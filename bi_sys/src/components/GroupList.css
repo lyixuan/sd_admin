@@ -1,0 +1,48 @@
+
+.normal {
+  width:100%;
+  padding:0 10px;
+  box-sizing: border-box;
+  background: #FFFFFF;
+}
+.flexContainer {
+  width:100%;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:justify;
+  -webkit-justify-content:space-between;
+  -ms-flex-pack:justify;
+  justify-content:space-between;
+  flex-flow:row wrap;
+  justify-content: start;
+
+}
+.btnStyle{
+  background: #F5F8FA;
+  color:#444348;
+  font-size:0.21rem !important;
+  width:1.9rem;
+  height:0.56rem !important;
+  line-height: 0.56rem !important;
+  margin: 0.1rem;
+}
+.btnSelected{
+  background: #52C9C2;
+  color:#FFFFFF;
+  font-size:0.21rem !important;
+  width:1.9rem;
+  height:0.56rem !important;
+  line-height: 0.56rem !important;
+  margin: 0.1rem;
+}
+.serialNumStyle{
+  font-style: normal;
+  color:#52C9C2
+}
+.selectedSerialNumStyle{
+  font-style: normal;
+  color:#FFFFFF
+}
+

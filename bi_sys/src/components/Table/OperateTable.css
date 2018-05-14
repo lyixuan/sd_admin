@@ -1,0 +1,22 @@
+
+.normal {
+	width: 6.98rem;
+	background-color: #fff;
+	padding-left: .26rem;
+  padding-right: .26rem;
+	position: relative;
+}
+.data_title{
+	font-size: 0.36rem;
+	color: #444348;
+}
+.data_tip{
+	font-size: .22rem;
+	color: #999;
+}
+.data_date{
+	font-size: .2rem;
+	color: #333;
+  position: absolute;
+  right: .3rem;
+}

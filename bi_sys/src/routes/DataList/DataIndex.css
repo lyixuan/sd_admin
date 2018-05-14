@@ -1,0 +1,169 @@
+
+.normal {
+  width: 100%;
+  height: 100%;
+  background: #F4F4F6;
+}
+
+.headerContainer {
+  position: relative;
+  width: 100%;
+  height: 2.05rem;
+  background: #FFFFFF;
+}
+
+.headerText {
+  position: absolute;
+  top: 0.32rem;
+  left: 0.3rem;
+  font-family: PingFangSC-Regular;
+}
+
+.dateArea {
+  font-size: 0.26rem;
+  color: #999999;
+}
+
+.headerTitle {
+  margin-top: 0.22rem;
+  font-size: 0.32rem;
+  color: #444348;
+}
+
+.iconBtn {
+  position: absolute;
+  top: 0.28rem;
+  right: 0.32rem;
+  width: 0.66rem;
+  height: 0.66rem;
+}
+
+.tabBox {
+  position: absolute;
+  bottom: 0;
+  left:0.2rem;
+  width: 7.1rem;
+  height: 0.74rem;
+  line-height: 0.74rem;
+}
+
+.tabBtn {
+  display: inline-block;
+  width: 50%;
+  height: 0.74rem;
+  text-align: center;
+  font-size: 0.3rem;
+  color: #999999;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.sectedBtn{
+  color:#52C9C2;
+  border-bottom: 2px solid #52C9C2;
+}
+
+.btnContainer {
+  display: flex;
+  margin: 0.4rem 0 0.3rem 0;
+  padding:0 0.2rem;
+  width: 100%;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:justify;
+  -webkit-justify-content:space-between;
+  -ms-flex-pack:justify;
+  justify-content:space-between;
+  flex-flow:row wrap;
+  justify-content: start;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.btnStyle{
+  height:0.64rem !important;
+  line-height: 0.64rem !important;
+  padding: 0 0.2rem !important;
+  margin-right: 0.2rem !important;
+  margin-bottom: 0.2rem;
+  font-size: 0.24rem !important;
+  color:#444348 !important;
+  background: #FFFFFF ;
+}
+
+.chartContainer {
+  position: relative;
+}
+.switchStyle{
+  position: absolute !important;
+  top:0.33rem;
+  right:0.45rem;
+  z-index: 1000;
+  width:1.2rem;
+  height:0.42rem;
+}
+
+.dataList {
+  width: 7.1rem;
+  margin-left: 0.2rem;
+
+  background: #FFFFFF;
+}
+
+.foodContainer {
+  height: 300px;
+  border: 1px solid red;
+  box-sizing: border-box;
+}
+
+.footbutton {
+  width: 7.1rem;
+  margin-left: 0.2rem;
+  background: #FFFFFF;
+}
+.subbutton{
+  width: 3.7rem;
+  height: 0.78rem;
+  margin-left: 1.9rem;
+  background: #52C9C2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.06rem;
+  border: 0rem;
+}
+.wordstyle2{
+  color:#FFFFFF;
+  font-size: 0.3rem;
+  line-height: 0.42rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+
+.topBarCls{
+  background: rgba(82,201,194,0.96);
+  box-shadow: 0 0 4px 1px rgba(28,92,89,0.60);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: .82rem;
+  z-index: 200;
+  display: none;
+  text-align: center;
+  line-height: .82rem;
+  font-size: .22rem;
+  color: #fff;
+}
+
+
+.loading{
+  height: 1rem;
+  text-align: center;
+  line-height: 0.8rem;
+  font-size: 0.4rem;
+  color: #333333;
+  margin:  auto;
+  font-family: PingFangSC-Regular;
+}
