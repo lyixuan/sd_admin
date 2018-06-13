@@ -12,6 +12,7 @@ export default {
   },
   alias: {
     components: path.resolve(__dirname, 'src/components/'),
+    selfComponents: path.resolve(__dirname, 'src/selfComponents/'),
   },
   ignoreMomentLocale: true,
   theme: './src/theme.js',
