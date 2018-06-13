@@ -2,6 +2,51 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
+    name: '质检',
+    icon: 'check-circle-o',
+    path: 'quality',
+    children: [
+      {
+        name: '质检列表',
+        path: 'qualityList',
+      },
+    ],
+  },
+  {
+    name: '账号管理',
+    icon: 'check-circle-o',
+    path: 'account',
+    children: [
+      {
+        name: '账号管理',
+        path: 'accountList',
+      },
+    ],
+  },
+  {
+    name: '用户管理',
+    icon: 'check-circle-o',
+    path: 'user',
+    children: [
+      {
+        name: '用户管理',
+        path: 'userList',
+      },
+    ],
+  },
+  {
+    name: '角色管理',
+    icon: 'check-circle-o',
+    path: 'role',
+    children: [
+      {
+        name: '角色管理',
+        path: 'roleList',
+      },
+    ],
+  },
+
+  {
     name: '结果页',
     icon: 'check-circle-o',
     path: 'result',
@@ -41,9 +86,9 @@ const menuData = [
     ],
   },
   {
-    name: '账户',
+    name: '登录',
     icon: 'user',
-    path: 'user',
+    path: 'userLayout',
     authority: 'guest',
     children: [
       {

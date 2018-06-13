@@ -72,6 +72,43 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
+    '/quality/qualityList': {
+      component: dynamicWrapper(app, [], () => import('../routes/Quality/QualityList')),
+    },
+    '/account/accountList': {
+      component: dynamicWrapper(app, [], () => import('../routes/Account/AccountList')),
+    },
+    '/account/createAccount': {
+      component: dynamicWrapper(app, [], () => import('../routes/Account/CreateAccount')),
+    },
+    '/account/editAccount': {
+      component: dynamicWrapper(app, [], () => import('../routes/Account/EditAccount')),
+    },
+    '/user/editUser': {
+      component: dynamicWrapper(app, [], () => import('../routes/Users/EditUser')),
+    },
+    '/user/createUser': {
+      component: dynamicWrapper(app, [], () => import('../routes/Users/CreateUser')),
+    },
+    '/user/checkUser': {
+      component: dynamicWrapper(app, [], () => import('../routes/Users/CheckUser')),
+    },
+    '/user/userList': {
+      component: dynamicWrapper(app, [], () => import('../routes/Users/UserList')),
+    },
+    '/role/editRole': {
+      component: dynamicWrapper(app, [], () => import('../routes/Role/EditRole')),
+    },
+    '/role/createrole': {
+      component: dynamicWrapper(app, [], () => import('../routes/Role/CreateRole')),
+    },
+    '/role/checkrole': {
+      component: dynamicWrapper(app, [], () => import('../routes/Role/CheckRole')),
+    },
+    '/role/roleList': {
+      component: dynamicWrapper(app, [], () => import('../routes/Role/RoleList')),
+    },
+
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     },
@@ -92,21 +129,19 @@ export const getRouterData = app => {
         import('../routes/Exception/triggerException')
       ),
     },
-    '/user': {
+    '/userLayout': {    //待修改
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },
-    '/user/login': {
-      component: dynamicWrapper(app, ['login'], () => import('../routes/User/Login')),
+    '/userLayout/login': {
+      component: dynamicWrapper(app, ['login'], () => import('../routes/Login/Login')),
     },
-    '/user/register': {
-      component: dynamicWrapper(app, ['register'], () => import('../routes/User/Register')),
+    '/userLayout/register': {
+      component: dynamicWrapper(app, ['register'], () => import('../routes/Login/Register')),
     },
-    '/user/register-result': {
-      component: dynamicWrapper(app, [], () => import('../routes/User/RegisterResult')),
+    '/userLayout/register-result': {
+      component: dynamicWrapper(app, [], () => import('../routes/Login/RegisterResult')),
     },
-    // '/user/:id': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/User/SomeComponent')),
-    // },
+
   };
   // Get name from ./menu.js or just set it in the router data.
   const menuData = getFlatMenuData(getMenuData());
