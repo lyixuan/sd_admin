@@ -65,7 +65,7 @@ class AccountList extends Component {
     ];
 
     this.state = {
-      dataSource: !dataSource ? dataSource : dataSource,
+      dataSource: !dataSource ? [] : dataSource,
       count: 3,
     };
   }
@@ -76,7 +76,7 @@ class AccountList extends Component {
   handleAdd = () => {
     const { count, dataSource } = this.state;
     const newData = {
-      key: count,
+      key: count + 1,
       name: `李四 ${count + 1}`,
       role: `质检员${count + 1}`,
       status: `禁止${count + 1}`,
@@ -89,7 +89,7 @@ class AccountList extends Component {
   };
   render() {
     const { dataSource } = this.state;
-    const columns = !this.columns ? this.columns : this.columns;
+    const columns = !this.columns ? [] : this.columns;
     return (
       <PageHeaderLayout>
         <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
