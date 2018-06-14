@@ -9,6 +9,7 @@ const menuData = [
       {
         name: '质检列表',
         path: 'qualityList',
+        hideInMenu: true,
       },
     ],
   },
@@ -142,6 +143,7 @@ function formatter(data, parentPath = '/', parentAuthority) {
       ...item,
       path,
       authority: item.authority || parentAuthority,
+      hideInMenu:item.hideInMenu||false,
     };
     if (item.children) {
       result.children = formatter(item.children, `${parentPath}${item.path}/`, item.authority);
