@@ -5,7 +5,6 @@ import Authorized from './Authorized';
 class AuthorizedRoute extends React.Component {
   render() {
     const { component: Component, render, authority, redirectPath, ...rest } = this.props;
-    console.log(this.props)
     return (
       <Authorized
         authority={authority}

@@ -17,6 +17,10 @@ English | [简体中文](./README.zh-CN.md)
 ## Templates未完待续
 
 ```
+- Account
+  - AccountList
+  - CreateAccount
+  - EditAccount
 - Result
   - Success
   - Failed

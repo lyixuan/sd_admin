@@ -3,7 +3,6 @@ import CheckPermissions from './CheckPermissions';
 
 class Authorized extends React.Component {
   render() {
-    console.log(authority)
     const { children, authority, noMatch = null } = this.props;
     const childrenRender = typeof children === 'undefined' ? null : children;
     return CheckPermissions(authority, childrenRender, noMatch);

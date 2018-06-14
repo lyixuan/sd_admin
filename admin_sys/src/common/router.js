@@ -109,12 +109,6 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/Role/RoleList')),
     },
 
-    '/result/success': {
-      component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
-    },
-    '/result/fail': {
-      component: dynamicWrapper(app, [], () => import('../routes/Result/Error')),
-    },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
     },
