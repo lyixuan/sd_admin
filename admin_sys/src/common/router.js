@@ -1,13 +1,13 @@
-import { createElement } from 'react';
+import {createElement} from 'react';
 import dynamic from 'dva/dynamic';
 import pathToRegexp from 'path-to-regexp';
-import { getMenuData } from './menu';
+import {getMenuData} from './menu';
 
 let routerDataCache;
 
 const modelNotExisted = (app, model) =>
   // eslint-disable-next-line
-  !app._models.some(({ namespace }) => {
+  !app._models.some(({namespace}) => {
     return namespace === model.substring(model.lastIndexOf('/') + 1);
   });
 
@@ -58,10 +58,10 @@ function getFlatMenuData(menus) {
   let keys = {};
   menus.forEach(item => {
     if (item.children) {
-      keys[item.path] = { ...item };
-      keys = { ...keys, ...getFlatMenuData(item.children) };
+      keys[item.path] = {...item};
+      keys = {...keys, ...getFlatMenuData(item.children)};
     } else {
-      keys[item.path] = { ...item };
+      keys[item.path] = {...item};
     }
   });
   return keys;
@@ -139,7 +139,6 @@ export const getRouterData = app => {
   };
   // Get name from ./menu.js or just set it in the router data.
   const menuData = getFlatMenuData(getMenuData());
-
   // Route configuration data
   // eg. {name,authority ...routerConfig }
   const routerData = {};
@@ -158,11 +157,14 @@ export const getRouterData = app => {
     // If you need to configure complex parameter routing,
     // https://github.com/ant-design/ant-design-pro-site/blob/master/docs/router-and-nav.md#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%B7%AF%E7%94%B1%E8%8F%9C%E5%8D%95
     // eg . /list/:type/user/info/:id
+    // console.log(path,menuItem['hideInMenu'])
+
     router = {
       ...router,
       name: router.name || menuItem.name,
       authority: router.authority || menuItem.authority,
       hideInBreadcrumb: router.hideInBreadcrumb || menuItem.hideInBreadcrumb,
+      hideInMenu:router['hideInMenu']||menuItem['hideInMenu'],
     };
     routerData[path] = router;
   });

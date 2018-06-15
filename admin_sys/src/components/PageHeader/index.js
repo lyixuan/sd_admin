@@ -178,7 +178,6 @@ export default class PageHeader extends PureComponent {
       tabDefaultActiveKey,
       tabBarExtraContent,
     } = this.props;
-
     const clsString = classNames(styles.pageHeader, className);
     const activeKeyProps = {};
     if (tabDefaultActiveKey !== undefined) {

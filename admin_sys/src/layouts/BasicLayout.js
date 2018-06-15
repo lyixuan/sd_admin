@@ -132,7 +132,6 @@ class BasicLayout extends React.PureComponent {
     // According to the url parameter to redirect
     // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
     const urlParams = new URL(window.location.href);
-
     const redirect = urlParams.searchParams.get('redirect');
     // Remove the parameters in the url
     if (redirect) {
@@ -142,7 +141,7 @@ class BasicLayout extends React.PureComponent {
       const { routerData } = this.props;
       // get the first authorized route path in routerData
       const authorizedPath = Object.keys(routerData).find(
-        item => check(routerData[item].authority, item) && item !== '/'
+        item => check(routerData[item].authority, item) && item !== '/'&&!routerData[item].hideInMenu
       );
       return authorizedPath;
     }
