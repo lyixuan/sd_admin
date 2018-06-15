@@ -8,6 +8,7 @@ class RoleList extends Component {
   };
 
   render() {
+    console.log(window.location.href)
     return (
       <PageHeaderLayout>
         <div>

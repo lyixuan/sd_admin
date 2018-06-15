@@ -66,7 +66,6 @@ function getFlatMenuData(menus) {
   });
   return keys;
 }
-
 export const getRouterData = app => {
   const routerConfig = {
     '/': {
@@ -75,7 +74,7 @@ export const getRouterData = app => {
     '/quality/qualityList': {
       component: dynamicWrapper(app, [], () => import('../routes/Quality/QualityList')),
     },
-    '/account/accountList': {
+    '/account/accountList/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/Account/AccountList')),
     },
     '/account/createAccount': {
