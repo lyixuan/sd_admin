@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Table, Button, Popconfirm, Pagination } from 'antd';
+import { Table, Button, Popconfirm, Pagination, Form } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './Account.css';
+import AdvancedSearchForm from '../../common/AdvancedSearchForm';
 
+const WrappedAdvancedSearchForm = Form.create()(AdvancedSearchForm);
 class AccountList extends Component {
   constructor(props) {
     super(props);
@@ -74,6 +76,7 @@ class AccountList extends Component {
     const dataSource = [...this.state.dataSource];
     this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
   };
+
   onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
   };
@@ -101,11 +104,13 @@ class AccountList extends Component {
     console.log(this.props.match.params.id)
     return (
       <PageHeaderLayout>
-        <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+        <WrappedAdvancedSearchForm />
+        <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16, marginTop: 20 }}>
           + 创建
         </Button>
         <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
         <Pagination
+          style={{ marginTop: 20 }}
           showSizeChanger
           onShowSizeChange={this.onShowSizeChange}
           defaultCurrent={3}
