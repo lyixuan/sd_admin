@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Button, Popconfirm } from 'antd';
+import { Table, Button, Popconfirm, Pagination } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './Account.css';
 
 class AccountList extends Component {
   constructor(props) {
@@ -73,6 +74,9 @@ class AccountList extends Component {
     const dataSource = [...this.state.dataSource];
     this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
   };
+  onShowSizeChange = (current, pageSize) => {
+    console.log(current, pageSize);
+  };
   handleAdd = () => {
     const { count, dataSource } = this.state;
     const newData = {
@@ -87,6 +91,7 @@ class AccountList extends Component {
       count: count + 1,
     });
   };
+
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
@@ -95,7 +100,14 @@ class AccountList extends Component {
         <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
           + 创建
         </Button>
-        <Table bordered dataSource={dataSource} columns={columns} />
+        <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+        <Pagination
+          showSizeChanger
+          onShowSizeChange={this.onShowSizeChange}
+          defaultCurrent={3}
+          total={100}
+          className={styles.pagination}
+        />
       </PageHeaderLayout>
     );
   }
