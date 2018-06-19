@@ -73,9 +73,8 @@ class AccountList extends Component {
     };
   }
   onEdit = () => {
-    this.props.history.push({
-      pathname: '/account/editAccount',
-      search: null,
+    this.props.setRouteUrlParams('/account/editAccount',{
+     a:2,b:3
     });
   };
 
