@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Popconfirm, Pagination, Form } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import ContentLayout from '../../layouts/ContentLayout';
 import styles from './Account.css';
 import AdvancedSearchForm from '../../common/AdvancedSearchForm';
 
@@ -86,7 +87,6 @@ class AccountList extends Component {
       pathname:'/role/roleList',
       search: JSON.stringify({s:2}),
     });
-
     const newData = {
       key: count + 1,
       name: `李四 ${count + 1}`,
@@ -105,22 +105,16 @@ class AccountList extends Component {
     const columns = !this.columns ? [] : this.columns;
     return (
       <PageHeaderLayout>
-        <WrappedAdvancedSearchForm />
-        <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16, marginTop: 20 }}>
-          + 创建
-        </Button>
-        <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
-        <Pagination
-          style={{ marginTop: 20 }}
-          showSizeChanger
-          onShowSizeChange={this.onShowSizeChange}
-          defaultCurrent={3}
-          total={100}
-          className={styles.pagination}
-        />
+        <ContentLayout
+          contentForm={<WrappedAdvancedSearchForm />}
+          contentButton={<Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16, marginTop: 20 }}>+ 创建</Button>}
+          contentTable={ <Table bordered dataSource={dataSource} columns={columns} pagination={false} />}
+          contentPagination={<Pagination showSizeChanger onShowSizeChange={this.onShowSizeChange} defaultCurrent={3} total={100}
+          />}
+        >
+        </ContentLayout>
       </PageHeaderLayout>
     );
   }
 }
-
 export default AccountList;
