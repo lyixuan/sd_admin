@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, Pagination } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
-import styles from './Account.css';
-import AdvancedSearchForm from '../../common/AdvancedSearchForm';
-
 
 class AccountList extends Component {
   constructor(props) {
@@ -69,12 +66,12 @@ class AccountList extends Component {
 
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
-      count: 3,
     };
   }
   onEdit = () => {
-    this.props.setRouteUrlParams('/account/editAccount',{
-     a:2,b:3
+    this.props.setRouteUrlParams('/account/editAccount', {
+      a: 2,
+      b: 3,
     });
   };
 
@@ -82,24 +79,16 @@ class AccountList extends Component {
     console.log(current, pageSize);
   };
   handleAdd = () => {
-    const { count, dataSource } = this.state;
-    const newData = {
-      key: count + 1,
-      name: `李四 ${count + 1}`,
-      role: `质检员${count + 1}`,
-      status: `禁止${count + 1}`,
-      email: `world${count + 1}@sunlands.com`,
-    };
-    this.setState({
-      dataSource: [...dataSource, newData],
-      count: count + 1,
+    this.props.setRouteUrlParams('/account/createAccount', {
+      a: 2,
+      b: 3,
     });
   };
-
 
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
+    console.log(this.props);
     return (
       <ContentLayout
         contentButton={
@@ -117,7 +106,6 @@ class AccountList extends Component {
         contentPagination={
           <Pagination
             showQuickJumper
-            pageSizeOptions={20}
             onChange={this.onShowSizeChange}
             defaultCurrent={3}
             total={100}
