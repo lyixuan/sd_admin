@@ -4,6 +4,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import ContentLayout from '../../layouts/ContentLayout';
 import styles from './Account.css';
 import AdvancedSearchForm from '../../common/AdvancedSearchForm';
+import AuthorizedButton from '../../selfComponent/AuthorizedButton'
 
 const WrappedAdvancedSearchForm = Form.create()(AdvancedSearchForm);
 class AccountList extends Component {
@@ -83,10 +84,6 @@ class AccountList extends Component {
   };
   handleAdd = () => {
     const { count, dataSource } = this.state;
-    this.props.history.push({
-      pathname:'/role/roleList',
-      search: JSON.stringify({s:2}),
-    });
     const newData = {
       key: count + 1,
       name: `李四 ${count + 1}`,
@@ -99,12 +96,18 @@ class AccountList extends Component {
       count: count + 1,
     });
   };
+  createUser=()=>{
+this.props.setRouteUrlParams('/role/roleList',{a:3,b:4});
+  }
 
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
     return (
       <PageHeaderLayout>
+        <AuthorizedButton authority='/role/roleList'>
+          <Button onClick={this.createUser} type="primary" style={{ marginBottom: 16, marginTop: 20 }}>测试</Button>
+        </AuthorizedButton>
         <ContentLayout
           contentForm={<WrappedAdvancedSearchForm />}
           contentButton={<Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16, marginTop: 20 }}>+ 创建</Button>}

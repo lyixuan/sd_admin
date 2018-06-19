@@ -13,16 +13,17 @@ const { AuthorizedRoute } = Authorized;
 dynamic.setDefaultLoadingComponent(() => {
   return <Spin size="large" className={styles.globalSpin} />;
 });
-console.log(checkoutLogin())
 function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
   const UserLayout = routerData['/userLayout'].component;
   const BasicLayout = routerData['/'].component;
+  const noAuthoried=routerData['/exception/403'].component
   return (
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>
         <Switch>
           <Route path="/userLayout" component={UserLayout} />
+          <Route path="/exception/403" component={noAuthoried} />
           <AuthorizedRoute
             path="/"
             render={props => <BasicLayout {...props} />}

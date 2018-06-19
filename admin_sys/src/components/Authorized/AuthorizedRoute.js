@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import {stringify} from 'qs';
 import { parse } from 'url';
 import Authorized from './Authorized';
-import NoAuthorized from '../../selfComponent/NoAuthorized'
+import {checkoutAuthRoute} from '../../utils/checkoutUserAuthInfo'
 class AuthorizedRoute extends React.Component {
   getUrlParams(){
     return parse(this.location.search,true).query;
@@ -18,7 +18,7 @@ class AuthorizedRoute extends React.Component {
     });
   }
   setRouteUrlParams(pathname,query=null){
-    if(!pathname){
+    if(pathname){
       this.history.push({
         pathname:pathname,
         search:stringify(query),
@@ -29,11 +29,11 @@ class AuthorizedRoute extends React.Component {
   }
   render() {
     const { component: Component, render, authority, redirectPath, ...rest } = this.props;
+    const pathname=this.props.location.pathname;
     return (
       <Authorized
-        authority={()=>(true)}
-        noMatch={<NoAuthorized/>}
-        // noMatch={<Route {...rest} render={() => <Redirect to={{ pathname: '/account/editAccount' }} />} />}
+        authority={checkoutAuthRoute.bind(null,pathname)}
+         noMatch={<Route {...rest} render={() => <Redirect to={{ pathname: '/exception/403' }} />} />}
       >
           <Route {...rest} render={props => (Component ? <Component {...props}
                                                                     getUrlParams={this.getUrlParams}
