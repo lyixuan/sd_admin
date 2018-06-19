@@ -10,10 +10,9 @@ import 'moment/locale/zh-cn';
 import './rollbar';
 
 import './index.less';
+const history=createHistory();
 // 1. Initialize
-const app = dva({
-  history: createHistory(),
-});
+const app = dva({history});
 
 // 2. Plugins
 app.use(createLoading());

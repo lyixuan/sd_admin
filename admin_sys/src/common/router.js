@@ -74,7 +74,7 @@ export const getRouterData = app => {
     '/quality/qualityList': {
       component: dynamicWrapper(app, [], () => import('../routes/Quality/QualityList')),
     },
-    '/account/accountList/:id': {
+    '/account/accountList': {
       component: dynamicWrapper(app, [], () => import('../routes/Account/AccountList')),
     },
     '/account/createAccount': {
@@ -156,7 +156,6 @@ export const getRouterData = app => {
     // If you need to configure complex parameter routing,
     // https://github.com/ant-design/ant-design-pro-site/blob/master/docs/router-and-nav.md#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%B7%AF%E7%94%B1%E8%8F%9C%E5%8D%95
     // eg . /list/:type/user/info/:id
-    // console.log(path,menuItem['hideInMenu'])
 
     router = {
       ...router,

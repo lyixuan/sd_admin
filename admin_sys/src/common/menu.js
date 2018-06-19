@@ -9,7 +9,6 @@ const menuData = [
       {
         name: '质检列表',
         path: 'qualityList',
-        hideInMenu: true,
       },
     ],
   },

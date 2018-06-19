@@ -83,8 +83,10 @@ class AccountList extends Component {
   handleAdd = () => {
     const { count, dataSource } = this.state;
     this.props.history.push({
-      pathname:'/role/roleList?ss=234',
-    })
+      pathname:'/role/roleList',
+      search: JSON.stringify({s:2}),
+    });
+
     const newData = {
       key: count + 1,
       name: `李四 ${count + 1}`,
@@ -101,7 +103,6 @@ class AccountList extends Component {
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
-    console.log(this.props.match.params.id)
     return (
       <PageHeaderLayout>
         <WrappedAdvancedSearchForm />

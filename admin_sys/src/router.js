@@ -6,13 +6,14 @@ import dynamic from 'dva/dynamic';
 import { getRouterData } from './common/router';
 import Authorized from './utils/Authorized';
 import styles from './index.less';
+import {checkoutLogin} from './utils/checkoutUserAuthInfo'
 
 const { ConnectedRouter } = routerRedux;
 const { AuthorizedRoute } = Authorized;
 dynamic.setDefaultLoadingComponent(() => {
   return <Spin size="large" className={styles.globalSpin} />;
 });
-
+console.log(checkoutLogin())
 function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
   const UserLayout = routerData['/userLayout'].component;
@@ -25,7 +26,7 @@ function RouterConfig({ history, app }) {
           <AuthorizedRoute
             path="/"
             render={props => <BasicLayout {...props} />}
-            authority={()=>(true)}
+            authority={checkoutLogin}
             redirectPath="/userLayout/login"
           />
         </Switch>

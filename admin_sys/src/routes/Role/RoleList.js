@@ -6,15 +6,20 @@ class RoleList extends Component {
     this.state = {
     }
   };
-
+  componentDidMount(){
+    // this.props.setUrlParams()
+  }
+  onClick=()=>{
+    this.props.setCurrentUrlParams({s:5})
+  }
   render() {
-    console.log(window.location.href)
+   console.log(this)
     return (
       <PageHeaderLayout>
-        <div>
+        <div onClick={this.onClick}>
           角色列表
         </div>
-      </PageHeaderLayout>
+       </PageHeaderLayout>
     );
   }
 }
