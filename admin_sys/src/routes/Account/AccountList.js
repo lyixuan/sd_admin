@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Button, Popconfirm, Pagination, Form } from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+
 import ContentLayout from '../../layouts/ContentLayout';
-import styles from './Account.css';
+// import styles from './Account.css';
 import AdvancedSearchForm from '../../common/AdvancedSearchForm';
 
 const WrappedAdvancedSearchForm = Form.create()(AdvancedSearchForm);
@@ -84,8 +84,8 @@ class AccountList extends Component {
   handleAdd = () => {
     const { count, dataSource } = this.state;
     this.props.history.push({
-      pathname:'/role/roleList',
-      search: JSON.stringify({s:2}),
+      pathname: '/role/roleList',
+      search: JSON.stringify({ s: 2 }),
     });
     const newData = {
       key: count + 1,
@@ -104,16 +104,29 @@ class AccountList extends Component {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
     return (
-      <PageHeaderLayout>
-        <ContentLayout
-          contentForm={<WrappedAdvancedSearchForm />}
-          contentButton={<Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16, marginTop: 20 }}>+ 创建</Button>}
-          contentTable={ <Table bordered dataSource={dataSource} columns={columns} pagination={false} />}
-          contentPagination={<Pagination showSizeChanger onShowSizeChange={this.onShowSizeChange} defaultCurrent={3} total={100}
-          />}
-        >
-        </ContentLayout>
-      </PageHeaderLayout>
+      <ContentLayout
+        contentForm={<WrappedAdvancedSearchForm />}
+        contentButton={
+          <Button
+            onClick={this.handleAdd}
+            type="primary"
+            style={{ marginBottom: 16, marginTop: 20 }}
+          >
+            + 创建
+          </Button>
+        }
+        contentTable={
+          <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+        }
+        contentPagination={
+          <Pagination
+            showSizeChanger
+            onShowSizeChange={this.onShowSizeChange}
+            defaultCurrent={3}
+            total={100}
+          />
+        }
+      />
     );
   }
 }
