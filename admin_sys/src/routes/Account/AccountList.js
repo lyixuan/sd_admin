@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Table, Button, Popconfirm, Pagination, Form } from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { Table, Button, Pagination } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import styles from './Account.css';
 import AdvancedSearchForm from '../../common/AdvancedSearchForm';
-import AuthorizedButton from '../../selfComponent/AuthorizedButton'
 
-const WrappedAdvancedSearchForm = Form.create()(AdvancedSearchForm);
+
 class AccountList extends Component {
   constructor(props) {
     super(props);
@@ -36,11 +34,11 @@ class AccountList extends Component {
         dataIndex: 'operation',
         width: '100px',
         render: (text, record) => {
-          return this.state.dataSource.length > 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
-              <a href="">编辑</a>
-            </Popconfirm>
-          ) : null;
+          return (
+            <span style={{ color: '#46A3EF' }} onClick={() => this.onEdit(record.key)}>
+              编辑
+            </span>
+          );
         },
       },
     ];
@@ -74,9 +72,11 @@ class AccountList extends Component {
       count: 3,
     };
   }
-  onDelete = key => {
-    const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+  onEdit = () => {
+    this.props.history.push({
+      pathname: '/account/editAccount',
+      search: null,
+    });
   };
 
   onShowSizeChange = (current, pageSize) => {
@@ -96,27 +96,36 @@ class AccountList extends Component {
       count: count + 1,
     });
   };
-  createUser=()=>{
-this.props.setRouteUrlParams('/role/roleList',{a:3,b:4});
-  }
+
 
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
     return (
-      <PageHeaderLayout>
-        <AuthorizedButton authority='/role/roleList'>
-          <Button onClick={this.createUser} type="primary" style={{ marginBottom: 16, marginTop: 20 }}>测试</Button>
-        </AuthorizedButton>
-        <ContentLayout
-          contentForm={<WrappedAdvancedSearchForm />}
-          contentButton={<Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16, marginTop: 20 }}>+ 创建</Button>}
-          contentTable={ <Table bordered dataSource={dataSource} columns={columns} pagination={false} />}
-          contentPagination={<Pagination showSizeChanger onShowSizeChange={this.onShowSizeChange} defaultCurrent={3} total={100}
-          />}
-        >
-        </ContentLayout>
-      </PageHeaderLayout>
+      <ContentLayout
+        contentButton={
+          <Button
+            onClick={this.handleAdd}
+            type="primary"
+            style={{ marginBottom: 16, marginTop: 0 }}
+          >
+            + 创建
+          </Button>
+        }
+        contentTable={
+          <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+        }
+        contentPagination={
+          <Pagination
+            showQuickJumper
+            pageSizeOptions={20}
+            onChange={this.onShowSizeChange}
+            defaultCurrent={3}
+            total={100}
+            style={{ marginTop: 24 }}
+          />
+        }
+      />
     );
   }
 }
