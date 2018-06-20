@@ -112,7 +112,7 @@ class AccountList extends Component {
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={1}
             total={100}
-            className={styles.paginationStyle}
+            className={common.paginationStyle}
           />
         }
       />

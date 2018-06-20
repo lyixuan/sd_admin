@@ -32,3 +32,8 @@
   background-color: #52C9C2;
   border-color: #52C9C2;
 }
+.paginationStyle{
+  margin: 24px 24px;
+  display: flex;
+  justify-content: flex-end;
+}
