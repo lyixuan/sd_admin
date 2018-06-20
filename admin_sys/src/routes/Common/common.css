@@ -19,3 +19,16 @@
 :global(.ant-pagination-item-active a){
   color: #52C9C2 !important;
 }
+
+.createButton{
+  margin: 0px 32px 24px;
+  background-color: #52C9C2;
+  font-size: 14px;
+  width: 70px;
+  height: 32px;
+  border-color: #52C9C2;
+}
+.createButton:hover{
+  background-color: #52C9C2;
+  border-color: #52C9C2;
+}
