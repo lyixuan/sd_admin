@@ -11,6 +11,10 @@
   height: 32px;
   border-color: #52C9C2;
 }
+.createButton:hover{
+  background-color: #52C9C2;
+  border-color: #52C9C2;
+}
 .tableContentStyle{
   margin: 0 32px;
 }
@@ -41,9 +45,15 @@
 }
 :global(.ant-pagination-item-active) {
   border-color: #52C9C2 !important;
-  font-weight: 500;
 }
-
+:global(.ant-pagination-item:hover) {
+  border-color: #52C9C2 !important;
+  color: #52C9C2 !important;
+}
+:global(.ant-pagination-item:hover a) {
+  color: #52C9C2 !important;
+}
 :global(.ant-pagination-item-active a){
   color: #52C9C2 !important;
 }
+
