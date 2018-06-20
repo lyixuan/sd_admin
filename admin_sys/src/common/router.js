@@ -1,13 +1,13 @@
-import {createElement} from 'react';
+import { createElement } from 'react';
 import dynamic from 'dva/dynamic';
 import pathToRegexp from 'path-to-regexp';
-import {getMenuData} from './menu';
+import { getMenuData } from './menu';
 
 let routerDataCache;
 
 const modelNotExisted = (app, model) =>
   // eslint-disable-next-line
-  !app._models.some(({namespace}) => {
+  !app._models.some(({ namespace }) => {
     return namespace === model.substring(model.lastIndexOf('/') + 1);
   });
 
@@ -58,10 +58,10 @@ function getFlatMenuData(menus) {
   let keys = {};
   menus.forEach(item => {
     if (item.children) {
-      keys[item.path] = {...item};
-      keys = {...keys, ...getFlatMenuData(item.children)};
+      keys[item.path] = { ...item };
+      keys = { ...keys, ...getFlatMenuData(item.children) };
     } else {
-      keys[item.path] = {...item};
+      keys[item.path] = { ...item };
     }
   });
   return keys;
@@ -107,7 +107,24 @@ export const getRouterData = app => {
     '/role/roleList': {
       component: dynamicWrapper(app, [], () => import('../routes/Role/RoleList')),
     },
-
+    '/refund/refundList': {
+      component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundList')),
+    },
+    '/refund/refundAdd': {
+      component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundAdd')),
+    },
+    '/refund/refundDel': {
+      component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundDel')),
+    },
+    '/Complaint/complaintList': {
+      component: dynamicWrapper(app, [], () => import('../routes/Complaint/ComplaintList')),
+    },
+    '/complaint/complaintAdd': {
+      component: dynamicWrapper(app, [], () => import('../routes/Complaint/ComplaintAdd')),
+    },
+    '/complaint/complaintDel': {
+      component: dynamicWrapper(app, [], () => import('../routes/Complaint/ComplaintDel')),
+    },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
     },
@@ -122,7 +139,8 @@ export const getRouterData = app => {
         import('../routes/Exception/triggerException')
       ),
     },
-    '/userLayout': {    //待修改
+    '/userLayout': {
+      //待修改
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },
     '/userLayout/login': {
@@ -134,7 +152,6 @@ export const getRouterData = app => {
     '/userLayout/register-result': {
       component: dynamicWrapper(app, [], () => import('../routes/Login/RegisterResult')),
     },
-
   };
   // Get name from ./menu.js or just set it in the router data.
   const menuData = getFlatMenuData(getMenuData());
@@ -162,7 +179,7 @@ export const getRouterData = app => {
       name: router.name || menuItem.name,
       authority: router.authority || menuItem.authority,
       hideInBreadcrumb: router.hideInBreadcrumb || menuItem.hideInBreadcrumb,
-      hideInMenu:router['hideInMenu']||menuItem['hideInMenu'],
+      hideInMenu: router['hideInMenu'] || menuItem['hideInMenu'],
     };
     routerData[path] = router;
   });
