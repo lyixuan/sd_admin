@@ -11,27 +11,22 @@ class AccountList extends Component {
       {
         title: '姓名',
         dataIndex: 'name',
-        width: '100px',
       },
       {
         title: '角色',
         dataIndex: 'role',
-        width: '200px',
       },
       {
         title: '邮箱',
         dataIndex: 'email',
-        width: '300px',
       },
       {
         title: '状态',
         dataIndex: 'status',
-        width: '100px',
       },
       {
         title: '操作',
         dataIndex: 'operation',
-        width: '100px',
         render: (text, record) => {
           return (
             <AuthorizedButton authority="/account/editAccount">
