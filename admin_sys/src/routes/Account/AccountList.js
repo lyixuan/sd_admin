@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Pagination } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import styles from './Account.css';
 
 class AccountList extends Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class AccountList extends Component {
         render: (text, record) => {
           return (
             <AuthorizedButton authority="/account/editAccount">
-              <span style={{ color: '#46A3EF' }} onClick={() => this.onEdit(record.key)}>
+              <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record.key)}>
                 编辑
               </span>
             </AuthorizedButton>
@@ -95,17 +96,19 @@ class AccountList extends Component {
       <ContentLayout
         contentButton={
           <AuthorizedButton authority="/account/createAccount">
-            <Button
-              onClick={this.handleAdd}
-              type="primary"
-              style={{ marginBottom: 16, marginTop: 0 }}
-            >
+            <Button onClick={this.handleAdd} type="primary" className={styles.createButton}>
               + 创建
             </Button>
           </AuthorizedButton>
         }
         contentTable={
-          <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+          <Table
+            bordered
+            dataSource={dataSource}
+            columns={columns}
+            pagination={false}
+            className={styles.tableContentStyle}
+          />
         }
         contentPagination={
           <Pagination
@@ -113,7 +116,7 @@ class AccountList extends Component {
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={1}
             total={100}
-            style={{ marginTop: 24 }}
+            className={styles.paginationStyle}
           />
         }
       />
