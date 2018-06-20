@@ -83,7 +83,48 @@ const menuData = [
         path: 'editUser',
         hideInMenu: true,
       },
-
+    ],
+  },
+  {
+    name: '退费管理',
+    icon: 'check-circle-o',
+    path: 'refund',
+    children: [
+      {
+        name: '退费列表',
+        path: 'refundList',
+      },
+      {
+        name: '添加退费',
+        path: 'refundAdd',
+        hideInMenu: false,
+      },
+      {
+        name: '删除退费',
+        path: 'refundDel',
+        hideInMenu: false,
+      },
+    ],
+  },
+  {
+    name: '投诉管理',
+    icon: 'check-circle-o',
+    path: 'complaint',
+    children: [
+      {
+        name: '投诉列表',
+        path: 'complaintList',
+      },
+      {
+        name: '添加投诉',
+        path: 'complaintAdd',
+        hideInMenu: false,
+      },
+      {
+        name: '删除投诉',
+        path: 'complaintDel',
+        hideInMenu: false,
+      },
     ],
   },
   {
@@ -142,7 +183,7 @@ function formatter(data, parentPath = '/', parentAuthority) {
       ...item,
       path,
       authority: item.authority || parentAuthority,
-      hideInMenu:item.hideInMenu||false,
+      hideInMenu: item.hideInMenu || false,
     };
     if (item.children) {
       result.children = formatter(item.children, `${parentPath}${item.path}/`, item.authority);

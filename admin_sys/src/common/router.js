@@ -110,7 +110,24 @@ export const getRouterData = app => {
     '/role/roleList': {
       component: dynamicWrapper(app, [], () => import('../routes/Role/RoleList')),
     },
-
+    '/refund/refundList': {
+      component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundList')),
+    },
+    '/refund/refundAdd': {
+      component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundAdd')),
+    },
+    '/refund/refundDel': {
+      component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundDel')),
+    },
+    '/Complaint/complaintList': {
+      component: dynamicWrapper(app, [], () => import('../routes/Complaint/ComplaintList')),
+    },
+    '/complaint/complaintAdd': {
+      component: dynamicWrapper(app, [], () => import('../routes/Complaint/ComplaintAdd')),
+    },
+    '/complaint/complaintDel': {
+      component: dynamicWrapper(app, [], () => import('../routes/Complaint/ComplaintDel')),
+    },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
     },

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Button, Pagination } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
-import AdvancedSearchForm from '../../common/AdvancedSearchForm';
-
+import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import styles from './Account.css';
 
 class AccountList extends Component {
   constructor(props) {
@@ -34,9 +34,11 @@ class AccountList extends Component {
         width: '100px',
         render: (text, record) => {
           return (
-            <span style={{ color: '#46A3EF' }} onClick={() => this.onEdit(record.key)}>
-              编辑
-            </span>
+            <AuthorizedButton authority="/account/editAccount">
+              <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record.key)}>
+                编辑
+              </span>
+            </AuthorizedButton>
           );
         },
       },
@@ -90,30 +92,32 @@ class AccountList extends Component {
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
-    console.log(this.props);
     return (
       <ContentLayout
         contentButton={
-          <Button
-            onClick={this.handleAdd}
-            type="primary"
-            style={{ marginBottom: 16, marginTop: 0 }}
-          >
-            + 创建
-          </Button>
+          <AuthorizedButton authority="/account/createAccount">
+            <Button onClick={this.handleAdd} type="primary" className={styles.createButton}>
+              + 创建
+            </Button>
+          </AuthorizedButton>
         }
         contentTable={
-          <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+          <Table
+            bordered
+            dataSource={dataSource}
+            columns={columns}
+            pagination={false}
+            className={styles.tableContentStyle}
+          />
         }
         contentPagination={
           <Pagination
-            showQuickJumper
-            onChange={this.onShowSizeChange}
-            defaultCurrent={3}
+            showSizeChanger
+            onShowSizeChange={this.onShowSizeChange}
+            defaultCurrent={1}
             total={100}
-            style={{ marginTop: 24 }}
+            className={styles.paginationStyle}
           />
-
         }
       />
     );
