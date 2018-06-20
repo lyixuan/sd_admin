@@ -104,7 +104,7 @@ export const getRouterData = app => {
     '/role/createrole': {
       component: dynamicWrapper(app, [], () => import('../routes/Role/CreateRole')),
     },
-    '/role/checkrole': {
+    '/role/checkRole': {
       component: dynamicWrapper(app, [], () => import('../routes/Role/CheckRole')),
     },
     '/role/roleList': {

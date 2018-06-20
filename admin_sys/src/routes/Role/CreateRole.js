@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+// import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd'
+// import ContentLayout from '../../layouts/ContentLayout';
+// import AdvancedSearchForm from '../../common/AdvancedSearchForm.js';
+
 class CreateRole extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    }
-  };
+    this.state = {};
+  }
 
   render() {
-    return (
-      <PageHeaderLayout>
-        <div>
-          创建角色
-        </div>
-      </PageHeaderLayout>
-    );
+    return <div />;
   }
 }
 

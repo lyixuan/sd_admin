@@ -44,7 +44,7 @@ const menuData = [
       },
       {
         name: '创建角色',
-        path: 'createrole',
+        path: 'createRole',
         hideInMenu: true,
       },
       {
