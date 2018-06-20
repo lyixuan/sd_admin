@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout, message } from 'antd';
+import { Layout } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
-import { Route, Redirect, Switch, routerRedux } from 'dva/router';
+import { Route, Redirect, Switch } from 'dva/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
@@ -14,7 +14,7 @@ import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 
 const { Content, Header } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -114,7 +114,7 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = 'Ant Design Pro';
+    let title = '小德';
     let currRouterData = null;
     // match params path
     Object.keys(routerData).forEach(key => {
@@ -123,7 +123,7 @@ class BasicLayout extends React.PureComponent {
       }
     });
     if (currRouterData && currRouterData.name) {
-      title = `${currRouterData.name} - Ant Design Pro`;
+      title = `${currRouterData.name} - 小德`;
     }
     return title;
   }
@@ -151,19 +151,15 @@ class BasicLayout extends React.PureComponent {
       payload: collapsed,
     });
   };
-  handleNoticeClear = type => {
-    message.success(`清空了${type}`);
-    this.props.dispatch({
-      type: 'global/clearNotices',
-      payload: type,
-    });
-  };
+
   handleMenuClick = ({ key }) => {
-    if (key === 'triggerError') {
-      this.props.dispatch(routerRedux.push('/exception/trigger'));
+    if (key === 'changePwd') {
+      console.log('修改密码');
+      // this.props.dispatch(routerRedux.push('/exception/trigger'));
       return;
     }
     if (key === 'logout') {
+      console.log('退出登录');
       this.props.dispatch({
         type: 'login/logout',
       });
@@ -210,7 +206,6 @@ class BasicLayout extends React.PureComponent {
               notices={notices}
               collapsed={collapsed}
               isMobile={this.state.isMobile}
-              onNoticeClear={this.handleNoticeClear}
               onCollapse={this.handleMenuCollapse}
               onMenuClick={this.handleMenuClick}
               onNoticeVisibleChange={this.handleNoticeVisibleChange}
