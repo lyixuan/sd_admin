@@ -1,0 +1,21 @@
+:global(.ant-table-tbody  tr  td) {
+  padding: 0 16px !important;
+  height: 44px;
+}
+:global(.ant-table-thead  tr  th) {
+  padding: 0 16px !important;
+  height: 44px;
+}
+:global(.ant-pagination-item-active) {
+  border-color: #52C9C2 !important;
+}
+:global(.ant-pagination-item:hover) {
+  border-color: #52C9C2 !important;
+  color: #52C9C2 !important;
+}
+:global(.ant-pagination-item:hover a) {
+  color: #52C9C2 !important;
+}
+:global(.ant-pagination-item-active a){
+  color: #52C9C2 !important;
+}

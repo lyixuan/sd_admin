@@ -1,58 +1,79 @@
 import React, { Component } from 'react';
-import { Button, Form, Row, Col, Input } from 'antd';
-import styles from './AdvancedSearchForm.css';
+import { Form, Input, Cascader } from 'antd';
 
 const FormItem = Form.Item;
+const residences = [
+  {
+    value: 'zhejiang',
+    label: 'Zhejiang',
+  },
+  {
+    value: 'jiangsu',
+    label: 'Jiangsu',
+  },
+];
 class AdvancedSearchForm extends Component {
-  // To generate mock Form.Item
-  getFields() {
-    const count = 4;
-    const { getFieldDecorator } = this.props.form;
-    const children = [];
-    for (let i = 0; i < 10; i += 1) {
-      children.push(
-        <Col span={8} key={i} style={{ display: i < count ? 'block' : 'none' }}>
-          <FormItem label={`条件 ${i + 1}`}>
-            {getFieldDecorator(`条件-${i + 1}`, {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入搜索内容!',
-                },
-              ],
-            })(<Input placeholder="搜索" />)}
-          </FormItem>
-        </Col>
-      );
-    }
-    return children;
-  }
-
-  handleSearch = e => {
+  state = {};
+  handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
     });
   };
-
-  handleReset = () => {
-    this.props.form.resetFields();
-  };
-
   render() {
+    const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    };
+    const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 16,
+          offset: 8,
+        },
+      },
+    };
     return (
-      <Form className={styles.searchForm} onSubmit={this.handleSearch}>
-        <Row gutter={24}>{this.getFields()}</Row>
-        <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type="primary" htmlType="submit">
-              搜索
-            </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
-              重置
-            </Button>
-          </Col>
-        </Row>
+      <Form onSubmit={this.handleSubmit}>
+        <FormItem {...formItemLayout} label="姓名">
+          {getFieldDecorator('姓名', {
+            rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
+          })(<Input style={{ width: 380 }} />)}
+        </FormItem>
+        <FormItem {...formItemLayout} label="邮箱">
+          {getFieldDecorator('邮箱', {
+            rules: [
+              {
+                type: 'email',
+                message: '请输入合法邮箱!',
+              },
+              {
+                required: true,
+                message: '请输入合法邮箱!',
+              },
+            ],
+          })(<Input style={{ width: 264 }} />)}
+          <span style={{ width: 101 }}> @sunlands.com</span>
+        </FormItem>
+        <FormItem {...formItemLayout} label="角色">
+          {getFieldDecorator('角色', {
+            rules: [{ type: 'array', required: true, message: '请选择角色！' }],
+          })(<Cascader options={residences} style={{ width: 380 }} />)}
+        </FormItem>
+        <FormItem {...tailFormItemLayout} />
       </Form>
     );
   }

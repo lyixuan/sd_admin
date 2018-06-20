@@ -1,8 +1,4 @@
 
-.pagination{
-  margin-right: 0 ;
-}
-
 .createButton{
   margin: 0px 32px 24px;
   background-color: #52C9C2;
@@ -35,25 +31,8 @@
   display: flex;
 }
 
-:global(.ant-table-tbody  tr  td) {
-  padding: 0 16px !important;
-  height: 44px;
+:global(.ant-form-item-required:before) {
+  color: #000 !important;
 }
-:global(.ant-table-thead  tr  th) {
-  padding: 0 16px !important;
-  height: 44px;
-}
-:global(.ant-pagination-item-active) {
-  border-color: #52C9C2 !important;
-}
-:global(.ant-pagination-item:hover) {
-  border-color: #52C9C2 !important;
-  color: #52C9C2 !important;
-}
-:global(.ant-pagination-item:hover a) {
-  color: #52C9C2 !important;
-}
-:global(.ant-pagination-item-active a){
-  color: #52C9C2 !important;
-}
+
 

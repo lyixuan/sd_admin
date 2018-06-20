@@ -3,6 +3,7 @@ import { Table, Button, Pagination } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import styles from './Account.css';
+import common from '../Common/common.css';
 
 class AccountList extends Component {
   constructor(props) {
@@ -91,7 +92,7 @@ class AccountList extends Component {
       <ContentLayout
         contentButton={
           <AuthorizedButton authority="/account/createAccount">
-            <Button onClick={this.handleAdd} type="primary" className={styles.createButton}>
+            <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
               + 创建
             </Button>
           </AuthorizedButton>
