@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Table, Button, Popconfirm, Pagination, Form } from 'antd';
+import { Table, Button, Popconfirm, Pagination, Form, Icon, Input, } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import AdvancedSearchForm from '../../common/AdvancedSearchForm';
 
-const WrappedAdvancedSearchForm = Form.create()(AdvancedSearchForm);
+function hasErrors(fieldsError) {
+  return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
 
 class UserList extends Component {
   constructor(props) {
@@ -98,7 +100,10 @@ class UserList extends Component {
     const columns = !this.columns ? [] : this.columns;
     return (
       <PageHeaderLayout>
-        <WrappedAdvancedSearchForm />
+
+
+
+
         <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16, marginTop: 20 }}>
           + 创建
         </Button>

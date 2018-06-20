@@ -14,6 +14,7 @@ let propsVal = '';
 class RoleList extends Component {
   constructor(props) {
     super(props);
+    const params=this.props.getUrlParams()
     this.columns = [
       {
         title: '姓名',
@@ -76,17 +77,15 @@ class RoleList extends Component {
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
       count: 3,
+      username:params.username||1223,
+      password:params.password||1111,
     };
   }
 
   componentDidMount() {
-    console.log(this.props.getUrlParams());
-    // const param = this.props.getUrlParams();
-    // propsVal.form.setFieldsValue({
-    //   username: 2131,
-    //   password: `${param.password?param.password:''}`,
-    // });
+
   }
+
 
   onDelete = key => {
     const dataSource = [...this.state.dataSource];
@@ -105,6 +104,7 @@ class RoleList extends Component {
         <Col span={8} key={key} style={{ display: i < count ? 'block' : 'none' }}>
           <FormItem label={params[key]}>
             {getFieldDecorator(key, {
+              initialValue: this.state.username,
               rules: [
                 {
                   required: true,
@@ -124,11 +124,14 @@ class RoleList extends Component {
     propsVal.form.validateFields((err, values) => {
       val = values;
     });
-    this.props.setCurrentUrlParams(val);
-    propsVal.form.setFieldsValue({
-      username: 2131,
-      password: 222,
+    console.log(val)
+    this.setState({
+      username:val.username
     });
+    this.props.setCurrentUrlParams(val);
+    console.log()
+
+
   };
 
   handleReset = () => {

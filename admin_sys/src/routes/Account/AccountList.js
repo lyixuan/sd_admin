@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Button, Pagination } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
+import AdvancedSearchForm from '../../common/AdvancedSearchForm';
+
 
 class AccountList extends Component {
   constructor(props) {
@@ -111,6 +113,7 @@ class AccountList extends Component {
             total={100}
             style={{ marginTop: 24 }}
           />
+
         }
       />
     );
