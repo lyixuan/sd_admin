@@ -1,84 +1,41 @@
 import React, { Component } from 'react';
-import { Button, Form, Row, Col, Input } from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { Form, Button } from 'antd';
 import styles from './Account.css';
+import AdvancedSearchForm from '../../common/AdvancedSearchForm.js';
+import ContentLayout from '../../layouts/ContentLayout';
+import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 
-const params = {
-  username: '用户名',
-  password: '密码',
-  email: '邮箱',
-};
-const FormItem = Form.Item;
-let propsVal = '';
+const WrappedRegistrationForm = Form.create()(AdvancedSearchForm);
 class EditAccount extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-
-  getFields = () => {
-    const count = 3;
-    const { getFieldDecorator } = propsVal.form;
-    const children = [];
-    Object.keys(params).map((key, i) => {
-      return children.push(
-        <Col span={8} key={key} style={{ display: i < count ? 'block' : 'none' }}>
-          <FormItem label={params[key]}>
-            {getFieldDecorator(key, {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入搜索内容!',
-                },
-              ],
-            })(<Input style={{ textAlign: 'right' }} placeholder={`请输入${params[key]}`} />)}
-          </FormItem>
-        </Col>
-      );
-    });
-    return children;
-  };
-  handleSearch = e => {
-    e.preventDefault();
-    let val = {};
-    propsVal.form.validateFields((err, values) => {
-      val = values;
-    });
-    this.props.setCurrentUrlParams(val);
-    propsVal.form.setFieldsValue({
-      username: 2131,
-      password: 222,
+  createUser = () => {
+    this.props.setRouteUrlParams('/account/accountList', {
+      a: 2,
+      b: 3,
     });
   };
-
-  handleReset = () => {
-    propsVal.form.resetFields();
-    this.props.setCurrentUrlParams({ s: 5 });
-  };
-
   render() {
-    const WrappedAdvancedSearchForm = Form.create()(props => {
-      propsVal = props;
-      return (
-        <Form className={styles.searchForm} onSubmit={this.handleSearch}>
-          <Row gutter={24}>{this.getFields()}</Row>
-          <Row>
-            <Col span={24} style={{ textAlign: 'right' }}>
-              <Button type="primary" htmlType="submit">
-                搜索
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
-                重置
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      );
-    });
     return (
-      <PageHeaderLayout>
-        <WrappedAdvancedSearchForm />
-      </PageHeaderLayout>
+      <ContentLayout
+        contentForm={<WrappedRegistrationForm />}
+        contentButton={
+          <div className={styles.buttonWrapper}>
+            <AuthorizedButton authority="/account/accountList">
+              <Button onClick={this.createUser} type="primary" className={styles.cancleButton}>
+                取消
+              </Button>
+            </AuthorizedButton>
+            <AuthorizedButton authority="/account/accountList">
+              <Button onClick={this.createUser} type="primary" className={styles.submitButton}>
+                提交
+              </Button>
+            </AuthorizedButton>
+          </div>
+        }
+      />
     );
   }
 }

@@ -1,13 +1,30 @@
-
-.createButton{
-  margin: 0px 32px 24px;
+.buttonWrapper{
+  display: flex;
+  justify-content: center;
+}
+.cancleButton{
+  margin: 0;
+  background-color: #fff;
+  font-size: 14px;
+  width: 70px;
+  height: 32px;
+  border: 1px solid #DCDDE0;
+  color: #000;
+}
+.cancleButton:hover{
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #DCDDE0;
+}
+.submitButton{
+  margin: 0 10px;
   background-color: #52C9C2;
   font-size: 14px;
   width: 70px;
   height: 32px;
   border-color: #52C9C2;
 }
-.createButton:hover{
+.submitButton:hover{
   background-color: #52C9C2;
   border-color: #52C9C2;
 }

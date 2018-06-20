@@ -37,3 +37,6 @@
   display: flex;
   justify-content: flex-end;
 }
+.tableContentStyle{
+  margin: 0 32px;
+}

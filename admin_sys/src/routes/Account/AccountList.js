@@ -30,11 +30,21 @@ class AccountList extends Component {
         dataIndex: 'operation',
         render: (text, record) => {
           return (
-            <AuthorizedButton authority="/account/editAccount">
-              <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record.key)}>
-                编辑
-              </span>
-            </AuthorizedButton>
+            <div>
+              <AuthorizedButton authority="/account/editAccount">
+                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record.key)}>
+                  编辑
+                </span>
+              </AuthorizedButton>
+              <AuthorizedButton authority="/account/editAccount">
+                <span
+                  style={{ color: '#52C9C2', marginLeft: 12 }}
+                  onClick={() => this.onEdit(record.key)}
+                >
+                  删除
+                </span>
+              </AuthorizedButton>
+            </div>
           );
         },
       },

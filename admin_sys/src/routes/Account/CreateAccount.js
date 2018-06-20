@@ -3,6 +3,7 @@ import { Form, Button } from 'antd';
 import styles from './Account.css';
 import AdvancedSearchForm from '../../common/AdvancedSearchForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
+import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 
 const WrappedRegistrationForm = Form.create()(AdvancedSearchForm);
 class CreateAccount extends Component {
@@ -21,23 +22,17 @@ class CreateAccount extends Component {
       <ContentLayout
         contentForm={<WrappedRegistrationForm />}
         contentButton={
-          <div>
-            <Button
-              onClick={this.createUser}
-              type="primary"
-              className={styles.createButton}
-              htmlType="cancle"
-            >
-              取消
-            </Button>
-            <Button
-              onClick={this.createUser}
-              type="primary"
-              className={styles.createButton}
-              htmlType="submit"
-            >
-              提交
-            </Button>
+          <div className={styles.buttonWrapper}>
+            <AuthorizedButton authority="/account/accountList">
+              <Button onClick={this.createUser} type="primary" className={styles.cancleButton}>
+                取消
+              </Button>
+            </AuthorizedButton>
+            <AuthorizedButton authority="/account/accountList">
+              <Button onClick={this.createUser} type="primary" className={styles.submitButton}>
+                提交
+              </Button>
+            </AuthorizedButton>
           </div>
         }
       />
