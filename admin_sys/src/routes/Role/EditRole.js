@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-class EditRole extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
-  };
+import { Form } from 'antd';
+import StepLayout from '../../layouts/stepLayout';
+import RoleForm from '../../selfComponent/RoleFrom/RoleForm';
 
+const WrappedRoleForm = Form.create()(RoleForm);
+class EditRole extends Component {
   render() {
-    return (
-      <PageHeaderLayout>
-        <div>
-          编辑角色
-        </div>
-      </PageHeaderLayout>
-    );
+    const baseLayout = <WrappedRoleForm />;
+    return <StepLayout title="编辑角色" baseLayout={baseLayout} />;
   }
 }
 

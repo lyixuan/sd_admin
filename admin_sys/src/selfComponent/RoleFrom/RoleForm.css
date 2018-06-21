@@ -1,0 +1,48 @@
+p{
+  margin: 0;
+  padding: 0;
+}
+.modelList{
+  border: 1px solid #DCDDE0;
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+.title{
+  width: 100%;
+  height: 38px;
+  background-color: #f6f7fa;
+  font-size: 14px;
+  color: #000000;
+  padding-left: 17px;
+}
+.content{
+  padding:15px 17px;
+}
+.contentTxt:not(:first-of-type):before{
+  content: '';
+  display: inline-block;
+  width: 100%;
+  height: 1px;
+  background: #EFF0F4;
+}
+.littleTitle{
+  font-size: 14px;
+  color: #000000;
+}
+.littleTitle:before{
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 12px;
+  margin-right: 4px;
+  background: #52C9C2;
+}
+.checkBox, .checkboxGroup{
+  font-size: 14px;
+  color: #000;
+}
+
+:global(.ant-checkbox-checked .ant-checkbox-inner),:global(.ant-checkbox-indeterminate .ant-checkbox-inner){
+  background-color: #52c9c2!important;
+  border: #52c9c2!important;
+}
