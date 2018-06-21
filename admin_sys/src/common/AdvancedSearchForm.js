@@ -63,7 +63,7 @@ class AdvancedSearchForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="姓名">
             {getFieldDecorator('name', {
-              rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
+              // rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="邮箱">
@@ -73,10 +73,11 @@ class AdvancedSearchForm extends Component {
                   type: 'email',
                   message: '请输入合法邮箱!',
                 },
-                {
-                  required: true,
-                  message: '请输入合法邮箱!',
-                },
+                // 若用户输入不对会一直提示
+                // {
+                //   required: true,
+                //   message: '请输入合法邮箱!',
+                // },
               ],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
@@ -87,7 +88,7 @@ class AdvancedSearchForm extends Component {
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
-          <FormItem style={{ marginLeft: 86 }}>
+          <FormItem>
             <div className={styles.buttonWrapper}>
               <AuthorizedButton authority="/account/accountList">
                 <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>

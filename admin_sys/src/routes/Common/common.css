@@ -21,16 +21,16 @@
 }
 
 .paginationStyle{
-  margin: 24px 24px;
+  margin: 24px 0;
   display: flex;
   justify-content: flex-end;
 }
 .tableContentStyle{
-  margin: 0 32px;
+  margin: 0;
 }
 
 .createButton{
-  margin: 0 32px 24px;
+  margin: 0 0 24px;
   background-color: #52C9C2;
   font-size: 14px;
   width: 70px;
@@ -42,6 +42,22 @@
   border-color: #52C9C2;
 }
 .createButton:focus{
+  background-color: #52C9C2;
+  border-color: #52C9C2;
+}
+.searchButton{
+  margin: 0 10px 24px 0;
+  background-color: #52C9C2;
+  font-size: 14px;
+  width: 70px;
+  height: 32px;
+  border-color: #52C9C2;
+}
+.searchButton:hover{
+  background-color: #52C9C2;
+  border-color: #52C9C2;
+}
+.searchButton:focus{
   background-color: #52C9C2;
   border-color: #52C9C2;
 }

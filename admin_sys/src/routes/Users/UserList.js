@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Table, Button, Form, Input } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-import styles from '../Account/Account.css';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
@@ -110,7 +109,7 @@ class UserList extends Component {
     const buttonItemLayout = null;
     const WrappedAdvancedSearchForm = Form.create()(() => {
       return (
-        <div style={{ marginLeft: 32 }}>
+        <div>
           <Form layout={formLayout}>
             <FormItem label="姓名" {...formItemLayout}>
               <Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />
@@ -119,7 +118,7 @@ class UserList extends Component {
               <Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />
             </FormItem>
             <FormItem {...buttonItemLayout} style={{ marginLeft: 86 }}>
-              <Button type="primary" className={common.createButton}>
+              <Button type="primary" className={common.searchButton}>
                 搜索
               </Button>
               <Button type="primary" className={common.cancleButton}>
@@ -146,7 +145,7 @@ class UserList extends Component {
             dataSource={dataSource}
             columns={columns}
             pagination={false}
-            className={styles.tableContentStyle}
+            className={common.tableContentStyle}
           />
         }
       />

@@ -11,6 +11,9 @@
 .buttonWrapper{
   display: flex;
   justify-content: center;
+  /*
+    margin-left: 400px;
+    */
 }
 :global(.ant-form-item-required:before) {
   color: #000 !important;
