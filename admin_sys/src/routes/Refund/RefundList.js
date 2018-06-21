@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Table, Button, Popconfirm, Pagination, Form, Row, Col, Input } from 'antd';
+import { Table, Button, Pagination, Form, Input, DatePicker } from 'antd';
+import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
-const paramsObj = {
-  username: '投诉时间',
-  password: '子订单编号',
-};
 const FormItem = Form.Item;
+const { RangePicker } = DatePicker;
 let propsVal = '';
+const dateFormat = 'YYYY/MM/DD';
 
 class RoleList extends Component {
   constructor(props) {
@@ -17,36 +16,36 @@ class RoleList extends Component {
     const params = this.props.getUrlParams();
     this.columns = [
       {
-        title: '姓名',
+        title: '序号',
+        dataIndex: 'key',
+      },
+      {
+        title: '子订单编号',
         dataIndex: 'name',
-        width: '100px',
       },
       {
-        title: '角色',
+        title: '投诉时间',
         dataIndex: 'role',
-        width: '200px',
       },
       {
-        title: '邮箱',
+        title: '学生名称/id',
         dataIndex: 'email',
-        width: '300px',
       },
       {
-        title: '状态',
+        title: '老师名称',
         dataIndex: 'status',
-        width: '100px',
       },
       {
-        title: '操作',
-        dataIndex: 'operation',
-        width: '100px',
-        render: (text, record) => {
-          return this.state.dataSource.length > 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
-              <a href="">编辑</a>
-            </Popconfirm>
-          ) : null;
-        },
+        title: '学院/家族/小组',
+        dataIndex: 'status3',
+      },
+      {
+        title: '编号',
+        dataIndex: 'status2',
+      },
+      {
+        title: '渠道',
+        dataIndex: 'status1',
       },
     ];
 
@@ -76,109 +75,86 @@ class RoleList extends Component {
 
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
-      count: 3,
-      username: params.username || 111,
-      // password: params.password||111,
+      orderNo: params.orderNo || '',
     };
   }
 
   componentDidMount() {}
 
-  onDelete = key => {
-    const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
-  };
-
   onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
   };
-  getFields = () => {
-    const count = 4;
-    const { getFieldDecorator } = propsVal.form;
-    const children = [];
-    Object.keys(paramsObj).map((key, i) => {
-      return children.push(
-        <Col span={8} key={key} style={{ display: i < count ? 'block' : 'none' }}>
-          <FormItem label={paramsObj[key]}>
-            {getFieldDecorator(key, {
-              initialValue: this.state.username,
-              rules: [
-                {
-                  required: true,
-                  message: '请输入搜索内容!',
-                },
-              ],
-            })(<Input placeholder={`请输入${paramsObj[key]}`} />)}
-          </FormItem>
-        </Col>
-      );
-    });
-    return children;
-  };
+
   handleSearch = e => {
     e.preventDefault();
     let val = {};
     propsVal.form.validateFields((err, values) => {
       val = values;
     });
-    console.log(val);
     this.setState({
-      username: val.username,
+      orderNo: val.orderNo,
     });
     this.props.setCurrentUrlParams(val);
   };
 
   handleReset = () => {
     propsVal.form.resetFields();
-    this.props.setCurrentUrlParams({ s: 5 });
+    this.setState({
+      orderNo: '',
+    });
+    this.props.setCurrentUrlParams({});
   };
   refundAdd = () => {
-    const { count, dataSource } = this.state;
     this.props.history.push({
       pathname: '/refund/refundAdd',
-      search: JSON.stringify({ s: 2 }),
-    });
-    const newData = {
-      key: count + 1,
-      name: `李四 ${count + 1}`,
-      role: `质检员${count + 1}`,
-      status: `禁止${count + 1}`,
-      email: `world${count + 1}@sunlands.com`,
-    };
-    this.setState({
-      dataSource: [...dataSource, newData],
-      count: count + 1,
+      search: JSON.stringify({ type: 'add' }),
     });
   };
   refundDel = () => {
     this.props.history.push({
       pathname: '/refund/refundDel',
-      search: JSON.stringify({ s: 2 }),
+      search: JSON.stringify({ type: 'del' }),
     });
   };
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
-
+    const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
+      const { getFieldDecorator } = props.form;
       return (
-        <Form onSubmit={this.handleSearch}>
-          <Row gutter={24}>{this.getFields()}</Row>
-          <Row>
-            <Col span={24} style={{ textAlign: 'right' }}>
-              <Button type="primary" htmlType="submit" className={common.searchButton}>
-                搜索
-              </Button>
-              <Button
-                style={{ marginLeft: 8 }}
-                onClick={this.handleReset}
-                className={common.cancleButton}
-              >
-                重置
-              </Button>
-            </Col>
-          </Row>
+        <Form onSubmit={this.handleSearch} layout={formLayout}>
+          <FormItem label="投诉时间">
+            {getFieldDecorator('dateRange', {
+              rules: [{ required: true, message: '请选择生效日期' }],
+            })(
+              <RangePicker
+                defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+                format={dateFormat}
+                style={{ width: 230, height: 32 }}
+              />
+            )}
+          </FormItem>
+          <FormItem label="子订单编号" style={{ marginLeft: 119 }}>
+            {getFieldDecorator('orderNo', {
+              initialValue: this.state.orderNo,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入搜索内容!',
+                },
+              ],
+            })(<Input placeholder="请输入子订单编号" style={{ width: 230, height: 32 }} />)}
+          </FormItem>
+          <FormItem style={{ marginLeft: 119 }}>
+            <Button type="primary" htmlType="submit" className={common.searchButton}>
+              搜索
+            </Button>
+            <Button onClick={this.handleReset} className={common.cancleButton}>
+              重置
+            </Button>
+          </FormItem>
         </Form>
       );
     });
@@ -212,6 +188,7 @@ class RoleList extends Component {
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={3}
             total={100}
+            className={common.paginationStyle}
           />
         }
       />
