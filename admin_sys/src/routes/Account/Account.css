@@ -48,8 +48,6 @@
   display: flex;
 }
 
-:global(.ant-form-item-required:before) {
-  color: #000 !important;
-}
+
 
 

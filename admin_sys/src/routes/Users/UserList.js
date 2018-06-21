@@ -110,22 +110,24 @@ class UserList extends Component {
     const buttonItemLayout = null;
     const WrappedAdvancedSearchForm = Form.create()(() => {
       return (
-        <Form layout={formLayout}>
-          <FormItem label="姓名" {...formItemLayout}>
-            <Input placeholder="q请输入" />
-          </FormItem>
-          <FormItem label="手机" {...formItemLayout}>
-            <Input placeholder="请输入" />
-          </FormItem>
-          <FormItem {...buttonItemLayout}>
-            <Button type="primary" className={common.createButton}>
-              搜索
-            </Button>
-            <Button type="primary" className={styles.cancleButton}>
-              重置
-            </Button>
-          </FormItem>
-        </Form>
+        <div style={{ marginLeft: 32 }}>
+          <Form layout={formLayout}>
+            <FormItem label="姓名" {...formItemLayout}>
+              <Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />
+            </FormItem>
+            <FormItem label="手机" {...formItemLayout} style={{ marginLeft: 119 }}>
+              <Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />
+            </FormItem>
+            <FormItem {...buttonItemLayout} style={{ marginLeft: 86 }}>
+              <Button type="primary" className={common.createButton}>
+                搜索
+              </Button>
+              <Button type="primary" className={common.cancleButton}>
+                重置
+              </Button>
+            </FormItem>
+          </Form>
+        </div>
       );
     });
     return (

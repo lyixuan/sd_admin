@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Pagination } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-import styles from './Account.css';
+// import styles from './Account.css';
 import common from '../Common/common.css';
 
 class AccountList extends Component {
@@ -113,7 +113,7 @@ class AccountList extends Component {
             dataSource={dataSource}
             columns={columns}
             pagination={false}
-            className={styles.tableContentStyle}
+            className={common.tableContentStyle}
           />
         }
         contentPagination={

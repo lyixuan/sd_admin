@@ -20,6 +20,15 @@
   color: #52C9C2 !important;
 }
 
+.paginationStyle{
+  margin: 24px 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+.tableContentStyle{
+  margin: 0 32px;
+}
+
 .createButton{
   margin: 0 32px 24px;
   background-color: #52C9C2;
@@ -32,11 +41,46 @@
   background-color: #52C9C2;
   border-color: #52C9C2;
 }
-.paginationStyle{
-  margin: 24px 24px;
-  display: flex;
-  justify-content: flex-end;
+.createButton:focus{
+  background-color: #52C9C2;
+  border-color: #52C9C2;
 }
-.tableContentStyle{
-  margin: 0 32px;
+
+.cancleButton{
+  margin: 0;
+  background-color: #fff;
+  font-size: 14px;
+  width: 70px;
+  height: 32px;
+  border: 1px solid #DCDDE0;
+  color: #000;
 }
+.cancleButton:hover{
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #DCDDE0;
+}
+.cancleButton:focus {
+  background-color: #fff;
+  border: 1px solid #DCDDE0;
+  color: #000;
+}
+
+.submitButton{
+  margin: 0 10px;
+  background-color: #52C9C2;
+  font-size: 14px;
+  width: 70px;
+  height: 32px;
+  border-color: #52C9C2;
+}
+.submitButton:hover{
+  background-color: #52C9C2;
+  border-color: #52C9C2;
+}
+.submitButton:focus{
+  background-color: #52C9C2;
+  border-color: #52C9C2;
+}
+
+

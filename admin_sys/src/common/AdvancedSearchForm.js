@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader } from 'antd';
+import { Form, Input, Cascader, Button } from 'antd';
+import AuthorizedButton from '../selfComponent/AuthorizedButton';
+import common from '../routes/Common/common.css';
+import styles from './AdvancedSearchForm.css';
 
 const FormItem = Form.Item;
 const residences = [
@@ -13,7 +16,10 @@ const residences = [
   },
 ];
 class AdvancedSearchForm extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -21,6 +27,9 @@ class AdvancedSearchForm extends Component {
         console.log('Received values of form: ', values);
       }
     });
+  };
+  resetContent = () => {
+    console.log(this.props.form.resetFields(['name', 'email', 'role']));
   };
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -47,34 +56,53 @@ class AdvancedSearchForm extends Component {
       },
     };
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <FormItem {...formItemLayout} label="姓名">
-          {getFieldDecorator('姓名', {
-            rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
-          })(<Input style={{ width: 380 }} />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="邮箱">
-          {getFieldDecorator('邮箱', {
-            rules: [
-              {
-                type: 'email',
-                message: '请输入合法邮箱!',
-              },
-              {
-                required: true,
-                message: '请输入合法邮箱!',
-              },
-            ],
-          })(<Input style={{ width: 264 }} />)}
-          <span style={{ width: 101 }}> @sunlands.com</span>
-        </FormItem>
-        <FormItem {...formItemLayout} label="角色">
-          {getFieldDecorator('角色', {
-            rules: [{ type: 'array', required: true, message: '请选择角色！' }],
-          })(<Cascader options={residences} style={{ width: 380 }} />)}
-        </FormItem>
-        <FormItem {...tailFormItemLayout} />
-      </Form>
+      <div>
+        {/*
+        <p style={{marginLeft:32,fontSize:24}}>账户信息</p>
+        */}
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem {...formItemLayout} label="姓名">
+            {getFieldDecorator('name', {
+              rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
+            })(<Input style={{ width: 380 }} />)}
+          </FormItem>
+          <FormItem {...formItemLayout} label="邮箱">
+            {getFieldDecorator('email', {
+              rules: [
+                {
+                  type: 'email',
+                  message: '请输入合法邮箱!',
+                },
+                {
+                  required: true,
+                  message: '请输入合法邮箱!',
+                },
+              ],
+            })(<Input style={{ width: 264 }} />)}
+            <span style={{ width: 101 }}> @sunlands.com</span>
+          </FormItem>
+          <FormItem {...formItemLayout} label="角色">
+            {getFieldDecorator('role', {
+              rules: [{ type: 'array', required: true, message: '请选择角色！' }],
+            })(<Cascader options={residences} style={{ width: 380 }} />)}
+          </FormItem>
+          <FormItem {...tailFormItemLayout} />
+          <FormItem style={{ marginLeft: 86 }}>
+            <div className={styles.buttonWrapper}>
+              <AuthorizedButton authority="/account/accountList">
+                <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>
+                  取消
+                </Button>
+              </AuthorizedButton>
+              <AuthorizedButton authority="/account/accountList">
+                <Button onClick={this.resetContent} type="primary" className={common.submitButton}>
+                  提交
+                </Button>
+              </AuthorizedButton>
+            </div>
+          </FormItem>
+        </Form>
+      </div>
     );
   }
 }
