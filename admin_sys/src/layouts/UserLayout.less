@@ -3,26 +3,85 @@
 .container {
   display: flex;
   flex-direction: column;
+  min-width: 1400px;
   height: 100vh;
   overflow: auto;
   background: #f0f2f5;
 }
 
 .content {
+  position: relative;
+  top: 0;
+  left: 0;
   padding: 32px 0;
   flex: 1;
+  box-sizing: border-box;
+}
+.showContent {
+  position: absolute;
+  width: 1000px;
+  height: 530px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  .peopleImg {
+    float: left;
+    width: 320px;
+    height: 400px;
+    margin-top: 65px;
+  }
+}
+.loginContainer {
+  float: right;
+  margin: auto;
+  width: 510px;
+  height: 530px;
+  background: #fff;
+  border-radius: 14px;
+  .loginContent {
+    width: 340px;
+    height: 370px;
+    margin: 65px 85px;
+    text-align: center;
+  }
+}
+.login {
+  width: 100%;
+  height: 330px;
+  border: 1px solid red;
 }
 
 @media (min-width: @screen-md-min) {
   .container {
-    background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
-    background-repeat: no-repeat;
-    background-position: center 110px;
+    //background-image: url('../assets/bj_right.png');
+    //background-repeat: no-repeat;
     background-size: 100%;
   }
 
   .content {
-    padding: 112px 0 24px 0;
+    padding: 0;
+  }
+
+  .background {
+    width: 70%;
+    min-width: 1000px;
+    height: 100%;
+    background: url('../assets/bj_right.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+
+  .backgroundBall {
+    position: absolute;
+    top: 0;
+    right: -65px;
+    width: 180px;
+    height: 180px;
+    background: url('../assets/bj_left.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
   }
 }
 
@@ -31,10 +90,19 @@
 }
 
 .header {
+  display: inline-block;
   height: 44px;
   line-height: 44px;
-  a {
-    text-decoration: none;
+  margin: 0 auto 30px;
+  img {
+    float: left;
+    width: 35px;
+    height: 40px;
+  }
+  h3 {
+    float: left;
+    margin-left: 10px;
+    font-weight: 800;
   }
 }
 
