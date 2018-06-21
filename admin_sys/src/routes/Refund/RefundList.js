@@ -10,7 +10,7 @@ const { RangePicker } = DatePicker;
 let propsVal = '';
 const dateFormat = 'YYYY/MM/DD';
 
-class RoleList extends Component {
+class RefundList extends Component {
   constructor(props) {
     super(props);
     const params = this.props.getUrlParams();
@@ -195,4 +195,4 @@ class RoleList extends Component {
     );
   }
 }
-export default RoleList;
+export default RefundList;
