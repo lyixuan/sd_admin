@@ -3,10 +3,10 @@
 export function checkoutLogin() {
   // const userInfo = JSON.parse(getAuthority('userInfo'));
   // return userInfo!==null;
-  return false;
+  return true;
 }
 export function checkoutAuthRoute(pathName) {
   console.log(pathName);
   // const authInfo = JSON.parse(getAuthority('authInfo'));
-  return false;
+  return true;
 }
