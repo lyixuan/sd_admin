@@ -77,6 +77,12 @@ export const getRouterData = app => {
     '/quality/qualityList': {
       component: dynamicWrapper(app, [], () => import('../routes/Quality/QualityList')),
     },
+    '/quality/qualityAdd': {
+      component: dynamicWrapper(app, [], () => import('../routes/Quality/QualityAdd')),
+    },
+    '/quality/qualityDel': {
+      component: dynamicWrapper(app, [], () => import('../routes/Quality/QualityDel')),
+    },
     '/account/accountList': {
       component: dynamicWrapper(app, [], () => import('../routes/Account/AccountList')),
     },

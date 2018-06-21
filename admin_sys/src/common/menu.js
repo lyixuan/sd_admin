@@ -10,6 +10,16 @@ const menuData = [
         name: '质检列表',
         path: 'qualityList',
       },
+      {
+        name: '添加质检',
+        path: 'qualityAdd',
+        hideInMenu: true,
+      },
+      {
+        name: '删除质检',
+        path: 'qualityDel',
+        hideInMenu: true,
+      },
     ],
   },
   {
