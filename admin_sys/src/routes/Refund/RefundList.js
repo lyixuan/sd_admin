@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Popconfirm, Pagination, Form, Row, Col, Input } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import common from '../Common/common.css';
 
 const paramsObj = {
   username: '投诉时间',
@@ -166,10 +167,14 @@ class RoleList extends Component {
           <Row gutter={24}>{this.getFields()}</Row>
           <Row>
             <Col span={24} style={{ textAlign: 'right' }}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" className={common.searchButton}>
                 搜索
               </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={this.handleReset}
+                className={common.cancleButton}
+              >
                 重置
               </Button>
             </Col>
@@ -183,11 +188,7 @@ class RoleList extends Component {
         contentButton={
           <div>
             <AuthorizedButton authority="/refund/refundAdd">
-              <Button
-                onClick={this.refundAdd}
-                type="primary"
-                style={{ margin: '20px 10px 16px 0' }}
-              >
+              <Button onClick={this.refundAdd} type="primary" className={common.addQualityButton}>
                 添加退费
               </Button>
             </AuthorizedButton>
@@ -195,7 +196,7 @@ class RoleList extends Component {
               <Button
                 onClick={this.refundDel}
                 type="primary"
-                style={{ margin: '20px 10px 16px 0' }}
+                className={common.deleteQualityButton}
               >
                 删除退费
               </Button>

@@ -62,9 +62,4 @@
 :global(.ant-btn){
   border: 1px solid #d9d9d9;
 }
-:global(.ant-btn-primary){
-  background: #52C9C2!important;
-  border-radius: 4px!important;
-  border: none;
-  width: 70px;
-}
+
