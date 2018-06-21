@@ -17,6 +17,7 @@ const residences = [
 class UserForm extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props);
     this.state = {};
   }
   handleSubmit = e => {
@@ -28,7 +29,12 @@ class UserForm extends Component {
     });
   };
   resetContent = () => {
-    console.log(this.props.form.resetFields(['name', 'email', 'role']));
+    console.log(this.props);
+    this.props.form.resetFields(['name', 'email', 'role']);
+    this.props.jumpFunction.setRouteUrlParams('/user/userList', {
+      a: 2,
+      b: 3,
+    });
   };
   render() {
     const { getFieldDecorator } = this.props.form;

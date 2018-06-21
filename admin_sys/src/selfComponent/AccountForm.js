@@ -28,7 +28,12 @@ class AccountForm extends Component {
     });
   };
   resetContent = () => {
-    console.log(this.props.form.resetFields(['name', 'email', 'role']));
+    console.log(this.props);
+    this.props.form.resetFields(['name', 'email', 'role']);
+    this.props.jumpFunction.setRouteUrlParams('/account/accountList', {
+      a: 2,
+      b: 3,
+    });
   };
   render() {
     const { getFieldDecorator } = this.props.form;

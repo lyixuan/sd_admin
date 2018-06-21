@@ -16,7 +16,7 @@ class CreateAccount extends Component {
     });
   };
   render() {
-    return <ContentLayout contentForm={<WrappedRegistrationForm />} />;
+    return <ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />;
   }
 }
 
