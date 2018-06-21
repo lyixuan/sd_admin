@@ -1,102 +1,94 @@
 import React, { Component } from 'react';
-import { Steps, Button, message, Upload, Icon } from 'antd';
-import styles from './Refund.css';
+import StepLayout from '../../layouts/stepLayout';
+import StepUpload from '../../selfComponent/setpForm/stepUpload';
+import StepTable from '../../selfComponent/setpForm/stepTable';
+import StepSucess from '../../selfComponent/setpForm/stepSucess';
 
-let isJPG = false;
-const { Step } = Steps;
-
-class EditRole extends Component {
+class RefundAdd extends Component {
   constructor(props) {
     super(props);
+    this.columns = [
+      {
+        title: '子订单编号',
+        dataIndex: 'name',
+        width: '100px',
+      },
+      {
+        title: '编号已存在',
+        dataIndex: 'role',
+        width: '100px',
+      },
+      {
+        title: '必填项缺失',
+        dataIndex: 'email',
+        width: '100px',
+      },
+      {
+        title: '班主任组织关系匹配失败',
+        dataIndex: 'status',
+        width: '100px',
+      },
+      {
+        title: '学院/家族/小组不存在',
+        dataIndex: 'status2',
+        width: '150px',
+      },
+      {
+        title: '编号重复',
+        dataIndex: 'status1',
+        width: '100px',
+      },
+    ];
+
+    const dataSource = [
+      {
+        key: 1,
+        name: `张三`,
+        role: `院长`,
+        status: `启用`,
+        email: `hello@sunlands.com`,
+      },
+      {
+        key: 2,
+        name: `王五`,
+        role: `学员`,
+        status: `启用`,
+        email: `hello@sunlands.com`,
+      },
+      {
+        key: 3,
+        name: `赵六`,
+        role: `院长`,
+        status: `禁止`,
+        email: `hello@sunlands.com`,
+      },
+    ];
     this.state = {
-      current: 0,
-      fileList: [],
+      dataSource: !dataSource ? [] : dataSource,
     };
-  }
-
-  handleChange = info => {
-    const { fileList } = info;
-    if (isJPG) {
-      this.setState({ fileList });
-    }
-  };
-
-  next() {
-    const current = this.state.current + 1;
-    this.setState({ current });
-  }
-
-  prev() {
-    const current = this.state.current - 1;
-    this.setState({ current });
   }
 
   render() {
-    const props = {
-      action: '//jsonplaceholder.typicode.com/posts/',
-      beforeUpload(file) {
-        isJPG = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-        if (!isJPG) {
-          message.error('只能上传 Excel 文件哦！');
-        }
-        return isJPG;
-      },
-      onChange: this.handleChange,
-      multiple: true,
-    };
-    /*
-    *上传组件
-    * */
-    const uploadExcel = (
-      <Upload {...props} fileList={this.state.fileList}>
-        <Button>
-          <Icon type="upload" /> 上传Excel
-        </Button>
-      </Upload>
-    );
+    const { dataSource } = this.state;
+    const columns = !this.columns ? [] : this.columns;
 
+    const tipSucess = '您已成功上传 1500 条数据！';
     const steps = [
       {
         title: '选择Excel',
-        content: uploadExcel,
+        content: <StepUpload />,
       },
       {
         title: '校验文件',
-        content: 'Second-content',
+        content: <StepTable onlyTable="true" dataSource={dataSource} columns={columns} />,
       },
       {
         title: '上传成功',
-        content: 'Last-content',
+        content: <StepSucess isDelImg="false" tipSucess={tipSucess} />,
       },
     ];
-    const { current } = this.state;
-
-    return (
-      <div>
-        <Steps current={current}>
-          {steps.map(item => <Step key={item.title} title={item.title} />)}
-        </Steps>
-        <div className={styles.stepsContent}>{steps[this.state.current].content}</div>
-        <div className={styles.stepsAction}>
-          {this.state.current < steps.length - 1 && (
-            <Button type="primary" onClick={() => this.next()}>
-              下一步
-            </Button>
-          )}
-          {this.state.current === steps.length - 1 && (
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>
-              完成
-            </Button>
-          )}
-          {this.state.current > 0 && (
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-              上一步
-            </Button>
-          )}
-        </div>
-      </div>
-    );
+    return <StepLayout title="添加退费" steps={steps} tipSucess={tipSucess} />;
   }
 }
 
-export default EditRole;
+export default RefundAdd;

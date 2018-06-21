@@ -1,0 +1,161 @@
+/*
+* stepUpload
+*/
+.wrap{
+  width: 590px;
+  margin: 0 auto;
+}
+.upload{
+  width: 100%;
+  height: 130px;
+  border: 1px dashed #E0E0E0;
+  border-radius: 8px;
+  margin: 51px 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.upload:hover{
+  border: 1px dashed #52C9C2;
+}
+.tip{
+  width: 100%;
+  height: 118px;
+  background: #F6F7FA;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 22px 20px;
+}
+.title{
+  font-size: 12px;
+  color: #000000;
+}
+.txt{
+  font-size: 12px;
+  color: #000000;
+  margin-top: 10px;
+}
+.uploadImg{
+  width: 90px;
+  margin-bottom: 10px;
+}
+.uploadTxt{
+  font-size: 14px;
+  color: #52C9C2;
+  letter-spacing: 0;
+  line-height: 28px;
+}
+
+/*
+* stepInput
+*/
+.inputTitle{
+  margin: 57px 0 19px;
+  text-align: left;
+  color: #000;
+}
+.inputInfo{
+  width: 100%;
+  height: 58px;
+  box-sizing: border-box;
+  padding: 19px auto;
+  background: #F6F7FA;
+  border-radius: 3px;
+  margin: 80px auto 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputContent{
+  width: 100%;
+  border: 1px solid #D9D9D9;
+  border-radius: 3px;
+}
+:global(.ant-input){
+  padding: 18px 25px!important;
+  color: #000!important;
+  border: none;
+}
+.inputContent_title{
+  height: 38px;
+  background: #F6F7FA;
+  font-size: 14px;
+  color: #000;
+  line-height: 38px;
+  padding-left: 25px;
+}
+.inputContent_txt{
+  box-sizing: border-box;
+  padding: 18px 25px;
+  height: 116px;
+  overflow-y: scroll;
+}
+
+.inputTip{
+  width: 590px;
+  height: 146px;
+  box-sizing: border-box;
+  padding: 22px 20px;
+  background: #F6F7FA;
+  border-radius: 3px;
+  margin: 20px auto 52px;
+}
+.inputTip_txt{
+  font-size: 12px;
+  color: #000000;
+  letter-spacing: 0;
+  line-height: 18px;
+}
+/*
+* stepTable
+*/
+.tableWrap{
+  width: 804px;
+  margin: 0 auto;
+}
+.tableTitle{
+  width: 100%;
+  font-size: 14px;
+  color: #000;
+  text-align: left;
+  margin: 56px 0 19px;
+}
+.onlyTable{
+  width: 608px;
+  height: 272px;
+  border: 1px solid #E8E8E8;
+  border-radius: 3px;
+  margin: 61px auto 40px;
+  overflow-y: scroll;
+}
+.tableList{
+  width: 100%;
+  height: 272px;
+  overflow: scroll;
+  margin-bottom: 40px;
+  border: 1px solid #E8E8E8;
+  border-radius: 3px;
+}
+
+/*
+* stepSucess
+*/
+
+.wrapSucess{
+
+}
+.imgSucess{
+  width: 113px;
+  height: 113px;
+  margin: 92px auto 33px;
+}
+.imgSucess img{
+  width: 100%;
+  height: 100%;
+}
+.tipSucess{
+  font-size: 14px;
+  color: #000;
+  text-align: center;
+}
