@@ -5,6 +5,7 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
+let propsVal = '';
 class UserList extends Component {
   constructor(props) {
     super(props);
@@ -84,14 +85,28 @@ class UserList extends Component {
 
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
-      formLayout: 'inline',
     };
   }
+
   onEdit = () => {
     this.props.setRouteUrlParams('/user/editUser', {
       a: 2,
       b: 3,
     });
+  };
+
+  handleReset = () => {
+    propsVal.form.resetFields();
+    this.props.setCurrentUrlParams({});
+  };
+
+  handleSearch = e => {
+    e.preventDefault();
+    let val = {};
+    propsVal.form.validateFields((err, values) => {
+      val = values;
+    });
+    this.props.setCurrentUrlParams(val);
   };
 
   handleAdd = () => {
@@ -104,25 +119,39 @@ class UserList extends Component {
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
-    const { formLayout } = this.state;
-    const formItemLayout = null;
-    const buttonItemLayout = null;
-    const WrappedAdvancedSearchForm = Form.create()(() => {
+    const formLayout = 'inline';
+    const WrappedAdvancedSearchForm = Form.create()(props => {
+      propsVal = props;
+      const { getFieldDecorator } = props.form;
       return (
         <div>
-          <Form layout={formLayout}>
-            <FormItem label="姓名" {...formItemLayout}>
-              <Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />
+          <Form layout={formLayout} onSubmit={this.handleSearch}>
+            <FormItem label="姓名">
+              {getFieldDecorator('name', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入姓名!',
+                  },
+                ],
+              })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="手机" {...formItemLayout} style={{ marginLeft: 119 }}>
-              <Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />
+            <FormItem label="手机" style={{ marginLeft: 119 }}>
+              {getFieldDecorator('phone', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入姓名!',
+                  },
+                ],
+              })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem {...buttonItemLayout} style={{ marginLeft: 119 }}>
-              <Button type="primary" className={common.searchButton}>
-                搜索
+            <FormItem style={{ marginLeft: 119 }}>
+              <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
+                搜 索
               </Button>
-              <Button type="primary" className={common.cancleButton}>
-                重置
+              <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
+                重 置
               </Button>
             </FormItem>
           </Form>
@@ -135,7 +164,7 @@ class UserList extends Component {
         contentButton={
           <AuthorizedButton authority="/user/createUser">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
-              创建
+              创 建
             </Button>
           </AuthorizedButton>
         }
