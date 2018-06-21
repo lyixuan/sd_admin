@@ -151,6 +151,8 @@
 }
 
 :global(.ant-form-item-required:before) {
-  content: "";
+  content: " " !important;
+  color: #fff;
 }
+
 
