@@ -20,6 +20,25 @@
   color: #52C9C2 !important;
 }
 
+
+
+
+:global(.ant-pagination-prev:hover) {
+  border-color: #52C9C2 !important;
+}
+
+:global(.ant-pagination-item-link:hover) {
+  border-color: #52C9C2 !important;
+  color: #52C9C2 !important;
+}
+:global(.ant-select-selection--single:hover){
+  border-color: #52C9C2 !important;
+}
+:global(.ant-select-selection--single:after){
+  border-color: #52C9C2 !important;
+}
+
+
 .paginationStyle{
   margin: 24px 0;
   display: flex;
