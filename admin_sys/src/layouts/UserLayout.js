@@ -4,6 +4,7 @@ import DocumentTitle from 'react-document-title';
 import styles from './UserLayout.less';
 import logo from '../assets/logo.png';
 import peopleImg from '../assets/bj.png';
+import ball from '../assets/bj_left.png';
 import { getRoutes } from '../utils/utils';
 
 class UserLayout extends React.PureComponent {
@@ -24,6 +25,7 @@ class UserLayout extends React.PureComponent {
         <div className={styles.container}>
           <div className={styles.content}>
             <div className={styles.background} />
+            <img src={ball} alt="ball" className={styles.backgroundBall} />
             <div className={styles.showContent}>
               <img src={peopleImg} alt="people" className={styles.peopleImg} />
 

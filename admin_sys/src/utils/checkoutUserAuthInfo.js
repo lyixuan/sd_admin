@@ -8,5 +8,5 @@ export function checkoutLogin() {
 export function checkoutAuthRoute(pathName) {
   console.log(pathName);
   // const authInfo = JSON.parse(getAuthority('authInfo'));
-  return true;
+  return false;
 }

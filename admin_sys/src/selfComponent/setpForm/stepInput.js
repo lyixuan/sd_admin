@@ -19,7 +19,11 @@ class stepInput extends Component {
         {inputContent ? (
           <div className={styles.inputContent}>
             {!inputTip ? <div className={styles.inputContent_title}>搜索失败的编号：</div> : null}
-            <TextArea rows={5} placeholder={'请输入编号，多个编号，请用","或空格隔开'} />
+            <TextArea
+              className={styles.inputTextArea}
+              rows={5}
+              placeholder={'请输入编号，多个编号，请用","或空格隔开'}
+            />
           </div>
         ) : null}
         {inputTip ? (
