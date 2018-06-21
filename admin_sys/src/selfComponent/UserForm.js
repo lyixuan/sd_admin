@@ -67,7 +67,7 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="手机">
             {getFieldDecorator('phone', {
-              // rules: [{ required: true, message: 'Please input your phone number!' }],
+              // rules: [{ type: 'phone', message: 'Please input your phone number!' }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*邮箱">

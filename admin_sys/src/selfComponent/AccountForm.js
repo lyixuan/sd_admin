@@ -66,10 +66,10 @@ class AccountForm extends Component {
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*邮箱">
-            {getFieldDecorator('email', {
+            {getFieldDecorator('string', {
               rules: [
                 {
-                  type: 'email',
+                  type: 'string',
                   message: '请输入合法邮箱!',
                 },
                 // 若用户输入不对会一直提示
@@ -88,7 +88,7 @@ class AccountForm extends Component {
           </FormItem>
           <FormItem {...tailFormItemLayout} />
           <FormItem>
-            <div style={{display:'flex',justifyContent:'center'}}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
               <AuthorizedButton authority="/account/accountList">
                 <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>
                   取消

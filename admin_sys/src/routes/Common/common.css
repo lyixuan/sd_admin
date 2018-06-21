@@ -45,6 +45,7 @@
   background-color: #52C9C2;
   border-color: #52C9C2;
 }
+
 .searchButton{
   margin: 0 10px 24px 0;
   background-color: #52C9C2;
@@ -60,6 +61,38 @@
 .searchButton:focus{
   background-color: #52C9C2;
   border-color: #52C9C2;
+}
+.addQualityButton{
+  margin: 0 10px 24px 0;
+  background-color: #46A3EF;
+  font-size: 14px;
+  width: 80px;
+  height: 32px;
+  border-color: #46A3EF;
+}
+.addQualityButton:hover{
+  background-color: #46A3EF;
+  border-color: #46A3EF;
+}
+.addQualityButton:focus{
+  background-color: #46A3EF;
+  border-color: #46A3EF;
+}
+.deleteQualityButton{
+  margin: 0 ;
+  background-color: #F29F38;
+  font-size: 14px;
+  width: 80px;
+  height: 32px;
+  border-color: #F29F38;
+}
+.deleteQualityButton:hover{
+  background-color: #F29F38;
+  border-color: #F29F38;
+}
+.deleteQualityButton:focus{
+  background-color: #F29F38;
+  border-color: #F29F38;
 }
 
 .cancleButton{
