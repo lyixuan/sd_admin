@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Table, Button, Pagination } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-// import styles from './Account.css';
 import common from '../Common/common.css';
 
 class AccountList extends Component {
@@ -108,13 +107,16 @@ class AccountList extends Component {
           </AuthorizedButton>
         }
         contentTable={
-          <Table
-            bordered
-            dataSource={dataSource}
-            columns={columns}
-            pagination={false}
-            className={common.tableContentStyle}
-          />
+          <div>
+            <p className={common.totalNum}>总数：500条</p>
+            <Table
+              bordered
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}
+              className={common.tableContentStyle}
+            />
+          </div>
         }
         contentPagination={
           <Pagination

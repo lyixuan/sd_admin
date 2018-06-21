@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Popconfirm, Pagination, Form, Row, Col, Input } from 'antd';
-
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-import styles from '../../common/AdvancedSearchForm.css';
 
 const paramsObj = {
   username: '投诉时间',
@@ -164,7 +162,7 @@ class RoleList extends Component {
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       return (
-        <Form className={styles.searchForm} onSubmit={this.handleSearch}>
+        <Form onSubmit={this.handleSearch}>
           <Row gutter={24}>{this.getFields()}</Row>
           <Row>
             <Col span={24} style={{ textAlign: 'right' }}>

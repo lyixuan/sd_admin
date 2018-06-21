@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
-import AdvancedSearchForm from '../../common/AdvancedSearchForm.js';
+import AccountForm from '../../selfComponent/AccountForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
-// import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-// import common from '../Common/common.css';
-// import styles from './Account.css';
 
-const WrappedRegistrationForm = Form.create()(AdvancedSearchForm);
+const WrappedRegistrationForm = Form.create()(AccountForm);
 class EditAccount extends Component {
   constructor(props) {
     super(props);
@@ -19,25 +16,7 @@ class EditAccount extends Component {
     });
   };
   render() {
-    return (
-      <ContentLayout
-        contentForm={<WrappedRegistrationForm />}
-        // contentButton={
-        //   <div className={styles.buttonWrapper}>
-        //     <AuthorizedButton authority="/account/accountList">
-        //       <Button onClick={this.createUser} type="primary" className={common.cancleButton}>
-        //         取消
-        //       </Button>
-        //     </AuthorizedButton>
-        //     <AuthorizedButton authority="/account/accountList">
-        //       <Button onClick={this.createUser} type="primary" className={common.submitButton}>
-        //         提交
-        //       </Button>
-        //     </AuthorizedButton>
-        //   </div>
-        // }
-      />
-    );
+    return <ContentLayout contentForm={<WrappedRegistrationForm />} />;
   }
 }
 

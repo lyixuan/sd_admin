@@ -117,7 +117,7 @@ class UserList extends Component {
             <FormItem label="手机" {...formItemLayout} style={{ marginLeft: 119 }}>
               <Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />
             </FormItem>
-            <FormItem {...buttonItemLayout} style={{ marginLeft: 86 }}>
+            <FormItem {...buttonItemLayout} style={{ marginLeft: 119 }}>
               <Button type="primary" className={common.searchButton}>
                 搜索
               </Button>
@@ -140,13 +140,16 @@ class UserList extends Component {
           </AuthorizedButton>
         }
         contentTable={
-          <Table
-            bordered
-            dataSource={dataSource}
-            columns={columns}
-            pagination={false}
-            className={common.tableContentStyle}
-          />
+          <div>
+            <p className={common.totalNum}>总数：500条</p>
+            <Table
+              bordered
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}
+              className={common.tableContentStyle}
+            />
+          </div>
         }
       />
     );

@@ -30,7 +30,7 @@
 }
 
 .createButton{
-  margin: 0 0 24px;
+  margin: 0;
   background-color: #52C9C2;
   font-size: 14px;
   width: 70px;
@@ -98,5 +98,26 @@
   background-color: #52C9C2;
   border-color: #52C9C2;
 }
+.totalNum{
+  display: flex;
+  justify-content: flex-end;
+  font-size: 14px;
+  color: #000;
+}
+.leftInput{
+  display: flex;
+  justify-content: flex-start;
+}
+.centerInput{
+  display: flex;
+  justify-content: center;
+}
+.rightDoubleButton{
+  display: flex;
+  justify-content: flex-end;
+}
 
+:global(.ant-form-item-required:before) {
+  content: "";
+}
 

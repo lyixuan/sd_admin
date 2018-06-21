@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
 import AuthorizedButton from '../selfComponent/AuthorizedButton';
 import common from '../routes/Common/common.css';
-import styles from './AdvancedSearchForm.css';
 
 const FormItem = Form.Item;
 const residences = [
@@ -15,7 +14,7 @@ const residences = [
     label: 'Jiangsu',
   },
 ];
-class AdvancedSearchForm extends Component {
+class AccountForm extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -61,12 +60,12 @@ class AdvancedSearchForm extends Component {
         <p style={{marginLeft:32,fontSize:24}}>账户信息</p>
         */}
         <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="姓名">
+          <FormItem {...formItemLayout} label="*姓名">
             {getFieldDecorator('name', {
               // rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
-          <FormItem {...formItemLayout} label="邮箱">
+          <FormItem {...formItemLayout} label="*邮箱">
             {getFieldDecorator('email', {
               rules: [
                 {
@@ -82,14 +81,14 @@ class AdvancedSearchForm extends Component {
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
-          <FormItem {...formItemLayout} label="角色">
+          <FormItem {...formItemLayout} label="*角色">
             {getFieldDecorator('role', {
               rules: [{ type: 'array', required: true, message: '请选择角色！' }],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
           <FormItem>
-            <div className={styles.buttonWrapper}>
+            <div style={{display:'flex',justifyContent:'center'}}>
               <AuthorizedButton authority="/account/accountList">
                 <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>
                   取消
@@ -108,4 +107,4 @@ class AdvancedSearchForm extends Component {
   }
 }
 
-export default AdvancedSearchForm;
+export default AccountForm;

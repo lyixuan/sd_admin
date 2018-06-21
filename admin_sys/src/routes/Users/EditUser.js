@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { Form } from 'antd';
+import UserForm from '../../selfComponent/UserForm.js';
+import ContentLayout from '../../layouts/ContentLayout';
+
+const WrappedRegistrationForm = Form.create()(UserForm);
 class EditUser extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    }
+    this.state = {};
+  }
+  createUser = () => {
+    this.props.setRouteUrlParams('/account/accountList', {
+      a: 2,
+      b: 3,
+    });
   };
-
   render() {
-    return (
-      <PageHeaderLayout>
-        <div>
-          编辑用户
-        </div>
-      </PageHeaderLayout>
-    );
+    return <ContentLayout contentForm={<WrappedRegistrationForm />} />;
   }
 }
 
