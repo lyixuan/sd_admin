@@ -16,7 +16,13 @@ const residences = [
 class AccountForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const arrValue = this.props.jumpFunction.getUrlParams();
+    this.state = {
+      name: !arrValue.name ? '' : arrValue.name,
+      email: !arrValue.email ? '' : arrValue.email,
+      role: !arrValue.role ? '' : arrValue.role,
+    };
+    console.log(this.state);
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -66,17 +72,21 @@ class AccountForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓名">
             {getFieldDecorator('name', {
+              initialValue: this.state.name,
               rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*邮箱">
-            {getFieldDecorator('string', {
+            {getFieldDecorator('email', {
+              initialValue: this.state.email,
               rules: [{ type: 'string', message: '请输入合法邮箱!' }],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">
             {getFieldDecorator('role', {
+              // initialValue: [{value:this.state.role,label:this.state.role}],
+              initialValue: [this.state.role],
               rules: [{ type: 'array', required: true, message: '请选择角色！' }],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
@@ -86,7 +96,7 @@ class AccountForm extends Component {
               <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>
                 取消
               </Button>
-              <Button onClick={this.resetContent} type="primary" className={common.submitButton}>
+              <Button onSubmit={this.handleSubmit} type="primary" className={common.submitButton}>
                 提交
               </Button>
             </div>

@@ -90,8 +90,11 @@ class UserList extends Component {
 
   onEdit = () => {
     this.props.setRouteUrlParams('/user/editUser', {
-      a: 2,
-      b: 3,
+      name: '张三',
+      phone: 18500469077,
+      email: '191509',
+      role: '二级',
+      responseCom: '尚德机构',
     });
   };
 
@@ -110,10 +113,7 @@ class UserList extends Component {
   };
 
   handleAdd = () => {
-    this.props.setRouteUrlParams('/user/createUser', {
-      a: 2,
-      b: 3,
-    });
+    this.props.setRouteUrlParams('/user/createUser', { a: 2, b: 3 });
   };
 
   render() {

@@ -79,8 +79,9 @@ class AccountList extends Component {
   }
   onEdit = () => {
     this.props.setRouteUrlParams('/account/editAccount', {
-      a: 2,
-      b: 3,
+      name: '张三',
+      email: '191509',
+      role: '院长',
     });
   };
 
@@ -88,10 +89,7 @@ class AccountList extends Component {
     console.log(current, pageSize);
   };
   handleAdd = () => {
-    this.props.setRouteUrlParams('/account/createAccount', {
-      a: 2,
-      b: 3,
-    });
+    this.props.setRouteUrlParams('/account/createAccount', { a: 2, b: 3 });
   };
 
   render() {
