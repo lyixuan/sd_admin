@@ -92,7 +92,7 @@ class RefundDel extends Component {
         title: '复核数据',
         content: (
           <StepTable
-            tableTitle="请确认是否删除以下数据："
+            tableTitle="请确认是否删除以下'质检'编号："
             dataSource={dataSource}
             columns={columns}
           />

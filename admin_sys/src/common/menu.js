@@ -107,12 +107,12 @@ const menuData = [
       {
         name: '添加退费',
         path: 'refundAdd',
-        hideInMenu: false,
+        hideInMenu: true,
       },
       {
         name: '删除退费',
         path: 'refundDel',
-        hideInMenu: false,
+        hideInMenu: true,
       },
     ],
   },
@@ -128,12 +128,31 @@ const menuData = [
       {
         name: '添加投诉',
         path: 'complaintAdd',
-        hideInMenu: false,
+        hideInMenu: true,
       },
       {
         name: '删除投诉',
         path: 'complaintDel',
-        hideInMenu: false,
+        hideInMenu: true,
+      },
+    ],
+  },
+  {
+    name: '短名称管理',
+    icon: 'check-circle-o',
+    path: 'shotName',
+    children: [
+      {
+        name: '小组',
+        path: 'group',
+      },
+      {
+        name: '家族',
+        path: 'family',
+      },
+      {
+        name: '学院',
+        path: 'college',
       },
     ],
   },
