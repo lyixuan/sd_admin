@@ -44,7 +44,7 @@ class PermissionList extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/user/editUser">
+              <AuthorizedButton authority="/permission/editPermission">
                 <span
                   style={{ color: '#52C9C2', marginLeft: 12 }}
                   onClick={() => this.onEdit(record.key)}

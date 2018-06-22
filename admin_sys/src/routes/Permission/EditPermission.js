@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
-import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
+import PermissionForm from '../../selfComponent/PermissionForm';
 
-const WrappedRegistrationForm = Form.create()(UserForm);
+const WrappedRegistrationForm = Form.create()(PermissionForm);
 class EditPermission extends Component {
   constructor(props) {
     super(props);
