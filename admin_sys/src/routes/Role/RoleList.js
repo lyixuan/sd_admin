@@ -103,7 +103,16 @@ class RoleList extends Component {
           </AuthorizedButton>
         }
         contentTable={
-          <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+          <div>
+            <p className={common.totalNum}>总数：500条</p>
+            <Table
+              bordered
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}
+              className={common.tableContentStyle}
+            />
+          </div>
         }
         contentPagination={
           <Pagination

@@ -9,14 +9,8 @@ class EditUser extends Component {
     super(props);
     this.state = {};
   }
-  createUser = () => {
-    this.props.setRouteUrlParams('/account/accountList', {
-      a: 2,
-      b: 3,
-    });
-  };
   render() {
-    return <ContentLayout contentForm={<WrappedRegistrationForm />} />;
+    return <ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />;
   }
 }
 

@@ -5,6 +5,7 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
+let propsVal = '';
 class QualityList extends Component {
   constructor(props) {
     super(props);
@@ -74,15 +75,32 @@ class QualityList extends Component {
 
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
-      formLayout: 'inline',
     };
   }
   onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
   };
 
-  handleAdd = () => {
-    this.props.setRouteUrlParams('/user/createUser', {
+  handleSearch = e => {
+    e.preventDefault();
+    let val = {};
+    propsVal.form.validateFields((err, values) => {
+      val = values;
+    });
+    this.props.setCurrentUrlParams(val);
+  };
+  handleReset = () => {
+    propsVal.form.resetFields();
+    this.props.setCurrentUrlParams({});
+  };
+  qualityDel = () => {
+    this.props.setRouteUrlParams('/quality/qualityDel', {
+      a: 2,
+      b: 3,
+    });
+  };
+  qualityAdd = () => {
+    this.props.setRouteUrlParams('/quality/qualityAdd', {
       a: 2,
       b: 3,
     });
@@ -92,25 +110,39 @@ class QualityList extends Component {
     console.log(this.props);
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
-    const { formLayout } = this.state;
-    const formItemLayout = null;
-    const buttonItemLayout = null;
-    const WrappedAdvancedSearchForm = Form.create()(() => {
+    const formLayout = 'inline';
+    const WrappedAdvancedSearchForm = Form.create()(props => {
+      propsVal = props;
+      const { getFieldDecorator } = props.form;
       return (
         <div>
-          <Form layout={formLayout}>
-            <FormItem {...formItemLayout}>
-              <Input placeholder="请输入归属班主任" style={{ width: 230, height: 32 }} />
+          <Form layout={formLayout} onSubmit={this.handleSearch}>
+            <FormItem>
+              {getFieldDecorator('teacher', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入归属班主任!',
+                  },
+                ],
+              })(<Input placeholder="请输入归属班主任" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem {...formItemLayout} style={{ marginLeft: 119 }}>
-              <Input placeholder="请输入质检单号" style={{ width: 230, height: 32 }} />
+            <FormItem style={{ marginLeft: 119 }}>
+              {getFieldDecorator('numbers', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入质检单号!',
+                  },
+                ],
+              })(<Input placeholder="请输入质检单号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem {...buttonItemLayout} style={{ marginLeft: 119 }}>
-              <Button type="primary" className={common.searchButton}>
-                搜索
+            <FormItem style={{ marginLeft: 119 }}>
+              <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
+                搜 索
               </Button>
-              <Button type="primary" className={common.cancleButton}>
-                取消
+              <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
+                取 消
               </Button>
             </FormItem>
           </Form>
@@ -123,13 +155,13 @@ class QualityList extends Component {
         contentButton={
           <div>
             <AuthorizedButton authority="/user/createUser">
-              <Button onClick={this.handleAdd} type="primary" className={common.addQualityButton}>
+              <Button onClick={this.qualityAdd} type="primary" className={common.addQualityButton}>
                 添加质检
               </Button>
             </AuthorizedButton>
             <AuthorizedButton authority="/account/accountList">
               <Button
-                onClick={this.resetContent}
+                onClick={this.qualityDel}
                 type="primary"
                 className={common.deleteQualityButton}
               >

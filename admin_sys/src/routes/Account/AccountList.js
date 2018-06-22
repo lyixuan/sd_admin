@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Pagination } from 'antd';
+import { Table, Button, Pagination, Popconfirm } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
@@ -36,12 +36,11 @@ class AccountList extends Component {
                 </span>
               </AuthorizedButton>
               <AuthorizedButton authority="/account/editAccount">
-                <span
-                  style={{ color: '#52C9C2', marginLeft: 12 }}
-                  onClick={() => this.onEdit(record.key)}
-                >
-                  删除
-                </span>
+                {this.state.dataSource.length > 1 ? (
+                  <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
+                    <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
+                  </Popconfirm>
+                ) : null}
               </AuthorizedButton>
             </div>
           );
@@ -77,10 +76,17 @@ class AccountList extends Component {
       dataSource: !dataSource ? [] : dataSource,
     };
   }
+
+  onDelete = key => {
+    const dataSource = [...this.state.dataSource];
+    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+  };
+
   onEdit = () => {
     this.props.setRouteUrlParams('/account/editAccount', {
-      a: 2,
-      b: 3,
+      name: '张三',
+      email: '191509',
+      role: '院长',
     });
   };
 
@@ -88,10 +94,7 @@ class AccountList extends Component {
     console.log(current, pageSize);
   };
   handleAdd = () => {
-    this.props.setRouteUrlParams('/account/createAccount', {
-      a: 2,
-      b: 3,
-    });
+    this.props.setRouteUrlParams('/account/createAccount', { a: 2, b: 3 });
   };
 
   render() {
@@ -123,7 +126,7 @@ class AccountList extends Component {
             showSizeChanger
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={1}
-            total={100}
+            total={1000}
             className={common.paginationStyle}
           />
         }

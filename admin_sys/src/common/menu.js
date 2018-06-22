@@ -96,6 +96,27 @@ const menuData = [
     ],
   },
   {
+    name: '权限管理',
+    icon: 'check-circle-o',
+    path: 'permission',
+    children: [
+      {
+        name: '权限列表',
+        path: 'permissionList',
+      },
+      {
+        name: '创建权限',
+        path: 'createPermission',
+        hideInMenu: true,
+      },
+      {
+        name: '编辑权限',
+        path: 'editPermission',
+        hideInMenu: true,
+      },
+    ],
+  },
+  {
     name: '退费管理',
     icon: 'check-circle-o',
     path: 'refund',
@@ -107,12 +128,12 @@ const menuData = [
       {
         name: '添加退费',
         path: 'refundAdd',
-        hideInMenu: false,
+        hideInMenu: true,
       },
       {
         name: '删除退费',
         path: 'refundDel',
-        hideInMenu: false,
+        hideInMenu: true,
       },
     ],
   },
@@ -128,12 +149,31 @@ const menuData = [
       {
         name: '添加投诉',
         path: 'complaintAdd',
-        hideInMenu: false,
+        hideInMenu: true,
       },
       {
         name: '删除投诉',
         path: 'complaintDel',
-        hideInMenu: false,
+        hideInMenu: true,
+      },
+    ],
+  },
+  {
+    name: '短名称管理',
+    icon: 'check-circle-o',
+    path: 'shotName',
+    children: [
+      {
+        name: '小组',
+        path: 'group',
+      },
+      {
+        name: '家族',
+        path: 'family',
+      },
+      {
+        name: '学院',
+        path: 'college',
       },
     ],
   },

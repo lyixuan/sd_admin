@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
-import AccountForm from '../../selfComponent/AccountForm.js';
+import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
 
-const WrappedRegistrationForm = Form.create()(AccountForm);
-class EditAccount extends Component {
+const WrappedRegistrationForm = Form.create()(UserForm);
+class EditPermission extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -14,4 +14,4 @@ class EditAccount extends Component {
   }
 }
 
-export default EditAccount;
+export default EditPermission;

@@ -104,6 +104,17 @@ export const getRouterData = app => {
     '/user/userList': {
       component: dynamicWrapper(app, [], () => import('../routes/Users/UserList')),
     },
+
+    '/permission/editPermission': {
+      component: dynamicWrapper(app, [], () => import('../routes/Permission/EditPermission')),
+    },
+    '/permission/createPermission': {
+      component: dynamicWrapper(app, [], () => import('../routes/Permission/CreatePermission')),
+    },
+    '/permission/permissionList': {
+      component: dynamicWrapper(app, [], () => import('../routes/Permission/PermissionList')),
+    },
+
     '/role/editRole': {
       component: dynamicWrapper(app, [], () => import('../routes/Role/EditRole')),
     },
@@ -133,6 +144,15 @@ export const getRouterData = app => {
     },
     '/complaint/complaintDel': {
       component: dynamicWrapper(app, [], () => import('../routes/Complaint/ComplaintDel')),
+    },
+    '/shotName/Group': {
+      component: dynamicWrapper(app, [], () => import('../routes/ShotName/Group')),
+    },
+    '/shotName/family': {
+      component: dynamicWrapper(app, [], () => import('../routes/ShotName/Family')),
+    },
+    '/shotName/college': {
+      component: dynamicWrapper(app, [], () => import('../routes/ShotName/College')),
     },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),

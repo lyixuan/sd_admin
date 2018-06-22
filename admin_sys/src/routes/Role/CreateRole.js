@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-// import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd'
-// import ContentLayout from '../../layouts/ContentLayout';
+import { Form } from 'antd';
+import StepLayout from '../../layouts/stepLayout';
+import RoleForm from '../../selfComponent/RoleFrom/RoleForm';
 
+const WrappedRoleForm = Form.create()(RoleForm);
 class CreateRole extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
-    return <div />;
+    const baseLayout = <WrappedRoleForm />;
+    return <StepLayout title="创建角色" baseLayout={baseLayout} />;
   }
 }
 

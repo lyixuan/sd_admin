@@ -1,38 +1,42 @@
 import React, { Component } from 'react';
-import { Table, Button, Form, Input, Popconfirm } from 'antd';
+import { Table, Button, Form, Input } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
 let propsVal = '';
-class UserList extends Component {
+class PermissionList extends Component {
   constructor(props) {
     super(props);
     this.columns = [
       {
-        title: '姓名',
-        dataIndex: 'name',
+        title: '编号',
+        dataIndex: 'id',
       },
       {
-        title: '手机',
-        dataIndex: 'phone',
+        title: '权限名称',
+        dataIndex: 'permissionName',
       },
       {
-        title: '邮箱',
-        dataIndex: 'email',
+        title: '权限类型',
+        dataIndex: 'permissionType',
       },
       {
-        title: '级别',
-        dataIndex: 'role',
+        title: '权限路由',
+        dataIndex: 'permissionRoute',
       },
       {
-        title: '负责单位',
-        dataIndex: 'responsyCom',
+        title: '上级编号',
+        dataIndex: 'upId',
       },
       {
-        title: '企业家单位',
-        dataIndex: 'comUnit',
+        title: '一级页面图标',
+        dataIndex: 'icon',
+      },
+      {
+        title: '权限排序',
+        dataIndex: 'status',
       },
       {
         title: '操作',
@@ -40,11 +44,6 @@ class UserList extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/user/checkUser">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record.key)}>
-                  更新
-                </span>
-              </AuthorizedButton>
               <AuthorizedButton authority="/user/editUser">
                 <span
                   style={{ color: '#52C9C2', marginLeft: 12 }}
@@ -52,13 +51,6 @@ class UserList extends Component {
                 >
                   编辑
                 </span>
-              </AuthorizedButton>
-              <AuthorizedButton authority="/user/editUser">
-                {this.state.dataSource.length > 1 ? (
-                  <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
-                    <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
-                  </Popconfirm>
-                ) : null}
               </AuthorizedButton>
             </div>
           );
@@ -69,30 +61,33 @@ class UserList extends Component {
     const dataSource = [
       {
         key: 1,
-        name: `张三`,
-        phone: 18500469077,
-        responsyCom: `地球`,
-        comUnit: `太空`,
-        role: `院长`,
-        email: `hello@sunlands.com`,
+        id: 1,
+        permissionName: `院长`,
+        permissionType: `一级页面`,
+        permissionRoute: `hello/word`,
+        upId: 1243524,
+        icon: ``,
+        status: `正序`,
       },
       {
         key: 2,
-        name: `王五`,
-        role: `学员`,
-        phone: 18500469077,
-        responsyCom: `地球`,
-        comUnit: `太空`,
-        email: `hello@sunlands.com`,
+        id: 2,
+        permissionName: `学员`,
+        permissionType: `二级页面`,
+        permissionRoute: `hello/world`,
+        upId: 3454254,
+        icon: ``,
+        status: `倒序`,
       },
       {
         key: 3,
-        name: `赵六`,
-        role: `院长`,
-        phone: 18500469077,
-        responsyCom: `地球`,
-        comUnit: `太空`,
-        email: `hello@sunlands.com`,
+        id: 3,
+        permissionName: `院长`,
+        permissionType: `页面功能`,
+        permissionRoute: `hello/world`,
+        upId: 25662542,
+        icon: ``,
+        status: `正序`,
       },
     ];
 
@@ -107,7 +102,7 @@ class UserList extends Component {
   };
 
   onEdit = () => {
-    this.props.setRouteUrlParams('/user/editUser', {
+    this.props.setRouteUrlParams('/permission/editPermission', {
       name: '张三',
       phone: 18500469077,
       email: '191509',
@@ -131,7 +126,7 @@ class UserList extends Component {
   };
 
   handleAdd = () => {
-    this.props.setRouteUrlParams('/user/createUser', { a: 2, b: 3 });
+    this.props.setRouteUrlParams('/permission/createPermission', { a: 2, b: 3 });
   };
 
   render() {
@@ -144,25 +139,15 @@ class UserList extends Component {
       return (
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
-            <FormItem label="姓名">
+            <FormItem label="权限名称">
               {getFieldDecorator('name', {
                 rules: [
                   {
                     required: true,
-                    message: '请输入姓名!',
+                    message: '请权限名称!',
                   },
                 ],
-              })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
-            </FormItem>
-            <FormItem label="手机" style={{ marginLeft: 119 }}>
-              {getFieldDecorator('phone', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入姓名!',
-                  },
-                ],
-              })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
+              })(<Input placeholder="请输入权限名称" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem style={{ marginLeft: 119 }}>
               <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
@@ -203,4 +188,4 @@ class UserList extends Component {
   }
 }
 
-export default UserList;
+export default PermissionList;
