@@ -4,6 +4,7 @@
 .wrap{
   width: 590px;
   margin: 0 auto;
+  position: relative;
 }
 .upload{
   width: 100%;
@@ -25,6 +26,7 @@
   border-radius: 4px;
   box-sizing: border-box;
   padding: 22px 20px;
+  margin-top: 66px;
 }
 .title{
   font-size: 12px;
@@ -44,6 +46,33 @@
   color: #52C9C2;
   letter-spacing: 0;
   line-height: 28px;
+}
+/*progress*/
+:global(.ant-upload-list){
+  position: absolute;
+  top: 142px;
+  left: 0;
+  background: rgba(203,235,233,0.40);
+  border-radius: 3px;
+  width: 100%;
+  font-size: 12px!important;
+}
+:global(.ant-progress-bg){
+  background-color: #52c9c2!important;
+}
+:global(.ant-upload-list-item-name){
+  padding-left: 33px!important;
+  padding-bottom: 13px!important;
+  font-size: 12px!important;
+}
+:global(.anticon-paper-clip:before),:global(.anticon-spin:before){
+  color: #52c9c2;
+  font-size: 12px;
+  margin-left: 13px!important;
+}
+:global(.ant-upload-list-item-error){
+  font-size: 12px!important;
+  color: #52c9c2!important;
 }
 
 /*
