@@ -163,6 +163,7 @@ class PermissionList extends Component {
     });
     return (
       <ContentLayout
+        pageHeraderUnvisible="unvisible"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <AuthorizedButton authority="/user/createUser">

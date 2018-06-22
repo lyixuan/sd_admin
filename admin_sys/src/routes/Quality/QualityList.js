@@ -151,6 +151,7 @@ class QualityList extends Component {
     });
     return (
       <ContentLayout
+        pageHeraderUnvisible="visible"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>

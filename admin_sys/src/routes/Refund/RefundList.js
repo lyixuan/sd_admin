@@ -160,6 +160,7 @@ class RefundList extends Component {
     });
     return (
       <ContentLayout
+        pageHeraderUnvisible="unvisible"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>

@@ -91,6 +91,7 @@ class RoleList extends Component {
     ];
     return (
       <ContentLayout
+        pageHeraderUnvisible="unvisible"
         contentButton={
           <AuthorizedButton authority="/role/createRole">
             <Button

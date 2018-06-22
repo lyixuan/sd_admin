@@ -102,6 +102,7 @@ class AccountList extends Component {
     const columns = !this.columns ? [] : this.columns;
     return (
       <ContentLayout
+        pageHeraderUnvisible="unvisible"
         contentButton={
           <AuthorizedButton authority="/account/createAccount">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
