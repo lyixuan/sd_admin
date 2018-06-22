@@ -1,7 +1,4 @@
 import React from 'react';
-import { Link } from 'dva/router';
-import Exception from 'components/Exception';
+import Exception from '../../selfComponent/Exception/Exception';
 
-export default () => (
-  <Exception type="403" style={{ minHeight: 500, height: '80%' }} linkElement={Link} />
-);
+export default () => <Exception message="您没有权限使用该系统,请联系系统管理员" />;

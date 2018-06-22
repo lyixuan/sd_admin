@@ -179,6 +179,9 @@ export const getRouterData = app => {
         import('../routes/Login/EmilRetrievePassWord')
       ),
     },
+    '/changePwd/changePassword': {
+      component: dynamicWrapper(app, ['login'], () => import('../routes/Login/ChangePassword')),
+    },
     '/userLayout': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },
