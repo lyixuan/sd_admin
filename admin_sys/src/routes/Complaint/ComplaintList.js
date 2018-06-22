@@ -161,6 +161,7 @@ class ComplainList extends Component {
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
+        title="投诉列表"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>

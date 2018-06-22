@@ -103,6 +103,7 @@ class AccountList extends Component {
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
+        title="账号列表"
         contentButton={
           <AuthorizedButton authority="/account/createAccount">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>

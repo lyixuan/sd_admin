@@ -152,6 +152,7 @@ class QualityList extends Component {
     return (
       <ContentLayout
         pageHeraderUnvisible="visible"
+        title="质检列表"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>

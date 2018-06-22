@@ -161,6 +161,7 @@ class RefundList extends Component {
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
+        title="退费列表"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>

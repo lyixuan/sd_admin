@@ -179,6 +179,7 @@ class UserList extends Component {
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
+        title="用户列表"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <AuthorizedButton authority="/user/createUser">
