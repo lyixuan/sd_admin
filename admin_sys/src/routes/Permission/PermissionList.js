@@ -11,19 +11,31 @@ class PermissionList extends Component {
     super(props);
     this.columns = [
       {
-        title: '姓名',
-        dataIndex: 'name',
+        title: '编号',
+        dataIndex: 'id',
       },
       {
-        title: '角色',
-        dataIndex: 'role',
+        title: '权限名称',
+        dataIndex: 'permissionName',
       },
       {
-        title: '邮箱',
-        dataIndex: 'email',
+        title: '权限类型',
+        dataIndex: 'permissionType',
       },
       {
-        title: '状态',
+        title: '权限路由',
+        dataIndex: 'permissionRoute',
+      },
+      {
+        title: '上级编号',
+        dataIndex: 'upId',
+      },
+      {
+        title: '一级页面图标',
+        dataIndex: 'icon',
+      },
+      {
+        title: '权限排序',
         dataIndex: 'status',
       },
       {
@@ -49,24 +61,33 @@ class PermissionList extends Component {
     const dataSource = [
       {
         key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
+        id: 1,
+        permissionName: `院长`,
+        permissionType: `一级页面`,
+        permissionRoute: `hello/word`,
+        upId: 1243524,
+        icon: ``,
+        status: `正序`,
       },
       {
         key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
+        id: 2,
+        permissionName: `学员`,
+        permissionType: `二级页面`,
+        permissionRoute: `hello/world`,
+        upId: 3454254,
+        icon: ``,
+        status: `倒序`,
       },
       {
         key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
+        id: 3,
+        permissionName: `院长`,
+        permissionType: `页面功能`,
+        permissionRoute: `hello/world`,
+        upId: 25662542,
+        icon: ``,
+        status: `正序`,
       },
     ];
 

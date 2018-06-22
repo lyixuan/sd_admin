@@ -15,16 +15,24 @@ class UserList extends Component {
         dataIndex: 'name',
       },
       {
-        title: '角色',
-        dataIndex: 'role',
+        title: '手机',
+        dataIndex: 'phone',
       },
       {
         title: '邮箱',
         dataIndex: 'email',
       },
       {
-        title: '状态',
-        dataIndex: 'status',
+        title: '级别',
+        dataIndex: 'role',
+      },
+      {
+        title: '负责单位',
+        dataIndex: 'responsyCom',
+      },
+      {
+        title: '企业家单位',
+        dataIndex: 'comUnit',
       },
       {
         title: '操作',
@@ -62,22 +70,28 @@ class UserList extends Component {
       {
         key: 1,
         name: `张三`,
+        phone: 18500469077,
+        responsyCom: `地球`,
+        comUnit: `太空`,
         role: `院长`,
-        status: `启用`,
         email: `hello@sunlands.com`,
       },
       {
         key: 2,
         name: `王五`,
         role: `学员`,
-        status: `启用`,
+        phone: 18500469077,
+        responsyCom: `地球`,
+        comUnit: `太空`,
         email: `hello@sunlands.com`,
       },
       {
         key: 3,
         name: `赵六`,
         role: `院长`,
-        status: `禁止`,
+        phone: 18500469077,
+        responsyCom: `地球`,
+        comUnit: `太空`,
         email: `hello@sunlands.com`,
       },
     ];
