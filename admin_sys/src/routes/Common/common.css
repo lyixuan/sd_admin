@@ -1,3 +1,12 @@
+.paginationStyle{
+  margin: 24px 0;
+  display: flex;
+  justify-content: flex-end;
+}
+.tableContentStyle{
+  margin: 0;
+}
+
 :global(.ant-table-tbody  tr  td) {
   padding: 0 16px !important;
   height: 44px;
@@ -51,7 +60,6 @@
   box-shadow: none !important;
 }
 
-
 :global(.ant-popover-inner-content){
   padding: 24px 35px;
   width: 356px;
@@ -99,7 +107,6 @@
   color: rgba(0, 0, 0, 0.65);
 }
 
-
 :global(.ant-input:hover){
   border: 1px solid #52C9C2;
   box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
@@ -111,16 +118,6 @@
 :global(.ant-cascader-picker:focus .ant-cascader-input) {
   border: 1px solid #52C9C2;
   box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
-}
-
-
-.paginationStyle{
-  margin: 24px 0;
-  display: flex;
-  justify-content: flex-end;
-}
-.tableContentStyle{
-  margin: 0;
 }
 
 .createButton{
