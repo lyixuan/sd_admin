@@ -96,6 +96,27 @@ const menuData = [
     ],
   },
   {
+    name: '权限管理',
+    icon: 'check-circle-o',
+    path: 'permission',
+    children: [
+      {
+        name: '权限列表',
+        path: 'permissionList',
+      },
+      {
+        name: '创建权限',
+        path: 'createPermission',
+        hideInMenu: true,
+      },
+      {
+        name: '编辑权限',
+        path: 'editPermission',
+        hideInMenu: true,
+      },
+    ],
+  },
+  {
     name: '退费管理',
     icon: 'check-circle-o',
     path: 'refund',
