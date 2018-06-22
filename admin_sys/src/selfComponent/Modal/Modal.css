@@ -1,7 +1,11 @@
 .name{
   text-align: center;
+  margin-bottom: 10px;
 }
 .shotName{
   width: 300px;
   margin:0 100px;
+}
+:global(.ant-modal-footer){
+  text-align: center!important;
 }
