@@ -148,6 +148,17 @@ export const getRouterData = app => {
         import('../routes/Exception/triggerException')
       ),
     },
+    '/changePwd': {
+      component: dynamicWrapper(app, [], () => import('../layouts/ChangePwd')),
+    },
+    '/changePwd/retrieve': {
+      component: dynamicWrapper(app, ['login'], () => import('../routes/Login/RetrievePassWord')),
+    },
+    '/changePwd/emilRetrieve': {
+      component: dynamicWrapper(app, ['login'], () =>
+        import('../routes/Login/EmilRetrievePassWord')
+      ),
+    },
     '/userLayout': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },

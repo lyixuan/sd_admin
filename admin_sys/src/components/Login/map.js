@@ -13,7 +13,6 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Please enter username!',
       },
     ],
   },
@@ -28,7 +27,7 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Please enter password!',
+        message: 'Wrong mobile number format!',
       },
     ],
   },
@@ -49,6 +48,14 @@ const map = {
         message: 'Wrong mobile number format!',
       },
     ],
+  },
+  Emil: {
+    component: Input,
+    props: {
+      size: 'large',
+      prefix: <Icon type="mail" className={styles.prefixIcon} />,
+      placeholder: 'captcha',
+    },
   },
   Captcha: {
     component: Input,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button, Row, Col } from 'antd';
+import { Form, Row, Col } from 'antd';
 import omit from 'omit.js';
 import styles from './index.less';
 import map from './map';
@@ -14,20 +14,24 @@ function generator({ defaultProps, defaultRules, type }) {
         form: PropTypes.object,
         updateActive: PropTypes.func,
       };
+
       constructor(props) {
         super(props);
         this.state = {
           count: 0,
         };
       }
+
       componentDidMount() {
         if (this.context.updateActive) {
           this.context.updateActive(this.props.name);
         }
       }
+
       componentWillUnmount() {
         clearInterval(this.interval);
       }
+
       onGetCaptcha = () => {
         let count = 59;
         this.setState({ count });
@@ -42,12 +46,20 @@ function generator({ defaultProps, defaultRules, type }) {
           }
         }, 1000);
       };
+      /*
+      用于点击验证码的回调
+      */
+      changeGetCaptcha = () => {
+        if (this.props.onChange) {
+          this.props.onChange();
+        }
+      };
+
       render() {
         const { getFieldDecorator } = this.context.form;
         const options = {};
         let otherProps = {};
         const { onChange, defaultValue, rules, name, ...restProps } = this.props;
-        const { count } = this.state;
         options.rules = rules || defaultRules;
         if (onChange) {
           options.onChange = onChange;
@@ -61,20 +73,18 @@ function generator({ defaultProps, defaultRules, type }) {
           return (
             <FormItem>
               <Row gutter={8}>
-                <Col span={16}>
+                <Col span={14}>
                   {getFieldDecorator(name, options)(
                     <WrappedComponent {...defaultProps} {...inputProps} />
                   )}
                 </Col>
-                <Col span={8}>
-                  <Button
-                    disabled={count}
-                    className={styles.getCaptcha}
-                    size="large"
-                    onClick={this.onGetCaptcha}
-                  >
-                    {count ? `${count} s` : '获取验证码'}
-                  </Button>
+                <Col span={10}>
+                  <span className={styles.captchaBox}>
+                    <i>{this.props.showcaptcha ? this.props.showcaptcha : ''}</i>
+                  </span>
+                  <span className={styles.changeImg} onClick={this.changeGetCaptcha}>
+                    换一张
+                  </span>
                 </Col>
               </Row>
             </FormItem>

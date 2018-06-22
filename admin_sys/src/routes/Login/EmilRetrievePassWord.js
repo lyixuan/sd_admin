@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Checkbox, Alert } from 'antd';
 import Login from 'components/Login';
 import PassWordErrorAlert from '../../selfComponent/passWordErrot/PassWordErrorAlert';
 import styles from './Login.less';
 import common from '../Common/common.css';
 
-const { UserName, Password, Submit } = Login;
+const { Captcha, Submit, Emil } = Login;
 
 @connect(({ login, loading }) => ({
   login,
   submitting: loading.effects['login/login'],
 }))
-export default class LoginPage extends Component {
+export default class RetrievePassWord extends Component {
   state = {
     type: 'account',
-    autoLogin: true,
   };
 
   onTabChange = type => {
     this.setState({ type });
   };
-
+  clickCaptcha = () => {
+    console.log('验证码');
+  };
   handleSubmit = (err, values) => {
     const { type } = this.state;
     if (!err) {
@@ -35,37 +35,23 @@ export default class LoginPage extends Component {
     }
   };
 
-  changeAutoLogin = e => {
-    this.setState({
-      autoLogin: e.target.checked,
-    });
-  };
-
-  renderMessage = content => {
-    return <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />;
-  };
-
   render() {
     const { submitting } = this.props;
     const { type } = this.state;
     return (
       <div className={styles.main}>
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <PassWordErrorAlert style={{ width: '340px' }} errorMes="密码错误" />
-          <div style={{ width: '340px' }}>
+          <PassWordErrorAlert style={{ width: '360px' }} errorMes="密码错误" />
+          <div style={{ width: '360px' }}>
             <span className={styles.loginLabel}>邮箱</span>
-            <UserName name="userName" placeholder="请输入邮箱" />
-            <span className={styles.loginLabel}>密码</span>
-            <Password name="password" placeholder="请输入密码" />
-            <div>
-              <span style={{ float: 'left' }}>
-                <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>
-                  自动登录
-                </Checkbox>
-              </span>
-
-              <span style={{ float: 'right' }}>忘记密码</span>
-            </div>
+            <Emil name="emil" placeholder="请输入密码" />
+            <span className={styles.loginLabel}>验证码</span>
+            <Captcha
+              name="rePassword"
+              placeholder="请输入验证码"
+              onChange={this.clickCaptcha}
+              showcaptcha="1111"
+            />
             <Submit loading={submitting} type="primary" className={common.searchButton}>
               登录
             </Submit>
