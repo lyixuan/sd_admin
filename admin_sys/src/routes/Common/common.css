@@ -72,32 +72,47 @@
     width: 70px;
     height: 32px;
 }
-:global(.ant-btn-primary) {
+:global(.ant-popover-buttons .ant-btn-primary) {
   background-color: #52C9C2;
   border-color: #52C9C2;
 }
 
-:global(.ant-btn-primary:hover) {
+:global(.ant-popover-buttons .ant-btn-primary:hover) {
   background-color: #52C9C2 !important;
   border-color: #52C9C2!important;
   color: #fff!important;
 }
-:global(.ant-btn-primary:focus) {
+:global(.ant-popover-buttons .ant-btn-primary:focus) {
   background-color: #52C9C2;
   border-color: #52C9C2;
   color: #fff!important;
 }
 
-:global(.ant-btn:hover) {
+:global(.ant-popover-buttons .ant-btn:hover) {
   background-color: #fff;
   border: 1px solid #DCDDE0;
   color: rgba(0, 0, 0, 0.65);
 }
-:global(.ant-btn:focus) {
+:global(.ant-popover-buttons .ant-btn:focus) {
   background-color: #fff;
   border: 1px solid #DCDDE0;
   color: rgba(0, 0, 0, 0.65);
 }
+
+
+:global(.ant-input:hover){
+  border: 1px solid #52C9C2;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+:global(.ant-input:focus){
+  border: 1px solid #52C9C2;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+:global(.ant-cascader-picker:focus .ant-cascader-input) {
+  border: 1px solid #52C9C2;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+
 
 .paginationStyle{
   margin: 24px 0;

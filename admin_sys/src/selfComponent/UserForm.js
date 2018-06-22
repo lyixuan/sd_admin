@@ -71,26 +71,26 @@ class UserForm extends Component {
         <p style={{marginLeft:32,fontSize:24}}>账户信息</p>
         */}
         <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="*姓名">
+          <FormItem {...formItemLayout} label="*姓 名">
             {getFieldDecorator('name', {
               initialValue: this.state.name,
               rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
-          <FormItem {...formItemLayout} label="手机">
+          <FormItem {...formItemLayout} label="手 机">
             {getFieldDecorator('phone', {
               initialValue: this.state.phone,
               rules: [{ required: true, message: '请输入手机号!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
-          <FormItem {...formItemLayout} label="*邮箱">
+          <FormItem {...formItemLayout} label="*邮 箱">
             {getFieldDecorator('string', {
               initialValue: this.state.email,
               rules: [{ type: 'string', message: '请输入合法邮箱!' }],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
-          <FormItem {...formItemLayout} label="*级别">
+          <FormItem {...formItemLayout} label="*级 别">
             {getFieldDecorator('role', {
               initialValue: [this.state.role],
               rules: [{ type: 'array', required: true, message: '请选择级别！' }],
