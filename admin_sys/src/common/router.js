@@ -89,10 +89,14 @@ export const getRouterData = app => {
       ),
     },
     '/account/createAccount': {
-      component: dynamicWrapper(app, [], () => import('../routes/Account/CreateAccount')),
+      component: dynamicWrapper(app, ['account/accountList'], () =>
+        import('../routes/Account/CreateAccount')
+      ),
     },
     '/account/editAccount': {
-      component: dynamicWrapper(app, [], () => import('../routes/Account/EditAccount')),
+      component: dynamicWrapper(app, ['account/accountList'], () =>
+        import('../routes/Account/EditAccount')
+      ),
     },
     '/user/editUser': {
       component: dynamicWrapper(app, [], () => import('../routes/Users/EditUser')),
