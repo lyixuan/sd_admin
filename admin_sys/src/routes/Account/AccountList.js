@@ -10,6 +10,8 @@ class AccountList extends Component {
     this.state = {};
   }
 
+  componentDidMount() {}
+
   // 删除账号函数
   onDelete = key => {
     // const dataSource = [...this.state.dataSource];
@@ -31,12 +33,13 @@ class AccountList extends Component {
   onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
   };
+
   // 点击某一页函数
   changePage = (current, pageSize) => {
     console.log(current, pageSize);
   };
 
-  // 编辑账号函数
+  // 初始化tabale 列数据
   fillDataSource = () => {
     const data = [];
     for (let i = 0; i < 50; i += 1) {
@@ -50,6 +53,8 @@ class AccountList extends Component {
     }
     return data;
   };
+
+  // 获取table列表头
   columnsData = () => {
     const columns = [
       {

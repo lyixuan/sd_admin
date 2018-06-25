@@ -9,7 +9,56 @@ let propsVal = '';
 class QualityList extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
+    this.state = {};
+  }
+
+  componentDidMount() {}
+
+  // 点击显示每页多少条数据函数
+  onShowSizeChange = (current, pageSize) => {
+    console.log(current, pageSize);
+  };
+  // 点击某一页函数
+  changePage = (current, pageSize) => {
+    console.log(current, pageSize);
+  };
+
+  // 表单搜索函数
+  handleSearch = e => {
+    e.preventDefault();
+    let val = {};
+    propsVal.form.validateFields((err, values) => {
+      val = values;
+    });
+    this.props.setCurrentUrlParams(val);
+  };
+  // 表单重置
+  handleReset = () => {
+    propsVal.form.resetFields();
+    this.props.setCurrentUrlParams({});
+  };
+
+  // 初始化tabale 列数据
+  fillDataSource = () => {
+    const data = [];
+    for (let i = 0; i < 50; i += 1) {
+      data.push({
+        key: i,
+        college: `自变量学院`,
+        family: `第二家族`,
+        familytype: `自己`,
+        teacher: `杨紫`,
+        name: `张三`,
+        status: `二级`,
+        nums: `110110110110`,
+      });
+    }
+    return data;
+  };
+
+  // 获取table列表头
+  columnsData = () => {
+    const columns = [
       {
         title: '学院',
         dataIndex: 'college',
@@ -39,66 +88,18 @@ class QualityList extends Component {
         dataIndex: 'nums',
       },
     ];
-
-    const dataSource = [
-      {
-        key: 1,
-        college: `自变量学院`,
-        family: `第二家族`,
-        familytype: `自己`,
-        teacher: `杨紫`,
-        name: `张三`,
-        status: `二级`,
-        nums: `110110110110`,
-      },
-      {
-        key: 2,
-        college: `动漫学院`,
-        family: `斗罗家族`,
-        familytype: `小小`,
-        teacher: `杨紫琼`,
-        name: `炸藕无`,
-        status: `二级`,
-        nums: `110110110110`,
-      },
-      {
-        key: 3,
-        college: `葫芦娃学院`,
-        family: `自己家族`,
-        familytype: `你猜`,
-        teacher: `程序员`,
-        name: `李四`,
-        status: `二级`,
-        nums: `110110110110`,
-      },
-    ];
-
-    this.state = {
-      dataSource: !dataSource ? [] : dataSource,
-    };
-  }
-  onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
+    return columns;
   };
 
-  handleSearch = e => {
-    e.preventDefault();
-    let val = {};
-    propsVal.form.validateFields((err, values) => {
-      val = values;
-    });
-    this.props.setCurrentUrlParams(val);
-  };
-  handleReset = () => {
-    propsVal.form.resetFields();
-    this.props.setCurrentUrlParams({});
-  };
+  // 删除质检
   qualityDel = () => {
     this.props.setRouteUrlParams('/quality/qualityDel', {
       a: 2,
       b: 3,
     });
   };
+
+  // 添加质检
   qualityAdd = () => {
     this.props.setRouteUrlParams('/quality/qualityAdd', {
       a: 2,
@@ -107,9 +108,8 @@ class QualityList extends Component {
   };
 
   render() {
-    console.log(this.props);
-    const { dataSource } = this.state;
-    const columns = !this.columns ? [] : this.columns;
+    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -187,6 +187,7 @@ class QualityList extends Component {
         contentPagination={
           <Pagination
             showSizeChanger
+            onChange={this.changePage}
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={1}
             total={100}
