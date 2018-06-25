@@ -95,6 +95,7 @@ class RefundDel extends Component {
             tableTitle="请确认是否删除以下'质检'编号："
             dataSource={dataSource}
             columns={columns}
+            scroll={{ y: 264 }}
           />
         ),
       },

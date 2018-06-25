@@ -3,30 +3,41 @@ import { message, Upload } from 'antd';
 import uploadImg from '../../assets/uploadImg.png';
 import styles from './step.css';
 
-let isJPG = false;
+let isExcel = false;
+let isLt35M = false;
 class stepUpload extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   handleChange = info => {
-    const { fileList } = info;
-    if (isJPG) {
-      this.setState({ fileList });
+    let { fileList } = info;
+    if (isLt35M) {
+      fileList = fileList.slice(-1);
+      if (isExcel) {
+        this.setState({ fileList });
+      }
     }
   };
   render() {
     const props = {
       action: '//jsonplaceholder.typicode.com/posts/',
       beforeUpload(file) {
-        isJPG = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-        if (!isJPG) {
+        isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        if (!isExcel) {
           message.error('只能上传 Excel 文件哦！');
         }
-        return isJPG;
+
+        isLt35M = file.size / 1024 / 1024 < 30;
+        if (!isLt35M) {
+          message.error('只能上传小于 35M 的文件哦！');
+        }
+        return isExcel && isLt35M;
       },
       onChange: this.handleChange,
-      multiple: true,
+      onRemove(e) {
+        console.log(e);
+      },
     };
 
     return (
