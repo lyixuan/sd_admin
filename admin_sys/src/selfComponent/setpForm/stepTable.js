@@ -20,7 +20,7 @@ class stepTable extends Component {
               dataSource={dataSource}
               columns={columns}
               pagination={false}
-              scroll={{ y: 272 }}
+              scroll={{ y: 264 }}
             />
           </div>
         ) : null}

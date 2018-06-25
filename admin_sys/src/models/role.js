@@ -1,16 +1,22 @@
+import { getRoleInfo } from '../services/api';
+
 export default {
   namespace: 'role',
 
   state: {
+    dataList: [],
     params: [],
     currentUser: {},
   },
 
   effects: {
-    *roleList(_, { put }) {
+    *roleList({ payload }, { put, call }) {
+      const { paramsObj } = payload;
+      const dataList = yield call(getRoleInfo, { ...paramsObj });
+      console.log(dataList);
       yield put({
         type: 'saveRoleList',
-        // payload: response,
+        payload: dataList,
       });
     },
     *fetchCurrent(_, { put }) {
@@ -22,11 +28,8 @@ export default {
   },
 
   reducers: {
-    saveRoleList(state, action) {
-      return {
-        ...state,
-        list: action.payload,
-      };
+    saveRoleList(state) {
+      return { ...state };
     },
     saveCurrentUser(state, action) {
       return {

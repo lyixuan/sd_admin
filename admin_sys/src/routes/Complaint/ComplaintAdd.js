@@ -80,7 +80,14 @@ class ComplaintAdd extends Component {
       },
       {
         title: '校验文件',
-        content: <StepTable onlyTable="true" dataSource={dataSource} columns={columns} />,
+        content: (
+          <StepTable
+            onlyTable="true"
+            dataSource={dataSource}
+            columns={columns}
+            scroll={{ y: 264 }}
+          />
+        ),
       },
       {
         title: '上传成功',

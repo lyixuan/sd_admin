@@ -26,7 +26,7 @@
   border-radius: 4px;
   box-sizing: border-box;
   padding: 22px 20px;
-  margin-top: 66px;
+  margin-top: 60px;
 }
 .title{
   font-size: 12px;
@@ -70,6 +70,12 @@
   font-size: 12px;
   margin-left: 13px!important;
 }
+:global(.anticon-paper-clip){
+  top: 3px!important;
+}
+:global(.anticon-loading){
+  top: 1px!important;
+}
 :global(.ant-upload-list-item-error){
   font-size: 12px!important;
   color: #52c9c2!important;
@@ -98,12 +104,14 @@
 
 .inputContent{
   width: 100%;
+  height: 143px;
   border: 1px solid #D9D9D9;
   border-radius: 3px;
 }
 .inputTextArea{
   padding: 18px 25px!important;
   color: #000!important;
+  height: 143px;
   border: none;
 }
 .inputContent_title{
@@ -136,6 +144,10 @@
   letter-spacing: 0;
   line-height: 18px;
 }
+:global(textarea.ant-input:hover),:global(textarea.ant-input:focus){
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+  border: none;
+}
 /*
 * stepTable
 */
@@ -145,7 +157,6 @@
 }
 .tableTitle{
   width: 100%;
-  font-size: 14px;
   color: #000;
   text-align: left;
   margin: 56px 0 19px;
