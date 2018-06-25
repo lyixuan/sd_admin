@@ -14,7 +14,63 @@ class ComplainList extends Component {
   constructor(props) {
     super(props);
     const params = this.props.getUrlParams();
-    this.columns = [
+    this.state = {
+      orderNo: params.orderNo || '',
+    };
+  }
+
+  componentDidMount() {}
+
+  // 点击显示每页多少条数据函数
+  onShowSizeChange = (current, pageSize) => {
+    console.log(current, pageSize);
+  };
+
+  // 点击某一页函数
+  changePage = (current, pageSize) => {
+    console.log(current, pageSize);
+  };
+
+  // 表单搜索
+  handleSearch = e => {
+    e.preventDefault();
+    let val = {};
+    propsVal.form.validateFields((err, values) => {
+      val = values;
+    });
+    this.setState({
+      orderNo: val.orderNo,
+    });
+    this.props.setCurrentUrlParams(val);
+  };
+
+  // 表单重置
+  handleReset = () => {
+    propsVal.form.resetFields();
+    this.setState({
+      orderNo: '',
+    });
+    this.props.setCurrentUrlParams({});
+  };
+
+  // 初始化tabale 列数据
+  fillDataSource = () => {
+    const data = [];
+    for (let i = 0; i < 50; i += 1) {
+      data.push({
+        key: i,
+        name: `张三`,
+        role: `院长`,
+        status: `启用`,
+        email: `hello${i}@sunlands.com`,
+      });
+    }
+    return data;
+  };
+
+  // 获取table列表头
+  columnsData = () => {
+    const columns = [
       {
         title: '序号',
         dataIndex: 'key',
@@ -48,77 +104,28 @@ class ComplainList extends Component {
         dataIndex: 'status1',
       },
     ];
-
-    const dataSource = [
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-    ];
-
-    this.state = {
-      dataSource: !dataSource ? [] : dataSource,
-      orderNo: params.orderNo || '',
-    };
-  }
-
-  componentDidMount() {}
-
-  onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
+    return columns;
   };
 
-  handleSearch = e => {
-    e.preventDefault();
-    let val = {};
-    propsVal.form.validateFields((err, values) => {
-      val = values;
-    });
-    this.setState({
-      orderNo: val.orderNo,
-    });
-    this.props.setCurrentUrlParams(val);
-  };
-
-  handleReset = () => {
-    propsVal.form.resetFields();
-    this.setState({
-      orderNo: '',
-    });
-    this.props.setCurrentUrlParams({});
-  };
+  // 添加退费
   refundAdd = () => {
     this.props.history.push({
-      pathname: '/refund/refundAdd',
+      pathname: '/complaint/complaintAdd',
       search: JSON.stringify({ type: 'add' }),
     });
   };
+
+  // 删除退费
   refundDel = () => {
     this.props.history.push({
-      pathname: '/refund/refundDel',
+      pathname: '/complaint/complaintDel',
       search: JSON.stringify({ type: 'del' }),
     });
   };
+
   render() {
-    const { dataSource } = this.state;
-    const columns = !this.columns ? [] : this.columns;
+    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -161,22 +168,22 @@ class ComplainList extends Component {
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
-        title="投诉列表"
+        title="退费列表"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>
-            <AuthorizedButton authority="/refund/refundAdd">
+            <AuthorizedButton authority="/complaint/complaintAdd">
               <Button onClick={this.refundAdd} type="primary" className={common.addQualityButton}>
-                添加退费
+                添加投诉
               </Button>
             </AuthorizedButton>
-            <AuthorizedButton authority="/refund/refundDel">
+            <AuthorizedButton authority="/complaint/complaintDel">
               <Button
                 onClick={this.refundDel}
                 type="primary"
                 className={common.deleteQualityButton}
               >
-                删除退费
+                删除投诉
               </Button>
             </AuthorizedButton>
           </div>
@@ -187,6 +194,7 @@ class ComplainList extends Component {
         contentPagination={
           <Pagination
             showSizeChanger
+            onChange={this.changePage}
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={3}
             total={100}
@@ -197,4 +205,5 @@ class ComplainList extends Component {
     );
   }
 }
+
 export default ComplainList;
