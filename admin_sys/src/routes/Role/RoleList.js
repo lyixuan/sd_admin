@@ -7,34 +7,15 @@ import common from '../Common/common.css';
 class RoleList extends Component {
   constructor(props) {
     super(props);
-
-    const dataSource = [
-      {
-        key: 1,
-        id: 1,
-        role: `院长`,
-      },
-      {
-        key: 2,
-        id: 2,
-        role: `学员`,
-      },
-      {
-        key: 3,
-        id: 3,
-        role: `院长`,
-      },
-    ];
-
-    this.state = {
-      dataSource: !dataSource ? [] : dataSource,
-    };
+    this.state = {};
   }
 
   componentDidMount() {}
+
   onChange = val => {
     this.getData({ current: val });
   };
+
   onShowSizeChange = (current, pageSize) => {
     this.getData({ current, pageSize });
   };
@@ -47,11 +28,26 @@ class RoleList extends Component {
     });
     this.props.setCullectUrlParams(sendObj);
   };
+
   handleNextPage = (pathName, params) => {
     this.props.setRouteUrlParams(pathName, params);
   };
-  render() {
-    const { dataSource } = this.state;
+
+  // 初始化tabale 列数据
+  fillDataSource = () => {
+    const data = [];
+    for (let i = 0; i < 50; i += 1) {
+      data.push({
+        key: i,
+        id: i,
+        role: `院长`,
+      });
+    }
+    return data;
+  };
+
+  // 获取table列表头
+  columnsData = () => {
     const columns = [
       {
         title: '角色',
@@ -89,6 +85,11 @@ class RoleList extends Component {
         },
       },
     ];
+    return columns;
+  };
+  render() {
+    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const columns = !this.columnsData() ? [] : this.columnsData();
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
