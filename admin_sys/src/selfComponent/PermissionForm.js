@@ -78,7 +78,9 @@ class PermissionForm extends Component {
           <FormItem {...formItemLayout} label="*权限名称">
             {getFieldDecorator('name', {
               initialValue: this.state.permissionName,
-              rules: [{ required: true, message: '权限名称!', whitespace: true }],
+              rules: [
+                { min: 2, required: true, message: '您输入权限名称不合法!', whitespace: true },
+              ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
@@ -113,7 +115,7 @@ class PermissionForm extends Component {
               <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>
                 取消
               </Button>
-              <Button onSubmit={this.handleSubmit} type="primary" className={common.submitButton}>
+              <Button htmlType="submit" type="primary" className={common.submitButton}>
                 提交
               </Button>
             </div>

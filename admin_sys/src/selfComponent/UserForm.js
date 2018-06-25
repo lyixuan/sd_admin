@@ -18,11 +18,11 @@ class UserForm extends Component {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     this.state = {
-      name: !arrValue.name ? '' : arrValue.name,
-      phone: !arrValue.phone ? '' : arrValue.phone,
-      email: !arrValue.email ? '' : arrValue.email,
-      role: !arrValue.role ? '' : arrValue.role,
-      responseCom: !arrValue.responseCom ? '' : arrValue.responseCom,
+      name: !arrValue.name ? null : arrValue.name,
+      phone: !arrValue.phone ? null : arrValue.phone,
+      email: !arrValue.email ? null : arrValue.email,
+      role: !arrValue.role ? null : arrValue.role,
+      responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
     };
   }
   handleSubmit = e => {
@@ -74,19 +74,27 @@ class UserForm extends Component {
           <FormItem {...formItemLayout} label="*姓 名">
             {getFieldDecorator('name', {
               initialValue: this.state.name,
-              rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
+              rules: [{ min: 2, required: true, message: '您输入姓名不合法!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="手 机">
             {getFieldDecorator('phone', {
               initialValue: this.state.phone,
-              rules: [{ required: true, message: '请输入手机号!', whitespace: true }],
+              rules: [
+                {
+                  min: 11,
+                  max: 11,
+                  required: true,
+                  message: '请输入手机号不合法!',
+                  whitespace: true,
+                },
+              ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*邮 箱">
             {getFieldDecorator('string', {
               initialValue: this.state.email,
-              rules: [{ type: 'string', message: '请输入合法邮箱!' }],
+              rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
@@ -108,7 +116,7 @@ class UserForm extends Component {
               <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>
                 取消
               </Button>
-              <Button onSubmit={this.handleSubmit} type="primary" className={common.submitButton}>
+              <Button htmlType="submit" type="primary" className={common.submitButton}>
                 提交
               </Button>
             </div>

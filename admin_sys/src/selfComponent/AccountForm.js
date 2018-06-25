@@ -27,6 +27,7 @@ class AccountForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
+      // console.log('test: ', values);
       if (!err) {
         console.log('Received values of form: ', values);
       }
@@ -75,7 +76,7 @@ class AccountForm extends Component {
               initialValue: this.state.name,
               rules: [
                 // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
-                { min: 2, required: true, message: '请输入姓名不合法!', whitespace: true },
+                { min: 2, required: true, message: '您输入姓名不合法!', whitespace: true },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -100,7 +101,7 @@ class AccountForm extends Component {
               <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>
                 取消
               </Button>
-              <Button onSubmit={this.handleSubmit} type="primary" className={common.submitButton}>
+              <Button htmlType="submit" type="primary" className={common.submitButton}>
                 提交
               </Button>
             </div>
