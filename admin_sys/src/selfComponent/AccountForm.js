@@ -5,12 +5,12 @@ import common from '../routes/Common/common.css';
 const FormItem = Form.Item;
 const residences = [
   {
-    value: 'zhejiang',
-    label: 'Zhejiang',
+    value: '院长',
+    label: '院长',
   },
   {
-    value: 'jiangsu',
-    label: 'Jiangsu',
+    value: '学员',
+    label: '学员',
   },
 ];
 class AccountForm extends Component {
@@ -73,19 +73,23 @@ class AccountForm extends Component {
           <FormItem {...formItemLayout} label="*姓名">
             {getFieldDecorator('name', {
               initialValue: this.state.name,
-              rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
+              rules: [
+                // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
+                { min: 2, required: true, message: '请输入姓名不合法!', whitespace: true },
+              ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*邮箱">
             {getFieldDecorator('email', {
               initialValue: this.state.email,
-              rules: [{ type: 'string', message: '请输入合法邮箱!' }],
+              rules: [
+                { min: 3, max: 5, required: true, message: '请输入邮箱不合法!', whitespace: true },
+              ],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">
             {getFieldDecorator('role', {
-              // initialValue: [{value:this.state.role,label:this.state.role}],
               initialValue: [this.state.role],
               rules: [{ type: 'array', required: true, message: '请选择角色！' }],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
