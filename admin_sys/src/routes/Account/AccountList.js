@@ -7,7 +7,46 @@ import common from '../Common/common.css';
 class AccountList extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
+    this.state = {};
+  }
+
+  // 删除账号函数
+  onDelete = key => {
+    // const dataSource = [...this.state.dataSource];
+    // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    console.log(key);
+  };
+
+  // 编辑账号函数
+  onEdit = () => {
+    this.props.setRouteUrlParams('/account/editAccount', {
+      name: '张三',
+      email: '191509',
+      role: '院长',
+    });
+  };
+
+  // 点击显示某一分页函数
+  onShowSizeChange = (current, pageSize) => {
+    console.log(current, pageSize);
+  };
+
+  // 编辑账号函数
+  fillDataSource = () => {
+    const data = [];
+    for (let i = 0; i < 50; i += 1) {
+      data.push({
+        key: i,
+        name: `张三`,
+        role: `院长`,
+        status: `启用`,
+        email: `hello${i}@sunlands.com`,
+      });
+    }
+    return data;
+  };
+  columnsData = () => {
+    const columns = [
       {
         title: '姓名',
         dataIndex: 'name',
@@ -36,73 +75,26 @@ class AccountList extends Component {
                 </span>
               </AuthorizedButton>
               <AuthorizedButton authority="/account/editAccount">
-                {this.state.dataSource.length > 1 ? (
-                  <Popconfirm
-                    title="是否确认删除该账号?"
-                    onConfirm={() => this.onDelete(record.key)}
-                  >
-                    <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
-                  </Popconfirm>
-                ) : null}
+                <Popconfirm title="是否确认删除该账号?" onConfirm={() => this.onDelete(record.key)}>
+                  <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
+                </Popconfirm>
               </AuthorizedButton>
             </div>
           );
         },
       },
     ];
-
-    const dataSource = [
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-    ];
-
-    this.state = {
-      dataSource: !dataSource ? [] : dataSource,
-    };
-  }
-
-  onDelete = key => {
-    const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    return columns;
   };
 
-  onEdit = () => {
-    this.props.setRouteUrlParams('/account/editAccount', {
-      name: '张三',
-      email: '191509',
-      role: '院长',
-    });
-  };
-
-  onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
-  };
+  // 创建账号函数
   handleAdd = () => {
     this.props.setRouteUrlParams('/account/createAccount', { a: 2, b: 3 });
   };
 
   render() {
-    const { dataSource } = this.state;
-    const columns = !this.columns ? [] : this.columns;
+    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const columns = !this.columnsData() ? [] : this.columnsData();
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"

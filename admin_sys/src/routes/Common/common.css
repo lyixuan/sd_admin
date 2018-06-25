@@ -1,5 +1,5 @@
 .paginationStyle{
-  margin: 24px 0;
+  margin: 24px 0 !important;
   display: flex;
   justify-content: flex-end;
 }
