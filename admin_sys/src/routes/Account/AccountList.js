@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Table, Button, Pagination, Popconfirm } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
+@connect(({ account, loading }) => ({
+  account,
+  loading,
+}))
 class AccountList extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const params = { name: 'test', mail: 'test@qq.com', roleId: 1, status: 1 };
+    this.props.dispatch({
+      type: 'account/fetch',
+      payload: { params },
+    });
+  }
 
   // 删除账号函数
   onDelete = key => {

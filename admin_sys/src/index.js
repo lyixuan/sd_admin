@@ -8,11 +8,11 @@ import createHistory from 'history/createBrowserHistory';
 import createLoading from 'dva-loading';
 import 'moment/locale/zh-cn';
 import './rollbar';
-
 import './index.less';
-const history=createHistory();
+
+const history = createHistory();
 // 1. Initialize
-const app = dva({history});
+const app = dva({ history });
 
 // 2. Plugins
 app.use(createLoading());
@@ -25,5 +25,4 @@ app.router(require('./router').default);
 
 // 5. Start
 app.start('#root');
-
 export default app._store; // eslint-disable-line

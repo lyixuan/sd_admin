@@ -5,7 +5,6 @@ import styles from './Content.less';
 
 export default ({ children, wrapperClassName, top, title, flag, ...restProps }) => {
   const visibleFlag = flag;
-  console.log(visibleFlag);
   return (
     <div style={{ margin: '0' }} className={wrapperClassName}>
       {top}
