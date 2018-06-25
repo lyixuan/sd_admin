@@ -61,7 +61,7 @@
 }
 
 :global(.ant-popover-inner-content){
-  padding: 24px 35px;
+  padding: 32px 24px;
   width: 356px;
   height: 136px;
 }
