@@ -9,7 +9,54 @@ let propsVal = '';
 class UserList extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
+    this.state = {};
+  }
+
+  componentDidMount() {}
+
+  // 删除用户
+  onDelete = val => {
+    const dataSource = [...this.state.dataSource];
+    this.setState({ dataSource: dataSource.filter(item => item.key !== val.id) });
+  };
+
+  // 更新用户
+  onUpdate = val => {
+    console.log(val);
+  };
+
+  // 编辑用户
+  onEdit = val => {
+    this.props.setRouteUrlParams('/user/editUser', {
+      name: val.name,
+      phone: val.phone,
+      email: val.email,
+      role: val.role,
+      responseCom: val.responseCom,
+    });
+  };
+
+  // 初始化tabale 列数据
+  fillDataSource = () => {
+    const data = [];
+    for (let i = 0; i < 50; i += 1) {
+      data.push({
+        key: i,
+        status: `启用`,
+        email: `hello${i}@sunlands.com`,
+        name: `王五`,
+        role: `学员`,
+        phone: 18500469077,
+        responsyCom: `地球`,
+        comUnit: `太空`,
+      });
+    }
+    return data;
+  };
+
+  // 获取table列表头
+  columnsData = () => {
+    const columns = [
       {
         title: '姓名',
         dataIndex: 'name',
@@ -41,89 +88,37 @@ class UserList extends Component {
           return (
             <div>
               <AuthorizedButton authority="/user/checkUser">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record.key)}>
+                <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
                   更新
                 </span>
               </AuthorizedButton>
               <AuthorizedButton authority="/user/editUser">
                 <span
                   style={{ color: '#52C9C2', marginLeft: 12 }}
-                  onClick={() => this.onEdit(record.key)}
+                  onClick={() => this.onEdit(record)}
                 >
                   编辑
                 </span>
               </AuthorizedButton>
               <AuthorizedButton authority="/user/editUser">
-                {this.state.dataSource.length > 1 ? (
-                  <Popconfirm
-                    title="是否确认删除该用户?"
-                    onConfirm={() => this.onDelete(record.key)}
-                  >
-                    <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
-                  </Popconfirm>
-                ) : null}
+                <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
+                  <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
+                </Popconfirm>
               </AuthorizedButton>
             </div>
           );
         },
       },
     ];
-
-    const dataSource = [
-      {
-        key: 1,
-        name: `张三`,
-        phone: 18500469077,
-        responsyCom: `地球`,
-        comUnit: `太空`,
-        role: `院长`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        phone: 18500469077,
-        responsyCom: `地球`,
-        comUnit: `太空`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        phone: 18500469077,
-        responsyCom: `地球`,
-        comUnit: `太空`,
-        email: `hello@sunlands.com`,
-      },
-    ];
-
-    this.state = {
-      dataSource: !dataSource ? [] : dataSource,
-    };
-  }
-
-  onDelete = key => {
-    const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    return columns;
   };
 
-  onEdit = () => {
-    this.props.setRouteUrlParams('/user/editUser', {
-      name: '张三',
-      phone: 18500469077,
-      email: '191509',
-      role: '二级',
-      responseCom: '尚德机构',
-    });
-  };
-
+  // 表单重置
   handleReset = () => {
     propsVal.form.resetFields();
     this.props.setCurrentUrlParams({});
   };
-
+  // 表单搜索
   handleSearch = e => {
     e.preventDefault();
     let val = {};
@@ -133,13 +128,14 @@ class UserList extends Component {
     this.props.setCurrentUrlParams(val);
   };
 
+  // 创建用户
   handleAdd = () => {
     this.props.setRouteUrlParams('/user/createUser', { a: 2, b: 3 });
   };
 
   render() {
-    const { dataSource } = this.state;
-    const columns = !this.columns ? [] : this.columns;
+    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;

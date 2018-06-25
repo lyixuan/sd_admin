@@ -9,7 +9,57 @@ let propsVal = '';
 class PermissionList extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
+    this.state = {};
+  }
+
+  // 权限编辑
+  onEdit = val => {
+    this.props.setRouteUrlParams('/permission/editPermission', {
+      permissionName: val.permissionName,
+      permissionType: val.permissionType,
+      permissionRoute: val.permissionRoute,
+      upId: val.upId,
+      status: val.status,
+    });
+  };
+
+  // 表单重置
+  handleReset = () => {
+    propsVal.form.resetFields();
+    this.props.setCurrentUrlParams({});
+  };
+
+  // 表单搜索
+  handleSearch = e => {
+    e.preventDefault();
+    let val = {};
+    propsVal.form.validateFields((err, values) => {
+      val = values;
+    });
+    this.props.setCurrentUrlParams(val);
+  };
+
+  // 初始化tabale 列数据
+  fillDataSource = () => {
+    const data = [];
+    for (let i = 0; i < 50; i += 1) {
+      data.push({
+        key: i,
+        id: i,
+        permissionName: `院长${i}`,
+        permissionType: `一级页面${i}`,
+        permissionRoute: `${i}hello/word`,
+        upId: 1243524,
+        icon: ``,
+        status: `正序`,
+      });
+    }
+    return data;
+  };
+
+  // 获取table列表头
+  columnsData = () => {
+    const columns = [
       {
         title: '编号',
         dataIndex: 'id',
@@ -47,7 +97,7 @@ class PermissionList extends Component {
               <AuthorizedButton authority="/permission/editPermission">
                 <span
                   style={{ color: '#52C9C2', marginLeft: 12 }}
-                  onClick={() => this.onEdit(record.key)}
+                  onClick={() => this.onEdit(record)}
                 >
                   编辑
                 </span>
@@ -57,81 +107,17 @@ class PermissionList extends Component {
         },
       },
     ];
-
-    const dataSource = [
-      {
-        key: 1,
-        id: 1,
-        permissionName: `院长`,
-        permissionType: `一级页面`,
-        permissionRoute: `hello/word`,
-        upId: 1243524,
-        icon: ``,
-        status: `正序`,
-      },
-      {
-        key: 2,
-        id: 2,
-        permissionName: `学员`,
-        permissionType: `二级页面`,
-        permissionRoute: `hello/world`,
-        upId: 3454254,
-        icon: ``,
-        status: `倒序`,
-      },
-      {
-        key: 3,
-        id: 3,
-        permissionName: `院长`,
-        permissionType: `页面功能`,
-        permissionRoute: `hello/world`,
-        upId: 25662542,
-        icon: ``,
-        status: `正序`,
-      },
-    ];
-
-    this.state = {
-      dataSource: !dataSource ? [] : dataSource,
-    };
-  }
-
-  onDelete = key => {
-    const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    return columns;
   };
 
-  onEdit = () => {
-    this.props.setRouteUrlParams('/permission/editPermission', {
-      name: '张三',
-      phone: 18500469077,
-      email: '191509',
-      role: '二级',
-      responseCom: '尚德机构',
-    });
-  };
-
-  handleReset = () => {
-    propsVal.form.resetFields();
-    this.props.setCurrentUrlParams({});
-  };
-
-  handleSearch = e => {
-    e.preventDefault();
-    let val = {};
-    propsVal.form.validateFields((err, values) => {
-      val = values;
-    });
-    this.props.setCurrentUrlParams(val);
-  };
-
+  // 创建权限
   handleAdd = () => {
     this.props.setRouteUrlParams('/permission/createPermission', { a: 2, b: 3 });
   };
 
   render() {
-    const { dataSource } = this.state;
-    const columns = !this.columns ? [] : this.columns;
+    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;

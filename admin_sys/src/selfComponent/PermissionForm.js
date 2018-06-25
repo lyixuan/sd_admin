@@ -22,9 +22,11 @@ class PermissionForm extends Component {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     this.state = {
-      name: !arrValue.name ? '' : arrValue.name,
-      phone: !arrValue.phone ? '' : arrValue.phone,
-      role: !arrValue.role ? '' : arrValue.role,
+      permissionName: !arrValue.permissionName ? '' : arrValue.permissionName,
+      permissionType: !arrValue.permissionType ? '' : arrValue.permissionType,
+      permissionRoute: !arrValue.permissionRoute ? '' : arrValue.permissionRoute,
+      upId: !arrValue.upId ? '' : arrValue.upId,
+      status: !arrValue.status ? '' : arrValue.status,
     };
   }
   handleSubmit = e => {
@@ -75,35 +77,33 @@ class PermissionForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*权限名称">
             {getFieldDecorator('name', {
-              initialValue: this.state.name,
+              initialValue: this.state.permissionName,
               rules: [{ required: true, message: '权限名称!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
             {getFieldDecorator('type', {
-              initialValue: [this.state.role],
+              initialValue: [this.state.permissionType],
               rules: [{ type: 'array', required: true, message: '权限类型！' }],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限路由">
             {getFieldDecorator('route', {
-              initialValue: this.state.phone,
+              initialValue: this.state.permissionRoute,
               rules: [{ required: true, message: '请输入权限路由!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('role', {
-              initialValue: [this.state.role],
+              initialValue: [this.state.upId],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
-            {getFieldDecorator('phone', {
-              initialValue: this.state.phone,
-            })(<Input style={{ width: 380 }} />)}
+            {getFieldDecorator('phone', {})(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('random', {
-              initialValue: this.state.phone,
+              initialValue: this.state.status,
               rules: [{ required: true, message: '请输入权限排序!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
