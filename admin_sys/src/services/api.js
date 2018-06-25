@@ -6,9 +6,23 @@ const HOST = 'http://172.16.56.211:8084';
 /*
 以下接口为账号相关
 * */
+// 账号列表接口
 export async function queryAccountList(params) {
   console.log(`/account/list?${stringify(params)}`);
-  return request(`${HOST}/account/info?id=1`);
+  return request(`${HOST}/account/list?${stringify(params)}`);
+}
+
+// 添加账号接口
+export async function addAccount(params) {
+  return request(`${HOST}/account/add?${stringify(params)}`);
+}
+// 修改账号接口
+export async function updateAccount(params) {
+  return request(`${HOST}/account/update?${stringify(params)}`);
+}
+// 删除账号接口
+export async function deleteAccount(params) {
+  return request(`${HOST}/account/delete?${stringify(params)}`);
 }
 /*
 * 角色管理

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Form, Input, Cascader, Button } from 'antd';
 import common from '../routes/Common/common.css';
 
@@ -13,6 +14,10 @@ const residences = [
     label: '学员',
   },
 ];
+@connect(({ account, loading }) => ({
+  account,
+  loading,
+}))
 class AccountForm extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +26,7 @@ class AccountForm extends Component {
       name: !arrValue.name ? '' : arrValue.name,
       email: !arrValue.email ? '' : arrValue.email,
       role: !arrValue.role ? '' : arrValue.role,
+      from: !arrValue.from ? '' : arrValue.from,
     };
     console.log(this.state);
   }
@@ -30,6 +36,19 @@ class AccountForm extends Component {
       // console.log('test: ', values);
       if (!err) {
         console.log('Received values of form: ', values);
+        if (this.state.from === 'edit') {
+          const params = { name: 'test', mail: 'test@qq.com', roleId: 1, status: 1 };
+          this.props.dispatch({
+            type: 'account/updateAccount',
+            payload: { params },
+          });
+        } else {
+          const params = { name: 'test', mail: 'test@qq.com', roleId: 1, status: 1 };
+          this.props.dispatch({
+            type: 'account/addAccount',
+            payload: { params },
+          });
+        }
       }
     });
   };

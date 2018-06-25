@@ -18,7 +18,7 @@ class AccountList extends Component {
   componentDidMount() {
     const params = { name: 'test', mail: 'test@qq.com', roleId: 1, status: 1 };
     this.props.dispatch({
-      type: 'account/fetch',
+      type: 'account/accountList',
       payload: { params },
     });
   }
@@ -28,6 +28,11 @@ class AccountList extends Component {
     // const dataSource = [...this.state.dataSource];
     // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     console.log(key);
+    const params = { name: 'test', mail: 'test@qq.com', roleId: 1, status: 1 };
+    this.props.dispatch({
+      type: 'account/deleteAccount',
+      payload: { params },
+    });
   };
 
   // 编辑账号函数
@@ -37,6 +42,7 @@ class AccountList extends Component {
       name: key.name,
       email: key.email,
       role: key.role,
+      from: 'edit',
     });
   };
 
