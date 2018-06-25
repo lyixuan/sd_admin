@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Table, Button, Pagination } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -10,7 +11,12 @@ class RoleList extends Component {
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'role/roleList',
+      payload: {},
+    });
+  }
 
   onChange = val => {
     this.getData({ current: val });
@@ -132,4 +138,6 @@ class RoleList extends Component {
   }
 }
 
-export default RoleList;
+export default connect(() => ({
+  // currentUser: role,
+}))(RoleList);
