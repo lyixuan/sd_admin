@@ -18,16 +18,21 @@ class AccountList extends Component {
   };
 
   // 编辑账号函数
-  onEdit = () => {
+  onEdit = key => {
+    console.log(key);
     this.props.setRouteUrlParams('/account/editAccount', {
-      name: '张三',
-      email: '191509',
-      role: '院长',
+      name: key.name,
+      email: key.email,
+      role: key.role,
     });
   };
 
-  // 点击显示某一分页函数
+  // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
+    console.log(current, pageSize);
+  };
+  // 点击某一页函数
+  changePage = (current, pageSize) => {
     console.log(current, pageSize);
   };
 
@@ -70,12 +75,12 @@ class AccountList extends Component {
           return (
             <div>
               <AuthorizedButton authority="/account/editAccount">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record.key)}>
+                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record)}>
                   编辑
                 </span>
               </AuthorizedButton>
               <AuthorizedButton authority="/account/editAccount">
-                <Popconfirm title="是否确认删除该账号?" onConfirm={() => this.onDelete(record.key)}>
+                <Popconfirm title="是否确认删除该账号?" onConfirm={() => this.onDelete(record)}>
                   <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
                 </Popconfirm>
               </AuthorizedButton>
@@ -121,6 +126,7 @@ class AccountList extends Component {
         contentPagination={
           <Pagination
             showSizeChanger
+            onChange={this.changePage}
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={1}
             total={1000}
