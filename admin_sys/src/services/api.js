@@ -8,7 +8,7 @@ const HOST = 'http://172.16.117.65:8084';
 * */
 export async function queryAccountList(params) {
   console.log(`/account/list?${stringify(params)}`);
-  return request(`${HOST}/account/list?${stringify(params)}`);
+  return request(`${HOST}/account/info?id=1`);
 }
 /*
   * 角色管理
