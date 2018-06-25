@@ -9,34 +9,34 @@ class RefundDel extends Component {
     super(props);
     this.columns = [
       {
+        title: '序号',
+        dataIndex: 'key',
+        width: '100px',
+      },
+      {
         title: '子订单编号',
         dataIndex: 'name',
         width: '100px',
       },
       {
-        title: '编号已存在',
+        title: '投诉时间',
         dataIndex: 'role',
         width: '100px',
       },
       {
-        title: '必填项缺失',
+        title: '学生名称/id',
         dataIndex: 'email',
         width: '100px',
       },
       {
-        title: '班主任组织关系匹配失败',
+        title: '老师名称',
         dataIndex: 'status',
         width: '100px',
       },
       {
         title: '学院/家族/小组不存在',
         dataIndex: 'status2',
-        width: '150px',
-      },
-      {
-        title: '编号重复',
-        dataIndex: 'status1',
-        width: '100px',
+        width: '152px',
       },
     ];
 
@@ -95,6 +95,7 @@ class RefundDel extends Component {
             tableTitle="请确认是否删除以下数据："
             dataSource={dataSource}
             columns={columns}
+            scroll={{ y: 272 }}
           />
         ),
       },

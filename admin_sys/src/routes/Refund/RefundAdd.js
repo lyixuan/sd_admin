@@ -11,32 +11,32 @@ class RefundAdd extends Component {
       {
         title: '子订单编号',
         dataIndex: 'name',
-        width: '100px',
+        width: '93px',
       },
       {
         title: '编号已存在',
         dataIndex: 'role',
-        width: '100px',
+        width: '92px',
       },
       {
         title: '必填项缺失',
         dataIndex: 'email',
-        width: '100px',
+        width: '92px',
       },
       {
         title: '班主任组织关系匹配失败',
         dataIndex: 'status',
-        width: '100px',
+        width: '164px',
       },
       {
         title: '学院/家族/小组不存在',
         dataIndex: 'status2',
-        width: '150px',
+        width: '152px',
       },
       {
         title: '编号重复',
         dataIndex: 'status1',
-        width: '100px',
+        width: '82px',
       },
     ];
 
