@@ -16,10 +16,11 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const params = { name: 'test', mail: 'test@qq.com', roleId: 1, status: 1 };
+    const params = {};
+    const params2 = { id: 1 };
     this.props.dispatch({
       type: 'account/accountList',
-      payload: { params },
+      payload: { params, params2 },
     });
   }
 
@@ -64,7 +65,6 @@ class AccountList extends Component {
         key: i,
         name: `张三`,
         role: `院长`,
-        status: `启用`,
         email: `hello${i}@sunlands.com`,
       });
     }
@@ -85,10 +85,6 @@ class AccountList extends Component {
       {
         title: '邮箱',
         dataIndex: 'email',
-      },
-      {
-        title: '状态',
-        dataIndex: 'status',
       },
       {
         title: '操作',

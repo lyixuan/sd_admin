@@ -1,4 +1,10 @@
-import { queryAccountList, addAccount, updateAccount, deleteAccount } from '../../services/api';
+import {
+  queryAccountList,
+  addAccount,
+  updateAccount,
+  deleteAccount,
+  getRoleInfo,
+} from '../../services/api';
 
 export default {
   namespace: 'account',
@@ -9,11 +15,9 @@ export default {
 
   effects: {
     *accountList({ payload }, { call, put }) {
-      const response = yield call(queryAccountList, payload.params);
-      yield put({
-        type: 'accountListSave',
-        payload: response,
-      });
+      const response1 = yield call(queryAccountList, payload.params);
+      const response2 = yield call(getRoleInfo, payload.params2);
+      yield put({ type: 'accountListSave', payload: { response1, response2 } });
     },
     *addAccount({ payload }, { call, put }) {
       const response = yield call(addAccount, payload.params);
