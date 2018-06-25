@@ -94,6 +94,8 @@ class Group extends Component {
     return (
       <div>
         <ContentLayout
+          pageHeraderUnvisible="unvisible"
+          title="小组"
           contentTable={
             <div>
               <p className={common.totalNum}>总数：500条</p>

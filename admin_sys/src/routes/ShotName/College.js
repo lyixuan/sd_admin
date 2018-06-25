@@ -94,6 +94,8 @@ class College extends Component {
     return (
       <div>
         <ContentLayout
+          pageHeraderUnvisible="unvisible"
+          title="学院"
           contentTable={
             <div>
               <p className={common.totalNum}>总数：500条</p>
