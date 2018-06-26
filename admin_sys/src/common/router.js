@@ -112,13 +112,19 @@ export const getRouterData = app => {
     },
 
     '/permission/editPermission': {
-      component: dynamicWrapper(app, [], () => import('../routes/Permission/EditPermission')),
+      component: dynamicWrapper(app, ['permission'], () =>
+        import('../routes/Permission/EditPermission')
+      ),
     },
     '/permission/createPermission': {
-      component: dynamicWrapper(app, [], () => import('../routes/Permission/CreatePermission')),
+      component: dynamicWrapper(app, ['permission'], () =>
+        import('../routes/Permission/CreatePermission')
+      ),
     },
     '/permission/permissionList': {
-      component: dynamicWrapper(app, [], () => import('../routes/Permission/PermissionList')),
+      component: dynamicWrapper(app, ['permission'], () =>
+        import('../routes/Permission/PermissionList')
+      ),
     },
 
     '/role/editRole': {
