@@ -1,7 +1,7 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-const HOST = 'http://http://172.16.56.211:8084/';
+const HOST = 'http://172.16.117.65:8084';
 
 /*
 以下接口为账号相关
@@ -92,6 +92,33 @@ export async function getRoleDelete(params) {
 * */
 export async function getRoleUpdate(params) {
   return request(`${HOST}/role/update`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+
+
+/*
+以下接口为权限相关
+* */
+// 权限列表接口
+export async function permissionList(params) {
+  return request(`${HOST}/privilege/listAll?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+
+// 添加权限接口
+export async function addPermission(params) {
+  return request(`${HOST}/privilege/add`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 修改权限接口
+export async function updatePermission(params) {
+  return request(`${HOST}/privilege/update`, {
     method: 'PUT',
     body: params,
   });

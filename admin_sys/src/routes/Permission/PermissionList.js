@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
 import { Table, Button, Form, Input } from 'antd';
+import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
+
 const FormItem = Form.Item;
 let propsVal = '';
+@connect(({ permission, loading }) => ({
+  permission,
+  loading,
+}))
 class PermissionList extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentDidMount() {
+    const permissionListParams = {};
+    this.props.dispatch({
+      type: 'permission/permissionList',
+      payload: { permissionListParams },
+    });
   }
 
   // 权限编辑
@@ -116,6 +130,7 @@ class PermissionList extends Component {
   };
 
   render() {
+    console.log(this.props.permission.permissionList)
     const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
