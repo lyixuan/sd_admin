@@ -32,7 +32,7 @@ export async function updateAccount(params) {
 // 删除账号接口
 export async function deleteAccount(params) {
   return request(`${HOST}/account/delete?${stringify(params)}`, {
-    method: 'DELETD',
+    method: 'DELETE',
     body: params,
   });
 }
