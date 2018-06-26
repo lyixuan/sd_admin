@@ -16,28 +16,30 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const accountList = {};
+    const accountListParams = {};
     this.props.dispatch({
       type: 'account/accountList',
-      payload: { accountList },
+      payload: { accountListParams },
+    });
+  // 为了提前获取角色列表数据。
+    const getRoleListParams = {};
+    this.props.dispatch({
+      type: 'account/getRoleList',
+      payload: { getRoleListParams },
     });
   }
 
-  // 删除账号函数
+  // 删除账号函数  删除后数据更新？
   onDelete = key => {
     // const dataSource = [...this.state.dataSource];
     // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     console.log(key.id);
-    const deleteAccount = { id: key.id };
-    const accountList = {};
+    const deleteAccountParams = { id: key.id };
     this.props.dispatch({
       type: 'account/deleteAccount',
-      payload: { deleteAccount },
+      payload: { deleteAccountParams },
     });
-    this.props.dispatch({
-      type: 'account/accountList',
-      payload: { accountList },
-    });
+
   };
 
   // 编辑账号函数
@@ -47,6 +49,8 @@ class AccountList extends Component {
       name: key.name,
       email: key.email,
       role: key.role,
+      id:key.id,
+      roleId:key.roleId,
       from: 'edit',
     });
   };
@@ -71,6 +75,7 @@ class AccountList extends Component {
         role: item.rname,
         email: item.mail,
         id: item.id,
+        roleId:item.roleId,
       })
     );
     return data;
@@ -117,7 +122,7 @@ class AccountList extends Component {
 
   // 创建账号函数
   handleAdd = () => {
-    this.props.setRouteUrlParams('/account/createAccount', { a: 2, b: 3 });
+    this.props.setRouteUrlParams('/account/createAccount', { });
   };
 
   render() {
