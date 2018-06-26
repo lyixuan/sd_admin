@@ -17,21 +17,21 @@ export async function queryAccountList(params) {
 
 // 添加账号接口
 export async function addAccount(params) {
-  return request(`${HOST}/account/add?${stringify(params)}`, {
+  return request(`${HOST}/account/add`, {
     method: 'POST',
     body: params,
   });
 }
 // 修改账号接口
 export async function updateAccount(params) {
-  return request(`${HOST}/account/update?${stringify(params)}`, {
+  return request(`${HOST}/account/update`, {
     method: 'PUT',
     body: params,
   });
 }
 // 删除账号接口
 export async function deleteAccount(params) {
-  return request(`${HOST}/account/delete?${stringify(params)}`, {
+  return request(`${HOST}/account/delete`, {
     method: 'DELETE',
     body: params,
   });
