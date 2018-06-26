@@ -1,7 +1,7 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-const HOST = 'http://172.16.117.65:8084';
+const HOST = 'http://http://172.16.56.211:8084/';
 
 /*
 以下接口为账号相关

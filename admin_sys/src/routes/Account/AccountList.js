@@ -16,11 +16,14 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const params = {};
-    const params2 = { id: 1 };
+    const params = {
+      id: 42,
+      name: 'wangjingjing',
+      privilegeIds: [1],
+    };
     this.props.dispatch({
       type: 'account/accountList',
-      payload: { params, params2 },
+      payload: { params },
     });
   }
 

@@ -51,7 +51,6 @@ export default function request(url, options) {
     if (!(newOptions.body instanceof FormData)) {
       newOptions.headers = {
         Accept: 'application/json',
-        'Content-Type': 'application/json; charset=utf-8',
         ...newOptions.headers,
       };
       newOptions.body = JSON.stringify(newOptions.body);
