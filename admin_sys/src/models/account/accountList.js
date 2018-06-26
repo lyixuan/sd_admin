@@ -3,55 +3,65 @@ import {
   addAccount,
   updateAccount,
   deleteAccount,
-  getRoleInfo,
-  getRoleAdd,
+  getRoleList,
 } from '../../services/api';
 
 export default {
   namespace: 'account',
 
   state: {
-    list: [],
+    // 请求接口上送参数
+    accountListParams: {},
+    addAccountParams: {},
+    updateAccountParams: {},
+    deleteAccountParams: {},
+    getRoleListParams: {},
+
+    // 接口返回数据存储
+    accountList: [],
+    addAccount: [],
+    updateAccount: [],
+    deleteAccount: [],
+    getRoleList: [],
   },
 
   effects: {
     *accountList({ payload }, { call, put }) {
-      const response1 = yield call(queryAccountList, payload.params);
-      const response2 = yield call(getRoleInfo, payload.params2);
-      yield put({ type: 'accountListSave', payload: { response1, response2 } });
+      const response1 = yield call(queryAccountList, payload.accountListParams);
+      const response = response1.data;
+      yield put({ type: 'accountListSave', payload: { response } });
     },
     *addAccount({ payload }, { call, put }) {
-      const response = yield call(addAccount, payload.params);
+      const response1 = yield call(addAccount, payload.addAccountParams);
+      const response = response1.data;
       yield put({
         type: 'addAccountSave',
         payload: response,
       });
     },
     *updateAccount({ payload }, { call, put }) {
-      const response = yield call(updateAccount, payload.params);
+      const response1 = yield call(updateAccount, payload.updateAccountParams);
+      const response = response1.data;
       yield put({
         type: 'updateAccountSave',
         payload: response,
       });
     },
     *deleteAccount({ payload }, { call, put }) {
-      const response = yield call(deleteAccount, payload.params);
+      console.log(payload.deleteAccountParams);
+      yield call(deleteAccount, payload.deleteAccountParams);
+      const response1 = yield call(queryAccountList, payload.accountListParams);
+      const response = response1.data;
       yield put({
-        type: 'deleteAccountSave',
-        payload: response,
+        type: 'accountListSave',
+        payload: { response },
       });
     },
-    *roleList({ payload }, { call, put }) {
-      const response = yield call(queryAccountList, payload.params);
+    *getRoleList({ payload }, { call, put }) {
+      const response1 = yield call(getRoleList, payload.getRoleListParams);
+      const response = response1.data;
       yield put({
-        type: 'roleListSave',
-        payload: response,
-      });
-    },
-    *addRoule({ payload }, { call, put }) {
-      const response = yield call(getRoleAdd, payload.params);
-      yield put({
-        type: 'save',
+        type: 'getRoleListSave',
         payload: response,
       });
     },
@@ -61,31 +71,31 @@ export default {
     accountListSave(state, action) {
       return {
         ...state,
-        list: action.payload,
+        accountList: action.payload,
       };
     },
     addAccountSave(state, action) {
       return {
         ...state,
-        list: action.payload,
+        addAccount: action.payload,
       };
     },
     updateAccountSave(state, action) {
       return {
         ...state,
-        list: action.payload,
+        updateAccount: action.payload,
       };
     },
     deleteAccountSave(state, action) {
       return {
         ...state,
-        list: action.payload,
+        deleteAccount: action.payload,
       };
     },
-    roleListSave(state, action) {
+    getRoleListSave(state, action) {
       return {
         ...state,
-        list: action.payload,
+        getRoleList: action.payload,
       };
     },
   },

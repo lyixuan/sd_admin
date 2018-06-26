@@ -122,13 +122,13 @@ export const getRouterData = app => {
     },
 
     '/role/editRole': {
-      component: dynamicWrapper(app, [], () => import('../routes/Role/EditRole')),
+      component: dynamicWrapper(app, ['role'], () => import('../routes/Role/EditRole')),
     },
     '/role/createrole': {
-      component: dynamicWrapper(app, [], () => import('../routes/Role/CreateRole')),
+      component: dynamicWrapper(app, ['role'], () => import('../routes/Role/CreateRole')),
     },
     '/role/checkRole': {
-      component: dynamicWrapper(app, [], () => import('../routes/Role/CheckRole')),
+      component: dynamicWrapper(app, ['role'], () => import('../routes/Role/CheckRole')),
     },
     '/role/roleList': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/RoleList')),

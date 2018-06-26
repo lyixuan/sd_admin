@@ -5,6 +5,10 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
+@connect(({ role, loading }) => ({
+  role,
+  loading,
+}))
 class RoleList extends Component {
   constructor(props) {
     super(props);
@@ -39,41 +43,27 @@ class RoleList extends Component {
     this.props.setRouteUrlParams(pathName, params);
   };
 
-  // 初始化tabale 列数据
-  fillDataSource = () => {
-    const data = [];
-    for (let i = 0; i < 50; i += 1) {
-      data.push({
-        key: i,
-        id: i,
-        role: `院长`,
-      });
-    }
-    return data;
-  };
-
   // 获取table列表头
   columnsData = () => {
     const columns = [
       {
         title: '角色',
-        dataIndex: 'role',
+        dataIndex: 'name',
         width: '200px',
-        key: 'role',
+        key: 'name',
       },
       {
         title: '操作',
-        dataIndex: 'operation',
+        key: 'operation',
         width: '100px',
-        key: 'action',
         render: (text, record) => {
-          const { id } = record;
+          const { id, name } = record;
           return (
             <div>
               <AuthorizedButton authority="/role/checkRole">
                 <span
                   style={{ color: '#52C9C2', marginRight: '20px' }}
-                  onClick={() => this.handleNextPage('/role/checkRole', { id })}
+                  onClick={() => this.handleNextPage('/role/checkRole', { id, name })}
                 >
                   查看详情
                 </span>
@@ -81,7 +71,7 @@ class RoleList extends Component {
               <AuthorizedButton authority="/role/editRole">
                 <span
                   style={{ color: '#52C9C2' }}
-                  onClick={() => this.handleNextPage('/role/editRole', { id })}
+                  onClick={() => this.handleNextPage('/role/editRole', { id, name })}
                 >
                   编辑
                 </span>
@@ -94,7 +84,7 @@ class RoleList extends Component {
     return columns;
   };
   render() {
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const dataSource = !this.props.role.dataList ? [] : this.props.role.dataList.content;
     const columns = !this.columnsData() ? [] : this.columnsData();
     return (
       <ContentLayout
@@ -138,6 +128,4 @@ class RoleList extends Component {
   }
 }
 
-export default connect(() => ({
-  // currentUser: role,
-}))(RoleList);
+export default RoleList;

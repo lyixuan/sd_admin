@@ -16,26 +16,27 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const params = {
-      id: 42,
-      name: 'wangjingjing',
-      privilegeIds: [1],
-    };
+    const accountListParams = {};
     this.props.dispatch({
       type: 'account/accountList',
-      payload: { params },
+      payload: { accountListParams },
+    });
+    // 为了提前获取角色列表数据。
+    const getRoleListParams = {};
+    this.props.dispatch({
+      type: 'account/getRoleList',
+      payload: { getRoleListParams },
     });
   }
 
-  // 删除账号函数
+  // 删除账号函数  删除后数据更新？
   onDelete = key => {
-    // const dataSource = [...this.state.dataSource];
-    // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
-    console.log(key);
-    const params = { name: 'test', mail: 'test@qq.com', roleId: 1, status: 1 };
+    console.log(key.id);
+    const deleteAccountParams = { accountId: key.id };
+    const accountListParams = {};
     this.props.dispatch({
       type: 'account/deleteAccount',
-      payload: { params },
+      payload: { deleteAccountParams, accountListParams },
     });
   };
 
@@ -46,6 +47,8 @@ class AccountList extends Component {
       name: key.name,
       email: key.email,
       role: key.role,
+      id: key.id,
+      roleId: key.roleId,
       from: 'edit',
     });
   };
@@ -61,16 +64,18 @@ class AccountList extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
+  fillDataSource = val => {
     const data = [];
-    for (let i = 0; i < 50; i += 1) {
+    val.map((item, index) =>
       data.push({
-        key: i,
-        name: `张三`,
-        role: `院长`,
-        email: `hello${i}@sunlands.com`,
-      });
-    }
+        key: index,
+        name: item.name,
+        role: item.rname,
+        email: item.mail,
+        id: item.id,
+        roleId: item.roleId,
+      })
+    );
     return data;
   };
 
@@ -115,11 +120,15 @@ class AccountList extends Component {
 
   // 创建账号函数
   handleAdd = () => {
-    this.props.setRouteUrlParams('/account/createAccount', { a: 2, b: 3 });
+    this.props.setRouteUrlParams('/account/createAccount', {});
   };
 
   render() {
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const data = !this.props.account.accountList.response
+      ? []
+      : this.props.account.accountList.response;
+    const totalNum = !data.size ? 0 : data.size;
+    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
     return (
       <ContentLayout
@@ -134,7 +143,7 @@ class AccountList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：500条</p>
+            <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
               dataSource={dataSource}
@@ -150,7 +159,7 @@ class AccountList extends Component {
             onChange={this.changePage}
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={1}
-            total={1000}
+            total={totalNum}
             className={common.paginationStyle}
           />
         }
