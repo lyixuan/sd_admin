@@ -34,7 +34,7 @@ class AccountList extends Component {
     // const dataSource = [...this.state.dataSource];
     // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     console.log(key.id);
-    const deleteAccountParams = { id: key.id };
+    const deleteAccountParams = { accountId: key.id };
     this.props.dispatch({
       type: 'account/deleteAccount',
       payload: { deleteAccountParams },

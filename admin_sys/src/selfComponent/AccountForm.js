@@ -34,8 +34,7 @@ class AccountForm extends Component {
       if (!err) {
         console.log(this.state.roleList)
         console.log('Received values of form: ', values);
-        const newmail =values.mail + "@sunlans.com"
-
+        const newmail =`${values.mail} @sunlans.com`  // values.mail + "@sunlans.com"
         const rname = values.rname[0];
         let newRoleId = 0;
         this.state.roleList.map((item) =>{
