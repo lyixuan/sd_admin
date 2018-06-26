@@ -1,15 +1,10 @@
-import {
-  permissionList,
-  addPermission,
-  updatePermission,
-} from '../services/api';
+import { permissionList, addPermission, updatePermission } from '../services/api';
 
 export default {
   namespace: 'permission',
 
   state: {
     // 请求接口上送参数
-
 
     // 接口返回数据存储
     permissionList: [],

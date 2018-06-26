@@ -5,7 +5,6 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
-
 const FormItem = Form.Item;
 let propsVal = '';
 @connect(({ permission, loading }) => ({

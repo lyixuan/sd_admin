@@ -18,7 +18,6 @@ import logo from '../assets/logo.png';
 
 const { Content, Header } = Layout;
 const { AuthorizedRoute, check } = Authorized;
-
 /**
  * 根据菜单取得重定向地址.
  */
@@ -99,6 +98,7 @@ class BasicLayout extends React.PureComponent {
     };
   }
   componentDidMount() {
+    console.log(this);
     this.enquireHandler = enquireScreen(mobile => {
       this.setState({
         isMobile: mobile,
