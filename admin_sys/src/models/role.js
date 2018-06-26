@@ -60,7 +60,7 @@ export default {
       content.forEach((item, i) => {
         content[i].key = i;
       });
-      return { ...state, ...action.payload };
+      return { ...state, dataList };
     },
     saveListAll(state, action) {
       let { listAll } = action.payload;
@@ -80,7 +80,7 @@ export default {
         }
       });
 
-      return { ...state, ...action.payload };
+      return { ...state, listAll };
     },
   },
 };
