@@ -45,6 +45,8 @@ class AccountForm extends Component {
     });
   };
   render() {
+    const { listAll } = this.props;
+    console.log(listAll);
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
@@ -61,84 +63,49 @@ class AccountForm extends Component {
           <FormItem {...formItemLayout} label=" *角色权限：">
             {getFieldDecorator('name', {})(
               <div>
-                <div className={styles.modelList}>
-                  <h1 className={styles.title}>质检</h1>
-                  <div className={styles.content}>
-                    <div className={styles.contentTxt}>
-                      <p className={styles.littleTitle}>质检管理</p>
-                      <Checkbox
-                        indeterminate={this.state.indeterminate}
-                        onChange={this.onCheckAllChange}
-                        checked={this.state.checkAll}
-                        className={styles.checkBox}
-                      >
-                        全选
-                      </Checkbox>
-                      <CheckboxGroup
-                        options={plainOptions}
-                        value={this.state.checkedList}
-                        onChange={this.onChange}
-                        className={styles.checkboxGroup}
-                      />
+                {Object.keys(listAll).map((key, item) => {
+                  return (
+                    <div key={listAll[item].id} className={styles.modelList}>
+                      <h1 className={styles.title}>{listAll[item].name}</h1>
+                      <div className={styles.content}>
+                        <div className={styles.contentTxt}>
+                          <p className={styles.littleTitle}>质检管理</p>
+                          <Checkbox
+                            indeterminate={this.state.indeterminate}
+                            onChange={this.onCheckAllChange}
+                            checked={this.state.checkAll}
+                            className={styles.checkBox}
+                          >
+                            全选
+                          </Checkbox>
+                          <CheckboxGroup
+                            options={plainOptions}
+                            value={this.state.checkedList}
+                            onChange={this.onChange}
+                            className={styles.checkboxGroup}
+                          />
+                        </div>
+                        <div className={styles.contentTxt}>
+                          <p className={styles.littleTitle}>质检管理</p>
+                          <Checkbox
+                            indeterminate={this.state.indeterminate}
+                            onChange={this.onCheckAllChange}
+                            checked={this.state.checkAll}
+                            className={styles.checkBox}
+                          >
+                            全选
+                          </Checkbox>
+                          <CheckboxGroup
+                            options={plainOptions}
+                            value={this.state.checkedList}
+                            onChange={this.onChange}
+                            className={styles.checkboxGroup}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className={styles.contentTxt}>
-                      <p className={styles.littleTitle}>质检管理</p>
-                      <Checkbox
-                        indeterminate={this.state.indeterminate}
-                        onChange={this.onCheckAllChange}
-                        checked={this.state.checkAll}
-                        className={styles.checkBox}
-                      >
-                        全选
-                      </Checkbox>
-                      <CheckboxGroup
-                        options={plainOptions}
-                        value={this.state.checkedList}
-                        onChange={this.onChange}
-                        className={styles.checkboxGroup}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.modelList}>
-                  <h1 className={styles.title}>质检</h1>
-                  <div className={styles.content}>
-                    <div className={styles.contentTxt}>
-                      <p className={styles.littleTitle}>质检管理</p>
-                      <Checkbox
-                        indeterminate={this.state.indeterminate}
-                        onChange={this.onCheckAllChange}
-                        checked={this.state.checkAll}
-                        className={styles.checkBox}
-                      >
-                        全选
-                      </Checkbox>
-                      <CheckboxGroup
-                        options={plainOptions}
-                        value={this.state.checkedList}
-                        onChange={this.onChange}
-                        className={styles.checkboxGroup}
-                      />
-                    </div>
-                    <div className={styles.contentTxt}>
-                      <p className={styles.littleTitle}>质检管理</p>
-                      <Checkbox
-                        indeterminate={this.state.indeterminate}
-                        onChange={this.onCheckAllChange}
-                        checked={this.state.checkAll}
-                        className={styles.checkBox}
-                      >
-                        全选
-                      </Checkbox>
-                      <CheckboxGroup
-                        options={plainOptions}
-                        value={this.state.checkedList}
-                        onChange={this.onChange}
-                        className={styles.checkboxGroup}
-                      />
-                    </div>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             )}
           </FormItem>

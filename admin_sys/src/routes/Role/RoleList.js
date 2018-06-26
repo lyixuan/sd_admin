@@ -5,6 +5,10 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
+@connect(({ role, loading }) => ({
+  role,
+  loading,
+}))
 class RoleList extends Component {
   constructor(props) {
     super(props);
@@ -39,33 +43,19 @@ class RoleList extends Component {
     this.props.setRouteUrlParams(pathName, params);
   };
 
-  // 初始化tabale 列数据
-  fillDataSource = () => {
-    const data = [];
-    for (let i = 0; i < 50; i += 1) {
-      data.push({
-        key: i,
-        id: i,
-        role: `院长`,
-      });
-    }
-    return data;
-  };
-
   // 获取table列表头
   columnsData = () => {
     const columns = [
       {
         title: '角色',
-        dataIndex: 'role',
+        dataIndex: 'name',
         width: '200px',
-        key: 'role',
+        key: 'name',
       },
       {
         title: '操作',
-        dataIndex: 'operation',
+        key: 'operation',
         width: '100px',
-        key: 'action',
         render: (text, record) => {
           const { id } = record;
           return (
@@ -94,7 +84,7 @@ class RoleList extends Component {
     return columns;
   };
   render() {
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const dataSource = !this.props.role.dataList ? [] : this.props.role.dataList.content;
     const columns = !this.columnsData() ? [] : this.columnsData();
     return (
       <ContentLayout
@@ -138,6 +128,4 @@ class RoleList extends Component {
   }
 }
 
-export default connect(() => ({
-  // currentUser: role,
-}))(RoleList);
+export default RoleList;

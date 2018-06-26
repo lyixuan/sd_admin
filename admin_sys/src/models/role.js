@@ -1,4 +1,10 @@
-import { getRoleInfo } from '../services/api';
+import {
+  getRoleList,
+  getRoleAdd,
+  getRoleListAll,
+  getRoleDelete,
+  getRoleUpdate,
+} from '../services/api';
 
 export default {
   namespace: 'role',
@@ -6,45 +12,58 @@ export default {
   state: {
     dataList: [],
     params: [],
-    currentUser: {},
   },
 
   effects: {
     *roleList({ payload }, { put, call }) {
       const { paramsObj } = payload;
-      const dataList = yield call(getRoleInfo, { ...paramsObj });
-      console.log(dataList);
+      const dataList = yield call(getRoleList, { ...paramsObj });
       yield put({
-        type: 'saveRoleList',
-        payload: dataList,
+        type: 'save',
+        payload: { dataList: dataList.data },
       });
     },
-    *fetchCurrent(_, { put }) {
+    *roleAdd({ payload }, { call }) {
+      const { paramsObj } = payload;
+      yield call(getRoleAdd, { ...paramsObj });
+    },
+    *roleListAll({ payload }, { put, call }) {
+      const { paramsObj } = payload;
+      const listAll = yield call(getRoleListAll, { ...paramsObj });
+      console.log(listAll);
       yield put({
-        type: 'saveCurrentUser',
-        // payload: response,
+        type: 'save',
+        payload: { listAll: listAll.data },
+      });
+    },
+    *roleDelete({ payload }, { put, call }) {
+      const { paramsObj } = payload;
+      const deleteData = yield call(getRoleDelete, { ...paramsObj });
+      console.log(deleteData);
+      yield put({
+        type: 'save',
+        payload: deleteData,
+      });
+    },
+    *roleUpdate({ payload }, { put, call }) {
+      const { paramsObj } = payload;
+      const updateData = yield call(getRoleUpdate, { ...paramsObj });
+      console.log(updateData);
+      yield put({
+        type: 'save',
+        payload: updateData,
       });
     },
   },
 
   reducers: {
-    saveRoleList(state) {
-      return { ...state };
-    },
-    saveCurrentUser(state, action) {
-      return {
-        ...state,
-        currentUser: action.payload,
-      };
-    },
-    changeNotifyCount(state, action) {
-      return {
-        ...state,
-        currentUser: {
-          ...state.currentUser,
-          notifyCount: action.payload,
-        },
-      };
+    save(state, action) {
+      const { dataList } = action.payload;
+      const { content } = dataList;
+      content.forEach((item, i) => {
+        content.item.key = i;
+      });
+      return { ...state, ...action.payload };
     },
   },
 };

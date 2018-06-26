@@ -45,9 +45,54 @@ export async function getRoleInfo(params) {
     body: params,
   });
 }
+
+/*
+* 角色列表
+* params：{roleId，orderType}
+* */
+export async function getRoleList(params) {
+  return request(`${HOST}/role/list`, {
+    method: 'GET',
+    body: params,
+  });
+}
+/*
+* 角色添加
+* params：{role}
+* */
 export async function getRoleAdd(params) {
   return request(`${HOST}/role/add`, {
     method: 'POST',
+    body: params,
+  });
+}
+/*
+* 角色添加>角色权限
+* params：{role:body}
+* */
+export async function getRoleListAll(params) {
+  return request(`${HOST}/privilege/listAll`, {
+    method: 'GET',
+    body: params,
+  });
+}
+/*
+* 角色删除
+* params：{role}
+* */
+export async function getRoleDelete(params) {
+  return request(`${HOST}/role/delete`, {
+    method: 'DELETE',
+    body: params,
+  });
+}
+/*
+* 角色修改
+* params：{role}
+* */
+export async function getRoleUpdate(params) {
+  return request(`${HOST}/role/update`, {
+    method: 'PUT',
     body: params,
   });
 }
