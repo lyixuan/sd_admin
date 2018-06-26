@@ -61,7 +61,7 @@ export default {
       const { dataList } = action.payload;
       const { content } = dataList;
       content.forEach((item, i) => {
-        content.item.key = i;
+        content[i].key = i;
       });
       return { ...state, ...action.payload };
     },
