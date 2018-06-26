@@ -16,11 +16,10 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const params = {};
-    const params2 = { id: 1 };
+    const accountList = {};
     this.props.dispatch({
       type: 'account/accountList',
-      payload: { params, params2 },
+      payload: { accountList },
     });
   }
 
@@ -28,11 +27,16 @@ class AccountList extends Component {
   onDelete = key => {
     // const dataSource = [...this.state.dataSource];
     // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
-    console.log(key);
-    const params = { name: 'test', mail: 'test@qq.com', roleId: 1, status: 1 };
+    console.log(key.id);
+    const deleteAccount = { id: key.id };
+    const accountList = {};
     this.props.dispatch({
       type: 'account/deleteAccount',
-      payload: { params },
+      payload: { deleteAccount },
+    });
+    this.props.dispatch({
+      type: 'account/accountList',
+      payload: { accountList },
     });
   };
 
@@ -58,16 +62,17 @@ class AccountList extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
+  fillDataSource = val => {
     const data = [];
-    for (let i = 0; i < 50; i += 1) {
+    val.map((item, index) =>
       data.push({
-        key: i,
-        name: `张三`,
-        role: `院长`,
-        email: `hello${i}@sunlands.com`,
-      });
-    }
+        key: index,
+        name: item.name,
+        role: item.rname,
+        email: item.mail,
+        id: item.id,
+      })
+    );
     return data;
   };
 
@@ -116,7 +121,11 @@ class AccountList extends Component {
   };
 
   render() {
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const data = !this.props.account.accountList.response
+      ? []
+      : this.props.account.accountList.response;
+    const totalNum = !data.size ? 0 : data.size;
+    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
     return (
       <ContentLayout
@@ -131,7 +140,7 @@ class AccountList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：500条</p>
+            <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
               dataSource={dataSource}
@@ -147,7 +156,7 @@ class AccountList extends Component {
             onChange={this.changePage}
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={1}
-            total={1000}
+            total={totalNum}
             className={common.paginationStyle}
           />
         }
