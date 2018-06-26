@@ -31,14 +31,14 @@ class AccountList extends Component {
 
   // 删除账号函数  删除后数据更新？
   onDelete = key => {
-    // const dataSource = [...this.state.dataSource];
-    // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     console.log(key.id);
     const deleteAccountParams = { accountId: key.id };
+    const accountListParams={};
     this.props.dispatch({
       type: 'account/deleteAccount',
-      payload: { deleteAccountParams },
+      payload: { deleteAccountParams , accountListParams},
     });
+
 
   };
 

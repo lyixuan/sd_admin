@@ -45,11 +45,12 @@ export default {
     },
     *deleteAccount({ payload }, { call, put }) {
       console.log(payload.deleteAccountParams)
-      const response1 = yield call(deleteAccount, payload.deleteAccountParams);
+      yield call(deleteAccount, payload.deleteAccountParams);
+      const response1 = yield call(queryAccountList, payload.accountListParams);
       const response = response1.data;
       yield put({
-        type: 'deleteAccountSave',
-        payload: response,
+        type: 'accountListSave',
+        payload: {response},
       });
     },
     *getRoleList({ payload }, { call, put }) {

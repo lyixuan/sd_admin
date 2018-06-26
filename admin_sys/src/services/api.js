@@ -8,7 +8,6 @@ const HOST = 'http://172.16.117.65:8084';
 * */
 // 账号列表接口
 export async function queryAccountList(params) {
-  console.log(`/account/list?${stringify(params)}`);
   return request(`${HOST}/account/list?${stringify(params)}`, {
     method: 'GET',
     body: params,
@@ -31,7 +30,8 @@ export async function updateAccount(params) {
 }
 // 删除账号接口
 export async function deleteAccount(params) {
-  return request(`${HOST}/account/delete`, {
+  console.log(params)
+  return request(`${HOST}/account/delete?${stringify(params)}`, {
     method: 'DELETE',
     body: params,
   });

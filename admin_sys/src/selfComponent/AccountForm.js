@@ -32,9 +32,8 @@ class AccountForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(this.state.roleList)
-        console.log('Received values of form: ', values);
-        const newmail =`${values.mail} @sunlans.com`  // values.mail + "@sunlans.com"
+        const accountListParams={}
+        const newmail =`${values.mail} @sunlans.com`
         const rname = values.rname[0];
         let newRoleId = 0;
         this.state.roleList.map((item) =>{
@@ -49,14 +48,14 @@ class AccountForm extends Component {
           console.log(updateAccountParams);
           this.props.dispatch({
             type: 'account/updateAccount',
-            payload: { updateAccountParams },
+            payload: { updateAccountParams,accountListParams },
           });
         } else {
           const addAccountParams = { name: values.name, mail: newmail, roleId: newRoleId };
           console.log(addAccountParams);
           this.props.dispatch({
             type: 'account/addAccount',
-            payload: { addAccountParams },
+            payload: { addAccountParams,accountListParams },
           });
         }
         this.props.jumpFunction.setRouteUrlParams('/account/accountList', { });
