@@ -17,8 +17,15 @@ class CheckRole extends Component {
     });
   }
   render() {
-    const listAll = !this.props.role.listAll ? [] : this.props.role.listAll.content;
-    const baseLayout = <WrappedRoleForm listAll={listAll} />;
+    const listAll = !this.props.role.listAll ? [] : this.props.role.listAll;
+    const baseLayout = (
+      <WrappedRoleForm
+        listAll={listAll}
+        submitInfo={values => {
+          this.submitInfo(values);
+        }}
+      />
+    );
     return <StepLayout title="查看角色" baseLayout={baseLayout} />;
   }
 }

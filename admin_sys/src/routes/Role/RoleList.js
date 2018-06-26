@@ -57,13 +57,13 @@ class RoleList extends Component {
         key: 'operation',
         width: '100px',
         render: (text, record) => {
-          const { id } = record;
+          const { id, name } = record;
           return (
             <div>
               <AuthorizedButton authority="/role/checkRole">
                 <span
                   style={{ color: '#52C9C2', marginRight: '20px' }}
-                  onClick={() => this.handleNextPage('/role/checkRole', { id })}
+                  onClick={() => this.handleNextPage('/role/checkRole', { id, name })}
                 >
                   查看详情
                 </span>
@@ -71,7 +71,7 @@ class RoleList extends Component {
               <AuthorizedButton authority="/role/editRole">
                 <span
                   style={{ color: '#52C9C2' }}
-                  onClick={() => this.handleNextPage('/role/editRole', { id })}
+                  onClick={() => this.handleNextPage('/role/editRole', { id, name })}
                 >
                   编辑
                 </span>

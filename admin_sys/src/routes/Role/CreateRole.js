@@ -16,9 +16,26 @@ class CreateRole extends Component {
       payload: { name: '' },
     });
   }
+  submitInfo = values => {
+    const paramsObj = {
+      name: values.name,
+      privilegeIds: values.privilegeIds || [1],
+    };
+    this.props.dispatch({
+      type: 'role/roleAdd',
+      payload: { paramsObj },
+    });
+  };
   render() {
-    const listAll = !this.props.role.listAll ? [] : this.props.role.listAll.content;
-    const baseLayout = <WrappedRoleForm listAll={listAll} />;
+    const listAll = !this.props.role.listAll ? [] : this.props.role.listAll;
+    const baseLayout = (
+      <WrappedRoleForm
+        listAll={listAll}
+        submitInfo={values => {
+          this.submitInfo(values);
+        }}
+      />
+    );
     return <StepLayout title="创建角色" baseLayout={baseLayout} />;
   }
 }
