@@ -11,7 +11,6 @@ import './rollbar';
 import './index.less';
 
 const history = createHistory();
-console.log(history);
 // 1. Initialize
 const app = dva({ history });
 
