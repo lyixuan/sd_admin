@@ -2,6 +2,16 @@ import { stringify } from 'qs';
 import request from '../utils/request';
 
 const HOST = 'http://172.16.117.65:8084';
+/*
+* 登录相关接口
+* params：{role}
+* */
+export async function userLogin(params) {
+  return request(`${HOST}/token/login`, {
+    method: 'POST',
+    body: params,
+  });
+}
 
 /*
 以下接口为账号相关
