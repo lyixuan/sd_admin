@@ -53,20 +53,20 @@ class PermissionList extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
+  fillDataSource = val => {
     const data = [];
-    for (let i = 0; i < 50; i += 1) {
+    val.map((item, index) =>
       data.push({
-        key: i,
-        id: i,
-        permissionName: `院长${i}`,
-        permissionType: `一级页面${i}`,
-        permissionRoute: `${i}hello/word`,
-        upId: 1243524,
-        icon: ``,
-        status: `正序`,
-      });
-    }
+        key: index,
+        id: item.id,
+        permissionName: item.name,
+        permissionType: item.level,
+        permissionRoute: item.resourceUrl,
+        upId: item.parentId,
+        icon: item.iconUrl,
+        status: item.sort,
+      })
+    );
     return data;
   };
 
@@ -129,8 +129,11 @@ class PermissionList extends Component {
   };
 
   render() {
-    console.log(this.props.permission.permissionList);
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const data = !this.props.permission.permissionList.response
+      ? []
+      : this.props.permission.permissionList.response;
+    const totalNum = !data.size ? 0 : data.size;
+    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -175,7 +178,7 @@ class PermissionList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：500条</p>
+            <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
               dataSource={dataSource}
