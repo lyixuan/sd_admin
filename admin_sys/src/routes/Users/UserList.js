@@ -1,11 +1,25 @@
 import React, { Component } from 'react';
-import { Table, Button, Form, Input, Popconfirm } from 'antd';
+import { Table, Button, Form, Input, Popconfirm ,Cascader } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
 let propsVal = '';
+const residences = [
+  {
+    value: 'null',
+    label: '----',
+  },
+  {
+    value: 'yes',
+    label: '是',
+  },
+  {
+    value: 'no',
+    label: '否',
+  },
+];
 class UserList extends Component {
   constructor(props) {
     super(props);
@@ -153,7 +167,7 @@ class UserList extends Component {
                 ],
               })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="手机" style={{ marginLeft: 119 }}>
+            <FormItem label="手机" >
               {getFieldDecorator('phone', {
                 rules: [
                   {
@@ -163,13 +177,20 @@ class UserList extends Component {
                 ],
               })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem style={{ marginLeft: 119 }}>
-              <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
-                搜 索
-              </Button>
-              <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
-                重 置
-              </Button>
+            <FormItem label="需要更新" >
+              {getFieldDecorator('role', {
+                rules: [{ type: 'array', required: true, message: '请选择级别！' }],
+              })(<Cascader options={residences}   style={{ width: 230, height: 32 }} />)}
+            </FormItem>
+            <FormItem >
+              <div className={common.totalNum}>
+                <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
+                  搜 索
+                </Button>
+                <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
+                  重 置
+                </Button>
+              </div>
             </FormItem>
           </Form>
         </div>

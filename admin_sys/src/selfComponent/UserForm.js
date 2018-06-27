@@ -33,6 +33,9 @@ class UserForm extends Component {
       }
     });
   };
+
+  changeSlect = () => {console.log("change数据内容了")}
+
   resetContent = () => {
     console.log(this.props);
     this.props.form.resetFields(['name', 'email', 'role']);
@@ -102,12 +105,18 @@ class UserForm extends Component {
             {getFieldDecorator('role', {
               initialValue: [this.state.role],
               rules: [{ type: 'array', required: true, message: '请选择级别！' }],
-            })(<Cascader options={residences} style={{ width: 380 }} />)}
+            })(<Cascader options={residences}  onChange={this.changeSlect} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*负责单位">
             {getFieldDecorator('responseCom', {
               initialValue: [this.state.responseCom],
               rules: [{ type: 'array', required: true, message: '请选择单位！' }],
+            })(<Cascader options={residences} style={{ width: 380 }} />)}
+          </FormItem>
+          <FormItem {...formItemLayout} label="*微信部门">
+            {getFieldDecorator('weChatDep', {
+              initialValue: [this.state.responseCom],
+              rules: [{ type: 'array', required: true, message: '请选择微信部门！' }],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
