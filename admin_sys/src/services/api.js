@@ -3,10 +3,20 @@ import request from '../utils/request';
 
 const HOST = 'http://172.16.117.65:8084';
 /*
-* 登录相关接口
-* params：{role}
+* 用户登录接口
+* params：{name，password}
 * */
 export async function userLogin(params) {
+  return request(`${HOST}/token/login`, {
+    method: 'POST',
+    body: params,
+  });
+}
+/*
+* 用户退出登录接口
+* params：{name，password}
+* */
+export async function userLogout(params) {
   return request(`${HOST}/token/login`, {
     method: 'POST',
     body: params,
