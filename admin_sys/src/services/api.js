@@ -100,14 +100,6 @@ export async function getRoleUpdate(params) {
 /*
 以下接口为权限相关
 * */
-// 权限列表接口
-export async function permissionList(params) {
-  return request(`${HOST}/privilege/listAll?${stringify(params)}`, {
-    method: 'GET',
-    body: params,
-  });
-}
-
 // 添加权限接口
 export async function addPermission(params) {
   return request(`${HOST}/privilege/add`, {

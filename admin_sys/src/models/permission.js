@@ -1,4 +1,4 @@
-import { permissionList, addPermission, updatePermission } from '../services/api';
+import { getRoleListAll, addPermission, updatePermission } from '../services/api';
 
 export default {
   namespace: 'permission',
@@ -14,7 +14,7 @@ export default {
 
   effects: {
     *permissionList({ payload }, { call, put }) {
-      const response1 = yield call(permissionList, payload.permissionListParams);
+      const response1 = yield call(getRoleListAll, payload.permissionListParams);
       const response = response1.data;
       yield put({ type: 'permissionListSave', payload: { response } });
     },
