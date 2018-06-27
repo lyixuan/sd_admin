@@ -60,7 +60,7 @@ export async function deleteAccount(params) {
 * 角色管理
 * */
 export async function getRoleInfo(params) {
-  return request(`${HOST}/role/info`, {
+  return request(`${HOST}/role/info?${stringify(params)}`, {
     method: 'GET',
     body: params,
   });
@@ -71,7 +71,7 @@ export async function getRoleInfo(params) {
 * params：{roleId，orderType}
 * */
 export async function getRoleList(params) {
-  return request(`${HOST}/role/list`, {
+  return request(`${HOST}/role/list?${stringify(params)}`, {
     method: 'GET',
     body: params,
   });
@@ -91,7 +91,7 @@ export async function getRoleAdd(params) {
 * params：{role:body}
 * */
 export async function getRoleListAll(params) {
-  return request(`${HOST}/privilege/listAll`, {
+  return request(`${HOST}/privilege/listAll?${stringify(params)}`, {
     method: 'GET',
     body: params,
   });
@@ -101,7 +101,7 @@ export async function getRoleListAll(params) {
 * params：{role}
 * */
 export async function getRoleDelete(params) {
-  return request(`${HOST}/role/delete`, {
+  return request(`${HOST}/role/delete?${stringify(params)}`, {
     method: 'DELETE',
     body: params,
   });

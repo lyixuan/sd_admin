@@ -25,7 +25,8 @@ class PermissionForm extends Component {
       permissionName: !arrValue.permissionName ? '' : arrValue.permissionName,
       permissionType: !arrValue.permissionType ? '' : arrValue.permissionType,
       permissionRoute: !arrValue.permissionRoute ? '' : arrValue.permissionRoute,
-      upId: !arrValue.upId ? '' : arrValue.upId,
+      parentId: !arrValue.parentId ? '' : arrValue.parentId,
+      icon: !arrValue.icon ? '' : arrValue.icon,
       status: !arrValue.status ? '' : arrValue.status,
     };
   }
@@ -97,11 +98,13 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('role', {
-              initialValue: [this.state.upId],
+              initialValue: [this.state.parentId],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
-            {getFieldDecorator('phone', {})(<Input style={{ width: 380 }} />)}
+            {getFieldDecorator('phone', {
+              initialValue: [this.state.icon],
+            })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('random', {

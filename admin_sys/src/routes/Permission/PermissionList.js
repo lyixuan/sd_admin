@@ -27,12 +27,14 @@ class PermissionList extends Component {
 
   // 权限编辑
   onEdit = val => {
+    console.log(val)
     this.props.setRouteUrlParams('/permission/editPermission', {
       permissionName: val.permissionName,
       permissionType: val.permissionType,
       permissionRoute: val.permissionRoute,
-      upId: val.upId,
+      parentId: val.parentId,
       status: val.status,
+      icon:val.icon,
     });
   };
 
@@ -67,7 +69,7 @@ class PermissionList extends Component {
         permissionName: item.name,
         permissionType: item.level===0?'页面功能':item.level===1?'一级页面':'二级页面',
         permissionRoute: item.resourceUrl,
-        upId: item.parentId,
+        parentId: item.parentId,
         icon: item.iconUrl,
         status: item.sort,
       })
@@ -96,11 +98,17 @@ class PermissionList extends Component {
       },
       {
         title: '上级编号',
-        dataIndex: 'upId',
+        dataIndex: 'parentId',
       },
       {
         title: '一级页面图标',
         dataIndex: 'icon',
+        render: (record) => {
+          return (
+            // !record ? <span>{!record?'':record}</span>:<img src={record} alt='上一级页面图标' />
+            <span>{record}</span>
+          );
+        },
       },
       {
         title: '权限排序',
