@@ -126,7 +126,7 @@ class AccountList extends Component {
   render() {
     const data = !this.props.account.accountList.response
       ? []
-      : this.props.account.accountList.response;
+      : !this.props.account.accountList.response.data?[]:this.props.account.accountList.response.data;
     const totalNum = !data.size ? 0 : data.size;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();

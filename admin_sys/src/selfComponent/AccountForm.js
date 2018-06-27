@@ -14,9 +14,9 @@ class AccountForm extends Component {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     this.state = {
-      roleList: !this.props.account.getRoleList.content
+      roleList: !this.props.account.getRoleList.data.content
         ? []
-        : this.props.account.getRoleList.content,
+        : this.props.account.getRoleList.data.content,
       name: !arrValue.name ? '' : arrValue.name,
       email: !arrValue.email ? '' : arrValue.email.substring(0, arrValue.email.indexOf('@')),
       role: !arrValue.role ? '' : arrValue.role, // name.substring(0,name.indexOf("@"))
@@ -32,8 +32,7 @@ class AccountForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const accountListParams = {};
-        const newmail = `${values.mail} @sunlans.com`;
+        const newmail = `${values.mail}@sunlans.com`;
         const rname = values.rname[0];
         let newRoleId = 0;
         this.state.roleList.map(item => {
@@ -52,14 +51,14 @@ class AccountForm extends Component {
           console.log(updateAccountParams);
           this.props.dispatch({
             type: 'account/updateAccount',
-            payload: { updateAccountParams, accountListParams },
+            payload: { updateAccountParams },
           });
         } else {
-          const addAccountParams = { name: values.name, mail: newmail, roleId: newRoleId };
+          const addAccountParams = { name: values.name, mail: newmail, roleId: newRoleId};
           console.log(addAccountParams);
           this.props.dispatch({
             type: 'account/addAccount',
-            payload: { addAccountParams, accountListParams },
+            payload: { addAccountParams },
           });
         }
         this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
@@ -67,6 +66,7 @@ class AccountForm extends Component {
     });
   };
   roleListFun = val => {
+    console.log(val)
     const residences = [];
     val.map(item =>
       residences.push({
@@ -74,6 +74,7 @@ class AccountForm extends Component {
         label: item.name,
       })
     );
+    console.log(residences)
     return residences;
   };
 
@@ -106,7 +107,10 @@ class AccountForm extends Component {
         },
       },
     };
-    const raleVal = !this.props.account.getRoleList ? [] : this.props.account.getRoleList;
+    const raleVal = !this.props.account.getRoleList
+      ? []
+      : !this.props.account.getRoleList.data?[]:this.props.account.getRoleList.data;
+    console.log(this.props.account.getRoleList)
     const residences = !raleVal.content ? [] : this.roleListFun(raleVal.content);
     return (
       <div>

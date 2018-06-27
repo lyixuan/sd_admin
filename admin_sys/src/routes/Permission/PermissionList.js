@@ -35,6 +35,7 @@ class PermissionList extends Component {
       parentId: val.parentId,
       status: val.status,
       icon:val.icon,
+      from: 'edit',
     });
   };
 

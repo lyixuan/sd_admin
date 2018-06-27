@@ -27,21 +27,18 @@ export default {
 
   effects: {
     *accountList({ payload }, { call, put }) {
-      const response1 = yield call(queryAccountList, payload.accountListParams);
-      const response = response1.data;
+      const response = yield call(queryAccountList, payload.accountListParams);
       yield put({ type: 'accountListSave', payload: { response } });
     },
     *addAccount({ payload }, { call, put }) {
-      const response1 = yield call(addAccount, payload.addAccountParams);
-      const response = response1.data;
+      const response = yield call(addAccount, payload.addAccountParams);
       yield put({
         type: 'addAccountSave',
         payload: response,
       });
     },
     *updateAccount({ payload }, { call, put }) {
-      const response1 = yield call(updateAccount, payload.updateAccountParams);
-      const response = response1.data;
+      const response = yield call(updateAccount, payload.updateAccountParams);
       yield put({
         type: 'updateAccountSave',
         payload: response,
@@ -50,8 +47,7 @@ export default {
     *deleteAccount({ payload }, { call, put }) {
       console.log(payload.deleteAccountParams);
       yield call(deleteAccount, payload.deleteAccountParams);
-      const response1 = yield call(queryAccountList, payload.accountListParams);
-      const response = response1.data;
+      const response = yield call(queryAccountList, payload.accountListParams);
       yield put({
         type: 'accountListSave',
         payload: { response },
@@ -59,7 +55,7 @@ export default {
     },
     *getRoleList({ payload }, { call, put }) {
       const response1 = yield call(getRoleList, payload.getRoleListParams);
-      const response = response1.data;
+      const response = response1;
       yield put({
         type: 'getRoleListSave',
         payload: response,

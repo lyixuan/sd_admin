@@ -34,10 +34,29 @@ class PermissionForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        if (this.state.from === 'edit') {
+          const updateAccountParams = {
+            name: values.name,
+          };
+          console.log(updateAccountParams);
+          this.props.dispatch({
+            type: 'account/updateAccount',
+            payload: { updateAccountParams },
+          });
+        } else {
+          const addAccountParams = { name: values.name };
+          console.log(addAccountParams);
+          this.props.dispatch({
+            type: 'account/addAccount',
+            payload: { addAccountParams },
+          });
+        }
+        this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
       }
     });
   };
+
+
   resetContent = () => {
     console.log(this.props);
     this.props.form.resetFields(['name', 'email', 'role']);
