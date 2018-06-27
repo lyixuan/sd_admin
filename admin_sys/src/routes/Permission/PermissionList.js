@@ -45,11 +45,16 @@ class PermissionList extends Component {
   // 表单搜索
   handleSearch = e => {
     e.preventDefault();
-    let val = {};
     propsVal.form.validateFields((err, values) => {
-      val = values;
+      if (!err) {
+        const permissionListParams = {name:values.name};
+        console.log(permissionListParams)
+        this.props.dispatch({
+          type: 'permission/permissionList',
+          payload: { permissionListParams },
+        });
+      }
     });
-    this.props.setCurrentUrlParams(val);
   };
 
   // 初始化tabale 列数据
@@ -60,7 +65,7 @@ class PermissionList extends Component {
         key: index,
         id: item.id,
         permissionName: item.name,
-        permissionType: item.level,
+        permissionType: item.level===0?'页面功能':item.level===1?'一级页面':'二级页面',
         permissionRoute: item.resourceUrl,
         upId: item.parentId,
         icon: item.iconUrl,
@@ -153,7 +158,7 @@ class PermissionList extends Component {
               })(<Input placeholder="请输入权限名称" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem style={{ marginLeft: 119 }}>
-              <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
+              <Button htmlType="submit" type="primary" className={common.searchButton}>
                 搜 索
               </Button>
               <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>

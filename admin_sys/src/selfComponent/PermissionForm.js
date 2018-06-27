@@ -6,15 +6,15 @@ const FormItem = Form.Item;
 const residences = [
   {
     value: '一级页面',
-    label: 'Zhejiang',
+    label: '一级页面',
   },
   {
     value: '二级页面',
-    label: 'Jiangsu',
+    label: '二级页面',
   },
   {
     value: '页面功能',
-    label: 'function',
+    label: '页面功能',
   },
 ];
 class PermissionForm extends Component {

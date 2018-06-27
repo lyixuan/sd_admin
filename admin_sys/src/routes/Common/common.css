@@ -116,10 +116,9 @@
   box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
 }
 :global(.ant-cascader-picker:focus .ant-cascader-input) {
-  border: 1px solid #52C9C2;
-  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+  border: 1px solid #52C9C2 !important;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2) !important;
 }
-
 .createButton{
   margin: 0;
   background-color: #52C9C2;
