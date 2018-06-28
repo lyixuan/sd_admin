@@ -64,7 +64,7 @@ class PermissionForm extends Component {
             iconUrl: values.icon[0],
             id: Number(this.state.id),
             level: type,
-            parentId: newparentId, // values.parentId[0],
+            parentId: newparentId,
             sort: Number(values.sort),
             resourceUrl: values.permissionRoute,
           };
@@ -116,7 +116,7 @@ class PermissionForm extends Component {
       'icon',
       'sort',
     ]);
-    // this.props.jumpFunction.setRouteUrlParams('/permission/permissionList');
+    this.props.jumpFunction.setRouteUrlParams('/permission/permissionList');
   };
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -142,12 +142,7 @@ class PermissionForm extends Component {
         },
       },
     };
-
-    const raleVal = !this.props.permission.permissionListAllName
-      ? []
-      : this.props.permission.permissionListAllName;
-    const parentIdList = !raleVal ? [] : this.roleListFun(raleVal);
-
+    const parentIdList = !this.state.parentIdList ? [] : this.roleListFun(this.state.parentIdList);
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>

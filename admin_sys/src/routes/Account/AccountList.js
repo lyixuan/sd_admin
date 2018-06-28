@@ -55,24 +55,22 @@ class AccountList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
-
-    // const accountListParams = {};
-    // this.props.dispatch({
-    //   type: 'account/accountList',
-    //   payload: { accountListParams },
-    // });
+    const accountListParams = {size:pageSize,number:current-1};
+    console.log(accountListParams)
+    this.props.dispatch({
+      type: 'account/accountList',
+      payload: { accountListParams },
+    });
   };
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    console.log(current, pageSize);
-
-    // const accountListParams = {};
-    // this.props.dispatch({
-    //   type: 'account/accountList',
-    //   payload: { accountListParams },
-    // });
+    const accountListParams = {size:pageSize,number:current-1};
+    console.log(accountListParams)
+    this.props.dispatch({
+      type: 'account/accountList',
+      payload: { accountListParams },
+    });
   };
 
   // 初始化tabale 列数据

@@ -22,9 +22,7 @@ class AccountForm extends Component {
       role: !arrValue.role ? '' : arrValue.role, // name.substring(0,name.indexOf("@"))
       from: !arrValue.from ? '' : arrValue.from,
       id: !arrValue.id ? '' : arrValue.id,
-      roleId: !arrValue.roleId ? '' : arrValue.roleId,
     };
-    console.log(this.state);
   }
   componentDidMount() {}
 
@@ -107,11 +105,7 @@ class AccountForm extends Component {
         },
       },
     };
-    const raleVal = !this.props.account.getRoleList
-      ? []
-      : !this.props.account.getRoleList.data?[]:this.props.account.getRoleList.data;
-    console.log(this.props.account.getRoleList)
-    const residences = !raleVal.content ? [] : this.roleListFun(raleVal.content);
+    const residences = !this.state.roleList ? [] : this.roleListFun(this.state.roleList);
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
