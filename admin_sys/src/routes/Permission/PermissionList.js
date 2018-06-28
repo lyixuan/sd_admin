@@ -23,11 +23,17 @@ class PermissionList extends Component {
       type: 'permission/permissionList',
       payload: { permissionListParams },
     });
+    // 为了提前获取角色列表数据。
+    const permissionListAllNameParams = {};
+    this.props.dispatch({
+      type: 'permission/permissionListAllName',
+      payload: { permissionListAllNameParams },
+    });
   }
 
   // 权限编辑
   onEdit = val => {
-    console.log(val)
+    // console.log(val)
     this.props.setRouteUrlParams('/permission/editPermission', {
       permissionName: val.permissionName,
       permissionType: val.permissionType,
@@ -144,6 +150,7 @@ class PermissionList extends Component {
   };
 
   render() {
+    // console.log(this.props.permission.permissionListAllName)
     const data = !this.props.permission.permissionList.response
       ? []
       : !this.props.permission.permissionList.response.data?[]:this.props.permission.permissionList.response.data;

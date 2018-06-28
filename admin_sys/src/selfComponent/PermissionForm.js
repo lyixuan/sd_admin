@@ -27,6 +27,7 @@ class PermissionForm extends Component {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     this.state = {
+      parentIdList: !this.props.permission.permissionListAllName?[]:this.props.permission.permissionListAllName,
       permissionName: !arrValue.permissionName ? '' : arrValue.permissionName,
       permissionType: !arrValue.permissionType ? '' : arrValue.permissionType,
       permissionRoute: !arrValue.permissionRoute ? '' : arrValue.permissionRoute,
@@ -41,14 +42,24 @@ class PermissionForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const type = values.permissionType ==='页面功能'?0: values.permissionType==='一级页面' ?1 : 2
+        console.log(values)
+        const type = values.permissionType[0] ==='页面功能'?0: values.permissionType[0]==='一级页面' ?1 : 2;
+        const parentIdName = values.parentId[0];
+        let newparentId = 0;
+        this.state.parentIdList.map(item => {
+          if (item.name === parentIdName) {
+            newparentId = item.id;
+          }
+          return 0;
+        });
+
         if (this.state.from === 'edit') {
           const updatePermissionParams = {
             name: values.permissionName,
-            iconUrl:values.icon,
+            iconUrl:values.icon[0],
             id:Number(this.state.id),
             level:type,
-            parentId:0, // values.parentId[0],
+            parentId:newparentId, // values.parentId[0],
             sort:Number(values.sort),
             resourceUrl:values.permissionRoute,
           };
@@ -60,9 +71,9 @@ class PermissionForm extends Component {
         } else {
           const addPermissionParams = {
             name: values.permissionName,
-            iconUrl:values.icon,
+            iconUrl:values.icon[0],
             level:type,
-            parentId:0,// Number(values.parentId),
+            parentId:newparentId,
             sort:Number(values.sort),
             resourceUrl:values.permissionRoute,
           };
@@ -77,11 +88,23 @@ class PermissionForm extends Component {
     });
   };
 
+  roleListFun = val => {
+    // console.log(val)
+    const parentIdList = [];
+    val.map(item =>
+      parentIdList.push({
+        value: item.name,
+        label: item.name,
+      })
+    );
+    // console.log(parentIdList)
+    return parentIdList;
+  };
 
   resetContent = () => {
-    console.log(this.props);
+    // console.log(this.props);
     this.props.form.resetFields(['permissionName', 'permissionType', 'permissionRoute','parentId','icon','sort']);
-    this.props.jumpFunction.setRouteUrlParams('/permission/permissionList');
+    // this.props.jumpFunction.setRouteUrlParams('/permission/permissionList');
   };
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -107,11 +130,12 @@ class PermissionForm extends Component {
         },
       },
     };
+
+    const raleVal = !this.props.permission.permissionListAllName?[]:this.props.permission.permissionListAllName;
+    const parentIdList = !raleVal ? [] : this.roleListFun(raleVal);
+
     return (
       <div>
-        {/*
-        <p style={{marginLeft:32,fontSize:24}}>账户信息</p>
-        */}
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*权限名称">
             {getFieldDecorator('permissionName', {
@@ -136,7 +160,7 @@ class PermissionForm extends Component {
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('parentId', {
               initialValue: [this.state.parentId],
-            })(<Cascader options={residences} style={{ width: 380 }} />)}
+            })(<Cascader options={parentIdList} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
             {getFieldDecorator('icon', {
