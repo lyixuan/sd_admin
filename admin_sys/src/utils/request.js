@@ -1,5 +1,5 @@
 import fetch from 'dva/fetch';
-import { notification } from 'antd';
+import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
 
@@ -24,11 +24,8 @@ function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
-  const errortext = codeMessage[response.status] || response.statusText;
-  notification.error({
-    message: `请求错误 ${response.status}: ${response.url}`,
-    description: errortext,
-  });
+  const errortext = response.msg || codeMessage[response.status] || response.statusText;
+  message.error(errortext);
   const error = new Error(errortext);
   error.name = response.status;
   error.response = response;
