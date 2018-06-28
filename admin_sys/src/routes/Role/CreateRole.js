@@ -16,10 +16,10 @@ class CreateRole extends Component {
       payload: { name: '' },
     });
   }
-  submitInfo = values => {
+  submitInfo = (values, privilegeIds) => {
     const paramsObj = {
       name: values.name,
-      privilegeIds: values.privilegeIds || [1],
+      privilegeIds,
     };
     this.props.dispatch({
       type: 'role/roleAdd',
@@ -28,11 +28,13 @@ class CreateRole extends Component {
   };
   render() {
     const listAll = !this.props.role.listAll ? [] : this.props.role.listAll;
+    const mapIdtoName = !this.props.role.mapIdtoName ? [] : this.props.role.mapIdtoName;
     const baseLayout = (
       <WrappedRoleForm
         listAll={listAll}
-        submitInfo={values => {
-          this.submitInfo(values);
+        mapIdtoName={mapIdtoName}
+        submitInfo={(values, privilegeIds) => {
+          this.submitInfo(values, privilegeIds);
         }}
       />
     );

@@ -9,11 +9,7 @@ import {
 export default {
   namespace: 'role',
 
-  state: {
-    dataList: [],
-    listAll: [],
-    params: [],
-  },
+  state: {},
 
   effects: {
     *roleList({ payload }, { put, call }) {
@@ -64,8 +60,35 @@ export default {
     },
     saveListAll(state, action) {
       let { listAll } = action.payload;
-      listAll = { ...listAll, firstChild: [], secChild: [], thirChild: [] };
+      /*
+      * 生成map表
+      * */
+      const { content } = listAll;
+      const mapIdtoName = {};
+      Object.keys(content).map(key => {
+        mapIdtoName[content[key].name] = content[key].id;
+        return mapIdtoName;
+      });
+      /*
+       * 生成树状数据结构
+       * */
+      // let getJsonTree=function(data,parentId){
+      //   let itemArr=[];
+      //   for(let i=0;i<data.length;i++){
+      //     let node=data[i];
+      //     if(node.parentId==parentId ){
+      //       let newNode={id:node.id,title:node.name,nodes:getJsonTree(data,node.parentId)};
+      //       itemArr.push(newNode);
+      //     }
+      //   }
+      //   return itemArr;
+      // };
+      // console.log(getJsonTree(listAll.content,''));
+      /*
+      * 临时取data
+      * */
 
+      listAll = { ...listAll, firstChild: [], secChild: [], thirChild: [] };
       Object.keys(listAll).forEach(itemList => {
         if (itemList === 'content') {
           listAll[itemList].forEach(item => {
@@ -76,11 +99,12 @@ export default {
             } else if (item.level === 2) {
               listAll.thirChild.push(item);
             }
+            listAll.thirChild.push(item.name);
           });
         }
       });
 
-      return { ...state, listAll };
+      return { ...state, listAll, mapIdtoName };
     },
   },
 };

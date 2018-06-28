@@ -6,13 +6,12 @@ import styles from './RoleForm.css';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 
-const plainOptions = ['Apple', 'Pear', 'Orange'];
+let privilegeIds = [];
 // const defaultCheckedList = ['Apple', 'Orange'];
 
 class RoleForm extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       checkedList: [],
       checkAll: false,
@@ -20,14 +19,26 @@ class RoleForm extends Component {
   }
 
   onChange = checkedList => {
+    // 根据名字从mapIdtoName获取id传给后台
+    const ids = [];
+    const { mapIdtoName } = this.props;
+    checkedList.forEach(n => {
+      ids.push(mapIdtoName[n]);
+    });
+    privilegeIds = ids;
+
+    const { listAll } = this.props;
+    const { thirChild } = listAll;
     this.setState({
       checkedList,
-      checkAll: checkedList.length === plainOptions.length,
+      checkAll: checkedList.length === thirChild.length,
     });
   };
   onCheckAllChange = e => {
+    const { listAll } = this.props;
+    const { thirChild } = listAll;
     this.setState({
-      checkedList: e.target.checked ? plainOptions : [],
+      checkedList: e.target.checked ? thirChild : [],
       checkAll: e.target.checked,
     });
   };
@@ -38,19 +49,21 @@ class RoleForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.submitInfo(values);
+        this.props.submitInfo(values, privilegeIds);
+      } else {
+        console.error(err);
       }
     });
   };
   render() {
     const { listAll } = this.props;
-    const { firstChild, secChild } = listAll;
+    const { firstChild, secChild, thirChild } = listAll;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
-    const secLevel = name => {
+    const secLevel = (name, plainOptions) => {
       return (
         <div>
           <p className={styles.littleTitle}>{name}</p>
@@ -79,7 +92,7 @@ class RoleForm extends Component {
             })(<Input style={{ width: '220px', height: '32px' }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label=" *角色权限：">
-            {getFieldDecorator('name', {})(
+            {getFieldDecorator('privilegeIds', {})(
               <div>
                 {firstChild &&
                   Object.keys(firstChild).map((key1, item1) => {
@@ -91,7 +104,7 @@ class RoleForm extends Component {
                             Object.keys(secChild).map((key2, item2) => {
                               return (
                                 <div key={secChild[item2].id} className={styles.contentTxt}>
-                                  {secLevel(secChild[item2].name)}
+                                  {secLevel(secChild[item2].name, thirChild)}
                                 </div>
                               );
                             })}
