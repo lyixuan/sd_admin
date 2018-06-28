@@ -61,13 +61,13 @@ class AccountForm extends Component {
             payload: { addAccountParams },
           });
         }
-         // const aa = this.state.from === 'edit'?message.success('账号编辑成功！'):message.success('账号创建成功！');
+        const aa = this.state.from === 'edit'?'账号编辑成功！':'账号创建成功！'
+        message.success(aa);
         this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
       }
     });
   };
   roleListFun = val => {
-    console.log(val)
     const residences = [];
     val.map(item =>
       residences.push({
@@ -75,12 +75,10 @@ class AccountForm extends Component {
         label: item.name,
       })
     );
-    console.log(residences)
     return residences;
   };
 
   resetContent = () => {
-    console.log(this.props);
     this.props.form.resetFields(['name', 'email', 'role']);
     this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
   };
@@ -109,7 +107,6 @@ class AccountForm extends Component {
       },
     };
     const residences = !this.state.roleList ? [] : this.roleListFun(this.state.roleList);
-    console.log(residences)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -119,7 +116,8 @@ class AccountForm extends Component {
               rules: [
                 // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
                 { required: true, message: '姓名为必填项，请填写!', whitespace: true },
-                { min: 2, mix: 20,  message: '您输入姓名不合法!'},
+                { min: 2,message: '姓名长度不得低于2!'},
+                { mix: 20, message: '姓名长度不得高于20!'},
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -143,8 +141,15 @@ class AccountForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">
             {getFieldDecorator('rname', {
-              initialValue: [!this.state.role?residences[0].label:this.state.role],
-              rules: [{ required: true, message: '请选择角色！' }],
+              initialValue: [this.state.role],
+              rules: [
+                { validator(rule, value, callback){
+                  console.log(value[0])
+                    if(!value[0]){
+                      callback({message:"角色为必填项，请选择！"})
+                    }
+                    callback()
+                  }}],
             }
             )(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>

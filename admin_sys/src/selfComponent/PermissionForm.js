@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
 import { connect } from 'dva';
 import common from '../routes/Common/common.css';
+import { message } from 'antd/lib/index';
 
 const FormItem = Form.Item;
 const residences = [
@@ -88,6 +89,8 @@ class PermissionForm extends Component {
             payload: { addPermissionParams },
           });
         }
+        const aa = this.state.from === 'edit'?'权限编辑成功！':'权限创建成功！'
+        message.success(aa);
         this.props.jumpFunction.setRouteUrlParams('/permission/permissionList', {});
       }
     });
@@ -150,25 +153,40 @@ class PermissionForm extends Component {
             {getFieldDecorator('permissionName', {
               initialValue: this.state.permissionName,
               rules: [
-                { min: 2, required: true, message: '您输入权限名称不合法!', whitespace: true },
+                { min: 2, required: true, message: '权限名称为必填项，请填写!', whitespace: true },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
             {getFieldDecorator('permissionType', {
-              initialValue: [!this.state.permissionType?residences[0].label:this.state.permissionType],
-              rules: [{ type: 'array', required: true, message: '权限类型！' }],
+              initialValue: [this.state.permissionType],
+              rules: [
+                { validator(rule, value, callback){
+                    console.log(value[0])
+                    if(!value[0]){
+                      callback({message:"权限类型为必填项，请选择！"})
+                    }
+                    callback()
+                  }}],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限路由">
             {getFieldDecorator('permissionRoute', {
               initialValue: this.state.permissionRoute,
-              rules: [{ required: true, message: '请输入权限路由!', whitespace: true }],
+              rules: [{ required: true, message: '权限路由为必填项，请填写!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('parentId', {
-              initialValue: [!this.state.parentId?parentIdList[0].label:this.state.parentId],
+              initialValue: [this.state.parentId],
+              rules: [
+                { validator(rule, value, callback){
+                    console.log(value[0])
+                    if(!value[0]){
+                      callback({message:"请选择权上级！"})
+                    }
+                    callback()
+                  }}],
             })(<Cascader options={parentIdList} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
@@ -179,7 +197,7 @@ class PermissionForm extends Component {
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('sort', {
               initialValue: this.state.sort,
-              rules: [{ required: true, message: '请输入权限排序!', whitespace: true }],
+              rules: [{ required: true, message: '权限排序为必填项，请填写!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
