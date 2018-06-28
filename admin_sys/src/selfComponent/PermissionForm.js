@@ -31,9 +31,9 @@ class PermissionForm extends Component {
         ? []
         : this.props.permission.permissionListAllName,
       permissionName: !arrValue.permissionName ? '' : arrValue.permissionName,
-      permissionType: !arrValue.permissionType ? '' : arrValue.permissionType,
+      permissionType: !arrValue.permissionType ? null : arrValue.permissionType,
       permissionRoute: !arrValue.permissionRoute ? '' : arrValue.permissionRoute,
-      parentId: !arrValue.parentId ? '' : arrValue.parentId,
+      parentId: !arrValue.parentId ? null : arrValue.parentId,
       icon: !arrValue.icon ? '' : arrValue.icon,
       sort: !arrValue.sort ? '' : arrValue.sort,
       id: !arrValue.id ? '' : arrValue.id,
@@ -156,7 +156,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
             {getFieldDecorator('permissionType', {
-              initialValue: [this.state.permissionType],
+              initialValue: [!this.state.permissionType?residences[0].label:this.state.permissionType],
               rules: [{ type: 'array', required: true, message: '权限类型！' }],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
@@ -168,7 +168,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('parentId', {
-              initialValue: [this.state.parentId],
+              initialValue: [!this.state.parentId?parentIdList[0].label:this.state.parentId],
             })(<Cascader options={parentIdList} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">

@@ -19,7 +19,7 @@ class AccountForm extends Component {
         : this.props.account.getRoleList.data.content,
       name: !arrValue.name ? '' : arrValue.name,
       email: !arrValue.email ? '' : arrValue.email.substring(0, arrValue.email.indexOf('@')),
-      role: !arrValue.role ? '' : arrValue.role, // name.substring(0,name.indexOf("@"))
+      role: !arrValue.role ? null : arrValue.role, // name.substring(0,name.indexOf("@"))
       from: !arrValue.from ? '' : arrValue.from,
       id: !arrValue.id ? '' : arrValue.id,
     };
@@ -106,6 +106,7 @@ class AccountForm extends Component {
       },
     };
     const residences = !this.state.roleList ? [] : this.roleListFun(this.state.roleList);
+    console.log(residences)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -114,7 +115,8 @@ class AccountForm extends Component {
               initialValue: this.state.name,
               rules: [
                 // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
-                { min: 2, mix: 20, required: true, message: '您输入姓名不合法!', whitespace: true },
+                { required: true, message: '姓名为必填项，请填写姓名!', whitespace: true },
+                { min: 2, mix: 20,  message: '您输入姓名不合法!'},
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -122,16 +124,20 @@ class AccountForm extends Component {
             {getFieldDecorator('mail', {
               initialValue: this.state.email,
               rules: [
-                { min: 3, mix: 50, required: true, message: '请输入邮箱不合法!', whitespace: true },
+                { required: true, message: '邮箱为必填项，请填写姓名!', whitespace: true },
+                { min: 3, mix: 50, message: '请输入邮箱不合法!'},
               ],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">
-            {getFieldDecorator('rname', {
-              initialValue: [this.state.role],
-              rules: [{ type: 'array', required: true, message: '请选择角色！' }],
-            })(<Cascader options={residences} style={{ width: 380 }} />)}
+            {
+              getFieldDecorator('rname', {
+              initialValue: [!this.state.role?residences[0].label:this.state.role],
+              rules: [{ required: true, message: '请选择角色！' }],
+            }
+
+            )(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
           <FormItem>
