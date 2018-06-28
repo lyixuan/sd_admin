@@ -26,7 +26,15 @@ class AccountForm extends Component {
   }
 // <Alert message="Success Tips" type="success" showIcon />
 
-  componentDidMount() {}
+  componentDidMount() {
+    // 为了提前获取角色列表数据。
+    const getRoleListParams = {};
+    this.props.dispatch({
+      type: 'account/getRoleList',
+      payload: { getRoleListParams },
+    });
+
+  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -61,6 +69,7 @@ class AccountForm extends Component {
             payload: { addAccountParams },
           });
         }
+        console.log(!this.props.account.accountList.result?[]:this.props.account.accountList.result.code);
         const aa = this.state.from === 'edit'?'账号编辑成功！':'账号创建成功！'
         message.success(aa);
         this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
