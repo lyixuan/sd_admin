@@ -19,9 +19,6 @@ export default {
 
     // 接口返回数据存储
     accountList: [],
-    addAccount: [],
-    updateAccount: [],
-    deleteAccount: [],
     getRoleList: [],
   },
 
@@ -31,23 +28,25 @@ export default {
       yield put({ type: 'accountListSave', payload: { response } });
     },
     *addAccount({ payload }, { call, put }) {
-      const response = yield call(addAccount, payload.addAccountParams);
+      yield call(addAccount, payload.addAccountParams);
+      const response = yield call(queryAccountList, {});
       yield put({
-        type: 'addAccountSave',
-        payload: response,
+        type: 'accountListSave',
+        payload: { response },
       });
     },
     *updateAccount({ payload }, { call, put }) {
-      const response = yield call(updateAccount, payload.updateAccountParams);
+      yield call(updateAccount, payload.updateAccountParams);
+      const response = yield call(queryAccountList, {});
       yield put({
-        type: 'updateAccountSave',
-        payload: response,
+        type: 'accountListSave',
+        payload: { response },
       });
     },
     *deleteAccount({ payload }, { call, put }) {
       console.log(payload.deleteAccountParams);
       yield call(deleteAccount, payload.deleteAccountParams);
-      const response = yield call(queryAccountList, payload.accountListParams);
+      const response = yield call(queryAccountList, {});
       yield put({
         type: 'accountListSave',
         payload: { response },
@@ -68,24 +67,6 @@ export default {
       return {
         ...state,
         accountList: action.payload,
-      };
-    },
-    addAccountSave(state, action) {
-      return {
-        ...state,
-        addAccount: action.payload,
-      };
-    },
-    updateAccountSave(state, action) {
-      return {
-        ...state,
-        updateAccount: action.payload,
-      };
-    },
-    deleteAccountSave(state, action) {
-      return {
-        ...state,
-        deleteAccount: action.payload,
       };
     },
     getRoleListSave(state, action) {
