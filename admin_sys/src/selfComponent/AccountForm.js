@@ -46,7 +46,7 @@ class AccountForm extends Component {
             name: values.name,
             mail: newmail,
             roleId: newRoleId,
-            id: this.state.id,
+            id: Number(this.state.id),
           };
           console.log(updateAccountParams);
           this.props.dispatch({

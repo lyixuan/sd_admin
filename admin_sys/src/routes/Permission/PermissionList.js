@@ -33,8 +33,9 @@ class PermissionList extends Component {
       permissionType: val.permissionType,
       permissionRoute: val.permissionRoute,
       parentId: val.parentId,
-      status: val.status,
+      sort: val.sort,
       icon:val.icon,
+      id:val.id,
       from: 'edit',
     });
   };
@@ -72,7 +73,7 @@ class PermissionList extends Component {
         permissionRoute: item.resourceUrl,
         parentId: item.parentId,
         icon: item.iconUrl,
-        status: item.sort,
+        sort: item.sort,
       })
     );
     return data;
@@ -113,7 +114,7 @@ class PermissionList extends Component {
       },
       {
         title: '权限排序',
-        dataIndex: 'status',
+        dataIndex: 'sort',
       },
       {
         title: '操作',
@@ -145,7 +146,7 @@ class PermissionList extends Component {
   render() {
     const data = !this.props.permission.permissionList.response
       ? []
-      : this.props.permission.permissionList.response;
+      : !this.props.permission.permissionList.response.data?[]:this.props.permission.permissionList.response.data;
     const totalNum = !data.size ? 0 : data.size;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();

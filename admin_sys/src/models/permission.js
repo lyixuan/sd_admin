@@ -15,8 +15,7 @@ export default {
   effects: {
     *permissionList({ payload }, { call, put }) {
       // console.log(payload.permissionListParams)
-      const response1 = yield call(getRoleListAll, payload.permissionListParams);
-      const response = response1.data;
+      const response = yield call(getRoleListAll, payload.permissionListParams);
       yield put({ type: 'permissionListSave', payload: { response } });
     },
     *addPermission({ payload }, { call, put }) {

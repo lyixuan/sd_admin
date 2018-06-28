@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
+import { connect } from 'dva';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
@@ -17,6 +18,10 @@ const residences = [
     label: '页面功能',
   },
 ];
+@connect(({ permission, loading }) => ({
+  permission,
+  loading,
+}))
 class PermissionForm extends Component {
   constructor(props) {
     super(props);
@@ -27,31 +32,47 @@ class PermissionForm extends Component {
       permissionRoute: !arrValue.permissionRoute ? '' : arrValue.permissionRoute,
       parentId: !arrValue.parentId ? '' : arrValue.parentId,
       icon: !arrValue.icon ? '' : arrValue.icon,
-      status: !arrValue.status ? '' : arrValue.status,
+      sort: !arrValue.sort ? '' : arrValue.sort,
+      id: !arrValue.id ? '' : arrValue.id,
+      from: !arrValue.from ? '' : arrValue.from,
     };
   }
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        const type = values.permissionType ==='页面功能'?0: values.permissionType==='一级页面' ?1 : 2
         if (this.state.from === 'edit') {
-          const updateAccountParams = {
-            name: values.name,
+          const updatePermissionParams = {
+            name: values.permissionName,
+            iconUrl:values.icon,
+            id:Number(this.state.id),
+            level:type,
+            parentId:0, // values.parentId[0],
+            sort:Number(values.sort),
+            resourceUrl:values.permissionRoute,
           };
-          console.log(updateAccountParams);
+          console.log(updatePermissionParams);
           this.props.dispatch({
-            type: 'account/updateAccount',
-            payload: { updateAccountParams },
+            type: 'permission/updatePermission',
+            payload: { updatePermissionParams },
           });
         } else {
-          const addAccountParams = { name: values.name };
-          console.log(addAccountParams);
+          const addPermissionParams = {
+            name: values.permissionName,
+            iconUrl:values.icon,
+            level:type,
+            parentId:0,// Number(values.parentId),
+            sort:Number(values.sort),
+            resourceUrl:values.permissionRoute,
+          };
+          console.log(addPermissionParams);
           this.props.dispatch({
-            type: 'account/addAccount',
-            payload: { addAccountParams },
+            type: 'permission/addPermission',
+            payload: { addPermissionParams },
           });
         }
-        this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
+        this.props.jumpFunction.setRouteUrlParams('/permission/permissionList', {});
       }
     });
   };
@@ -59,11 +80,8 @@ class PermissionForm extends Component {
 
   resetContent = () => {
     console.log(this.props);
-    this.props.form.resetFields(['name', 'email', 'role']);
-    this.props.jumpFunction.setRouteUrlParams('/permission/permissionList', {
-      a: 2,
-      b: 3,
-    });
+    this.props.form.resetFields(['permissionName', 'permissionType', 'permissionRoute','parentId','icon','sort']);
+    this.props.jumpFunction.setRouteUrlParams('/permission/permissionList');
   };
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -96,7 +114,7 @@ class PermissionForm extends Component {
         */}
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*权限名称">
-            {getFieldDecorator('name', {
+            {getFieldDecorator('permissionName', {
               initialValue: this.state.permissionName,
               rules: [
                 { min: 2, required: true, message: '您输入权限名称不合法!', whitespace: true },
@@ -104,30 +122,30 @@ class PermissionForm extends Component {
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
-            {getFieldDecorator('type', {
+            {getFieldDecorator('permissionType', {
               initialValue: [this.state.permissionType],
               rules: [{ type: 'array', required: true, message: '权限类型！' }],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限路由">
-            {getFieldDecorator('route', {
+            {getFieldDecorator('permissionRoute', {
               initialValue: this.state.permissionRoute,
               rules: [{ required: true, message: '请输入权限路由!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="上级权限">
-            {getFieldDecorator('role', {
+            {getFieldDecorator('parentId', {
               initialValue: [this.state.parentId],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
-            {getFieldDecorator('phone', {
+            {getFieldDecorator('icon', {
               initialValue: [this.state.icon],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
-            {getFieldDecorator('random', {
-              initialValue: this.state.status,
+            {getFieldDecorator('sort', {
+              initialValue: this.state.sort,
               rules: [{ required: true, message: '请输入权限排序!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
