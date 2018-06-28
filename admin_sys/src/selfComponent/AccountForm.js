@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Cascader, Button } from 'antd';
+import { Form, Input, Cascader, Button ,message} from 'antd';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
@@ -24,6 +24,8 @@ class AccountForm extends Component {
       id: !arrValue.id ? '' : arrValue.id,
     };
   }
+// <Alert message="Success Tips" type="success" showIcon />
+
   componentDidMount() {}
 
   handleSubmit = e => {
@@ -59,6 +61,7 @@ class AccountForm extends Component {
             payload: { addAccountParams },
           });
         }
+         // const aa = this.state.from === 'edit'?message.success('账号编辑成功！'):message.success('账号创建成功！');
         this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
       }
     });
@@ -115,7 +118,7 @@ class AccountForm extends Component {
               initialValue: this.state.name,
               rules: [
                 // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
-                { required: true, message: '姓名为必填项，请填写姓名!', whitespace: true },
+                { required: true, message: '姓名为必填项，请填写!', whitespace: true },
                 { min: 2, mix: 20,  message: '您输入姓名不合法!'},
               ],
             })(<Input style={{ width: 380 }} />)}
@@ -124,19 +127,25 @@ class AccountForm extends Component {
             {getFieldDecorator('mail', {
               initialValue: this.state.email,
               rules: [
-                { required: true, message: '邮箱为必填项，请填写姓名!', whitespace: true },
-                { min: 3, mix: 50, message: '请输入邮箱不合法!'},
+                { validator(rule, value, callback){
+                  const strExp=/^[A-Za-z0-9]+$/;
+                  if(!strExp.test(value)){
+                    callback({message:"请输入合法邮箱"})
+                  }
+                    callback()
+                  }},
+                { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
+                { min: 3,message: '邮箱账号长度不得低于3!'},
+                { mix: 50, message: '邮箱账号长度不得高于50!'},
               ],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">
-            {
-              getFieldDecorator('rname', {
+            {getFieldDecorator('rname', {
               initialValue: [!this.state.role?residences[0].label:this.state.role],
               rules: [{ required: true, message: '请选择角色！' }],
             }
-
             )(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />

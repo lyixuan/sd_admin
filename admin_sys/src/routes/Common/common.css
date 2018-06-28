@@ -96,6 +96,13 @@
   color: #fff!important;
 }
 
+:global(.ant-btn-primary) {
+  color: #fff;
+  background-color: #52C9C2;
+  border-color: #52C9C2;
+}
+
+
 :global(.ant-popover-buttons .ant-btn:hover) {
   background-color: #fff;
   border: 1px solid #DCDDE0;
