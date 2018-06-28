@@ -134,3 +134,10 @@ export async function updatePermission(params) {
     body: params,
   });
 }
+// 查询上级权限列表接口
+export async function permissionListAllName(params) {
+  return request(`${HOST}/privilege/listAllName${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}

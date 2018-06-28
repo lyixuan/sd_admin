@@ -23,19 +23,25 @@ class PermissionList extends Component {
       type: 'permission/permissionList',
       payload: { permissionListParams },
     });
+    // 为了提前获取角色列表数据。
+    const permissionListAllNameParams = {};
+    this.props.dispatch({
+      type: 'permission/permissionListAllName',
+      payload: { permissionListAllNameParams },
+    });
   }
 
   // 权限编辑
   onEdit = val => {
-    console.log(val)
+    // console.log(val)
     this.props.setRouteUrlParams('/permission/editPermission', {
       permissionName: val.permissionName,
       permissionType: val.permissionType,
       permissionRoute: val.permissionRoute,
       parentId: val.parentId,
       sort: val.sort,
-      icon:val.icon,
-      id:val.id,
+      icon: val.icon,
+      id: val.id,
       from: 'edit',
     });
   };
@@ -51,8 +57,8 @@ class PermissionList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        const permissionListParams = {name:values.name};
-        console.log(permissionListParams)
+        const permissionListParams = { name: values.name };
+        console.log(permissionListParams);
         this.props.dispatch({
           type: 'permission/permissionList',
           payload: { permissionListParams },
@@ -69,7 +75,7 @@ class PermissionList extends Component {
         key: index,
         id: item.id,
         permissionName: item.name,
-        permissionType: item.level===0?'页面功能':item.level===1?'一级页面':'二级页面',
+        permissionType: item.level === 0 ? '页面功能' : item.level === 1 ? '一级页面' : '二级页面',
         permissionRoute: item.resourceUrl,
         parentId: item.parentId,
         icon: item.iconUrl,
@@ -105,7 +111,7 @@ class PermissionList extends Component {
       {
         title: '一级页面图标',
         dataIndex: 'icon',
-        render: (record) => {
+        render: record => {
           return (
             // !record ? <span>{!record?'':record}</span>:<img src={record} alt='上一级页面图标' />
             <span>{record}</span>
@@ -144,9 +150,12 @@ class PermissionList extends Component {
   };
 
   render() {
+    // console.log(this.props.permission.permissionListAllName)
     const data = !this.props.permission.permissionList.response
       ? []
-      : !this.props.permission.permissionList.response.data?[]:this.props.permission.permissionList.response.data;
+      : !this.props.permission.permissionList.response.data
+        ? []
+        : this.props.permission.permissionList.response.data;
     const totalNum = !data.size ? 0 : data.size;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
