@@ -156,7 +156,7 @@ class PermissionList extends Component {
       : !this.props.permission.permissionList.response.data
         ? []
         : this.props.permission.permissionList.response.data;
-    const totalNum = !data.size ? 0 : data.size;
+    const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
