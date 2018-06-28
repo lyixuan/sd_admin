@@ -50,14 +50,16 @@ export default function request(url, options) {
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
     if (!(newOptions.body instanceof FormData)) {
       newOptions.headers = {
-        Accept: 'application/json',
+        Accept: 'application/json;charset=UTF-8',
+        'Content-Type': 'application/json;charset=UTF-8',
         ...newOptions.headers,
       };
       newOptions.body = JSON.stringify(newOptions.body);
     } else {
       // newOptions.body is FormData
       newOptions.headers = {
-        Accept: 'application/json',
+        Accept: 'application/json;charset=UTF-8',
+        'Content-Type': 'application/json;charset=UTF-8',
         ...newOptions.headers,
       };
     }

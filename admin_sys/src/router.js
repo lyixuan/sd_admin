@@ -6,7 +6,7 @@ import dynamic from 'dva/dynamic';
 import { getRouterData } from './common/router';
 import Authorized from './utils/Authorized';
 import styles from './index.less';
-// import { checkoutLogin } from './utils/checkoutUserAuthInfo';
+import { checkoutLogin } from './utils/checkoutUserAuthInfo';
 
 const { ConnectedRouter } = routerRedux;
 const { AuthorizedRoute } = Authorized;
@@ -18,6 +18,7 @@ function RouterConfig({ history, app }) {
   const UserLayout = routerData['/userLayout'].component;
   const BasicLayout = routerData['/'].component;
   const noAuthoried = routerData['/exception/403'].component;
+  console.log(this);
   return (
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>
@@ -27,9 +28,7 @@ function RouterConfig({ history, app }) {
           <AuthorizedRoute
             path="/"
             render={props => <BasicLayout {...props} />}
-            authority={() => {
-              return true;
-            }}
+            authority={checkoutLogin}
             redirectPath="/userLayout/login"
           />
         </Switch>
