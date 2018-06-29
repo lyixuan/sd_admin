@@ -40,7 +40,6 @@ class AccountForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const newmail = `${values.mail}@sunlans.com`;
         const rname = values.rname[0];
         let newRoleId = 0;
         this.state.roleList.map(item => {
@@ -52,7 +51,7 @@ class AccountForm extends Component {
         if (this.state.from === 'edit') {
           const updateAccountParams = {
             name: values.name,
-            mail: newmail,
+            mail: values.mail,
             roleId: newRoleId,
             id: Number(this.state.id),
           };
@@ -62,7 +61,7 @@ class AccountForm extends Component {
             payload: { updateAccountParams },
           });
         } else {
-          const addAccountParams = { name: values.name, mail: newmail, roleId: newRoleId};
+          const addAccountParams = { name: values.name, mail: values.mail, roleId: newRoleId};
           console.log(addAccountParams);
           this.props.dispatch({
             type: 'account/addAccount',

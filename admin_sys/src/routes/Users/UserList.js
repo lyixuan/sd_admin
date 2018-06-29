@@ -34,7 +34,7 @@ class UserList extends Component {
 
   componentDidMount() {
     console.log("开始请求接口")
-    const userListParams = {};
+    const userListParams = { name:'mahuishu'};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
