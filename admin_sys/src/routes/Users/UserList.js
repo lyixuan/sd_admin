@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, Popconfirm ,Cascader } from 'antd';
+import { Table, Button, Form, Input, Popconfirm, Cascader } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
@@ -33,7 +33,6 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    console.log("开始请求接口")
     const userListParams = { };
     this.props.dispatch({
       type: 'user/userList',
@@ -69,6 +68,7 @@ class UserList extends Component {
     const data = [];
     val.map((item, index) =>
       data.push({
+
         key: index,
         name: item.name,
         mobile: item.mobile,
@@ -168,6 +168,7 @@ class UserList extends Component {
   };
 
   render() {
+
     const data = !this.props.user.userList.response
       ? []
       : this.props.user.userList.response;
@@ -176,6 +177,7 @@ class UserList extends Component {
 
     console.log(dataSource)
     // const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -207,9 +209,9 @@ class UserList extends Component {
             <FormItem label="需要更新" >
               {getFieldDecorator('isUpdate', {
                 rules: [{ type: 'array', required: true, message: '请选择级别！' }],
-              })(<Cascader options={residences}   style={{ width: 230, height: 32 }} />)}
+              })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem >
+            <FormItem>
               <div className={common.totalNum}>
                 <Button htmlType="submit" type="primary" className={common.searchButton}>
                   搜 索

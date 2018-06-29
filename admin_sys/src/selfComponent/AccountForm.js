@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Cascader, Button ,message} from 'antd';
+import { Form, Input, Cascader, Button, message } from 'antd';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
@@ -24,7 +24,7 @@ class AccountForm extends Component {
       id: !arrValue.id ? '' : arrValue.id,
     };
   }
-// <Alert message="Success Tips" type="success" showIcon />
+  // <Alert message="Success Tips" type="success" showIcon />
 
   componentDidMount() {
     // 为了提前获取角色列表数据。
@@ -33,7 +33,6 @@ class AccountForm extends Component {
       type: 'account/getRoleList',
       payload: { getRoleListParams },
     });
-
   }
 
   handleSubmit = e => {
@@ -61,15 +60,17 @@ class AccountForm extends Component {
             payload: { updateAccountParams },
           });
         } else {
-          const addAccountParams = { name: values.name, mail: values.mail, roleId: newRoleId};
+          const addAccountParams = { name: values.name, mail: values.mail, roleId: newRoleId };
           console.log(addAccountParams);
           this.props.dispatch({
             type: 'account/addAccount',
             payload: { addAccountParams },
           });
         }
-        console.log(!this.props.account.accountList.result?[]:this.props.account.accountList.result.code);
-        const aa = this.state.from === 'edit'?'账号编辑成功！':'账号创建成功！'
+        console.log(
+          !this.props.account.accountList.result ? [] : this.props.account.accountList.result.code
+        );
+        const aa = this.state.from === 'edit' ? '账号编辑成功！' : '账号创建成功！';
         message.success(aa);
         // if
         this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
@@ -125,8 +126,8 @@ class AccountForm extends Component {
               rules: [
                 // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
                 { required: true, message: '姓名为必填项，请填写!', whitespace: true },
-                { min: 2,message: '姓名长度不得低于2!'},
-                { mix: 20, message: '姓名长度不得高于20!'},
+                { min: 2, message: '姓名长度不得低于2!' },
+                { mix: 20, message: '姓名长度不得高于20!' },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -134,16 +135,18 @@ class AccountForm extends Component {
             {getFieldDecorator('mail', {
               initialValue: this.state.email,
               rules: [
-                { validator(rule, value, callback){
-                  const strExp=/^[A-Za-z0-9]+$/;
-                  if(!strExp.test(value)){
-                    callback({message:"请输入合法邮箱"})
-                  }
-                    callback()
-                  }},
+                {
+                  validator(rule, value, callback) {
+                    const strExp = /^[A-Za-z0-9]+$/;
+                    if (!strExp.test(value)) {
+                      callback({ message: '请输入合法邮箱' });
+                    }
+                    callback();
+                  },
+                },
                 { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
-                { min: 3,message: '邮箱账号长度不得低于3!'},
-                { mix: 50, message: '邮箱账号长度不得高于50!'},
+                { min: 3, message: '邮箱账号长度不得低于3!' },
+                { mix: 50, message: '邮箱账号长度不得高于50!' },
               ],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
@@ -152,15 +155,17 @@ class AccountForm extends Component {
             {getFieldDecorator('rname', {
               initialValue: [this.state.role],
               rules: [
-                { validator(rule, value, callback){
-                  console.log(value[0])
-                    if(!value[0]){
-                      callback({message:"角色为必填项，请选择！"})
+                {
+                  validator(rule, value, callback) {
+                    console.log(value[0]);
+                    if (!value[0]) {
+                      callback({ message: '角色为必填项，请选择！' });
                     }
-                    callback()
-                  }}],
-            }
-            )(<Cascader options={residences} style={{ width: 380 }} />)}
+                    callback();
+                  },
+                },
+              ],
+            })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
           <FormItem>

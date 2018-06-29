@@ -6,64 +6,53 @@ import styles from './RoleForm.css';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 
-let privilegeIds = [];
-let defaultValue = [];
-let secChild = [];
-let checkAll = false;
+// let defaultValue = [];
+const checkAllObj = {};
+
 class RoleForm extends Component {
-  constructor(props) {
-    super(props);
-    console.log(props);
-    this.state = {
-      checkedList: defaultValue,
-    };
-  }
-
-  onChange = checkedList => {
-    privilegeIds = checkedList;
-    console.log(privilegeIds);
-    this.setState({
-      checkedList,
-    });
-    checkAll = checkedList.length === secChild.length;
+  onChange = (secList, key, listKey, checkedList) => {
+    checkAllObj[listKey] = checkedList;
+    checkAllObj[key] = checkedList.length === secList.length;
   };
-  onCheckAllChange = e => {
+  onCheckAllChange = (secList, allKey, listKey, e) => {
     const nodeIDs = [];
-    secChild.forEach(key => {
-      nodeIDs.push({ label: key.name, value: key.id });
-    });
-    console.log(nodeIDs);
-    this.setState({
-      checkedList: e.target.checked ? nodeIDs : [],
+    secList.forEach(key => {
+      nodeIDs.push(key.id);
     });
 
-    checkAll = e.target.checked;
+    checkAllObj[listKey] = e.target.checked ? nodeIDs : [];
+    checkAllObj[allKey] = e.target.checked;
   };
   cancel = () => {
     window.history.go(-1);
   };
   handleSubmit = e => {
+    let arr = [];
+    Object.keys(checkAllObj).map(key => {
+      if (key.indexOf('checkedList') > -1) {
+        arr = [...arr, ...checkAllObj[key]];
+      }
+      return arr;
+    });
+
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.submitInfo(values, privilegeIds);
+        this.props.submitInfo(values, arr);
       } else {
         console.error(err);
       }
     });
   };
   render() {
-    defaultValue = this.props.getRoleIds;
-    console.log(defaultValue);
+    // defaultValue = this.props.getRoleIds;
     const { listAll } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
-    const secLevel = (name, item, bol) => {
-      console.log(bol);
-      secChild = item;
+    const secLevel = (name, item, checkAllKey, listKey) => {
       const plainOptions = [];
       item.forEach(key => {
         plainOptions.push({ label: key.name, value: key.id });
@@ -71,14 +60,17 @@ class RoleForm extends Component {
       return (
         <div>
           <p className={styles.littleTitle}>{name}</p>
-
-          <Checkbox onChange={this.onCheckAllChange} checked={bol} className={styles.checkBox}>
+          <Checkbox
+            onChange={this.onCheckAllChange.bind(this, item, checkAllKey, listKey)}
+            checked={checkAllObj[checkAllKey]}
+            className={styles.checkBox}
+          >
             全选
           </Checkbox>
           <CheckboxGroup
             options={plainOptions}
-            value={this.state.checkedList}
-            onChange={this.onChange}
+            value={checkAllObj[listKey]}
+            onChange={this.onChange.bind(this, item, checkAllKey, listKey)}
             className={styles.checkboxGroup}
           />
         </div>
@@ -97,16 +89,23 @@ class RoleForm extends Component {
               <div>
                 {listAll &&
                   Object.keys(listAll).map((key1, item1) => {
+                    const firNodes = listAll[item1];
                     return (
-                      <div key={listAll[item1].id} className={styles.modelList}>
-                        <h1 className={styles.title}>{listAll[item1].name}</h1>
+                      <div key={firNodes.id} className={styles.modelList}>
+                        <h1 className={styles.title}>{firNodes.name}</h1>
                         <div className={styles.content}>
-                          {Object.keys(listAll[item1].nodes).map((key2, item2) => {
-                            const secNodes = listAll[item1].nodes;
-                            // checkAll = secNodes[item2].checkAll;
+                          {Object.keys(firNodes.nodes).map((key2, item2) => {
+                            const { nodes } = firNodes;
+                            const { checkAll } = nodes[item2];
+                            const { checkedList } = nodes[item2];
                             return (
-                              <div key={secNodes[item2].id} className={styles.contentTxt}>
-                                {secLevel(secNodes[item2].name, secNodes[item2].nodes, checkAll)}
+                              <div key={nodes[item2].id} className={styles.contentTxt}>
+                                {secLevel(
+                                  nodes[item2].name,
+                                  nodes[item2].nodes,
+                                  checkAll,
+                                  checkedList
+                                )}
                               </div>
                             );
                           })}
