@@ -54,6 +54,8 @@ class RoleForm extends Component {
       wrapperCol: { span: 22 },
     };
     const secLevel = (name, item, checkAllKey, listKey) => {
+      let isDisabled = true;
+      if (isShowFooter) isDisabled = false;
       const plainOptions = [];
       item.forEach(key => {
         plainOptions.push({ label: key.name, value: key.id });
@@ -64,6 +66,7 @@ class RoleForm extends Component {
           <Checkbox
             onChange={this.onCheckAllChange.bind(this, item, checkAllKey, listKey)}
             checked={checkAllObj[checkAllKey]}
+            disabled={isDisabled}
             className={styles.checkBox}
           >
             全选
@@ -71,6 +74,7 @@ class RoleForm extends Component {
           <CheckboxGroup
             options={plainOptions}
             value={checkAllObj[listKey]}
+            disabled={isDisabled}
             onChange={this.onChange.bind(this, item, checkAllKey, listKey)}
             className={styles.checkboxGroup}
           />
