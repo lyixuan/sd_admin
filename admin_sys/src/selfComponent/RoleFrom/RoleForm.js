@@ -6,7 +6,7 @@ import styles from './RoleForm.css';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 
-// let defaultValue = [];
+let defaultValue = [];
 const checkAllObj = {};
 
 class RoleForm extends Component {
@@ -45,8 +45,9 @@ class RoleForm extends Component {
     });
   };
   render() {
-    // defaultValue = this.props.getRoleIds;
-    const { listAll } = this.props;
+    defaultValue = this.props.getRoleIds;
+    console.log(defaultValue);
+    const { listAll, isShowFooter } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
@@ -116,16 +117,18 @@ class RoleForm extends Component {
               </div>
             )}
           </FormItem>
-          <FormItem>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button onClick={this.cancel} type="primary" className={common.cancleButton}>
-                取消
-              </Button>
-              <Button htmlType="submit" type="primary" className={common.submitButton}>
-                提交
-              </Button>
-            </div>
-          </FormItem>
+          {!isShowFooter ? null : (
+            <FormItem>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button onClick={this.cancel} type="primary" className={common.cancleButton}>
+                  取消
+                </Button>
+                <Button htmlType="submit" type="primary" className={common.submitButton}>
+                  提交
+                </Button>
+              </div>
+            </FormItem>
+          )}
         </Form>
       </div>
     );

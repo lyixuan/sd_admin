@@ -31,6 +31,7 @@ class CreateRole extends Component {
     const baseLayout = (
       <WrappedRoleForm
         listAll={listAll}
+        isShowFooter="true"
         submitInfo={(values, privilegeIds) => {
           this.submitInfo(values, privilegeIds);
         }}
