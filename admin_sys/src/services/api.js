@@ -169,3 +169,32 @@ export async function userList(params) {
     body: params,
   });
 }
+// 更新用户组织结构
+export async function updateUserOrg(params) {
+  return request(`${HOST}/user/updateOrg?${stringify(params)}`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+// 更新用户信息
+export async function updateUserInfo(params) {
+  return request(`${HOST}/user/updateInfo?${stringify(params)}`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+// 删除用户
+export async function userDelete(params) {
+  return request(`${HOST}/user/delete?${stringify(params)}`, {
+    method: 'DELETE',
+    body: params,
+  });
+}
+// 创建用户
+export async function userAdd(params) {
+  return request(`${HOST}/user/add`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
