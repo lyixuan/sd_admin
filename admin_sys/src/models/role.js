@@ -149,7 +149,8 @@ export default {
             const newNode = {
               id: node.id,
               name: node.name,
-              checkAll: false,
+              checkAll: `checkAll${i}`,
+              checkedList: `checkedList${i}`,
               nodes: getJsonTree(data, node.id),
             };
             itemArr.push(newNode);
