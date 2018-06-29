@@ -145,7 +145,7 @@ export default {
         const itemArr = [];
         for (let i = 0; i < data.length; i += 1) {
           const node = data[i];
-          if (node.parentId === parentId) {
+          if (node.parentId === Number(parentId)) {
             const newNode = {
               id: node.id,
               name: node.name,
