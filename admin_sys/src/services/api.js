@@ -78,7 +78,10 @@ export async function getRoleList(params) {
 }
 /*
 * 角色添加
-* params：{role}
+*  params：{
+*   "name": "string",
+*   "privilegeIds": [1]
+* }
 * */
 export async function getRoleAdd(params) {
   return request(`${HOST}/role/add`, {
@@ -87,18 +90,18 @@ export async function getRoleAdd(params) {
   });
 }
 /*
-* 角色添加>角色权限
-* params：{role:body}
+* 角色添加/编辑>角色权限
+* params：{name}
 * */
 export async function getRoleListAll(params) {
-  return request(`${HOST}/privilege/listAll?${stringify(params)}`, {
+  return request(`${HOST}/privilege/listAll`, {
     method: 'GET',
     body: params,
   });
 }
 /*
 * 角色删除
-* params：{role}
+* params：{id}
 * */
 export async function getRoleDelete(params) {
   return request(`${HOST}/role/delete?${stringify(params)}`, {
@@ -108,11 +111,25 @@ export async function getRoleDelete(params) {
 }
 /*
 * 角色修改
-* params：{role}
+* params：{
+*   "id": 0,
+*   "name": "string",
+*   "privilegeIds": [1]
+* }
 * */
 export async function getRoleUpdate(params) {
   return request(`${HOST}/role/update`, {
     method: 'PUT',
+    body: params,
+  });
+}
+/*
+* 角色编辑>角色权限回显
+* params：{id}
+* */
+export async function getRolePrivileges(params) {
+  return request(`${HOST}/rolePrivilege/getRolePrivileges?${stringify(params)}`, {
+    method: 'GET',
     body: params,
   });
 }

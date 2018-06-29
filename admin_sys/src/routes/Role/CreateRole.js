@@ -28,11 +28,9 @@ class CreateRole extends Component {
   };
   render() {
     const listAll = !this.props.role.listAll ? [] : this.props.role.listAll;
-    const mapIdtoName = !this.props.role.mapIdtoName ? [] : this.props.role.mapIdtoName;
     const baseLayout = (
       <WrappedRoleForm
         listAll={listAll}
-        mapIdtoName={mapIdtoName}
         submitInfo={(values, privilegeIds) => {
           this.submitInfo(values, privilegeIds);
         }}
