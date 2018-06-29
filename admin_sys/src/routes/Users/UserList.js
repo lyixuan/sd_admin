@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, Popconfirm ,Cascader } from 'antd';
+import { Table, Button, Form, Input, Popconfirm, Cascader } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
@@ -33,8 +33,8 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    console.log("开始请求接口")
-    const userListParams = {};
+    console.log('开始请求接口');
+    const userListParams = { name: 'mahuishu' };
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -81,7 +81,6 @@ class UserList extends Component {
     }
     return data;
 
-
     // val.map((item, index) =>
     //   data.push({
     //     key: index,
@@ -94,10 +93,6 @@ class UserList extends Component {
     //     sort: item.sort,
     //   })
     // );
-
-
-
-
   };
 
   // 获取table列表头
@@ -180,13 +175,12 @@ class UserList extends Component {
   };
 
   render() {
-    console.log(this.props.user.userList)
+    console.log(this.props.user.userList);
     // const data = !this.props.user.userList.response
     //   ? []
     //   : !this.props.user.userList.response;
     // const totalNum = !data.totalElements ? 0 : data.totalElements;
     // const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-
 
     const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
     const columns = !this.columnsData() ? [] : this.columnsData();
@@ -207,7 +201,7 @@ class UserList extends Component {
                 ],
               })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="手机" >
+            <FormItem label="手机">
               {getFieldDecorator('phone', {
                 rules: [
                   {
@@ -217,12 +211,12 @@ class UserList extends Component {
                 ],
               })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="需要更新" >
+            <FormItem label="需要更新">
               {getFieldDecorator('role', {
                 rules: [{ type: 'array', required: true, message: '请选择级别！' }],
-              })(<Cascader options={residences}   style={{ width: 230, height: 32 }} />)}
+              })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem >
+            <FormItem>
               <div className={common.totalNum}>
                 <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
                   搜 索

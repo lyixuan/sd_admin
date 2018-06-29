@@ -55,8 +55,8 @@ class AccountList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const accountListParams = {size:pageSize,number:current-1};
-    console.log(accountListParams)
+    const accountListParams = { size: pageSize, number: current - 1 };
+    console.log(accountListParams);
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
@@ -65,8 +65,8 @@ class AccountList extends Component {
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const accountListParams = {size:pageSize,number:current-1};
-    console.log(accountListParams)
+    const accountListParams = { size: pageSize, number: current - 1 };
+    console.log(accountListParams);
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
@@ -81,7 +81,7 @@ class AccountList extends Component {
         key: index,
         name: item.name,
         role: item.rname,
-        email: item.mail,
+        email: `${item.mail}@sunlans.com`, // const newmail = `${values.mail}@sunlans.com`;
         id: item.id,
         roleId: item.roleId,
       })
@@ -136,7 +136,9 @@ class AccountList extends Component {
   render() {
     const data = !this.props.account.accountList.response
       ? []
-      : !this.props.account.accountList.response.data?[]:this.props.account.accountList.response.data;
+      : !this.props.account.accountList.response.data
+        ? []
+        : this.props.account.accountList.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();

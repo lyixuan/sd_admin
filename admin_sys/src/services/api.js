@@ -153,7 +153,7 @@ export async function updatePermission(params) {
 }
 // 查询上级权限列表接口
 export async function permissionListAllName(params) {
-  return request(`${HOST}/privilege/listAllName${stringify(params)}`, {
+  return request(`${HOST}/privilege/listAllName?${stringify(params)}`, {
     method: 'GET',
     body: params,
   });
@@ -164,10 +164,8 @@ export async function permissionListAllName(params) {
 * */
 // 查询用户列表
 export async function userList(params) {
-  return request(`${HOST}/user/list${stringify(params)}`, {
+  return request(`${HOST}/user/list?${stringify(params)}`, {
     method: 'GET',
     body: params,
   });
 }
-
-
