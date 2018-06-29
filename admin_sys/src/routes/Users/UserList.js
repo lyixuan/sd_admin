@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Table, Button, Form, Input, Popconfirm ,Cascader } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -20,13 +21,25 @@ const residences = [
     label: '否',
   },
 ];
+
+@connect(({ user, loading }) => ({
+  user,
+  loading,
+}))
 class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log("开始请求接口")
+    const userListParams = {};
+    this.props.dispatch({
+      type: 'user/userList',
+      payload: { userListParams },
+    });
+  }
 
   // 删除用户
   onDelete = val => {
@@ -52,6 +65,7 @@ class UserList extends Component {
 
   // 初始化tabale 列数据
   fillDataSource = () => {
+    // console.log(val)
     const data = [];
     for (let i = 0; i < 50; i += 1) {
       data.push({
@@ -66,6 +80,24 @@ class UserList extends Component {
       });
     }
     return data;
+
+
+    // val.map((item, index) =>
+    //   data.push({
+    //     key: index,
+    //     id: item.id,
+    //     permissionName: item.name,
+    //     permissionType: item.level === 0 ? '页面功能' : item.level === 1 ? '一级页面' : '二级页面',
+    //     permissionRoute: item.resourceUrl,
+    //     parentId: item.parentId,
+    //     icon: item.iconUrl,
+    //     sort: item.sort,
+    //   })
+    // );
+
+
+
+
   };
 
   // 获取table列表头
@@ -148,6 +180,14 @@ class UserList extends Component {
   };
 
   render() {
+    console.log(this.props.user.userList)
+    // const data = !this.props.user.userList.response
+    //   ? []
+    //   : !this.props.user.userList.response;
+    // const totalNum = !data.totalElements ? 0 : data.totalElements;
+    // const dataSource = !data.content ? [] : this.fillDataSource(data.content);
+
+
     const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
@@ -210,7 +250,7 @@ class UserList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：500条</p>
+            <p className={common.totalNum}>总数：50条</p>
             <Table
               bordered
               dataSource={dataSource}

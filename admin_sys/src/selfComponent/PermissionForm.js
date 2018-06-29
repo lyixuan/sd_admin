@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button } from 'antd';
+import { Form, Input, Cascader, Button,message } from 'antd';
 import { connect } from 'dva';
 import common from '../routes/Common/common.css';
-import { message } from 'antd/lib/index';
 
 const FormItem = Form.Item;
 const residences = [
@@ -28,9 +27,9 @@ class PermissionForm extends Component {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     this.state = {
-      parentIdList: !this.props.permission.permissionListAllName
+      parentIdList: !this.props.permission.permissionListAllName.data
         ? []
-        : this.props.permission.permissionListAllName,
+        : this.props.permission.permissionListAllName.data,
       permissionName: !arrValue.permissionName ? '' : arrValue.permissionName,
       permissionType: !arrValue.permissionType ? null : arrValue.permissionType,
       permissionRoute: !arrValue.permissionRoute ? '' : arrValue.permissionRoute,
@@ -40,6 +39,7 @@ class PermissionForm extends Component {
       id: !arrValue.id ? '' : arrValue.id,
       from: !arrValue.from ? '' : arrValue.from,
     };
+    console.log(this.state)
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -145,6 +145,7 @@ class PermissionForm extends Component {
         },
       },
     };
+    console.log(this.state.parentIdList)
     const parentIdList = !this.state.parentIdList ? [] : this.roleListFun(this.state.parentIdList);
     return (
       <div>

@@ -141,3 +141,16 @@ export async function permissionListAllName(params) {
     body: params,
   });
 }
+
+/*
+以下接口为用户管理模块相关
+* */
+// 查询用户列表
+export async function userList(params) {
+  return request(`${HOST}/user/list${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+
+
