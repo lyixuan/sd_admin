@@ -42,13 +42,24 @@ class UserList extends Component {
 
   // 删除用户
   onDelete = val => {
-    const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.key !== val.id) });
+    console.log(val.id);
+    const userDeleteParams = { id: val.id };
+    const userListParams = {};
+    this.props.dispatch({
+      type: 'user/userDelete',
+      payload: { userDeleteParams, userListParams },
+    });
   };
 
   // 更新用户
   onUpdate = val => {
-    console.log(val);
+    console.log(val.id);
+    const updateUserOrgParams = { id: val.id };
+    const userListParams = {};
+    this.props.dispatch({
+      type: 'user/updateUserOrg',
+      payload: { updateUserOrgParams, userListParams },
+    });
   };
 
   // 编辑用户
@@ -174,10 +185,6 @@ class UserList extends Component {
       : this.props.user.userList.response;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-
-    console.log(dataSource)
-    // const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
-
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
