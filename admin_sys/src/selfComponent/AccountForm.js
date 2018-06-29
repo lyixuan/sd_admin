@@ -72,6 +72,7 @@ class AccountForm extends Component {
         );
         const aa = this.state.from === 'edit' ? '账号编辑成功！' : '账号创建成功！';
         message.success(aa);
+        // if
         this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
       }
     });

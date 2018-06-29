@@ -12,6 +12,7 @@ export default {
   namespace: 'account',
 
   state: {
+
     // 请求接口上送参数
     accountListParams: {},
     addAccountParams: {},
