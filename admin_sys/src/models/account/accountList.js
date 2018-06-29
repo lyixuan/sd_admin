@@ -14,7 +14,7 @@ export default {
   state: {
 
     // 请求接口上送参数
-    accountListParams: {},
+    accountListParams: {size: 50, number: 0},
     addAccountParams: {},
     updateAccountParams: {},
     deleteAccountParams: {},
@@ -27,7 +27,8 @@ export default {
 
   effects: {
     *accountList({ payload }, { call, put }) {
-      const response = yield call(queryAccountList, payload.accountListParams);
+      const {accountListParams} = payload;
+      const response = yield call(queryAccountList, {...accountListParams});
       console.log(response)
       yield put({ type: 'accountListSave', payload: { response } });
     },

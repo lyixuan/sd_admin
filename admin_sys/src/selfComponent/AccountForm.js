@@ -4,7 +4,6 @@ import { Form, Input, Cascader, Button, message } from 'antd';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
-
 @connect(({ account, loading }) => ({
   account,
   loading,
@@ -24,7 +23,6 @@ class AccountForm extends Component {
       id: !arrValue.id ? '' : arrValue.id,
     };
   }
-  // <Alert message="Success Tips" type="success" showIcon />
 
   componentDidMount() {
     // 为了提前获取角色列表数据。
@@ -72,7 +70,6 @@ class AccountForm extends Component {
         );
         const aa = this.state.from === 'edit' ? '账号编辑成功！' : '账号创建成功！';
         message.success(aa);
-        // if
         this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
       }
     });
@@ -157,7 +154,6 @@ class AccountForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    console.log(value[0]);
                     if (!value[0]) {
                       callback({ message: '角色为必填项，请选择！' });
                     }
