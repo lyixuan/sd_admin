@@ -20,17 +20,26 @@ const WrappedRoleForm = Form.create({
 }))
 class EditRole extends Component {
   componentDidMount() {
+    const params = this.props.getUrlParams();
     this.props.dispatch({
       type: 'role/roleListAll',
       payload: { name: '' },
     });
+
+    const paramsIds = {
+      id: params.id,
+    };
+    this.props.dispatch({
+      type: 'role/rolePrivileges',
+      payload: { paramsIds },
+    });
   }
-  submitInfo = values => {
+  submitInfo = (values, privilegeIds) => {
     const params = this.props.getUrlParams();
     const paramsObj = {
       id: params.id,
       name: values.name,
-      privilegeIds: values.privilegeIds || [1],
+      privilegeIds,
     };
     this.props.dispatch({
       type: 'role/roleUpdate',
@@ -39,11 +48,14 @@ class EditRole extends Component {
   };
   render() {
     const listAll = !this.props.role.listAll ? [] : this.props.role.listAll;
+    const getRoleIds = !this.props.role.getRoleIds ? [] : this.props.role.getRoleIds;
+
     const baseLayout = (
       <WrappedRoleForm
         listAll={listAll}
-        submitInfo={values => {
-          this.submitInfo(values);
+        getRoleIds={getRoleIds}
+        submitInfo={(values, privilegeIds) => {
+          this.submitInfo(values, privilegeIds);
         }}
         selfProps={this.props}
       />

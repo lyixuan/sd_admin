@@ -7,41 +7,37 @@ const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 
 let privilegeIds = [];
-// const defaultCheckedList = ['Apple', 'Orange'];
-
+let defaultValue = [];
+let secChild = [];
+let checkAll = false;
 class RoleForm extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
-      checkedList: [],
-      checkAll: false,
+      checkedList: defaultValue,
     };
   }
 
   onChange = checkedList => {
-    // 根据名字从mapIdtoName获取id传给后台
-    const ids = [];
-    const { mapIdtoName } = this.props;
-    checkedList.forEach(n => {
-      ids.push(mapIdtoName[n]);
-    });
-    privilegeIds = ids;
-
-    const { listAll } = this.props;
-    const { thirChild } = listAll;
+    privilegeIds = checkedList;
+    console.log(privilegeIds);
     this.setState({
       checkedList,
-      checkAll: checkedList.length === thirChild.length,
     });
+    checkAll = checkedList.length === secChild.length;
   };
   onCheckAllChange = e => {
-    console.log(e);
-    const { listAll } = this.props;
-    const { thirChild } = listAll;
-    this.setState({
-      checkedList: e.target.checked ? thirChild : [],
-      checkAll: e.target.checked,
+    const nodeIDs = [];
+    secChild.forEach(key => {
+      nodeIDs.push({ label: key.name, value: key.id });
     });
+    console.log(nodeIDs);
+    this.setState({
+      checkedList: e.target.checked ? nodeIDs : [],
+    });
+
+    checkAll = e.target.checked;
   };
   cancel = () => {
     window.history.go(-1);
@@ -57,22 +53,26 @@ class RoleForm extends Component {
     });
   };
   render() {
+    defaultValue = this.props.getRoleIds;
+    console.log(defaultValue);
     const { listAll } = this.props;
-    const { firstChild, secChild, thirChild } = listAll;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
-    const secLevel = (name, plainOptions) => {
+    const secLevel = (name, item, bol) => {
+      console.log(bol);
+      secChild = item;
+      const plainOptions = [];
+      item.forEach(key => {
+        plainOptions.push({ label: key.name, value: key.id });
+      });
       return (
         <div>
           <p className={styles.littleTitle}>{name}</p>
-          <Checkbox
-            onChange={this.onCheckAllChange.bind(this, 22)}
-            checked={this.state.checkAll}
-            className={styles.checkBox}
-          >
+
+          <Checkbox onChange={this.onCheckAllChange} checked={bol} className={styles.checkBox}>
             全选
           </Checkbox>
           <CheckboxGroup
@@ -89,26 +89,27 @@ class RoleForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*角色名称：">
             {getFieldDecorator('name', {
-              // rules: [{ required: true, message: '请输入角色名称!', whitespace: true }],
+              rules: [{ required: true, message: '请输入角色名称!', whitespace: true }],
             })(<Input style={{ width: '220px', height: '32px' }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label=" *角色权限：">
             {getFieldDecorator('privilegeIds', {})(
               <div>
-                {firstChild &&
-                  Object.keys(firstChild).map((key1, item1) => {
+                {listAll &&
+                  Object.keys(listAll).map((key1, item1) => {
                     return (
-                      <div key={firstChild[item1].id} className={styles.modelList}>
-                        <h1 className={styles.title}>{firstChild[item1].name}</h1>
+                      <div key={listAll[item1].id} className={styles.modelList}>
+                        <h1 className={styles.title}>{listAll[item1].name}</h1>
                         <div className={styles.content}>
-                          {secChild &&
-                            Object.keys(secChild).map((key2, item2) => {
-                              return (
-                                <div key={secChild[item2].id} className={styles.contentTxt}>
-                                  {secLevel(secChild[item2].name, thirChild)}
-                                </div>
-                              );
-                            })}
+                          {Object.keys(listAll[item1].nodes).map((key2, item2) => {
+                            const secNodes = listAll[item1].nodes;
+                            // checkAll = secNodes[item2].checkAll;
+                            return (
+                              <div key={secNodes[item2].id} className={styles.contentTxt}>
+                                {secLevel(secNodes[item2].name, secNodes[item2].nodes, checkAll)}
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     );
