@@ -9,15 +9,15 @@ const FormItem = Form.Item;
 let propsVal = '';
 const residences = [
   {
-    value: 'null',
+    value: 'no',
     label: '----',
   },
   {
-    value: 'yes',
+    value: 'true',
     label: '是',
   },
   {
-    value: 'no',
+    value: 'false',
     label: '否',
   },
 ];
@@ -34,7 +34,7 @@ class UserList extends Component {
 
   componentDidMount() {
     console.log("开始请求接口")
-    const userListParams = { name:'mahuishu'};
+    const userListParams = { };
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -56,48 +56,31 @@ class UserList extends Component {
   onEdit = val => {
     this.props.setRouteUrlParams('/user/editUser', {
       name: val.name,
-      phone: val.phone,
-      email: val.email,
-      role: val.role,
-      responseCom: val.responseCom,
+      phone: val.mobile,
+      email: val.mail,
+      role: val.showName,
+      responseCom: val.changeShowName,
     });
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
-    // console.log(val)
+  fillDataSource = (val) => {
+    console.log(val)
     const data = [];
-    for (let i = 0; i < 50; i += 1) {
+    val.map((item, index) =>
       data.push({
-        key: i,
-        status: `启用`,
-        email: `hello${i}@sunlands.com`,
-        name: `王五`,
-        role: `学员`,
-        phone: 18500469077,
-        responsyCom: `地球`,
-        comUnit: `太空`,
-      });
-    }
+        key: index,
+        name: item.name,
+        mobile: item.mobile,
+        mail: `${item.entUserId}@sunlans.com`,
+        userType: item.userType==='college'?'学院':item.userType==="family"?'家族':item.userType==='group'?'小组':item.userType==='admin'?'系统管理员':item.userType==='boss'?'高级管理员':'无底表权限', // 需转为中文
+        showName: item.showName,
+        changeShowName: item.changeShowName,
+        id:item.id,
+      })
+    );
+
     return data;
-
-
-    // val.map((item, index) =>
-    //   data.push({
-    //     key: index,
-    //     id: item.id,
-    //     permissionName: item.name,
-    //     permissionType: item.level === 0 ? '页面功能' : item.level === 1 ? '一级页面' : '二级页面',
-    //     permissionRoute: item.resourceUrl,
-    //     parentId: item.parentId,
-    //     icon: item.iconUrl,
-    //     sort: item.sort,
-    //   })
-    // );
-
-
-
-
   };
 
   // 获取table列表头
@@ -109,23 +92,23 @@ class UserList extends Component {
       },
       {
         title: '手机',
-        dataIndex: 'phone',
+        dataIndex: 'mobile',
       },
       {
         title: '邮箱',
-        dataIndex: 'email',
+        dataIndex: 'mail',
       },
       {
         title: '级别',
-        dataIndex: 'role',
+        dataIndex: 'userType',
       },
       {
         title: '负责单位',
-        dataIndex: 'responsyCom',
+        dataIndex: 'showName',
       },
       {
         title: '企业家单位',
-        dataIndex: 'comUnit',
+        dataIndex: 'changeShowName',
       },
       {
         title: '操作',
@@ -167,11 +150,16 @@ class UserList extends Component {
   // 表单搜索
   handleSearch = e => {
     e.preventDefault();
-    let val = {};
     propsVal.form.validateFields((err, values) => {
-      val = values;
+      if (!err) {
+        console.log('进入开始请求')
+        const userListParams = {isUpdate:values.isUpdate==='no'?true:values.isUpdate,name:values.name,mobile:values.mobile };
+        this.props.dispatch({
+          type: 'user/userList',
+          payload: { userListParams },
+        });
+      }
     });
-    this.props.setCurrentUrlParams(val);
   };
 
   // 创建用户
@@ -180,15 +168,14 @@ class UserList extends Component {
   };
 
   render() {
-    console.log(this.props.user.userList)
-    // const data = !this.props.user.userList.response
-    //   ? []
-    //   : !this.props.user.userList.response;
-    // const totalNum = !data.totalElements ? 0 : data.totalElements;
-    // const dataSource = !data.content ? [] : this.fillDataSource(data.content);
+    const data = !this.props.user.userList.response
+      ? []
+      : this.props.user.userList.response;
+    const totalNum = !data.totalElements ? 0 : data.totalElements;
+    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
 
-
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    console.log(dataSource)
+    // const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -208,7 +195,7 @@ class UserList extends Component {
               })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem label="手机" >
-              {getFieldDecorator('phone', {
+              {getFieldDecorator('mobile', {
                 rules: [
                   {
                     required: true,
@@ -218,13 +205,13 @@ class UserList extends Component {
               })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem label="需要更新" >
-              {getFieldDecorator('role', {
+              {getFieldDecorator('isUpdate', {
                 rules: [{ type: 'array', required: true, message: '请选择级别！' }],
               })(<Cascader options={residences}   style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem >
               <div className={common.totalNum}>
-                <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
+                <Button htmlType="submit" type="primary" className={common.searchButton}>
                   搜 索
                 </Button>
                 <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
@@ -250,7 +237,7 @@ class UserList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：50条</p>
+            <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
               dataSource={dataSource}
