@@ -35,6 +35,7 @@ class RoleForm extends Component {
     });
   };
   onCheckAllChange = e => {
+    console.log(e);
     const { listAll } = this.props;
     const { thirChild } = listAll;
     this.setState({
@@ -68,7 +69,7 @@ class RoleForm extends Component {
         <div>
           <p className={styles.littleTitle}>{name}</p>
           <Checkbox
-            onChange={this.onCheckAllChange}
+            onChange={this.onCheckAllChange.bind(this, 22)}
             checked={this.state.checkAll}
             className={styles.checkBox}
           >
