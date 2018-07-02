@@ -64,18 +64,21 @@ class UserList extends Component {
 
   // 编辑用户
   onEdit = val => {
+    console.log(val)
     this.props.setRouteUrlParams('/user/editUser', {
       name: val.name,
       phone: val.mobile,
       email: val.mail,
       role: val.showName,
       responseCom: val.changeShowName,
+      wechatDepartmentId:val.wechatDepartmentId,
+      wechatDepartmentName:val.wechatDepartmentName,
     });
   };
 
   // 初始化tabale 列数据
   fillDataSource = (val) => {
-    console.log(val)
+    // console.log(val)
     const data = [];
     val.map((item, index) =>
       data.push({
@@ -88,6 +91,8 @@ class UserList extends Component {
         showName: item.showName,
         changeShowName: item.changeShowName,
         id:item.id,
+        wechatDepartmentId:item.wechatDepartmentId,
+        wechatDepartmentName:item.wechatDepartmentName,
       })
     );
 

@@ -197,4 +197,11 @@ export async function userAdd(params) {
     body: params,
   });
 }
+// 查看微信部门
+export async function wechatList(params) {
+  return request(`${HOST}/user/wechatList?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
 

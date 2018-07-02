@@ -13,9 +13,9 @@ class AccountForm extends Component {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     this.state = {
-      roleList: !this.props.account.getRoleList.data.content
+      roleList: !this.props.account.getRoleList
         ? []
-        : this.props.account.getRoleList.data.content,
+        : !this.props.account.getRoleList.data?[]:this.props.account.getRoleList.data.content,
       name: !arrValue.name ? '' : arrValue.name,
       email: !arrValue.email ? '' : arrValue.email.substring(0, arrValue.email.indexOf('@')),
       role: !arrValue.role ? null : arrValue.role, // name.substring(0,name.indexOf("@"))
@@ -23,16 +23,6 @@ class AccountForm extends Component {
       id: !arrValue.id ? '' : arrValue.id,
     };
   }
-
-  componentDidMount() {
-    // 为了提前获取角色列表数据。
-    const getRoleListParams = {};
-    this.props.dispatch({
-      type: 'account/getRoleList',
-      payload: { getRoleListParams },
-    });
-  }
-
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {

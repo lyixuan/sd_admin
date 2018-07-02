@@ -33,7 +33,7 @@ class PermissionForm extends Component {
       permissionName: !arrValue.permissionName ? '' : arrValue.permissionName,
       permissionType: !arrValue.permissionType ? null : arrValue.permissionType,
       permissionRoute: !arrValue.permissionRoute ? '' : arrValue.permissionRoute,
-      parentId: !arrValue.parentId ? null : arrValue.parentId,
+      parentId: !arrValue.parentId ? null : Number(arrValue.parentId),
       icon: !arrValue.icon ? '' : arrValue.icon,
       sort: !arrValue.sort ? '' : arrValue.sort,
       id: !arrValue.id ? '' : arrValue.id,
@@ -97,11 +97,11 @@ class PermissionForm extends Component {
   };
 
   roleListFun = val => {
-    // console.log(val)
+    console.log(val)
     const parentIdList = [];
     val.map(item =>
       parentIdList.push({
-        value: item.name,
+        value: item.id,
         label: item.name,
       })
     );

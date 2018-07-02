@@ -1,22 +1,30 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
+import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import PermissionForm from '../../selfComponent/PermissionForm';
 
 const WrappedRegistrationForm = Form.create()(PermissionForm);
+@connect(({ permission, loading }) => ({
+  permission,
+  loading,
+}))
 class CreatePermission extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-  createUser = () => {
-    this.props.setRouteUrlParams('/account/accountList', {
-      a: 2,
-      b: 3,
+  componentDidMount() {
+    const permissionListAllNameParams = {};
+    this.props.dispatch({
+      type: 'permission/permissionListAllName',
+      payload: { permissionListAllNameParams },
     });
-  };
+  }
   render() {
-    return <ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />;
+    return !this.props.permission.permissionListAllName
+      ?[]:!this.props.permission.permissionListAllName.data
+      ? <div />:<ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />;
   }
 }
 

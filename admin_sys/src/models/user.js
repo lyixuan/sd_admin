@@ -4,7 +4,8 @@ import {
   updateUserOrg,
   updateUserInfo,
   userDelete,
-  userAdd, getRoleListAll, addPermission,
+  wechatList,
+  userAdd,
 } from '../services/api';
 
 export default {
@@ -13,6 +14,7 @@ export default {
   state: {
     // 接口返回数据存储
     userList: [],
+    wechatList: [],
   },
 
   effects: {
@@ -45,6 +47,11 @@ export default {
       console.log(response)
       yield put({ type: 'userListSave', payload: { response } });
     },
+    *wechatList({ payload }, { call, put }) {
+      const response = yield call(wechatList, payload.wechatListParams);
+      console.log(response)
+      yield put({ type: 'wechatListSave', payload: { response } });
+    },
   },
 
   reducers: {
@@ -52,6 +59,12 @@ export default {
       return {
         ...state,
         userList: action.payload,
+      };
+    },
+    wechatListSave(state, action) {
+      return {
+        ...state,
+        wechatList: action.payload,
       };
     },
   },

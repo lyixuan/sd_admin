@@ -21,12 +21,6 @@ class AccountList extends Component {
       type: 'account/accountList',
       payload: { accountListParams },
     });
-    // 为了提前获取角色列表数据。
-    const getRoleListParams = {};
-    this.props.dispatch({
-      type: 'account/getRoleList',
-      payload: { getRoleListParams },
-    });
   }
 
   // 删除账号函数  删除后数据更新？
