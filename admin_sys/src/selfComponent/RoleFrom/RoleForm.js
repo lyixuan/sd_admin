@@ -107,15 +107,17 @@ class RoleForm extends Component {
       item.forEach(key => {
         plainOptions.push({ label: key.name, value: key.id });
       });
-      plainOptions.forEach(n => {
-        getRoleIds.forEach(m => {
-          if (n.value === m) {
-            len += 1;
-          }
+      if (getRoleIds) {
+        plainOptions.forEach(n => {
+          getRoleIds.forEach(m => {
+            if (n.value === m) {
+              len += 1;
+            }
+          });
         });
-      });
-      if (!isClick && len === plainOptions.length) {
-        checkAllObj[checkAllKey] = true;
+        if (!isClick && len === plainOptions.length) {
+          checkAllObj[checkAllKey] = true;
+        }
       }
 
       return (

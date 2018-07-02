@@ -1,5 +1,27 @@
 import moment from 'moment';
 
+/*
+* 扁平转树状结构
+* id，parentId
+* */
+export function getJsonTree(data, parentId) {
+  const itemArr = [];
+  for (let i = 0; i < data.length; i += 1) {
+    const node = data[i];
+    if (node.parentId === Number(parentId)) {
+      const newNode = {
+        id: node.id,
+        name: node.name,
+        checkAll: `checkAll${node.id}`,
+        checkedList: `checkedList${node.id}`,
+        nodes: getJsonTree(data, node.id),
+      };
+      itemArr.push(newNode);
+    }
+  }
+  return itemArr;
+}
+
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
 }
@@ -74,15 +96,15 @@ function accMul(arg1, arg2) {
   let m = 0;
   const s1 = arg1.toString();
   const s2 = arg2.toString();
-  m += s1.split(".").length > 1 ? s1.split(".")[1].length : 0;
-  m += s2.split(".").length > 1 ? s2.split(".")[1].length : 0;
-  return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / 10 ** m;
+  m += s1.split('.').length > 1 ? s1.split('.')[1].length : 0;
+  m += s2.split('.').length > 1 ? s2.split('.')[1].length : 0;
+  return Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / 10 ** m;
 }
 
 export function digitUppercase(n) {
   const fraction = ['角', '分'];
   const digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
-  const unit = [['元', '万', '亿'],['', '拾', '佰', '仟', '万']];
+  const unit = [['元', '万', '亿'], ['', '拾', '佰', '仟', '万']];
   let num = Math.abs(n);
   let s = '';
   fraction.forEach((item, index) => {
