@@ -49,7 +49,7 @@ class ModalDemo extends React.Component {
             </Button>,
           ]}
         >
-          {!modalContent ? defaultModal : modalContent}
+          {!modalContent ? defaultModal : <div style={{ textAlign: 'center' }}>{modalContent}</div>}
         </Modal>
       </div>
     );

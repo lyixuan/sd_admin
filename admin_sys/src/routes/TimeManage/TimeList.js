@@ -3,6 +3,7 @@ import { Table, Button, Pagination, Form, Popconfirm, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
@@ -10,9 +11,20 @@ const { RangePicker } = DatePicker;
 let propsVal = '';
 const dateFormat = 'YYYY/MM/DD';
 
-class RefundList extends Component {
+class TimeList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: false,
+    };
+  }
+
   componentDidMount() {}
 
+  // 添加
+  onAdd = () => {
+    this.showModal(true);
+  };
   // 删除账号函数  删除后数据更新？
   onDelete = key => {
     console.log(key.id);
@@ -28,6 +40,11 @@ class RefundList extends Component {
     console.log(current, pageSize);
   };
 
+  showModal = bol => {
+    this.setState({
+      visible: bol,
+    });
+  };
   // 点击某一页函数
   changePage = (current, pageSize) => {
     console.log(current, pageSize);
@@ -84,11 +101,20 @@ class RefundList extends Component {
     ];
     return columns;
   };
-
   render() {
+    const { visible } = this.state;
     const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
+
+    const datePicker = (
+      <RangePicker
+        initialValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+        format={dateFormat}
+        style={{ width: 230, height: 32 }}
+      />
+    );
+
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -97,13 +123,7 @@ class RefundList extends Component {
           <FormItem label="可选范围">
             {getFieldDecorator('dateRange', {
               rules: [{ required: true, message: '请选择生效日期' }],
-            })(
-              <RangePicker
-                defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
-                format={dateFormat}
-                style={{ width: 230, height: 32 }}
-              />
-            )}
+            })(datePicker)}
           </FormItem>
           <FormItem style={{ marginLeft: 119 }}>
             <Button type="primary" htmlType="submit" className={common.searchButton}>
@@ -114,34 +134,40 @@ class RefundList extends Component {
       );
     });
     return (
-      <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="时间管理"
-        contentForm={<WrappedAdvancedSearchForm />}
-        contentButton={
-          <div>
-            <AuthorizedButton authority="/refund/refundAdd">
-              <Button onClick={this.refundAdd} type="primary" className={common.searchButton}>
+      <div>
+        <ContentLayout
+          pageHeraderUnvisible="unvisible"
+          title="时间管理"
+          contentForm={<WrappedAdvancedSearchForm />}
+          contentButton={
+            <AuthorizedButton authority="/timeManage/TimeList">
+              <Button onClick={this.onAdd} type="primary" className={common.searchButton}>
                 添加
               </Button>
             </AuthorizedButton>
-          </div>
-        }
-        contentTable={
-          <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
-        }
-        contentPagination={
-          <Pagination
-            showSizeChanger
-            onChange={this.changePage}
-            onShowSizeChange={this.onShowSizeChange}
-            defaultCurrent={3}
-            total={100}
-            className={common.paginationStyle}
-          />
-        }
-      />
+          }
+          contentTable={
+            <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+          }
+          contentPagination={
+            <Pagination
+              showSizeChanger
+              onChange={this.changePage}
+              onShowSizeChange={this.onShowSizeChange}
+              defaultCurrent={3}
+              total={100}
+              className={common.paginationStyle}
+            />
+          }
+        />
+        <ModalDialog
+          title="添加不可用时间"
+          visible={visible}
+          modalContent={datePicker}
+          showModal={bol => this.showModal(bol)}
+        />
+      </div>
     );
   }
 }
-export default RefundList;
+export default TimeList;
