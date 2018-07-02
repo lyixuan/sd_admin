@@ -27,9 +27,16 @@ class RoleForm extends Component {
     checkAllObj = null;
   }
   onChange = (secList, key, listKey, checkedList) => {
-    console.log(checkedList);
+    let len = 0;
+    secList.forEach(n => {
+      checkedList.forEach(m => {
+        if (n.id === m) {
+          len += 1;
+        }
+      });
+    });
     checkAllObj[listKey] = checkedList;
-    checkAllObj[key] = checkedList.length === secList.length;
+    checkAllObj[key] = len === secList.length;
   };
   onCheckAllChange = (secList, allKey, listKey, e) => {
     const nodeIDs = [];
@@ -58,7 +65,7 @@ class RoleForm extends Component {
         if (privilegeIds.length === 0) {
           privilegeIds = this.props.getRoleIds;
         }
-        this.props.submitInfo(values, privilegeIds);
+        this.props.submitInfo(values, Array.from(new Set(privilegeIds)));
       } else {
         console.error(err);
       }
@@ -74,11 +81,26 @@ class RoleForm extends Component {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
+
     const secLevel = (name, item, checkAllKey, listKey) => {
+      let len = 0;
       const plainOptions = [];
       item.forEach(key => {
         plainOptions.push({ label: key.name, value: key.id });
       });
+      plainOptions.forEach(n => {
+        getRoleIds.forEach(m => {
+          if (n.value === m) {
+            len += 1;
+          }
+        });
+      });
+      if (len === plainOptions.length) {
+        checkAllObj[checkAllKey] = true;
+      } else {
+        checkAllObj[checkAllKey] = false;
+      }
+
       return (
         <div>
           <p className={styles.littleTitle}>{name}</p>
