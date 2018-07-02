@@ -33,7 +33,7 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    const userListParams = { };
+    const userListParams = {size: 50, number: 0};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },

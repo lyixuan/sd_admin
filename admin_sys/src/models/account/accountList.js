@@ -34,7 +34,7 @@ export default {
     },
     *addAccount({ payload }, { call, put }) {
       const result = yield call(addAccount, payload.addAccountParams);
-      const response = yield call(queryAccountList, {});
+      const response = yield call(queryAccountList, {size: 50, number: 0});
       console.log(result,result.code)
       console.log(result.code === 0 || result.code === 2000)
       if(result.code === 0 || result.code === 2000){
@@ -48,7 +48,7 @@ export default {
     },
     *updateAccount({ payload }, { call, put }) {
       const result = yield call(updateAccount, payload.updateAccountParams);
-      const response = yield call(queryAccountList, {});
+      const response = yield call(queryAccountList, {size: 50, number: 0});
       console.log(result)
       yield put({
         type: 'accountListSave',
@@ -58,7 +58,7 @@ export default {
     *deleteAccount({ payload }, { call, put }) {
       console.log(payload.deleteAccountParams);
       yield call(deleteAccount, payload.deleteAccountParams);
-      const response = yield call(queryAccountList, {});
+      const response = yield call(queryAccountList, {size: 50, number: 0});
       console.log(response)
       yield put({
         type: 'accountListSave',

@@ -27,25 +27,25 @@ export default {
     },
     *updateUserOrg({ payload }, { call, put }) {
       yield call(updateUserOrg, payload.updateUserOrgParams);
-      const response = yield call(userList, payload.userListParams);
+      const response = yield call(userList, {size: 50, number: 0});
       console.log(response)
       yield put({ type: 'userListSave', payload: { response } });
     },
     *updateUserInfo({ payload }, { call, put }) {
       yield call(updateUserInfo, payload.updateUserInfoParams);
-      const response = yield call(userList, {});
+      const response = yield call(userList, {size: 50, number: 0});
       console.log(response)
       yield put({ type: 'userListSave', payload: { response } });
     },
     *userDelete({ payload }, { call, put }) {
       yield call(userDelete, payload.userDeleteParams);
-      const response = yield call(userList, {});
+      const response = yield call(userList, {size: 50, number: 0});
       console.log(response)
       yield put({ type: 'userListSave', payload: { response } });
     },
     *userAdd({ payload }, { call, put }) {
       yield call(userAdd, payload.userAddParams);
-      const response = yield call(userList, {});
+      const response = yield call(userList, {size: 50, number: 0});
       console.log(response)
       yield put({ type: 'userListSave', payload: { response } });
     },

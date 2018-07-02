@@ -18,7 +18,7 @@ class PermissionList extends Component {
   }
 
   componentDidMount() {
-    const permissionListParams = {};
+    const permissionListParams = {size: 50, number: 0};
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Pagination, Popconfirm } from 'antd';
+import { Table, Button, Popconfirm } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 
 @connect(({ account, loading }) => ({
@@ -16,7 +17,7 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const accountListParams = {};
+    const accountListParams = {size: 50, number: 0};
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
@@ -49,6 +50,7 @@ class AccountList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
+    console.log(pageSize,current);
     const accountListParams = { size: pageSize, number: current - 1 };
     console.log(accountListParams);
     this.props.dispatch({
@@ -59,6 +61,7 @@ class AccountList extends Component {
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
+    console.log(pageSize,current);
     const accountListParams = { size: pageSize, number: current - 1 };
     console.log(accountListParams);
     this.props.dispatch({
@@ -136,40 +139,46 @@ class AccountList extends Component {
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
+    console.log(totalNum)
     return (
-      <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="账号列表"
-        contentButton={
-          <AuthorizedButton authority="/account/createAccount">
-            <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
-              + 创建
-            </Button>
-          </AuthorizedButton>
-        }
-        contentTable={
-          <div>
-            <p className={common.totalNum}>总数：{totalNum}条</p>
-            <Table
-              bordered
-              dataSource={dataSource}
-              columns={columns}
-              pagination={false}
-              className={common.tableContentStyle}
-            />
-          </div>
-        }
-        contentPagination={
-          <Pagination
-            showSizeChanger
-            onChange={this.changePage}
-            onShowSizeChange={this.onShowSizeChange}
-            defaultCurrent={1}
-            total={totalNum}
-            className={common.paginationStyle}
-          />
-        }
-      />
+      !this.props.account.accountList.response
+        ? <div />
+        : !this.props.account.accountList.response.data
+        ? <div />
+        :(
+          <ContentLayout
+            pageHeraderUnvisible="unvisible"
+            title="账号列表"
+            contentButton={
+              <AuthorizedButton authority="/account/createAccount">
+                <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
+                  + 创建
+                </Button>
+              </AuthorizedButton>
+            }
+            contentTable={
+              <div>
+                <p className={common.totalNum}>总数：{totalNum}条</p>
+                <Table
+                  bordered
+                  dataSource={dataSource}
+                  columns={columns}
+                  pagination={false}
+                  className={common.tableContentStyle}
+                />
+              </div>
+            }
+            contentPagination={
+              <SelfPagination
+                onChange={(current, pageSize)=>{this.changePage(current, pageSize)}}
+                onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
+                defaultCurrent={1}
+                total={totalNum}
+                defaultPageSize={50}
+                pageSizeOptions={['50']}
+              />
+            }
+          />)
     );
   }
 }

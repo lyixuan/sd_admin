@@ -25,13 +25,13 @@ export default {
     },
     *addPermission({ payload }, { call, put }) {
       yield call(addPermission, payload.addPermissionParams);
-      const response = yield call(getRoleListAll, {});
+      const response = yield call(getRoleListAll, {size: 50, number: 0});
       console.log(response)
       yield put({ type: 'permissionListSave', payload: { response } });
     },
     *updatePermission({ payload }, { call, put }) {
       yield call(updatePermission, payload.updatePermissionParams);
-      const response = yield call(getRoleListAll, {});
+      const response = yield call(getRoleListAll, {size: 50, number: 0});
       console.log(response)
       yield put({ type: 'permissionListSave', payload: { response } });
     },

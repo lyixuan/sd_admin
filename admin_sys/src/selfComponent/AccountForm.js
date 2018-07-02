@@ -18,8 +18,8 @@ class AccountForm extends Component {
         ? []
         : !this.props.account.getRoleList.data?[]:this.props.account.getRoleList.data.content,
       name: !arrValue.name ? '' : arrValue.name,
-      email: !arrValue.email ? '' : formatEmail(arrValue.email), // !arrValue.email.substring(0, arrValue.email.indexOf('@'))?arrValue.email:arrValue.email.substring(0, arrValue.email.indexOf('@')), // arrValue.email.substring(0, arrValue.email.indexOf('@')),
-      role: !arrValue.role ? null : arrValue.role, // name.substring(0,name.indexOf("@"))
+      email: !arrValue.email ? '' : formatEmail(arrValue.email),
+      role: !arrValue.role ? null : arrValue.role,
       from: !arrValue.from ? '' : arrValue.from,
       id: !arrValue.id ? '' : arrValue.id,
     };
