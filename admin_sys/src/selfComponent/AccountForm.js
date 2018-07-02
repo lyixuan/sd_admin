@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Cascader, Button, message } from 'antd';
+import {formatEmail} from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
@@ -17,7 +18,7 @@ class AccountForm extends Component {
         ? []
         : !this.props.account.getRoleList.data?[]:this.props.account.getRoleList.data.content,
       name: !arrValue.name ? '' : arrValue.name,
-      email: !arrValue.email ? '' : arrValue.email.substring(0, arrValue.email.indexOf('@')),
+      email: !arrValue.email ? '' : formatEmail(arrValue.email), // !arrValue.email.substring(0, arrValue.email.indexOf('@'))?arrValue.email:arrValue.email.substring(0, arrValue.email.indexOf('@')), // arrValue.email.substring(0, arrValue.email.indexOf('@')),
       role: !arrValue.role ? null : arrValue.role, // name.substring(0,name.indexOf("@"))
       from: !arrValue.from ? '' : arrValue.from,
       id: !arrValue.id ? '' : arrValue.id,

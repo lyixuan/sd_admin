@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
 import { connect } from 'dva';
+import {formatEmail} from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
@@ -29,7 +30,7 @@ class UserForm extends Component {
       //   : this.props.account.wechatList.data.content,
       name: !arrValue.name ? null : arrValue.name,
       phone: !arrValue.phone ? null : arrValue.phone,
-      email: !arrValue.email ? null : !arrValue.email.substring(0, arrValue.email.indexOf('@'))?arrValue.email:arrValue.email.substring(0, arrValue.email.indexOf('@')), // arrValue.email.substring(0, arrValue.email.indexOf('@'))
+      email: !arrValue.email ? null : formatEmail(arrValue.email),// !arrValue.email.substring(0, arrValue.email.indexOf('@'))?arrValue.email:arrValue.email.substring(0, arrValue.email.indexOf('@')), // arrValue.email.substring(0, arrValue.email.indexOf('@'))
       role: !arrValue.role ? null : arrValue.role,
       responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
       wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
