@@ -48,7 +48,7 @@ class AccountForm extends Component {
         if (this.state.from === 'edit') {
           const updateAccountParams = {
             name: values.name,
-            mail: values.mail,
+            mail: `${values.mail}@sunlans.com`,
             roleId: newRoleId,
             id: Number(this.state.id),
           };
@@ -58,7 +58,7 @@ class AccountForm extends Component {
             payload: { updateAccountParams },
           });
         } else {
-          const addAccountParams = { name: values.name, mail: values.mail, roleId: newRoleId };
+          const addAccountParams = { name: values.name, mail:`${values.mail}@sunlans.com`, roleId: newRoleId };
           console.log(addAccountParams);
           this.props.dispatch({
             type: 'account/addAccount',

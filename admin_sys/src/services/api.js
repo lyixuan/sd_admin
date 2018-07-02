@@ -94,7 +94,7 @@ export async function getRoleAdd(params) {
 * params：{name}
 * */
 export async function getRoleListAll(params) {
-  return request(`${HOST}/privilege/listAll`, {
+  return request(`${HOST}/privilege/listAll?${stringify(params)}`, {
     method: 'GET',
     body: params,
   });
@@ -169,14 +169,14 @@ export async function userList(params) {
     body: params,
   });
 }
-// 更新用户组织结构
+// 更新用户组织结构  慧慧提示该put接口要在url后面添加参数
 export async function updateUserOrg(params) {
   return request(`${HOST}/user/updateOrg?${stringify(params)}`, {
     method: 'PUT',
     body: params,
   });
 }
-// 更新用户信息
+// 更新用户信息 慧慧提示该put接口要在url后面添加参数
 export async function updateUserInfo(params) {
   return request(`${HOST}/user/updateInfo?${stringify(params)}`, {
     method: 'PUT',

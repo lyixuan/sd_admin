@@ -81,7 +81,7 @@ class AccountList extends Component {
         key: index,
         name: item.name,
         role: item.rname,
-        email: `${item.mail}@sunlans.com`, // const newmail = `${values.mail}@sunlans.com`;
+        email: item.mail, //   const newmail = `${values.mail}@sunlans.com`;
         id: item.id,
         roleId: item.roleId,
       })

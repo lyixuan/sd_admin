@@ -83,7 +83,7 @@ class UserList extends Component {
         key: index,
         name: item.name,
         mobile: item.mobile,
-        mail: `${item.entUserId}@sunlans.com`,
+        mail: item.entUserId,
         userType: item.userType==='college'?'学院':item.userType==="family"?'家族':item.userType==='group'?'小组':item.userType==='admin'?'系统管理员':item.userType==='boss'?'高级管理员':'无底表权限', // 需转为中文
         showName: item.showName,
         changeShowName: item.changeShowName,
@@ -164,6 +164,8 @@ class UserList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         console.log('进入开始请求')
+        // searchName= !
+        //   searchMobile=
         const userListParams = {isUpdate:values.isUpdate==='no'?true:values.isUpdate,name:values.name,mobile:values.mobile };
         this.props.dispatch({
           type: 'user/userList',

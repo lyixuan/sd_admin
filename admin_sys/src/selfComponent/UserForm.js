@@ -20,7 +20,7 @@ class UserForm extends Component {
     this.state = {
       name: !arrValue.name ? null : arrValue.name,
       phone: !arrValue.phone ? null : arrValue.phone,
-      email: !arrValue.email ? null : arrValue.email,
+      email: !arrValue.email ? '' : arrValue.email.substring(0, arrValue.email.indexOf('@')),
       role: !arrValue.role ? null : arrValue.role,
       responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
     };
@@ -95,7 +95,7 @@ class UserForm extends Component {
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*邮 箱">
-            {getFieldDecorator('string', {
+            {getFieldDecorator('email', {
               initialValue: this.state.email,
               rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
             })(<Input style={{ width: 264 }} />)}
