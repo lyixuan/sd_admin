@@ -148,7 +148,7 @@ export const getRouterData = app => {
     '/refund/refundDel': {
       component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundDel')),
     },
-    '/Complaint/complaintList': {
+    '/complaint/complaintList': {
       component: dynamicWrapper(app, [], () => import('../routes/Complaint/ComplaintList')),
     },
     '/complaint/complaintAdd': {
@@ -156,6 +156,9 @@ export const getRouterData = app => {
     },
     '/complaint/complaintDel': {
       component: dynamicWrapper(app, [], () => import('../routes/Complaint/ComplaintDel')),
+    },
+    '/timeManage/timeList': {
+      component: dynamicWrapper(app, [], () => import('../routes/TimeManage/TimeList')),
     },
     '/shotName/Group': {
       component: dynamicWrapper(app, [], () => import('../routes/ShotName/Group')),

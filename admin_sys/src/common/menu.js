@@ -159,6 +159,17 @@ const menuData = [
     ],
   },
   {
+    name: '时间管理',
+    icon: 'check-circle-o',
+    path: 'timeManage',
+    children: [
+      {
+        name: '时间列表',
+        path: 'timeList',
+      },
+    ],
+  },
+  {
     name: '短名称管理',
     icon: 'check-circle-o',
     path: 'shotName',
