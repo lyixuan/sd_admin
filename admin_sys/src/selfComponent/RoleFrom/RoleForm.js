@@ -6,11 +6,28 @@ import styles from './RoleForm.css';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 
-let defaultValue = [];
-const checkAllObj = {};
+let checkAllObj = {};
 
 class RoleForm extends Component {
+  constructor(props) {
+    super(props);
+    checkAllObj = {};
+  }
+  // getCheckObj = {
+  //   checkAllObj:{},
+  //   get:()=>{
+  //     return this.checkAllObj;
+  //   },
+  //   set:(checkAllObj)=>{
+  //     this.checkAllObj = checkAllObj;
+  //   }
+  // };
+
+  componentWillUnmount() {
+    checkAllObj = null;
+  }
   onChange = (secList, key, listKey, checkedList) => {
+    console.log(checkedList);
     checkAllObj[listKey] = checkedList;
     checkAllObj[key] = checkedList.length === secList.length;
   };
@@ -27,35 +44,37 @@ class RoleForm extends Component {
     window.history.go(-1);
   };
   handleSubmit = e => {
-    let arr = [];
+    let privilegeIds = [];
     Object.keys(checkAllObj).map(key => {
       if (key.indexOf('checkedList') > -1) {
-        arr = [...arr, ...checkAllObj[key]];
+        privilegeIds = [...privilegeIds, ...checkAllObj[key]];
       }
-      return arr;
+      return privilegeIds;
     });
 
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.submitInfo(values, arr);
+        if (privilegeIds.length === 0) {
+          privilegeIds = this.props.getRoleIds;
+        }
+        this.props.submitInfo(values, privilegeIds);
       } else {
         console.error(err);
       }
     });
   };
   render() {
-    defaultValue = this.props.getRoleIds;
-    console.log(defaultValue);
-    const { listAll, isShowFooter } = this.props;
+    const { listAll, isShowFooter, getRoleIds } = this.props;
     const { getFieldDecorator } = this.props.form;
+    let isDisabled = true;
+    if (isShowFooter) isDisabled = false;
+
     const formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
     const secLevel = (name, item, checkAllKey, listKey) => {
-      let isDisabled = true;
-      if (isShowFooter) isDisabled = false;
       const plainOptions = [];
       item.forEach(key => {
         plainOptions.push({ label: key.name, value: key.id });
@@ -73,7 +92,7 @@ class RoleForm extends Component {
           </Checkbox>
           <CheckboxGroup
             options={plainOptions}
-            value={checkAllObj[listKey]}
+            value={!checkAllObj[listKey] ? getRoleIds : checkAllObj[listKey]}
             disabled={isDisabled}
             onChange={this.onChange.bind(this, item, checkAllKey, listKey)}
             className={styles.checkboxGroup}
@@ -87,7 +106,7 @@ class RoleForm extends Component {
           <FormItem {...formItemLayout} label="*角色名称：">
             {getFieldDecorator('name', {
               rules: [{ required: true, message: '请输入角色名称!', whitespace: true }],
-            })(<Input style={{ width: '220px', height: '32px' }} />)}
+            })(<Input disabled={isDisabled} style={{ width: '220px', height: '32px' }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label=" *角色权限：">
             {getFieldDecorator('privilegeIds', {})(
