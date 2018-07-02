@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
 import { connect } from 'dva';
-import {formatEmail} from '../utils/email';
+import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
@@ -30,13 +30,13 @@ class UserForm extends Component {
       //   : this.props.account.wechatList.data.content,
       name: !arrValue.name ? null : arrValue.name,
       phone: !arrValue.phone ? null : arrValue.phone,
-      email: !arrValue.email ? null : formatEmail(arrValue.email),// !arrValue.email.substring(0, arrValue.email.indexOf('@'))?arrValue.email:arrValue.email.substring(0, arrValue.email.indexOf('@')), // arrValue.email.substring(0, arrValue.email.indexOf('@'))
+      email: !arrValue.email ? null : formatEmail(arrValue.email), // !arrValue.email.substring(0, arrValue.email.indexOf('@'))?arrValue.email:arrValue.email.substring(0, arrValue.email.indexOf('@')), // arrValue.email.substring(0, arrValue.email.indexOf('@'))
       role: !arrValue.role ? null : arrValue.role,
       responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
       wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
       wechatDepartmentName: !arrValue.wechatDepartmentName ? null : arrValue.wechatDepartmentName,
     };
-    console.log(this.state)
+    console.log(this.state);
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -47,7 +47,9 @@ class UserForm extends Component {
     });
   };
 
-  changeSlect = () => {console.log("change数据内容了")}
+  changeSlect = () => {
+    console.log('change数据内容了');
+  };
 
   resetContent = () => {
     console.log(this.props);
@@ -81,7 +83,7 @@ class UserForm extends Component {
         },
       },
     };
-    console.log(this.props.user)
+    console.log(this.props.user);
     return (
       <div>
         {/*
@@ -119,7 +121,9 @@ class UserForm extends Component {
             {getFieldDecorator('role', {
               initialValue: [this.state.role],
               rules: [{ type: 'array', required: true, message: '请选择级别！' }],
-            })(<Cascader options={residences}  onChange={this.changeSlect} style={{ width: 380 }} />)}
+            })(
+              <Cascader options={residences} onChange={this.changeSlect} style={{ width: 380 }} />
+            )}
           </FormItem>
           <FormItem {...formItemLayout} label="*负责单位">
             {getFieldDecorator('responseCom', {

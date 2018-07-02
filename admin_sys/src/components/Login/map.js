@@ -8,7 +8,7 @@ const map = {
     props: {
       size: 'large',
       prefix: <Icon type="user" className={styles.prefixIcon} />,
-      placeholder: 'admin',
+      placeholder: '请输入邮箱',
     },
     rules: [
       {
@@ -22,7 +22,7 @@ const map = {
       size: 'large',
       prefix: <Icon type="lock" className={styles.prefixIcon} />,
       type: 'password',
-      placeholder: '888888',
+      placeholder: '请输入密码',
     },
     rules: [
       {
@@ -53,9 +53,15 @@ const map = {
     component: Input,
     props: {
       size: 'large',
-      prefix: <Icon type="mail" className={styles.prefixIcon} />,
-      placeholder: 'captcha',
+      prefix: <Icon type="user" className={styles.prefixIcon} />,
+      placeholder: '请输入账户邮箱',
     },
+    rules: [
+      {
+        required: true,
+        message: '账户不能为空!',
+      },
+    ],
   },
   Captcha: {
     component: Input,

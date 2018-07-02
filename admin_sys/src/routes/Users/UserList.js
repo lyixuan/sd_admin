@@ -64,35 +64,43 @@ class UserList extends Component {
 
   // 编辑用户
   onEdit = val => {
-    console.log(val)
+    console.log(val);
     this.props.setRouteUrlParams('/user/editUser', {
       name: val.name,
       phone: val.mobile,
       email: val.mail,
       role: val.showName,
       responseCom: val.changeShowName,
-      wechatDepartmentId:val.wechatDepartmentId,
-      wechatDepartmentName:val.wechatDepartmentName,
+      wechatDepartmentId: val.wechatDepartmentId,
+      wechatDepartmentName: val.wechatDepartmentName,
     });
   };
 
   // 初始化tabale 列数据
-  fillDataSource = (val) => {
+  fillDataSource = val => {
     // console.log(val)
     const data = [];
     val.map((item, index) =>
       data.push({
-
         key: index,
         name: item.name,
         mobile: item.mobile,
         mail: item.entUserId,
-        userType: item.userType==='college'?'学院':item.userType==="family"?'家族':item.userType==='group'?'小组':item.userType==='admin'?'系统管理员':item.userType==='boss'?'高级管理员':'无底表权限', // 需转为中文
+        userType:
+          item.userType === 'college'
+            ? '学院'
+            : item.userType === 'family'
+              ? '家族'
+              : item.userType === 'group'
+                ? '小组'
+                : item.userType === 'admin'
+                  ? '系统管理员'
+                  : item.userType === 'boss' ? '高级管理员' : '无底表权限', // 需转为中文
         showName: item.showName,
         changeShowName: item.changeShowName,
-        id:item.id,
-        wechatDepartmentId:item.wechatDepartmentId,
-        wechatDepartmentName:item.wechatDepartmentName,
+        id: item.id,
+        wechatDepartmentId: item.wechatDepartmentId,
+        wechatDepartmentName: item.wechatDepartmentName,
       })
     );
 
@@ -168,10 +176,14 @@ class UserList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        console.log('进入开始请求')
+        console.log('进入开始请求');
         // searchName= !
         //   searchMobile=
-        const userListParams = {isUpdate:values.isUpdate==='no'?true:values.isUpdate,name:values.name,mobile:values.mobile };
+        const userListParams = {
+          isUpdate: values.isUpdate === 'no' ? true : values.isUpdate,
+          name: values.name,
+          mobile: values.mobile,
+        };
         this.props.dispatch({
           type: 'user/userList',
           payload: { userListParams },
@@ -186,10 +198,7 @@ class UserList extends Component {
   };
 
   render() {
-
-    const data = !this.props.user.userList.response
-      ? []
-      : this.props.user.userList.response;
+    const data = !this.props.user.userList.response ? [] : this.props.user.userList.response;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
@@ -210,7 +219,7 @@ class UserList extends Component {
                 ],
               })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="手机" >
+            <FormItem label="手机">
               {getFieldDecorator('mobile', {
                 rules: [
                   {
@@ -220,7 +229,7 @@ class UserList extends Component {
                 ],
               })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="需要更新" >
+            <FormItem label="需要更新">
               {getFieldDecorator('isUpdate', {
                 rules: [{ type: 'array', required: true, message: '请选择级别！' }],
               })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}

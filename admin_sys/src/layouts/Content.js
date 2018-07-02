@@ -37,6 +37,4 @@ export default ({ children, wrapperClassName, top, title, flag, ...restProps }) 
   //       </div>
   //     )
   // );
-
-
 };

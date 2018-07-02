@@ -22,7 +22,13 @@ class CreateAccount extends Component {
     });
   }
   render() {
-    return !this.props.account.getRoleList?[]:!this.props.account.getRoleList.data?<div />:<ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />;
+    return !this.props.account.getRoleList ? (
+      []
+    ) : !this.props.account.getRoleList.data ? (
+      <div />
+    ) : (
+      <ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />
+    );
   }
 }
 

@@ -7,11 +7,13 @@ const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 
 let checkAllObj = {};
+let isClick = false;
 
 class RoleForm extends Component {
   constructor(props) {
     super(props);
     checkAllObj = {};
+    isClick = false;
   }
   // getCheckObj = {
   //   checkAllObj:{},
@@ -25,8 +27,13 @@ class RoleForm extends Component {
 
   componentWillUnmount() {
     checkAllObj = null;
+    isClick = null;
   }
+  /*
+  * 单选按钮事件
+  * */
   onChange = (secList, key, listKey, checkedList) => {
+    isClick = true;
     let len = 0;
     secList.forEach(n => {
       checkedList.forEach(m => {
@@ -38,7 +45,11 @@ class RoleForm extends Component {
     checkAllObj[listKey] = checkedList;
     checkAllObj[key] = len === secList.length;
   };
+  /*
+  * 全选按钮事件
+  * */
   onCheckAllChange = (secList, allKey, listKey, e) => {
+    isClick = true;
     const nodeIDs = [];
     secList.forEach(key => {
       nodeIDs.push(key.id);
@@ -47,9 +58,15 @@ class RoleForm extends Component {
     checkAllObj[listKey] = e.target.checked ? nodeIDs : [];
     checkAllObj[allKey] = e.target.checked;
   };
+  /*
+  * 取消事件
+  * */
   cancel = () => {
     window.history.go(-1);
   };
+  /*
+  * 提交事件
+  * */
   handleSubmit = e => {
     let privilegeIds = [];
     Object.keys(checkAllObj).map(key => {
@@ -81,24 +98,26 @@ class RoleForm extends Component {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
-
+    /*
+    * 复选框
+    * */
     const secLevel = (name, item, checkAllKey, listKey) => {
       let len = 0;
       const plainOptions = [];
       item.forEach(key => {
         plainOptions.push({ label: key.name, value: key.id });
       });
-      plainOptions.forEach(n => {
-        getRoleIds.forEach(m => {
-          if (n.value === m) {
-            len += 1;
-          }
+      if (getRoleIds) {
+        plainOptions.forEach(n => {
+          getRoleIds.forEach(m => {
+            if (n.value === m) {
+              len += 1;
+            }
+          });
         });
-      });
-      if (len === plainOptions.length) {
-        checkAllObj[checkAllKey] = true;
-      } else {
-        checkAllObj[checkAllKey] = false;
+        if (!isClick && len === plainOptions.length) {
+          checkAllObj[checkAllKey] = true;
+        }
       }
 
       return (

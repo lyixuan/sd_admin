@@ -7,18 +7,25 @@ export default {
   namespace: 'login',
 
   state: {
-    status: undefined,
+    status: null,
+    msg: '',
   },
 
   effects: {
     *login({ payload }, { call, put }) {
+      const { mail, password } = payload;
       const response = yield call(userLogin, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.status === true) {
+        const { userId, token } = response.data;
+        if (payload.autoLogin === true) {
+          setAuthority('admin_user', { mail, password, userId }); // 存储用户信息
+        }
+        setAuthority('admin_token', { userId, token }); // 存储api token
         reloadAuthorized();
         yield put(routerRedux.push('/'));
       }
@@ -47,11 +54,9 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority('userInfo', payload.userInfo); // 存储用户信息
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        ...payload,
       };
     },
   },

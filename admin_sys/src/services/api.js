@@ -211,4 +211,3 @@ export async function wechatList(params) {
     body: params,
   });
 }
-

@@ -22,9 +22,13 @@ class CreatePermission extends Component {
     });
   }
   render() {
-    return !this.props.permission.permissionListAllName
-      ?[]:!this.props.permission.permissionListAllName.data
-      ? <div />:<ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />;
+    return !this.props.permission.permissionListAllName ? (
+      []
+    ) : !this.props.permission.permissionListAllName.data ? (
+      <div />
+    ) : (
+      <ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />
+    );
   }
 }
 

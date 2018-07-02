@@ -1,4 +1,4 @@
-import { message} from 'antd';
+import { message } from 'antd';
 import {
   queryAccountList,
   addAccount,
@@ -7,14 +7,12 @@ import {
   getRoleList,
 } from '../../services/api';
 
-
 export default {
   namespace: 'account',
 
   state: {
-
     // 请求接口上送参数
-    accountListParams: {size: 50, number: 0},
+    accountListParams: { size: 50, number: 0 },
     addAccountParams: {},
     updateAccountParams: {},
     deleteAccountParams: {},
@@ -27,9 +25,9 @@ export default {
 
   effects: {
     *accountList({ payload }, { call, put }) {
-      const {accountListParams} = payload;
-      const response = yield call(queryAccountList, {...accountListParams});
-      console.log(response)
+      const { accountListParams } = payload;
+      const response = yield call(queryAccountList, { ...accountListParams });
+      console.log(response);
       yield put({ type: 'accountListSave', payload: { response } });
     },
     *addAccount({ payload }, { call, put }) {
@@ -42,7 +40,7 @@ export default {
           type: 'accountListSave',
           payload: { response },
         });
-      }else{
+      } else {
         message.error(result.msg);
       }
     },

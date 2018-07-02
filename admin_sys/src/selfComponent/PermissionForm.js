@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button,message } from 'antd';
+import { Form, Input, Cascader, Button, message } from 'antd';
 import { connect } from 'dva';
 import common from '../routes/Common/common.css';
 
@@ -39,7 +39,7 @@ class PermissionForm extends Component {
       id: !arrValue.id ? '' : arrValue.id,
       from: !arrValue.from ? '' : arrValue.from,
     };
-    console.log(this.state)
+    console.log(this.state);
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -89,7 +89,7 @@ class PermissionForm extends Component {
             payload: { addPermissionParams },
           });
         }
-        const aa = this.state.from === 'edit'?'权限编辑成功！':'权限创建成功！'
+        const aa = this.state.from === 'edit' ? '权限编辑成功！' : '权限创建成功！';
         message.success(aa);
         this.props.jumpFunction.setRouteUrlParams('/permission/permissionList', {});
       }
@@ -97,7 +97,7 @@ class PermissionForm extends Component {
   };
 
   roleListFun = val => {
-    console.log(val)
+    console.log(val);
     const parentIdList = [];
     val.map(item =>
       parentIdList.push({
@@ -145,7 +145,7 @@ class PermissionForm extends Component {
         },
       },
     };
-    console.log(this.state.parentIdList)
+    console.log(this.state.parentIdList);
     const parentIdList = !this.state.parentIdList ? [] : this.roleListFun(this.state.parentIdList);
     return (
       <div>
@@ -162,13 +162,16 @@ class PermissionForm extends Component {
             {getFieldDecorator('permissionType', {
               initialValue: [this.state.permissionType],
               rules: [
-                { validator(rule, value, callback){
-                    console.log(value[0])
-                    if(!value[0]){
-                      callback({message:"权限类型为必填项，请选择！"})
+                {
+                  validator(rule, value, callback) {
+                    console.log(value[0]);
+                    if (!value[0]) {
+                      callback({ message: '权限类型为必填项，请选择！' });
                     }
-                    callback()
-                  }}],
+                    callback();
+                  },
+                },
+              ],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限路由">
@@ -181,13 +184,16 @@ class PermissionForm extends Component {
             {getFieldDecorator('parentId', {
               initialValue: [this.state.parentId],
               rules: [
-                { validator(rule, value, callback){
-                    console.log(value[0])
-                    if(!value[0]){
-                      callback({message:"请选择权上级！"})
+                {
+                  validator(rule, value, callback) {
+                    console.log(value[0]);
+                    if (!value[0]) {
+                      callback({ message: '请选择权上级！' });
                     }
-                    callback()
-                  }}],
+                    callback();
+                  },
+                },
+              ],
             })(<Cascader options={parentIdList} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">

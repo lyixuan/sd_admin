@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Cascader, Button, message } from 'antd';
-import {formatEmail} from '../utils/email';
+import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
@@ -16,7 +16,7 @@ class AccountForm extends Component {
     this.state = {
       roleList: !this.props.account.getRoleList
         ? []
-        : !this.props.account.getRoleList.data?[]:this.props.account.getRoleList.data.content,
+        : !this.props.account.getRoleList.data ? [] : this.props.account.getRoleList.data.content,
       name: !arrValue.name ? '' : arrValue.name,
       email: !arrValue.email ? '' : formatEmail(arrValue.email),
       role: !arrValue.role ? null : arrValue.role,
@@ -49,7 +49,11 @@ class AccountForm extends Component {
             payload: { updateAccountParams },
           });
         } else {
-          const addAccountParams = { name: values.name, mail:`${values.mail}@sunlans.com`, roleId: newRoleId };
+          const addAccountParams = {
+            name: values.name,
+            mail: `${values.mail}@sunlans.com`,
+            roleId: newRoleId,
+          };
           console.log(addAccountParams);
           this.props.dispatch({
             type: 'account/addAccount',

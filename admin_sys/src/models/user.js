@@ -1,4 +1,3 @@
-
 import {
   userList,
   updateUserOrg,
@@ -16,13 +15,13 @@ export default {
     // 接口返回数据存储
     userList: [],
     wechatList: [],
-    listOrg:[],
+    listOrg: [],
   },
 
   effects: {
     *userList({ payload }, { call, put }) {
       const response = yield call(userList, payload.userListParams);
-      console.log(response)
+      console.log(response);
       yield put({ type: 'userListSave', payload: { response } });
     },
     *updateUserOrg({ payload }, { call, put }) {
@@ -51,12 +50,12 @@ export default {
     },
     *wechatList({ payload }, { call, put }) {
       const response = yield call(wechatList, payload.wechatListParams);
-      console.log(response)
+      console.log(response);
       yield put({ type: 'wechatListSave', payload: { response } });
     },
     *listOrg({ payload }, { call, put }) {
       const response = yield call(listOrg, payload.listOrgParams);
-      console.log(response)
+      console.log(response);
       yield put({ type: 'listOrgSave', payload: { response } });
     },
   },
