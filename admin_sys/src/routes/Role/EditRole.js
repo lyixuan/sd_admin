@@ -53,6 +53,7 @@ class EditRole extends Component {
     const baseLayout = (
       <WrappedRoleForm
         listAll={listAll}
+        isShowFooter="true"
         getRoleIds={getRoleIds}
         submitInfo={(values, privilegeIds) => {
           this.submitInfo(values, privilegeIds);

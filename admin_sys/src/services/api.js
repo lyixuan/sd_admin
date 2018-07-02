@@ -94,7 +94,7 @@ export async function getRoleAdd(params) {
 * params：{name}
 * */
 export async function getRoleListAll(params) {
-  return request(`${HOST}/privilege/listAll`, {
+  return request(`${HOST}/privilege/listAll?${stringify(params)}`, {
     method: 'GET',
     body: params,
   });
@@ -153,7 +153,7 @@ export async function updatePermission(params) {
 }
 // 查询上级权限列表接口
 export async function permissionListAllName(params) {
-  return request(`${HOST}/privilege/listAllName${stringify(params)}`, {
+  return request(`${HOST}/privilege/listAllName?${stringify(params)}`, {
     method: 'GET',
     body: params,
   });
@@ -164,7 +164,49 @@ export async function permissionListAllName(params) {
 * */
 // 查询用户列表
 export async function userList(params) {
-  return request(`${HOST}/user/list${stringify(params)}`, {
+  return request(`${HOST}/user/list?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+// 更新用户组织结构  慧慧提示该put接口要在url后面添加参数
+export async function updateUserOrg(params) {
+  return request(`${HOST}/user/updateOrg?${stringify(params)}`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+// 更新用户信息 慧慧提示该put接口要在url后面添加参数
+export async function updateUserInfo(params) {
+  return request(`${HOST}/user/updateInfo?${stringify(params)}`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+// 删除用户
+export async function userDelete(params) {
+  return request(`${HOST}/user/delete?${stringify(params)}`, {
+    method: 'DELETE',
+    body: params,
+  });
+}
+// 创建用户
+export async function userAdd(params) {
+  return request(`${HOST}/user/add`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 负责单位列表
+export async function listOrg(params) {
+  return request(`${HOST}/user/listOrg?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+// 查看微信部门
+export async function wechatList(params) {
+  return request(`${HOST}/user/wechatList?${stringify(params)}`, {
     method: 'GET',
     body: params,
   });

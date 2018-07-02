@@ -1,4 +1,4 @@
-import { message} from 'antd';
+import { message } from 'antd';
 import {
   queryAccountList,
   addAccount,
@@ -7,13 +7,12 @@ import {
   getRoleList,
 } from '../../services/api';
 
-
 export default {
   namespace: 'account',
 
   state: {
     // 请求接口上送参数
-    accountListParams: {},
+    accountListParams: { size: 50, number: 0 },
     addAccountParams: {},
     updateAccountParams: {},
     deleteAccountParams: {},
@@ -26,28 +25,29 @@ export default {
 
   effects: {
     *accountList({ payload }, { call, put }) {
-      const response = yield call(queryAccountList, payload.accountListParams);
-      console.log(response)
+      const { accountListParams } = payload;
+      const response = yield call(queryAccountList, { ...accountListParams });
+      console.log(response);
       yield put({ type: 'accountListSave', payload: { response } });
     },
     *addAccount({ payload }, { call, put }) {
       const result = yield call(addAccount, payload.addAccountParams);
       const response = yield call(queryAccountList, {});
-      console.log(result,result.code)
-      console.log(result.code === 0 || result.code === 2000)
-      if(result.code === 0 || result.code === 2000){
+      console.log(result, result.code);
+      console.log(result.code === 0 || result.code === 2000);
+      if (result.code === 0 || result.code === 2000) {
         yield put({
           type: 'accountListSave',
           payload: { response },
         });
-      }else{
+      } else {
         message.error(result.msg);
       }
     },
     *updateAccount({ payload }, { call, put }) {
       const result = yield call(updateAccount, payload.updateAccountParams);
       const response = yield call(queryAccountList, {});
-      console.log(result)
+      console.log(result);
       yield put({
         type: 'accountListSave',
         payload: { response, result },
@@ -57,7 +57,7 @@ export default {
       console.log(payload.deleteAccountParams);
       yield call(deleteAccount, payload.deleteAccountParams);
       const response = yield call(queryAccountList, {});
-      console.log(response)
+      console.log(response);
       yield put({
         type: 'accountListSave',
         payload: { response },

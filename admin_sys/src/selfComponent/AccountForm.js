@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Cascader, Button ,message} from 'antd';
+import { Form, Input, Cascader, Button, message } from 'antd';
+import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
-
 @connect(({ account, loading }) => ({
   account,
   loading,
@@ -14,33 +14,20 @@ class AccountForm extends Component {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     this.state = {
-      roleList: !this.props.account.getRoleList.data.content
+      roleList: !this.props.account.getRoleList
         ? []
-        : this.props.account.getRoleList.data.content,
+        : !this.props.account.getRoleList.data ? [] : this.props.account.getRoleList.data.content,
       name: !arrValue.name ? '' : arrValue.name,
-      email: !arrValue.email ? '' : arrValue.email.substring(0, arrValue.email.indexOf('@')),
+      email: !arrValue.email ? '' : formatEmail(arrValue.email), // !arrValue.email.substring(0, arrValue.email.indexOf('@'))?arrValue.email:arrValue.email.substring(0, arrValue.email.indexOf('@')), // arrValue.email.substring(0, arrValue.email.indexOf('@')),
       role: !arrValue.role ? null : arrValue.role, // name.substring(0,name.indexOf("@"))
       from: !arrValue.from ? '' : arrValue.from,
       id: !arrValue.id ? '' : arrValue.id,
     };
   }
-// <Alert message="Success Tips" type="success" showIcon />
-
-  componentDidMount() {
-    // 为了提前获取角色列表数据。
-    const getRoleListParams = {};
-    this.props.dispatch({
-      type: 'account/getRoleList',
-      payload: { getRoleListParams },
-    });
-
-  }
-
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const newmail = `${values.mail}@sunlans.com`;
         const rname = values.rname[0];
         let newRoleId = 0;
         this.state.roleList.map(item => {
@@ -52,7 +39,7 @@ class AccountForm extends Component {
         if (this.state.from === 'edit') {
           const updateAccountParams = {
             name: values.name,
-            mail: newmail,
+            mail: `${values.mail}@sunlans.com`,
             roleId: newRoleId,
             id: Number(this.state.id),
           };
@@ -62,15 +49,21 @@ class AccountForm extends Component {
             payload: { updateAccountParams },
           });
         } else {
-          const addAccountParams = { name: values.name, mail: newmail, roleId: newRoleId};
+          const addAccountParams = {
+            name: values.name,
+            mail: `${values.mail}@sunlans.com`,
+            roleId: newRoleId,
+          };
           console.log(addAccountParams);
           this.props.dispatch({
             type: 'account/addAccount',
             payload: { addAccountParams },
           });
         }
-        console.log(!this.props.account.accountList.result?[]:this.props.account.accountList.result.code);
-        const aa = this.state.from === 'edit'?'账号编辑成功！':'账号创建成功！'
+        console.log(
+          !this.props.account.accountList.result ? [] : this.props.account.accountList.result.code
+        );
+        const aa = this.state.from === 'edit' ? '账号编辑成功！' : '账号创建成功！';
         message.success(aa);
         this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
       }
@@ -125,8 +118,8 @@ class AccountForm extends Component {
               rules: [
                 // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
                 { required: true, message: '姓名为必填项，请填写!', whitespace: true },
-                { min: 2,message: '姓名长度不得低于2!'},
-                { mix: 20, message: '姓名长度不得高于20!'},
+                { min: 2, message: '姓名长度不得低于2!' },
+                { mix: 20, message: '姓名长度不得高于20!' },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -134,16 +127,18 @@ class AccountForm extends Component {
             {getFieldDecorator('mail', {
               initialValue: this.state.email,
               rules: [
-                { validator(rule, value, callback){
-                  const strExp=/^[A-Za-z0-9]+$/;
-                  if(!strExp.test(value)){
-                    callback({message:"请输入合法邮箱"})
-                  }
-                    callback()
-                  }},
+                {
+                  validator(rule, value, callback) {
+                    const strExp = /^[A-Za-z0-9]+$/;
+                    if (!strExp.test(value)) {
+                      callback({ message: '请输入合法邮箱' });
+                    }
+                    callback();
+                  },
+                },
                 { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
-                { min: 3,message: '邮箱账号长度不得低于3!'},
-                { mix: 50, message: '邮箱账号长度不得高于50!'},
+                { min: 3, message: '邮箱账号长度不得低于3!' },
+                { mix: 50, message: '邮箱账号长度不得高于50!' },
               ],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
@@ -152,15 +147,16 @@ class AccountForm extends Component {
             {getFieldDecorator('rname', {
               initialValue: [this.state.role],
               rules: [
-                { validator(rule, value, callback){
-                  console.log(value[0])
-                    if(!value[0]){
-                      callback({message:"角色为必填项，请选择！"})
+                {
+                  validator(rule, value, callback) {
+                    if (!value[0]) {
+                      callback({ message: '角色为必填项，请选择！' });
                     }
-                    callback()
-                  }}],
-            }
-            )(<Cascader options={residences} style={{ width: 380 }} />)}
+                    callback();
+                  },
+                },
+              ],
+            })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
           <FormItem>

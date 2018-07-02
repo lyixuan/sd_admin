@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
+import { connect } from 'dva';
+import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
+
 const residences = [
   {
     value: 'zhejiang',
@@ -13,17 +16,27 @@ const residences = [
     label: 'Jiangsu',
   },
 ];
+@connect(({ user, loading }) => ({
+  user,
+  loading,
+}))
 class UserForm extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     this.state = {
+      // wechatList: !this.props.account.wechatList.data.content
+      //   ? []
+      //   : this.props.account.wechatList.data.content,
       name: !arrValue.name ? null : arrValue.name,
       phone: !arrValue.phone ? null : arrValue.phone,
-      email: !arrValue.email ? null : arrValue.email,
+      email: !arrValue.email ? null : formatEmail(arrValue.email), // !arrValue.email.substring(0, arrValue.email.indexOf('@'))?arrValue.email:arrValue.email.substring(0, arrValue.email.indexOf('@')), // arrValue.email.substring(0, arrValue.email.indexOf('@'))
       role: !arrValue.role ? null : arrValue.role,
       responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
+      wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
+      wechatDepartmentName: !arrValue.wechatDepartmentName ? null : arrValue.wechatDepartmentName,
     };
+    console.log(this.state);
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -34,7 +47,9 @@ class UserForm extends Component {
     });
   };
 
-  changeSlect = () => {console.log("change数据内容了")}
+  changeSlect = () => {
+    console.log('change数据内容了');
+  };
 
   resetContent = () => {
     console.log(this.props);
@@ -68,6 +83,7 @@ class UserForm extends Component {
         },
       },
     };
+    console.log(this.props.user);
     return (
       <div>
         {/*
@@ -95,7 +111,7 @@ class UserForm extends Component {
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*邮 箱">
-            {getFieldDecorator('string', {
+            {getFieldDecorator('email', {
               initialValue: this.state.email,
               rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
             })(<Input style={{ width: 264 }} />)}
@@ -105,7 +121,9 @@ class UserForm extends Component {
             {getFieldDecorator('role', {
               initialValue: [this.state.role],
               rules: [{ type: 'array', required: true, message: '请选择级别！' }],
-            })(<Cascader options={residences}  onChange={this.changeSlect} style={{ width: 380 }} />)}
+            })(
+              <Cascader options={residences} onChange={this.changeSlect} style={{ width: 380 }} />
+            )}
           </FormItem>
           <FormItem {...formItemLayout} label="*负责单位">
             {getFieldDecorator('responseCom', {
@@ -114,8 +132,8 @@ class UserForm extends Component {
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*微信部门">
-            {getFieldDecorator('weChatDep', {
-              initialValue: [this.state.responseCom],
+            {getFieldDecorator('wechatDepartmentName', {
+              initialValue: [this.state.wechatDepartmentName],
               rules: [{ type: 'array', required: true, message: '请选择微信部门！' }],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>

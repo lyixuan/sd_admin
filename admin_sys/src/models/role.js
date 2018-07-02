@@ -69,6 +69,25 @@ export default {
     },
     savePrivileges(state, action) {
       let { getRoleIds } = action.payload;
+
+      // const getJsonData = function(data, parentId) {
+      //   const itemArr = [];
+      //   for (let i = 0; i < data.length; i += 1) {
+      //     const node = data[i];
+      //     if (node.pid === Number(parentId)) {
+      //       const newNode = {
+      //         name:node.name,
+      //         id: node.id,
+      //         checkedList: `checkedList${node.id}`,
+      //         nodes: getJsonData(data, node.id),
+      //       };
+      //       itemArr.push(newNode);
+      //     }
+      //   }
+      //   return itemArr;
+      // };
+      // getRoleIds = getJsonData(getRoleIds, '');
+
       const ids = [];
       getRoleIds.forEach(item => {
         ids.push(item.id);
@@ -149,7 +168,8 @@ export default {
             const newNode = {
               id: node.id,
               name: node.name,
-              checkAll: false,
+              checkAll: `checkAll${node.id}`,
+              checkedList: `checkedList${node.id}`,
               nodes: getJsonTree(data, node.id),
             };
             itemArr.push(newNode);

@@ -16,4 +16,25 @@ export default ({ children, wrapperClassName, top, title, flag, ...restProps }) 
       {children ? <div className={styles.content}>{children}</div> : null}
     </div>
   );
+
+  // return (
+  //   !visibleFlag ?
+  //     (
+  //       <div style={{ margin: '0' }} className={wrapperClassName}>
+  //         {top}
+  //         <div className={styles.title}>{title}</div>
+  //         {children ? <div className={styles.content}>{children}</div> : null}
+  //       </div >
+  //     ) :
+  //     (
+  //       <div>
+  //         <PageHeader key="pageheader" {...restProps} linkElement={Link} style={{color:'#8C8C8C',background:'#DCDDE0'}} />
+  //         <div style={{ margin: '0' }} className={wrapperClassName}>
+  //           {top}
+  //           <div className={styles.title}>{title}</div>
+  //           {children ? <div className={styles.content}>{children}</div> : null}
+  //         </div >
+  //       </div>
+  //     )
+  // );
 };
