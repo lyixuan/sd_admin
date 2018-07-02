@@ -197,6 +197,13 @@ export async function userAdd(params) {
     body: params,
   });
 }
+// 负责单位列表
+export async function listOrg(params) {
+  return request(`${HOST}/user/listOrg?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
 // 查看微信部门
 export async function wechatList(params) {
   return request(`${HOST}/user/wechatList?${stringify(params)}`, {

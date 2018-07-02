@@ -20,6 +20,12 @@ class EditUser extends Component {
       type: 'user/wechatList',
       payload: {wechatListParams},
     });
+
+    const listOrgParams={}
+    this.props.dispatch({
+      type: 'user/listOrg',
+      payload: {listOrgParams},
+    });
   }
   render() {
     return <ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />;

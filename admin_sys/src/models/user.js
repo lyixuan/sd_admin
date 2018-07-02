@@ -6,6 +6,7 @@ import {
   userDelete,
   wechatList,
   userAdd,
+  listOrg,
 } from '../services/api';
 
 export default {
@@ -15,6 +16,7 @@ export default {
     // 接口返回数据存储
     userList: [],
     wechatList: [],
+    listOrg:[],
   },
 
   effects: {
@@ -52,6 +54,11 @@ export default {
       console.log(response)
       yield put({ type: 'wechatListSave', payload: { response } });
     },
+    *listOrg({ payload }, { call, put }) {
+      const response = yield call(listOrg, payload.listOrgParams);
+      console.log(response)
+      yield put({ type: 'listOrgSave', payload: { response } });
+    },
   },
 
   reducers: {
@@ -65,6 +72,12 @@ export default {
       return {
         ...state,
         wechatList: action.payload,
+      };
+    },
+    listOrgSave(state, action) {
+      return {
+        ...state,
+        listOrg: action.payload,
       };
     },
   },
