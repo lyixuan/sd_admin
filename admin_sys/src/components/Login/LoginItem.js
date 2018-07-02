@@ -68,6 +68,23 @@ function generator({ defaultProps, defaultRules, type }) {
           options.initialValue = defaultValue;
         }
         otherProps = restProps || otherProps;
+        if (type === 'Emil') {
+          const inputProps = omit(otherProps, ['onGetCaptcha']);
+          return (
+            <FormItem>
+              <Row gutter={8}>
+                <Col span={16}>
+                  {getFieldDecorator(name, options)(
+                    <WrappedComponent {...defaultProps} {...inputProps} />
+                  )}
+                </Col>
+                <Col span={8}>
+                  <span>@sunlands.com</span>
+                </Col>
+              </Row>
+            </FormItem>
+          );
+        }
         if (type === 'Captcha') {
           const inputProps = omit(otherProps, ['onGetCaptcha']);
           return (

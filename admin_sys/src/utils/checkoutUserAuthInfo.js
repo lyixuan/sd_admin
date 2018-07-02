@@ -1,11 +1,11 @@
-// import { getAuthority } from './authority';
+import { getAuthority } from './authority';
 
 export function checkoutLogin() {
-  // const adminUser = JSON.parse(getAuthority('admin_user'));
-  return true;
-  // if (adminUser && adminUser['password'] && admin_user['name']) {
-  //   return true;
-  // } else false;
+  const adminUser = getAuthority('admin_user');
+
+  if (adminUser && adminUser.password && adminUser.mail) {
+    return true;
+  } else return false;
 }
 
 export function checkoutAuthRoute() {

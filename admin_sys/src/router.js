@@ -18,7 +18,6 @@ function RouterConfig({ history, app }) {
   const UserLayout = routerData['/userLayout'].component;
   const BasicLayout = routerData['/'].component;
   const noAuthoried = routerData['/exception/403'].component;
-  console.log(this);
   return (
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>

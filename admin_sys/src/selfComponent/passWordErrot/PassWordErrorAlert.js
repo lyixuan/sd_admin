@@ -10,7 +10,7 @@ export default class PassWordErrorAlert extends Component {
   };
 
   render() {
-    return (
+    return !this.props.isShow ? null : (
       <div className={styles.errorBox} style={this.props.style}>
         {this.renderMessage(this.props.errorMes)}
       </div>

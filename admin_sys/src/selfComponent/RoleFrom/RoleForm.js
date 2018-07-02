@@ -27,7 +27,7 @@ class RoleForm extends Component {
     });
     checkAll = checkedList.length === secChild.length;
   };
-  onCheckAllChange = e => {
+  onCheckAllChange = (o, e) => {
     const nodeIDs = [];
     secChild.forEach(key => {
       nodeIDs.push({ label: key.name, value: key.id });
