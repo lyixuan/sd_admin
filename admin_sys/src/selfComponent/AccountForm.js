@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Cascader, Button, message } from 'antd';
+import { Form, Input, Cascader, Button } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
@@ -20,52 +20,51 @@ class AccountForm extends Component {
       name: !arrValue.name ? '' : arrValue.name,
       email: !arrValue.email ? '' : formatEmail(arrValue.email),
       role: !arrValue.role ? null : arrValue.role,
-      from: !arrValue.from ? '' : arrValue.from,
-      id: !arrValue.id ? '' : arrValue.id,
     };
   }
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const rname = values.rname[0];
-        let newRoleId = 0;
-        this.state.roleList.map(item => {
-          if (item.name === rname) {
-            newRoleId = item.id;
-          }
-          return 0;
-        });
-        if (this.state.from === 'edit') {
-          const updateAccountParams = {
-            name: values.name,
-            mail: `${values.mail}@sunlans.com`,
-            roleId: newRoleId,
-            id: Number(this.state.id),
-          };
-          console.log(updateAccountParams);
-          this.props.dispatch({
-            type: 'account/updateAccount',
-            payload: { updateAccountParams },
-          });
-        } else {
-          const addAccountParams = {
-            name: values.name,
-            mail: `${values.mail}@sunlans.com`,
-            roleId: newRoleId,
-          };
-          console.log(addAccountParams);
-          this.props.dispatch({
-            type: 'account/addAccount',
-            payload: { addAccountParams },
-          });
-        }
-        console.log(
-          !this.props.account.accountList.result ? [] : this.props.account.accountList.result.code
-        );
-        const aa = this.state.from === 'edit' ? '账号编辑成功！' : '账号创建成功！';
-        message.success(aa);
-        this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
+        this.props.handleSubmit(values)
+        // const rname = values.rname[0];
+        // let newRoleId = 0;
+        // this.state.roleList.map(item => {
+        //   if (item.name === rname) {
+        //     newRoleId = item.id;
+        //   }
+        //   return 0;
+        // });
+        // if (this.state.from === 'edit') {
+        //   const updateAccountParams = {
+        //     name: values.name,
+        //     mail: `${values.mail}@sunlans.com`,
+        //     roleId: newRoleId,
+        //     id: Number(this.state.id),
+        //   };
+        //   console.log(updateAccountParams);
+        //   this.props.dispatch({
+        //     type: 'account/updateAccount',
+        //     payload: { updateAccountParams },
+        //   });
+        // } else {
+        //   const addAccountParams = {
+        //     name: values.name,
+        //     mail: `${values.mail}@sunlans.com`,
+        //     roleId: newRoleId,
+        //   };
+        //   console.log(addAccountParams);
+        //   this.props.dispatch({
+        //     type: 'account/addAccount',
+        //     payload: { addAccountParams },
+        //   });
+        // }
+        // console.log(
+        //   !this.props.account.accountList.result ? [] : this.props.account.accountList.result.code
+        // );
+        // const aa = this.state.from === 'edit' ? '账号编辑成功！' : '账号创建成功！';
+        // message.success(aa);
+        // this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
       }
     });
   };
