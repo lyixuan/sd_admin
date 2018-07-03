@@ -1,3 +1,5 @@
+import { routerRedux } from 'dva/router';
+import { message } from 'antd';
 import {
   getRoleList,
   getRoleAdd,
@@ -22,9 +24,15 @@ export default {
         payload: { dataList: dataList.data },
       });
     },
-    *roleAdd({ payload }, { call }) {
+    *roleAdd({ payload }, { put, call }) {
       const { paramsObj } = payload;
-      yield call(getRoleAdd, { ...paramsObj });
+      const getCode = yield call(getRoleAdd, { ...paramsObj });
+      if (getCode.code === 2000) {
+        message.success('角色创建成功！');
+        yield put(routerRedux.push('/role/roleList'));
+      } else {
+        message.error(getCode.msg);
+      }
     },
     *roleListAll({ payload }, { put, call }) {
       const { paramsObj } = payload;
@@ -42,9 +50,15 @@ export default {
         payload: deleteData,
       });
     },
-    *roleUpdate({ payload }, { call }) {
+    *roleUpdate({ payload }, { put, call }) {
       const { paramsObj } = payload;
-      yield call(getRoleUpdate, { ...paramsObj });
+      const getCode = yield call(getRoleUpdate, { ...paramsObj });
+      if (getCode.code === 2000) {
+        message.success('角色创建成功！');
+        yield put(routerRedux.push('/role/roleList'));
+      } else {
+        message.error(getCode.msg);
+      }
     },
     *rolePrivileges({ payload }, { put, call }) {
       const { paramsIds } = payload;
