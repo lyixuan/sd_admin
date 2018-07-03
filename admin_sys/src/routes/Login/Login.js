@@ -6,8 +6,14 @@ import PassWordErrorAlert from '../../selfComponent/passWordErrot/PassWordErrorA
 import styles from './Login.less';
 import common from '../Common/common.css';
 import { getAuthority } from '../../utils/authority';
+import { formatEmail } from '../../utils/email';
 
 const { Emil, Password, Submit } = Login;
+function checkoutLoginObj(loginObj, key) {
+  if (loginObj && typeof loginObj === 'object' && loginObj.token) {
+    return loginObj[key];
+  } else return '';
+}
 
 @connect(({ login, loading }) => ({
   login,
@@ -16,6 +22,8 @@ const { Emil, Password, Submit } = Login;
 export default class LoginPage extends Component {
   constructor(props) {
     const localAdminUser = getAuthority('admin_user') || {};
+    const mail = checkoutLoginObj(localAdminUser, 'mail');
+    const password = checkoutLoginObj(localAdminUser, 'password');
     super(props);
     this.state = {
       type: 'account',
@@ -23,8 +31,8 @@ export default class LoginPage extends Component {
       errorMessage: '',
       isShowErrorBox: false,
       adminUser: {
-        mail: localAdminUser.mail || '',
-        password: localAdminUser.password || '',
+        mail: formatEmail(mail),
+        password: formatEmail(password),
       },
     };
   }
@@ -43,10 +51,12 @@ export default class LoginPage extends Component {
   handleSubmit = (err, values) => {
     if (!err) {
       const { autoLogin } = this.state;
+      const mail = `${values.mail}@sunlands.com`;
       this.props.dispatch({
         type: 'login/login',
         payload: {
           ...values,
+          mail,
           autoLogin,
         },
       });

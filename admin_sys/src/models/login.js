@@ -1,5 +1,6 @@
 import { routerRedux } from 'dva/router';
-import { userLogin } from '../services/api';
+import { message } from 'antd';
+import { userLogin, queryCurrentUser } from '../services/api';
 import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 
@@ -9,6 +10,7 @@ export default {
   state: {
     status: null,
     msg: '',
+    currentUser: {},
   },
 
   effects: {
@@ -28,6 +30,18 @@ export default {
         setAuthority('admin_token', { userId, token }); // 存储api token
         reloadAuthorized();
         yield put(routerRedux.push('/'));
+      }
+    },
+    *fetchCurrent({ payload }, { call, put }) {
+      const { id } = payload;
+      const response = yield call(queryCurrentUser, { id });
+      if (response.status === true) {
+        yield put({
+          type: 'saveCurrentUser',
+          payload: response,
+        });
+      } else {
+        message.error('获取账号信息失败,请刷新页面');
       }
     },
     *logout(_, { put, select }) {
@@ -58,6 +72,10 @@ export default {
         ...state,
         ...payload,
       };
+    },
+    saveCurrentUser(state, { payload }) {
+      const currentUser = payload.data;
+      return { ...state, currentUser };
     },
   },
 };

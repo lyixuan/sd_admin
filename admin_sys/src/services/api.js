@@ -13,6 +13,15 @@ export async function userLogin(params) {
   });
 }
 /*
+* 获取登录用户信息
+* params：{userId}
+* */
+export async function queryCurrentUser(params) {
+  return request(`${HOST}/account/info?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+/*
 * 用户退出登录接口
 * params：{name，password}
 * */

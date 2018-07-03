@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
-import { Route, Redirect, Switch } from 'dva/router';
+import { Route, Redirect, Switch, routerRedux } from 'dva/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
@@ -15,6 +15,7 @@ import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.png';
+import { getAuthority } from '../utils/authority';
 
 const { Content, Header } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -90,6 +91,7 @@ class BasicLayout extends React.PureComponent {
   state = {
     isMobile,
   };
+
   getChildContext() {
     const { location, routerData } = this.props;
     return {
@@ -97,20 +99,20 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
     };
   }
+
   componentDidMount() {
-    console.log(this);
     this.enquireHandler = enquireScreen(mobile => {
       this.setState({
         isMobile: mobile,
       });
     });
-    this.props.dispatch({
-      type: 'user/fetchCurrent',
-    });
+    this.handleUserInfo();
   }
+
   componentWillUnmount() {
     unenquireScreen(this.enquireHandler);
   }
+
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
@@ -127,6 +129,7 @@ class BasicLayout extends React.PureComponent {
     }
     return title;
   }
+
   getBaseRedirect = () => {
     const urlParams = new URL(window.location.href);
     const redirect = urlParams.searchParams.get('redirect');
@@ -145,6 +148,13 @@ class BasicLayout extends React.PureComponent {
     }
     return redirect;
   };
+  handleUserInfo = () => {
+    const { userId = '' } = getAuthority('admin_user');
+    this.props.dispatch({
+      type: 'login/fetchCurrent',
+      payload: { id: userId },
+    });
+  };
   handleMenuCollapse = collapsed => {
     this.props.dispatch({
       type: 'global/changeLayoutCollapsed',
@@ -154,8 +164,7 @@ class BasicLayout extends React.PureComponent {
 
   handleMenuClick = ({ key }) => {
     if (key === 'changePwd') {
-      console.log('修改密码');
-      // this.props.dispatch(routerRedux.push('/exception/trigger'));
+      this.props.dispatch(routerRedux.push('/changePwd/changePassword'));
       return;
     }
     if (key === 'logout') {
@@ -172,6 +181,7 @@ class BasicLayout extends React.PureComponent {
       });
     }
   };
+
   render() {
     const {
       currentUser,
@@ -182,6 +192,10 @@ class BasicLayout extends React.PureComponent {
       match,
       location,
     } = this.props;
+    /*
+    * ******默认小德logo*******
+    * */
+    currentUser.avatar = currentUser.avatar || logo;
     const bashRedirect = this.getBaseRedirect();
     const layout = (
       <Layout>
@@ -246,9 +260,7 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-export default connect(({ user, global, loading }) => ({
-  currentUser: user.currentUser,
+export default connect(({ global, login }) => ({
+  currentUser: login.currentUser,
   collapsed: global.collapsed,
-  fetchingNotices: loading.effects['global/fetchNotices'],
-  notices: global.notices,
 }))(BasicLayout);

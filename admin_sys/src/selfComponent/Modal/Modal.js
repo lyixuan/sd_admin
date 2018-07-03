@@ -3,6 +3,7 @@
 * visible：布尔值，弹框显隐
 * showModal：函数，控制弹框显隐
 * modalContent：html，弹框中间内容
+* clickOK点击确认按钮回调
 * footButton：数组，['是'，'否']
 * */
 import React from 'react';
@@ -11,16 +12,39 @@ import common from '../../routes/Common/common.css';
 import styles from './Modal.css';
 
 class ModalDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: this.props.visible,
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { visible } = nextProps;
+    if (nextProps.visible && !this.state.visible) {
+      this.setState({
+        visible,
+      });
+    }
+  }
+
   handleOk = e => {
-    console.log(e);
-    this.props.showModal(false);
+    const { clickOK } = this.props;
+    if (clickOK) {
+      clickOK(e);
+    }
+    this.setState({
+      visible: false,
+    });
   };
-  handleCancel = e => {
-    console.log(e);
-    this.props.showModal(false);
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    });
   };
+
   render() {
-    const { title, visible, name, modalContent, footButton } = this.props;
+    const { title, name, modalContent, footButton } = this.props;
     const defaultModal = (
       <div>
         <p className={styles.name}> {name} </p>
@@ -32,7 +56,7 @@ class ModalDemo extends React.Component {
       <div>
         <Modal
           title={title}
-          visible={visible}
+          visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[

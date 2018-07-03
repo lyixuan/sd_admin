@@ -2,6 +2,7 @@ import fetch from 'dva/fetch';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
+import { getAuthority } from './authority';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -20,6 +21,7 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 };
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -32,6 +34,12 @@ function checkStatus(response) {
   throw error;
 }
 
+function checkoutToken(tokenObj) {
+  if (tokenObj && typeof tokenObj === 'object' && tokenObj.token) {
+    return tokenObj.token;
+  } else return '';
+}
+
 /**
  * Requests a URL, returning a promise.
  *
@@ -40,9 +48,13 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
+  const tokenObj = getAuthority('admin_token');
+
   const defaultOptions = {
     credentials: 'include',
-    Authorization: 1111,
+    headers: {
+      Authorization: checkoutToken(tokenObj),
+    },
   };
   const newOptions = { ...defaultOptions, ...options };
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
