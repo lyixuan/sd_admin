@@ -1,3 +1,4 @@
+import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import {
   queryAccountList,
@@ -6,6 +7,7 @@ import {
   deleteAccount,
   getRoleList,
 } from '../../services/api';
+
 
 export default {
   namespace: 'account',
@@ -32,30 +34,30 @@ export default {
     },
     *addAccount({ payload }, { call, put }) {
       const result = yield call(addAccount, payload.addAccountParams);
-      const response = yield call(queryAccountList, {size: 50, number: 0});
-      console.log(result,result.code)
-      console.log(result.code === 0 || result.code === 2000)
       if(result.code === 0 || result.code === 2000){
-        yield put({
-          type: 'accountListSave',
-          payload: { response },
-        });
+        message.success('账号添加成功！')
+        yield put(routerRedux.push('/account/accountList'));
       } else {
         message.error(result.msg);
       }
     },
     *updateAccount({ payload }, { call, put }) {
       const result = yield call(updateAccount, payload.updateAccountParams);
-      const response = yield call(queryAccountList, {size: 50, number: 0});
-      console.log(result)
-      yield put({
-        type: 'accountListSave',
-        payload: { response, result },
-      });
+      if(result.code === 0 || result.code === 2000){
+        message.success('账号编辑成功！')
+        yield put(routerRedux.push('/account/accountList'));
+      } else {
+        message.error(result.msg);
+      }
     },
     *deleteAccount({ payload }, { call, put }) {
       console.log(payload.deleteAccountParams);
-      yield call(deleteAccount, payload.deleteAccountParams);
+      const result = yield call(deleteAccount, payload.deleteAccountParams);
+      if(result.code === 0 || result.code === 2000){
+        message.success('账号删除成功！')
+      } else {
+        message.error(result.msg);
+      }
       const response = yield call(queryAccountList, {size: 50, number: 0});
       console.log(response)
       yield put({

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form ,message} from 'antd';
+import { Form } from 'antd';
 import { connect } from 'dva';
 import AccountForm from '../../selfComponent/AccountForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -47,8 +47,6 @@ class EditAccount extends Component {
             type: 'account/updateAccount',
             payload: { updateAccountParams },
         });
-        message.success('账号编辑成功！');
-        this.props.setRouteUrlParams('/account/accountList', {});
   };
 
   resetContent = () => {

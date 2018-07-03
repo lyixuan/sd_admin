@@ -3,6 +3,8 @@ import { Form, Input, Cascader, Button } from 'antd';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
+let parentList=[];
+let parentListBackup = [];
 const residences = [
   {
     value: '一级页面',
@@ -32,25 +34,113 @@ class PermissionForm extends Component {
       sort: !arrValue.sort ? '' : arrValue.sort,
     };
   }
+
+  componentDidMount(){
+    parentListBackup = !this.state.parentIdList ? [] : this.fullListFun(this.state.parentIdList);
+    parentList = this.roleListFun();
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        console.log("进入提交函数")
         this.props.handleSubmit(values)
       }
     });
   };
 
-  roleListFun = val => {
+  roleListFun = () => {
+    const parentIdList = [];
+    const listValue = parentListBackup
+    if(this.state.level==='页面功能'){
+      listValue.map((obj)=> {
+        if(obj.level<3){
+          parentIdList.push({
+            value: obj.value,
+            label: obj.label,
+            level:obj.level,
+          })
+        }
+        return 0; });
+    }
+    else if(this.state.level==='二级页面'){
+      listValue.map((obj)=> {
+        if(obj.level<2){
+          parentIdList.push({
+            value: obj.value,
+            label: obj.label,
+            level:obj.level,
+          })
+        }
+        return 0; });
+    }else if (this.state.level==='一级页面'){
+      listValue.map((obj)=> {
+        if(obj.level<1){
+          parentIdList.push({
+            value: obj.value,
+            label: obj.label,
+            level:obj.level,
+          })
+        }
+        return 0; });
+    }
+    return parentIdList;
+  };
+
+  fullListFun = val => {
     const parentIdList = [];
     val.map(item =>
       parentIdList.push({
         value: item.id,
         label: item.name,
+        level:item.level,
       })
     );
     return parentIdList;
   };
+
+  handleSelectChange = (value) => {
+    const level = value[0]
+    const listValue = parentListBackup
+    const rObj = [];
+    if(level==='页面功能'){
+      listValue.map((obj)=> {
+        if(obj.level<3){
+          rObj.push({
+            value: obj.value,
+            label: obj.label,
+            level:obj.level,
+          })
+        }
+        return 0; });
+      parentList= rObj;
+    }
+    else if(level==='二级页面'){
+      listValue.map((obj)=> {
+        if(obj.level<2){
+          rObj.push({
+            value: obj.value,
+            label: obj.label,
+            level:obj.level,
+          })
+        }
+        return 0; });
+      parentList= rObj;
+    }else{
+      listValue.map((obj)=> {
+        if(obj.level<1){
+          rObj.push({
+            value: obj.value,
+            label: obj.label,
+            level:obj.level,
+          })
+        }
+        return 0; });
+      parentList= rObj;
+    }
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -75,7 +165,6 @@ class PermissionForm extends Component {
         },
       },
     };
-    const parentIdList = !this.state.parentIdList ? [] : this.roleListFun(this.state.parentIdList);
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -100,7 +189,7 @@ class PermissionForm extends Component {
                   },
                 },
               ],
-            })(<Cascader options={residences} style={{ width: 380 }} />)}
+            })(<Cascader options={residences} onChange={this.handleSelectChange} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限路由">
             {getFieldDecorator('resourceUrl', {
@@ -111,17 +200,17 @@ class PermissionForm extends Component {
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('parentId', {
               initialValue: [this.state.parentId],
-              rules: [
-                {
-                  validator(rule, value, callback) {
-                    if (!value[0]) {
-                      callback({ message: '请选择权上级！' });
-                    }
-                    callback();
-                  },
-                },
-              ],
-            })(<Cascader options={parentIdList} style={{ width: 380 }} />)}
+              // rules: [
+              //   {
+              //     validator(rule, value, callback) {
+              //       if (!value[0]) {
+              //         callback({ message: '请选择权上级！' });
+              //       }
+              //       callback();
+              //     },
+              //   },
+              // ],
+            })(<Cascader options={parentList} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
             {getFieldDecorator('iconUrl', {

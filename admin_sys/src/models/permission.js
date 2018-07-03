@@ -1,4 +1,6 @@
 
+import { routerRedux } from 'dva/router';
+import { message } from 'antd';
 import {
   getRoleListAll,
   addPermission,
@@ -24,16 +26,22 @@ export default {
       yield put({ type: 'permissionListSave', payload: { response } });
     },
     *addPermission({ payload }, { call, put }) {
-      yield call(addPermission, payload.addPermissionParams);
-      const response = yield call(getRoleListAll, {size: 50, number: 0});
-      console.log(response)
-      yield put({ type: 'permissionListSave', payload: { response } });
+      const result = call(addPermission, payload.addPermissionParams);
+      if(result.code === 0 || result.code === 2000){
+        message.success('权限添加成功！')
+        yield put(routerRedux.push('/permission/permissionList'));
+      } else {
+        message.error(result.msg);
+      }
     },
     *updatePermission({ payload }, { call, put }) {
-      yield call(updatePermission, payload.updatePermissionParams);
-      const response = yield call(getRoleListAll, {size: 50, number: 0});
-      console.log(response)
-      yield put({ type: 'permissionListSave', payload: { response } });
+      const result = yield call(updatePermission, payload.updatePermissionParams);
+      if(result.code === 0 || result.code === 2000){
+        message.success('权限编辑成功！')
+        yield put(routerRedux.push('/permission/permissionList'));
+      } else {
+        message.error(result.msg);
+      }
     },
     *permissionListAllName({ payload }, { call, put }) {
       const response = yield call(permissionListAllName, payload.permissionListAllNameParams);

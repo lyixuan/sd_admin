@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form ,message} from 'antd';
+import { Form } from 'antd';
 import { connect } from 'dva';
 import AccountForm from '../../selfComponent/AccountForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -43,8 +43,6 @@ class CreateAccount extends Component {
       type: 'account/addAccount',
       payload: { addAccountParams },
     });
-    message.success('账号创建成功！');
-    this.props.setRouteUrlParams('/account/accountList', {});
   };
 
   resetContent = () => {

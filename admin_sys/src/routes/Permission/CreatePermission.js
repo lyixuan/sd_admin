@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form ,message} from 'antd';
+import { Form } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import PermissionForm from '../../selfComponent/PermissionForm';
@@ -30,7 +30,7 @@ class CreatePermission extends Component {
         ? 3
         : values.level[0] === '一级页面' ? 1 : 2;
     const parentIdName = values.parentId[0];
-    let newparentId = 0;
+    let newparentId = 1;
     const parentIdList = this.props.permission.permissionListAllName.data
     parentIdList.map(item => {
       if (item.name === parentIdName) {
@@ -51,8 +51,6 @@ class CreatePermission extends Component {
       type: 'permission/addPermission',
       payload: { addPermissionParams },
     });
-    message.success('权限创建成功！');
-    this.props.setRouteUrlParams('/permission/permissionList', {});
   };
 
   resetContent = () => {
