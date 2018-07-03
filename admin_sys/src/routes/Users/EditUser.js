@@ -21,15 +21,30 @@ class EditUser extends Component {
       payload: { wechatListParams },
     });
 
-    const listOrgParams = {};
-    this.props.dispatch({
-      type: 'user/listOrg',
-      payload: { listOrgParams },
-    });
+    // const listOrgParams = {};
+    // this.props.dispatch({
+    //   type: 'user/listOrg',
+    //   payload: { listOrgParams },
+    // });
   }
+  resetContent = () => {
+    this.props.setRouteUrlParams('/user/userList', {});
+  };
   render() {
-    return <ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props} />} />;
-  }
+    const aa = !this.props.user.wechatList.response ? [] : !this.props.user.wechatList.response.data ?[]:this.props.user.wechatList.response.data.department
+    console.log(aa)
+    return (!this.props.user.wechatList.response ? [] : !this.props.user.wechatList.response.data ? <div /> :
+        (
+          <ContentLayout
+            contentForm={<WrappedRegistrationForm
+              jumpFunction={this.props}
+              resetContent={()=>{this.resetContent()}}
+              handleSubmit={(values)=>{this.handleSubmit(values)}}
+            />}
+          />
+        )
+    );}
 }
+
 
 export default EditUser;

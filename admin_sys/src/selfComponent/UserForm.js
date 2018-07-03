@@ -1,37 +1,47 @@
 import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
-import { connect } from 'dva';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
-
-const residences = [
+const userTypeList = [
   {
-    value: 'zhejiang',
-    label: 'Zhejiang',
+    value: '学院',
+    label: '学院',
   },
   {
-    value: 'jiangsu',
-    label: 'Jiangsu',
+    value: '家族',
+    label: '家族',
+  },
+  {
+    value: '小组',
+    label: '小组',
+  },
+  {
+    value: '系统管理员',
+    label: '系统管理员',
+  },
+  {
+    value: '高级管理员',
+    label: '高级管理员',
+  },
+  {
+    value: '无底表权限',
+    label: '无底表权限',
   },
 ];
-@connect(({ user, loading }) => ({
-  user,
-  loading,
-}))
+
 class UserForm extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
+    const wechatValues = this.props.jumpFunction.user.wechatList
     this.state = {
-      // wechatList: !this.props.account.wechatList.data.content
-      //   ? []
-      //   : this.props.account.wechatList.data.content,
+      wechatList: !wechatValues.response.data.department ? [] : wechatValues.response.data.department,
       name: !arrValue.name ? null : arrValue.name,
       phone: !arrValue.phone ? null : arrValue.phone,
-      email: !arrValue.email ? null : formatEmail(arrValue.email), // !arrValue.email.substring(0, arrValue.email.indexOf('@'))?arrValue.email:arrValue.email.substring(0, arrValue.email.indexOf('@')), // arrValue.email.substring(0, arrValue.email.indexOf('@'))
-      role: !arrValue.role ? null : arrValue.role,
+      email: !arrValue.email ? null : formatEmail(arrValue.email),
+      userType: !arrValue.userType ? null : arrValue.userType,
       responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
       wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
       wechatDepartmentName: !arrValue.wechatDepartmentName ? null : arrValue.wechatDepartmentName,
@@ -42,25 +52,28 @@ class UserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        this.props.handleSubmit(values)
       }
     });
   };
 
-  changeSlect = () => {
-    console.log('change数据内容了');
+  roleListFun = val => {
+    console.log(val)
+    const residences = [];
+    console.log(val);
+    val.map((item, index) =>
+      residences.push({
+        value: item.name,
+        label: item.name,
+        key:index,
+      })
+    );
+    return residences;
   };
 
-  resetContent = () => {
-    console.log(this.props);
-    this.props.form.resetFields(['name', 'email', 'role']);
-    this.props.jumpFunction.setRouteUrlParams('/user/userList', {
-      a: 2,
-      b: 3,
-    });
-  };
   render() {
     const { getFieldDecorator } = this.props.form;
+    const residences = !this.state.wechatList ? [] : this.roleListFun(this.state.wechatList);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -83,12 +96,8 @@ class UserForm extends Component {
         },
       },
     };
-    console.log(this.props.user);
     return (
       <div>
-        {/*
-        <p style={{marginLeft:32,fontSize:24}}>账户信息</p>
-        */}
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓 名">
             {getFieldDecorator('name', {
@@ -118,11 +127,11 @@ class UserForm extends Component {
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*级 别">
-            {getFieldDecorator('role', {
-              initialValue: [this.state.role],
+            {getFieldDecorator('userType', {
+              initialValue: [this.state.userType],
               rules: [{ type: 'array', required: true, message: '请选择级别！' }],
             })(
-              <Cascader options={residences} onChange={this.changeSlect} style={{ width: 380 }} />
+              <Cascader options={userTypeList} style={{ width: 380 }} />
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="*负责单位">
@@ -140,7 +149,7 @@ class UserForm extends Component {
           <FormItem {...tailFormItemLayout} />
           <FormItem>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>
+              <Button onClick={this.props.resetContent} type="primary" className={common.cancleButton}>
                 取消
               </Button>
               <Button htmlType="submit" type="primary" className={common.submitButton}>
