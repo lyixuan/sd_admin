@@ -24,14 +24,13 @@ class PermissionForm extends Component {
     const parentIdValues = this.props.jumpFunction.permission.permissionListAllName
     this.state = {
       parentIdList: !parentIdValues.data ? [] : parentIdValues.data,
-      permissionName: !arrValue.permissionName ? '' : arrValue.permissionName,
-      permissionType: !arrValue.permissionType ? null : arrValue.permissionType,
-      permissionRoute: !arrValue.permissionRoute ? '' : arrValue.permissionRoute,
+      name: !arrValue.name ? '' : arrValue.name,
+      level: !arrValue.level ? null : arrValue.level,
+      resourceUrl: !arrValue.resourceUrl ? '' : arrValue.resourceUrl,
       parentId: !arrValue.parentId ? null : Number(arrValue.parentId),
-      icon: !arrValue.icon ? '' : arrValue.icon,
+      iconUrl: !arrValue.iconUrl ? '' : arrValue.iconUrl,
       sort: !arrValue.sort ? '' : arrValue.sort,
     };
-    console.log(this.state);
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -43,7 +42,6 @@ class PermissionForm extends Component {
   };
 
   roleListFun = val => {
-    console.log(val);
     const parentIdList = [];
     val.map(item =>
       parentIdList.push({
@@ -77,26 +75,24 @@ class PermissionForm extends Component {
         },
       },
     };
-    console.log(this.state.parentIdList);
     const parentIdList = !this.state.parentIdList ? [] : this.roleListFun(this.state.parentIdList);
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*权限名称">
-            {getFieldDecorator('permissionName', {
-              initialValue: this.state.permissionName,
+            {getFieldDecorator('name', {
+              initialValue: this.state.name,
               rules: [
                 { min: 2, required: true, message: '权限名称为必填项，请填写!', whitespace: true },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
-            {getFieldDecorator('permissionType', {
-              initialValue: [this.state.permissionType],
+            {getFieldDecorator('level', {
+              initialValue: [this.state.level],
               rules: [
                 {
                   validator(rule, value, callback) {
-                    console.log(value[0]);
                     if (!value[0]) {
                       callback({ message: '权限类型为必填项，请选择！' });
                     }
@@ -107,8 +103,8 @@ class PermissionForm extends Component {
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限路由">
-            {getFieldDecorator('permissionRoute', {
-              initialValue: this.state.permissionRoute,
+            {getFieldDecorator('resourceUrl', {
+              initialValue: this.state.resourceUrl,
               rules: [{ required: true, message: '权限路由为必填项，请填写!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -118,7 +114,6 @@ class PermissionForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    console.log(value[0]);
                     if (!value[0]) {
                       callback({ message: '请选择权上级！' });
                     }
@@ -129,8 +124,8 @@ class PermissionForm extends Component {
             })(<Cascader options={parentIdList} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
-            {getFieldDecorator('icon', {
-              initialValue: [this.state.icon],
+            {getFieldDecorator('iconUrl', {
+              initialValue: [this.state.iconUrl],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">

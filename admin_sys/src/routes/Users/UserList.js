@@ -199,7 +199,8 @@ class UserList extends Component {
   };
 
   render() {
-    const data = !this.props.user.userList.response ? [] : this.props.user.userList.response;
+    console.log(this.props.user.userList)
+    const data = !this.props.user.userList.response ? [] : !this.props.user.userList.response.data?[]:this.props.user.userList.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();

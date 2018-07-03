@@ -29,14 +29,13 @@ class PermissionList extends Component {
   onEdit = val => {
     console.log(val);
     this.props.setRouteUrlParams('/permission/editPermission', {
-      permissionName: val.permissionName,
-      permissionType: val.permissionType,
-      permissionRoute: val.permissionRoute,
+      name: val.name,
+      level: val.level,
+      resourceUrl: val.resourceUrl,
       parentId: val.parentId,
       sort: val.sort,
-      icon: val.icon,
+      iconUrl: val.iconUrl,
       id: val.id,
-      from: 'edit',
     });
   };
 
@@ -68,11 +67,11 @@ class PermissionList extends Component {
       data.push({
         key: index,
         id: item.id,
-        permissionName: item.name,
-        permissionType: item.level === 0 ? '页面功能' : item.level === 1 ? '一级页面' : '二级页面',
-        permissionRoute: item.resourceUrl,
+        name: item.name,
+        level: item.level === 3 ? '页面功能' : item.level === 1 ? '一级页面' : '二级页面',
+        resourceUrl: item.resourceUrl,
         parentId: item.parentId,
-        icon: item.iconUrl,
+        iconUrl: item.iconUrl,
         sort: item.sort,
       })
     );
@@ -88,15 +87,15 @@ class PermissionList extends Component {
       },
       {
         title: '权限名称',
-        dataIndex: 'permissionName',
+        dataIndex: 'name',
       },
       {
         title: '权限类型',
-        dataIndex: 'permissionType',
+        dataIndex: 'level',
       },
       {
         title: '权限路由',
-        dataIndex: 'permissionRoute',
+        dataIndex: 'resourceUrl',
       },
       {
         title: '上级编号',
@@ -104,7 +103,7 @@ class PermissionList extends Component {
       },
       {
         title: '一级页面图标',
-        dataIndex: 'icon',
+        dataIndex: 'iconUrl',
         render: record => {
           return (
             // !record ? <span>{!record?'':record}</span>:<img src={record} alt='上一级页面图标' />

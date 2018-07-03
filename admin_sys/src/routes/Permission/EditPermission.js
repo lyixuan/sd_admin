@@ -25,12 +25,10 @@ class EditPermission extends Component {
     });
   }
 
-
   handleSubmit = (values) => {
-    console.log(values);
-    const type = values.permissionType[0] === '页面功能'
-        ? 0
-        : values.permissionType[0] === '一级页面' ? 1 : 2;
+    const type = values.level[0] === '页面功能'
+        ? 3
+        : values.level[0] === '一级页面' ? 1 : 2;
     const parentIdName = values.parentId[0];
     let newparentId = 0;
     const parentIdList = this.props.permission.permissionListAllName.data
@@ -41,15 +39,14 @@ class EditPermission extends Component {
       return 0;
     });
     const updatePermissionParams = {
-      name: values.permissionName,
-      iconUrl: values.icon[0],
+      name: values.name,
+      iconUrl: values.iconUrl[0],
       id: Number(this.state.id),
       level: type,
       parentId: newparentId,
       sort: Number(values.sort),
-      resourceUrl: values.permissionRoute,
+      resourceUrl: values.resourceUrl,
     };
-    console.log(updatePermissionParams);
     this.props.dispatch({
       type: 'permission/updatePermission',
       payload: { updatePermissionParams },
@@ -61,7 +58,6 @@ class EditPermission extends Component {
   resetContent = () => {
     this.props.setRouteUrlParams('/permission/permissionList');
   };
-
 
   render() {
     return (!this.props.permission.permissionListAllName ? [] : !this.props.permission.permissionListAllName.data ? <div /> : (
