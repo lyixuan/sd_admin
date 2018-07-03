@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Table, Button, Pagination, Form, Popconfirm, DatePicker } from 'antd';
+import { Table, Button, Form, Popconfirm, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
+import styles from './TimeList.css';
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -82,6 +83,7 @@ class TimeList extends Component {
       {
         title: '时间',
         dataIndex: 'key',
+        width: 400,
       },
       {
         title: '操作',
@@ -120,16 +122,24 @@ class TimeList extends Component {
       const { getFieldDecorator } = props.form;
       return (
         <Form onSubmit={this.handleSearch} layout={formLayout}>
-          <FormItem label="可选范围">
-            {getFieldDecorator('dateRange', {
-              rules: [{ required: true, message: '请选择生效日期' }],
-            })(datePicker)}
-          </FormItem>
-          <FormItem style={{ marginLeft: 119 }}>
-            <Button type="primary" htmlType="submit" className={common.searchButton}>
-              保存
-            </Button>
-          </FormItem>
+          <p className={styles.formTitle}>“自定义时间”可选范围设置</p>
+          <div className={styles.formCls}>
+            <FormItem label="可选范围">
+              {getFieldDecorator('dateRange', {
+                rules: [{ required: true, message: '请选择生效日期' }],
+              })(datePicker)}
+            </FormItem>
+            <FormItem style={{ marginLeft: 119 }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={common.searchButton}
+                style={{ margin: '0' }}
+              >
+                保存
+              </Button>
+            </FormItem>
+          </div>
         </Form>
       );
     });
@@ -140,25 +150,46 @@ class TimeList extends Component {
           title="时间管理"
           contentForm={<WrappedAdvancedSearchForm />}
           contentButton={
-            <AuthorizedButton authority="/timeManage/TimeList">
-              <Button onClick={this.onAdd} type="primary" className={common.searchButton}>
-                添加
-              </Button>
-            </AuthorizedButton>
+            <div>
+              <p className={styles.tableTitle}>“不可用日期”设置</p>
+              <p className={styles.content}>
+                <span className={styles.txt}>设置不可用的日期（指定日期将不参与学分计算）</span>
+                <AuthorizedButton authority="/timeManage/TimeList">
+                  <Button
+                    onClick={this.onAdd}
+                    type="primary"
+                    className={common.searchButton}
+                    style={{ margin: '0 14px' }}
+                  >
+                    添加
+                  </Button>
+                </AuthorizedButton>
+              </p>
+            </div>
           }
           contentTable={
-            <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+            <div style={{ width: '590px' }}>
+              <Table
+                bordered
+                dataSource={dataSource}
+                columns={columns}
+                useFixedHeader
+                scroll={{ y: 600 }}
+                pagination={false}
+              />
+            </div>
           }
-          contentPagination={
-            <Pagination
-              showSizeChanger
-              onChange={this.changePage}
-              onShowSizeChange={this.onShowSizeChange}
-              defaultCurrent={3}
-              total={100}
-              className={common.paginationStyle}
-            />
-          }
+          // contentPagination={
+          //   <Pagination
+          //     showSizeChanger
+          //     onChange={this.changePage}
+          //     onShowSizeChange={this.onShowSizeChange}
+          //     defaultCurrent={3}
+          //     total={100}
+          //     className={common.paginationStyle}
+          //     style={{width:'590px'}}
+          //   />
+          // }
         />
         <ModalDialog
           title="添加不可用时间"

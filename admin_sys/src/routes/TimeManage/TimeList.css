@@ -1,0 +1,37 @@
+
+p{
+  margin: 0;
+  padding: 0;
+}
+.formTitle{
+  color: #000;
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+.tableTitle{
+  color: #000;
+  font-size: 18px;
+}
+.txt{
+  font-size: 14px;
+  color: #262626;
+}
+.formCls{
+  border: 1px solid #DCDDE0;
+  border-radius: 2px;
+  width: 590px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 36px;
+  padding-left: 13px;
+}
+.content{
+  width: 590px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 13px;
+}
+
