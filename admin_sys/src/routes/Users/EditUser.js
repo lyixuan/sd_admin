@@ -21,17 +21,17 @@ class EditUser extends Component {
       payload: { wechatListParams },
     });
 
-    // const listOrgParams = {};
-    // this.props.dispatch({
-    //   type: 'user/listOrg',
-    //   payload: { listOrgParams },
-    // });
+    const listOrgParams = {};
+    this.props.dispatch({
+      type: 'user/listOrg',
+      payload: { listOrgParams },
+    });
   }
   resetContent = () => {
     this.props.setRouteUrlParams('/user/userList', {});
   };
   render() {
-    const aa = !this.props.user.wechatList.response ? [] : !this.props.user.wechatList.response.data ?[]:this.props.user.wechatList.response.data.department
+    const aa = this.props.user.listOrg.response // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
     console.log(aa)
     return (!this.props.user.wechatList.response ? [] : !this.props.user.wechatList.response.data ? <div /> :
         (
