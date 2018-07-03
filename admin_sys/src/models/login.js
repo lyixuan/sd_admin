@@ -10,6 +10,10 @@ export default {
   state: {
     status: null,
     msg: '',
+    loginStatusObj: {
+      msg: '',
+      status: false,
+    },
     currentUser: {},
   },
 
@@ -22,7 +26,8 @@ export default {
         payload: response,
       });
       // Login successfully
-      if (response.status === true) {
+
+      if (response.code === 2000) {
         const { userId, token } = response.data;
         if (payload.autoLogin === true) {
           setAuthority('admin_user', { mail, password, userId }); // 存储用户信息
@@ -35,7 +40,7 @@ export default {
     *fetchCurrent({ payload }, { call, put }) {
       const { id } = payload;
       const response = yield call(queryCurrentUser, { id });
-      if (response.status === true) {
+      if (response.code === 2000) {
         yield put({
           type: 'saveCurrentUser',
           payload: response,
@@ -68,9 +73,13 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
+      const loginStatusObj = {
+        status: payload.code === 2000,
+        msg: payload.data,
+      };
       return {
         ...state,
-        ...payload,
+        loginStatusObj,
       };
     },
     saveCurrentUser(state, { payload }) {

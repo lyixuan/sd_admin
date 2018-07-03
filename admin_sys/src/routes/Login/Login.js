@@ -29,20 +29,21 @@ export default class LoginPage extends Component {
       type: 'account',
       autoLogin: true,
       errorMessage: '',
-      isShowErrorBox: false,
+      isShowErrorBox: true,
       adminUser: {
-        mail: formatEmail(mail),
-        password: formatEmail(password),
+        mail: mail ? formatEmail(mail) : '',
+        password: password ? formatEmail(password) : '',
       },
     };
   }
-
-  // showErrorMessage = errorMessage => {
-  //   this.setState({
-  //     isShowErrorBox: true,
-  //     errorMessage,
-  //   });
-  // };
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.login.loginStatusObj !== this.props.login.loginStatusObj) {
+      this.setState({
+        errorMessage: nextProps.login.loginStatusObj.msg,
+        isShowErrorBox: nextProps.login.loginStatusObj.status,
+      });
+    }
+  }
 
   onTabChange = type => {
     this.setState({ type });
@@ -78,7 +79,7 @@ export default class LoginPage extends Component {
           <PassWordErrorAlert
             style={{ width: '340px' }}
             errorMes={errorMessage}
-            isShow={isShowErrorBox}
+            isShow={!isShowErrorBox}
           />
           <div style={{ width: '340px' }}>
             <span className={styles.loginLabel}>邮箱</span>

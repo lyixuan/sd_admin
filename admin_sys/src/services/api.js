@@ -31,7 +31,16 @@ export async function userLogout(params) {
     body: params,
   });
 }
-
+/*
+* 用户修改登录密码
+* params：{id，oldPassword,password}
+* */
+export async function updatePwd(params) {
+  return request(`${HOST}/account/updatePwd`, {
+    method: 'PUT',
+    body: params,
+  });
+}
 /*
 以下接口为账号相关
 * */

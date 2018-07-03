@@ -192,10 +192,7 @@ class BasicLayout extends React.PureComponent {
       match,
       location,
     } = this.props;
-    /*
-    * ******默认小德logo*******
-    * */
-    currentUser.avatar = currentUser.avatar || logo;
+    currentUser.avatar = logo;
     const bashRedirect = this.getBaseRedirect();
     const layout = (
       <Layout>
