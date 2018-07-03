@@ -44,7 +44,6 @@ class AccountList extends Component {
       role: key.role,
       id: key.id,
       roleId: key.roleId,
-      from: 'edit',
     });
   };
 

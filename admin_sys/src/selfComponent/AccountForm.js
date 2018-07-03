@@ -1,22 +1,17 @@
 import React, { Component } from 'react';
-import { connect } from 'dva';
 import { Form, Input, Cascader, Button } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
-@connect(({ account, loading }) => ({
-  account,
-  loading,
-}))
 class AccountForm extends Component {
   constructor(props) {
+    console.log("进入form")
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
+    const roleValues = this.props.jumpFunction.account.getRoleList
     this.state = {
-      roleList: !this.props.account.getRoleList
-        ? []
-        : !this.props.account.getRoleList.data ? [] : this.props.account.getRoleList.data.content,
+      roleList: !roleValues ? [] : !roleValues.data ? [] : roleValues.data.content,
       name: !arrValue.name ? '' : arrValue.name,
       email: !arrValue.email ? '' : formatEmail(arrValue.email),
       role: !arrValue.role ? null : arrValue.role,
@@ -27,62 +22,21 @@ class AccountForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         this.props.handleSubmit(values)
-        // const rname = values.rname[0];
-        // let newRoleId = 0;
-        // this.state.roleList.map(item => {
-        //   if (item.name === rname) {
-        //     newRoleId = item.id;
-        //   }
-        //   return 0;
-        // });
-        // if (this.state.from === 'edit') {
-        //   const updateAccountParams = {
-        //     name: values.name,
-        //     mail: `${values.mail}@sunlans.com`,
-        //     roleId: newRoleId,
-        //     id: Number(this.state.id),
-        //   };
-        //   console.log(updateAccountParams);
-        //   this.props.dispatch({
-        //     type: 'account/updateAccount',
-        //     payload: { updateAccountParams },
-        //   });
-        // } else {
-        //   const addAccountParams = {
-        //     name: values.name,
-        //     mail: `${values.mail}@sunlans.com`,
-        //     roleId: newRoleId,
-        //   };
-        //   console.log(addAccountParams);
-        //   this.props.dispatch({
-        //     type: 'account/addAccount',
-        //     payload: { addAccountParams },
-        //   });
-        // }
-        // console.log(
-        //   !this.props.account.accountList.result ? [] : this.props.account.accountList.result.code
-        // );
-        // const aa = this.state.from === 'edit' ? '账号编辑成功！' : '账号创建成功！';
-        // message.success(aa);
-        // this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
       }
     });
   };
   roleListFun = val => {
     const residences = [];
-    val.map(item =>
+    val.map((item, index) =>
       residences.push({
         value: item.name,
         label: item.name,
+        key:index,
       })
     );
     return residences;
   };
 
-  resetContent = () => {
-    this.props.form.resetFields(['name', 'email', 'role']);
-    this.props.jumpFunction.setRouteUrlParams('/account/accountList', {});
-  };
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -160,7 +114,7 @@ class AccountForm extends Component {
           <FormItem {...tailFormItemLayout} />
           <FormItem>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button onClick={this.resetContent} type="primary" className={common.cancleButton}>
+              <Button onClick={this.props.resetContent} type="primary" className={common.cancleButton}>
                 取消
               </Button>
               <Button htmlType="submit" type="primary" className={common.submitButton}>

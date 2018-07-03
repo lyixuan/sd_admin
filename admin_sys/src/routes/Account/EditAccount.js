@@ -29,7 +29,8 @@ class EditAccount extends Component {
         console.log(values)
         const rname = values.rname[0];
         let newRoleId = 0;
-        this.props.account.getRoleList.data.content.map(item => {
+        const roleList = this.props.account.getRoleList.data.content
+        roleList.map(item => {
           if (item.name === rname) {
             newRoleId = item.id;
           }
@@ -50,14 +51,22 @@ class EditAccount extends Component {
         this.props.setRouteUrlParams('/account/accountList', {});
   };
 
-  render() {
+  resetContent = () => {
+    this.props.setRouteUrlParams('/account/accountList', {});
+  };
 
-    return !this.props.account.getRoleList ? (
-      []
-    ) : !this.props.account.getRoleList.data ? (
-      <div />
-    ) : (
-      <ContentLayout contentForm={<WrappedRegistrationForm jumpFunction={this.props}  handleSubmit={(values)=>{this.handleSubmit(values)}} />} />
+  render() {
+    console.log(this.props.account.getRoleList)
+    return (!this.props.account.getRoleList ? [] : !this.props.account.getRoleList.data ? <div /> :
+      (
+        <ContentLayout
+          contentForm={<WrappedRegistrationForm
+            jumpFunction={this.props}
+            resetContent={()=>{this.resetContent()}}
+            handleSubmit={(values)=>{this.handleSubmit(values)}}
+          />}
+        />
+      )
     );
   }
 }
