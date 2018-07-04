@@ -26,7 +26,6 @@ export default {
         payload: response,
       });
       // Login successfully
-
       if (response.code === 2000) {
         const { userId, token } = response.data;
         if (payload.autoLogin === true) {

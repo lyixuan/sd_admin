@@ -10,7 +10,7 @@ export default {
   },
 
   effects: {
-    *updatePwd({ payload }, { call, put }) {
+    *updatePwd({ payload }, { call, put, fork }) {
       const adminUser = getAuthority('admin_user') || {};
       const id = adminUser.userId || '';
       const response = yield call(updatePwd, { ...payload, id });
@@ -21,7 +21,7 @@ export default {
       if (response.code === 2000) {
         const { password } = payload;
         setAuthority('admin_user', { ...adminUser, password }); // 存储用户信息
-        yield call(handleSuccess, { content: '修改成功', pathname: '/userLayout/login' });
+        yield fork(handleSuccess, { content: '修改成功', pathname: '/userLayout/login' });
       }
     },
     reducers: {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Checkbox } from 'antd';
+import { routerRedux } from 'dva/router';
 import Login from 'components/Login';
 import PassWordErrorAlert from '../../selfComponent/passWordErrot/PassWordErrorAlert';
 import styles from './Login.less';
@@ -63,7 +64,9 @@ export default class LoginPage extends Component {
       });
     }
   };
-
+  callBackPwd = () => {
+    this.props.dispatch(routerRedux.push({ pathname: '/changePwd/emilRetrieve' }));
+  };
   changeAutoLogin = e => {
     this.setState({
       autoLogin: e.target.checked,
@@ -86,13 +89,15 @@ export default class LoginPage extends Component {
             <Emil name="mail" placeholder="请输入邮箱" defaultValue={adminUser.mail} />
             <span className={styles.loginLabel}>密码</span>
             <Password name="password" placeholder="请输入密码" defaultValue={adminUser.password} />
-            <div>
+            <div className={styles.loginStatusBox}>
               <span style={{ float: 'left' }}>
                 <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>
                   自动登录
                 </Checkbox>
               </span>
-              <span style={{ float: 'right' }}>忘记密码</span>
+              <span className={styles.callBackPwd} onClick={this.callBackPwd}>
+                忘记密码
+              </span>
             </div>
             <Submit loading={submitting} type="primary" className={common.searchButton}>
               登录
