@@ -3,6 +3,7 @@ import { Form } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import PermissionForm from '../../selfComponent/PermissionForm';
+import {levelDataReset} from '../../utils/dataDictionary';
 
 const WrappedRegistrationForm = Form.create()(PermissionForm);
 @connect(({ permission, loading }) => ({
@@ -26,9 +27,6 @@ class EditPermission extends Component {
   }
 
   handleSubmit = (values) => {
-    const type = values.level[0] === '页面功能'
-        ? 3
-        : values.level[0] === '一级页面' ? 1 : 2;
     const parentIdName = !values.parentId[0]?'':values.parentId[0];
     let newparentId = 1;
     const parentIdList = this.props.permission.permissionListAllName.data
@@ -42,7 +40,7 @@ class EditPermission extends Component {
       name: values.name,
       iconUrl: values.iconUrl[0],
       id: Number(this.state.id),
-      level: type,
+      level: levelDataReset[values.level[0]]||1,
       parentId: newparentId,
       sort: Number(values.sort),
       resourceUrl: values.resourceUrl,

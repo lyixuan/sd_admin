@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
 import common from '../routes/Common/common.css';
+import {levelDataReset} from '../utils/dataDictionary';
 
 const FormItem = Form.Item;
 let parentList=[];
@@ -53,38 +54,16 @@ class PermissionForm extends Component {
   roleListFun = () => {
     const parentIdList = [];
     const listValue = parentListBackup
-    if(this.state.level==='页面功能'){
-      listValue.map((obj)=> {
-        if(obj.level<3){
-          parentIdList.push({
-            value: obj.value,
-            label: obj.label,
-            level:obj.level,
-          })
-        }
-        return 0; });
-    }
-    else if(this.state.level==='二级页面'){
-      listValue.map((obj)=> {
-        if(obj.level<2){
-          parentIdList.push({
-            value: obj.value,
-            label: obj.label,
-            level:obj.level,
-          })
-        }
-        return 0; });
-    }else if (this.state.level==='一级页面'){
-      listValue.map((obj)=> {
-        if(obj.level<1){
-          parentIdList.push({
-            value: obj.value,
-            label: obj.label,
-            level:obj.level,
-          })
-        }
-        return 0; });
-    }
+    const levelValue = !this.state.level?'页面功能':this.state.level
+    listValue.map((obj)=> {
+      if(obj.level<levelDataReset[levelValue]){
+        parentIdList.push({
+          value: obj.value,
+          label: obj.label,
+          level:obj.level,
+        })
+      }
+      return 0; });
     return parentIdList;
   };
 
@@ -104,41 +83,16 @@ class PermissionForm extends Component {
     const level = value[0]
     const listValue = parentListBackup
     const rObj = [];
-    if(level==='页面功能'){
-      listValue.map((obj)=> {
-        if(obj.level<3){
-          rObj.push({
-            value: obj.value,
-            label: obj.label,
-            level:obj.level,
-          })
-        }
-        return 0; });
-      parentList= rObj;
-    }
-    else if(level==='二级页面'){
-      listValue.map((obj)=> {
-        if(obj.level<2){
-          rObj.push({
-            value: obj.value,
-            label: obj.label,
-            level:obj.level,
-          })
-        }
-        return 0; });
-      parentList= rObj;
-    }else{
-      listValue.map((obj)=> {
-        if(obj.level<1){
-          rObj.push({
-            value: obj.value,
-            label: obj.label,
-            level:obj.level,
-          })
-        }
-        return 0; });
-      parentList= rObj;
-    }
+    listValue.map((obj)=> {
+      if(obj.level<levelDataReset[level]){
+        rObj.push({
+          value: obj.value,
+          label: obj.label,
+          level:obj.level,
+        })
+      }
+      return 0; });
+    parentList= rObj;
   }
 
   render() {

@@ -4,6 +4,7 @@ import { Table, Button, Form, Input, Popconfirm, Cascader } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
+import {userTypeData} from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 let propsVal = '';
@@ -87,16 +88,7 @@ class UserList extends Component {
         name: item.name,
         mobile: item.mobile,
         mail: item.entUserId,
-        userType:
-          item.userType === 'college'
-            ? '学院'
-            : item.userType === 'family'
-              ? '家族'
-              : item.userType === 'group'
-                ? '小组'
-                : item.userType === 'admin'
-                  ? '系统管理员'
-                  : item.userType === 'boss' ? '高级管理员' : '无底表权限', // 需转为中文
+        userType:userTypeData[item.userType],
         showName: item.showName,
         changeShowName: item.changeShowName,
         id: item.id,

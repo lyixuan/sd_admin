@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
+import {levelData} from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 let propsVal = '';
@@ -51,7 +52,6 @@ class PermissionList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         const permissionListParams = { name: values.name };
-        console.log(permissionListParams);
         this.props.dispatch({
           type: 'permission/permissionList',
           payload: { permissionListParams },
@@ -68,7 +68,7 @@ class PermissionList extends Component {
         key: index,
         id: item.id,
         name: item.name,
-        level: item.level === 3 ? '页面功能' : item.level === 1 ? '一级页面' : '二级页面',
+        level: levelData[item.level],
         resourceUrl: item.resourceUrl,
         parentId: item.parentId,
         iconUrl: item.iconUrl,
@@ -143,7 +143,6 @@ class PermissionList extends Component {
   };
 
   render() {
-    // console.log(this.props.permission.permissionListAllName)
     const data = !this.props.permission.permissionList.response
       ? []
       : !this.props.permission.permissionList.response.data
