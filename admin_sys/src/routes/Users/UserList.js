@@ -182,11 +182,8 @@ class UserList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        console.log('进入开始请求');
-        // searchName= !
-        //   searchMobile=
         const userListParams = {
-          isUpdate: values.isUpdate === 'no' ? true : values.isUpdate,
+          isUpdate: !values.isUpdate?undefined:!values.isUpdate[0]?undefined:values.isUpdate[0] === 'no' ? true : values.isUpdate[0],
           name: values.name,
           mobile: values.mobile,
         };
@@ -218,27 +215,14 @@ class UserList extends Component {
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <FormItem label="姓名">
               {getFieldDecorator('name', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入姓名!',
-                  },
-                ],
               })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem label="手机">
               {getFieldDecorator('mobile', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入姓名!',
-                  },
-                ],
               })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem label="需要更新">
               {getFieldDecorator('isUpdate', {
-                rules: [{ type: 'array', required: true, message: '请选择级别！' }],
               })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem>
