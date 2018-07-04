@@ -14,7 +14,7 @@ export default {
 
   state: {
     // 请求接口上送参数
-    accountListParams: { size: 50, number: 0 },
+    accountListParams: { size: 30, number: 0 },
     addAccountParams: {},
     updateAccountParams: {},
     deleteAccountParams: {},
