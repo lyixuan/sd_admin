@@ -17,9 +17,10 @@ class RoleList extends Component {
   }
 
   componentDidMount() {
+    const paramsObj = { size: 30, number: 0 };
     this.props.dispatch({
       type: 'role/roleList',
-      payload: {},
+      payload: { paramsObj },
     });
   }
 
@@ -28,10 +29,10 @@ class RoleList extends Component {
   };
 
   getData = params => {
-    const sendObj = { ...this.props.role.params, ...params };
+    const paramsObj = { ...this.props.role.params, ...params };
     this.props.dispatch({
       type: 'role/roleList',
-      payload: sendObj,
+      payload: { paramsObj },
     });
   };
 
