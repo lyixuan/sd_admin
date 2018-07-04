@@ -4,7 +4,7 @@ import uploadImg from '../../assets/uploadImg.png';
 import styles from './step.css';
 
 let isExcel = false;
-let isLt35M = false;
+let isLt10M = false;
 class stepUpload extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +12,7 @@ class stepUpload extends Component {
   }
   handleChange = info => {
     let { fileList } = info;
-    if (isLt35M) {
+    if (isLt10M) {
       fileList = fileList.slice(-1);
       if (isExcel) {
         this.setState({ fileList });
@@ -25,14 +25,14 @@ class stepUpload extends Component {
       beforeUpload(file) {
         isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         if (!isExcel) {
-          message.error('只能上传 Excel 文件哦！');
+          message.error('请上传 Excel 文件！');
         }
 
-        isLt35M = file.size / 1024 / 1024 < 30;
-        if (!isLt35M) {
-          message.error('只能上传小于 35M 的文件哦！');
+        isLt10M = file.size / 1024 / 1024 < 30;
+        if (!isLt10M) {
+          message.error('文件不能大于 10MB！');
         }
-        return isExcel && isLt35M;
+        return isExcel && isLt10M;
       },
       onChange: this.handleChange,
       onRemove(e) {

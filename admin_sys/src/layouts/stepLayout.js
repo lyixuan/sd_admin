@@ -12,21 +12,27 @@ class StepLayout extends Component {
       current: 0,
     };
   }
+  // 上一页
   next() {
     const current = this.state.current + 1;
     this.setState({ current });
   }
-
+  // 下一页
   prev() {
     const current = this.state.current - 1;
     this.setState({ current });
   }
-
+  // 取消---回到列表页
   cancel = () => {
     window.history.go(-1);
   };
+  // 确定---回到列表页
+  clickOk = () => {
+    message.success('添加成功');
+    this.props.history('/refund/refundList');
+  };
   render() {
-    const { title, steps, baseLayout } = this.props;
+    const { title, steps, baseLayout, isDisabled } = this.props;
     const { current } = this.state;
 
     const stepBlock = (
@@ -50,16 +56,17 @@ class StepLayout extends Component {
                   </Button>
                 )}
               {this.state.current < steps.length - 1 && (
-                <Button className={common.submitButton} type="primary" onClick={() => this.next()}>
+                <Button
+                  className={common.submitButton}
+                  type="primary"
+                  onClick={() => this.next()}
+                  disabled={isDisabled}
+                >
                   下一步
                 </Button>
               )}
               {this.state.current === steps.length - 1 && (
-                <Button
-                  type="primary"
-                  onClick={() => message.success('Processing complete!')}
-                  className={common.submitButton}
-                >
+                <Button type="primary" onClick={this.clickOk} className={common.submitButton}>
                   确定
                 </Button>
               )}

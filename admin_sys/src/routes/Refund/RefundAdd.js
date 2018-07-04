@@ -109,7 +109,12 @@ class RefundAdd extends Component {
       dataSource: !dataSource ? [] : dataSource,
     };
   }
-
+  // 回调
+  historyFn(pathname) {
+    this.props.history.push({
+      pathname,
+    });
+  }
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
@@ -129,7 +134,17 @@ class RefundAdd extends Component {
         content: <StepSucess isDelImg="false" tipSucess={tipSucess} />,
       },
     ];
-    return <StepLayout title="添加退费" steps={steps} tipSucess={tipSucess} />;
+    return (
+      <StepLayout
+        title="添加退费"
+        steps={steps}
+        tipSucess={tipSucess}
+        isDisabled={false}
+        history={cb => {
+          this.historyFn(cb);
+        }}
+      />
+    );
   }
 }
 
