@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Pagination } from 'antd';
+import { Table, Button } from 'antd';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
@@ -27,8 +28,18 @@ class RoleList extends Component {
   };
 
   onShowSizeChange = (current, pageSize) => {
-    this.getData({ current, pageSize });
+    this.getData({ size: pageSize, number: current - 1 });
   };
+  // 点击显示每页多少条数据函数
+  // onShowSizeChange = (current, pageSize) => {
+  //   console.log(pageSize,current);
+  //   const sendObj = { size: pageSize, number: current - 1 };
+  //   console.log(sendObj);
+  //   this.props.dispatch({
+  //     type: 'role/roleList',
+  //     payload: sendObj,
+  //   });
+  // };
 
   getData = params => {
     const sendObj = { ...this.props.role.params, ...params };
@@ -84,8 +95,11 @@ class RoleList extends Component {
     return columns;
   };
   render() {
-    const dataSource = !this.props.role.dataList ? [] : this.props.role.dataList.content;
+    const { dataList } = this.props.role;
+    const totalNum = !dataList ? 0 : dataList.totalElements;
+    const dataSource = !dataList ? [] : dataList.content;
     const columns = !this.columnsData() ? [] : this.columnsData();
+
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
@@ -103,7 +117,7 @@ class RoleList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：500条</p>
+            <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
               dataSource={dataSource}
@@ -114,13 +128,17 @@ class RoleList extends Component {
           </div>
         }
         contentPagination={
-          <Pagination
-            showSizeChanger
-            onShowSizeChange={this.onShowSizeChange}
+          <SelfPagination
+            onChange={(current, pageSize) => {
+              this.changePage(current, pageSize);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              this.onShowSizeChange(current, pageSize);
+            }}
             defaultCurrent={1}
-            total={100}
-            onChange={this.onChange}
-            className={common.paginationStyle}
+            total={totalNum}
+            defaultPageSize={50}
+            pageSizeOptions={['50']}
           />
         }
       />

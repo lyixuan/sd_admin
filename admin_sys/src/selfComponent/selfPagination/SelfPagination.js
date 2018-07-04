@@ -3,33 +3,28 @@ import { Pagination } from 'antd';
 import common from '../../routes/Common/common.css';
 
 class SelfPagination extends Component {
-  constructor(props) {
-    super(props);
-    console.log(this.props)
-    this.state = {
-      defaultCurrent:this.props.defaultCurrent || 1,
-      defaultPageSize:this.props.defaultPageSize || 50,
-      pageSizeOptions:this.props.pageSizeOptions || [],
-      total:this.props.total||0,
-    };
-    console.log(this.state)
-  }
   render() {
-
-    return(
+    const {
+      defaultCurrent,
+      defaultPageSize,
+      pageSizeOptions,
+      total,
+      onChange,
+      onShowSizeChange,
+    } = this.props;
+    return (
       <Pagination
         showSizeChanger
         className={common.paginationStyle}
-        onChange={this.props.onChange}
-        onShowSizeChange={this.props.onShowSizeChange}
-        defaultCurrent={this.state.defaultCurrent}
-        total={this.state.total}
-        defaultPageSize={this.state.defaultPageSize}
-        pageSizeOptions={this.state.pageSizeOptions}
-      />);
+        onChange={onChange}
+        onShowSizeChange={onShowSizeChange}
+        defaultCurrent={defaultCurrent || 1}
+        total={total || 0}
+        defaultPageSize={defaultPageSize || 50}
+        pageSizeOptions={pageSizeOptions || []}
+      />
+    );
   }
 }
 
 export default SelfPagination;
-
-
