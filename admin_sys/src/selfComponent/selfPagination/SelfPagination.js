@@ -21,7 +21,7 @@ class SelfPagination extends Component {
         defaultCurrent={defaultCurrent || 1}
         total={total || 0}
         defaultPageSize={defaultPageSize || 30}
-        pageSizeOptions={pageSizeOptions || []}
+        pageSizeOptions={pageSizeOptions || ['30']}
       />
     );
   }

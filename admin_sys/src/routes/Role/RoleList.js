@@ -128,7 +128,6 @@ class RoleList extends Component {
             defaultCurrent={1}
             total={totalNum}
             defaultPageSize={30}
-            pageSizeOptions={['50']}
           />
         }
       />
