@@ -117,13 +117,13 @@ class UserForm extends Component {
                   whitespace: true,
                 },
               ],
-            })(<Input style={{ width: 380 }} />)}
+            })(<Input style={{ width: 380 }} disabled={!this.state.phone?false:"disabled"} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*邮 箱">
             {getFieldDecorator('email', {
               initialValue: this.state.email,
               rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
-            })(<Input style={{ width: 264 }} />)}
+            })(<Input style={{ width: 264 }} disabled={!this.state.email?false:"disabled"} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*级 别">
