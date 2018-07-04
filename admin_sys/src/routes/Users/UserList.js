@@ -33,7 +33,7 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    const userListParams = {size: 50, number: 0};
+    const userListParams = {size: 30, number: 0, isUpdate:false};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -141,11 +141,16 @@ class UserList extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/user/checkUser">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
-                  更新
-                </span>
-              </AuthorizedButton>
+              {
+                !record.changeShowName?<div />:
+                  (
+                    <AuthorizedButton authority="/user/checkUser">
+                      <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
+                        更新
+                      </span>
+                    </AuthorizedButton>
+                  )
+              }
               <AuthorizedButton authority="/user/editUser">
                 <span
                   style={{ color: '#52C9C2', marginLeft: 12 }}
