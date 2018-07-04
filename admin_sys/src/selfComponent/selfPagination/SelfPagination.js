@@ -20,7 +20,7 @@ class SelfPagination extends Component {
         onShowSizeChange={onShowSizeChange}
         defaultCurrent={defaultCurrent || 1}
         total={total || 0}
-        defaultPageSize={defaultPageSize || 50}
+        defaultPageSize={defaultPageSize || 30}
         pageSizeOptions={pageSizeOptions || []}
       />
     );

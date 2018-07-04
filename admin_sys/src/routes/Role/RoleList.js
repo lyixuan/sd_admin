@@ -23,23 +23,9 @@ class RoleList extends Component {
     });
   }
 
-  onChange = val => {
-    this.getData({ current: val });
-  };
-
   onShowSizeChange = (current, pageSize) => {
     this.getData({ size: pageSize, number: current - 1 });
   };
-  // 点击显示每页多少条数据函数
-  // onShowSizeChange = (current, pageSize) => {
-  //   console.log(pageSize,current);
-  //   const sendObj = { size: pageSize, number: current - 1 };
-  //   console.log(sendObj);
-  //   this.props.dispatch({
-  //     type: 'role/roleList',
-  //     payload: sendObj,
-  //   });
-  // };
 
   getData = params => {
     const sendObj = { ...this.props.role.params, ...params };
@@ -47,7 +33,11 @@ class RoleList extends Component {
       type: 'role/roleList',
       payload: sendObj,
     });
-    this.props.setCullectUrlParams(sendObj);
+  };
+
+  changePage = (current, pageSize) => {
+    console.log(current, pageSize);
+    this.getData({ size: pageSize, number: current - 1 });
   };
 
   handleNextPage = (pathName, params) => {
@@ -137,7 +127,7 @@ class RoleList extends Component {
             }}
             defaultCurrent={1}
             total={totalNum}
-            defaultPageSize={50}
+            defaultPageSize={30}
             pageSizeOptions={['50']}
           />
         }
