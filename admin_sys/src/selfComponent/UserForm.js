@@ -58,9 +58,7 @@ class UserForm extends Component {
   };
 
   roleListFun = val => {
-    console.log(val)
     const residences = [];
-    console.log(val);
     val.map((item, index) =>
       residences.push({
         value: item.name,

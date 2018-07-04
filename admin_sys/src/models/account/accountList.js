@@ -58,7 +58,7 @@ export default {
       } else {
         message.error(result.msg);
       }
-      const response = yield call(queryAccountList, {size: 50, number: 0});
+      const response = yield call(queryAccountList, {size: 30, number: 0});
       console.log(response)
       yield put({
         type: 'accountListSave',

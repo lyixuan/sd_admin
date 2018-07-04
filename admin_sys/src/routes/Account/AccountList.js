@@ -17,7 +17,7 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const accountListParams = {size: 50, number: 0};
+    const accountListParams = {size: 30, number: 0};
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
@@ -173,8 +173,8 @@ class AccountList extends Component {
                 onShowSizeChange={(current, pageSize)=>{this.onShowSizeChange(current, pageSize)}}
                 defaultCurrent={1}
                 total={totalNum}
-                defaultPageSize={50}
-                pageSizeOptions={['50']}
+                defaultPageSize={30}
+                pageSizeOptions={['30']}
               />
             }
           />)
