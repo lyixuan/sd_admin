@@ -1,7 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { userLogin, queryCurrentUser } from '../services/api';
-import { setAuthority } from '../utils/authority';
+import { setAuthority, setAuthoritySeccion } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 
 export default {
@@ -30,6 +30,8 @@ export default {
         const { userId, token } = response.data;
         if (payload.autoLogin === true) {
           setAuthority('admin_user', { mail, password, userId }); // 存储用户信息
+        } else {
+          setAuthoritySeccion('admin_user', { mail, password, userId });
         }
         setAuthority('admin_token', { userId, token }); // 存储api token
         reloadAuthorized();

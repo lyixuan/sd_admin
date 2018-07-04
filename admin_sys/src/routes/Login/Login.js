@@ -11,7 +11,7 @@ import { formatEmail } from '../../utils/email';
 
 const { Emil, Password, Submit } = Login;
 function checkoutLoginObj(loginObj, key) {
-  if (loginObj && typeof loginObj === 'object' && loginObj.token) {
+  if (loginObj && typeof loginObj === 'object' && loginObj[key]) {
     return loginObj[key];
   } else return '';
 }
@@ -38,7 +38,10 @@ export default class LoginPage extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.login.loginStatusObj !== this.props.login.loginStatusObj) {
+    if (
+      JSON.stringify(nextProps.login.loginStatusObj) !==
+      JSON.stringify(this.props.login.loginStatusObj)
+    ) {
       this.setState({
         errorMessage: nextProps.login.loginStatusObj.msg,
         isShowErrorBox: nextProps.login.loginStatusObj.status,

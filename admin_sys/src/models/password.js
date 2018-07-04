@@ -21,17 +21,17 @@ export default {
       if (response.code === 2000) {
         const { password } = payload;
         setAuthority('admin_user', { ...adminUser, password }); // 存储用户信息
-        yield fork(handleSuccess, { content: '修改成功', pathname: '/userLayout/login' });
+        yield fork(handleSuccess, { content: '密码修改成功', pathname: '/userLayout/login' });
       }
     },
-    reducers: {
-      saveNewPassword(state, { payload }) {
-        const changePwdObj = {
-          status: payload.code === 2000,
-          msg: payload.msg,
-        };
-        return { ...state, changePwdObj };
-      },
+  },
+  reducers: {
+    saveNewPassword(state, { payload }) {
+      const changePwdObj = {
+        status: payload.code === 2000,
+        msg: payload.msg,
+      };
+      return { ...state, changePwdObj };
     },
   },
 };

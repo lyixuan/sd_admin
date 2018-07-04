@@ -25,6 +25,7 @@ export default class RetrievePassWord extends Component {
       JSON.stringify(nextProps.password.changePwdObj) !==
       JSON.stringify(this.props.password.changePwdObj)
     ) {
+      console.log(nextProps.password.changePwdObj);
       const { msg, status } = nextProps.password.changePwdObj;
       if (!status) {
         this.setState({
@@ -34,9 +35,6 @@ export default class RetrievePassWord extends Component {
       }
     }
   }
-  clickCaptcha = () => {
-    console.log('验证码');
-  };
   handleSubmit = (err, values) => {
     if (!err) {
       const { oldPassword, password, repeadPassword } = values;
@@ -59,7 +57,6 @@ export default class RetrievePassWord extends Component {
 
   render() {
     const { submitting } = this.props;
-    console.log();
     return (
       <div className={styles.main}>
         <Login onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
