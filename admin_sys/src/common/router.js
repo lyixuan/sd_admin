@@ -22,6 +22,7 @@ const dynamicWrapper = (app, models, component) => {
         app.model(require(`../models/${model}`).default);
       }
     });
+
     return props => {
       if (!routerDataCache) {
         routerDataCache = getRouterData(app);
@@ -169,6 +170,9 @@ export const getRouterData = app => {
     '/shotName/college': {
       component: dynamicWrapper(app, [], () => import('../routes/ShotName/College')),
     },
+    '/exception': {
+      component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
+    },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
     },
@@ -178,16 +182,16 @@ export const getRouterData = app => {
     '/exception/500': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),
     },
-    '/exception/trigger': {
-      component: dynamicWrapper(app, ['error'], () =>
-        import('../routes/Exception/triggerException')
-      ),
+    '/exception/failUrl': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/failUrl')),
     },
     '/changePwd': {
       component: dynamicWrapper(app, [], () => import('../layouts/ChangePwd')),
     },
     '/changePwd/retrieve': {
-      component: dynamicWrapper(app, ['login'], () => import('../routes/Login/RetrievePassWord')),
+      component: dynamicWrapper(app, ['password'], () =>
+        import('../routes/Login/RetrievePassWord')
+      ),
     },
     '/changePwd/emilRetrieve': {
       component: dynamicWrapper(app, ['password'], () =>
@@ -202,12 +206,6 @@ export const getRouterData = app => {
     },
     '/userLayout/login': {
       component: dynamicWrapper(app, ['login'], () => import('../routes/Login/Login')),
-    },
-    '/userLayout/register': {
-      component: dynamicWrapper(app, ['register'], () => import('../routes/Login/Register')),
-    },
-    '/userLayout/register-result': {
-      component: dynamicWrapper(app, [], () => import('../routes/Login/RegisterResult')),
     },
   };
   // Get name from ./menu.js or just set it in the router data.
