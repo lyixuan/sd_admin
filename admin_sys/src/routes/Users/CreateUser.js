@@ -12,7 +12,11 @@ const WrappedRegistrationForm = Form.create()(UserForm);
 class CreateUser extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const arrValue = this.props.getUrlParams();
+    this.state = {
+      wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
+    };
+    console.log(this.state);
   }
   componentDidMount() {
     const wechatListParams = {};
@@ -28,8 +32,8 @@ class CreateUser extends Component {
     });
   }
 
-  handleSubmit = (values) => {
-    console.log(values)
+  handleSubmit = values => {
+    console.log(values);
     // const type = values.level[0] === '页面功能'
     //   ? 3
     //   : values.level[0] === '一级页面' ? 1 : 2;
@@ -61,19 +65,28 @@ class CreateUser extends Component {
     this.props.setRouteUrlParams('/user/userList', {});
   };
   render() {
-    const aa = this.props.user.listOrg.response // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
-    console.log(aa)
-    return (!this.props.user.wechatList.response ? [] : !this.props.user.wechatList.response.data ? <div /> :
-        (
-          <ContentLayout
-            contentForm={<WrappedRegistrationForm
-              jumpFunction={this.props}
-              resetContent={()=>{this.resetContent()}}
-              handleSubmit={(values)=>{this.handleSubmit(values)}}
-            />}
+    const aa = this.props.user.listOrg.response; // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
+    console.log(aa);
+    return !this.props.user.wechatList.response ? (
+      []
+    ) : !this.props.user.wechatList.response.data ? (
+      <div />
+    ) : (
+      <ContentLayout
+        contentForm={
+          <WrappedRegistrationForm
+            jumpFunction={this.props}
+            resetContent={() => {
+              this.resetContent();
+            }}
+            handleSubmit={values => {
+              this.handleSubmit(values);
+            }}
           />
-        )
-    );}
+        }
+      />
+    );
+  }
 }
 
 export default CreateUser;

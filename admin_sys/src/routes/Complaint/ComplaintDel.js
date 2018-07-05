@@ -72,7 +72,12 @@ class ComplaintDel extends Component {
       dataSource: !dataSource ? [] : dataSource,
     };
   }
-
+  // 回调
+  historyFn() {
+    this.props.history.push({
+      pathname: '/complaint/complaintList',
+    });
+  }
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
@@ -109,7 +114,16 @@ class ComplaintDel extends Component {
         content: <StepSucess isDelImg="true" tipSucess={tipSucess} />,
       },
     ];
-    return <StepLayout title="删除投诉" steps={steps} tipSucess={tipSucess} />;
+    return (
+      <StepLayout
+        title="删除投诉"
+        steps={steps}
+        tipSucess={tipSucess}
+        goBack={() => {
+          this.historyFn();
+        }}
+      />
+    );
   }
 }
 

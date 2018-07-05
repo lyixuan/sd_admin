@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
 import common from '../routes/Common/common.css';
-import {levelDataReset} from '../utils/dataDictionary';
+import { levelDataReset } from '../utils/dataDictionary';
 
 const FormItem = Form.Item;
-let parentList=[];
+let parentList = [];
 let parentListBackup = [];
+let flag = '页面功能';
 const residences = [
   {
     value: '一级页面',
@@ -24,7 +25,7 @@ class PermissionForm extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
-    const parentIdValues = this.props.jumpFunction.permission.permissionListAllName
+    const parentIdValues = this.props.jumpFunction.permission.permissionListAllName;
     this.state = {
       parentIdList: !parentIdValues.data ? [] : parentIdValues.data,
       name: !arrValue.name ? '' : arrValue.name,
@@ -36,35 +37,20 @@ class PermissionForm extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     parentListBackup = !this.state.parentIdList ? [] : this.fullListFun(this.state.parentIdList);
     parentList = this.roleListFun();
+    flag = this.state.level;
   }
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log("进入提交函数")
-        this.props.handleSubmit(values)
+        console.log('进入提交函数');
+        this.props.handleSubmit(values);
       }
     });
-  };
-
-  roleListFun = () => {
-    const parentIdList = [];
-    const listValue = parentListBackup
-    const levelValue = !this.state.level?'页面功能':this.state.level
-    listValue.map((obj)=> {
-      if(obj.level<levelDataReset[levelValue]){
-        parentIdList.push({
-          value: obj.value,
-          label: obj.label,
-          level:obj.level,
-        })
-      }
-      return 0; });
-    return parentIdList;
   };
 
   fullListFun = val => {
@@ -73,27 +59,46 @@ class PermissionForm extends Component {
       parentIdList.push({
         value: item.id,
         label: item.name,
-        level:item.level,
+        level: item.level,
       })
     );
     return parentIdList;
   };
 
-  handleSelectChange = (value) => {
-    const level = value[0]
-    const listValue = parentListBackup
+  roleListFun = () => {
+    const parentIdList = [];
+    const listValue = parentListBackup;
+    const levelValue = !this.state.level ? '页面功能' : this.state.level;
+    listValue.map(obj => {
+      if (obj.level < levelDataReset[levelValue]) {
+        parentIdList.push({
+          value: obj.value,
+          label: obj.label,
+          level: obj.level,
+        });
+      }
+      return 0;
+    });
+    return parentIdList;
+  };
+
+  handleSelectChange = value => {
+    const level = value[0];
+    flag = level;
+    const listValue = parentListBackup;
     const rObj = [];
-    listValue.map((obj)=> {
-      if(obj.level<levelDataReset[level]){
+    listValue.map(obj => {
+      if (obj.level < levelDataReset[level]) {
         rObj.push({
           value: obj.value,
           label: obj.label,
-          level:obj.level,
-        })
+          level: obj.level,
+        });
       }
-      return 0; });
-    parentList= rObj;
-  }
+      return 0;
+    });
+    parentList = rObj;
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -126,7 +131,8 @@ class PermissionForm extends Component {
             {getFieldDecorator('name', {
               initialValue: this.state.name,
               rules: [
-                { min: 2, required: true, message: '权限名称为必填项，请填写!', whitespace: true },
+                { min: 2, max: 10, message: '权限名称长度在2-10!', whitespace: true },
+                { required: true, message: '权限名称为必填项，请填写!', whitespace: true },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -143,7 +149,13 @@ class PermissionForm extends Component {
                   },
                 },
               ],
-            })(<Cascader options={residences} onChange={this.handleSelectChange} style={{ width: 380 }} />)}
+            })(
+              <Cascader
+                options={residences}
+                onChange={this.handleSelectChange}
+                style={{ width: 380 }}
+              />
+            )}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限路由">
             {getFieldDecorator('resourceUrl', {
@@ -164,7 +176,13 @@ class PermissionForm extends Component {
               //     },
               //   },
               // ],
-            })(<Cascader options={parentList} style={{ width: 380 }} />)}
+            })(
+              <Cascader
+                options={parentList}
+                style={{ width: 380 }}
+                disabled={flag === '一级页面' ? 'disabled' : false}
+              />
+            )}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
             {getFieldDecorator('iconUrl', {
@@ -180,7 +198,11 @@ class PermissionForm extends Component {
           <FormItem {...tailFormItemLayout} />
           <FormItem>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button onClick={this.props.resetContent} type="primary" className={common.cancleButton}>
+              <Button
+                onClick={this.props.resetContent}
+                type="primary"
+                className={common.cancleButton}
+              >
                 取消
               </Button>
               <Button htmlType="submit" type="primary" className={common.submitButton}>

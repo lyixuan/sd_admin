@@ -22,7 +22,7 @@ class stepInput extends Component {
             <TextArea
               className={styles.inputTextArea}
               rows={5}
-              placeholder={'请输入编号，多个编号，请用","或空格隔开'}
+              placeholder="请输入编号，多个编号，请用空格隔开"
             />
           </div>
         ) : null}

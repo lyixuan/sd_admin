@@ -67,7 +67,12 @@ class RefundAdd extends Component {
       dataSource: !dataSource ? [] : dataSource,
     };
   }
-
+  // 回调
+  historyFn() {
+    this.props.history.push({
+      pathname: '/quality/qualityList',
+    });
+  }
   render() {
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
@@ -94,7 +99,16 @@ class RefundAdd extends Component {
         content: <StepSucess isDelImg="false" tipSucess={tipSucess} />,
       },
     ];
-    return <StepLayout title="添加质检" steps={steps} tipSucess={tipSucess} />;
+    return (
+      <StepLayout
+        title="添加质检"
+        steps={steps}
+        tipSucess={tipSucess}
+        goBack={() => {
+          this.historyFn();
+        }}
+      />
+    );
   }
 }
 

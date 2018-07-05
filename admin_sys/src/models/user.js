@@ -23,43 +23,42 @@ export default {
   effects: {
     *userList({ payload }, { call, put }) {
       const response = yield call(userList, payload.userListParams);
-      console.log(response);
+      // console.log(response);
       yield put({ type: 'userListSave', payload: { response } });
     },
     *updateUserOrg({ payload }, { call, put }) {
       const result = yield call(updateUserOrg, payload.updateUserOrgParams);
-      if(result.code === 2000){
-        message.success('更新成功！')
+      if (result.code === 2000) {
+        message.success('更新成功！');
       } else {
         message.error(result.msg);
       }
-      const response = yield call(userList, {size: 50, number: 0});
-      console.log(response)
+      const response = yield call(userList, { size: 30, number: 0 });
+      console.log(response);
       yield put({ type: 'userListSave', payload: { response } });
     },
     *updateUserInfo({ payload }, { call }) {
       const result = yield call(updateUserInfo, payload.updateUserInfoParams);
-      if(result.code === 2000){
-        message.success('用户编辑成功！')
+      if (result.code === 2000) {
+        message.success('用户编辑成功！');
       } else {
         message.error(result.msg);
       }
     },
     *userDelete({ payload }, { call, put }) {
       const result = yield call(userDelete, payload.userDeleteParams);
-      if(result.code === 2000){
-        message.success('用户删除成功！')
+      if (result.code === 2000) {
+        message.success('用户删除成功！');
       } else {
         message.error(result.msg);
       }
-      const response = yield call(userList, {size: 50, number: 0});
-      console.log(response)
+      const response = yield call(userList, { size: 30, number: 0 });
       yield put({ type: 'userListSave', payload: { response } });
     },
     *userAdd({ payload }, { call, put }) {
       const result = yield call(userAdd, payload.userAddParams);
-      if(result.code === 2000){
-        message.success('用户创建成功！')
+      if (result.code === 2000) {
+        message.success('用户创建成功！');
         yield put(routerRedux.push('/user/userList'));
       } else {
         message.error(result.msg);
@@ -67,12 +66,10 @@ export default {
     },
     *wechatList({ payload }, { call, put }) {
       const response = yield call(wechatList, payload.wechatListParams);
-      console.log(response);
       yield put({ type: 'wechatListSave', payload: { response } });
     },
     *listOrg({ payload }, { call, put }) {
       const response = yield call(listOrg, payload.listOrgParams);
-      console.log(response);
       yield put({ type: 'listOrgSave', payload: { response } });
     },
   },

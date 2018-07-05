@@ -159,7 +159,7 @@ export default {
         },
       ];
 
-      listAll = getJsonTree(kkk, '');
+      listAll = getJsonTree(kkk, 1);
       return { ...state, listAll, mapIdtoName };
     },
   },
