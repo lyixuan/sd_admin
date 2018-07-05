@@ -93,6 +93,37 @@ export async function deleteAccount(params) {
   });
 }
 /*
+* 短名称管理
+* */
+// 学院
+export async function getCollegeList(params) {
+  return request(`${HOST}/sn/listCollege?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+export async function updateCollege(params) {
+  return request(`${HOST}/sn/updateCollege`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+// 家族
+export async function getFamilyList(params) {
+  return request(`${HOST}/sn/listFamily?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+// 小组
+export async function getGroupList(params) {
+  return request(`${HOST}/sn/listGroup?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+
+/*
 * 角色管理
 * */
 export async function getRoleInfo(params) {
