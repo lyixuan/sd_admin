@@ -255,7 +255,16 @@ class UserForm extends Component {
           <FormItem {...formItemLayout} label="*级 别">
             {getFieldDecorator('userType', {
               initialValue: [this.state.userType],
-              rules: [{ type: 'array', required: true, message: '请选择级别！' }],
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    if (!value[0]) {
+                      callback({ message: '请选择权级别！' });
+                    }
+                    callback();
+                  },
+                },
+              ],
             })(
               <Cascader options={userTypeList} onChange={this.handleSelectChange} style={{ width: 380 }} />
             )}
@@ -263,13 +272,35 @@ class UserForm extends Component {
           <FormItem {...formItemLayout} label="*负责单位">
             {getFieldDecorator('responseCom', {
               initialValue: [this.state.responseCom],
-              // rules: [{ type: 'array', required: true, message: '请选择负责单位单位！' }],
+              rules: [
+                {
+                  // console.log("进入校验")
+                  validator(rule, value, callback) {
+                    console.log('规则校验',flag,value[0])
+                      if(flag==='系统管理员'||flag==='高级管理员'){
+                        callback();
+                      }else if (typeof(value[0])==='string') {
+                      callback({ message: '请选择负责单位！' });
+                    }
+                    callback();
+                  },
+                },
+              ],
             })(<Cascader options={responseComList} style={{ width: 380 }} disabled={flag==='系统管理员'||flag==='高级管理员'?"disabled":false} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*微信部门">
             {getFieldDecorator('wechatDepartmentName', {
               initialValue: [this.state.wechatDepartmentName],
-              rules: [{ type: 'array', required: true, message: '请选择微信部门！' }],
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    if (!value[0]) {
+                      callback({ message: '请选择权微信部门！' });
+                    }
+                    callback();
+                  },
+                },
+              ],
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />

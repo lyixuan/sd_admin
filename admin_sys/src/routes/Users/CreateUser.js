@@ -3,6 +3,7 @@ import { Form } from 'antd';
 import { connect } from 'dva';
 import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
+import { userTypeDataReset } from '../../utils/dataDictionary';
 
 const WrappedRegistrationForm = Form.create()(UserForm);
 @connect(({ user, loading }) => ({
@@ -12,9 +13,7 @@ const WrappedRegistrationForm = Form.create()(UserForm);
 class CreateUser extends Component {
   constructor(props) {
     super(props);
-    const arrValue = this.props.getUrlParams();
     this.state = {
-      wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
     };
     console.log(this.state)
   }
@@ -33,32 +32,36 @@ class CreateUser extends Component {
   }
 
   handleSubmit = (values) => {
-    console.log(values)
-    // const type = values.level[0] === '页面功能'
-    //   ? 3
-    //   : values.level[0] === '一级页面' ? 1 : 2;
-    // const parentIdName = !values.parentId[0]?'未选择':values.parentId[0];
-    // let newparentId = 1;
-    // const parentIdList = this.props.permission.permissionListAllName.data
-    // parentIdList.map(item => {
-    //   if (item.name === parentIdName) {
-    //     newparentId = item.id;
-    //   }
-    //   return 0;
-    // });
-    // const updatePermissionParams = {
-    //   name: values.name,
-    //   iconUrl: values.iconUrl[0],
-    //   id: Number(this.state.id),
-    //   level: type,
-    //   parentId: newparentId,
-    //   sort: Number(values.sort),
-    //   resourceUrl: values.resourceUrl,
-    // };
-    // this.props.dispatch({
-    //   type: 'permission/updatePermission',
-    //   payload: { updatePermissionParams },
-    // });
+    const rname = values.wechatDepartmentName[0];
+    const rUserType = values.userType[0];
+    const len= values.responseCom.length
+    let typeId = values.responseCom[len-1]
+    if(typeof(typeId)==='string'||rUserType==='系统管理员'||rUserType==='高级管理员'){
+      typeId=undefined;
+    }
+
+    let newRoleId = 0;
+    const roleList = this.props.user.wechatList.response.data.department
+    roleList.map(item => {
+      if (item.name === rname) {
+        newRoleId = item.id;
+      }
+      return 0;
+    });
+    const userAddParams = {
+      name: values.name,
+      mail: `${values.email}@sunlans.com`,
+      mobile:values.phone,
+      userType:userTypeDataReset[rUserType],
+      userTypeId:typeId,
+      wechatDepartmentId: Number(newRoleId) ,
+      wechatDepartmentName:!rname?undefined:rname,
+    };
+    console.log(userAddParams);
+    this.props.dispatch({
+      type: 'user/userAdd',
+      payload: { userAddParams },
+    });
   };
 
   resetContent = () => {

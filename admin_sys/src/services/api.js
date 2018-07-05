@@ -196,7 +196,7 @@ export async function updateUserOrg(params) {
 }
 // 更新用户信息 慧慧提示该put接口要在url后面添加参数
 export async function updateUserInfo(params) {
-  return request(`${HOST}/user/updateInfo?${stringify(params)}`, {
+  return request(`${HOST}/user/updateUserInfo?${stringify(params)}`, {
     method: 'PUT',
     body: params,
   });
