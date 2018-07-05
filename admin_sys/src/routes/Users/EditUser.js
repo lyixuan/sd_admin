@@ -17,7 +17,7 @@ class EditUser extends Component {
     this.state = {
       id:!arrValue.id ? null : arrValue.id,
     };
-    console.log(this.state)
+    console.log(this.state);
   }
   componentDidMount() {
     const wechatListParams = {};
@@ -72,21 +72,32 @@ class EditUser extends Component {
     this.props.setRouteUrlParams('/user/userList', {});
   };
   render() {
-    const userListValue = this.props.user // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
+    const userListValue = this.props.user; // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
     // console.log(userListValue.listOrg)
-    return (!userListValue.wechatList.response? [] : !this.props.user.wechatList.response.data? <div /> :
-        !userListValue.listOrg.response?[]:!userListValue.listOrg.response.data? <div /> :
-        (
-          <ContentLayout
-            contentForm={<WrappedRegistrationForm
-              jumpFunction={this.props}
-              resetContent={()=>{this.resetContent()}}
-              handleSubmit={(values)=>{this.handleSubmit(values)}}
-            />}
+    return !userListValue.wechatList.response ? (
+      []
+    ) : !this.props.user.wechatList.response.data ? (
+      <div />
+    ) : !userListValue.listOrg.response ? (
+      []
+    ) : !userListValue.listOrg.response.data ? (
+      <div />
+    ) : (
+      <ContentLayout
+        contentForm={
+          <WrappedRegistrationForm
+            jumpFunction={this.props}
+            resetContent={() => {
+              this.resetContent();
+            }}
+            handleSubmit={values => {
+              this.handleSubmit(values);
+            }}
           />
-        )
-    );}
+        }
+      />
+    );
+  }
 }
-
 
 export default EditUser;

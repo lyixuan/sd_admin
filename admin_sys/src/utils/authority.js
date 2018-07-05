@@ -9,6 +9,7 @@ export function setAuthority(key, value) {
 }
 export function removeStorge(key) {
   window.localStorage.removeItem(key);
+  window.sessionStorage.removeItem(key);
 }
 // 使用seccion会话记录不进行免登陆账号的问题
 export function setAuthoritySeccion(key, value) {

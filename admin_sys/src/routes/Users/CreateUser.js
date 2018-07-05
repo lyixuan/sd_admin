@@ -15,7 +15,7 @@ class CreateUser extends Component {
     super(props);
     this.state = {
     };
-    console.log(this.state)
+    console.log(this.state);
   }
   componentDidMount() {
     const wechatListParams = {};
@@ -68,19 +68,28 @@ class CreateUser extends Component {
     this.props.setRouteUrlParams('/user/userList', {});
   };
   render() {
-    const aa = this.props.user.listOrg.response // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
-    console.log(aa)
-    return (!this.props.user.wechatList.response ? [] : !this.props.user.wechatList.response.data ? <div /> :
-        (
-          <ContentLayout
-            contentForm={<WrappedRegistrationForm
-              jumpFunction={this.props}
-              resetContent={()=>{this.resetContent()}}
-              handleSubmit={(values)=>{this.handleSubmit(values)}}
-            />}
+    const aa = this.props.user.listOrg.response; // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
+    console.log(aa);
+    return !this.props.user.wechatList.response ? (
+      []
+    ) : !this.props.user.wechatList.response.data ? (
+      <div />
+    ) : (
+      <ContentLayout
+        contentForm={
+          <WrappedRegistrationForm
+            jumpFunction={this.props}
+            resetContent={() => {
+              this.resetContent();
+            }}
+            handleSubmit={values => {
+              this.handleSubmit(values);
+            }}
           />
-        )
-    );}
+        }
+      />
+    );
+  }
 }
 
 export default CreateUser;

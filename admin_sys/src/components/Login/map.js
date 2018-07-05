@@ -73,7 +73,7 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Please enter Captcha!',
+        message: '验证码不能为空!',
       },
     ],
   },

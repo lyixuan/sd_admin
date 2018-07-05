@@ -42,6 +42,32 @@ class ModalDemo extends React.Component {
       visible: false,
     });
   };
+  checkoutFootButton = footButton => {
+    if (footButton && typeof footButton === 'object' && !Array.isArray(footButton)) {
+      // 判断传入的是node
+      return footButton;
+    } else {
+      const buttonArray = !footButton ? ['取消', '确定'] : footButton;
+      if (Array.isArray(buttonArray) && buttonArray.length === 1) {
+        return [
+          <Button key={0} className={common.submitButton} onClick={this.handleOk}>
+            {buttonArray[0]}
+          </Button>,
+        ];
+      } else if (Array.isArray(buttonArray) && buttonArray.length === 2) {
+        return [
+          <Button key={0} className={common.cancleButton} onClick={this.handleCancel}>
+            {buttonArray[0]}
+          </Button>,
+          <Button key={1} className={common.submitButton} onClick={this.handleOk}>
+            {buttonArray[1]}
+          </Button>,
+        ];
+      } else {
+        console.warn('传入数组');
+      }
+    }
+  };
 
   render() {
     const { title, name, modalContent, footButton } = this.props;
@@ -51,27 +77,14 @@ class ModalDemo extends React.Component {
         <Input className={styles.shotName} />
       </div>
     );
-    const defaultBtn = !footButton ? ['取消', '确定'] : footButton;
-    return (
+    return !this.state.visible ? null : (
       <div>
         <Modal
           title={title}
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" className={common.cancleButton} onClick={this.handleCancel}>
-              {defaultBtn[0]}
-            </Button>,
-            <Button
-              key="submit"
-              type="primary"
-              className={common.submitButton}
-              onClick={this.handleOk}
-            >
-              {defaultBtn[1]}
-            </Button>,
-          ]}
+          footer={this.checkoutFootButton(footButton)}
         >
           {!modalContent ? defaultModal : <div style={{ textAlign: 'center' }}>{modalContent}</div>}
         </Modal>

@@ -4,7 +4,7 @@ import { Table, Button, Form, Input, Popconfirm, Cascader } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
-import {userTypeData} from '../../utils/dataDictionary';
+import { userTypeData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 let propsVal = '';
@@ -34,7 +34,7 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    const userListParams = {size: 30, number: 0};
+    const userListParams = { size: 30, number: 0 };
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -71,7 +71,7 @@ class UserList extends Component {
       name: val.name,
       phone: val.mobile,
       email: val.mail,
-      userType:val.userType,
+      userType: val.userType,
       showName: val.showName,
       responseCom: val.changeShowName,
       wechatDepartmentId: val.wechatDepartmentId,
@@ -89,7 +89,7 @@ class UserList extends Component {
         name: item.name,
         mobile: item.mobile,
         mail: item.entUserId,
-        userType:userTypeData[item.userType],
+        userType: userTypeData[item.userType],
         showName: item.showName,
         changeShowName: item.changeShowName,
         id: item.id,
@@ -134,16 +134,15 @@ class UserList extends Component {
         render: (text, record) => {
           return (
             <div>
-              {
-                !record.changeShowName?<div />:
-                  (
-                    <AuthorizedButton authority="/user/checkUser">
-                      <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
-                        更新
-                      </span>
-                    </AuthorizedButton>
-                  )
-              }
+              {!record.changeShowName ? (
+                <div />
+              ) : (
+                <AuthorizedButton authority="/user/checkUser">
+                  <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
+                    更新
+                  </span>
+                </AuthorizedButton>
+              )}
               <AuthorizedButton authority="/user/editUser">
                 <span
                   style={{ color: '#52C9C2', marginLeft: 12 }}
@@ -194,7 +193,9 @@ class UserList extends Component {
   };
 
   render() {
-    const data = !this.props.user.userList.response ? [] : !this.props.user.userList.response.data?[]:this.props.user.userList.response.data;
+    const data = !this.props.user.userList.response
+      ? []
+      : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
@@ -206,16 +207,19 @@ class UserList extends Component {
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <FormItem label="姓名">
-              {getFieldDecorator('name', {
-              })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
+              {getFieldDecorator('name', {})(
+                <Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />
+              )}
             </FormItem>
             <FormItem label="手机">
-              {getFieldDecorator('mobile', {
-              })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
+              {getFieldDecorator('mobile', {})(
+                <Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />
+              )}
             </FormItem>
             <FormItem label="需要更新">
-              {getFieldDecorator('isUpdate', {
-              })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
+              {getFieldDecorator('isUpdate', {})(
+                <Cascader options={residences} style={{ width: 230, height: 32 }} />
+              )}
             </FormItem>
             <FormItem>
               <div className={common.totalNum}>

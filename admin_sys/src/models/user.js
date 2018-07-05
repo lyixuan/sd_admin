@@ -28,13 +28,13 @@ export default {
     },
     *updateUserOrg({ payload }, { call, put }) {
       const result = yield call(updateUserOrg, payload.updateUserOrgParams);
-      if(result.code === 2000){
-        message.success('更新成功！')
+      if (result.code === 2000) {
+        message.success('更新成功！');
       } else {
         message.error(result.msg);
       }
-      const response = yield call(userList, {size: 30, number: 0});
-      console.log(response)
+      const response = yield call(userList, { size: 30, number: 0 });
+      console.log(response);
       yield put({ type: 'userListSave', payload: { response } });
     },
     *updateUserInfo({ payload }, { call,put }) {
@@ -48,18 +48,18 @@ export default {
     },
     *userDelete({ payload }, { call, put }) {
       const result = yield call(userDelete, payload.userDeleteParams);
-      if(result.code === 2000){
-        message.success('用户删除成功！')
+      if (result.code === 2000) {
+        message.success('用户删除成功！');
       } else {
         message.error(result.msg);
       }
-      const response = yield call(userList, {size: 30, number: 0});
+      const response = yield call(userList, { size: 30, number: 0 });
       yield put({ type: 'userListSave', payload: { response } });
     },
     *userAdd({ payload }, { call, put }) {
       const result = yield call(userAdd, payload.userAddParams);
-      if(result.code === 2000){
-        message.success('用户创建成功！')
+      if (result.code === 2000) {
+        message.success('用户创建成功！');
         yield put(routerRedux.push('/user/userList'));
       } else {
         message.error(result.msg);
