@@ -86,12 +86,42 @@ export async function updateAccount(params) {
 }
 // 删除账号接口
 export async function deleteAccount(params) {
-  console.log(params);
   return request(`${HOST}/account/delete?${stringify(params)}`, {
     method: 'DELETE',
     body: params,
   });
 }
+/*
+* 短名称管理
+* */
+// 学院
+export async function getCollegeList(params) {
+  return request(`${HOST}/sn/listCollege?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+export async function updateCollege(params) {
+  return request(`${HOST}/sn/updateCollege`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+// 家族
+export async function getFamilyList(params) {
+  return request(`${HOST}/sn/listFamily?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+// 小组
+export async function getGroupList(params) {
+  return request(`${HOST}/sn/listGroup?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+
 /*
 * 角色管理
 * */
@@ -214,7 +244,7 @@ export async function updateUserOrg(params) {
 }
 // 更新用户信息 慧慧提示该put接口要在url后面添加参数
 export async function updateUserInfo(params) {
-  return request(`${HOST}/user/updateInfo?${stringify(params)}`, {
+  return request(`${HOST}/user/updateUserInfo?${stringify(params)}`, {
     method: 'PUT',
     body: params,
   });

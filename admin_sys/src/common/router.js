@@ -162,13 +162,13 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/TimeManage/TimeList')),
     },
     '/shotName/Group': {
-      component: dynamicWrapper(app, [], () => import('../routes/ShotName/Group')),
+      component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
     },
     '/shotName/family': {
-      component: dynamicWrapper(app, [], () => import('../routes/ShotName/Family')),
+      component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Family')),
     },
     '/shotName/college': {
-      component: dynamicWrapper(app, [], () => import('../routes/ShotName/College')),
+      component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/College')),
     },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
