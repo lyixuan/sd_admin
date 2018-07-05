@@ -1,4 +1,4 @@
-import { updatePwd } from '../services/api';
+import { updatePwd, findBackPwd } from '../services/api';
 import { setAuthority, getAuthority } from '../utils/authority';
 import { handleSuccess } from '../utils/Handle';
 
@@ -7,6 +7,7 @@ export default {
 
   state: {
     changePwdObj: {},
+    findBackPwdObj: {},
   },
 
   effects: {
@@ -24,6 +25,14 @@ export default {
         yield fork(handleSuccess, { content: '密码修改成功', pathname: '/userLayout/login' });
       }
     },
+    *findBackPwd({ payload }, { call, put }) {
+      console.log({ ...payload });
+      const response = yield call(findBackPwd, { ...payload });
+      yield put({
+        type: 'saveFindBackPwd',
+        payload: response,
+      });
+    },
   },
   reducers: {
     saveNewPassword(state, { payload }) {
@@ -32,6 +41,13 @@ export default {
         msg: payload.msg,
       };
       return { ...state, changePwdObj };
+    },
+    saveFindBackPwd(state, { payload }) {
+      const findBackPwdObj = {
+        status: payload.code === 2000,
+        msg: payload.msg,
+      };
+      return { ...state, findBackPwdObj };
     },
   },
 };

@@ -1,8 +1,9 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { userLogin, queryCurrentUser } from '../services/api';
-import { setAuthority, setAuthoritySeccion } from '../utils/authority';
+import { userLogin, userLogout, queryCurrentUser } from '../services/api';
+import { setAuthority, setAuthoritySeccion, removeStorge } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
+import { handleSuccess } from '../utils/Handle';
 
 export default {
   namespace: 'login',
@@ -50,24 +51,12 @@ export default {
         message.error('获取账号信息失败,请刷新页面');
       }
     },
-    *logout(_, { put, select }) {
+    *logout(_, { call }) {
       try {
-        // get location pathname
-        const urlParams = new URL(window.location.href);
-        const pathname = yield select(state => state.routing.location.pathname);
-        // add the parameters in the url
-        urlParams.searchParams.set('redirect', pathname);
-        window.history.replaceState(null, 'login', urlParams.href);
+        yield call(userLogout);
       } finally {
-        yield put({
-          type: 'changeLoginStatus',
-          payload: {
-            status: false,
-            currentAuthority: 'guest',
-          },
-        });
-        reloadAuthorized();
-        yield put(routerRedux.push('/user/login'));
+        removeStorge('admin_user');
+        yield call(handleSuccess, { content: '退出登录', pathname: '/userLayout/login' });
       }
     },
   },
@@ -76,7 +65,7 @@ export default {
     changeLoginStatus(state, { payload }) {
       const loginStatusObj = {
         status: payload.code === 2000,
-        msg: payload.data,
+        msg: payload.msg,
       };
       return {
         ...state,

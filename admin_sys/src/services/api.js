@@ -26,7 +26,7 @@ export async function queryCurrentUser(params) {
 * params：{name，password}
 * */
 export async function userLogout(params) {
-  return request(`${HOST}/token/login`, {
+  return request(`${HOST}/token/logout`, {
     method: 'POST',
     body: params,
   });
@@ -40,6 +40,24 @@ export async function updatePwd(params) {
     method: 'PUT',
     body: params,
   });
+}
+/*
+ *忘记密码,向邮箱里面发送邮件接口
+ * params:{mail}
+ */
+export async function findBackPwd(params) {
+  return request(`${HOST}/account/findBackPwd?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+/*
+ *获取验证码接口,不需要加验证,使用tag请求
+ * params:{}
+ */
+export async function generateAuthCode() {
+  const image = new Image();
+  image.src = `${HOST}/token/generateAuthCode?v=${new Date().valueOf()}`;
+  return image.src;
 }
 /*
 以下接口为账号相关

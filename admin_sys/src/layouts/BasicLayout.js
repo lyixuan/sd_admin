@@ -168,9 +168,9 @@ class BasicLayout extends React.PureComponent {
       return;
     }
     if (key === 'logout') {
-      console.log('退出登录');
       this.props.dispatch({
         type: 'login/logout',
+        payload: { a: 1 },
       });
     }
   };

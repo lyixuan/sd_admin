@@ -31,27 +31,12 @@ function generator({ defaultProps, defaultRules, type }) {
       componentWillUnmount() {
         clearInterval(this.interval);
       }
-
-      onGetCaptcha = () => {
-        let count = 59;
-        this.setState({ count });
-        if (this.props.onGetCaptcha) {
-          this.props.onGetCaptcha();
-        }
-        this.interval = setInterval(() => {
-          count -= 1;
-          this.setState({ count });
-          if (count === 0) {
-            clearInterval(this.interval);
-          }
-        }, 1000);
-      };
       /*
       用于点击验证码的回调
       */
       changeGetCaptcha = () => {
-        if (this.props.onChange) {
-          this.props.onChange();
+        if (this.props.onGetCaptcha) {
+          this.props.onGetCaptcha();
         }
       };
 
@@ -97,7 +82,9 @@ function generator({ defaultProps, defaultRules, type }) {
                 </Col>
                 <Col span={10}>
                   <span className={styles.captchaBox}>
-                    <i>{this.props.showcaptcha ? this.props.showcaptcha : ''}</i>
+                    {this.props.showcaptcha ? (
+                      <img src={this.props.showcaptcha} alt="验证码" />
+                    ) : null}
                   </span>
                   <span className={styles.changeImg} onClick={this.changeGetCaptcha}>
                     换一张

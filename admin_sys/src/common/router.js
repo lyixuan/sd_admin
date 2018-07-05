@@ -190,7 +190,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['login'], () => import('../routes/Login/RetrievePassWord')),
     },
     '/changePwd/emilRetrieve': {
-      component: dynamicWrapper(app, ['login'], () =>
+      component: dynamicWrapper(app, ['password'], () =>
         import('../routes/Login/EmilRetrievePassWord')
       ),
     },
