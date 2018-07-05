@@ -23,7 +23,7 @@ export default {
   effects: {
     *userList({ payload }, { call, put }) {
       const response = yield call(userList, payload.userListParams);
-      console.log(response);
+      // console.log(response);
       yield put({ type: 'userListSave', payload: { response } });
     },
     *updateUserOrg({ payload }, { call, put }) {

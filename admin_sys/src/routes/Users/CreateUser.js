@@ -12,7 +12,11 @@ const WrappedRegistrationForm = Form.create()(UserForm);
 class CreateUser extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const arrValue = this.props.getUrlParams();
+    this.state = {
+      wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
+    };
+    console.log(this.state)
   }
   componentDidMount() {
     const wechatListParams = {};

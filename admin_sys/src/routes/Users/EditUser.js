@@ -12,7 +12,11 @@ const WrappedRegistrationForm = Form.create()(UserForm);
 class EditUser extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const arrValue = this.props.getUrlParams();
+    this.state = {
+      wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
+    };
+    console.log(this.state)
   }
   componentDidMount() {
     const wechatListParams = {};
@@ -37,8 +41,9 @@ class EditUser extends Component {
   };
   render() {
     const userListValue = this.props.user // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
-    console.log(userListValue.listOrg)
-    return (!userListValue.wechatList.response  ? [] : !this.props.user.wechatList.response.data ? <div /> :
+    // console.log(userListValue.listOrg)
+    return (!userListValue.wechatList.response? [] : !this.props.user.wechatList.response.data? <div /> :
+        !userListValue.listOrg.response?[]:!userListValue.listOrg.response.data? <div /> :
         (
           <ContentLayout
             contentForm={<WrappedRegistrationForm

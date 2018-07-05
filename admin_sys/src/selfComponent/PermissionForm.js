@@ -53,6 +53,18 @@ class PermissionForm extends Component {
     });
   };
 
+  fullListFun = val => {
+    const parentIdList = [];
+    val.map(item =>
+      parentIdList.push({
+        value: item.id,
+        label: item.name,
+        level:item.level,
+      })
+    );
+    return parentIdList;
+  };
+
   roleListFun = () => {
     const parentIdList = [];
     const listValue = parentListBackup
@@ -66,18 +78,6 @@ class PermissionForm extends Component {
         })
       }
       return 0; });
-    return parentIdList;
-  };
-
-  fullListFun = val => {
-    const parentIdList = [];
-    val.map(item =>
-      parentIdList.push({
-        value: item.id,
-        label: item.name,
-        level:item.level,
-      })
-    );
     return parentIdList;
   };
 
