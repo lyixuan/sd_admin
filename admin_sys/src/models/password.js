@@ -26,11 +26,11 @@ export default {
       }
     },
     *findBackPwd({ payload }, { call, put }) {
-      console.log({ ...payload });
+      const { mail } = payload;
       const response = yield call(findBackPwd, { ...payload });
       yield put({
         type: 'saveFindBackPwd',
-        payload: response,
+        payload: { response, mail },
       });
     },
   },
@@ -43,10 +43,13 @@ export default {
       return { ...state, changePwdObj };
     },
     saveFindBackPwd(state, { payload }) {
+      const { response = {}, mail } = payload;
       const findBackPwdObj = {
-        status: payload.code === 2000,
-        msg: payload.msg,
+        status: response.code === 2000,
+        msg: response.msg,
+        mail,
       };
+      console.log(findBackPwdObj);
       return { ...state, findBackPwdObj };
     },
   },

@@ -11,7 +11,7 @@ const { Captcha, Submit, Emil } = Login;
 
 @connect(({ password, loading }) => ({
   password,
-  submitting: loading.effects['password/password'],
+  submitting: loading.effects['password/findBackPwd'],
 }))
 export default class RetrievePassWord extends Component {
   constructor(props) {
@@ -20,7 +20,7 @@ export default class RetrievePassWord extends Component {
       msg: '',
       status: null,
       showCaptcha: '',
-      isShowMedal: true,
+      mail: '',
     };
   }
 
@@ -29,13 +29,12 @@ export default class RetrievePassWord extends Component {
       JSON.stringify(nextProps.password.findBackPwdObj) !==
       JSON.stringify(this.props.password.findBackPwdObj)
     ) {
-      const { msg, status } = nextProps.password.findBackPwdObj;
-      if (!status) {
-        this.setState({
-          msg,
-          status,
-        });
-      }
+      const { msg, status, mail } = nextProps.password.findBackPwdObj;
+      this.setState({
+        msg,
+        status,
+        mail,
+      });
     }
   }
 
@@ -64,18 +63,24 @@ export default class RetrievePassWord extends Component {
       });
     }
   };
+  clickOK = () => {
+    window.location.href = 'http://mail.sunlands.com/';
+  };
 
   render() {
     const { submitting } = this.props;
-    const { showCaptcha, msg, status, isShowMedal } = this.state;
+    const { showCaptcha, msg, status, mail } = this.state;
     return (
       <div className={styles.main}>
-        <ModalDemo
-          visible={isShowMedal}
-          title="提示"
-          content="小德已经给您的企业邮箱,发送了找回密码邮件,请在2个小时内查收邮件,完成找回密码的操作."
-          footButton={[111, 222]}
-        />
+        {!status ? null : (
+          <ModalDemo
+            visible={status === true}
+            title="提示"
+            clickOK={this.clickOK}
+            modalContent={`小德已经给您的企业邮箱${mail}发送了找回密码邮件,请在2个小时内查收邮件,完成找回密码的操作.`}
+            footButton={['确定']}
+          />
+        )}
         <Login onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
           <PassWordErrorAlert style={{ width: '360px' }} errorMes={msg} isShow={status === false} />
           <div style={{ width: '360px' }}>
