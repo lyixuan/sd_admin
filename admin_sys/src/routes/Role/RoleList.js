@@ -24,10 +24,6 @@ class RoleList extends Component {
     });
   }
 
-  onShowSizeChange = (current, pageSize) => {
-    this.getData({ size: pageSize, number: current - 1 });
-  };
-
   getData = params => {
     const paramsObj = { ...this.props.role.params, ...params };
     this.props.dispatch({
@@ -123,12 +119,7 @@ class RoleList extends Component {
             onChange={(current, pageSize) => {
               this.changePage(current, pageSize);
             }}
-            onShowSizeChange={(current, pageSize) => {
-              this.onShowSizeChange(current, pageSize);
-            }}
-            defaultCurrent={1}
             total={totalNum}
-            defaultPageSize={30}
           />
         }
       />
