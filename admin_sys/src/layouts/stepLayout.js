@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Steps, Button, message } from 'antd';
+import { Steps, Button } from 'antd';
 import styles from './stepLayout.css';
 import common from '../routes/Common/common.css';
 
@@ -28,8 +28,7 @@ class StepLayout extends Component {
   };
   // 确定---回到列表页
   clickOk = () => {
-    message.success('添加成功');
-    this.props.history('/refund/refundList');
+    this.props.goBack();
   };
   render() {
     const { title, steps, baseLayout, isDisabled } = this.props;

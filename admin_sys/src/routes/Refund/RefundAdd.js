@@ -110,9 +110,9 @@ class RefundAdd extends Component {
     };
   }
   // 回调
-  historyFn(pathname) {
+  historyFn() {
     this.props.history.push({
-      pathname,
+      pathname: '/refund/refundList',
     });
   }
   render() {
@@ -140,8 +140,8 @@ class RefundAdd extends Component {
         steps={steps}
         tipSucess={tipSucess}
         isDisabled={false}
-        history={cb => {
-          this.historyFn(cb);
+        goBack={() => {
+          this.historyFn();
         }}
       />
     );
