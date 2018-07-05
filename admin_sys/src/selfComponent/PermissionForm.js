@@ -6,6 +6,7 @@ import {levelDataReset} from '../utils/dataDictionary';
 const FormItem = Form.Item;
 let parentList=[];
 let parentListBackup = [];
+let flag='页面功能'
 const residences = [
   {
     value: '一级页面',
@@ -39,6 +40,7 @@ class PermissionForm extends Component {
   componentDidMount(){
     parentListBackup = !this.state.parentIdList ? [] : this.fullListFun(this.state.parentIdList);
     parentList = this.roleListFun();
+    flag=this.state.level
   }
 
   handleSubmit = e => {
@@ -81,6 +83,7 @@ class PermissionForm extends Component {
 
   handleSelectChange = (value) => {
     const level = value[0]
+    flag = level;
     const listValue = parentListBackup
     const rObj = [];
     listValue.map((obj)=> {
@@ -126,7 +129,8 @@ class PermissionForm extends Component {
             {getFieldDecorator('name', {
               initialValue: this.state.name,
               rules: [
-                { min: 2, required: true, message: '权限名称为必填项，请填写!', whitespace: true },
+                { min: 2, max: 10, message: '权限名称长度在2-10!', whitespace: true },
+                { required: true, message: '权限名称为必填项，请填写!', whitespace: true },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -164,7 +168,7 @@ class PermissionForm extends Component {
               //     },
               //   },
               // ],
-            })(<Cascader options={parentList} style={{ width: 380 }} />)}
+            })(<Cascader options={parentList} style={{ width: 380 }} disabled={flag==='一级页面'?"disabled":false} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
             {getFieldDecorator('iconUrl', {

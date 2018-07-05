@@ -36,9 +36,9 @@ class EditUser extends Component {
     this.props.setRouteUrlParams('/user/userList', {});
   };
   render() {
-    const aa = this.props.user.listOrg.response // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
-    console.log(aa)
-    return (!this.props.user.wechatList.response ? [] : !this.props.user.wechatList.response.data ? <div /> :
+    const userListValue = this.props.user // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
+    console.log(userListValue.listOrg)
+    return (!userListValue.wechatList.response  ? [] : !this.props.user.wechatList.response.data ? <div /> :
         (
           <ContentLayout
             contentForm={<WrappedRegistrationForm

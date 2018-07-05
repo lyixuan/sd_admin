@@ -36,6 +36,8 @@ class UserForm extends Component {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     const wechatValues = this.props.jumpFunction.user.wechatList
+    const listOrgValues = this.props.jumpFunction.user.listOrg
+    console.log(listOrgValues);
     this.state = {
       wechatList: !wechatValues.response.data.department ? [] : wechatValues.response.data.department,
       name: !arrValue.name ? null : arrValue.name,
@@ -43,10 +45,10 @@ class UserForm extends Component {
       email: !arrValue.email ? null : formatEmail(arrValue.email),
       userType: !arrValue.userType ? null : arrValue.userType,
       responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
-      wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
+      // wechatDepartmentId: !arrValue.wechatDepartmentId ? null : arrValue.wechatDepartmentId,
       wechatDepartmentName: !arrValue.wechatDepartmentName ? null : arrValue.wechatDepartmentName,
     };
-    console.log(this.state);
+
   }
   handleSubmit = e => {
     e.preventDefault();

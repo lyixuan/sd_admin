@@ -66,12 +66,10 @@ export default {
     },
     *wechatList({ payload }, { call, put }) {
       const response = yield call(wechatList, payload.wechatListParams);
-      console.log(response);
       yield put({ type: 'wechatListSave', payload: { response } });
     },
     *listOrg({ payload }, { call, put }) {
       const response = yield call(listOrg, payload.listOrgParams);
-      console.log(response);
       yield put({ type: 'listOrgSave', payload: { response } });
     },
   },
