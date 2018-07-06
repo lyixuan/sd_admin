@@ -5,7 +5,6 @@ import ContentLayout from '../../layouts/ContentLayout';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
-import styles from '../../selfComponent/Modal/Modal.css';
 
 @connect(({ complaintDoubles, loading }) => ({
   complaintDoubles,
@@ -34,7 +33,6 @@ class ComplaintDoublesList extends Component {
 
   // 编辑账号函数
   onEdit = key => {
-    console.log(key);
     this.setState({
       collegeName: key.collegeName,
       multiplePoints: key.multiplePoints,
@@ -45,21 +43,11 @@ class ComplaintDoublesList extends Component {
     this.setDialogSHow(true);
   };
 
-  // 点击显示每页多少条数据函数
-  onShowSizeChange = (current, pageSize) => {
-    console.log(pageSize, current);
-  };
-
   setDialogSHow(bol){
     this.setState({
       visible:bol,
     })
   }
-
-  // 点击某一页函数
-  changePage = (current, pageSize) => {
-    console.log(pageSize, current);
-  };
 
   // 初始化tabale 列数据
   fillDataSource = val => {
@@ -116,7 +104,6 @@ class ComplaintDoublesList extends Component {
 
   // input双向绑定
   handelChange(e) {
-    console.log(e.target.value)
     this.setState({
       multiplePoints: e.target.value,
     });
@@ -140,7 +127,6 @@ class ComplaintDoublesList extends Component {
 
   // 模态框回显
   editName = () => {
-    console.log(this.state)
     const upateComplaintDoublesParams = {
       collegeName: this.state.collegeName,
       multiplePoints: Number(this.state.multiplePoints),
@@ -164,9 +150,7 @@ class ComplaintDoublesList extends Component {
     const totalNum = !data ? 0 : data.length;
     const dataSource = !data ? [] : this.fillDataSource(data);
     const columns = !this.columnsData() ? [] : this.columnsData();
-
-    const { visible,collegeName,multiplePoints,id,effectiveDate,collegeId} = this.state;
-    console.log(collegeId)
+    const { visible,collegeName,multiplePoints,id,effectiveDate} = this.state;
     const modalContent = (
       <div>
         <Row>
