@@ -78,6 +78,12 @@ export async function getFamilyList(params) {
     body: params,
   });
 }
+export async function updateFamily(params) {
+  return request(`${HOST}/sn/updateFamily`, {
+    method: 'PUT',
+    body: params,
+  });
+}
 // 小组
 export async function getGroupList(params) {
   return request(`${HOST}/sn/listGroup?${stringify(params)}`, {
@@ -85,7 +91,12 @@ export async function getGroupList(params) {
     body: params,
   });
 }
-
+export async function updateGroup(params) {
+  return request(`${HOST}/sn/updateGroup`, {
+    method: 'PUT',
+    body: params,
+  });
+}
 /*
 * 角色管理
 * */

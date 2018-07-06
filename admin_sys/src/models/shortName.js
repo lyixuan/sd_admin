@@ -1,6 +1,13 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { getCollegeList, updateCollege } from '../services/api';
+import {
+  getCollegeList,
+  updateCollege,
+  getFamilyList,
+  updateFamily,
+  getGroupList,
+  updateGroup,
+} from '../services/api';
 
 export default {
   namespace: 'shortName',
@@ -23,6 +30,44 @@ export default {
         message.success('短名称修改成功！');
         yield put({ visible: false });
         yield put(routerRedux.push('/shotName/college'));
+      } else {
+        message.error(getCode.msg);
+      }
+    },
+    *familyList({ payload }, { put, call }) {
+      const { paramsObj } = payload;
+      const familyList = yield call(getFamilyList, { ...paramsObj });
+      yield put({
+        type: 'save',
+        payload: { familyList },
+      });
+    },
+    *editFamily({ payload }, { put, call }) {
+      const { paramsObj } = payload;
+      const getCode = yield call(updateFamily, { ...paramsObj });
+      if (getCode.code === 2000) {
+        message.success('短名称修改成功！');
+        yield put({ visible: false });
+        yield put(routerRedux.push('/shotName/family'));
+      } else {
+        message.error(getCode.msg);
+      }
+    },
+    *groupList({ payload }, { put, call }) {
+      const { paramsObj } = payload;
+      const groupList = yield call(getGroupList, { ...paramsObj });
+      yield put({
+        type: 'save',
+        payload: { groupList },
+      });
+    },
+    *editGroup({ payload }, { put, call }) {
+      const { paramsObj } = payload;
+      const getCode = yield call(updateGroup, { ...paramsObj });
+      if (getCode.code === 2000) {
+        message.success('短名称修改成功！');
+        yield put({ visible: false });
+        yield put(routerRedux.push('/shotName/group'));
       } else {
         message.error(getCode.msg);
       }

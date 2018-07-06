@@ -1,46 +1,48 @@
 import React, { Component } from 'react';
-import { Table, Pagination } from 'antd';
+import { Table, Input } from 'antd';
+import { connect } from 'dva';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 
+@connect(({ shortName, loading }) => ({
+  shortName,
+  loading,
+}))
 class Family extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
+      familyName: '',
+      objId: 0,
+      name: '',
     };
   }
-
+  componentDidMount() {
+    this.getFamilyData({ size: 30, number: 0 });
+  }
   // 编辑
-  onEdit = () => {
-    this.showModal(true);
+  onEdit = record => {
+    this.setState({
+      familyName: record.familyName,
+      objId: record.objId,
+      visible: true,
+    });
   };
 
-  // 点击显示每页多少条数据函数
-  onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
+  // 获取家族列表数据
+  getFamilyData = params => {
+    this.props.dispatch({
+      type: 'shortName/familyList',
+      payload: { paramsObj: params },
+    });
   };
-
   // 点击某一页函数
   changePage = (current, pageSize) => {
     console.log(current, pageSize);
-  };
-
-  // 初始化tabale 列数据
-  fillDataSource = () => {
-    const data = [];
-    for (let i = 0; i < 50; i += 1) {
-      data.push({
-        key: i,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello${i}@sunlands.com`,
-      });
-    }
-    return data;
   };
 
   // 获取table列表头
@@ -48,19 +50,23 @@ class Family extends Component {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'key',
-      },
-      {
-        title: '学院id',
-        dataIndex: 'status',
+        dataIndex: 'id',
       },
       {
         title: '学院名称',
-        dataIndex: 'role',
+        dataIndex: 'collegeName',
       },
       {
-        title: '学院简称',
-        dataIndex: 'status2',
+        title: '家族id',
+        dataIndex: 'familyId',
+      },
+      {
+        title: '家族名称',
+        dataIndex: 'familyName',
+      },
+      {
+        title: '家族简称',
+        dataIndex: 'objShortName',
       },
       {
         title: '操作',
@@ -69,7 +75,7 @@ class Family extends Component {
           return (
             <div>
               <AuthorizedButton authority="/account/editAccount">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record.key)}>
+                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record)}>
                   编辑
                 </span>
               </AuthorizedButton>
@@ -81,16 +87,24 @@ class Family extends Component {
     return columns;
   };
 
-  showModal = bol => {
-    this.setState({
-      visible: bol,
-    });
-  };
-
   render() {
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const { familyList } = this.props.shortName;
+    const dataSource = !familyList ? [] : familyList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const { visible } = this.state;
+    const { visible, familyName, objId, name } = this.state;
+    const modalContent = (
+      <div>
+        <p style={{ textAlign: 'center', marginBottom: '10px' }}> {familyName} </p>
+        <Input
+          style={{ width: '300px', margin: '0 100px' }}
+          // ref="name"
+          onChange={e => {
+            this.handelChange(e);
+          }}
+          value={name}
+        />
+      </div>
+    );
     return (
       <div>
         <ContentLayout
@@ -109,21 +123,19 @@ class Family extends Component {
             </div>
           }
           contentPagination={
-            <Pagination
-              showSizeChanger
-              onChange={this.changePage}
-              onShowSizeChange={this.onShowSizeChange}
-              defaultCurrent={1}
+            <SelfPagination
+              onChange={(current, pageSize) => {
+                this.changePage(current, pageSize);
+              }}
               total={100}
-              className={common.paginationStyle}
             />
           }
         />
         <ModalDialog
-          title="编辑小组简称"
-          name="学院名称/家族名称/小组名称"
+          title="编辑家族短名称"
           visible={visible}
-          showModal={bol => this.showModal(bol)}
+          modalContent={modalContent}
+          clickOK={() => this.editName(objId)}
         />
       </div>
     );
