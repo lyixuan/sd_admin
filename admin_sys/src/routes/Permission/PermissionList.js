@@ -3,6 +3,7 @@ import { Table, Button, Form, Input } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 import {levelData} from '../../utils/dataDictionary';
 
@@ -37,6 +38,24 @@ class PermissionList extends Component {
       sort: val.sort,
       iconUrl: val.iconUrl,
       id: val.id,
+    });
+  };
+
+  // 点击显示每页多少条数据函数
+  onShowSizeChange = (current, pageSize) => {
+    const permissionListParams = {size: pageSize, number: current - 1 };
+    this.props.dispatch({
+      type: 'permission/permissionList',
+      payload: { permissionListParams },
+    });
+  };
+
+  // 点击某一页函数
+  changePage = (current, pageSize) => {
+    const permissionListParams = {size: pageSize, number: current - 1 };
+    this.props.dispatch({
+      type: 'permission/permissionList',
+      payload: { permissionListParams },
     });
   };
 
@@ -203,7 +222,20 @@ class PermissionList extends Component {
               className={common.tableContentStyle}
             />
           </div>
-        }
+        }contentPagination={
+        <SelfPagination
+          onChange={(current, pageSize) => {
+            this.changePage(current, pageSize);
+          }}
+          onShowSizeChange={(current, pageSize) => {
+            this.onShowSizeChange(current, pageSize);
+          }}
+          defaultCurrent={1}
+          total={totalNum}
+          defaultPageSize={30}
+          pageSizeOptions={['30']}
+        />
+      }
       />
     );
   }

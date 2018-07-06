@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Table, Button, Form, Input, Popconfirm, Cascader } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 import { userTypeData } from '../../utils/dataDictionary';
 
@@ -34,7 +35,7 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    const userListParams = { size: 30, number: 0 };
+    const userListParams = { pageSize: 30, pageNum: 0 };
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -76,6 +77,24 @@ class UserList extends Component {
       responseCom: val.changeShowName,
       wechatDepartmentId: val.wechatDepartmentId,
       wechatDepartmentName: val.wechatDepartmentName,
+    });
+  };
+
+  // 点击显示每页多少条数据函数
+  onShowSizeChange = (current, Size) => {
+    const userListParams = { pageSize : Size, pageNum: current - 1 };
+    this.props.dispatch({
+      type: 'user/userList',
+      payload: { userListParams },
+    });
+  };
+
+  // 点击某一页函数
+  changePage = (current, Size) => {
+    const userListParams = { pageSize: Size, pageNum: current - 1 };
+    this.props.dispatch({
+      type: 'user/userList',
+      payload: { userListParams },
     });
   };
 
@@ -266,6 +285,20 @@ class UserList extends Component {
               className={common.tableContentStyle}
             />
           </div>
+        }
+        contentPagination={
+          <SelfPagination
+            onChange={(current, pageSize) => {
+              this.changePage(current, pageSize);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              this.onShowSizeChange(current, pageSize);
+            }}
+            defaultCurrent={1}
+            total={totalNum}
+            defaultPageSize={30}
+            pageSizeOptions={['30']}
+          />
         }
       />
     );
