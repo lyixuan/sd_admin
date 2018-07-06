@@ -222,19 +222,20 @@ class PermissionList extends Component {
               className={common.tableContentStyle}
             />
           </div>
-        }contentPagination={
-        <SelfPagination
-          onChange={(current, pageSize) => {
-            this.changePage(current, pageSize);
-          }}
-          onShowSizeChange={(current, pageSize) => {
-            this.onShowSizeChange(current, pageSize);
-          }}
-          defaultCurrent={1}
-          total={totalNum}
-          defaultPageSize={30}
-          pageSizeOptions={['30']}
-        />
+        }
+        contentPagination={
+          <SelfPagination
+            onChange={(current, pageSize) => {
+              this.changePage(current, pageSize);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              this.onShowSizeChange(current, pageSize);
+            }}
+            defaultCurrent={1}
+            total={totalNum}
+            defaultPageSize={30}
+            pageSizeOptions={['30']}
+          />
       }
       />
     );
