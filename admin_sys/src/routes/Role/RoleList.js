@@ -17,11 +17,7 @@ class RoleList extends Component {
   }
 
   componentDidMount() {
-    const paramsObj = { size: 30, number: 0 };
-    this.props.dispatch({
-      type: 'role/roleList',
-      payload: { paramsObj },
-    });
+    this.getData({ size: 30, number: 0 });
   }
 
   getData = params => {

@@ -13,8 +13,7 @@ const WrappedRegistrationForm = Form.create()(UserForm);
 class CreateUser extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
     console.log(this.state);
   }
   componentDidMount() {
@@ -31,17 +30,17 @@ class CreateUser extends Component {
     });
   }
 
-  handleSubmit = (values) => {
+  handleSubmit = values => {
     const rname = values.wechatDepartmentName[0];
     const rUserType = values.userType[0];
-    const len= values.responseCom.length
-    let typeId = values.responseCom[len-1]
-    if(typeof(typeId)==='string'||rUserType==='系统管理员'||rUserType==='高级管理员'){
-      typeId=undefined;
+    const len = values.responseCom.length;
+    let typeId = values.responseCom[len - 1];
+    if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
+      typeId = undefined;
     }
 
     let newRoleId = 0;
-    const roleList = this.props.user.wechatList.response.data.department
+    const roleList = this.props.user.wechatList.response.data.department;
     roleList.map(item => {
       if (item.name === rname) {
         newRoleId = item.id;
@@ -51,11 +50,11 @@ class CreateUser extends Component {
     const userAddParams = {
       name: values.name,
       mail: `${values.email}@sunlans.com`,
-      mobile:values.phone,
-      userType:userTypeDataReset[rUserType],
-      userTypeId:typeId,
-      wechatDepartmentId: Number(newRoleId) ,
-      wechatDepartmentName:!rname?undefined:rname,
+      mobile: values.phone,
+      userType: userTypeDataReset[rUserType],
+      userTypeId: typeId,
+      wechatDepartmentId: Number(newRoleId),
+      wechatDepartmentName: !rname ? undefined : rname,
     };
     console.log(userAddParams);
     this.props.dispatch({

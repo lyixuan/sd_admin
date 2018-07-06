@@ -67,7 +67,7 @@ class UserList extends Component {
   onEdit = val => {
     console.log(val);
     this.props.setRouteUrlParams('/user/editUser', {
-      id:val.id,
+      id: val.id,
       name: val.name,
       phone: val.mobile,
       email: val.mail,
@@ -175,9 +175,13 @@ class UserList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         const userListParams = {
-          isUpdate: !values.isUpdate?undefined:!values.isUpdate[0]?undefined:values.isUpdate[0] === 'no' ? false : values.isUpdate[0],
-          name: !values.name?undefined:values.name,
-          mobile: !values.mobile?undefined:values.mobile,
+          isUpdate: !values.isUpdate
+            ? undefined
+            : !values.isUpdate[0]
+              ? undefined
+              : values.isUpdate[0] === 'no' ? false : values.isUpdate[0],
+          name: !values.name ? undefined : values.name,
+          mobile: !values.mobile ? undefined : values.mobile,
         };
         this.props.dispatch({
           type: 'user/userList',

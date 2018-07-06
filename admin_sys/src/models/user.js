@@ -34,13 +34,12 @@ export default {
         message.error(result.msg);
       }
       const response = yield call(userList, { size: 30, number: 0 });
-      console.log(response);
       yield put({ type: 'userListSave', payload: { response } });
     },
-    *updateUserInfo({ payload }, { call,put }) {
+    *updateUserInfo({ payload }, { call, put }) {
       const result = yield call(updateUserInfo, payload.updateUserInfoParams);
-      if(result.code === 2000){
-        message.success('用户编辑成功！')
+      if (result.code === 2000) {
+        message.success('用户编辑成功！');
         yield put(routerRedux.push('/user/userList'));
       } else {
         message.error(result.msg);

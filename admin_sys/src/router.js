@@ -18,6 +18,7 @@ function RouterConfig({ history, app }) {
   const UserLayout = routerData['/userLayout'].component;
   const BasicLayout = routerData['/'].component;
   const ChangePwd = routerData['/changePwd'].component;
+  const Exception = routerData['/exception'].component;
   const noAuthoried = routerData['/exception/403'].component;
   return (
     <LocaleProvider locale={zhCN}>
@@ -25,6 +26,7 @@ function RouterConfig({ history, app }) {
         <Switch>
           <Route path="/changePwd" component={ChangePwd} />
           <Route path="/userLayout" component={UserLayout} />
+          <Route path="/exception" component={Exception} />
           <Route path="/exception/403" component={noAuthoried} />
           <AuthorizedRoute
             path="/"

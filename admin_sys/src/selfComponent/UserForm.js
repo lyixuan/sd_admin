@@ -281,17 +281,23 @@ class UserForm extends Component {
                 {
                   // console.log("进入校验")
                   validator(rule, value, callback) {
-                    console.log('规则校验',flag,value[0])
-                      if(flag==='系统管理员'||flag==='高级管理员'){
-                        callback();
-                      }else if (typeof(value[0])==='string') {
+                    console.log('规则校验', flag, value[0]);
+                    if (flag === '系统管理员' || flag === '高级管理员') {
+                      callback();
+                    } else if (typeof value[0] === 'string') {
                       callback({ message: '请选择负责单位！' });
                     }
                     callback();
                   },
                 },
               ],
-            })(<Cascader options={responseComList} style={{ width: 380 }} disabled={flag==='系统管理员'||flag==='高级管理员'?"disabled":false} />)}
+            })(
+              <Cascader
+                options={responseComList}
+                style={{ width: 380 }}
+                disabled={flag === '系统管理员' || flag === '高级管理员' ? 'disabled' : false}
+              />
+            )}
           </FormItem>
           <FormItem {...formItemLayout} label="*微信部门">
             {getFieldDecorator('wechatDepartmentName', {

@@ -15,7 +15,7 @@ class EditUser extends Component {
     super(props);
     const arrValue = this.props.getUrlParams();
     this.state = {
-      id:!arrValue.id ? null : arrValue.id,
+      id: !arrValue.id ? null : arrValue.id,
     };
     console.log(this.state);
   }
@@ -33,18 +33,18 @@ class EditUser extends Component {
     });
   }
 
-  handleSubmit = (values) => {
-    console.log(values)
+  handleSubmit = values => {
+    console.log(values);
     const rname = values.wechatDepartmentName[0];
     const rUserType = values.userType[0];
-    const len= values.responseCom.length
-    let typeId = values.responseCom[len-1]
-    if(typeof(typeId)==='string'||rUserType==='系统管理员'||rUserType==='高级管理员'){
-      typeId=undefined;
+    const len = values.responseCom.length;
+    let typeId = values.responseCom[len - 1];
+    if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
+      typeId = undefined;
     }
 
     let newRoleId = 0;
-    const roleList = this.props.user.wechatList.response.data.department
+    const roleList = this.props.user.wechatList.response.data.department;
     roleList.map(item => {
       if (item.name === rname) {
         newRoleId = item.id;
@@ -54,12 +54,12 @@ class EditUser extends Component {
     const updateUserInfoParams = {
       name: values.name,
       mail: `${values.email}@sunlans.com`,
-      mobile:values.phone,
+      mobile: values.phone,
       id: Number(this.state.id),
-      userType:userTypeDataReset[rUserType],
-      userTypeId:!typeId?undefined:typeId,
-      wechatDepartmentId: Number(newRoleId) ,
-      wechatDepartmentName:!rname?undefined:rname,
+      userType: userTypeDataReset[rUserType],
+      userTypeId: !typeId ? undefined : typeId,
+      wechatDepartmentId: Number(newRoleId),
+      wechatDepartmentName: !rname ? undefined : rname,
     };
     console.log(updateUserInfoParams);
     this.props.dispatch({
