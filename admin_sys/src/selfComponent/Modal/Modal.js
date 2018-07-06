@@ -12,35 +12,19 @@ import common from '../../routes/Common/common.css';
 import styles from './Modal.css';
 
 class ModalDemo extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: this.props.visible,
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { visible } = nextProps;
-    if (nextProps.visible && !this.state.visible) {
-      this.setState({
-        visible,
-      });
-    }
-  }
-
   handleOk = e => {
     const { clickOK } = this.props;
     if (clickOK) {
       clickOK(e);
     }
-    this.setState({
-      visible: false,
-    });
+    this.handleCancel(false);
   };
-  handleCancel = () => {
-    this.setState({
-      visible: false,
-    });
+  handleCancel = bol => {
+    if (this.props.showModal) {
+      this.props.showModal(bol);
+    } else {
+      console.warn('传入showModal方法');
+    }
   };
   checkoutFootButton = footButton => {
     if (footButton && typeof footButton === 'object' && !Array.isArray(footButton)) {
@@ -70,20 +54,20 @@ class ModalDemo extends React.Component {
   };
 
   render() {
-    const { title, name, modalContent, footButton } = this.props;
+    const { title, name, modalContent, footButton, visible } = this.props;
     const defaultModal = (
       <div>
         <p className={styles.name}> {name} </p>
         <Input className={styles.shotName} />
       </div>
     );
-    return !this.state.visible ? null : (
+    return !visible ? null : (
       <div>
         <Modal
           title={title}
-          visible={this.state.visible}
+          visible={visible}
           onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          onCancel={this.handleCancel.bind(this, false)}
           footer={this.checkoutFootButton(footButton)}
         >
           {!modalContent ? defaultModal : <div style={{ textAlign: 'center' }}>{modalContent}</div>}

@@ -21,6 +21,7 @@ export default class RetrievePassWord extends Component {
       status: null,
       showCaptcha: '',
       mail: '',
+      showSuccessModal: true,
     };
   }
 
@@ -34,10 +35,10 @@ export default class RetrievePassWord extends Component {
         msg,
         status,
         mail,
+        showSuccessModal: status,
       });
     }
   }
-
   onFocus = () => {
     if (!this.state.showCaptcha) {
       this.getAuthCode();
@@ -48,6 +49,11 @@ export default class RetrievePassWord extends Component {
     generateAuthCode().then(src => {
       const showCaptcha = src;
       self.setState({ showCaptcha });
+    });
+  };
+  fnTiggleModal = bol => {
+    this.setState({
+      showSuccessModal: bol,
     });
   };
   handleSubmit = (err, values) => {
@@ -68,16 +74,17 @@ export default class RetrievePassWord extends Component {
 
   render() {
     const { submitting } = this.props;
-    const { showCaptcha, msg, status, mail } = this.state;
+    const { showCaptcha, msg, status, mail, showSuccessModal } = this.state;
     return (
       <div className={styles.main}>
-        {!status ? null : (
+        {!showSuccessModal ? null : (
           <ModalDemo
-            visible={status === true}
+            visible={showSuccessModal}
             title="提示"
             clickOK={this.clickOK}
             modalContent={`小德已经给您的企业邮箱${mail}发送了找回密码邮件,请在2个小时内查收邮件,完成找回密码的操作.`}
             footButton={['确定']}
+            showModal={bol => this.fnTiggleModal(bol)}
           />
         )}
         <Login onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
