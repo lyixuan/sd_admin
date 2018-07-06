@@ -19,9 +19,9 @@ class ModalDemo extends React.Component {
     }
     this.handleCancel(false);
   };
-  handleCancel = bol => {
+  handleCancel = () => {
     if (this.props.showModal) {
-      this.props.showModal(bol);
+      this.props.showModal(false);
     } else {
       console.warn('传入showModal方法');
     }
@@ -40,7 +40,7 @@ class ModalDemo extends React.Component {
         ];
       } else if (Array.isArray(buttonArray) && buttonArray.length === 2) {
         return [
-          <Button key={0} className={common.cancleButton} onClick={this.handleCancel(false)}>
+          <Button key={0} className={common.cancleButton} onClick={this.handleCancel}>
             {buttonArray[0]}
           </Button>,
           <Button key={1} className={common.submitButton} onClick={this.handleOk}>
