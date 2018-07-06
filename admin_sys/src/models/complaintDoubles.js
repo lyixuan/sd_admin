@@ -1,4 +1,10 @@
-import { complaintDoublesList, upateComplaintDoubles } from '../services/api';
+
+// import { routerRedux } from 'dva/router';
+import { message } from 'antd';
+import {
+  complaintDoublesList,
+  upateComplaintDoubles,
+} from '../services/api';
 
 export default {
   namespace: 'complaintDoubles',
@@ -11,15 +17,21 @@ export default {
 
   effects: {
     *complaintDoublesList({ payload }, { call, put }) {
-      console.log('进入model');
+
       const response = yield call(complaintDoublesList, payload.complaintDoublesListParams);
       console.log(response);
       yield put({ type: 'complaintDoublesListSave', payload: { response } });
     },
     *upateComplaintDoubles({ payload }, { call, put }) {
       const response = yield call(upateComplaintDoubles, payload.upateComplaintDoublesParams);
-      // console.log(response);
-      yield put({ type: 'upateComplaintDoublesSave', payload: { response } });
+      if (response.code === 2000) {
+        message.success('投诉倍数修改成功！');
+        // const response1 = yield call(complaintDoublesList, payload.complaintDoublesListParams);
+        // console.log(response1);
+        // yield put({ type: 'complaintDoublesListSave', payload: { response1 } });
+      } else {
+        message.error(response.msg);
+      }
     },
   },
 

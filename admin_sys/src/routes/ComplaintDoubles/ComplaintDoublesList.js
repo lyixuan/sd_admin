@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table } from 'antd';
+import { Table,Input} from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
+import ModalDialog from '../../selfComponent/Modal/Modal';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
+import styles from '../../selfComponent/Modal/Modal.css';
 
 @connect(({ complaintDoubles, loading }) => ({
   complaintDoubles,
@@ -13,11 +14,17 @@ import common from '../Common/common.css';
 class ComplaintDoublesList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      visible:false,
+      collegeName: '',
+      multiplePoints: 0,
+      id: 0,
+      effectiveDate: '',
+      collegeId:0,
+    };
   }
 
   componentDidMount() {
-    console.log('进入did');
     const complaintDoublesListParams = { size: 30, number: 0 };
     this.props.dispatch({
       type: 'complaintDoubles/complaintDoublesList',
@@ -28,6 +35,14 @@ class ComplaintDoublesList extends Component {
   // 编辑账号函数
   onEdit = key => {
     console.log(key);
+    this.setState({
+      visible: true,
+      collegeName: key.collegeName,
+      multiplePoints: key.multiplePoints,
+      id: key.id,
+      effectiveDate: key.effectiveDate,
+      collegeId:key.collegeId,
+    });
   };
 
   // 点击显示每页多少条数据函数
@@ -93,49 +108,101 @@ class ComplaintDoublesList extends Component {
     return columns;
   };
 
+  // input双向绑定
+  handelChange(e) {
+    console.log(e.target.value)
+    this.setState({
+      multiplePoints: e.target.value,
+    });
+  }
+
+  // 初始化tabale 列数据
+  fillDataSource = val => {
+    const data = [];
+    val.map((item, index) =>
+      data.push({
+        key: index,
+        collegeName: item.collegeName,
+        multiplePoints: item.multiplePoints,
+        id: item.id,
+        effectiveDate: item.effectiveDate,
+        collegeId:item.collegeId,
+      })
+    );
+    return data;
+  };
+
+  // 模态框回显
+  editName = () => {
+    console.log(this.state)
+    const upateComplaintDoublesParams = {
+      collegeName: this.state.collegeName,
+      multiplePoints: Number(this.state.multiplePoints),
+      id: this.state.id,
+      effectiveDate: this.state.effectiveDate,
+      collegeId:this.state.collegeId,
+
+    };
+    this.props.dispatch({
+      type: 'complaintDoubles/upateComplaintDoubles',
+      payload: { upateComplaintDoublesParams },
+    });
+  };
+
   render() {
-    console.log(this.props);
     const data = !this.props.complaintDoubles.complaintDoublesList.response
       ? []
       : !this.props.complaintDoubles.complaintDoublesList.response.data
         ? []
         : this.props.complaintDoubles.complaintDoublesList.response.data;
-    const totalNum = !data.totalElements ? 0 : data.totalElements;
-    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
+    const totalNum = !data ? 0 : data.length;
+    const dataSource = !data ? [] : this.fillDataSource(data);
     const columns = !this.columnsData() ? [] : this.columnsData();
 
-    return (
-      <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="投诉翻倍"
-        contentTable={
-          <div>
-            <p className={common.totalNum}>总数：{totalNum}条</p>
-            <Table
-              bordered
-              dataSource={dataSource}
-              columns={columns}
-              pagination={false}
-              className={common.tableContentStyle}
-            />
-          </div>
-        }
-        contentPagination={
-          <SelfPagination
-            onChange={(current, pageSize) => {
-              this.changePage(current, pageSize);
-            }}
-            onShowSizeChange={(current, pageSize) => {
-              this.onShowSizeChange(current, pageSize);
-            }}
-            defaultCurrent={1}
-            total={totalNum}
-            defaultPageSize={30}
-            pageSizeOptions={['30']}
-          />
-        }
-      />
+    const { visible,collegeName,multiplePoints,id,effectiveDate,collegeId} = this.state;
+    console.log(collegeId)
+    const modalContent = (
+      <div>
+        <p className={styles.name}> 学院{id}</p>
+        <p className={styles.name}> 学院名称{collegeName}</p>
+        <p className={styles.name}> 生效月份{effectiveDate}</p>
+        <Input
+          className={styles.shotName}
+          // ref="name"
+          onChange={e => {
+            this.handelChange(e);
+          }}
+          value={multiplePoints}
+        />
+      </div>
     );
+    return(
+      <div>
+        <ContentLayout
+          pageHeraderUnvisible="unvisible"
+          title="投诉翻倍"
+          contentTable={
+            <div>
+              <p className={common.totalNum}>总数：{totalNum}条</p>
+              <Table
+                bordered
+                dataSource={dataSource}
+                columns={columns}
+                pagination={false}
+                className={common.tableContentStyle}
+              />
+            </div>
+          }
+        />
+
+        <ModalDialog
+          title="编辑投诉翻倍"
+          visible={visible}
+          modalContent={modalContent}
+          clickOK={() => this.editName()}
+        />
+      </div>
+        )
   }
 }
 export default ComplaintDoublesList;
