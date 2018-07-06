@@ -159,6 +159,17 @@ const menuData = [
     ],
   },
   {
+    name: '投诉翻倍',
+    icon: 'check-circle-o',
+    path: 'complaintDoubles',
+    children: [
+      {
+        name: '投诉翻倍列表',
+        path: 'complaintDoublesList',
+      },
+    ],
+  },
+  {
     name: '时间管理',
     icon: 'check-circle-o',
     path: 'timeManage',

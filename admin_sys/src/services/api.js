@@ -13,52 +13,16 @@ export async function userLogin(params) {
   });
 }
 /*
-* 获取登录用户信息
-* params：{userId}
-* */
-export async function queryCurrentUser(params) {
-  return request(`${HOST}/account/info?${stringify(params)}`, {
-    method: 'GET',
-  });
-}
-/*
 * 用户退出登录接口
 * params：{name，password}
 * */
 export async function userLogout(params) {
-  return request(`${HOST}/token/logout`, {
+  return request(`${HOST}/token/login`, {
     method: 'POST',
     body: params,
   });
 }
-/*
-* 用户修改登录密码
-* params：{id，oldPassword,password}
-* */
-export async function updatePwd(params) {
-  return request(`${HOST}/account/updatePwd`, {
-    method: 'PUT',
-    body: params,
-  });
-}
-/*
- *忘记密码,向邮箱里面发送邮件接口
- * params:{mail}
- */
-export async function findBackPwd(params) {
-  return request(`${HOST}/account/findBackPwd?${stringify(params)}`, {
-    method: 'GET',
-  });
-}
-/*
- *获取验证码接口,不需要加验证,使用tag请求
- * params:{}
- */
-export async function generateAuthCode() {
-  const image = new Image();
-  image.src = `${HOST}/token/generateAuthCode?v=${new Date().valueOf()}`;
-  return image.src;
-}
+
 /*
 以下接口为账号相关
 * */
@@ -214,7 +178,7 @@ export async function updateUserOrg(params) {
 }
 // 更新用户信息 慧慧提示该put接口要在url后面添加参数
 export async function updateUserInfo(params) {
-  return request(`${HOST}/user/updateUserInfo?${stringify(params)}`, {
+  return request(`${HOST}/user/updateInfo?${stringify(params)}`, {
     method: 'PUT',
     body: params,
   });
