@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Input } from 'antd';
-import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
+// import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -16,8 +16,10 @@ class Group extends Component {
     super(props);
     this.state = {
       visible: false,
-      groupName: '',
-      objId: 0,
+      collegeName: '学院名字',
+      familyName: '家族名字',
+      groupName: '小组名字',
+      id: 0,
       name: '',
     };
   }
@@ -29,8 +31,10 @@ class Group extends Component {
   // 编辑
   onEdit = record => {
     this.setState({
+      collegeName: record.collegeName,
+      familyName: record.familyName,
       groupName: record.groupName,
-      objId: record.objId,
+      id: record.id,
       visible: true,
     });
   };
@@ -43,18 +47,14 @@ class Group extends Component {
     });
   };
 
-  // 点击某一页函数
-  changePage = (current, pageSize) => {
-    console.log(current, pageSize);
-  };
-  // 模态框回显
-  editName = (id, groupShortName) => {
+  // 模态框确定
+  clickModalOK = (id, groupShortName) => {
     const paramsObj = {
       id,
       groupShortName,
     };
     this.props.dispatch({
-      type: 'shortName/editCollege',
+      type: 'shortName/editGroup',
       payload: { paramsObj },
     });
   };
@@ -64,6 +64,12 @@ class Group extends Component {
       name: e.target.value,
     });
   }
+  // 模态框显隐回调
+  showModal = bol => {
+    this.setState({
+      visible: bol,
+    });
+  };
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -111,13 +117,14 @@ class Group extends Component {
   };
 
   render() {
-    const { dataList } = this.props.shortName;
-    const dataSource = !dataList ? [] : dataList.data;
+    const { groupList } = this.props.shortName;
+    const dataSource = !groupList ? [] : groupList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const { visible, groupName, objId, name } = this.state;
+    const { visible, collegeName, familyName, groupName, id, name } = this.state;
+    const modalTitle = `${collegeName} / ${familyName}  / ${groupName}`;
     const modalContent = (
       <div>
-        <p style={{ textAlign: 'center', marginBottom: '10px' }}> {groupName} </p>
+        <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
         <Input
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
@@ -134,7 +141,7 @@ class Group extends Component {
           title="小组"
           contentTable={
             <div>
-              <p className={common.totalNum}>总数：500条</p>
+              <p className={common.totalNum}>总数：{dataSource.length} 条</p>
               <Table
                 bordered
                 dataSource={dataSource}
@@ -144,20 +151,21 @@ class Group extends Component {
               />
             </div>
           }
-          contentPagination={
-            <SelfPagination
-              onChange={(current, pageSize) => {
-                this.changePage(current, pageSize);
-              }}
-              total={100}
-            />
-          }
+          // contentPagination={
+          //   <SelfPagination
+          //     onChange={(current, pageSize) => {
+          //       this.changePage(current, pageSize);
+          //     }}
+          //     total={dataSource.length}
+          //   />
+          // }
         />
         <ModalDialog
           title="编辑小组短名称"
           visible={visible}
           modalContent={modalContent}
-          clickOK={() => this.editName(objId, name)}
+          showModal={bol => this.showModal(bol)}
+          clickOK={() => this.clickModalOK(id, name)}
         />
       </div>
     );

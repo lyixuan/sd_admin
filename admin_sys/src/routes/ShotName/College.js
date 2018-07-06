@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Input } from 'antd';
-import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
+// import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -18,7 +18,7 @@ class College extends Component {
     this.state = {
       visible,
       collegeName: '',
-      objId: 0,
+      id: 0,
       name: '',
     };
   }
@@ -30,7 +30,7 @@ class College extends Component {
   onEdit = record => {
     this.setState({
       collegeName: record.collegeName,
-      objId: record.objId,
+      id: record.id,
       visible: true,
     });
   };
@@ -41,15 +41,12 @@ class College extends Component {
       payload: { paramsObj: params },
     });
   };
-  // 点击某一页函数
-  changePage = (current, pageSize) => {
-    console.log(current, pageSize);
-  };
+
   // 模态框回显
-  editName = objId => {
+  clickModalOK = (id, collegeShortName) => {
     const paramsObj = {
-      id: objId,
-      collegeShortName: this.state.name,
+      id,
+      collegeShortName,
     };
     this.props.dispatch({
       type: 'shortName/editCollege',
@@ -62,6 +59,12 @@ class College extends Component {
       name: e.target.value,
     });
   }
+  // 模态框显隐回调
+  showModal = bol => {
+    this.setState({
+      visible: bol,
+    });
+  };
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -101,10 +104,10 @@ class College extends Component {
   };
 
   render() {
-    const { dataList } = this.props.shortName;
-    const dataSource = !dataList ? [] : dataList.data;
+    const { collegeList } = this.props.shortName;
+    const dataSource = !collegeList ? [] : collegeList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const { visible, collegeName, objId, name } = this.state;
+    const { visible, collegeName, id, name } = this.state;
     const modalContent = (
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}> {collegeName} </p>
@@ -124,7 +127,7 @@ class College extends Component {
           title="学院"
           contentTable={
             <div>
-              <p className={common.totalNum}>总数：500条</p>
+              <p className={common.totalNum}>总数：{dataSource.length} 条</p>
               <Table
                 bordered
                 dataSource={dataSource}
@@ -134,20 +137,21 @@ class College extends Component {
               />
             </div>
           }
-          contentPagination={
-            <SelfPagination
-              onChange={(current, pageSize) => {
-                this.changePage(current, pageSize);
-              }}
-              total={100}
-            />
-          }
+          // contentPagination={
+          //   <SelfPagination
+          //     onChange={(current, pageSize) => {
+          //       this.changePage(current, pageSize);
+          //     }}
+          //     total={dataSource.length}
+          //   />
+          // }
         />
         <ModalDialog
           title="编辑学院短名称"
           visible={visible}
           modalContent={modalContent}
-          clickOK={() => this.editName(objId)}
+          showModal={bol => this.showModal(bol)}
+          clickOK={() => this.clickModalOK(id)}
         />
       </div>
     );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Input } from 'antd';
 import { connect } from 'dva';
-import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
+// import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -16,8 +16,9 @@ class Family extends Component {
     super(props);
     this.state = {
       visible: false,
-      familyName: '',
-      objId: 0,
+      collegeName: '学院名字',
+      familyName: '家族名字',
+      id: 0,
       name: '',
     };
   }
@@ -27,8 +28,9 @@ class Family extends Component {
   // 编辑
   onEdit = record => {
     this.setState({
+      collegeName: record.collegeName,
       familyName: record.familyName,
-      objId: record.objId,
+      id: record.id,
       visible: true,
     });
   };
@@ -40,18 +42,15 @@ class Family extends Component {
       payload: { paramsObj: params },
     });
   };
-  // 点击某一页函数
-  changePage = (current, pageSize) => {
-    console.log(current, pageSize);
-  };
+
   // 模态框回显
-  editName = (id, familyShortName) => {
+  clickModalOK = (id, familyShortName) => {
     const paramsObj = {
       id,
       familyShortName,
     };
     this.props.dispatch({
-      type: 'shortName/editCollege',
+      type: 'shortName/editFamily',
       payload: { paramsObj },
     });
   };
@@ -61,6 +60,14 @@ class Family extends Component {
       name: e.target.value,
     });
   }
+
+  // 模态框显隐回调
+  showModal = bol => {
+    this.setState({
+      visible: bol,
+    });
+  };
+
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -104,13 +111,14 @@ class Family extends Component {
   };
 
   render() {
-    const { dataList } = this.props.shortName;
-    const dataSource = !dataList ? [] : dataList.data;
+    const { familyList } = this.props.shortName;
+    const dataSource = !familyList ? [] : familyList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const { visible, familyName, objId, name } = this.state;
+    const { visible, collegeName, familyName, id, name } = this.state;
+    const modalTitle = `${collegeName} / ${familyName}`;
     const modalContent = (
       <div>
-        <p style={{ textAlign: 'center', marginBottom: '10px' }}> {familyName} </p>
+        <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
         <Input
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
@@ -127,7 +135,7 @@ class Family extends Component {
           title="家族"
           contentTable={
             <div>
-              <p className={common.totalNum}>总数：500条</p>
+              <p className={common.totalNum}>总数：{dataSource.length} 条</p>
               <Table
                 bordered
                 dataSource={dataSource}
@@ -137,20 +145,21 @@ class Family extends Component {
               />
             </div>
           }
-          contentPagination={
-            <SelfPagination
-              onChange={(current, pageSize) => {
-                this.changePage(current, pageSize);
-              }}
-              total={100}
-            />
-          }
+          // contentPagination={
+          //   <SelfPagination
+          //     onChange={(current, pageSize) => {
+          //       this.changePage(current, pageSize);
+          //     }}
+          //     total={dataSource.length}
+          //   />
+          // }
         />
         <ModalDialog
           title="编辑家族短名称"
           visible={visible}
           modalContent={modalContent}
-          clickOK={() => this.editName(objId, name)}
+          showModal={bol => this.showModal(bol)}
+          clickOK={() => this.clickModalOK(id, name)}
         />
       </div>
     );

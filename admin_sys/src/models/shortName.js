@@ -19,7 +19,7 @@ export default {
       const collegeList = yield call(getCollegeList, { ...paramsObj });
       yield put({
         type: 'save',
-        payload: { dataList: collegeList },
+        payload: { collegeList },
       });
     },
     *editCollege({ payload }, { put, call }) {
@@ -30,7 +30,7 @@ export default {
         const collegeList = yield call(getCollegeList, {});
         yield put({
           type: 'save',
-          payload: { dataList: collegeList, visible: false },
+          payload: { collegeList, visible: false },
         });
       } else {
         message.error(getCode.msg);
@@ -41,7 +41,7 @@ export default {
       const familyList = yield call(getFamilyList, { ...paramsObj });
       yield put({
         type: 'save',
-        payload: { dataList: familyList },
+        payload: { familyList },
       });
     },
     *editFamily({ payload }, { put, call }) {
@@ -52,7 +52,7 @@ export default {
         const familyList = yield call(getFamilyList, {});
         yield put({
           type: 'save',
-          payload: { dataList: familyList, visible: false },
+          payload: { familyList, visible: false },
         });
       } else {
         message.error(getCode.msg);
@@ -63,7 +63,7 @@ export default {
       const groupList = yield call(getGroupList, { ...paramsObj });
       yield put({
         type: 'save',
-        payload: { dataList: groupList },
+        payload: { groupList },
       });
     },
     *editGroup({ payload }, { put, call }) {
@@ -74,7 +74,7 @@ export default {
         const groupList = yield call(getGroupList, {});
         yield put({
           type: 'save',
-          payload: { dataList: groupList, visible: false },
+          payload: { groupList, visible: false },
         });
       } else {
         message.error(getCode.msg);
@@ -84,11 +84,23 @@ export default {
 
   reducers: {
     save(state, action) {
-      const { dataList } = action.payload;
-      const { data } = dataList;
-      data.forEach((item, i) => {
-        data[i].key = i;
-      });
+      const { collegeList, familyList, groupList } = action.payload;
+
+      // 给列表数据添加key
+      if (collegeList) {
+        collegeList.data.forEach((item, i) => {
+          collegeList.data[i].key = i;
+        });
+      } else if (familyList) {
+        familyList.data.forEach((item, i) => {
+          familyList.data[i].key = i;
+        });
+      } else if (groupList) {
+        groupList.data.forEach((item, i) => {
+          groupList.data[i].key = i;
+        });
+      }
+
       return { ...state, ...action.payload };
     },
     saveList(state, action) {
