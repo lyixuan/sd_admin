@@ -151,6 +151,7 @@ export async function updateGroup(params) {
     body: params,
   });
 }
+
 /*
 * 角色管理
 * */
@@ -321,6 +322,31 @@ export async function complaintDoublesList(params) {
 export async function upateComplaintDoubles(params) {
   return request(`${HOST}/complainMultiple/update`, {
     method: 'PUT',
+    body: params,
+  });
+}
+
+/*
+以下接口为投诉管理模块相关
+* */
+// 投诉列表
+export async function getBlComplainList(params) {
+  return request(`${HOST}/blComplain/list?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+// 预删除投诉列表
+export async function preDelBlComplainList(params) {
+  return request(`${HOST}/blComplain/preDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 删除投诉列表
+export async function delBlComplainList(params) {
+  return request(`${HOST}/blComplain/confirmDelete`, {
+    method: 'POST',
     body: params,
   });
 }
