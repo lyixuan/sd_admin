@@ -23,6 +23,7 @@ class EditAccount extends Component {
       type: 'account/getRoleList',
       payload: { getRoleListParams },
     });
+
   }
 
   handleSubmit = (values) => {
