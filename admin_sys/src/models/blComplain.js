@@ -4,12 +4,16 @@ import { getBlComplainList, preDelBlComplainList, delBlComplainList } from '../s
 export default {
   namespace: 'blComplain',
 
-  state: {},
+  state: {
+    getListParams:{size: 30, number: 0},
+
+    getList: [],
+  },
 
   effects: {
     *getList({ payload }, { call, put }) {
-      const { accountListParams } = payload;
-      const response = yield call(getBlComplainList, { ...accountListParams });
+      const { getListParams } = payload;
+      const response = yield call(getBlComplainList, { ...getListParams });
       console.log(response);
       yield put({ type: 'save', payload: { response } });
     },
@@ -36,8 +40,9 @@ export default {
     save(state, action) {
       return {
         ...state,
-        ...action.payload,
+        getList: action.payload,
       };
+
     },
   },
 };

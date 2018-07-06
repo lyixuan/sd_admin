@@ -24,7 +24,13 @@ class ComplainList extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const getListParams = { size: 30, number: 0 };
+    this.props.dispatch({
+      type: 'blComplain/getList',
+      payload: { getListParams },
+    });
+  }
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
@@ -129,6 +135,7 @@ class ComplainList extends Component {
   };
 
   render() {
+    console.log(this.props.blComplain);
     const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
