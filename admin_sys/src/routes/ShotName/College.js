@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Pagination, Input } from 'antd';
+import { Table, Input } from 'antd';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
-import styles from '../../selfComponent/Modal/Modal.css';
 
 @connect(({ shortName, loading }) => ({
   shortName,
@@ -33,11 +33,6 @@ class College extends Component {
       objId: record.objId,
       visible: true,
     });
-  };
-
-  // 点击显示每页多少条数据函数
-  onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
   };
 
   getCollegeData = params => {
@@ -112,9 +107,9 @@ class College extends Component {
     const { visible, collegeName, objId, name } = this.state;
     const modalContent = (
       <div>
-        <p className={styles.name}> {collegeName} </p>
+        <p style={{ textAlign: 'center', marginBottom: '10px' }}> {collegeName} </p>
         <Input
-          className={styles.shotName}
+          style={{ width: '300px', margin: '0 100px' }}
           // ref="name"
           onChange={e => {
             this.handelChange(e);
@@ -141,13 +136,11 @@ class College extends Component {
             </div>
           }
           contentPagination={
-            <Pagination
-              showSizeChanger
-              onChange={this.changePage}
-              onShowSizeChange={this.onShowSizeChange}
-              defaultCurrent={1}
+            <SelfPagination
+              onChange={(current, pageSize) => {
+                this.changePage(current, pageSize);
+              }}
               total={100}
-              className={common.paginationStyle}
             />
           }
         />

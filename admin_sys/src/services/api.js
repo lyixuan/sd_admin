@@ -13,20 +13,11 @@ export async function userLogin(params) {
   });
 }
 /*
-* 获取登录用户信息
-* params：{userId}
-* */
-export async function queryCurrentUser(params) {
-  return request(`${HOST}/account/info?${stringify(params)}`, {
-    method: 'GET',
-  });
-}
-/*
 * 用户退出登录接口
 * params：{name，password}
 * */
 export async function userLogout(params) {
-  return request(`${HOST}/token/logout`, {
+  return request(`${HOST}/token/login`, {
     method: 'POST',
     body: params,
   });
@@ -124,6 +115,12 @@ export async function getFamilyList(params) {
     body: params,
   });
 }
+export async function updateFamily(params) {
+  return request(`${HOST}/sn/updateFamily`, {
+    method: 'PUT',
+    body: params,
+  });
+}
 // 小组
 export async function getGroupList(params) {
   return request(`${HOST}/sn/listGroup?${stringify(params)}`, {
@@ -131,7 +128,12 @@ export async function getGroupList(params) {
     body: params,
   });
 }
-
+export async function updateGroup(params) {
+  return request(`${HOST}/sn/updateGroup`, {
+    method: 'PUT',
+    body: params,
+  });
+}
 /*
 * 角色管理
 * */
@@ -284,6 +286,24 @@ export async function listOrg(params) {
 export async function wechatList(params) {
   return request(`${HOST}/user/wechatList?${stringify(params)}`, {
     method: 'GET',
+    body: params,
+  });
+}
+
+/*
+以下接口为投诉翻倍模块相关
+* */
+// 投诉扣分倍数列表
+export async function complaintDoublesList(params) {
+  return request(`${HOST}/complainMultiple/list?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+// 修改投诉扣分倍数
+export async function upateComplaintDoubles(params) {
+  return request(`${HOST}/complainMultiple/update`, {
+    method: 'PUT',
     body: params,
   });
 }

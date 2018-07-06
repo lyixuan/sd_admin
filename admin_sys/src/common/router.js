@@ -170,6 +170,11 @@ export const getRouterData = app => {
     '/shotName/college': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/College')),
     },
+    '/complaintDoubles/complaintDoublesList': {
+      component: dynamicWrapper(app, ['complaintDoubles'], () =>
+        import('../routes/ComplaintDoubles/ComplaintDoublesList')
+      ),
+    },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
     },
