@@ -12,25 +12,22 @@ export default {
   state: {
     // 接口返回数据存储
     complaintDoublesList: [],
-    upateComplaintDoubles: [],
   },
 
   effects: {
     *complaintDoublesList({ payload }, { call, put }) {
-
       const response = yield call(complaintDoublesList, payload.complaintDoublesListParams);
-      console.log(response);
       yield put({ type: 'complaintDoublesListSave', payload: { response } });
     },
     *upateComplaintDoubles({ payload }, { call, put }) {
-      const response = yield call(upateComplaintDoubles, payload.upateComplaintDoublesParams);
-      if (response.code === 2000) {
+      const result = yield call(upateComplaintDoubles, payload.upateComplaintDoublesParams);
+      if (result.code === 2000) {
         message.success('投诉倍数修改成功！');
-        // const response1 = yield call(complaintDoublesList, payload.complaintDoublesListParams);
-        // console.log(response1);
-        // yield put({ type: 'complaintDoublesListSave', payload: { response1 } });
+        const response = yield call(complaintDoublesList, payload.complaintDoublesListParams);
+        console.log(response);
+        yield put({ type: 'complaintDoublesListSave', payload: { response } });
       } else {
-        message.error(response.msg);
+        message.error(result.msg);
       }
     },
   },
@@ -40,12 +37,6 @@ export default {
       return {
         ...state,
         complaintDoublesList: action.payload,
-      };
-    },
-    upateComplaintDoublesSave(state, action) {
-      return {
-        ...state,
-        upateComplaintDoubles: action.payload,
       };
     },
   },

@@ -36,19 +36,25 @@ class ComplaintDoublesList extends Component {
   onEdit = key => {
     console.log(key);
     this.setState({
-      visible: true,
       collegeName: key.collegeName,
       multiplePoints: key.multiplePoints,
       id: key.id,
       effectiveDate: key.effectiveDate,
       collegeId:key.collegeId,
     });
+    this.setDialogSHow(true);
   };
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     console.log(pageSize, current);
   };
+
+  setDialogSHow(bol){
+    this.setState({
+      visible:bol,
+    })
+  }
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
@@ -200,6 +206,7 @@ class ComplaintDoublesList extends Component {
           visible={visible}
           modalContent={modalContent}
           clickOK={() => this.editName()}
+          showModal={(bol)=>{this.setDialogSHow(bol)}}
         />
       </div>
         )
