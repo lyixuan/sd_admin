@@ -52,8 +52,7 @@ export default class RetrievePassWord extends Component {
   };
   handleSubmit = (err, values) => {
     if (!err) {
-      // const mail = `${values.mail}@sunlands.com`;
-      const mail = '623570688@qq.com';
+      const mail = `${values.mail}@sunlands.com`;
       this.props.dispatch({
         type: 'password/findBackPwd',
         payload: {

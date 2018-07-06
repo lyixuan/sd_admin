@@ -42,6 +42,16 @@ export async function updatePwd(params) {
   });
 }
 /*
+* 用户重置登录密码
+* params：{userd，oldPassword,password,token}
+* */
+export async function resetPwd(params) {
+  return request(`${HOST}/account/resetPwd`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+/*
  *忘记密码,向邮箱里面发送邮件接口
  * params:{mail}
  */

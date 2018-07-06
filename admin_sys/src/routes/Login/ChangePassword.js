@@ -25,7 +25,6 @@ export default class RetrievePassWord extends Component {
       JSON.stringify(nextProps.password.changePwdObj) !==
       JSON.stringify(this.props.password.changePwdObj)
     ) {
-      console.log(nextProps.password.changePwdObj);
       const { msg, status } = nextProps.password.changePwdObj;
       if (!status) {
         this.setState({

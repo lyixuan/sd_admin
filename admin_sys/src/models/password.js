@@ -1,4 +1,4 @@
-import { updatePwd, findBackPwd } from '../services/api';
+import { updatePwd, findBackPwd, resetPwd } from '../services/api';
 import { setAuthority, getAuthority } from '../utils/authority';
 import { handleSuccess } from '../utils/Handle';
 
@@ -8,6 +8,7 @@ export default {
   state: {
     changePwdObj: {},
     findBackPwdObj: {},
+    resertPwdObj: {},
   },
 
   effects: {
@@ -33,6 +34,19 @@ export default {
         payload: { response, mail },
       });
     },
+    *resetPwd({ payload }, { call, put, fork }) {
+      const { password } = payload;
+      const response = yield call(resetPwd, { ...payload });
+      yield put({
+        type: 'saveResetPwd',
+        payload: response,
+      });
+      if (response.code === 2000) {
+        const adminUser = getAuthority('admin_user') || {};
+        setAuthority('admin_user', { ...adminUser, password }); // 存储用户信息
+        yield fork(handleSuccess, { content: '密码重置成功', pathname: '/userLayout/login' });
+      }
+    },
   },
   reducers: {
     saveNewPassword(state, { payload }) {
@@ -51,6 +65,13 @@ export default {
       };
       console.log(findBackPwdObj);
       return { ...state, findBackPwdObj };
+    },
+    saveResetPwd(state, { payload }) {
+      const resertPwdObj = {
+        status: payload.code === 2000,
+        msg: payload.msg,
+      };
+      return { ...state, resertPwdObj };
     },
   },
 };

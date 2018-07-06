@@ -11,7 +11,7 @@ const { Password, Submit } = Login;
 
 @connect(({ password, loading }) => ({
   password,
-  submitting: loading.effects['login/login'],
+  submitting: loading.effects['password/resetPwd'],
 }))
 export default class RetrievePassWord extends Component {
   constructor(props) {
@@ -19,6 +19,8 @@ export default class RetrievePassWord extends Component {
     const urlParams = parse(this.props.location.search, true).query;
     const { validate = false, userId = '', token = '' } = urlParams;
     this.state = {
+      errorMsg: '',
+      isShowError: false,
       validate,
       userId,
       token,
@@ -32,26 +34,51 @@ export default class RetrievePassWord extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      JSON.stringify(nextProps.password.resertPwdObj) !==
+      JSON.stringify(this.props.password.resertPwdObj)
+    ) {
+      console.log(nextProps.password.resertPwdObj);
+      const { msg, status } = nextProps.password.resertPwdObj;
+      if (!status) {
+        this.setState({
+          errorMsg: msg,
+          isShowError: !status,
+        });
+      }
+    }
+  }
+
   handleSubmit = (err, values) => {
     if (!err) {
       const { userId, token } = this.state;
-      this.props.dispatch({
-        type: 'login/login',
-        payload: {
-          ...values,
-          userId,
-          token,
-        },
-      });
+      const { password, rePassword } = values;
+      if (password !== rePassword) {
+        this.setState({
+          isShowError: true,
+          errorMsg: '两次密码输入不一致',
+        });
+      } else {
+        this.props.dispatch({
+          type: 'password/resetPwd',
+          payload: {
+            password,
+            id: userId,
+            token,
+          },
+        });
+      }
     }
   };
 
   render() {
     const { submitting } = this.props;
+    const { errorMsg, isShowError } = this.state;
     return (
       <div className={styles.main}>
         <Login onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <PassWordErrorAlert style={{ width: '360px' }} errorMes="密码错误" />
+          <PassWordErrorAlert style={{ width: '360px' }} errorMes={errorMsg} isShow={isShowError} />
           <div style={{ width: '360px' }}>
             <span className={styles.loginLabel}>新密码</span>
             <Password name="password" placeholder="请输入密码" />
