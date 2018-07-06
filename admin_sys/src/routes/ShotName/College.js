@@ -48,8 +48,8 @@ class College extends Component {
   // 模态框回显
   editName = objId => {
     const paramsObj = {
-      objId,
-      name: this.state.name,
+      id: objId,
+      collegeShortName: this.state.name,
     };
     this.props.dispatch({
       type: 'shortName/editCollege',
@@ -83,7 +83,7 @@ class College extends Component {
       },
       {
         title: '操作',
-        dataIndex: 'operation',
+        key: 'operation',
         render: (text, record) => {
           return (
             <div>
@@ -101,8 +101,8 @@ class College extends Component {
   };
 
   render() {
-    const { collegeList } = this.props.shortName;
-    const dataSource = !collegeList ? [] : collegeList.data;
+    const { dataList } = this.props.shortName;
+    const dataSource = !dataList ? [] : dataList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, collegeName, objId, name } = this.state;
     const modalContent = (
@@ -110,7 +110,6 @@ class College extends Component {
         <p style={{ textAlign: 'center', marginBottom: '10px' }}> {collegeName} </p>
         <Input
           style={{ width: '300px', margin: '0 100px' }}
-          // ref="name"
           onChange={e => {
             this.handelChange(e);
           }}

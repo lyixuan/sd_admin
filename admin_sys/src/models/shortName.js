@@ -1,4 +1,3 @@
-import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import {
   getCollegeList,
@@ -20,7 +19,7 @@ export default {
       const collegeList = yield call(getCollegeList, { ...paramsObj });
       yield put({
         type: 'save',
-        payload: { collegeList },
+        payload: { dataList: collegeList },
       });
     },
     *editCollege({ payload }, { put, call }) {
@@ -28,8 +27,11 @@ export default {
       const getCode = yield call(updateCollege, { ...paramsObj });
       if (getCode.code === 2000) {
         message.success('短名称修改成功！');
-        yield put({ visible: false });
-        yield put(routerRedux.push('/shotName/college'));
+        const collegeList = yield call(getCollegeList, {});
+        yield put({
+          type: 'save',
+          payload: { dataList: collegeList, visible: false },
+        });
       } else {
         message.error(getCode.msg);
       }
@@ -39,7 +41,7 @@ export default {
       const familyList = yield call(getFamilyList, { ...paramsObj });
       yield put({
         type: 'save',
-        payload: { familyList },
+        payload: { dataList: familyList },
       });
     },
     *editFamily({ payload }, { put, call }) {
@@ -47,8 +49,11 @@ export default {
       const getCode = yield call(updateFamily, { ...paramsObj });
       if (getCode.code === 2000) {
         message.success('短名称修改成功！');
-        yield put({ visible: false });
-        yield put(routerRedux.push('/shotName/family'));
+        const familyList = yield call(getFamilyList, {});
+        yield put({
+          type: 'save',
+          payload: { dataList: familyList, visible: false },
+        });
       } else {
         message.error(getCode.msg);
       }
@@ -58,7 +63,7 @@ export default {
       const groupList = yield call(getGroupList, { ...paramsObj });
       yield put({
         type: 'save',
-        payload: { groupList },
+        payload: { dataList: groupList },
       });
     },
     *editGroup({ payload }, { put, call }) {
@@ -66,8 +71,11 @@ export default {
       const getCode = yield call(updateGroup, { ...paramsObj });
       if (getCode.code === 2000) {
         message.success('短名称修改成功！');
-        yield put({ visible: false });
-        yield put(routerRedux.push('/shotName/group'));
+        const groupList = yield call(getGroupList, {});
+        yield put({
+          type: 'save',
+          payload: { dataList: groupList, visible: false },
+        });
       } else {
         message.error(getCode.msg);
       }
@@ -76,6 +84,11 @@ export default {
 
   reducers: {
     save(state, action) {
+      const { dataList } = action.payload;
+      const { data } = dataList;
+      data.forEach((item, i) => {
+        data[i].key = i;
+      });
       return { ...state, ...action.payload };
     },
     saveList(state, action) {

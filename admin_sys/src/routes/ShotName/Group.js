@@ -47,7 +47,23 @@ class Group extends Component {
   changePage = (current, pageSize) => {
     console.log(current, pageSize);
   };
-
+  // 模态框回显
+  editName = (id, groupShortName) => {
+    const paramsObj = {
+      id,
+      groupShortName,
+    };
+    this.props.dispatch({
+      type: 'shortName/editCollege',
+      payload: { paramsObj },
+    });
+  };
+  // input双向绑定
+  handelChange(e) {
+    this.setState({
+      name: e.target.value,
+    });
+  }
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -95,8 +111,8 @@ class Group extends Component {
   };
 
   render() {
-    const { groupList } = this.props.shortName;
-    const dataSource = !groupList ? [] : groupList.data;
+    const { dataList } = this.props.shortName;
+    const dataSource = !dataList ? [] : dataList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, groupName, objId, name } = this.state;
     const modalContent = (
@@ -104,7 +120,6 @@ class Group extends Component {
         <p style={{ textAlign: 'center', marginBottom: '10px' }}> {groupName} </p>
         <Input
           style={{ width: '300px', margin: '0 100px' }}
-          // ref="name"
           onChange={e => {
             this.handelChange(e);
           }}
@@ -142,7 +157,7 @@ class Group extends Component {
           title="编辑小组短名称"
           visible={visible}
           modalContent={modalContent}
-          clickOK={() => this.editName(objId)}
+          clickOK={() => this.editName(objId, name)}
         />
       </div>
     );

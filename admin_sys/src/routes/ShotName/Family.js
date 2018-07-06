@@ -44,7 +44,23 @@ class Family extends Component {
   changePage = (current, pageSize) => {
     console.log(current, pageSize);
   };
-
+  // 模态框回显
+  editName = (id, familyShortName) => {
+    const paramsObj = {
+      id,
+      familyShortName,
+    };
+    this.props.dispatch({
+      type: 'shortName/editCollege',
+      payload: { paramsObj },
+    });
+  };
+  // input双向绑定
+  handelChange(e) {
+    this.setState({
+      name: e.target.value,
+    });
+  }
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -88,8 +104,8 @@ class Family extends Component {
   };
 
   render() {
-    const { familyList } = this.props.shortName;
-    const dataSource = !familyList ? [] : familyList.data;
+    const { dataList } = this.props.shortName;
+    const dataSource = !dataList ? [] : dataList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, familyName, objId, name } = this.state;
     const modalContent = (
@@ -97,7 +113,6 @@ class Family extends Component {
         <p style={{ textAlign: 'center', marginBottom: '10px' }}> {familyName} </p>
         <Input
           style={{ width: '300px', margin: '0 100px' }}
-          // ref="name"
           onChange={e => {
             this.handelChange(e);
           }}
@@ -135,7 +150,7 @@ class Family extends Component {
           title="编辑家族短名称"
           visible={visible}
           modalContent={modalContent}
-          clickOK={() => this.editName(objId)}
+          clickOK={() => this.editName(objId, name)}
         />
       </div>
     );
