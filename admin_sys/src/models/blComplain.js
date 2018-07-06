@@ -10,7 +10,7 @@ import {
 } from '../../services/api';
 
 export default {
-  namespace: 'account',
+  namespace: 'blComplain',
 
   state: {
     // 请求接口上送参数

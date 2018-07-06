@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Table, Button, Pagination, Form, Input, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -10,6 +11,10 @@ const { RangePicker } = DatePicker;
 let propsVal = '';
 const dateFormat = 'YYYY/MM/DD';
 
+@connect(({ blComplain, loading }) => ({
+  blComplain,
+  loading,
+}))
 class ComplainList extends Component {
   constructor(props) {
     super(props);
