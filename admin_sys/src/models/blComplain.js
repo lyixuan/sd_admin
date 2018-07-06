@@ -5,7 +5,7 @@ export default {
   namespace: 'blComplain',
 
   state: {
-    getListParams:{size: 30, number: 0},
+    getListParams: { size: 30, number: 0 },
 
     getList: [],
   },
@@ -17,13 +17,10 @@ export default {
       console.log(response);
       yield put({ type: 'save', payload: { response } });
     },
-    *perDelComplain({ payload }, { call }) {
-      const result = yield call(preDelBlComplainList, payload.updateAccountParams);
-      if (result.code === 0 || result.code === 2000) {
-        message.success('账号编辑成功！');
-      } else {
-        message.error(result.msg);
-      }
+    *perDelComplain({ payload }, { call, put }) {
+      const { params } = payload;
+      const preDelData = yield call(preDelBlComplainList, { ...params });
+      yield put({ type: 'savePreData', payload: { preDelData } });
     },
     *delComplain({ payload }, { call }) {
       console.log(payload.deleteAccountParams);
@@ -42,7 +39,10 @@ export default {
         ...state,
         getList: action.payload,
       };
-
+    },
+    savePreData(state, action) {
+      const { preDelData } = action.payload;
+      return { ...state, preDelData };
     },
   },
 };

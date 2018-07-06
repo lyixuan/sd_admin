@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import StepLayout from '../../layouts/stepLayout';
 import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 
+@connect(({ blComplain, loading }) => ({
+  blComplain,
+  loading,
+}))
 class ComplaintDel extends Component {
   constructor(props) {
     super(props);
@@ -72,6 +77,19 @@ class ComplaintDel extends Component {
       dataSource: !dataSource ? [] : dataSource,
     };
   }
+  componentDidMount() {
+    this.fetchPreDel({
+      nums: '22222 11111',
+    });
+  }
+
+  fetchPreDel = params => {
+    this.props.dispatch({
+      type: 'blComplain/perDelComplain',
+      payload: { params },
+    });
+  };
+
   // 回调
   historyFn() {
     this.props.history.push({
@@ -79,10 +97,25 @@ class ComplaintDel extends Component {
     });
   }
   render() {
+    const { preDelData } = this.props.blComplain;
+    const { data } = preDelData;
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
     const tipSucess = '您已成功删除 1500 条数据！';
+    const checkRes = (
+      <div>
+        <span>校验数据总数：</span>
+        <span>{data.totalSize}</span>
+        <span>条数据</span>
+        <span>成功</span>
+        <span>{data.successSize}</span>
+        <span>条</span>
+        <span>失败</span>
+        <span>{data.failSize}</span>
+        <span>条</span>
+      </div>
+    );
     const steps = [
       {
         title: '输入编号',
@@ -96,7 +129,7 @@ class ComplaintDel extends Component {
       },
       {
         title: '校验编号',
-        content: <StepInput inputInfo="校验数据总数：5000 条数据 " inputContent="1212" />,
+        content: <StepInput inputInfo={checkRes} inputContent="1212" />,
       },
       {
         title: '复核数据',
