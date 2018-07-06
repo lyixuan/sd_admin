@@ -4,6 +4,7 @@ import { Table, Button, Pagination, Form, Input, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
@@ -34,12 +35,20 @@ class ComplainList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
+    const getListParams = { size: pageSize, number: current - 1 };
+    this.props.dispatch({
+      type: 'blComplain/getList',
+      payload: { getListParams },
+    });
   };
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    console.log(current, pageSize);
+    const getListParams = { size: pageSize, number: current - 1 };
+    this.props.dispatch({
+      type: 'blComplain/getList',
+      payload: { getListParams },
+    });
   };
 
   // 表单搜索
@@ -64,55 +73,62 @@ class ComplainList extends Component {
     this.props.setCurrentUrlParams({});
   };
 
+
   // 初始化tabale 列数据
-  fillDataSource = () => {
+  fillDataSource = val => {
     const data = [];
-    for (let i = 0; i < 50; i += 1) {
+    val.map((item, index) =>
       data.push({
-        key: i,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello${i}@sunlands.com`,
-      });
-    }
+        key: index,
+        ordId: item.ordId,
+        complainTime: item.complainTime,
+        stuName: item.stuName, //   const newmail = `${values.mail}@sunlans.com`;
+        id: item.id,
+        groupName: item.groupName,
+        cpName:item.cpName,
+        cpId:item.cpId,
+        complainChannel:item.complainChannel,
+      })
+    );
     return data;
   };
+
+
 
   // 获取table列表头
   columnsData = () => {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'key',
+        dataIndex: 'id',
       },
       {
         title: '子订单编号',
-        dataIndex: 'name',
+        dataIndex: 'ordId',
       },
       {
         title: '投诉时间',
-        dataIndex: 'role',
+        dataIndex: 'complainTime',
       },
       {
         title: '学生名称/id',
-        dataIndex: 'email',
+        dataIndex: 'stuName',
       },
       {
         title: '老师名称',
-        dataIndex: 'status',
+        dataIndex: 'cpName',
       },
       {
         title: '学院/家族/小组',
-        dataIndex: 'status3',
+        dataIndex: 'groupName',
       },
       {
         title: '编号',
-        dataIndex: 'status2',
+        dataIndex: 'cpId',
       },
       {
         title: '渠道',
-        dataIndex: 'status1',
+        dataIndex: 'complainChannel',
       },
     ];
     return columns;
@@ -136,8 +152,20 @@ class ComplainList extends Component {
 
   render() {
     console.log(this.props.blComplain);
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    // const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    // const columns = !this.columnsData() ? [] : this.columnsData();
+
+
+    const data = !this.props.blComplain.getList.response
+          ? []
+          : !this.props.blComplain.getList.response.data
+        ? []
+        : this.props.blComplain.getList.response.data;
+    const totalNum = !data.totalElements ? 0 : data.totalElements;
+    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
+    console.log(totalNum)
+
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -201,17 +229,31 @@ class ComplainList extends Component {
           </div>
         }
         contentTable={
-          <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+          <div>
+            <p className={common.totalNum}>总数：{totalNum}条</p>
+            <Table
+              bordered
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}
+              className={common.tableContentStyle}
+            />
+          </div>
         }
         contentPagination={
-          <Pagination
-            showSizeChanger
-            onChange={this.changePage}
-            onShowSizeChange={this.onShowSizeChange}
-            defaultCurrent={3}
-            total={100}
-            className={common.paginationStyle}
+          <SelfPagination
+            onChange={(current, pageSize) => {
+              this.changePage(current, pageSize);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              this.onShowSizeChange(current, pageSize);
+            }}
+            defaultCurrent={1}
+            total={totalNum}
+            defaultPageSize={30}
+            pageSizeOptions={['30']}
           />
+
         }
       />
     );
