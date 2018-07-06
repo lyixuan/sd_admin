@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table,Input} from 'antd';
+import { Table,Input,Row,Col} from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -169,17 +169,30 @@ class ComplaintDoublesList extends Component {
     console.log(collegeId)
     const modalContent = (
       <div>
-        <p className={styles.name}> 学院{id}</p>
-        <p className={styles.name}> 学院名称{collegeName}</p>
-        <p className={styles.name}> 生效月份{effectiveDate}</p>
-        <Input
-          className={styles.shotName}
-          // ref="name"
-          onChange={e => {
-            this.handelChange(e);
-          }}
-          value={multiplePoints}
-        />
+        <Row>
+          <Col span={5} offset={6}>学院id:</Col>
+          <Col span={2} offset={0}>{id}</Col>
+        </Row>
+        <Row>
+          <Col span={4} offset={6}>学院名称:</Col>
+          <Col span={4} offset={1}>{collegeName}</Col>
+        </Row>
+        <Row>
+          <Col span={4} offset={6}>生效月份:</Col>
+          <Col span={4} offset={1}>{effectiveDate}</Col>
+        </Row>
+        <Row>
+          <Col span={6} offset={4}>*投诉扣分倍数:</Col>
+          <Col span={6} offset={1}>
+            <Input
+              onChange={e => {
+                this.handelChange(e);
+              }}
+              value={multiplePoints}
+              defaultValue={1}
+            />
+          </Col>
+        </Row>
       </div>
     );
     return(
