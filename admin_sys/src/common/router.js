@@ -2,6 +2,7 @@ import { createElement } from 'react';
 import dynamic from 'dva/dynamic';
 import pathToRegexp from 'path-to-regexp';
 import { getMenuData } from './menu';
+import ComplaintDoublesList from '../routes/ComplaintDoubles/ComplaintDoublesList';
 
 let routerDataCache;
 
@@ -169,6 +170,9 @@ export const getRouterData = app => {
     },
     '/shotName/college': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/College')),
+    },
+    '/complaintDoubles/complaintDoublesList': {
+      component: dynamicWrapper(app, ['complaintDoubles'], () => import('../routes/ComplaintDoubles/ComplaintDoublesList')),
     },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),

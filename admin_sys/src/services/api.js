@@ -208,7 +208,7 @@ export async function updateUserOrg(params) {
 }
 // 更新用户信息 慧慧提示该put接口要在url后面添加参数
 export async function updateUserInfo(params) {
-  return request(`${HOST}/user/updateInfo?${stringify(params)}`, {
+  return request(`${HOST}/user/updateUserInfo?${stringify(params)}`, {
     method: 'PUT',
     body: params,
   });
@@ -238,6 +238,24 @@ export async function listOrg(params) {
 export async function wechatList(params) {
   return request(`${HOST}/user/wechatList?${stringify(params)}`, {
     method: 'GET',
+    body: params,
+  });
+}
+
+/*
+以下接口为投诉翻倍模块相关
+* */
+// 投诉扣分倍数列表
+export async function complaintDoublesList(params) {
+  return request(`${HOST}/complainMultiple/list?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+// 修改投诉扣分倍数
+export async function upateComplaintDoubles(params) {
+  return request(`${HOST}/complainMultiple/update`, {
+    method: 'PUT',
     body: params,
   });
 }
