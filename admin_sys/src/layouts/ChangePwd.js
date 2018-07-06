@@ -18,25 +18,27 @@ class ChangePwd extends React.Component {
   backHome = () => {
     this.props.history.push('/');
   };
-  showDiaLog = () => {
+  showDiaLog = bol => {
     this.setState({
-      isShowDialog: true,
+      isShowDialog: bol,
     });
   };
 
   render() {
     const { routerData, match } = this.props;
+    const { isShowDialog } = this.state;
     return (
       <div className={styles.container}>
         <div className={styles.header}>
           <ModalDemo
-            visible={this.state.isShowDialog}
+            visible={isShowDialog}
             modalContent="确定停止修改密码"
             clickOK={e => this.backHome(e)}
             title="回到首页确认"
+            showModal={bol => this.fnTiggleModal(bol)}
           />
           {!this.state.isChangePwd ? null : (
-            <span className={styles.backHome} onClick={this.showDiaLog}>
+            <span className={styles.backHome} onClick={this.showDiaLog.bind(this, true)}>
               <Icon type="bank" className={styles.backIcon} />
               回到首页
             </span>
