@@ -40,7 +40,7 @@ class ModalDemo extends React.Component {
         ];
       } else if (Array.isArray(buttonArray) && buttonArray.length === 2) {
         return [
-          <Button key={0} className={common.cancleButton} onClick={this.handleCancel}>
+          <Button key={0} className={common.cancleButton} onClick={this.handleCancel(false)}>
             {buttonArray[0]}
           </Button>,
           <Button key={1} className={common.submitButton} onClick={this.handleOk}>
