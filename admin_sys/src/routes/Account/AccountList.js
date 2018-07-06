@@ -26,7 +26,6 @@ class AccountList extends Component {
 
   // 删除账号函数  删除后数据更新？
   onDelete = key => {
-    console.log(key.id);
     const deleteAccountParams = { accountId: key.id };
     const accountListParams = {};
     this.props.dispatch({
@@ -39,11 +38,7 @@ class AccountList extends Component {
   onEdit = key => {
     console.log(key);
     this.props.setRouteUrlParams('/account/editAccount', {
-      name: key.name,
-      email: key.email,
-      role: key.role,
       id: key.id,
-      roleId: key.roleId,
     });
   };
 

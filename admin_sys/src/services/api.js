@@ -80,6 +80,14 @@ export async function queryAccountList(params) {
   });
 }
 
+// 查询单个账号的信息
+export async function queryAccountInfo(params) {
+  return request(`${HOST}/account/info?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+
 // 添加账号接口
 export async function addAccount(params) {
   return request(`${HOST}/account/add`, {

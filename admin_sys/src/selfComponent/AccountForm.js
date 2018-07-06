@@ -6,15 +6,12 @@ import common from '../routes/Common/common.css';
 const FormItem = Form.Item;
 class AccountForm extends Component {
   constructor(props) {
-    console.log("进入form")
     super(props);
-    const arrValue = this.props.jumpFunction.getUrlParams();
+    const fromWhere = this.props.jumpFunction.getUrlParams();
     const roleValues = this.props.jumpFunction.account.getRoleList
     this.state = {
       roleList: !roleValues ? [] : !roleValues.data ? [] : roleValues.data.content,
-      name: !arrValue.name ? '' : arrValue.name,
-      email: !arrValue.email ? '' : formatEmail(arrValue.email),
-      role: !arrValue.role ? null : arrValue.role,
+      id: !fromWhere.id ? '' : fromWhere.id,
     };
   }
   handleSubmit = e => {
@@ -62,12 +59,13 @@ class AccountForm extends Component {
       },
     };
     const residences = !this.state.roleList ? [] : this.roleListFun(this.state.roleList);
+    const arrValue = !this.props.jumpFunction.account.accountInfo?[]:!this.props.jumpFunction.account.accountInfo.response?[]:this.props.jumpFunction.account.accountInfo.response.data;
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓名">
             {getFieldDecorator('name', {
-              initialValue: this.state.name,
+              initialValue: !this.state.id?'':!arrValue.name?'':arrValue.name,
               rules: [
                 // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
                 { required: true, message: '姓名为必填项，请填写!', whitespace: true },
@@ -78,7 +76,7 @@ class AccountForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*邮箱">
             {getFieldDecorator('mail', {
-              initialValue: this.state.email,
+              initialValue: !this.state.id?'':!arrValue.mail?'':formatEmail(arrValue.mail),
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -98,7 +96,7 @@ class AccountForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">
             {getFieldDecorator('rname', {
-              initialValue: [this.state.role],
+              initialValue: [!this.state.id?null:!arrValue.rname?null:arrValue.rname],
               rules: [
                 {
                   validator(rule, value, callback) {

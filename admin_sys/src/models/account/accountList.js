@@ -6,6 +6,7 @@ import {
   updateAccount,
   deleteAccount,
   getRoleList,
+  queryAccountInfo,
 } from '../../services/api';
 
 export default {
@@ -18,10 +19,11 @@ export default {
     updateAccountParams: {},
     deleteAccountParams: {},
     getRoleListParams: {},
-
+    accountInfoParams:{},
     // 接口返回数据存储
     accountList: [],
     getRoleList: [],
+    accountInfo:[],
   },
 
   effects: {
@@ -30,6 +32,13 @@ export default {
       const response = yield call(queryAccountList, { ...accountListParams });
       console.log(response);
       yield put({ type: 'accountListSave', payload: { response } });
+    },
+    *accountInfo({ payload }, { call, put }) {
+      console.log("进入info的接口")
+      const { accountInfoParams } = payload;
+      const response = yield call(queryAccountInfo, { ...accountInfoParams });
+      console.log(response);
+      yield put({ type: 'accountInfoSave', payload: { response } });
     },
     *addAccount({ payload }, { call, put }) {
       const result = yield call(addAccount, payload.addAccountParams);
@@ -78,6 +87,12 @@ export default {
       return {
         ...state,
         accountList: action.payload,
+      };
+    },
+    accountInfoSave(state, action) {
+      return {
+        ...state,
+        accountInfo: action.payload,
       };
     },
     getRoleListSave(state, action) {

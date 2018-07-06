@@ -24,10 +24,14 @@ class EditAccount extends Component {
       payload: { getRoleListParams },
     });
 
+    const accountInfoParams = {id:this.state.id};
+    this.props.dispatch({
+      type: 'account/accountInfo',
+      payload: { accountInfoParams },
+    });
   }
 
   handleSubmit = (values) => {
-        console.log(values)
         const rname = values.rname[0];
         let newRoleId = 0;
         const roleList = this.props.account.getRoleList.data.content
@@ -55,8 +59,8 @@ class EditAccount extends Component {
   };
 
   render() {
-    console.log(this.props.account.getRoleList)
     return (!this.props.account.getRoleList ? [] : !this.props.account.getRoleList.data ? <div /> :
+        !this.props.account.accountInfo.response ? [] : !this.props.account.accountInfo.response.data ? <div /> :
       (
         <ContentLayout
           contentForm={<WrappedRegistrationForm
