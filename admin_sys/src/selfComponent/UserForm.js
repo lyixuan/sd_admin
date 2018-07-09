@@ -237,11 +237,13 @@ class UserForm extends Component {
               initialValue: this.state.phone,
               rules: [
                 {
-                  min: 11,
-                  max: 11,
-                  required: true,
-                  message: '请输入手机号不合法!',
-                  whitespace: true,
+                  validator(rule, value, callback) {
+                    const reg = /^0?1\d{10}$/;  // /^0?1[3|4|5|8|7][0-9]\d{8}$/
+                    if (!reg.test(value)){
+                      callback({ message: '手机号是以1开头的11位数字组成' });
+                    }
+                    callback();
+                  },
                 },
               ],
             })(<Input style={{ width: 380 }} disabled={!this.state.phone ? false : 'disabled'} />)}
