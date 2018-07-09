@@ -22,7 +22,7 @@ export default {
     *upateComplaintDoubles({ payload }, { call, put }) {
       const result = yield call(upateComplaintDoubles, payload.upateComplaintDoublesParams);
       if (result.code === 2000) {
-        message.success('投诉倍数修改成功！');
+        message.success('成功编辑投诉扣分倍数！');
         const response = yield call(complaintDoublesList, payload.complaintDoublesListParams);
         console.log(response);
         yield put({ type: 'complaintDoublesListSave', payload: { response } });
