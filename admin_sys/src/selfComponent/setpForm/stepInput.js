@@ -10,8 +10,24 @@ import styles from './step.css';
 const { TextArea } = Input;
 
 class stepInput extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nums: '',
+    };
+  }
+
+  // input双向绑定
+  handelChange(e) {
+    this.setState({
+      nums: e.target.value,
+    });
+    this.props.getNums({ nums: e.target.value });
+  }
   render() {
-    const { inputTitle, inputInfo, inputContent, inputTip } = this.props;
+    const { inputTitle, inputInfo, inputContent, inputTip, disabled, faileData } = this.props;
+
+    const valueData = !faileData ? this.state.nums : faileData;
     return (
       <div className={styles.wrap}>
         {inputTitle ? <div className={styles.inputTitle}>{inputTitle}</div> : null}
@@ -23,6 +39,11 @@ class stepInput extends Component {
               className={styles.inputTextArea}
               rows={5}
               placeholder="请输入编号，多个编号，请用空格隔开"
+              onChange={e => {
+                this.handelChange(e);
+              }}
+              value={valueData}
+              disabled={disabled}
             />
           </div>
         ) : null}

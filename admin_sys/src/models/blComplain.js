@@ -6,8 +6,8 @@ export default {
 
   state: {
     getListParams: { size: 30, number: 0 },
-
     getList: [],
+    nums: '',
   },
 
   effects: {
@@ -17,19 +17,24 @@ export default {
       console.log(response);
       yield put({ type: 'save', payload: { response } });
     },
-    *perDelComplain({ payload }, { call, put }) {
+    *preDelComplain({ payload }, { call, put }) {
       const { params } = payload;
       const preDelData = yield call(preDelBlComplainList, { ...params });
       yield put({ type: 'savePreData', payload: { preDelData } });
     },
-    *delComplain({ payload }, { call }) {
-      console.log(payload.deleteAccountParams);
-      const result = yield call(delBlComplainList, payload.deleteAccountParams);
-      if (result.code === 0 || result.code === 2000) {
+    *delComplain({ payload }, { call, put }) {
+      const { params } = payload;
+      const delData = yield call(delBlComplainList, { ...params });
+      if (delData.code === 2000) {
         message.success('账号删除成功！');
       } else {
-        message.error(result.msg);
+        message.error(delData.msg);
       }
+      yield put({ type: 'savePreData', payload: { delData } });
+    },
+    *getNums({ payload }, { put }) {
+      const { nums } = payload;
+      yield put({ type: 'savePreData', payload: { nums } });
     },
   },
 
@@ -41,8 +46,7 @@ export default {
       };
     },
     savePreData(state, action) {
-      const { preDelData } = action.payload;
-      return { ...state, preDelData };
+      return { ...state, ...action.payload };
     },
   },
 };

@@ -40,12 +40,12 @@ class ComplaintDel extends Component {
       },
       {
         title: '扣分值',
-        dataIndex: 'role',
+        dataIndex: 'role3',
         width: '100px',
       },
       {
         title: '编号',
-        dataIndex: 'role',
+        dataIndex: 'role2',
         width: '100px',
       },
     ];
@@ -78,18 +78,30 @@ class ComplaintDel extends Component {
     };
   }
   componentDidMount() {
-    this.fetchPreDel({
-      nums: '22222 11111',
+    this.props.dispatch({
+      type: 'blComplain/testUpload',
+      payload: { params: '' },
     });
   }
 
+  getNums = nums => {
+    this.props.dispatch({
+      type: 'blComplain/getNums',
+      payload: nums,
+    });
+  };
   fetchPreDel = params => {
     this.props.dispatch({
-      type: 'blComplain/perDelComplain',
+      type: 'blComplain/preDelComplain',
       payload: { params },
     });
   };
-
+  fetchDel = params => {
+    this.props.dispatch({
+      type: 'blComplain/delComplain',
+      payload: { params },
+    });
+  };
   // 回调
   historyFn() {
     this.props.history.push({
@@ -97,22 +109,27 @@ class ComplaintDel extends Component {
     });
   }
   render() {
-    const { preDelData } = this.props.blComplain;
-    const { data } = preDelData;
+    const { preDelData, nums } = this.props.blComplain;
+    const data = preDelData ? preDelData.data : null;
+
+    const failNums = data ? data.failNums : 'ww';
+    const successNums = data ? data.successNums : 'ww';
+    const inputContent = data ? data.failSize > 0 : null;
+    console.log({ inputContent });
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
     const tipSucess = '您已成功删除 1500 条数据！';
-    const checkRes = (
+    const checkRes = !data ? null : (
       <div>
         <span>校验数据总数：</span>
-        <span>{data.totalSize}</span>
-        <span>条数据</span>
-        <span>成功</span>
-        <span>{data.successSize}</span>
-        <span>条</span>
-        <span>失败</span>
-        <span>{data.failSize}</span>
+        <span style={{ color: '#00A3FF' }}>{data.totalSize} </span>
+        <span style={{ marginRight: '50px' }}>条数据</span>
+        <span>成功：</span>
+        <span style={{ color: '#00A3FF' }}>{data.successSize} </span>
+        <span style={{ marginRight: '50px' }}>条</span>
+        <span>失败：</span>
+        <span style={{ color: '#F5212D' }}>{data.failSize} </span>
         <span>条</span>
       </div>
     );
@@ -122,14 +139,25 @@ class ComplaintDel extends Component {
         content: (
           <StepInput
             inputTitle="请输入想删除的 “子订单编号”："
-            inputContent="1212"
+            inputContent="true"
             inputTip="true"
+            disabled={false}
+            getNums={param => {
+              this.getNums(param);
+            }}
           />
         ),
       },
       {
         title: '校验编号',
-        content: <StepInput inputInfo={checkRes} inputContent="1212" />,
+        content: (
+          <StepInput
+            inputInfo={checkRes}
+            inputContent={inputContent}
+            disabled
+            faileData={failNums}
+          />
+        ),
       },
       {
         title: '复核数据',
@@ -148,14 +176,24 @@ class ComplaintDel extends Component {
       },
     ];
     return (
-      <StepLayout
-        title="删除投诉"
-        steps={steps}
-        tipSucess={tipSucess}
-        goBack={() => {
-          this.historyFn();
-        }}
-      />
+      <div>
+        <StepLayout
+          title="删除投诉"
+          steps={steps}
+          tipSucess={tipSucess}
+          goBack={() => {
+            this.historyFn();
+          }}
+          step1Fetch={param => {
+            this.fetchPreDel(param);
+          }}
+          step2Fetch={param => {
+            this.fetchDel(param);
+          }}
+          nums={nums}
+          successNums={successNums}
+        />
+      </div>
     );
   }
 }

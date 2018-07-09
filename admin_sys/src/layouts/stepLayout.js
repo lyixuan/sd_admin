@@ -12,14 +12,27 @@ class StepLayout extends Component {
       current: 0,
     };
   }
-  // 上一页
+
+  // 下一页
   next() {
     const current = this.state.current + 1;
+    const { step1Fetch, step2Fetch, step3Fetch, nums, successNums } = this.props;
     this.setState({ current });
+    console.log(current);
+    if (current === 1) {
+      step1Fetch({ nums });
+    } else if (current === 2) {
+      step2Fetch({ nums: successNums });
+    } else if (current === 3) {
+      step3Fetch({ nums: successNums });
+    } else {
+      console.log('4');
+    }
   }
-  // 下一页
+  // 上一页
   prev() {
     const current = this.state.current - 1;
+    console.log(current);
     this.setState({ current });
   }
   // 取消---回到列表页

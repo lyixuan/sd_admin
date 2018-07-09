@@ -21,7 +21,7 @@ class stepUpload extends Component {
   };
   render() {
     const props = {
-      action: '//jsonplaceholder.typicode.com/posts/',
+      action: 'http://172.16.56.186:8084/metaQuality/uploadFile',
       beforeUpload(file) {
         isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         if (!isExcel) {
