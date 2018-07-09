@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button, Form, Input, DatePicker } from 'antd';
+import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
+import { formatEmail } from '../../utils/email';
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 let propsVal = '';
 let firstBeginTime = '';
 let firstEndTime = '';
+let firstBottomLineNum = ''
 const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ blComplain, loading }) => ({
@@ -63,6 +66,7 @@ class ComplainList extends Component {
   handleSearch = e => {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
+      firstBottomLineNum = values.bottomLineNum;
       if (!values.dateRange){
           const getListParams = { size: 30, number: 0,bottomLineNum:values.bottomLineNum};
           console.log(getListParams)
@@ -193,7 +197,7 @@ class ComplainList extends Component {
               // rules: [{ required: true, message: '请选择生效日期' }],
             })(
               <RangePicker
-                // defaultValue={[moment('2018-07-01', dateFormat), moment('2018-07-09', dateFormat)]}
+                defaultValue={!firstEndTime?null:[moment(firstBeginTime, dateFormat), moment(firstEndTime, dateFormat)]}
                 format={dateFormat}
                 style={{ width: 230, height: 32 }}
                 onChange={this.onChange}
@@ -202,6 +206,7 @@ class ComplainList extends Component {
           </FormItem>
           <FormItem label="编号" style={{ marginLeft: 119 }}>
             {getFieldDecorator('bottomLineNum', {
+              initialValue: firstBottomLineNum,
               rules: [
                 { min: 2, message: '编号长度不得低于2!' },
                 { mix: 20, message: '编号长度不得高于20!' },
