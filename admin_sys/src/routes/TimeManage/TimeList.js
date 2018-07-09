@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Table, Button, Form, Popconfirm, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -6,21 +7,31 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import styles from './TimeList.css';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
+// const { RangePicker } = DatePicker;
 let propsVal = '';
 const dateFormat = 'YYYY/MM/DD';
 
+@connect(({ time, loading }) => ({ time, loading }))
 class TimeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      params: {
+        orderDirection: 'asc',
+        orderType: 'id',
+        pageNum: 0,
+        pageSize: 30,
+      },
       visible: false,
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.fillDataSource();
+  }
 
   // 添加
   onAdd = () => {
@@ -63,18 +74,12 @@ class TimeList extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
-    const data = [];
-    for (let i = 0; i < 50; i += 1) {
-      data.push({
-        key: i,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello${i}@sunlands.com`,
-      });
-    }
-    return data;
+  fillDataSource = value => {
+    const { params } = this.state;
+    this.props.dispatch({
+      type: 'time/getDates',
+      payload: { ...params, value },
+    });
   };
 
   // 获取table列表头
@@ -82,7 +87,7 @@ class TimeList extends Component {
     const columns = [
       {
         title: '时间',
-        dataIndex: 'key',
+        dataIndex: 'date',
         width: 400,
       },
       {
@@ -103,15 +108,20 @@ class TimeList extends Component {
     ];
     return columns;
   };
+
   render() {
     const { visible } = this.state;
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const { dateListObj = {} } = this.props.time;
+    const { content = [], size = 0 } = dateListObj;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
-
+    const dataSorce = content.map(item => ({
+      key: item.id,
+      date: moment.unix(item.date / 1000).format(dateFormat),
+    }));
     const datePicker = (
-      <RangePicker
-        initialValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+      <DatePicker
+        initialValue={[moment('2015/01/01', dateFormat)]}
         format={dateFormat}
         style={{ width: 230, height: 32 }}
       />
@@ -171,7 +181,7 @@ class TimeList extends Component {
             <div style={{ width: '590px' }}>
               <Table
                 bordered
-                dataSource={dataSource}
+                dataSource={dataSorce}
                 columns={columns}
                 useFixedHeader
                 scroll={{ y: 600 }}
@@ -179,17 +189,20 @@ class TimeList extends Component {
               />
             </div>
           }
-          // contentPagination={
-          //   <Pagination
-          //     showSizeChanger
-          //     onChange={this.changePage}
-          //     onShowSizeChange={this.onShowSizeChange}
-          //     defaultCurrent={3}
-          //     total={100}
-          //     className={common.paginationStyle}
-          //     style={{width:'590px'}}
-          //   />
-          // }
+          contentPagination={
+            <SelfPagination
+              onChange={(current, pageSize) => {
+                this.changePage(current, pageSize);
+              }}
+              onShowSizeChange={(current, pageSize) => {
+                this.onShowSizeChange(current, pageSize);
+              }}
+              defaultCurrent={1}
+              total={size}
+              defaultPageSize={30}
+              pageSizeOptions={['30']}
+            />
+          }
         />
         <ModalDialog
           title="添加不可用时间"
@@ -201,4 +214,5 @@ class TimeList extends Component {
     );
   }
 }
+
 export default TimeList;

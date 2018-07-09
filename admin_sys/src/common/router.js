@@ -165,7 +165,7 @@ export const getRouterData = app => {
       ),
     },
     '/timeManage/timeList': {
-      component: dynamicWrapper(app, [], () => import('../routes/TimeManage/TimeList')),
+      component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),
     },
     '/shotName/Group': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
