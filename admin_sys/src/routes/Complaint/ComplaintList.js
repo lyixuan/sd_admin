@@ -6,7 +6,6 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import { formatEmail } from '../../utils/email';
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
