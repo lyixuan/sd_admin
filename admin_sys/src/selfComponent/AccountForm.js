@@ -69,8 +69,7 @@ class AccountForm extends Component {
               rules: [
                 // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
                 { required: true, message: '姓名为必填项，请填写!', whitespace: true },
-                { min: 2, message: '姓名长度不得低于2!' },
-                { mix: 20, message: '姓名长度不得高于20!' },
+                { min: 2,max: 20, message: '姓名长度在2-20字符之间!' },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -88,8 +87,7 @@ class AccountForm extends Component {
                   },
                 },
                 { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
-                { min: 3, message: '邮箱账号长度不得低于3!' },
-                { mix: 50, message: '邮箱账号长度不得高于50!' },
+                { min: 3,max: 50,required: true, message: '邮箱账号长度需要在3-50字符之间!' },
               ],
             })(<Input style={{ width: 264 }} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>

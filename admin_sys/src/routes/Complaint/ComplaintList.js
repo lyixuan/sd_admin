@@ -208,7 +208,7 @@ class ComplainList extends Component {
               initialValue: firstBottomLineNum,
               rules: [
                 { min: 2, message: '编号长度不得低于2!' },
-                { mix: 20, message: '编号长度不得高于20!' },
+                { max: 20, message: '编号长度不得高于20!' },
                 ],
             })(<Input placeholder="请输入编号" style={{ width: 230, height: 32 }} />)}
           </FormItem>
