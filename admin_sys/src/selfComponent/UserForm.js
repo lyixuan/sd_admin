@@ -238,8 +238,8 @@ class UserForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const reg = /^0?1\d{10}$/;  // /^0?1[3|4|5|8|7][0-9]\d{8}$/
-                    if (!reg.test(value)){
+                    const reg = /^0?1\d{10}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
+                    if (!reg.test(value)) {
                       callback({ message: '手机号是以1开头的11位数字组成' });
                     }
                     callback();
@@ -283,11 +283,12 @@ class UserForm extends Component {
                 {
                   validator(rule, value, callback) {
                     console.log('规则校验', flag, value[0]);
-                    if(typeof value[0] === 'string' || !value[0]){
-                      if (flag === '系统管理员' || flag === '高级管理员')
-                        {
-                          callback();
-                        }else{callback({ message: '请选择负责单位！' })}
+                    if (typeof value[0] === 'string' || !value[0]) {
+                      if (flag === '系统管理员' || flag === '高级管理员') {
+                        callback();
+                      } else {
+                        callback({ message: '请选择负责单位！' });
+                      }
                     }
                     callback();
                   },
