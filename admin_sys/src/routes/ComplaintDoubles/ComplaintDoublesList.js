@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table,Input,Row,Col} from 'antd';
+import { Table,Input,Row,Col,message} from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -104,9 +104,15 @@ class ComplaintDoublesList extends Component {
 
   // input双向绑定
   handelChange(e) {
-    this.setState({
-      multiplePoints: e.target.value,
-    });
+    console.log(e.target.value)
+    if(!e.target.value){
+      message.error("投诉扣分倍数不能为空")
+    }
+    else{
+      this.setState({
+        multiplePoints: e.target.value,
+      });
+    }
   }
 
   // 初始化tabale 列数据
