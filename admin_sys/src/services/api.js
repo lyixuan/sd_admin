@@ -353,8 +353,34 @@ export async function delBlComplainList(params) {
 /*
 获取不可选时间列表
  */
-export async function getDisableDate(params) {
+export async function getDate(params) {
   return request(`${HOST}/time/getDate?${stringify(params)}`, {
     method: 'GET',
+  });
+}
+/*
+删除不可选时间
+ */
+export async function deleteDate(params) {
+  return request(`${HOST}/time/deleteDate?${stringify(params)}`, {
+    method: 'DELETE',
+  });
+}
+/*
+增加不可选时间
+ */
+export async function addDate(params) {
+  return request(`${HOST}/time/addDate`, {
+    method: 'POST',
+    body: params,
+  });
+}
+/*
+更新可见日期
+ */
+export async function updateDate(params) {
+  return request(`${HOST}/time/updateDate`, {
+    method: 'PUT',
+    body: params,
   });
 }
