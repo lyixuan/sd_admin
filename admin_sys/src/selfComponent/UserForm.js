@@ -281,13 +281,13 @@ class UserForm extends Component {
                 {
                   validator(rule, value, callback) {
                     console.log('规则校验', flag, value[0]);
-                    if (flag === '系统管理员' || flag === '高级管理员') {
-                      callback();
-                    } else {
-                       const aa = typeof value[0] === 'string' || !value[0] ?callback({ message: '请选择负责单位！' }):callback();
-                       return aa;
-                        // }
+                    if(typeof value[0] === 'string' || !value[0]){
+                      if (flag === '系统管理员' || flag === '高级管理员')
+                        {
+                          callback();
+                        }else{callback({ message: '请选择负责单位！' })}
                     }
+                    callback();
                   },
                 },
               ],

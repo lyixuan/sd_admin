@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form } from 'antd';
+import { Form ,message} from 'antd';
 import { connect } from 'dva';
 import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -37,6 +37,9 @@ class CreateUser extends Component {
     let typeId = values.responseCom[len - 1];
     if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
       typeId = undefined;
+    }else {
+      const aa = !typeId?message.error('请选择负责单位'):null;
+      return aa;
     }
 
     let newRoleId = 0;
