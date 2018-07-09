@@ -216,7 +216,7 @@ class UserList extends Component {
 
   // 创建用户
   handleAdd = () => {
-    this.props.setRouteUrlParams('/user/createUser', { a: 2, b: 3 });
+    this.props.setRouteUrlParams('/user/createUser');
   };
 
   render() {

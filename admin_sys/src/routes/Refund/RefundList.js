@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Button, Pagination, Form, Input, DatePicker } from 'antd';
+import { Table, Button, Form, Input, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
@@ -56,13 +57,19 @@ class RefundList extends Component {
   // 初始化tabale 列数据
   fillDataSource = () => {
     const data = [];
-    for (let i = 0; i < 50; i += 1) {
+    for (let i = 0; i < 30; i += 1) {
       data.push({
         key: i,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello${i}@sunlands.com`,
+        ordId: i,
+        complainTime: '2018-07-09',
+        stuName:  '小当家',
+        id: i,
+        collegeName:'海产品',
+        familyName:'海鲜',
+        groupName: '虾',
+        cpName:'吃货',
+        bottomLineNum:i,
+        complainChannel:'太平洋',
       });
     }
     return data;
@@ -73,35 +80,43 @@ class RefundList extends Component {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'key',
+        dataIndex: 'id',
       },
       {
         title: '子订单编号',
-        dataIndex: 'name',
+        dataIndex: 'ordId',
       },
       {
         title: '投诉时间',
-        dataIndex: 'role',
+        dataIndex: 'complainTime',
       },
       {
         title: '学生名称/id',
-        dataIndex: 'email',
+        dataIndex: 'stuName',
       },
       {
         title: '老师名称',
-        dataIndex: 'status',
+        dataIndex: 'cpName',
       },
       {
-        title: '学院/家族/小组',
-        dataIndex: 'status3',
+        title: '学院',
+        dataIndex: 'collegeName',
+      },
+      {
+        title: '家族',
+        dataIndex: 'familyName',
+      },
+      {
+        title: '小组',
+        dataIndex: 'groupName',
       },
       {
         title: '编号',
-        dataIndex: 'status2',
+        dataIndex: 'bottomLineNum',
       },
       {
         title: '渠道',
-        dataIndex: 'status1',
+        dataIndex: 'complainChannel',
       },
     ];
     return columns;
@@ -189,16 +204,29 @@ class RefundList extends Component {
           </div>
         }
         contentTable={
-          <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+          <div>
+            <p className={common.totalNum}>总数：35条</p>
+            <Table
+              bordered
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}
+              className={common.tableContentStyle}
+            />
+          </div>
         }
         contentPagination={
-          <Pagination
-            showSizeChanger
-            onChange={this.changePage}
-            onShowSizeChange={this.onShowSizeChange}
-            defaultCurrent={3}
-            total={100}
-            className={common.paginationStyle}
+          <SelfPagination
+            onChange={(current, pageSize) => {
+              this.changePage(current, pageSize);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              this.onShowSizeChange(current, pageSize);
+            }}
+            defaultCurrent={1}
+            total={31}
+            defaultPageSize={30}
+            pageSizeOptions={['30']}
           />
         }
       />

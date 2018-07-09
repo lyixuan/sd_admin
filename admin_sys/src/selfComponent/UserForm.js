@@ -279,15 +279,15 @@ class UserForm extends Component {
               initialValue: [this.state.responseCom],
               rules: [
                 {
-                  // console.log("进入校验")
                   validator(rule, value, callback) {
                     console.log('规则校验', flag, value[0]);
                     if (flag === '系统管理员' || flag === '高级管理员') {
                       callback();
-                    } else if (typeof value[0] === 'string') {
-                      callback({ message: '请选择负责单位！' });
+                    } else {
+                       const aa = typeof value[0] === 'string' || !value[0] ?callback({ message: '请选择负责单位！' }):callback();
+                       return aa;
+                        // }
                     }
-                    callback();
                   },
                 },
               ],
