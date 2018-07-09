@@ -350,3 +350,11 @@ export async function delBlComplainList(params) {
     body: params,
   });
 }
+/*
+获取不可选时间列表
+ */
+export async function getDisableDate(params) {
+  return request(`${HOST}/time/getDate?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
