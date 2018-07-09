@@ -131,7 +131,7 @@ class PermissionForm extends Component {
             {getFieldDecorator('name', {
               initialValue: this.state.name,
               rules: [
-                { min: 2, max: 10, message: '权限名称长度在2-10!', whitespace: true },
+                { min: 2, max: 50, message: '权限名称长度在2-50!', whitespace: true },
                 { required: true, message: '权限名称为必填项，请填写!', whitespace: true },
               ],
             })(<Input style={{ width: 380 }} />)}
@@ -160,7 +160,9 @@ class PermissionForm extends Component {
           <FormItem {...formItemLayout} label="*权限路由">
             {getFieldDecorator('resourceUrl', {
               initialValue: this.state.resourceUrl,
-              rules: [{ required: true, message: '权限路由为必填项，请填写!', whitespace: true }],
+              rules: [
+                { max: 50, message: '权限路由长度最多50个字节!' },
+                { required: true, message: '权限路由为必填项，请填写!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="上级权限">
@@ -187,12 +189,24 @@ class PermissionForm extends Component {
           <FormItem {...formItemLayout} label="一级页面图标">
             {getFieldDecorator('iconUrl', {
               initialValue: [this.state.iconUrl],
+              rules: [{ max: 50, message: '权限路由长度最多50个字节!' },
+                {
+                  validator(rule, value, callback) {
+                    console.log(value)
+                    if (!value) {
+                      callback({ message: '一级页面下的页面图标为必填项，请填写！' });
+                    }
+                    callback();
+                  },
+                },
+              ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('sort', {
               initialValue: this.state.sort,
               rules: [{ required: true, message: '权限排序为必填项，请填写!', whitespace: true },
+                { max: 10, message: '权限排序长度最多10个字节!' },
                 {
                     validator(rule, value, callback) {
                       const re = /^[0-9]*[0-9]$/i; // 校验是否为数字
