@@ -89,7 +89,7 @@ class AccountForm extends Component {
                 { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
                 { min: 3,max: 50,required: true, message: '邮箱账号长度需要在3-50字符之间!' },
               ],
-            })(<Input style={{ width: 264 }} />)}
+            })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : 'disabled'} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">

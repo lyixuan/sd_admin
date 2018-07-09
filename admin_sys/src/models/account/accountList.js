@@ -30,20 +30,17 @@ export default {
     *accountList({ payload }, { call, put }) {
       const { accountListParams } = payload;
       const response = yield call(queryAccountList, { ...accountListParams });
-      console.log(response);
       yield put({ type: 'accountListSave', payload: { response } });
     },
     *accountInfo({ payload }, { call, put }) {
-      console.log("进入info的接口")
       const { accountInfoParams } = payload;
       const response = yield call(queryAccountInfo, { ...accountInfoParams });
-      console.log(response);
       yield put({ type: 'accountInfoSave', payload: { response } });
     },
     *addAccount({ payload }, { call, put }) {
       const result = yield call(addAccount, payload.addAccountParams);
       if (result.code === 0 || result.code === 2000) {
-        message.success('账号添加成功！');
+        message.success('成功创建账号！');
         yield put(routerRedux.push('/account/accountList'));
       } else {
         message.error(result.msg);
@@ -52,7 +49,7 @@ export default {
     *updateAccount({ payload }, { call, put }) {
       const result = yield call(updateAccount, payload.updateAccountParams);
       if (result.code === 0 || result.code === 2000) {
-        message.success('账号编辑成功！');
+        message.success('成功编辑账号！');
         yield put(routerRedux.push('/account/accountList'));
       } else {
         message.error(result.msg);
