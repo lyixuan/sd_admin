@@ -15,7 +15,6 @@ import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.png';
-import { getAuthority } from '../utils/authority';
 
 const { Content, Header } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -107,6 +106,7 @@ class BasicLayout extends React.PureComponent {
       });
     });
     this.handleUserInfo();
+    // this.getuserAuthList();
   }
 
   componentWillUnmount() {
@@ -148,11 +148,16 @@ class BasicLayout extends React.PureComponent {
     }
     return redirect;
   };
-  handleUserInfo = () => {
-    const { userId = '' } = getAuthority('admin_user');
+  // handleUserInfo = () => {
+  //   const { userId = '' } = getAuthority('admin_user');
+  //   this.props.dispatch({
+  //     type: 'login/fetchCurrent',
+  //     payload: { id: userId },
+  //   });
+  // };
+  getuserAuthList = () => {
     this.props.dispatch({
-      type: 'login/fetchCurrent',
-      payload: { id: userId },
+      type: 'login/getAuthList',
     });
   };
   handleMenuCollapse = collapsed => {
