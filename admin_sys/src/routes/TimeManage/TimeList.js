@@ -10,9 +10,8 @@ import styles from './TimeList.css';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 
 const FormItem = Form.Item;
-// const { RangePicker } = DatePicker;
 let propsVal = '';
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ time, loading }) => ({ time, loading }))
 class TimeList extends Component {
@@ -25,7 +24,15 @@ class TimeList extends Component {
         pageNum: 0,
         pageSize: 30,
       },
+      dateArea: {
+        beginTime: '',
+        endTime: '',
+        id: 1,
+      },
       visible: false,
+      dateEx: '',
+      hintVisible: false,
+      changeVisible: false,
     };
   }
 
@@ -37,24 +44,45 @@ class TimeList extends Component {
   onAdd = () => {
     this.showModal(true);
   };
+
   // 删除账号函数  删除后数据更新？
   onDelete = key => {
-    console.log(key.id);
-    const deleteAccountParams = { accountId: key.id };
-    const accountListParams = {};
+    const id = key.key;
+    const { params } = this.state;
     this.props.dispatch({
-      type: 'account/deleteAccount',
-      payload: { deleteAccountParams, accountListParams },
+      type: 'time/deleteTime',
+      payload: { id, params },
     });
   };
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
   };
-
+  // 点击选择添加不可选时间
+  selectDisableTime = (date, dateString) => {
+    this.setState({ dateEx: dateString });
+  };
+  addDisableTime = () => {
+    const { dateEx = '', params } = this.state;
+    this.props.dispatch({
+      type: 'time/addDisableTime',
+      payload: { dateEx, params },
+    });
+    this.setState({ visible: false });
+  };
   showModal = bol => {
     this.setState({
       visible: bol,
+    });
+  };
+  showHintModal = bol => {
+    this.setState({
+      hintVisible: bol,
+    });
+  };
+  showChangeDateModal = bol => {
+    this.setState({
+      changeVisible: bol,
     });
   };
   // 点击某一页函数
@@ -65,12 +93,30 @@ class TimeList extends Component {
   // 表单搜索
   handleSearch = e => {
     e.preventDefault();
-    let val = {};
     propsVal.form.validateFields((err, values) => {
-      val = values;
+      const { beginTime, endTime = '' } = values;
+      if (endTime && typeof endTime === 'object' && moment(beginTime).isAfter(endTime)) {
+        this.setState({
+          hintVisible: true,
+        });
+      } else {
+        const dateArea = { ...this.state.dateArea, endTime, beginTime };
+        this.setState({
+          changeVisible: true,
+          dateArea,
+        });
+      }
     });
-
-    this.props.setCurrentUrlParams(val);
+    // this.props.setCurrentUrlParams(val);
+  };
+  changeDate = () => {
+    const { dateArea = {} } = this.state;
+    this.props.dispatch({
+      type: 'time/updateAreaDate',
+      payload: {
+        ...dateArea,
+      },
+    });
   };
 
   // 初始化tabale 列数据
@@ -87,7 +133,7 @@ class TimeList extends Component {
     const columns = [
       {
         title: '时间',
-        dataIndex: 'date',
+        dataIndex: 'dateEx',
         width: 400,
       },
       {
@@ -110,22 +156,24 @@ class TimeList extends Component {
   };
 
   render() {
-    const { visible } = this.state;
+    const { visible, hintVisible, changeVisible, dateArea } = this.state;
     const { dateListObj = {} } = this.props.time;
     const { content = [], size = 0 } = dateListObj;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const dataSorce = content.map(item => ({
       key: item.id,
-      date: moment.unix(item.date / 1000).format(dateFormat),
+      dateEx: moment.unix(item.dateEx / 1000).format(dateFormat),
     }));
     const datePicker = (
       <DatePicker
-        initialValue={[moment('2015/01/01', dateFormat)]}
+        initialValue={[moment('2015-01-01', dateFormat)]}
+        onChange={this.selectDisableTime}
         format={dateFormat}
         style={{ width: 230, height: 32 }}
       />
     );
+    const dateAreaPicker = <DatePicker format={dateFormat} style={{ width: 230, height: 32 }} />;
 
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -134,12 +182,19 @@ class TimeList extends Component {
         <Form onSubmit={this.handleSearch} layout={formLayout}>
           <p className={styles.formTitle}>“自定义时间”可选范围设置</p>
           <div className={styles.formCls}>
-            <FormItem label="可选范围">
-              {getFieldDecorator('dateRange', {
-                rules: [{ required: true, message: '请选择生效日期' }],
-              })(datePicker)}
+            <FormItem label="开始日期">
+              {getFieldDecorator('beginTime', {
+                initialValue: dateArea.beginTime ? moment(dateArea.beginTime, dateFormat) : null,
+                rules: [{ required: true, message: '请选择生效开始日期' }],
+              })(dateAreaPicker)}
             </FormItem>
-            <FormItem style={{ marginLeft: 119 }}>
+            <FormItem label="结束日期">
+              {getFieldDecorator('endTime', {
+                initialValue: dateArea.endTime ? moment(dateArea.endTime, dateFormat) : null,
+                rules: [{ required: false, message: '请选择生效结束日期' }],
+              })(dateAreaPicker)}
+            </FormItem>
+            <FormItem style={{ marginLeft: 30 }}>
               <Button
                 type="primary"
                 htmlType="submit"
@@ -209,6 +264,20 @@ class TimeList extends Component {
           visible={visible}
           modalContent={datePicker}
           showModal={bol => this.showModal(bol)}
+          clickOK={this.addDisableTime}
+        />
+        <ModalDialog
+          title="添加不可用时间"
+          visible={hintVisible}
+          modalContent="时间可选范围有误"
+          showModal={bol => this.showHintModal(bol)}
+        />
+        <ModalDialog
+          title="修改&quot;自定义时间&quot;可选范围"
+          visible={changeVisible}
+          modalContent="修改的可选范围将被更新,是否确定修改"
+          showModal={bol => this.showChangeDateModal(bol)}
+          clickOK={this.changeDate}
         />
       </div>
     );

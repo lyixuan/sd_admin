@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getDate } from '../services/api';
+import { getDate, addDate, deleteDate, updateDate } from '../services/api';
 
 export default {
   namespace: 'time',
@@ -17,12 +17,43 @@ export default {
         payload: { dateListObj },
       });
       if (reponse.code !== 2000) {
-        message.error(dateListObj.msg);
+        message.error(reponse.msg);
       }
     },
-    // *updateTimeArea({ payload }, { put, call }) {
-    //   const { paramsObj } = payload;
-    // },
+    *addDisableTime({ payload }, { put, call }) {
+      const { dateEx, params } = payload;
+      const response = yield call(addDate, { dateEx });
+      if (response.code === 2000) {
+        message.success('添加成功');
+        const listData = yield call(getDate, { ...params });
+        const dateListObj = listData.data || {};
+        yield put({
+          type: 'saveDateList',
+          payload: { dateListObj },
+        });
+      }
+    },
+    *deleteTime({ payload }, { put, call }) {
+      const { id, params } = payload;
+      const reponse = yield call(deleteDate, { id });
+      if (reponse.code === 2000) {
+        message.success('删除成功');
+        const listData = yield call(getDate, { ...params });
+        const dateListObj = listData.data || {};
+        yield put({
+          type: 'saveDateList',
+          payload: { dateListObj },
+        });
+      }
+    },
+    *updateAreaDate({ payload }, { call }) {
+      const response = yield call(updateDate, { ...payload });
+      if (response.code === 2000) {
+        message.success('设置日期成功');
+      } else {
+        message.error(response.msg);
+      }
+    },
   },
 
   reducers: {
