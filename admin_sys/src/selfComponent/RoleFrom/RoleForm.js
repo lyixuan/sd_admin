@@ -123,21 +123,26 @@ class RoleForm extends Component {
       return (
         <div>
           <p className={styles.littleTitle}>{name}</p>
-          <Checkbox
-            onChange={this.onCheckAllChange.bind(this, item, checkAllKey, listKey)}
-            checked={checkAllObj[checkAllKey]}
-            disabled={isDisabled}
-            className={styles.checkBox}
-          >
-            全选
-          </Checkbox>
-          <CheckboxGroup
-            options={plainOptions}
-            value={!checkAllObj[listKey] ? getRoleIds : checkAllObj[listKey]}
-            disabled={isDisabled}
-            onChange={this.onChange.bind(this, item, checkAllKey, listKey)}
-            className={styles.checkboxGroup}
-          />
+          {item.length===0?null: (
+            <div>
+              <Checkbox
+                onChange={this.onCheckAllChange.bind(this, item, checkAllKey, listKey)}
+                checked={checkAllObj[checkAllKey]}
+                disabled={isDisabled}
+                className={styles.checkBox}
+              >
+                全选
+              </Checkbox>
+              <CheckboxGroup
+                options={plainOptions}
+                value={!checkAllObj[listKey] ? getRoleIds : checkAllObj[listKey]}
+                disabled={isDisabled}
+                onChange={this.onChange.bind(this, item, checkAllKey, listKey)}
+                className={styles.checkboxGroup}
+              />
+            </div>
+          )
+          }
         </div>
       );
     };
