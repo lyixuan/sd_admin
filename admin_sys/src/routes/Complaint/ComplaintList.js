@@ -107,7 +107,6 @@ class ComplainList extends Component {
         key: index,
         ordId: item.ordId,
         complainTime: item.complainTime,
-        stuName:  `${item.stuName}/${item.id}`,
         id: item.id,
         collegeName:item.collegeName,
         familyName:item.familyName,
@@ -134,10 +133,6 @@ class ComplainList extends Component {
       {
         title: '投诉时间',
         dataIndex: 'complainTime',
-      },
-      {
-        title: '学生名称/id',
-        dataIndex: 'stuName',
       },
       {
         title: '老师名称',
