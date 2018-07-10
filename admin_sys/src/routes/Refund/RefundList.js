@@ -149,10 +149,10 @@ class RefundList extends Component {
         <Form onSubmit={this.handleSearch} layout={formLayout}>
           <FormItem label="投诉时间">
             {getFieldDecorator('dateRange', {
+              initialValue: [moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)],
               rules: [{ required: true, message: '请选择生效日期' }],
             })(
               <RangePicker
-                defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
                 format={dateFormat}
                 style={{ width: 230, height: 32 }}
               />
