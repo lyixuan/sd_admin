@@ -11,17 +11,23 @@ class stepUpload extends Component {
     this.state = {};
   }
   handleChange = info => {
-    let { fileList } = info;
+    // todo 目前支持上传一个文件
+    let { file } = info;
+    if (file.response.code === 2000) {
+      // todo 上传成功，更改下一步状态
+      console.log(1);
+    }
     if (isLt10M) {
-      fileList = fileList.slice(-1);
+      file = file.slice(-1);
       if (isExcel) {
-        this.setState({ fileList });
+        this.setState({ file });
       }
     }
   };
   render() {
+    const { uploadUrl } = this.props;
     const props = {
-      action: 'http://172.16.56.186:8084/metaQuality/uploadFile',
+      action: `http://172.16.117.65:8084${uploadUrl}`,
       beforeUpload(file) {
         isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         if (!isExcel) {
@@ -43,7 +49,7 @@ class stepUpload extends Component {
     return (
       <div className={styles.wrap}>
         <div className={styles.upload}>
-          <Upload {...props} fileList={this.state.fileList}>
+          <Upload {...props} fileList={this.state.file}>
             <img className={styles.uploadImg} src={uploadImg} alt="上传Excel" />
             <p className={styles.uploadTxt}> 选择文件 </p>
           </Upload>

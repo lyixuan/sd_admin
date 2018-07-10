@@ -1,3 +1,14 @@
+/*
+* title,
+* steps,
+* baseLayout,
+* isDisabled，
+* step1Fetch, 第一步接口请求
+* step2Fetch, 第二步接口请求
+* step3Fetch, 第三步接口请求
+* nums,       所有的nums
+* successNums 校验成功的nums
+* */
 import React, { Component } from 'react';
 import { Steps, Button } from 'antd';
 import styles from './stepLayout.css';

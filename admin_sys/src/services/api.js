@@ -384,3 +384,14 @@ export async function updateDate(params) {
     body: params,
   });
 }
+
+/*
+* 质检相关接口
+* */
+// 校验质检excel文件
+export async function checkQuality(params) {
+  return request(`${HOST}/metaQuality/verifyDataFromExcel`, {
+    method: 'POST',
+    body: params,
+  });
+}

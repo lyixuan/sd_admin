@@ -81,7 +81,7 @@ class RefundAdd extends Component {
     const steps = [
       {
         title: '选择Excel',
-        content: <StepUpload />,
+        content: <StepUpload uploadUrl="/metaQuality/uploadFile" />,
       },
       {
         title: '校验文件',
@@ -107,6 +107,7 @@ class RefundAdd extends Component {
         goBack={() => {
           this.historyFn();
         }}
+        isDisabled={false}
       />
     );
   }
