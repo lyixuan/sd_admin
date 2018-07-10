@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Form } from 'antd';
+import { Form , message } from 'antd';
 import { connect } from 'dva';
 import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import { userTypeDataReset } from '../../utils/dataDictionary';
-import { message } from 'antd/lib/index';
 
 const WrappedRegistrationForm = Form.create()(UserForm);
 @connect(({ user, loading }) => ({
@@ -75,17 +74,8 @@ class EditUser extends Component {
     this.props.setRouteUrlParams('/user/userList', {});
   };
   render() {
-    const userListValue = this.props.user; // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
-    // console.log(userListValue.listOrg)
-    return !userListValue.wechatList.response ? (
-      []
-    ) : !this.props.user.wechatList.response.data ? (
-      <div />
-    ) : !userListValue.listOrg.response ? (
-      []
-    ) : !userListValue.listOrg.response.data ? (
-      <div />
-    ) : (
+    const userListValue = this.props.user;
+    return !userListValue.wechatList.response ? null: !userListValue.wechatList.response.data ? null: !userListValue.listOrg.response ? null : !userListValue.listOrg.response.data ? null : (
       <ContentLayout
         contentForm={
           <WrappedRegistrationForm

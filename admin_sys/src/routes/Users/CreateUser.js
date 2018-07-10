@@ -14,7 +14,6 @@ class CreateUser extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    console.log(this.state);
   }
   componentDidMount() {
     const wechatListParams = {};
@@ -30,6 +29,7 @@ class CreateUser extends Component {
     });
   }
 
+  // 点击确定按钮请求接口
   handleSubmit = values => {
     const rname = values.wechatDepartmentName[0];
     const rUserType = values.userType[0];
@@ -41,7 +41,6 @@ class CreateUser extends Component {
       const aa = !typeId?message.error('请选择负责单位'):null;
       return aa;
     }
-
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
     roleList.map(item => {
@@ -59,24 +58,19 @@ class CreateUser extends Component {
       wechatDepartmentId: Number(newRoleId),
       wechatDepartmentName: !rname ? undefined : rname,
     };
-    console.log(userAddParams);
     this.props.dispatch({
       type: 'user/userAdd',
       payload: { userAddParams },
     });
   };
-
+  // 点击取消按钮跳转到list页面
   resetContent = () => {
     this.props.setRouteUrlParams('/user/userList', {});
   };
+
   render() {
-    const aa = this.props.user.listOrg.response; // ? [] : !this.props.user.listOrg.response.data ?[]:this.props.user.wechatList.response.data.department
-    console.log(aa);
-    return !this.props.user.wechatList.response ? (
-      []
-    ) : !this.props.user.wechatList.response.data ? (
-      <div />
-    ) : (
+    const userListValue = this.props.user;
+    return !userListValue.wechatList.response ? null : !userListValue.wechatList.response.data ? null : !userListValue.listOrg.response ? null : !userListValue.listOrg.response.data ? null: (
       <ContentLayout
         contentForm={
           <WrappedRegistrationForm
@@ -90,8 +84,8 @@ class CreateUser extends Component {
           />
         }
       />
-    );
-  }
+    );}
 }
+
 
 export default CreateUser;
