@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import StepLayout from '../../layouts/stepLayout';
 import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 
+@connect(({ refund, loading }) => ({
+  refund,
+  loading,
+}))
 class RefundDel extends Component {
   constructor(props) {
     super(props);

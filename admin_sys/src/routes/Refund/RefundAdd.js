@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
+import { qualityUpload } from '../../services/api';
 import StepLayout from '../../layouts/stepLayout';
 import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 
+@connect(({ refund, loading }) => ({
+  refund,
+  loading,
+}))
 class RefundAdd extends Component {
   constructor(props) {
     super(props);
@@ -131,7 +137,7 @@ class RefundAdd extends Component {
         title: '选择Excel',
         content: (
           <StepUpload
-            uploadUrl="/metaQuality/uploadFile"
+            uploadUrl={qualityUpload()._v}
             callBackParent={bol => {
               this.onChildChange(bol);
             }}

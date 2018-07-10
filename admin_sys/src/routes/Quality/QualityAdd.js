@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
+import { qualityUpload } from '../../services/api';
 import StepLayout from '../../layouts/stepLayout';
 import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 
+@connect(({ quality, loading }) => ({
+  quality,
+  loading,
+}))
 class RefundAdd extends Component {
   constructor(props) {
     super(props);
@@ -74,6 +80,12 @@ class RefundAdd extends Component {
       isDisabled: bol,
     });
   };
+  fetchCheckData = params => {
+    this.props.dispatch({
+      type: 'quality/checkQuality',
+      payload: { params },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/quality/qualityList',
@@ -82,14 +94,14 @@ class RefundAdd extends Component {
   render() {
     const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
-
+    console.log(qualityUpload());
     const tipSucess = '您已成功上传 1500 条数据！';
     const steps = [
       {
         title: '选择Excel',
         content: (
           <StepUpload
-            uploadUrl="/metaQuality/uploadFile"
+            uploadUrl={qualityUpload()._v}
             callBackParent={bol => {
               this.onChildChange(bol);
             }}
@@ -119,6 +131,9 @@ class RefundAdd extends Component {
         tipSucess={tipSucess}
         goBack={() => {
           this.historyFn();
+        }}
+        step1Fetch={() => {
+          this.fetchCheckData({ name: '' });
         }}
         isDisabled={isDisabled}
       />

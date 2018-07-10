@@ -188,14 +188,12 @@ class ComplaintDel extends Component {
           goBack={() => {
             this.historyFn();
           }}
-          step1Fetch={param => {
-            this.fetchPreDel(param);
+          step1Fetch={() => {
+            this.fetchPreDel({ nums });
           }}
-          step2Fetch={param => {
-            this.fetchDel(param);
+          step2Fetch={() => {
+            this.fetchDel({ nums: successNums });
           }}
-          nums={nums}
-          successNums={successNums}
           isDisabled={isDisabled}
         />
       </div>

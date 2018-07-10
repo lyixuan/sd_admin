@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
+import { qualityUpload } from '../../services/api';
 import StepLayout from '../../layouts/stepLayout';
 import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 
+@connect(({ blComplain, loading }) => ({
+  blComplain,
+  loading,
+}))
 class ComplaintAdd extends Component {
   constructor(props) {
     super(props);
@@ -89,7 +95,7 @@ class ComplaintAdd extends Component {
         title: '选择Excel',
         content: (
           <StepUpload
-            uploadUrl="/metaQuality/uploadFile"
+            uploadUrl={qualityUpload()._v}
             callBackParent={bol => {
               this.onChildChange(bol);
             }}

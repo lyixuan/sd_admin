@@ -27,24 +27,23 @@ class StepLayout extends Component {
   // 下一页
   next() {
     const current = this.state.current + 1;
-    const { step1Fetch, step2Fetch, step3Fetch, nums, successNums } = this.props;
+    const { step1Fetch, step2Fetch, step3Fetch } = this.props;
     this.setState({ current });
-    console.log(current);
     if (current === 1) {
       if (step1Fetch) {
-        step1Fetch({ nums });
+        step1Fetch();
       } else {
         console.warn('添加step1Fetch方法');
       }
     } else if (current === 2) {
       if (step2Fetch) {
-        step2Fetch({ nums: successNums });
+        step2Fetch();
       } else {
         console.warn('添加step2Fetch方法');
       }
     } else if (current === 3) {
       if (step3Fetch) {
-        step3Fetch({ nums: successNums });
+        step3Fetch();
       } else {
         console.warn('添加step3Fetch方法');
       }
@@ -55,7 +54,6 @@ class StepLayout extends Component {
   // 上一页
   prev() {
     const current = this.state.current - 1;
-    console.log(current);
     this.setState({ current });
   }
   // 取消---回到列表页
