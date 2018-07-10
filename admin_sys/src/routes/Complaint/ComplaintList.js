@@ -33,7 +33,11 @@ class ComplainList extends Component {
       payload: { getListParams },
     });
   }
-
+  componentWillUnmount() {
+    firstBeginTime = null;
+    firstEndTime = null;
+    firstBottomLineNum = null;
+  }
   onChange=(dates, dateStrings)=> {
     console.log(dates)
     console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
@@ -88,6 +92,9 @@ class ComplainList extends Component {
 
   // 表单重置
   handleReset = () => {
+    firstBeginTime = '';
+    firstEndTime = '';
+    firstBottomLineNum = '';
     propsVal.form.resetFields();
     this.props.setCurrentUrlParams({});
   };
