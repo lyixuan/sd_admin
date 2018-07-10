@@ -12,16 +12,16 @@ class stepUpload extends Component {
   }
   handleChange = info => {
     // todo 目前支持上传一个文件
-    let { file } = info;
-    if (file.response.code === 2000) {
-      // todo 上传成功，更改下一步状态
-      console.log(1);
-    }
+    let { fileList } = info;
     if (isLt10M) {
-      file = file.slice(-1);
+      fileList = fileList.slice(-1);
       if (isExcel) {
-        this.setState({ file });
+        this.setState({ fileList });
       }
+    }
+
+    if (info.file.response && info.file.response.code === 2000) {
+      this.props.callBackParent(false);
     }
   };
   render() {
@@ -49,7 +49,7 @@ class stepUpload extends Component {
     return (
       <div className={styles.wrap}>
         <div className={styles.upload}>
-          <Upload {...props} fileList={this.state.file}>
+          <Upload {...props} fileList={this.state.fileList}>
             <img className={styles.uploadImg} src={uploadImg} alt="上传Excel" />
             <p className={styles.uploadTxt}> 选择文件 </p>
           </Upload>

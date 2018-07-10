@@ -19,13 +19,22 @@ class stepInput extends Component {
 
   // input双向绑定
   handelChange(e) {
+    const { getNums, callBackParent } = this.props;
     this.setState({
       nums: e.target.value,
     });
-    this.props.getNums({ nums: e.target.value });
+    if (getNums) {
+      getNums({ nums: e.target.value });
+    }
+    // 文本框没有值，下一步不可点击
+    if (e.target.value && callBackParent) {
+      callBackParent(false);
+    } else {
+      callBackParent(true);
+    }
   }
   render() {
-    const { inputTitle, inputInfo, inputContent, inputTip, disabled, faileData } = this.props;
+    const { inputTitle, inputInfo, inputContent, inputTip, isDisabled, faileData } = this.props;
 
     const valueData = !faileData ? this.state.nums : faileData;
     return (
@@ -43,7 +52,7 @@ class stepInput extends Component {
                 this.handelChange(e);
               }}
               value={valueData}
-              disabled={disabled}
+              disabled={isDisabled}
             />
           </div>
         ) : null}

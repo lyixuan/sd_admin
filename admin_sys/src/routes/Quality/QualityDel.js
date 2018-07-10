@@ -71,15 +71,22 @@ class RefundDel extends Component {
     ];
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
+      isDisabled: true,
     };
   }
+
+  // 回调
+  onChildChange = bol => {
+    this.setState({
+      isDisabled: bol,
+    });
+  };
   getNums = nums => {
     this.props.dispatch({
       type: 'quality/getNums',
       payload: nums,
     });
   };
-  // 回调
   historyFn() {
     this.props.history.push({
       pathname: '/quality/qualityList',
@@ -93,7 +100,7 @@ class RefundDel extends Component {
     const successNums = data ? data.successNums : 'ww';
     const inputContent = data ? data.failSize > 0 : null;
 
-    const { dataSource } = this.state;
+    const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
     const tipSucess = '您已成功删除 1500 条数据！';
@@ -115,6 +122,9 @@ class RefundDel extends Component {
             disabled={false}
             getNums={param => {
               this.getNums(param);
+            }}
+            callBackParent={bol => {
+              this.onChildChange(bol);
             }}
           />
         ),
@@ -155,6 +165,7 @@ class RefundDel extends Component {
           this.historyFn();
         }}
         successNums={successNums}
+        isDisabled={isDisabled}
       />
     );
   }

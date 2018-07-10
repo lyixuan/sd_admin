@@ -76,6 +76,7 @@ class ComplaintDel extends Component {
     ];
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
+      isDisabled: true,
     };
   }
   componentDidMount() {
@@ -85,6 +86,12 @@ class ComplaintDel extends Component {
     });
   }
 
+  // 回调
+  onChildChange = bol => {
+    this.setState({
+      isDisabled: bol,
+    });
+  };
   getNums = nums => {
     this.props.dispatch({
       type: 'blComplain/getNums',
@@ -103,7 +110,6 @@ class ComplaintDel extends Component {
       payload: { params },
     });
   };
-  // 回调
   historyFn() {
     this.props.history.push({
       pathname: '/complaint/complaintList',
@@ -117,7 +123,7 @@ class ComplaintDel extends Component {
     const successNums = data ? data.successNums : 'ww';
     const inputContent = data ? data.failSize > 0 : null;
 
-    const { dataSource } = this.state;
+    const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
     const tipSucess = '您已成功删除 1500 条数据！';
@@ -139,6 +145,9 @@ class ComplaintDel extends Component {
             disabled={false}
             getNums={param => {
               this.getNums(param);
+            }}
+            callBackParent={bol => {
+              this.onChildChange(bol);
             }}
           />
         ),
@@ -187,6 +196,7 @@ class ComplaintDel extends Component {
           }}
           nums={nums}
           successNums={successNums}
+          isDisabled={isDisabled}
         />
       </div>
     );

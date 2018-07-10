@@ -65,16 +65,22 @@ class RefundDel extends Component {
     ];
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
+      isDisabled: true,
     };
   }
   // 回调
+  onChildChange = bol => {
+    this.setState({
+      isDisabled: bol,
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/refund/refundList',
     });
   }
   render() {
-    const { dataSource } = this.state;
+    const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
     const tipSucess = '您已成功删除 1500 条数据！';
@@ -85,7 +91,10 @@ class RefundDel extends Component {
           <StepInput
             inputTitle="请输入想删除的 “子订单编号”："
             inputContent="1212"
-            inputTip="true "
+            inputTip="true"
+            callBackParent={bol => {
+              this.onChildChange(bol);
+            }}
           />
         ),
       },
@@ -117,6 +126,7 @@ class RefundDel extends Component {
         goBack={() => {
           this.historyFn();
         }}
+        isDisabled={isDisabled}
       />
     );
   }

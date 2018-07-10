@@ -107,23 +107,36 @@ class RefundAdd extends Component {
     ];
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
+      isDisabled: true,
     };
   }
   // 回调
+  onChildChange = bol => {
+    this.setState({
+      isDisabled: bol,
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/refund/refundList',
     });
   }
   render() {
-    const { dataSource } = this.state;
+    const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
     const tipSucess = '您已成功上传 1500 条数据！';
     const steps = [
       {
         title: '选择Excel',
-        content: <StepUpload />,
+        content: (
+          <StepUpload
+            uploadUrl="/metaQuality/uploadFile"
+            callBackParent={bol => {
+              this.onChildChange(bol);
+            }}
+          />
+        ),
       },
       {
         title: '校验文件',
@@ -139,7 +152,7 @@ class RefundAdd extends Component {
         title="添加退费"
         steps={steps}
         tipSucess={tipSucess}
-        isDisabled={false}
+        isDisabled={isDisabled}
         goBack={() => {
           this.historyFn();
         }}
