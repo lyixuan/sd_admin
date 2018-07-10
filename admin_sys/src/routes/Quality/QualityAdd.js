@@ -94,14 +94,13 @@ class RefundAdd extends Component {
   render() {
     const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
-    console.log(qualityUpload());
     const tipSucess = '您已成功上传 1500 条数据！';
     const steps = [
       {
         title: '选择Excel',
         content: (
           <StepUpload
-            uploadUrl={qualityUpload()._v}
+            uploadUrl={qualityUpload()}
             callBackParent={bol => {
               this.onChildChange(bol);
             }}
