@@ -100,16 +100,16 @@ export const getRouterData = app => {
       ),
     },
     '/user/editUser': {
-      component: dynamicWrapper(app, [], () => import('../routes/Users/EditUser')),
+      component: dynamicWrapper(app, ['user'], () => import('../routes/Users/EditUser')),
     },
     '/user/createUser': {
-      component: dynamicWrapper(app, [], () => import('../routes/Users/CreateUser')),
+      component: dynamicWrapper(app, ['user'], () => import('../routes/Users/CreateUser')),
     },
     '/user/checkUser': {
       component: dynamicWrapper(app, [], () => import('../routes/Users/CheckUser')),
     },
     '/user/userList': {
-      component: dynamicWrapper(app, [], () => import('../routes/Users/UserList')),
+      component: dynamicWrapper(app, ['user'], () => import('../routes/Users/UserList')),
     },
 
     '/permission/editPermission': {
