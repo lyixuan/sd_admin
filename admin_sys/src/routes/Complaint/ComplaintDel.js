@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import { Icon } from 'antd';
 import StepLayout from '../../layouts/stepLayout';
 import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
@@ -123,12 +124,14 @@ class ComplaintDel extends Component {
     const checkRes = !data ? null : (
       <div>
         <span>校验数据总数：</span>
-        <span style={{ color: '#00A3FF' }}>{data.totalSize} </span>
+        <span style={{ color: '#52C9C2' }}>{data.totalSize} </span>
         <span style={{ marginRight: '50px' }}>条数据</span>
-        <span>成功：</span>
+        <Icon type="check-circle" style={{ color: '#00A3FF' }} />
+        <span> 成功：</span>
         <span style={{ color: '#00A3FF' }}>{data.successSize} </span>
         <span style={{ marginRight: '50px' }}>条</span>
-        <span>失败：</span>
+        <Icon type="close-circle" style={{ color: '#F5212D' }} />
+        <span> 失败：</span>
         <span style={{ color: '#F5212D' }}>{data.failSize} </span>
         <span>条</span>
       </div>
