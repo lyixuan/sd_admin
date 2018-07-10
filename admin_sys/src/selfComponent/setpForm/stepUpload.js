@@ -27,7 +27,7 @@ class stepUpload extends Component {
   render() {
     const { uploadUrl } = this.props;
     const props = {
-      action: `http://172.16.117.65:8084${uploadUrl}`,
+      action: `http://172.16.117.65:8090${uploadUrl}`,
       beforeUpload(file) {
         isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         if (!isExcel) {
