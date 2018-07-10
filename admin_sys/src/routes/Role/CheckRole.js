@@ -21,10 +21,6 @@ const WrappedRoleForm = Form.create({
 class CheckRole extends Component {
   componentDidMount() {
     const params = this.props.getUrlParams();
-    this.props.dispatch({
-      type: 'role/roleListAll',
-      payload: { name: '' },
-    });
     const paramsIds = {
       id: params.id,
     };
@@ -35,11 +31,11 @@ class CheckRole extends Component {
   }
 
   render() {
-    const listAll = !this.props.role.listAll ? [] : this.props.role.listAll;
+    const getRoleData = !this.props.role.getRoleData ? [] : this.props.role.getRoleData;
     const getRoleIds = !this.props.role.getRoleIds ? [] : this.props.role.getRoleIds;
 
     const baseLayout = (
-      <WrappedRoleForm listAll={listAll} getRoleIds={getRoleIds} selfProps={this.props} />
+      <WrappedRoleForm listAll={getRoleData} getRoleIds={getRoleIds} selfProps={this.props} />
     );
     return <StepLayout title="查看角色" baseLayout={baseLayout} />;
   }

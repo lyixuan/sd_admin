@@ -84,14 +84,16 @@ export default {
     },
     savePrivileges(state, action) {
       let { getRoleIds } = action.payload;
+      const getRoleData = getJsonTree(getRoleIds, 0);
 
       const ids = [];
       getRoleIds.forEach(item => {
-        ids.push(item.id);
+        if (item.checked && item.level === 3) {
+          ids.push(item.id);
+        }
       });
       getRoleIds = ids;
-
-      return { ...state, getRoleIds };
+      return { ...state, getRoleIds, getRoleData };
     },
     saveListAll(state, action) {
       let { listAll } = action.payload;
@@ -104,62 +106,10 @@ export default {
         mapIdtoName[content[key].name] = content[key].id;
         return mapIdtoName;
       });
-      /*
-       * 生成树状数据结构
-       * */
-      const kkk = [
-        {
-          id: 6,
-          level: 2,
-          modifyTime: 1530179572000,
-          name: '首页B',
-          parentId: 0,
-        },
-        {
-          id: 1,
-          level: 2,
-          modifyTime: 1530179572000,
-          name: '首页A',
-          parentId: 0,
-        },
-        {
-          id: 2,
-          level: 2,
-          modifyTime: 1530179572000,
-          name: '首页1',
-          parentId: 1,
-        },
-        {
-          id: 3,
-          level: 2,
-          modifyTime: 1530179572000,
-          name: '首2页',
-          parentId: 1,
-        },
-        {
-          id: 8,
-          level: 2,
-          modifyTime: 1530179572000,
-          name: '首页2-2',
-          parentId: 3,
-        },
-        {
-          id: 4,
-          level: 2,
-          modifyTime: 1530179572000,
-          name: '首页2-1',
-          parentId: 3,
-        },
-        {
-          id: 5,
-          level: 2,
-          modifyTime: 1530179572000,
-          name: '首页1-1',
-          parentId: 2,
-        },
-      ];
 
-      listAll = getJsonTree(kkk, 1);
+      // 生成树状数据结构
+      listAll = getJsonTree(content, 1);
+
       return { ...state, listAll, mapIdtoName };
     },
   },
