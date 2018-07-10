@@ -194,9 +194,9 @@ class ComplainList extends Component {
           <FormItem label="投诉时间">
             {getFieldDecorator('dateRange', {
               // rules: [{ required: true, message: '请选择生效日期' }],
+              initialValue: !firstEndTime?null:[moment(firstBeginTime, dateFormat), moment(firstEndTime, dateFormat)],
             })(
               <RangePicker
-                defaultValue={!firstEndTime?null:[moment(firstBeginTime, dateFormat), moment(firstEndTime, dateFormat)]}
                 format={dateFormat}
                 style={{ width: 230, height: 32 }}
                 onChange={this.onChange}
