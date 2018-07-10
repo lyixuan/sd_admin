@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Icon } from 'antd';
 import StepLayout from '../../layouts/stepLayout';
 import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 import StepTable from '../../selfComponent/setpForm/stepTable';
+import CheckResult from '../../selfComponent/setpForm/checkResult';
 
 @connect(({ blComplain, loading }) => ({
   blComplain,
@@ -116,25 +116,17 @@ class ComplaintDel extends Component {
     const failNums = data ? data.failNums : 'ww';
     const successNums = data ? data.successNums : 'ww';
     const inputContent = data ? data.failSize > 0 : null;
-    console.log({ inputContent });
+
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
     const tipSucess = '您已成功删除 1500 条数据！';
     const checkRes = !data ? null : (
-      <div>
-        <span>校验数据总数：</span>
-        <span style={{ color: '#52C9C2' }}>{data.totalSize} </span>
-        <span style={{ marginRight: '50px' }}>条数据</span>
-        <Icon type="check-circle" style={{ color: '#00A3FF' }} />
-        <span> 成功：</span>
-        <span style={{ color: '#00A3FF' }}>{data.successSize} </span>
-        <span style={{ marginRight: '50px' }}>条</span>
-        <Icon type="close-circle" style={{ color: '#F5212D' }} />
-        <span> 失败：</span>
-        <span style={{ color: '#F5212D' }}>{data.failSize} </span>
-        <span>条</span>
-      </div>
+      <CheckResult
+        totalSize={data.totalSize}
+        successSize={data.successSize}
+        failSize={data.failSize}
+      />
     );
     const steps = [
       {

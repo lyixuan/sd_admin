@@ -198,3 +198,17 @@
   color: #000;
   text-align: center;
 }
+
+/*校验结果*/
+.marRight_50{
+  margin-right: 50px;
+}
+.totalColor{
+  color: #52C9C2
+}
+.sucessColor{
+  color: #00A3FF
+}
+.failColor{
+  color:#F5212D
+}

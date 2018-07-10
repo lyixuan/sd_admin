@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import StepLayout from '../../layouts/stepLayout';
 import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 import StepTable from '../../selfComponent/setpForm/stepTable';
+import CheckResult from '../../selfComponent/setpForm/checkResult';
 
+@connect(({ quality, loading }) => ({
+  quality,
+  loading,
+}))
 class RefundDel extends Component {
   constructor(props) {
     super(props);
@@ -67,6 +73,12 @@ class RefundDel extends Component {
       dataSource: !dataSource ? [] : dataSource,
     };
   }
+  getNums = nums => {
+    this.props.dispatch({
+      type: 'quality/getNums',
+      payload: nums,
+    });
+  };
   // 回调
   historyFn() {
     this.props.history.push({
@@ -74,24 +86,49 @@ class RefundDel extends Component {
     });
   }
   render() {
+    const preDelData = !this.props.quality ? null : this.props.quality.preDelData;
+    const data = preDelData ? preDelData.data : null;
+
+    const failNums = data ? data.failNums : 'ww';
+    const successNums = data ? data.successNums : 'ww';
+    const inputContent = data ? data.failSize > 0 : null;
+
     const { dataSource } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
     const tipSucess = '您已成功删除 1500 条数据！';
+    const checkRes = !data ? null : (
+      <CheckResult
+        totalSize={data.totalSize}
+        successSize={data.successSize}
+        failSize={data.failSize}
+      />
+    );
     const steps = [
       {
         title: '输入编号',
         content: (
           <StepInput
             inputTitle="请输入想删除的 “子订单编号”："
-            inputContent="1212"
-            inputTip="true "
+            inputContent="true"
+            inputTip="true"
+            disabled={false}
+            getNums={param => {
+              this.getNums(param);
+            }}
           />
         ),
       },
       {
         title: '校验编号',
-        content: <StepInput inputInfo="校验数据总数：5000 条数据 " inputContent="1212" />,
+        content: (
+          <StepInput
+            inputInfo={checkRes}
+            inputContent={inputContent}
+            disabled
+            faileData={failNums}
+          />
+        ),
       },
       {
         title: '复核数据',
@@ -117,6 +154,7 @@ class RefundDel extends Component {
         goBack={() => {
           this.historyFn();
         }}
+        successNums={successNums}
       />
     );
   }

@@ -20,11 +20,23 @@ class StepLayout extends Component {
     this.setState({ current });
     console.log(current);
     if (current === 1) {
-      step1Fetch({ nums });
+      if (step1Fetch) {
+        step1Fetch({ nums });
+      } else {
+        console.warn('添加step1Fetch方法');
+      }
     } else if (current === 2) {
-      step2Fetch({ nums: successNums });
+      if (step2Fetch) {
+        step2Fetch({ nums: successNums });
+      } else {
+        console.warn('添加step2Fetch方法');
+      }
     } else if (current === 3) {
-      step3Fetch({ nums: successNums });
+      if (step3Fetch) {
+        step3Fetch({ nums: successNums });
+      } else {
+        console.warn('添加step3Fetch方法');
+      }
     } else {
       console.log('4');
     }
