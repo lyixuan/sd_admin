@@ -1,7 +1,7 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-const HOST = 'http://172.16.117.65:8084';
+const HOST = 'http://172.16.117.65:8090';
 /*
 * 用户登录接口
 * params：{name，password}
@@ -68,6 +68,15 @@ export async function generateAuthCode() {
   const image = new Image();
   image.src = `${HOST}/token/generateAuthCode?v=${new Date().valueOf()}`;
   return image.src;
+}
+/*
+ *获取获取用户登录权限
+ * params:{id}  userId
+ */
+export async function getUserAuth(params) {
+  return request(`${HOST}/privilege/getPrivilegeById?${stringify(params)}`, {
+    method: 'GET',
+  });
 }
 /*
 以下接口为账号相关

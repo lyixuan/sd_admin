@@ -1,7 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { userLogin, userLogout, queryCurrentUser } from '../services/api';
-import { setAuthority, setAuthoritySeccion, removeStorge } from '../utils/authority';
+import { userLogin, userLogout, queryCurrentUser, getUserAuth } from '../services/api';
+import { setAuthority, setAuthoritySeccion, removeStorge, getAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import { handleSuccess } from '../utils/Handle';
 
@@ -60,6 +60,18 @@ export default {
         yield call(handleSuccess, { content: '退出登录', pathname: '/userLayout/login' });
       }
     },
+    *getAuthList(_, { call, put }) {
+      const admin = getAuthority('admin_user') || {};
+      const response = yield call(getUserAuth, { id: admin.userId });
+      if (response.code === 2000) {
+        yield put({
+          type: 'saveAuthList',
+          payload: response.data,
+        });
+      } else {
+        message.error(response.msg);
+      }
+    },
   },
 
   reducers: {
@@ -76,6 +88,9 @@ export default {
     saveCurrentUser(state, { payload }) {
       const currentUser = payload.data;
       return { ...state, currentUser };
+    },
+    saveAuthList(state, { payload }) {
+      return { ...state, ...payload };
     },
   },
 };

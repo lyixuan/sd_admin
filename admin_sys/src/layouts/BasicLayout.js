@@ -107,6 +107,7 @@ class BasicLayout extends React.PureComponent {
       });
     });
     this.handleUserInfo();
+    this.getuserAuthList();
   }
 
   componentWillUnmount() {
@@ -147,6 +148,11 @@ class BasicLayout extends React.PureComponent {
       return authorizedPath;
     }
     return redirect;
+  };
+  getuserAuthList = () => {
+    this.props.dispatch({
+      type: 'login/getAuthList',
+    });
   };
   handleUserInfo = () => {
     const { userId = '' } = getAuthority('admin_user');
