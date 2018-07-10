@@ -34,7 +34,7 @@ class ModalDemo extends React.Component {
       const buttonArray = !footButton ? ['取消', '确定'] : footButton;
       if (Array.isArray(buttonArray) && buttonArray.length === 1) {
         return [
-          <Button key={0} className={common.submitButton} onClick={this.handleOk}>
+          <Button key={0} className={common.searchButton} onClick={this.handleOk}>
             {buttonArray[0]}
           </Button>,
         ];
@@ -43,7 +43,7 @@ class ModalDemo extends React.Component {
           <Button key={0} className={common.cancleButton} onClick={this.handleCancel}>
             {buttonArray[0]}
           </Button>,
-          <Button key={1} className={common.submitButton} onClick={this.handleOk}>
+          <Button key={1} className={common.searchButton} onClick={this.handleOk}>
             {buttonArray[1]}
           </Button>,
         ];

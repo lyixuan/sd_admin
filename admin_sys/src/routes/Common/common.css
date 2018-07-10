@@ -150,6 +150,7 @@
   width: 70px;
   height: 32px;
   border-color: #52C9C2;
+  color: #fff;
 }
 .searchButton:hover{
   background-color: #52C9C2;
@@ -251,5 +252,3 @@
   content: " " !important;
   color: #fff;
 }
-
-

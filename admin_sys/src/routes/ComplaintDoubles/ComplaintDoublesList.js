@@ -164,19 +164,19 @@ class ComplaintDoublesList extends Component {
     const modalContent = (
       <div>
         <Row>
-          <Col span={3} offset={7}>学院id:</Col>
+          <Col span={3} offset={9}>学院id:</Col>
           <Col style={{textAlign:'left'}} offset={0}>{id}</Col>
         </Row>
         <Row>
-          <Col span={4} offset={6}>学院名称:</Col>
+          <Col span={4} offset={8}>学院名称:</Col>
           <Col  offset={1} style={{textAlign:'left'}}>{collegeName}</Col>
         </Row>
         <Row>
-          <Col span={4} offset={6}>生效月份:</Col>
+          <Col span={4} offset={8}>生效月份:</Col>
           <Col style={{textAlign:'left'}} offset={1}>{effectiveDate}</Col>
         </Row>
         <Row>
-          <Col span={6} offset={4}>*投诉扣分倍数:</Col>
+          <Col span={6} offset={6}>*投诉扣分倍数:</Col>
           <Col span={4} offset={0}>
             <Input
               onChange={e => {
