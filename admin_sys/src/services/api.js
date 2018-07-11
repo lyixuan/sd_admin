@@ -336,30 +336,6 @@ export async function upateComplaintDoubles(params) {
 }
 
 /*
-以下接口为投诉管理模块相关
-* */
-// 投诉列表
-export async function getBlComplainList(params) {
-  return request(`${HOST}/blComplain/list?${stringify(params)}`, {
-    method: 'GET',
-    body: params,
-  });
-}
-// 预删除投诉列表
-export async function preDelBlComplainList(params) {
-  return request(`${HOST}/blComplain/preDelete`, {
-    method: 'POST',
-    body: params,
-  });
-}
-// 删除投诉列表
-export async function delBlComplainList(params) {
-  return request(`${HOST}/blComplain/confirmDelete`, {
-    method: 'POST',
-    body: params,
-  });
-}
-/*
 获取不可选时间列表
  */
 export async function getDate(params) {
@@ -395,7 +371,32 @@ export async function updateDate(params) {
 }
 
 /*
-* 质检相关接口
+以下接口为投诉管理模块相关
+* */
+// 投诉列表
+export async function getBlComplainList(params) {
+  return request(`${HOST}/blComplain/list?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+// 预删除投诉列表
+export async function preDelBlComplainList(params) {
+  return request(`${HOST}/blComplain/preDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 删除投诉列表
+export async function delBlComplainList(params) {
+  return request(`${HOST}/blComplain/confirmDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+/*
+* 质检模块接口
 * */
 // 校验质检excel文件
 export async function checkQuality(params) {
@@ -406,4 +407,28 @@ export async function checkQuality(params) {
 }
 export function qualityUpload() {
   return `${HOST}/metaQuality/uploadFile`;
+}
+
+/*
+* 退费模块接口
+* */
+export async function getBlRefundList(params) {
+  return request(`${HOST}/blRefund/list?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+// 预删除投诉列表
+export async function preDelBlRefundList(params) {
+  return request(`${HOST}/blRefund/preDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 删除投诉列表
+export async function delBlRefundList(params) {
+  return request(`${HOST}/blRefund/confirmDelete`, {
+    method: 'POST',
+    body: params,
+  });
 }
