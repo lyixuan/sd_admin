@@ -8,6 +8,7 @@ export default {
     getListParams: { size: 30, number: 0 },
     getList: [],
     nums: '',
+    current: 0,
   },
 
   effects: {
@@ -19,21 +20,30 @@ export default {
     *preDelComplain({ payload }, { call, put }) {
       const { params } = payload;
       const preDelData = yield call(preDelBlComplainList, { ...params });
-      yield put({ type: 'savePreData', payload: { preDelData } });
+      if (preDelData.code !== 2000) {
+        message.error(preDelData.msg);
+        yield put({ type: 'savePreData', payload: { current: 0 } });
+      } else {
+        yield put({ type: 'savePreData', payload: { preDelData, current: 1 } });
+      }
     },
     *delComplain({ payload }, { call, put }) {
       const { params } = payload;
       const delData = yield call(delBlComplainList, { ...params });
-      if (delData.code === 2000) {
-        message.success('账号删除成功！');
-      } else {
+      if (delData.code !== 2000) {
         message.error(delData.msg);
+        yield put({ type: 'savePreData', payload: { current: 1 } });
+      } else {
+        yield put({ type: 'savePreData', payload: { delData, current: 2 } });
       }
-      yield put({ type: 'savePreData', payload: { delData } });
     },
     *getNums({ payload }, { put }) {
       const { nums } = payload;
       yield put({ type: 'savePreData', payload: { nums } });
+    },
+    *editCurrent({ payload }, { put }) {
+      const { current } = payload;
+      yield put({ type: 'savePreData', payload: { current } });
     },
   },
 

@@ -80,12 +80,19 @@ class ComplaintAdd extends Component {
       isDisabled: bol,
     });
   };
+  editCurrent = current => {
+    this.props.dispatch({
+      type: 'blComplain/editCurrent',
+      payload: { current },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/complaint/complaintList',
     });
   }
   render() {
+    const { current } = this.props.blComplain;
     const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
@@ -95,7 +102,7 @@ class ComplaintAdd extends Component {
         title: '选择Excel',
         content: (
           <StepUpload
-            uploadUrl={qualityUpload()._v}
+            uploadUrl={qualityUpload()}
             callBackParent={bol => {
               this.onChildChange(bol);
             }}
@@ -123,10 +130,20 @@ class ComplaintAdd extends Component {
         title="添加投诉"
         steps={steps}
         tipSucess={tipSucess}
+        isDisabled={isDisabled}
         goBack={() => {
           this.historyFn();
         }}
-        isDisabled={isDisabled}
+        step1Fetch={() => {
+          this.editCurrent(1);
+        }}
+        step2Fetch={() => {
+          this.editCurrent(2);
+        }}
+        current={current}
+        editCurrent={param => {
+          this.editCurrent(param);
+        }}
       />
     );
   }

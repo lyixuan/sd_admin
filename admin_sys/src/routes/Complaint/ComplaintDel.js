@@ -105,13 +105,19 @@ class ComplaintDel extends Component {
       payload: { params },
     });
   };
+  editCurrent = current => {
+    this.props.dispatch({
+      type: 'blComplain/editCurrent',
+      payload: { current },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/complaint/complaintList',
     });
   }
   render() {
-    const { preDelData, nums } = this.props.blComplain;
+    const { preDelData, nums, current } = this.props.blComplain;
     const data = preDelData ? preDelData.data : null;
 
     const failNums = data ? data.failNums : 'ww';
@@ -189,6 +195,10 @@ class ComplaintDel extends Component {
             this.fetchDel({ nums: successNums });
           }}
           isDisabled={isDisabled}
+          current={current}
+          editCurrent={param => {
+            this.editCurrent(param);
+          }}
         />
       </div>
     );
