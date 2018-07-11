@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Table, Button, Form, Input, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -11,6 +12,10 @@ const { RangePicker } = DatePicker;
 let propsVal = '';
 const dateFormat = 'YYYY/MM/DD';
 
+@connect(({ blRefund, loading }) => ({
+  blRefund,
+  loading,
+}))
 class RefundList extends Component {
   constructor(props) {
     super(props);
@@ -62,14 +67,14 @@ class RefundList extends Component {
         key: i,
         ordId: i,
         complainTime: '2018-07-09',
-        stuName:  '小当家',
+        stuName: '小当家',
         id: i,
-        collegeName:'海产品',
-        familyName:'海鲜',
+        collegeName: '海产品',
+        familyName: '海鲜',
         groupName: '虾',
-        cpName:'吃货',
-        bottomLineNum:i,
-        complainChannel:'太平洋',
+        cpName: '吃货',
+        bottomLineNum: i,
+        complainChannel: '太平洋',
       });
     }
     return data;
@@ -151,12 +156,7 @@ class RefundList extends Component {
             {getFieldDecorator('dateRange', {
               initialValue: [moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)],
               rules: [{ required: true, message: '请选择生效日期' }],
-            })(
-              <RangePicker
-                format={dateFormat}
-                style={{ width: 230, height: 32 }}
-              />
-            )}
+            })(<RangePicker format={dateFormat} style={{ width: 230, height: 32 }} />)}
           </FormItem>
           <FormItem label="子订单编号" style={{ marginLeft: 119 }}>
             {getFieldDecorator('orderNo', {

@@ -76,13 +76,13 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/IndexPage/IndexPage')),
     },
     '/quality/qualityList': {
-      component: dynamicWrapper(app, [], () => import('../routes/Quality/QualityList')),
+      component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityList')),
     },
     '/quality/qualityAdd': {
-      component: dynamicWrapper(app, [], () => import('../routes/Quality/QualityAdd')),
+      component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityAdd')),
     },
     '/quality/qualityDel': {
-      component: dynamicWrapper(app, [], () => import('../routes/Quality/QualityDel')),
+      component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityDel')),
     },
     '/account/accountList': {
       component: dynamicWrapper(app, ['account/accountList'], () =>
@@ -141,13 +141,13 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/RoleList')),
     },
     '/refund/refundList': {
-      component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundList')),
+      component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundList')),
     },
     '/refund/refundAdd': {
-      component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundAdd')),
+      component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundAdd')),
     },
     '/refund/refundDel': {
-      component: dynamicWrapper(app, [], () => import('../routes/Refund/RefundDel')),
+      component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundDel')),
     },
     '/complaint/complaintList': {
       component: dynamicWrapper(app, ['blComplain'], () =>

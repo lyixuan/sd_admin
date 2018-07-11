@@ -79,12 +79,7 @@ class ComplaintDel extends Component {
       isDisabled: true,
     };
   }
-  componentDidMount() {
-    this.props.dispatch({
-      type: 'blComplain/testUpload',
-      payload: { params: '' },
-    });
-  }
+  componentDidMount() {}
 
   // 回调
   onChildChange = bol => {

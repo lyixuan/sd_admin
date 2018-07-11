@@ -1,9 +1,11 @@
 import { getBlRefundList, preDelBlRefundList, delBlRefundList } from '../services/api';
 
 export default {
-  namespace: 'refund',
+  namespace: 'blRefund',
 
-  state: {},
+  state: {
+    nums: '',
+  },
 
   effects: {
     *refundList({ payload }, { call, put }) {
