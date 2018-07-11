@@ -412,6 +412,20 @@ export async function checkQuality(params) {
     body: params,
   });
 }
+// 预删除质检列表 todo edit interface
+export async function preDelQualityList(params) {
+  return request(`${HOST}/blComplain/preDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 删除质检列表 todo edit interface
+export async function delQualityList(params) {
+  return request(`${HOST}/blComplain/confirmDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
 export function qualityUpload() {
   return `${HOST}/metaQuality/uploadFile`;
 }

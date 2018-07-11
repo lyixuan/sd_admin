@@ -86,12 +86,20 @@ class RefundAdd extends Component {
       payload: { params },
     });
   };
+
+  editCurrent = current => {
+    this.props.dispatch({
+      type: 'quality/editCurrent',
+      payload: { current },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/quality/qualityList',
     });
   }
   render() {
+    const { current } = this.props.quality;
     const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
     const tipSucess = '您已成功上传 1500 条数据！';
@@ -131,10 +139,20 @@ class RefundAdd extends Component {
         goBack={() => {
           this.historyFn();
         }}
-        step1Fetch={() => {
-          this.fetchCheckData({ name: '' });
-        }}
+        // step1Fetch={() => {
+        //   this.fetchCheckData({ name: '' });
+        // }}
         isDisabled={isDisabled}
+        step1Fetch={() => {
+          this.editCurrent(1);
+        }}
+        step2Fetch={() => {
+          this.editCurrent(2);
+        }}
+        current={current}
+        editCurrent={param => {
+          this.editCurrent(param);
+        }}
       />
     );
   }

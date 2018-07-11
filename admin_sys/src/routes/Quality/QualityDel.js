@@ -87,13 +87,31 @@ class RefundDel extends Component {
       payload: nums,
     });
   };
+  fetchPreDel = params => {
+    this.props.dispatch({
+      type: 'quality/preDelQuality',
+      payload: { params },
+    });
+  };
+  fetchDel = params => {
+    this.props.dispatch({
+      type: 'quality/delQuality',
+      payload: { params },
+    });
+  };
+  editCurrent = current => {
+    this.props.dispatch({
+      type: 'quality/editCurrent',
+      payload: { current },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/quality/qualityList',
     });
   }
   render() {
-    const preDelData = !this.props.quality ? null : this.props.quality.preDelData;
+    const { preDelData, nums, current } = this.props.quality;
     const data = preDelData ? preDelData.data : null;
 
     const failNums = data ? data.failNums : 'ww';
@@ -160,11 +178,20 @@ class RefundDel extends Component {
         title="删除质检"
         steps={steps}
         tipSucess={tipSucess}
+        isDisabled={isDisabled}
         goBack={() => {
           this.historyFn();
         }}
-        successNums={successNums}
-        isDisabled={isDisabled}
+        step1Fetch={() => {
+          this.fetchPreDel({ nums });
+        }}
+        step2Fetch={() => {
+          this.fetchDel({ nums: successNums });
+        }}
+        current={current}
+        editCurrent={param => {
+          this.editCurrent(param);
+        }}
       />
     );
   }
