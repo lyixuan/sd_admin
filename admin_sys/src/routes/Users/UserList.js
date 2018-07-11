@@ -209,7 +209,8 @@ class UserList extends Component {
       if (!err) {
         firstName = values.name;
         firstPhone = values.mobile;
-        firstUpdate = values.isUpdate[0];
+        const aa = values.isUpdate[0]
+        firstUpdate =aa ;
         const userListParams = {
           isUpdate: !values.isUpdate
             ? undefined

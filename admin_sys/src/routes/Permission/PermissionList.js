@@ -9,6 +9,7 @@ import {levelData} from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 let propsVal = '';
+let firstName = '';
 @connect(({ permission, loading }) => ({
   permission,
   loading,
@@ -26,7 +27,9 @@ class PermissionList extends Component {
       payload: { permissionListParams },
     });
   }
-
+  componentWillUnmount() {
+    firstName = null;
+  }
   // 权限编辑
   onEdit = val => {
     console.log(val);
@@ -55,6 +58,7 @@ class PermissionList extends Component {
 
   // 表单重置
   handleReset = () => {
+    firstName = '';
     propsVal.form.resetFields();
     this.props.setCurrentUrlParams({});
   };
@@ -64,7 +68,8 @@ class PermissionList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        const permissionListParams = { name: values.name };
+        firstName = values.name;
+        const permissionListParams = { name: !values.name?undefined:values.name };
         this.props.dispatch({
           type: 'permission/permissionList',
           payload: { permissionListParams },
@@ -173,12 +178,7 @@ class PermissionList extends Component {
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <FormItem label="权限名称">
               {getFieldDecorator('name', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请权限名称!',
-                  },
-                ],
+                initialValue: firstName,
               })(<Input placeholder="请输入权限名称" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem style={{ marginLeft: 119 }}>

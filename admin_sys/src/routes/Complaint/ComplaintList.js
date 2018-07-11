@@ -68,30 +68,32 @@ class ComplainList extends Component {
   handleSearch = e => {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
-      firstBottomLineNum = values.bottomLineNum;
-      if (!values.dateRange) {
-        console.log(values);
-        const getListParams = { size: 30, number: 0, bottomLineNum: values.bottomLineNum };
-        console.log(getListParams);
-        this.props.dispatch({
-          type: 'blComplain/getList',
-          payload: { getListParams },
-        });
-      } else {
-        const beginTime = firstBeginTime;
-        const endTime = firstEndTime;
-        const getListParams = {
-          size: 30,
-          number: 0,
-          beginTime,
-          endTime,
-          bottomLineNum: values.bottomLineNum,
-        };
-        console.log(getListParams);
-        this.props.dispatch({
-          type: 'blComplain/getList',
-          payload: { getListParams },
-        });
+      if (!err) {
+        firstBottomLineNum = values.bottomLineNum;
+        if (!values.dateRange) {
+          console.log(values);
+          const getListParams = { size: 30, number: 0, bottomLineNum: values.bottomLineNum };
+          console.log(getListParams);
+          this.props.dispatch({
+            type: 'blComplain/getList',
+            payload: { getListParams },
+          });
+        } else {
+          const beginTime = firstBeginTime;
+          const endTime = firstEndTime;
+          const getListParams = {
+            size: 30,
+            number: 0,
+            beginTime,
+            endTime,
+            bottomLineNum: values.bottomLineNum,
+          };
+          console.log(getListParams);
+          this.props.dispatch({
+            type: 'blComplain/getList',
+            payload: { getListParams },
+          });
+        }
       }
     });
   };
