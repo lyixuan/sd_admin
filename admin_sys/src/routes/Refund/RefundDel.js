@@ -98,13 +98,19 @@ class RefundDel extends Component {
       payload: { params },
     });
   };
+  editCurrent = current => {
+    this.props.dispatch({
+      type: 'blRefund/editCurrent',
+      payload: { current },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/refund/refundList',
     });
   }
   render() {
-    const { preDelData, nums } = this.props.blRefund;
+    const { preDelData, nums, current } = this.props.blRefund;
     const data = preDelData ? preDelData.data : null;
 
     const failNums = data ? data.failNums : '';
@@ -130,7 +136,6 @@ class RefundDel extends Component {
             inputTitle="请输入想删除的 “退费编号”："
             inputContent="true"
             inputTip="true"
-            disabled={false}
             getNums={param => {
               this.getNums(param);
             }}
@@ -182,6 +187,10 @@ class RefundDel extends Component {
           this.fetchDel({ nums: successNums });
         }}
         isDisabled={isDisabled}
+        current={current}
+        editCurrent={param => {
+          this.editCurrent(param);
+        }}
       />
     );
   }

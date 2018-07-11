@@ -137,7 +137,6 @@ class ComplaintDel extends Component {
             inputTitle="请输入想删除的 “子订单编号”："
             inputContent="true"
             inputTip="true"
-            disabled={false}
             getNums={param => {
               this.getNums(param);
             }}

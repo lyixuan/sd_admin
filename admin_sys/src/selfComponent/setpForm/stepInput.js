@@ -34,7 +34,7 @@ class stepInput extends Component {
     }
   }
   render() {
-    const { inputTitle, inputInfo, inputContent, inputTip, isDisabled, faileData } = this.props;
+    const { inputTitle, inputInfo, inputContent, inputTip, disabled, faileData } = this.props;
 
     const valueData = !faileData ? this.state.nums : faileData;
     return (
@@ -52,7 +52,7 @@ class stepInput extends Component {
                 this.handelChange(e);
               }}
               value={valueData}
-              disabled={isDisabled}
+              disabled={disabled}
             />
           </div>
         ) : null}

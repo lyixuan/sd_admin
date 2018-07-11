@@ -122,12 +122,19 @@ class RefundAdd extends Component {
       isDisabled: bol,
     });
   };
+  editCurrent = current => {
+    this.props.dispatch({
+      type: 'blRefund/editCurrent',
+      payload: { current },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/refund/refundList',
     });
   }
   render() {
+    const { current } = this.props.blRefund;
     const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
@@ -161,6 +168,16 @@ class RefundAdd extends Component {
         isDisabled={isDisabled}
         goBack={() => {
           this.historyFn();
+        }}
+        step1Fetch={() => {
+          this.editCurrent(1);
+        }}
+        step2Fetch={() => {
+          this.editCurrent(2);
+        }}
+        current={current}
+        editCurrent={param => {
+          this.editCurrent(param);
         }}
       />
     );

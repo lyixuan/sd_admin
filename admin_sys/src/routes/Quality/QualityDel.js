@@ -116,10 +116,9 @@ class RefundDel extends Component {
         title: '输入编号',
         content: (
           <StepInput
-            inputTitle="请输入想删除的 “子订单编号”："
+            inputTitle="请输入想删除的 “质检编号”："
             inputContent="true"
             inputTip="true"
-            disabled={false}
             getNums={param => {
               this.getNums(param);
             }}
