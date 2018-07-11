@@ -9,6 +9,9 @@ import { userTypeData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 let propsVal = '';
+let firstName = '';
+let firstPhone = '';
+let firstUpdate = '';
 const residences = [
   {
     value: 'no',
@@ -41,6 +44,11 @@ class UserList extends Component {
       payload: { userListParams },
     });
   }
+  componentWillUnmount() {
+    firstName = null;
+    firstPhone = null;
+    firstUpdate = null;
+  }
 
   // 删除用户
   onDelete = val => {
@@ -66,7 +74,6 @@ class UserList extends Component {
 
   // 编辑用户
   onEdit = val => {
-    console.log(val);
     this.props.setRouteUrlParams('/user/editUser', {
       id: val.id,
       name: val.name,
@@ -189,6 +196,9 @@ class UserList extends Component {
 
   // 表单重置
   handleReset = () => {
+    firstName = '';
+    firstPhone = '';
+    firstUpdate = '';
     propsVal.form.resetFields();
     this.props.setCurrentUrlParams({});
   };
@@ -197,6 +207,9 @@ class UserList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
+        firstName = values.name;
+        firstPhone = values.mobile;
+        firstUpdate = values.isUpdate[0];
         const userListParams = {
           isUpdate: !values.isUpdate
             ? undefined
@@ -234,17 +247,23 @@ class UserList extends Component {
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <FormItem label="姓名">
-              {getFieldDecorator('name', {})(
+              {getFieldDecorator('name', {
+                initialValue: firstName,
+              })(
                 <Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />
               )}
             </FormItem>
             <FormItem label="手机">
-              {getFieldDecorator('mobile', {})(
+              {getFieldDecorator('mobile', {
+                initialValue: firstPhone,
+              })(
                 <Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />
               )}
             </FormItem>
             <FormItem label="需要更新">
-              {getFieldDecorator('isUpdate', {})(
+              {getFieldDecorator('isUpdate', {
+                initialValue: [firstUpdate],
+              })(
                 <Cascader options={residences} style={{ width: 230, height: 32 }} />
               )}
             </FormItem>
