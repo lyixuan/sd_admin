@@ -12,7 +12,7 @@ const { RangePicker } = DatePicker;
 let propsVal = '';
 let firstBeginTime = '';
 let firstEndTime = '';
-let firstBottomLineNum = '';
+let firstOrdId = '';
 const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ blRefund, loading }) => ({
@@ -36,7 +36,7 @@ class RefundList extends Component {
   componentWillUnmount() {
     firstBeginTime = null;
     firstEndTime = null;
-    firstBottomLineNum = null;
+    firstOrdId = null;
   }
 
   onChange = (dates, dateStrings) => {
@@ -68,9 +68,9 @@ class RefundList extends Component {
   handleSearch = e => {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
-      firstBottomLineNum = values.bottomLineNum;
+      firstOrdId = values.ordId;
       if (!values.dateRange) {
-        const params = { size: 30, number: 0, bottomLineNum: values.bottomLineNum };
+        const params = { size: 30, number: 0, ordId: values.ordId };
         this.props.dispatch({
           type: 'blRefund/refundList',
           payload: { params },
@@ -83,7 +83,7 @@ class RefundList extends Component {
           number: 0,
           beginTime,
           endTime,
-          bottomLineNum: values.bottomLineNum,
+          ordId: values.ordId,
         };
         this.props.dispatch({
           type: 'blRefund/refundList',
@@ -97,7 +97,7 @@ class RefundList extends Component {
   handleReset = () => {
     firstBeginTime = '';
     firstEndTime = '';
-    firstBottomLineNum = '';
+    firstOrdId = '';
     propsVal.form.resetFields();
     this.props.setCurrentUrlParams({});
   };
@@ -208,14 +208,14 @@ class RefundList extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="编号" style={{ marginLeft: 119 }}>
-            {getFieldDecorator('bottomLineNum', {
-              initialValue: firstBottomLineNum,
+          <FormItem label="子订单编号" style={{ marginLeft: 119 }}>
+            {getFieldDecorator('ordId', {
+              initialValue: firstOrdId,
               rules: [
                 { min: 2, message: '编号长度不得低于2!' },
                 { max: 20, message: '编号长度不得高于20!' },
               ],
-            })(<Input placeholder="请输入编号" style={{ width: 230, height: 32 }} />)}
+            })(<Input placeholder="请输入子订单编号" style={{ width: 230, height: 32 }} />)}
           </FormItem>
           <FormItem style={{ marginLeft: 119 }}>
             <Button type="primary" htmlType="submit" className={common.searchButton}>
