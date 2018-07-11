@@ -88,7 +88,7 @@ class RefundDel extends Component {
     const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
-    const tipSucess = '您已成功删除 1500 条数据！';
+    const tipSucess = '您已成功删除 150 条数据！';
     const steps = [
       {
         title: '输入编号',
