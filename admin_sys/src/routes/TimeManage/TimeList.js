@@ -95,7 +95,10 @@ class TimeList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       const { beginTime, endTime = '' } = values;
-      if (endTime && typeof endTime === 'object' && moment(beginTime).isAfter(endTime)) {
+      if (
+        !beginTime ||
+        (endTime && typeof endTime === 'object' && moment(beginTime).isAfter(endTime))
+      ) {
         this.setState({
           hintVisible: true,
         });
@@ -185,7 +188,7 @@ class TimeList extends Component {
             <FormItem label="开始日期">
               {getFieldDecorator('beginTime', {
                 initialValue: dateArea.beginTime ? moment(dateArea.beginTime, dateFormat) : null,
-                rules: [{ required: true, message: '请选择生效开始日期' }],
+                rules: [{ required: false, message: '请选择生效开始日期' }],
               })(dateAreaPicker)}
             </FormItem>
             <FormItem label="结束日期">
@@ -267,7 +270,7 @@ class TimeList extends Component {
           clickOK={this.addDisableTime}
         />
         <ModalDialog
-          title="添加不可用时间"
+          title="自定义时间"
           visible={hintVisible}
           modalContent="时间可选范围有误"
           showModal={bol => this.showHintModal(bol)}
