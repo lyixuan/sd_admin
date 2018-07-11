@@ -122,6 +122,7 @@ class PermissionForm extends Component {
       },
     }
     const arrValue = !this.props.jumpFunction.permission.permissionById?[]:!this.props.jumpFunction.permission.permissionById.response?[]:this.props.jumpFunction.permission.permissionById.response.data;
+    const disabled = true;
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -180,7 +181,7 @@ class PermissionForm extends Component {
               <Cascader
                 options={parentList}
                 style={{ width: 380 }}
-                disabled={flag === '一级页面' ? 'disabled' : false}
+                disabled={flag === '一级页面' ? disabled : false}
               />
             )}
           </FormItem>
