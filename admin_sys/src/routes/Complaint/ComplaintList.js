@@ -12,7 +12,7 @@ const { RangePicker } = DatePicker;
 let propsVal = '';
 let firstBeginTime = '';
 let firstEndTime = '';
-let firstBottomLineNum = ''
+let firstBottomLineNum = '';
 const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ blComplain, loading }) => ({
@@ -22,8 +22,7 @@ const dateFormat = 'YYYY-MM-DD';
 class ComplainList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -38,14 +37,14 @@ class ComplainList extends Component {
     firstEndTime = null;
     firstBottomLineNum = null;
   }
-  onChange=(dates, dateStrings)=> {
-    console.log(dates)
+  onChange = (dates, dateStrings) => {
+    console.log(dates);
     console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
-    const aa = dateStrings[0]
-    const bb = dateStrings[1]
+    const aa = dateStrings[0];
+    const bb = dateStrings[1];
     firstBeginTime = aa;
     firstEndTime = bb;
-  }
+  };
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
@@ -70,23 +69,30 @@ class ComplainList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       firstBottomLineNum = values.bottomLineNum;
-      if (!values.dateRange){
-          const getListParams = { size: 30, number: 0,bottomLineNum:values.bottomLineNum};
-          console.log(getListParams)
-          this.props.dispatch({
-            type: 'blComplain/getList',
-            payload: { getListParams },
-          });
-      }else{
-        const beginTime= firstBeginTime;
+      if (!values.dateRange) {
+        console.log(values);
+        const getListParams = { size: 30, number: 0, bottomLineNum: values.bottomLineNum };
+        console.log(getListParams);
+        this.props.dispatch({
+          type: 'blComplain/getList',
+          payload: { getListParams },
+        });
+      } else {
+        const beginTime = firstBeginTime;
         const endTime = firstEndTime;
-          const getListParams = { size: 30, number: 0,beginTime, endTime,bottomLineNum:values.bottomLineNum};
-          console.log(getListParams)
-          this.props.dispatch({
-            type: 'blComplain/getList',
-            payload: { getListParams },
-          });
-        }
+        const getListParams = {
+          size: 30,
+          number: 0,
+          beginTime,
+          endTime,
+          bottomLineNum: values.bottomLineNum,
+        };
+        console.log(getListParams);
+        this.props.dispatch({
+          type: 'blComplain/getList',
+          payload: { getListParams },
+        });
+      }
     });
   };
 
@@ -108,12 +114,12 @@ class ComplainList extends Component {
         ordId: item.ordId,
         complainTime: item.complainTime,
         id: item.id,
-        collegeName:item.collegeName,
-        familyName:item.familyName,
+        collegeName: item.collegeName,
+        familyName: item.familyName,
         groupName: item.groupName,
-        cpName:item.cpName,
-        bottomLineNum:item.bottomLineNum,
-        complainChannel:item.complainChannel,
+        cpName: item.cpName,
+        bottomLineNum: item.bottomLineNum,
+        complainChannel: item.complainChannel,
       })
     );
     return data;
@@ -180,8 +186,8 @@ class ComplainList extends Component {
 
   render() {
     const data = !this.props.blComplain.getList.response
-          ? []
-          : !this.props.blComplain.getList.response.data
+      ? []
+      : !this.props.blComplain.getList.response.data
         ? []
         : this.props.blComplain.getList.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
@@ -196,7 +202,9 @@ class ComplainList extends Component {
           <FormItem label="投诉时间">
             {getFieldDecorator('dateRange', {
               // rules: [{ required: true, message: '请选择生效日期' }],
-              initialValue: !firstEndTime?null:[moment(firstBeginTime, dateFormat), moment(firstEndTime, dateFormat)],
+              initialValue: !firstEndTime
+                ? null
+                : [moment(firstBeginTime, dateFormat), moment(firstEndTime, dateFormat)],
             })(
               <RangePicker
                 format={dateFormat}
@@ -211,7 +219,7 @@ class ComplainList extends Component {
               rules: [
                 { min: 2, message: '编号长度不得低于2!' },
                 { max: 20, message: '编号长度不得高于20!' },
-                ],
+              ],
             })(<Input placeholder="请输入编号" style={{ width: 230, height: 32 }} />)}
           </FormItem>
           <FormItem style={{ marginLeft: 119 }}>
@@ -273,7 +281,6 @@ class ComplainList extends Component {
             defaultPageSize={30}
             pageSizeOptions={['30']}
           />
-
         }
       />
     );
