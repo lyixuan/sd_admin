@@ -53,6 +53,7 @@ class UserForm extends Component {
       responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
       wechatDepartmentName: !arrValue.wechatDepartmentName ? null : arrValue.wechatDepartmentName,
     };
+    console.log(this.state.responseCom)
   }
   componentDidMount() {
     responseComListBackup = !this.state.listOrgLiost
@@ -103,7 +104,6 @@ class UserForm extends Component {
     const levelValue = !this.state.userType ? '小组' : this.state.userType;
     flag = levelValue;
     if (levelValue === '家族') {
-      console.log('进入家族的分支');
       newResponseComList.map(item => {
         const firstChldren = [];
         const chldren1 = item.sub;
@@ -125,7 +125,6 @@ class UserForm extends Component {
       });
     }
     if (levelValue === '学院') {
-      console.log('进入学院的分支');
       newResponseComList.map(item => {
         responseValue.push({
           value: item.id,
@@ -141,7 +140,6 @@ class UserForm extends Component {
   handleSelectChange = value => {
     const aa = value[0];
     flag = aa;
-    console.log(flag);
     const responseValue = [];
     const newResponseComList = this.state.listOrgLiost;
     if (value[0] === '家族') {
@@ -281,9 +279,16 @@ class UserForm extends Component {
             {getFieldDecorator('responseCom', {
               initialValue: [this.state.responseCom],
               rules: [
+              //   flag === '系统管理员' || flag === '高级管理员'?{}:{
+              //   validator(rule, value, callback) {
+              //     if (typeof value[0] === 'string' || !value[0]) {
+              //       callback({ message: '请选择负责单位！' });
+              //     }
+              //     callback();
+              //   },
+              // },
                 {
                   validator(rule, value, callback) {
-                    console.log('规则校验', flag, value[0]);
                     if (typeof value[0] === 'string' || !value[0]) {
                       if (flag === '系统管理员' || flag === '高级管理员') {
                         callback();
@@ -299,7 +304,7 @@ class UserForm extends Component {
               <Cascader
                 options={responseComList}
                 style={{ width: 380 }}
-                disabled={flag === '系统管理员' || flag === '高级管理员' ? 'disabled' : false}
+                disabled={flag === '系统管理员' || flag === '高级管理员' ? disabled : false}
               />
             )}
           </FormItem>
