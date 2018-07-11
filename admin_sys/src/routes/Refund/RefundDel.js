@@ -5,6 +5,7 @@ import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import CheckResult from '../../selfComponent/setpForm/checkResult';
+import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 
 @connect(({ blRefund, loading }) => ({
   blRefund,
@@ -77,6 +78,10 @@ class RefundDel extends Component {
 
   componentDidMount() {
     this.editCurrent(0);
+    setConfirm();
+  }
+  componentWillUnmount() {
+    clearConfirm();
   }
   // 回调
   onChildChange = bol => {

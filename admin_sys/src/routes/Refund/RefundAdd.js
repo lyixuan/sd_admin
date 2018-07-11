@@ -5,6 +5,7 @@ import StepLayout from '../../layouts/stepLayout';
 import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
+import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 
 @connect(({ blRefund, loading }) => ({
   blRefund,
@@ -119,6 +120,10 @@ class RefundAdd extends Component {
 
   componentDidMount() {
     this.editCurrent(0);
+    setConfirm();
+  }
+  componentWillUnmount() {
+    clearConfirm();
   }
   // 回调
   onChildChange = bol => {
