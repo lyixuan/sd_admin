@@ -30,7 +30,7 @@ class TimeList extends Component {
         id: 1,
       },
       visible: false,
-      dateEx: '',
+      dateTime: '',
       hintVisible: false,
       changeVisible: false,
     };
@@ -60,13 +60,13 @@ class TimeList extends Component {
   };
   // 点击选择添加不可选时间
   selectDisableTime = (date, dateString) => {
-    this.setState({ dateEx: dateString });
+    this.setState({ dateTime: dateString });
   };
   addDisableTime = () => {
-    const { dateEx = '', params } = this.state;
+    const { dateTime = '', params } = this.state;
     this.props.dispatch({
       type: 'time/addDisableTime',
-      payload: { dateEx, params },
+      payload: { dateTime, params },
     });
     this.setState({ visible: false });
   };
@@ -133,7 +133,7 @@ class TimeList extends Component {
     const columns = [
       {
         title: '时间',
-        dataIndex: 'dateEx',
+        dataIndex: 'dateTime',
         width: 400,
       },
       {
@@ -163,7 +163,7 @@ class TimeList extends Component {
     const formLayout = 'inline';
     const dataSorce = content.map(item => ({
       key: item.id,
-      dateEx: moment.unix(item.dateEx / 1000).format(dateFormat),
+      dateTime: moment.unix(item.dateTime / 1000).format(dateFormat),
     }));
     const datePicker = (
       <DatePicker

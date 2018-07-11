@@ -21,8 +21,8 @@ export default {
       }
     },
     *addDisableTime({ payload }, { put, call }) {
-      const { dateEx, params } = payload;
-      const response = yield call(addDate, { dateEx });
+      const { dateTime, params } = payload;
+      const response = yield call(addDate, { dateTime });
       if (response.code === 2000) {
         message.success('添加成功');
         const listData = yield call(getDate, { ...params });
