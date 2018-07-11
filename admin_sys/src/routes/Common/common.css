@@ -268,11 +268,19 @@
 :global(.ant-calendar-today .ant-calendar-date){
   border-color: #52C9C2;
   font-weight: bold;
-  color: #52C9C2;
+  color:#52C9C2;
 }
 :global(.ant-calendar-selected-day .ant-calendar-date:hover){
   background: #52C9C2;
+  color:#fff;
 }
 :global(.ant-calendar-selected-day .ant-calendar-date){
   background: #52C9C2;
+  color:#fff;
 }
+
+:global(.ant-calendar-date:hover){
+  background: #52C9C2;
+  color:#fff;
+}
+
