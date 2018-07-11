@@ -14,7 +14,6 @@ export default {
     *getList({ payload }, { call, put }) {
       const { getListParams } = payload;
       const response = yield call(getBlComplainList, { ...getListParams });
-      console.log(response);
       yield put({ type: 'save', payload: { response } });
     },
     *preDelComplain({ payload }, { call, put }) {

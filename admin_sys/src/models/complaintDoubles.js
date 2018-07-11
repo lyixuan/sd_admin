@@ -24,7 +24,6 @@ export default {
       if (result.code === 2000) {
         message.success('成功编辑投诉扣分倍数！');
         const response = yield call(complaintDoublesList, payload.complaintDoublesListParams);
-        console.log(response);
         yield put({ type: 'complaintDoublesListSave', payload: { response } });
       } else {
         message.error(result.msg);
