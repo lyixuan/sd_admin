@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
 import common from '../routes/Common/common.css';
-import { levelDataReset } from '../utils/dataDictionary';
+import {levelData, levelDataReset} from '../utils/dataDictionary';
 
 const FormItem = Form.Item;
 let parentList = [];
@@ -24,23 +24,20 @@ const residences = [
 class PermissionForm extends Component {
   constructor(props) {
     super(props);
-    const arrValue = this.props.jumpFunction.getUrlParams();
+    const fromWhere = this.props.jumpFunction.getUrlParams();
     const parentIdValues = this.props.jumpFunction.permission.permissionListAllName;
     this.state = {
       parentIdList: !parentIdValues.data ? [] : parentIdValues.data,
-      name: !arrValue.name ? '' : arrValue.name,
-      level: !arrValue.level ? null : arrValue.level,
-      resourceUrl: !arrValue.resourceUrl ? '' : arrValue.resourceUrl,
-      parentId: !arrValue.parentId ? null : Number(arrValue.parentId),
-      iconUrl: !arrValue.iconUrl ? '' : arrValue.iconUrl,
-      sort: !arrValue.sort ? '' : arrValue.sort,
+      id: !fromWhere.id ? '' : fromWhere.id,
     };
+    console.log(this.state)
   }
 
   componentDidMount() {
     parentListBackup = !this.state.parentIdList ? [] : this.fullListFun(this.state.parentIdList);
     parentList = this.roleListFun();
-    flag = this.state.level;
+    const arrValue = !this.props.jumpFunction.permission.permissionById?[]:!this.props.jumpFunction.permission.permissionById.response?[]:this.props.jumpFunction.permission.permissionById.response.data;
+    flag = levelData[arrValue.level];
   }
 
   handleSubmit = e => {
@@ -123,13 +120,14 @@ class PermissionForm extends Component {
           offset: 8,
         },
       },
-    };
+    }
+    const arrValue = !this.props.jumpFunction.permission.permissionById?[]:!this.props.jumpFunction.permission.permissionById.response?[]:this.props.jumpFunction.permission.permissionById.response.data;
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*权限名称">
             {getFieldDecorator('name', {
-              initialValue: this.state.name,
+              initialValue: !this.state.id?'':!arrValue.name?'':arrValue.name,
               rules: [
                 { min: 2, max: 50, message: '权限名称长度在2-50!', whitespace: true },
                 { required: true, message: '权限名称为必填项，请填写!', whitespace: true },
@@ -138,7 +136,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
             {getFieldDecorator('level', {
-              initialValue: [this.state.level],
+              initialValue: [!this.state.id?'':!arrValue.level?'':levelData[arrValue.level]],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -159,7 +157,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限路由">
             {getFieldDecorator('resourceUrl', {
-              initialValue: this.state.resourceUrl,
+              initialValue: !this.state.id?'':!arrValue.level?'':arrValue.resourceUrl,
               rules: [
                 { max: 50, message: '权限路由长度最多50个字节!' },
                 { required: true, message: '权限路由为必填项，请填写!', whitespace: true }],
@@ -167,7 +165,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('parentId', {
-              initialValue: [this.state.parentId],
+              initialValue: [!this.state.id?'':!arrValue.parentId?'':arrValue.parentId],
               // rules: [
               //   {
               //     validator(rule, value, callback) {
@@ -188,7 +186,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
             {getFieldDecorator('iconUrl', {
-              initialValue: [this.state.iconUrl],
+              initialValue: [!this.state.id?'':!arrValue.iconUrl?'':arrValue.iconUrl],
               rules: [{ max: 50, message: '权限路由长度最多50个字节!' },
                 {
                   validator(rule, value, callback) {
@@ -204,7 +202,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('sort', {
-              initialValue: this.state.sort,
+              initialValue: !this.state.id?'':arrValue.sort===0?'0':arrValue.sort,
               rules: [{ required: true, message: '权限排序为必填项，请填写!', whitespace: true },
                 { max: 10, message: '权限排序长度最多10个字节!' },
                 {

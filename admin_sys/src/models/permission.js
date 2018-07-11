@@ -4,6 +4,7 @@ import { message } from 'antd';
 import {
   getRoleListAll,
   addPermission,
+  getPermissionById,
   updatePermission,
   permissionListAllName,
 } from '../services/api';
@@ -17,6 +18,7 @@ export default {
     // 接口返回数据存储
     permissionList: [],
     permissionListAllNameSave: [],
+    permissionById:[],
   },
 
   effects: {
@@ -24,6 +26,11 @@ export default {
       const response = yield call(getRoleListAll, payload.permissionListParams);
       console.log(response)
       yield put({ type: 'permissionListSave', payload: { response } });
+    },
+    *permissionById({ payload }, { call, put }) {
+      const response = yield call(getPermissionById, payload.permissionByIdParams);
+      console.log(response)
+      yield put({ type: 'permissionByIdSave', payload: { response } });
     },
     *addPermission({ payload }, { call, put }) {
       const result = call(addPermission, payload.addPermissionParams);
@@ -57,6 +64,12 @@ export default {
       return {
         ...state,
         permissionList: action.payload,
+      };
+    },
+    permissionByIdSave(state, action) {
+      return {
+        ...state,
+        permissionById: action.payload,
       };
     },
     permissionListAllNameSave(state, action) {

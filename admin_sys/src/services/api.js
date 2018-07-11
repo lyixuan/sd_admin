@@ -249,6 +249,13 @@ export async function addPermission(params) {
     body: params,
   });
 }
+// 根据ID查询对应权限
+export async function getPermissionById(params) {
+  return request(`${HOST}/privilege/getPrivilegeById?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
 // 修改权限接口
 export async function updatePermission(params) {
   return request(`${HOST}/privilege/update`, {
