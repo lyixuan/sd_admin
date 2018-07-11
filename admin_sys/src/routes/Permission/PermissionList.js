@@ -31,12 +31,6 @@ class PermissionList extends Component {
   onEdit = val => {
     console.log(val);
     this.props.setRouteUrlParams('/permission/editPermission', {
-      name: val.name,
-      level: val.level,
-      resourceUrl: val.resourceUrl,
-      parentId: val.parentId,
-      sort: val.sort,
-      iconUrl: val.iconUrl,
       id: val.id,
     });
   };

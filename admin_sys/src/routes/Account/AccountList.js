@@ -137,7 +137,6 @@ class AccountList extends Component {
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
-    console.log(totalNum);
     return !this.props.account.accountList.response ? (
       <div />
     ) : !this.props.account.accountList.response.data ? (

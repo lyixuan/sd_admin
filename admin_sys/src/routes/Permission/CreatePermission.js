@@ -42,7 +42,6 @@ class CreatePermission extends Component {
       sort: Number(values.sort),
       resourceUrl: values.resourceUrl,
     };
-    console.log(addPermissionParams);
     this.props.dispatch({
       type: 'permission/addPermission',
       payload: { addPermissionParams },
@@ -55,7 +54,7 @@ class CreatePermission extends Component {
 
 
   render() {
-    return (!this.props.permission.permissionListAllName ? [] : !this.props.permission.permissionListAllName.data ? <div /> : (
+    return (!this.props.permission.permissionListAllName ? null : !this.props.permission.permissionListAllName.data ? null : (
       <ContentLayout
         contentForm={<WrappedRegistrationForm
           jumpFunction={this.props}

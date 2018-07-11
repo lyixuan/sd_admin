@@ -24,6 +24,12 @@ class EditPermission extends Component {
       type: 'permission/permissionListAllName',
       payload: { permissionListAllNameParams },
     });
+
+    const permissionByIdParams = {id:this.state.id};
+    this.props.dispatch({
+      type: 'permission/permissionById',
+      payload: { permissionByIdParams },
+    });
   }
 
   handleSubmit = (values) => {
@@ -56,14 +62,17 @@ class EditPermission extends Component {
   };
 
   render() {
-    return (!this.props.permission.permissionListAllName ? [] : !this.props.permission.permissionListAllName.data ? <div /> : (
-      <ContentLayout
-        contentForm={<WrappedRegistrationForm
-          jumpFunction={this.props}
-          resetContent={()=>{this.resetContent()}}
-          handleSubmit={(values)=>{this.handleSubmit(values)}}
-        />}
-      />
+    const permissionVal = this.props.permission;
+    return (!permissionVal.permissionListAllName ? null :
+      !permissionVal.permissionListAllName.data ? null:!permissionVal.permissionById.response?null:
+      !permissionVal.permissionById.response.data?null: (
+        <ContentLayout
+          contentForm={<WrappedRegistrationForm
+            jumpFunction={this.props}
+            resetContent={()=>{this.resetContent()}}
+            handleSubmit={(values)=>{this.handleSubmit(values)}}
+          />}
+        />
     ));
   }
 }

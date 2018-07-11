@@ -252,3 +252,27 @@
   content: " " !important;
   color: #fff;
 }
+
+:global(.ant-calendar-picker:hover .ant-calendar-picker-input:not(.ant-input-disabled)){
+  border-color: #52C9C2;
+  -webkit-box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+
+:global(.ant-calendar-picker:focus .ant-calendar-picker-input:not(.ant-input-disabled)){
+  border-color: #52C9C2;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+:global(.ant-calendar-today .ant-calendar-date){
+  border-color: #52C9C2;
+  font-weight: bold;
+  color: #52C9C2;
+}
+:global(.ant-calendar-selected-day .ant-calendar-date:hover){
+  background: #52C9C2;
+}
+:global(.ant-calendar-selected-day .ant-calendar-date){
+  background: #52C9C2;
+}
