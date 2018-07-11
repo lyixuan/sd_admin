@@ -10,7 +10,10 @@ import common from '../Common/common.css';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 let propsVal = '';
-const dateFormat = 'YYYY/MM/DD';
+let firstBeginTime = '';
+let firstEndTime = '';
+let firstBottomLineNum = '';
+const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ blRefund, loading }) => ({
   blRefund,
@@ -19,64 +22,103 @@ const dateFormat = 'YYYY/MM/DD';
 class RefundList extends Component {
   constructor(props) {
     super(props);
-    const params = this.props.getUrlParams();
     this.state = {
-      orderNo: params.orderNo || '',
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const params = { size: 30, number: 0 };
+    this.props.dispatch({
+      type: 'blRefund/refundList',
+      payload: { params },
+    });
+  }
+  componentWillUnmount() {
+    firstBeginTime = null;
+    firstEndTime = null;
+    firstBottomLineNum = null;
+  }
+
+  onChange = (dates, dateStrings) => {
+    const aa = dateStrings[0];
+    const bb = dateStrings[1];
+    firstBeginTime = aa;
+    firstEndTime = bb;
+  };
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
+    const params = { size: pageSize, number: current - 1 };
+    this.props.dispatch({
+      type: 'blRefund/refundList',
+      payload: { params },
+    });
   };
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    console.log(current, pageSize);
+    const params = { size: pageSize, number: current - 1 };
+    this.props.dispatch({
+      type: 'blRefund/refundList',
+      payload: { params },
+    });
   };
 
   // 表单搜索
   handleSearch = e => {
     e.preventDefault();
-    let val = {};
     propsVal.form.validateFields((err, values) => {
-      val = values;
+      firstBottomLineNum = values.bottomLineNum;
+      if (!values.dateRange) {
+        const params = { size: 30, number: 0, bottomLineNum: values.bottomLineNum };
+        this.props.dispatch({
+          type: 'blRefund/refundList',
+          payload: { params },
+        });
+      } else {
+        const beginTime = firstBeginTime;
+        const endTime = firstEndTime;
+        const params = {
+          size: 30,
+          number: 0,
+          beginTime,
+          endTime,
+          bottomLineNum: values.bottomLineNum,
+        };
+        this.props.dispatch({
+          type: 'blRefund/refundList',
+          payload: { params },
+        });
+      }
     });
-    this.setState({
-      orderNo: val.orderNo,
-    });
-    this.props.setCurrentUrlParams(val);
   };
 
   // 表单重置
   handleReset = () => {
+    firstBeginTime = '';
+    firstEndTime = '';
+    firstBottomLineNum = '';
     propsVal.form.resetFields();
-    this.setState({
-      orderNo: '',
-    });
     this.props.setCurrentUrlParams({});
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
+  fillDataSource = (val) => {
     const data = [];
-    for (let i = 0; i < 30; i += 1) {
+    val.map((item, index) =>
       data.push({
-        key: i,
-        ordId: i,
-        complainTime: '2018-07-09',
-        stuName: '小当家',
-        id: i,
-        collegeName: '海产品',
-        familyName: '海鲜',
-        groupName: '虾',
-        cpName: '吃货',
-        bottomLineNum: i,
-        complainChannel: '太平洋',
-      });
-    }
+        key: index,
+        ordId: item.ordId,
+        complainTime: item.complainTime,
+        id: item.id,
+        collegeName:item.collegeName,
+        familyName: item.familyName,
+        groupName: item.groupName,
+        cpName: item.cpName,
+        bottomLineNum: item.bottomLineNum,
+        complainChannel: item.complainChannel,
+      })
+    );
     return data;
   };
 
@@ -94,10 +136,6 @@ class RefundList extends Component {
       {
         title: '投诉时间',
         dataIndex: 'complainTime',
-      },
-      {
-        title: '学生名称/id',
-        dataIndex: 'stuName',
       },
       {
         title: '老师名称',
@@ -144,7 +182,11 @@ class RefundList extends Component {
   };
 
   render() {
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const data = !this.props.blRefund.listData?null:!this.props.blRefund.listData.data
+        ? null
+        : this.props.blRefund.listData.data;
+    const totalNum = !data?null:!data.totalElements ? 0 : data.totalElements;
+    const dataSource = !data?null:!data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -154,20 +196,26 @@ class RefundList extends Component {
         <Form onSubmit={this.handleSearch} layout={formLayout}>
           <FormItem label="投诉时间">
             {getFieldDecorator('dateRange', {
-              initialValue: [moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)],
-              rules: [{ required: true, message: '请选择生效日期' }],
-            })(<RangePicker format={dateFormat} style={{ width: 230, height: 32 }} />)}
+              // rules: [{ required: true, message: '请选择生效日期' }],
+              initialValue: !firstEndTime
+                ? null
+                : [moment(firstBeginTime, dateFormat), moment(firstEndTime, dateFormat)],
+            })(
+              <RangePicker
+                format={dateFormat}
+                style={{ width: 230, height: 32 }}
+                onChange={this.onChange}
+              />
+            )}
           </FormItem>
-          <FormItem label="子订单编号" style={{ marginLeft: 119 }}>
-            {getFieldDecorator('orderNo', {
-              initialValue: this.state.orderNo,
+          <FormItem label="编号" style={{ marginLeft: 119 }}>
+            {getFieldDecorator('bottomLineNum', {
+              initialValue: firstBottomLineNum,
               rules: [
-                {
-                  required: true,
-                  message: '请输入搜索内容!',
-                },
+                { min: 2, message: '编号长度不得低于2!' },
+                { max: 20, message: '编号长度不得高于20!' },
               ],
-            })(<Input placeholder="请输入子订单编号" style={{ width: 230, height: 32 }} />)}
+            })(<Input placeholder="请输入编号" style={{ width: 230, height: 32 }} />)}
           </FormItem>
           <FormItem style={{ marginLeft: 119 }}>
             <Button type="primary" htmlType="submit" className={common.searchButton}>
@@ -205,7 +253,7 @@ class RefundList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：35条</p>
+            <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
               dataSource={dataSource}
@@ -224,7 +272,7 @@ class RefundList extends Component {
               this.onShowSizeChange(current, pageSize);
             }}
             defaultCurrent={1}
-            total={31}
+            total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}
           />
