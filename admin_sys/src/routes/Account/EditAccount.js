@@ -47,7 +47,6 @@ class EditAccount extends Component {
             roleId: newRoleId,
             id: Number(this.state.id),
         };
-        console.log(updateAccountParams);
         this.props.dispatch({
             type: 'account/updateAccount',
             payload: { updateAccountParams },
@@ -59,8 +58,8 @@ class EditAccount extends Component {
   };
 
   render() {
-    return (!this.props.account.getRoleList ? [] : !this.props.account.getRoleList.data ? <div /> :
-        !this.props.account.accountInfo.response ? [] : !this.props.account.accountInfo.response.data ? <div /> :
+    return (!this.props.account.getRoleList ? null : !this.props.account.getRoleList.data ? null:
+        !this.props.account.accountInfo.response ? null : !this.props.account.accountInfo.response.data ? null:
       (
         <ContentLayout
           contentForm={<WrappedRegistrationForm

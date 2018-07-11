@@ -17,7 +17,6 @@ class EditUser extends Component {
     this.state = {
       id: !arrValue.id ? null : arrValue.id,
     };
-    console.log(this.state);
   }
   componentDidMount() {
     const wechatListParams = {};
@@ -34,7 +33,6 @@ class EditUser extends Component {
   }
 
   handleSubmit = values => {
-    console.log(values);
     const rname = values.wechatDepartmentName[0];
     const rUserType = values.userType[0];
     const len = values.responseCom.length;
@@ -63,7 +61,6 @@ class EditUser extends Component {
       wechatDepartmentId: Number(newRoleId),
       wechatDepartmentName: !rname ? undefined : rname,
     };
-    console.log(updateUserInfoParams);
     this.props.dispatch({
       type: 'user/updateUserInfo',
       payload: { updateUserInfoParams },

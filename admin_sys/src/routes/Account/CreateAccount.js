@@ -23,7 +23,6 @@ class CreateAccount extends Component {
     });
   }
   handleSubmit = (values) => {
-    console.log(values)
     const rname = values.rname[0];
     let newRoleId = 0;
     const roleList = this.props.account.getRoleList.data.content
@@ -38,7 +37,6 @@ class CreateAccount extends Component {
       mail: `${values.mail}@sunlans.com`,
       roleId: newRoleId,
     };
-    console.log(addAccountParams);
     this.props.dispatch({
       type: 'account/addAccount',
       payload: { addAccountParams },
@@ -50,8 +48,7 @@ class CreateAccount extends Component {
   };
 
   render() {
-    console.log(this.props.account.getRoleList)
-    return (!this.props.account.getRoleList ? [] : !this.props.account.getRoleList.data ? <div /> :
+    return (!this.props.account.getRoleList ? null : !this.props.account.getRoleList.data ? null :
         (
           <ContentLayout
             contentForm={<WrappedRegistrationForm

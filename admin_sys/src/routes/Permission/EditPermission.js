@@ -63,17 +63,16 @@ class EditPermission extends Component {
 
   render() {
     const permissionVal = this.props.permission;
-    // console.log(permissionVal.permissionById)
     return (!permissionVal.permissionListAllName ? null :
       !permissionVal.permissionListAllName.data ? null:!permissionVal.permissionById.response?null:
       !permissionVal.permissionById.response.data?null: (
-      <ContentLayout
-        contentForm={<WrappedRegistrationForm
-          jumpFunction={this.props}
-          resetContent={()=>{this.resetContent()}}
-          handleSubmit={(values)=>{this.handleSubmit(values)}}
-        />}
-      />
+        <ContentLayout
+          contentForm={<WrappedRegistrationForm
+            jumpFunction={this.props}
+            resetContent={()=>{this.resetContent()}}
+            handleSubmit={(values)=>{this.handleSubmit(values)}}
+          />}
+        />
     ));
   }
 }
