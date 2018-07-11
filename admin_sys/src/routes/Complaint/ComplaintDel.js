@@ -79,7 +79,10 @@ class ComplaintDel extends Component {
       isDisabled: true,
     };
   }
-  componentDidMount() {}
+
+  componentDidMount() {
+    this.editCurrent(0);
+  }
 
   // 回调
   onChildChange = bol => {

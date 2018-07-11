@@ -74,6 +74,10 @@ class ComplaintAdd extends Component {
       isDisabled: true,
     };
   }
+
+  componentDidMount() {
+    this.editCurrent(0);
+  }
   // 回调
   onChildChange = bol => {
     this.setState({

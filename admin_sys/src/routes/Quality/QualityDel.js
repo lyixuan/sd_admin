@@ -75,6 +75,9 @@ class RefundDel extends Component {
     };
   }
 
+  componentDidMount() {
+    this.editCurrent(0);
+  }
   // 回调
   onChildChange = bol => {
     this.setState({
