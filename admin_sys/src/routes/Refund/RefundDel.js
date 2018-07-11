@@ -4,9 +4,10 @@ import StepLayout from '../../layouts/stepLayout';
 import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 import StepTable from '../../selfComponent/setpForm/stepTable';
+import CheckResult from '../../selfComponent/setpForm/checkResult';
 
-@connect(({ refund, loading }) => ({
-  refund,
+@connect(({ blRefund, loading }) => ({
+  blRefund,
   loading,
 }))
 class RefundDel extends Component {
@@ -79,24 +80,60 @@ class RefundDel extends Component {
       isDisabled: bol,
     });
   };
+  getNums = nums => {
+    this.props.dispatch({
+      type: 'blRefund/getNums',
+      payload: nums,
+    });
+  };
+  fetchPreDel = params => {
+    this.props.dispatch({
+      type: 'blRefund/preDelRefund',
+      payload: { params },
+    });
+  };
+  fetchDel = params => {
+    this.props.dispatch({
+      type: 'blRefund/delRefund',
+      payload: { params },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/refund/refundList',
     });
   }
   render() {
+    const { preDelData, nums } = this.props.blRefund;
+    const data = preDelData ? preDelData.data : null;
+
+    const failNums = data ? data.failNums : '';
+    const successNums = data ? data.successNums : '';
+    const inputContent = data ? data.failSize > 0 : null;
+
     const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
-    const tipSucess = '您已成功删除 1500 条数据！';
+    const tipSucess = '您已成功删除 150 条数据！';
+    const checkRes = !data ? null : (
+      <CheckResult
+        totalSize={data.totalSize}
+        successSize={data.successSize}
+        failSize={data.failSize}
+      />
+    );
     const steps = [
       {
         title: '输入编号',
         content: (
           <StepInput
-            inputTitle="请输入想删除的 “子订单编号”："
-            inputContent="1212"
+            inputTitle="请输入想删除的 “退费编号”："
+            inputContent="true"
             inputTip="true"
+            disabled={false}
+            getNums={param => {
+              this.getNums(param);
+            }}
             callBackParent={bol => {
               this.onChildChange(bol);
             }}
@@ -105,7 +142,14 @@ class RefundDel extends Component {
       },
       {
         title: '校验编号',
-        content: <StepInput inputInfo="校验数据总数：5000 条数据 " inputContent="1212" />,
+        content: (
+          <StepInput
+            inputInfo={checkRes}
+            inputContent={inputContent}
+            disabled
+            faileData={failNums}
+          />
+        ),
       },
       {
         title: '复核数据',
@@ -130,6 +174,12 @@ class RefundDel extends Component {
         tipSucess={tipSucess}
         goBack={() => {
           this.historyFn();
+        }}
+        step1Fetch={() => {
+          this.fetchPreDel({ nums });
+        }}
+        step2Fetch={() => {
+          this.fetchDel({ nums: successNums });
         }}
         isDisabled={isDisabled}
       />

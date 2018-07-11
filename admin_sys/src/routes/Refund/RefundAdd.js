@@ -6,8 +6,8 @@ import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 
-@connect(({ refund, loading }) => ({
-  refund,
+@connect(({ blRefund, loading }) => ({
+  blRefund,
   loading,
 }))
 class RefundAdd extends Component {
@@ -137,7 +137,7 @@ class RefundAdd extends Component {
         title: '选择Excel',
         content: (
           <StepUpload
-            uploadUrl={qualityUpload()._v}
+            uploadUrl={qualityUpload()}
             callBackParent={bol => {
               this.onChildChange(bol);
             }}
