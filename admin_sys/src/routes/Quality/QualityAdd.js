@@ -73,17 +73,21 @@ class RefundAdd extends Component {
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
       isDisabled: true,
+      checkParams: '',
     };
   }
   componentDidMount() {
     this.editCurrent(0);
   }
   // 回调
-  onChildChange = bol => {
+  onChildChange = (bol, checkParams) => {
     this.setState({
       isDisabled: bol,
+      checkParams,
     });
   };
+
+  // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
       type: 'quality/checkQuality',
@@ -104,7 +108,7 @@ class RefundAdd extends Component {
   }
   render() {
     const { current } = this.props.quality;
-    const { dataSource, isDisabled } = this.state;
+    const { dataSource, isDisabled, checkParams } = this.state;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -121,8 +125,8 @@ class RefundAdd extends Component {
         content: (
           <StepUpload
             uploadUrl={qualityUpload()}
-            callBackParent={bol => {
-              this.onChildChange(bol);
+            callBackParent={(bol, params) => {
+              this.onChildChange(bol, params);
             }}
           />
         ),
@@ -148,15 +152,12 @@ class RefundAdd extends Component {
         title="添加质检"
         steps={steps}
         tipSucess={tipSucess}
+        isDisabled={isDisabled}
         goBack={() => {
           this.historyFn();
         }}
-        // step1Fetch={() => {
-        //   this.fetchCheckData({ name: '' });
-        // }}
-        isDisabled={isDisabled}
         step1Fetch={() => {
-          this.editCurrent(1);
+          this.fetchCheckData({ additionalProp1: checkParams });
         }}
         step2Fetch={() => {
           this.editCurrent(2);

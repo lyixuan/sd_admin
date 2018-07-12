@@ -115,6 +115,7 @@ class RefundAdd extends Component {
     this.state = {
       dataSource: !dataSource ? [] : dataSource,
       isDisabled: true,
+      checkParams: '',
     };
   }
 
@@ -126,9 +127,17 @@ class RefundAdd extends Component {
     clearConfirm();
   }
   // 回调
-  onChildChange = bol => {
+  onChildChange = (bol, checkParams) => {
     this.setState({
       isDisabled: bol,
+      checkParams,
+    });
+  };
+  // 校验excel文件
+  fetchCheckData = params => {
+    this.props.dispatch({
+      type: 'blRefund/checkRefund',
+      payload: { params },
     });
   };
   editCurrent = current => {
@@ -144,7 +153,7 @@ class RefundAdd extends Component {
   }
   render() {
     const { current } = this.props.blRefund;
-    const { dataSource, isDisabled } = this.state;
+    const { dataSource, isDisabled, checkParams } = this.state;
     const columns = !this.columns ? [] : this.columns;
 
     // 有数据之后刷新页面提示弹框
@@ -161,8 +170,8 @@ class RefundAdd extends Component {
         content: (
           <StepUpload
             uploadUrl={qualityUpload()}
-            callBackParent={bol => {
-              this.onChildChange(bol);
+            callBackParent={(bol, params) => {
+              this.onChildChange(bol, params);
             }}
           />
         ),
@@ -186,7 +195,7 @@ class RefundAdd extends Component {
           this.historyFn();
         }}
         step1Fetch={() => {
-          this.editCurrent(1);
+          this.fetchCheckData({ additionalProp1: checkParams });
         }}
         step2Fetch={() => {
           this.editCurrent(2);

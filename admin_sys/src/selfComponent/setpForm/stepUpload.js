@@ -21,7 +21,7 @@ class stepUpload extends Component {
     }
 
     if (info.file.response && info.file.response.code === 2000) {
-      this.props.callBackParent(false);
+      this.props.callBackParent(false, info.file.response.data);
     }
   };
   render() {
