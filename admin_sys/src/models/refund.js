@@ -27,7 +27,7 @@ export default {
         message.error(checkList.msg);
         yield put({ type: 'save', payload: { current: 0 } });
       } else {
-        yield put({ type: 'save', payload: { checkList, current: 1 } });
+        yield put({ type: 'saveList', payload: { checkList, current: 1 } });
       }
     },
     *preDelRefund({ payload }, { call, put }) {
@@ -63,6 +63,14 @@ export default {
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
+    },
+    saveList(state, action) {
+      const { checkList } = action.payload;
+      const { content } = checkList;
+      content.forEach((item, i) => {
+        content[i].key = i;
+      });
+      return { ...state, checkList };
     },
   },
 };

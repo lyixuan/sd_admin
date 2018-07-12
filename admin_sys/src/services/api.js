@@ -387,9 +387,9 @@ export async function getBlComplainList(params) {
     body: params,
   });
 }
-// 校验质检excel文件 todo
+// 校验质检excel文件
 export async function checkComplainList(params) {
-  return request(`${HOST}/metaQuality/verifyDataFromExcel`, {
+  return request(`${HOST}/blComplain/verifyDataFromExcel`, {
     method: 'POST',
     body: params,
   });
@@ -454,9 +454,9 @@ export async function getBlRefundList(params) {
     body: params,
   });
 }
-// 校验退费excel文件 todo
+// 校验退费excel文件
 export async function checkRefundList(params) {
-  return request(`${HOST}/metaQuality/verifyDataFromExcel`, {
+  return request(`${HOST}/blRefund/verifyDataFromExcel`, {
     method: 'POST',
     body: params,
   });
