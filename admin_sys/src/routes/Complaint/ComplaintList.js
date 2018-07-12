@@ -38,8 +38,6 @@ class ComplainList extends Component {
     firstBottomLineNum = null;
   }
   onChange = (dates, dateStrings) => {
-    console.log(dates);
-    console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
     const aa = dateStrings[0];
     const bb = dateStrings[1];
     firstBeginTime = aa;
@@ -71,9 +69,7 @@ class ComplainList extends Component {
       if (!err) {
         firstBottomLineNum = values.bottomLineNum;
         if (!values.dateRange) {
-          console.log(values);
           const getListParams = { size: 30, number: 0, bottomLineNum: values.bottomLineNum };
-          console.log(getListParams);
           this.props.dispatch({
             type: 'blComplain/getList',
             payload: { getListParams },
@@ -88,7 +84,6 @@ class ComplainList extends Component {
             endTime,
             bottomLineNum: values.bottomLineNum,
           };
-          console.log(getListParams);
           this.props.dispatch({
             type: 'blComplain/getList',
             payload: { getListParams },
