@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { qualityUpload } from '../../services/api';
+import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 import StepLayout from '../../layouts/stepLayout';
 import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
-import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 
 @connect(({ blRefund, loading }) => ({
   blRefund,
@@ -119,8 +119,8 @@ class RefundAdd extends Component {
   }
 
   componentDidMount() {
+    // init current
     this.editCurrent(0);
-    setConfirm();
   }
   componentWillUnmount() {
     clearConfirm();
@@ -146,6 +146,13 @@ class RefundAdd extends Component {
     const { current } = this.props.blRefund;
     const { dataSource, isDisabled } = this.state;
     const columns = !this.columns ? [] : this.columns;
+
+    // 有数据之后刷新页面提示弹框
+    if (!isDisabled) {
+      setConfirm();
+    } else {
+      clearConfirm();
+    }
 
     const tipSucess = '您已成功上传 1500 条数据！';
     const steps = [

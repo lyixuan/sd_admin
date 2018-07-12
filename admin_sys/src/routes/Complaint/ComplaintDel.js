@@ -5,6 +5,7 @@ import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import CheckResult from '../../selfComponent/setpForm/checkResult';
+import { clearConfirm, setConfirm } from '../../utils/reloadConfirm';
 
 @connect(({ blComplain, loading }) => ({
   blComplain,
@@ -81,6 +82,7 @@ class ComplaintDel extends Component {
   }
 
   componentDidMount() {
+    // init current
     this.editCurrent(0);
   }
 
@@ -128,6 +130,14 @@ class ComplaintDel extends Component {
     const inputContent = data ? data.failSize > 0 : null;
 
     const { dataSource, isDisabled } = this.state;
+
+    // 有数据之后刷新页面提示弹框
+    if (!isDisabled) {
+      setConfirm();
+    } else {
+      clearConfirm();
+    }
+
     const columns = !this.columns ? [] : this.columns;
 
     const tipSucess = '您已成功删除 1500 条数据！';

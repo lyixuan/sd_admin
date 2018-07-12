@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { qualityUpload } from '../../services/api';
+import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 import StepLayout from '../../layouts/stepLayout';
 import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
@@ -104,6 +105,14 @@ class RefundAdd extends Component {
   render() {
     const { current } = this.props.quality;
     const { dataSource, isDisabled } = this.state;
+
+    // 有数据之后刷新页面提示弹框
+    if (!isDisabled) {
+      setConfirm();
+    } else {
+      clearConfirm();
+    }
+
     const columns = !this.columns ? [] : this.columns;
     const tipSucess = '您已成功上传 1500 条数据！';
     const steps = [
