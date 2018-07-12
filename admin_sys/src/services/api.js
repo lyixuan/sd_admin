@@ -441,6 +441,7 @@ export async function delQualityList(params) {
     body: params,
   });
 }
+// 上传图片地址
 export function qualityUpload() {
   return `${HOST}/metaQuality/uploadFile`;
 }
