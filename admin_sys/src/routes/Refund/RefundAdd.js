@@ -57,32 +57,32 @@ class RefundAdd extends Component {
     const columns = [
       {
         title: '子订单编号',
-        dataIndex: 'name',
+        dataIndex: 'bottomLinueNum',
         width: '93px',
       },
       {
         title: '编号已存在',
-        dataIndex: 'role',
+        dataIndex: 'countValue',
         width: '92px',
       },
       {
         title: '必填项缺失',
-        dataIndex: 'email',
+        dataIndex: 'complainTime',
         width: '92px',
       },
       {
         title: '班主任组织关系匹配失败',
-        dataIndex: 'status',
+        dataIndex: 'stuId',
         width: '164px',
       },
       {
         title: '学院/家族/小组不存在',
-        dataIndex: 'status2',
+        dataIndex: 'cpId',
         width: '152px',
       },
       {
         title: '编号重复',
-        dataIndex: 'status1',
+        dataIndex: 'stuName',
         width: '82px',
       },
     ];
@@ -92,8 +92,13 @@ class RefundAdd extends Component {
     const { current, checkList } = this.props.blRefund;
     const { isDisabled, checkParams } = this.state;
 
-    const dataSource = !checkList ? [] : checkList.data;
+    const sucessNum = !checkList ? 0 : checkList.data.num;
+    const errorList = !checkList ? [] : checkList.data.errorList;
+
+    const dataSource = !errorList.length > 0 ? null : errorList;
     const columns = !this.columnsData() ? [] : this.columnsData();
+    const tableTitle =
+      !errorList.length > 0 ? `本次添加退费数量 ${sucessNum} 条数据！确定上传？` : null;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -102,7 +107,6 @@ class RefundAdd extends Component {
       clearConfirm();
     }
 
-    const tipSucess = '您已成功上传 1500 条数据！';
     const steps = [
       {
         title: '选择Excel',
@@ -117,24 +121,30 @@ class RefundAdd extends Component {
       },
       {
         title: '校验文件',
-        content: <StepTable onlyTable="true" dataSource={dataSource} columns={columns} />,
+        content: (
+          <StepTable
+            tableTitle={tableTitle}
+            onlyTable="true"
+            dataSource={dataSource}
+            columns={columns}
+          />
+        ),
       },
       {
         title: '上传成功',
-        content: <StepSucess isDelImg="false" tipSucess={tipSucess} />,
+        content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
       },
     ];
     return (
       <StepLayout
         title="添加退费"
         steps={steps}
-        tipSucess={tipSucess}
         isDisabled={isDisabled}
         goBack={() => {
           this.historyFn();
         }}
         step1Fetch={() => {
-          this.fetchCheckData({ additionalProp1: checkParams });
+          this.fetchCheckData({ filePath: checkParams });
         }}
         step2Fetch={() => {
           this.editCurrent(2);

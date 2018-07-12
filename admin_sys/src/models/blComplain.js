@@ -27,9 +27,9 @@ export default {
       const checkList = yield call(checkComplainList, { ...params });
       if (checkList.code !== 2000) {
         message.error(checkList.msg);
-        yield put({ type: 'save', payload: { current: 0 } });
+        yield put({ type: 'savePreData', payload: { current: 0 } });
       } else {
-        yield put({ type: 'save', payload: { checkList, current: 1 } });
+        yield put({ type: 'savePreData', payload: { checkList, current: 1 } });
       }
     },
     *preDelComplain({ payload }, { call, put }) {
@@ -70,6 +70,15 @@ export default {
       };
     },
     savePreData(state, action) {
+      const { checkList } = action.payload;
+      if (checkList) {
+        const { errorList } = checkList.data;
+        if (errorList) {
+          errorList.forEach((item, i) => {
+            errorList[i].key = i;
+          });
+        }
+      }
       return { ...state, ...action.payload };
     },
   },

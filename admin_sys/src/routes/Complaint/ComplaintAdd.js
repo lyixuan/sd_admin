@@ -157,7 +157,7 @@ class ComplaintAdd extends Component {
           this.historyFn();
         }}
         step1Fetch={() => {
-          this.fetchCheckData({ additionalProp1: checkParams });
+          this.fetchCheckData({ filePath: checkParams });
         }}
         step2Fetch={() => {
           this.editCurrent(2);

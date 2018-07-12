@@ -63,6 +63,15 @@ export default {
 
   reducers: {
     save(state, action) {
+      const { checkList } = action.payload;
+      if (checkList) {
+        const { errorList } = checkList.data;
+        if (errorList) {
+          errorList.forEach((item, i) => {
+            errorList[i].key = i;
+          });
+        }
+      }
       return { ...state, ...action.payload };
     },
     qualityListSave(state, action) {
