@@ -405,6 +405,14 @@ export async function delBlComplainList(params) {
 /*
 * 质检模块接口
 * */
+
+// 质检单列表
+export async function getQualityList(params) {
+  return request(`${HOST}/metaQuality/list?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
 // 校验质检excel文件
 export async function checkQuality(params) {
   return request(`${HOST}/metaQuality/verifyDataFromExcel`, {

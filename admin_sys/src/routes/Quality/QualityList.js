@@ -1,26 +1,45 @@
 import React, { Component } from 'react';
 import { Table, Button, Form, Input, Pagination } from 'antd';
+import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
 let propsVal = '';
+@connect(({ quality, loading }) => ({
+  quality,
+  loading,
+}))
 class QualityList extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const qualityListParams = { size: 30, number: 0 };
+    this.props.dispatch({
+      type: 'quality/getQualityList',
+      payload: { qualityListParams },
+    });
+  }
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
+    const qualityListParams = { size: pageSize, number: current - 1 };
+    this.props.dispatch({
+      type: 'quality/getQualityList',
+      payload: { qualityListParams },
+    });
   };
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    console.log(current, pageSize);
+    const qualityListParams = { size: pageSize, number: current - 1 };
+    this.props.dispatch({
+      type: 'quality/getQualityList',
+      payload: { qualityListParams },
+    });
   };
 
   // 表单搜索函数
@@ -108,6 +127,7 @@ class QualityList extends Component {
   };
 
   render() {
+    console.log(this.props.quality.qualityList)
     const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';

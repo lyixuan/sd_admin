@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { checkQuality, delQualityList, preDelQualityList } from '../services/api';
+import { getQualityList, checkQuality, delQualityList, preDelQualityList } from '../services/api';
 
 export default {
   namespace: 'quality',
@@ -7,9 +7,15 @@ export default {
   state: {
     nums: '',
     current: 0,
+    qualityList:[],
   },
 
   effects: {
+    *getQualityList({ payload }, { call, put }) {
+      const response = yield call(getQualityList, payload.qualityListParams);
+      // console.log(response);
+      yield put({ type: 'qualityListSave', payload: { response } });
+    },
     *checkQuality({ payload }, { call, put }) {
       const { data } = payload;
       const response = yield call(checkQuality, { ...data });
@@ -49,6 +55,11 @@ export default {
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
+    },
+    qualityListSave(state, action) {
+      return { ...state,
+        qualityList: action.payload,
+      };
     },
   },
 };
