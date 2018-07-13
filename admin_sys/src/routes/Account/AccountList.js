@@ -137,11 +137,8 @@ class AccountList extends Component {
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
-    return !this.props.account.accountList.response ? (
-      <div />
-    ) : !this.props.account.accountList.response.data ? (
-      <div />
-    ) : (
+    const val = this.props.account.accountList.response
+    return !val ? null: !val ? null: (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
         title="账号列表"

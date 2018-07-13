@@ -164,9 +164,7 @@ class UserList extends Component {
         render: (text, record) => {
           return (
             <div>
-              {!record.changeShowName ? (
-                <div />
-              ) : (
+              {record.changeShowName!==record.showName ? null: (
                 <AuthorizedButton authority="/user/checkUser">
                   <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
                     更新
