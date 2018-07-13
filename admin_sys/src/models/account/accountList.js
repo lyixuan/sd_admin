@@ -5,7 +5,7 @@ import {
   addAccount,
   updateAccount,
   deleteAccount,
-  getRoleList,
+  getRolePrivilegesList,
   queryAccountInfo,
 } from '../../services/api';
 
@@ -71,7 +71,7 @@ export default {
       });
     },
     *getRoleList({ payload }, { call, put }) {
-      const response = yield call(getRoleList, payload.getRoleListParams);
+      const response = yield call(getRolePrivilegesList, payload.getRoleListParams);
       yield put({
         type: 'getRoleListSave',
         payload: response,

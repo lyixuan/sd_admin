@@ -10,7 +10,7 @@ class AccountForm extends Component {
     const fromWhere = this.props.jumpFunction.getUrlParams();
     const roleValues = this.props.jumpFunction.account.getRoleList
     this.state = {
-      roleList: !roleValues ? [] : !roleValues.data ? [] : roleValues.data.content,
+      roleList: !roleValues ? [] : !roleValues.data ? [] : roleValues.data,
       id: !fromWhere.id ? '' : fromWhere.id,
     };
   }

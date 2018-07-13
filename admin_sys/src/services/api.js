@@ -118,6 +118,15 @@ export async function deleteAccount(params) {
     body: params,
   });
 }
+
+// 查询角色下拉列表
+export async function getRolePrivilegesList(params) {
+  return request(`${HOST}/rolePrivilege/list?${stringify(params)}`, {
+    method: 'GET',
+    body: params,
+  });
+}
+
 /*
 * 短名称管理
 * */
