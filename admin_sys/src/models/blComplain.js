@@ -15,6 +15,7 @@ export default {
     getList: [],
     nums: '',
     current: 0,
+    disableFlag: false,
   },
 
   effects: {
@@ -29,8 +30,10 @@ export default {
       if (checkList.code !== 2000) {
         message.error(checkList.msg);
         yield put({ type: 'savePreData', payload: { current: 0 } });
-      } else {
+      } else if (checkList.data.errorList.length > 0) {
         yield put({ type: 'savePreData', payload: { checkList, current: 1 } });
+      } else {
+        yield put({ type: 'savePreData', payload: { checkList, current: 1, disableFlag: true } });
       }
     },
     *saveExcel({ payload }, { call, put }) {

@@ -19,7 +19,10 @@ const { Step } = Steps;
 class StepLayout extends Component {
   // 下一页
   next() {
-    const { step1Fetch, step2Fetch, step3Fetch, current } = this.props;
+    const { step1Fetch, step2Fetch, step3Fetch, current, callBackParent, disableFlag } = this.props;
+    if (disableFlag === false) {
+      callBackParent(true);
+    }
     if (current === 0) {
       if (step1Fetch) {
         step1Fetch();

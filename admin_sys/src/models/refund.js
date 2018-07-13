@@ -12,6 +12,7 @@ export default {
 
   state: {
     nums: '',
+    disableFlag: false,
     current: 0,
   },
 
@@ -27,8 +28,10 @@ export default {
       if (checkList.code !== 2000) {
         message.error(checkList.msg);
         yield put({ type: 'save', payload: { current: 0 } });
-      } else {
+      } else if (checkList.data.errorList.length > 0) {
         yield put({ type: 'save', payload: { checkList, current: 1 } });
+      } else {
+        yield put({ type: 'save', payload: { checkList, current: 1, disableFlag: true } });
       }
     },
     *saveExcel({ payload }, { call, put }) {

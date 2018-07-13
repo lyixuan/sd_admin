@@ -80,6 +80,14 @@ class ComplaintAdd extends Component {
   componentDidMount() {
     this.editCurrent(0);
   }
+  componentWillReceiveProps() {
+    if (this.props.blComplain.disableFlag) {
+      this.onChildChange(false);
+    }
+  }
+  componentWillUnmount() {
+    clearConfirm();
+  }
   // 回调
   onChildChange = (bol, checkParams) => {
     this.setState({
@@ -114,7 +122,7 @@ class ComplaintAdd extends Component {
     });
   }
   render() {
-    const { current } = this.props.blComplain;
+    const { current, disableFlag } = this.props.blComplain;
     const { dataSource, isDisabled, checkParams } = this.state;
 
     // 有数据之后刷新页面提示弹框
@@ -161,8 +169,12 @@ class ComplaintAdd extends Component {
         steps={steps}
         tipSucess={tipSucess}
         isDisabled={isDisabled}
+        disableFlag={disableFlag}
         goBack={() => {
           this.historyFn();
+        }}
+        callBackParent={bol => {
+          this.onChildChange(bol);
         }}
         step1Fetch={() => {
           this.fetchCheckData({ filePath: checkParams });

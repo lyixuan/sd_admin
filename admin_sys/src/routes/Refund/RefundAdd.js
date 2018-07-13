@@ -24,6 +24,11 @@ class RefundAdd extends Component {
     // init current
     this.editCurrent(0);
   }
+  componentWillReceiveProps() {
+    if (this.props.blRefund.disableFlag) {
+      this.onChildChange(false);
+    }
+  }
   componentWillUnmount() {
     clearConfirm();
   }
@@ -97,7 +102,7 @@ class RefundAdd extends Component {
     return columns;
   };
   render() {
-    const { current, checkList } = this.props.blRefund;
+    const { current, checkList, disableFlag } = this.props.blRefund;
     const { isDisabled, checkParams } = this.state;
 
     const sucessNum = !checkList ? 0 : checkList.data.num;
@@ -148,8 +153,12 @@ class RefundAdd extends Component {
         title="添加退费"
         steps={steps}
         isDisabled={isDisabled}
+        disableFlag={disableFlag}
         goBack={() => {
           this.historyFn();
+        }}
+        callBackParent={bol => {
+          this.onChildChange(bol);
         }}
         step1Fetch={() => {
           this.fetchCheckData({ filePath: checkParams });

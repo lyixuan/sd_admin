@@ -21,15 +21,27 @@ class RefundAdd extends Component {
   }
   componentDidMount() {
     this.editCurrent(0);
-    // todo 点击添加的时候清除文件
-    this.saveFileList(null);
+  }
+  componentWillReceiveProps() {
+    if (this.props.quality.disableFlag) {
+      this.onChildChange(false);
+    }
+  }
+  componentWillUnmount() {
+    clearConfirm();
   }
   // 回调
   onChildChange = (bol, checkParams) => {
-    this.setState({
-      isDisabled: bol,
-      checkParams,
-    });
+    if (checkParams) {
+      this.setState({
+        isDisabled: bol,
+        checkParams,
+      });
+    } else {
+      this.setState({
+        isDisabled: bol,
+      });
+    }
   };
 
   // 校验excel文件
@@ -48,12 +60,6 @@ class RefundAdd extends Component {
     });
   };
 
-  saveFileList = fileList => {
-    this.props.dispatch({
-      type: 'quality/saveFileList',
-      payload: { fileList },
-    });
-  };
   editCurrent = current => {
     this.props.dispatch({
       type: 'quality/editCurrent',
@@ -101,7 +107,7 @@ class RefundAdd extends Component {
     return columns;
   };
   render() {
-    const { current, checkList, fileList } = this.props.quality;
+    const { current, checkList, fileList, disableFlag } = this.props.quality;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;
@@ -117,6 +123,7 @@ class RefundAdd extends Component {
     } else {
       clearConfirm();
     }
+
     const steps = [
       {
         title: '选择Excel',
@@ -126,9 +133,6 @@ class RefundAdd extends Component {
             fileList={fileList}
             callBackParent={(bol, params) => {
               this.onChildChange(bol, params);
-            }}
-            saveFileList={param => {
-              this.saveFileList(param);
             }}
           />
         ),
@@ -155,8 +159,12 @@ class RefundAdd extends Component {
         title="添加质检"
         steps={steps}
         isDisabled={isDisabled}
+        disableFlag={disableFlag}
         goBack={() => {
           this.historyFn();
+        }}
+        callBackParent={bol => {
+          this.onChildChange(bol);
         }}
         step1Fetch={() => {
           this.fetchCheckData({ filePath: checkParams });
