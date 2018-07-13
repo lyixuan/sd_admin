@@ -21,7 +21,7 @@ class PermissionList extends Component {
   }
 
   componentDidMount() {
-    const permissionListParams = {size: 50, number: 0};
+    const permissionListParams = {size: 50, number: 0,sort:'id'};
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -40,7 +40,7 @@ class PermissionList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const permissionListParams = {size: pageSize, number: current - 1 };
+    const permissionListParams = {size: pageSize, number: current - 1,sort:'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -49,7 +49,7 @@ class PermissionList extends Component {
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const permissionListParams = {size: pageSize, number: current - 1 };
+    const permissionListParams = {size: pageSize, number: current - 1 ,sort:'id'};
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -69,7 +69,7 @@ class PermissionList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         firstName = values.name;
-        const permissionListParams = { name: !values.name?undefined:values.name };
+        const permissionListParams = { name: !values.name?undefined:values.name ,sort:'id'};
         this.props.dispatch({
           type: 'permission/permissionList',
           payload: { permissionListParams },
