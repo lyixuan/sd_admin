@@ -34,7 +34,7 @@ class CreateAccount extends Component {
     });
     const addAccountParams = {
       name: values.name,
-      mail: `${values.mail}@sunlans.com`,
+      mail: `${values.mail}@sunlands.com`,
       roleId: newRoleId,
     };
     this.props.dispatch({

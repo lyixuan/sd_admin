@@ -43,7 +43,7 @@ class EditAccount extends Component {
         });
         const updateAccountParams = {
             name: values.name,
-            mail: `${values.mail}@sunlans.com`,
+            mail: `${values.mail}@sunlands.com`,
             roleId: newRoleId,
             id: Number(this.state.id),
         };
