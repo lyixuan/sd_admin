@@ -14,7 +14,7 @@ export default {
 
   state: {
     // 请求接口上送参数
-    accountListParams: { size: 30, number: 0 },
+    accountListParams: { size: 30, number: 0 ,orderType:'name'},
     addAccountParams: {},
     updateAccountParams: {},
     deleteAccountParams: {},
@@ -63,7 +63,7 @@ export default {
       } else {
         message.error(result.msg);
       }
-      const response = yield call(queryAccountList, { size: 30, number: 0 });
+      const response = yield call(queryAccountList, { size: 30, number: 0,orderType:'name' });
       console.log(response);
       yield put({
         type: 'accountListSave',
