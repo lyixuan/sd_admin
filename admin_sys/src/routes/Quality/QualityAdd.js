@@ -74,40 +74,44 @@ class RefundAdd extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '子订单编号',
+        title: '行数',
         dataIndex: 'rowNum',
-        width: '100px',
+        width: '70px',
       },
       {
-        title: '编号已存在',
-        dataIndex: 'qualityNum',
-        width: '100px',
-      },
-      {
-        title: '必填项缺失',
-        dataIndex: 'qualityDate',
-        width: '100px',
-      },
-      {
-        title: '班主任组织关系匹配失败',
-        dataIndex: 'teaId',
-        width: '100px',
-      },
-      {
-        title: '学院/家族/小组不存在',
-        dataIndex: 'qualityType',
-        width: '150px',
-      },
-      {
-        title: '编号重复',
+        title: '编号',
         dataIndex: 'countValue',
-        width: '100px',
+        width: '92px',
+      },
+      {
+        title: '投诉时间',
+        dataIndex: 'complainTime',
+        width: '105px',
+      },
+      {
+        title: '学生id',
+        dataIndex: 'stuId',
+        width: '133px',
+      },
+      {
+        title: '学生姓名',
+        dataIndex: 'stuName',
+        width: '92px',
+      },
+      {
+        title: '老师id',
+        dataIndex: 'cpId',
+        width: '160px',
+      },
+      {
+        title: '扣分值',
+        dataIndex: 'countValue',
       },
     ];
     return columns;
   };
   render() {
-    const { current, checkList, fileList, disableFlag } = this.props.quality;
+    const { current, checkList, disableFlag } = this.props.quality;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;
@@ -115,7 +119,22 @@ class RefundAdd extends Component {
     const dataSource = !errorList.length > 0 ? null : errorList;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const tableTitle =
-      !errorList.length > 0 ? `本次添加退费数量 ${sucessNum} 条数据！确定上传？` : null;
+      !errorList.length > 0 ? (
+        <div
+          style={{
+            width: '590px',
+            height: '58px',
+            background: '#F6F7FA',
+            borderRadius: '3px',
+            lineHeight: '58px',
+            margin: '116px auto 0',
+          }}
+        >
+          本次添加质检数量
+          <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
+          条！确定上传？
+        </div>
+      ) : null;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -130,7 +149,6 @@ class RefundAdd extends Component {
         content: (
           <StepUpload
             uploadUrl={qualityUpload()}
-            fileList={fileList}
             callBackParent={(bol, params) => {
               this.onChildChange(bol, params);
             }}

@@ -14,64 +14,7 @@ import StepSucess from '../../selfComponent/setpForm/stepSucess';
 class ComplaintAdd extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
-      {
-        title: '子订单编号',
-        dataIndex: 'name',
-        width: '100px',
-      },
-      {
-        title: '编号已存在',
-        dataIndex: 'role',
-        width: '100px',
-      },
-      {
-        title: '必填项缺失',
-        dataIndex: 'email',
-        width: '100px',
-      },
-      {
-        title: '班主任组织关系匹配失败',
-        dataIndex: 'status',
-        width: '100px',
-      },
-      {
-        title: '学院/家族/小组不存在',
-        dataIndex: 'status2',
-        width: '150px',
-      },
-      {
-        title: '编号重复',
-        dataIndex: 'status1',
-        width: '100px',
-      },
-    ];
-
-    const dataSource = [
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-    ];
     this.state = {
-      dataSource: !dataSource ? [] : dataSource,
       isDisabled: true,
       checkParams: '',
     };
@@ -121,9 +64,70 @@ class ComplaintAdd extends Component {
       pathname: '/complaint/complaintList',
     });
   }
+  columnsData = () => {
+    const columns = [
+      {
+        title: '行数',
+        dataIndex: 'rowNum',
+        width: '70px',
+      },
+      {
+        title: '编号',
+        dataIndex: 'bottomLinueNum',
+        width: '92px',
+      },
+      {
+        title: '投诉时间',
+        dataIndex: 'complainTime',
+        width: '105px',
+      },
+      {
+        title: '学生id',
+        dataIndex: 'stuId',
+        width: '133px',
+      },
+      {
+        title: '学生姓名',
+        dataIndex: 'stuName',
+        width: '92px',
+      },
+      {
+        title: '老师id',
+        dataIndex: 'cpId',
+        width: '160px',
+      },
+      {
+        title: '扣分值',
+        dataIndex: 'countValue',
+      },
+    ];
+    return columns;
+  };
   render() {
-    const { current, disableFlag } = this.props.blComplain;
-    const { dataSource, isDisabled, checkParams } = this.state;
+    const { current, checkList, disableFlag } = this.props.blComplain;
+    const { isDisabled, checkParams } = this.state;
+    const sucessNum = !checkList ? 0 : checkList.data.num;
+    const errorList = !checkList ? [] : checkList.data.errorList;
+
+    const dataSource = !errorList.length > 0 ? null : errorList;
+    const columns = !this.columnsData() ? [] : this.columnsData();
+    const tableTitle =
+      !errorList.length > 0 ? (
+        <div
+          style={{
+            width: '590px',
+            height: '58px',
+            background: '#F6F7FA',
+            borderRadius: '3px',
+            lineHeight: '58px',
+            margin: '116px auto 0',
+          }}
+        >
+          本次添加投诉数量
+          <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
+          条！确定上传？
+        </div>
+      ) : null;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -132,9 +136,6 @@ class ComplaintAdd extends Component {
       clearConfirm();
     }
 
-    const columns = !this.columns ? [] : this.columns;
-
-    const tipSucess = '您已成功上传 1500 条数据！';
     const steps = [
       {
         title: '选择Excel',
@@ -151,6 +152,7 @@ class ComplaintAdd extends Component {
         title: '校验文件',
         content: (
           <StepTable
+            tableTitle={tableTitle}
             onlyTable="true"
             dataSource={dataSource}
             columns={columns}
@@ -160,14 +162,13 @@ class ComplaintAdd extends Component {
       },
       {
         title: '上传成功',
-        content: <StepSucess isDelImg="false" tipSucess={tipSucess} />,
+        content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
       },
     ];
     return (
       <StepLayout
         title="添加投诉"
         steps={steps}
-        tipSucess={tipSucess}
         isDisabled={isDisabled}
         disableFlag={disableFlag}
         goBack={() => {
