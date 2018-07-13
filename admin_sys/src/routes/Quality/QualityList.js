@@ -55,7 +55,12 @@ class QualityList extends Component {
       if (!err) {
         firstTeaName = values.teaName;
         firstQualityNum = values.qualityNum;
-        const qualityListParams = { size: 30, number: 0, teaName: !values.teaName?undefined:values.teaName,qualityNum:!values.qualityNum?undefined:values.qualityNum };
+        const qualityListParams = {
+          size: 30,
+          number: 0,
+          teaName: !values.teaName ? undefined : values.teaName,
+          qualityNum: !values.qualityNum ? undefined : values.qualityNum,
+        };
         this.props.dispatch({
           type: 'quality/getQualityList',
           payload: { qualityListParams },
@@ -72,12 +77,12 @@ class QualityList extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = (val) => {
+  fillDataSource = val => {
     const data = [];
     val.map((item, index) =>
       data.push({
         key: index,
-        id:item.id,
+        id: item.id,
         collegeName: item.collegeName,
         familyName: item.familyName,
         groupName: item.groupName,
@@ -146,7 +151,7 @@ class QualityList extends Component {
   };
 
   render() {
-    const val = this.props.quality.qualityList
+    const val = this.props.quality.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
