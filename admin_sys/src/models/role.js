@@ -108,7 +108,7 @@ export default {
       });
 
       // 生成树状数据结构
-      listAll = getJsonTree(content, 1);
+      listAll = getJsonTree(content, 0);
 
       return { ...state, listAll, mapIdtoName };
     },
