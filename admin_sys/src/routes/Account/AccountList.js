@@ -17,7 +17,7 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const accountListParams = { size: 30, number: 0 };
+    const accountListParams = { size: 30, number: 0 ,orderType:'name'};
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
@@ -45,7 +45,7 @@ class AccountList extends Component {
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     console.log(pageSize, current);
-    const accountListParams = { size: pageSize, number: current - 1 };
+    const accountListParams = { size: pageSize, number: current - 1 ,orderType:'name'};
     console.log(accountListParams);
     this.props.dispatch({
       type: 'account/accountList',
@@ -56,7 +56,7 @@ class AccountList extends Component {
   // 点击某一页函数
   changePage = (current, pageSize) => {
     console.log(pageSize, current);
-    const accountListParams = { size: pageSize, number: current - 1 };
+    const accountListParams = { size: pageSize, number: current - 1,orderType:'name' };
     console.log(accountListParams);
     this.props.dispatch({
       type: 'account/accountList',
