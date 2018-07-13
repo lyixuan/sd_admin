@@ -14,7 +14,54 @@ import { clearConfirm, setConfirm } from '../../utils/reloadConfirm';
 class ComplaintDel extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
+    this.state = {
+      isDisabled: true,
+    };
+  }
+
+  componentDidMount() {
+    // init current
+    this.editCurrent(0);
+  }
+
+  // 回调
+  onChildChange = bol => {
+    this.setState({
+      isDisabled: bol,
+    });
+  };
+  getNums = nums => {
+    this.props.dispatch({
+      type: 'blComplain/getNums',
+      payload: nums,
+    });
+  };
+  fetchPreDel = params => {
+    this.props.dispatch({
+      type: 'blComplain/preDelComplain',
+      payload: params,
+    });
+  };
+  fetchDel = params => {
+    console.log(params);
+    this.props.dispatch({
+      type: 'blComplain/delComplain',
+      payload: params,
+    });
+  };
+  editCurrent = current => {
+    this.props.dispatch({
+      type: 'blComplain/editCurrent',
+      payload: { current },
+    });
+  };
+  historyFn() {
+    this.props.history.push({
+      pathname: '/complaint/complaintList',
+    });
+  }
+  columnsData = () => {
+    const columns = [
       {
         title: '序号',
         dataIndex: 'role',
@@ -51,85 +98,26 @@ class ComplaintDel extends Component {
         width: '100px',
       },
     ];
-
-    const dataSource = [
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-    ];
-    this.state = {
-      dataSource: !dataSource ? [] : dataSource,
-      isDisabled: true,
-    };
-  }
-
-  componentDidMount() {
-    // init current
-    this.editCurrent(0);
-  }
-
-  // 回调
-  onChildChange = bol => {
-    this.setState({
-      isDisabled: bol,
-    });
+    return columns;
   };
-  getNums = nums => {
-    this.props.dispatch({
-      type: 'blComplain/getNums',
-      payload: nums,
-    });
-  };
-  fetchPreDel = params => {
-    this.props.dispatch({
-      type: 'blComplain/preDelComplain',
-      payload: { params },
-    });
-  };
-  fetchDel = params => {
-    this.props.dispatch({
-      type: 'blComplain/delComplain',
-      payload: { params },
-    });
-  };
-  editCurrent = current => {
-    this.props.dispatch({
-      type: 'blComplain/editCurrent',
-      payload: { current },
-    });
-  };
-  historyFn() {
-    this.props.history.push({
-      pathname: '/complaint/complaintList',
-    });
-  }
   render() {
-    const { preDelData, nums, current } = this.props.blComplain;
+    const { preDelData, checkDelList, nums, current } = this.props.blComplain;
+    const { isDisabled } = this.state;
+
+    const dataSource = !checkDelList ? null : checkDelList;
+    const columns = !this.columnsData() ? [] : this.columnsData();
+
     const data = preDelData ? preDelData.data : null;
+    const successArr = [];
+    if (data && data.successNums.length > 0) {
+      data.successNums.forEach(item => {
+        successArr.push(item.ordId);
+      });
+    }
 
-    const failNums = data ? data.failNums : 'ww';
-    const successNums = data ? data.successNums : 'ww';
+    const failNums = data ? data.failNums : [];
+    const successSize = data ? data.successSize : 0;
     const inputContent = data ? data.failSize > 0 : null;
-
-    const { dataSource, isDisabled } = this.state;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -138,15 +126,9 @@ class ComplaintDel extends Component {
       clearConfirm();
     }
 
-    const columns = !this.columns ? [] : this.columns;
-
-    const tipSucess = '您已成功删除 1500 条数据！';
+    const tipSucess = `您已成功删除 ${successSize} 条数据！`;
     const checkRes = !data ? null : (
-      <CheckResult
-        totalSize={data.totalSize}
-        successSize={data.successSize}
-        failSize={data.failSize}
-      />
+      <CheckResult totalSize={data.totalSize} failSize={data.failSize} successSize={successSize} />
     );
     const steps = [
       {
@@ -205,7 +187,10 @@ class ComplaintDel extends Component {
             this.fetchPreDel({ nums });
           }}
           step2Fetch={() => {
-            this.fetchDel({ nums: successNums });
+            this.editCurrent(2);
+          }}
+          step3Fetch={() => {
+            this.fetchDel({ nums: successArr.join(' ') });
           }}
           isDisabled={isDisabled}
           current={current}

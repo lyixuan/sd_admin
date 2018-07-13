@@ -14,64 +14,7 @@ import { clearConfirm, setConfirm } from '../../utils/reloadConfirm';
 class RefundDel extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
-      {
-        title: '子订单编号',
-        dataIndex: 'name',
-        width: '100px',
-      },
-      {
-        title: '编号已存在',
-        dataIndex: 'role',
-        width: '100px',
-      },
-      {
-        title: '必填项缺失',
-        dataIndex: 'email',
-        width: '100px',
-      },
-      {
-        title: '班主任组织关系匹配失败',
-        dataIndex: 'status',
-        width: '100px',
-      },
-      {
-        title: '学院/家族/小组不存在',
-        dataIndex: 'status2',
-        width: '150px',
-      },
-      {
-        title: '编号重复',
-        dataIndex: 'status1',
-        width: '100px',
-      },
-    ];
-
-    const dataSource = [
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-    ];
     this.state = {
-      dataSource: !dataSource ? [] : dataSource,
       isDisabled: true,
     };
   }
@@ -115,15 +58,59 @@ class RefundDel extends Component {
       pathname: '/quality/qualityList',
     });
   }
+  columnsData = () => {
+    const columns = [
+      {
+        title: '子订单编号',
+        dataIndex: 'name',
+        width: '100px',
+      },
+      {
+        title: '编号已存在',
+        dataIndex: 'role',
+        width: '100px',
+      },
+      {
+        title: '必填项缺失',
+        dataIndex: 'email',
+        width: '100px',
+      },
+      {
+        title: '班主任组织关系匹配失败',
+        dataIndex: 'status',
+        width: '100px',
+      },
+      {
+        title: '学院/家族/小组不存在',
+        dataIndex: 'status2',
+        width: '150px',
+      },
+      {
+        title: '编号重复',
+        dataIndex: 'status1',
+        width: '100px',
+      },
+    ];
+
+    return columns;
+  };
   render() {
-    const { preDelData, nums, current } = this.props.quality;
+    const { preDelData, checkDelList, nums, current } = this.props.quality;
+    const { isDisabled } = this.state;
+
+    const dataSource = !checkDelList ? null : checkDelList;
+    const columns = !this.columnsData() ? [] : this.columnsData();
+
     const data = preDelData ? preDelData.data : null;
-
-    const failNums = data ? data.failNums : 'ww';
-    const successNums = data ? data.successNums : 'ww';
+    const successArr = [];
+    if (data && data.successNums.length > 0) {
+      data.successNums.forEach(item => {
+        successArr.push(item.ordId);
+      });
+    }
+    const failNums = data ? data.failNums : [];
+    const successSize = data ? data.successSize : 0;
     const inputContent = data ? data.failSize > 0 : null;
-
-    const { dataSource, isDisabled } = this.state;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -132,15 +119,9 @@ class RefundDel extends Component {
       clearConfirm();
     }
 
-    const columns = !this.columns ? [] : this.columns;
-
-    const tipSucess = '您已成功删除 1500 条数据！';
+    const tipSucess = `您已成功删除 ${successSize} 条数据！`;
     const checkRes = !data ? null : (
-      <CheckResult
-        totalSize={data.totalSize}
-        successSize={data.successSize}
-        failSize={data.failSize}
-      />
+      <CheckResult totalSize={data.totalSize} successSize={successSize} failSize={data.failSize} />
     );
     const steps = [
       {
@@ -199,7 +180,10 @@ class RefundDel extends Component {
           this.fetchPreDel({ nums });
         }}
         step2Fetch={() => {
-          this.fetchDel({ nums: successNums });
+          this.editCurrent(2);
+        }}
+        step3Fetch={() => {
+          this.fetchDel({ nums: successArr.join(' ') });
         }}
         current={current}
         editCurrent={param => {

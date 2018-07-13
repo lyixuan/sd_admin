@@ -59,9 +59,9 @@ export default {
       const delData = yield call(delBlRefundList, { ...params });
       if (delData.code !== 2000) {
         message.error(delData.msg);
-        yield put({ type: 'save', payload: { current: 1 } });
+        yield put({ type: 'save', payload: { current: 2 } });
       } else {
-        yield put({ type: 'save', payload: { delData, current: 2 } });
+        yield put({ type: 'save', payload: { delData, current: 3 } });
       }
     },
     *getNums({ payload }, { put }) {
