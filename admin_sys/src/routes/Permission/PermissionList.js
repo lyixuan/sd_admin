@@ -124,8 +124,8 @@ class PermissionList extends Component {
         dataIndex: 'iconUrl',
         render: record => {
           return (
-            // !record ? <span>{!record?'':record}</span>:<img src={record} alt='上一级页面图标' />
-            <span>{record}</span>
+            !record ? <span>{!record?'':record}</span>:<img src={record} alt='上一级页面图标' />
+            // <span>{record}</span>
           );
         },
       },

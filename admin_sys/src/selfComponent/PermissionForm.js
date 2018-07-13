@@ -189,15 +189,15 @@ class PermissionForm extends Component {
             {getFieldDecorator('iconUrl', {
               initialValue: [!this.state.id?'':!arrValue.iconUrl?'':arrValue.iconUrl],
               rules: [{ max: 50, message: '权限路由长度最多50个字节!' },
-                {
-                  validator(rule, value, callback) {
-                    console.log(value)
-                    if (!value) {
-                      callback({ message: '一级页面下的页面图标为必填项，请填写！' });
-                    }
-                    callback();
-                  },
-                },
+                // {
+                //   validator(rule, value, callback) {
+                //     console.log(value)
+                //     if (!value) {
+                //       callback({ message: '一级页面下的页面图标为必填项，请填写！' });
+                //     }
+                //     callback();
+                //   },
+                // },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
