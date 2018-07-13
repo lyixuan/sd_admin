@@ -19,10 +19,14 @@ export default {
     *roleList({ payload }, { put, call }) {
       const { paramsObj } = payload;
       const dataList = yield call(getRoleList, { ...paramsObj });
-      yield put({
-        type: 'saveList',
-        payload: { dataList: dataList.data },
-      });
+      if (dataList.code !== 2000) {
+        message.error(dataList.msg);
+      } else {
+        yield put({
+          type: 'saveList',
+          payload: { dataList: dataList.data },
+        });
+      }
     },
     *roleAdd({ payload }, { put, call }) {
       const { paramsObj } = payload;
@@ -37,10 +41,14 @@ export default {
     *roleListAll({ payload }, { put, call }) {
       const { paramsObj } = payload;
       const listAll = yield call(getRoleListAll, { ...paramsObj });
-      yield put({
-        type: 'saveListAll',
-        payload: { listAll: listAll.data },
-      });
+      if (listAll.code !== 2000) {
+        message.error(listAll.msg);
+      } else {
+        yield put({
+          type: 'saveListAll',
+          payload: { listAll: listAll.data },
+        });
+      }
     },
     *roleDelete({ payload }, { put, call }) {
       const { paramsObj } = payload;
@@ -63,10 +71,14 @@ export default {
     *rolePrivileges({ payload }, { put, call }) {
       const { paramsIds } = payload;
       const getRoleIds = yield call(getRolePrivileges, { ...paramsIds });
-      yield put({
-        type: 'savePrivileges',
-        payload: { getRoleIds: getRoleIds.data },
-      });
+      if (getRoleIds.code !== 2000) {
+        message.error(getRoleIds.msg);
+      } else {
+        yield put({
+          type: 'savePrivileges',
+          payload: { getRoleIds: getRoleIds.data },
+        });
+      }
     },
   },
 

@@ -17,10 +17,14 @@ export default {
     *collegeList({ payload }, { put, call }) {
       const { paramsObj } = payload;
       const collegeList = yield call(getCollegeList, { ...paramsObj });
-      yield put({
-        type: 'save',
-        payload: { collegeList },
-      });
+      if (collegeList.code !== 2000) {
+        message.error(collegeList.msg);
+      } else {
+        yield put({
+          type: 'save',
+          payload: { collegeList },
+        });
+      }
     },
     *editCollege({ payload }, { put, call }) {
       const { paramsObj } = payload;
@@ -39,10 +43,14 @@ export default {
     *familyList({ payload }, { put, call }) {
       const { paramsObj } = payload;
       const familyList = yield call(getFamilyList, { ...paramsObj });
-      yield put({
-        type: 'save',
-        payload: { familyList },
-      });
+      if (familyList.code !== 2000) {
+        message.error(familyList.msg);
+      } else {
+        yield put({
+          type: 'save',
+          payload: { familyList },
+        });
+      }
     },
     *editFamily({ payload }, { put, call }) {
       const { paramsObj } = payload;
@@ -61,10 +69,14 @@ export default {
     *groupList({ payload }, { put, call }) {
       const { paramsObj } = payload;
       const groupList = yield call(getGroupList, { ...paramsObj });
-      yield put({
-        type: 'save',
-        payload: { groupList },
-      });
+      if (groupList.code !== 2000) {
+        message.error(groupList.msg);
+      } else {
+        yield put({
+          type: 'save',
+          payload: { groupList },
+        });
+      }
     },
     *editGroup({ payload }, { put, call }) {
       const { paramsObj } = payload;
