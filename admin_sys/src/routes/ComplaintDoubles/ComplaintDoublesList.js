@@ -55,9 +55,10 @@ class ComplaintDoublesList extends Component {
     val.map((item, index) =>
       data.push({
         key: index,
+        id:item.id,
         collegeName: item.collegeName,
         multiplePoints: item.multiplePoints,
-        id: item.id,
+        collegeId: item.collegeId,
         effectiveDate: item.effectiveDate,
       })
     );
@@ -69,7 +70,7 @@ class ComplaintDoublesList extends Component {
     const columns = [
       {
         title: '学院id',
-        dataIndex: 'id',
+        dataIndex: 'collegeId',
       },
       {
         title: '学院名称',
@@ -160,12 +161,12 @@ class ComplaintDoublesList extends Component {
     const totalNum = !data ? 0 : data.length;
     const dataSource = !data ? [] : this.fillDataSource(data);
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const { visible,collegeName,multiplePoints,id,effectiveDate} = this.state;
+    const { visible,collegeName,multiplePoints,collegeId,effectiveDate} = this.state;
     const modalContent = (
       <div>
         <Row>
           <Col span={3} offset={9}>学院id:</Col>
-          <Col style={{textAlign:'left'}} offset={0}>{id}</Col>
+          <Col style={{textAlign:'left'}} offset={0}>{collegeId}</Col>
         </Row>
         <Row>
           <Col span={4} offset={8}>学院名称:</Col>
