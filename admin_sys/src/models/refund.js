@@ -4,6 +4,7 @@ import {
   preDelBlRefundList,
   delBlRefundList,
   checkRefundList,
+  saveDataRefund,
 } from '../services/api';
 
 export default {
@@ -28,6 +29,16 @@ export default {
         yield put({ type: 'save', payload: { current: 0 } });
       } else {
         yield put({ type: 'save', payload: { checkList, current: 1 } });
+      }
+    },
+    *saveExcel({ payload }, { call, put }) {
+      const { params } = payload;
+      const excelData = yield call(saveDataRefund, { ...params });
+      if (excelData.code !== 2000) {
+        message.error(excelData.msg);
+        yield put({ type: 'savePreData', payload: { current: 1 } });
+      } else {
+        yield put({ type: 'savePreData', payload: { excelData, current: 2 } });
       }
     },
     *preDelRefund({ payload }, { call, put }) {

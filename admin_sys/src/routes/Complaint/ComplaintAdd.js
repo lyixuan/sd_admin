@@ -94,6 +94,14 @@ class ComplaintAdd extends Component {
       payload: { params },
     });
   };
+  // 保存excel数据
+  saveExcelData = file => {
+    console.log(file);
+    this.props.dispatch({
+      type: 'blComplain/saveExcel',
+      payload: { file },
+    });
+  };
   editCurrent = current => {
     this.props.dispatch({
       type: 'blComplain/editCurrent',
@@ -160,7 +168,7 @@ class ComplaintAdd extends Component {
           this.fetchCheckData({ filePath: checkParams });
         }}
         step2Fetch={() => {
-          this.editCurrent(2);
+          this.saveExcelData({ filePath: checkParams });
         }}
         current={current}
         editCurrent={param => {

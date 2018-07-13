@@ -394,6 +394,13 @@ export async function checkComplainList(params) {
     body: params,
   });
 }
+// 确定excel文件数据插入数据库
+export async function saveDataComplain(params) {
+  return request(`${HOST}/blComplain/saveDatas`, {
+    method: 'POST',
+    body: params,
+  });
+}
 // 预删除投诉列表
 export async function preDelBlComplainList(params) {
   return request(`${HOST}/blComplain/preDelete`, {
@@ -423,6 +430,13 @@ export async function getQualityList(params) {
 // 校验质检excel文件
 export async function checkQualityList(params) {
   return request(`${HOST}/metaQuality/verifyDataFromExcel`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 确定excel文件数据插入数据库
+export async function saveDataQuality(params) {
+  return request(`${HOST}/metaQuality/saveDatas`, {
     method: 'POST',
     body: params,
   });
@@ -458,6 +472,13 @@ export async function getBlRefundList(params) {
 // 校验退费excel文件
 export async function checkRefundList(params) {
   return request(`${HOST}/blRefund/verifyDataFromExcel`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 确定excel文件数据插入数据库
+export async function saveDataRefund(params) {
+  return request(`${HOST}/blRefund/saveDatas`, {
     method: 'POST',
     body: params,
   });
