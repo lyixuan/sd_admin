@@ -160,21 +160,20 @@
   text-align: left;
   margin: 56px 0 19px;
 }
+.centerTxt{
+  width: 100%;
+  color: #000;
+  text-align: center;
+  margin: 56px 0 19px;
+}
 .onlyTable{
   width: 768px;
-  /*max-height: 272px;*/
-  /*border: 1px solid #E8E8E8;*/
-  /*border-radius: 3px;*/
   margin: 61px auto 40px;
   overflow-y: scroll;
 }
 .tableList{
   width: 768px;
-  /*height: 272px;*/
-  /*overflow: scroll;*/
   margin-bottom: 40px;
-  /*border: 1px solid #E8E8E8;*/
-  /*border-radius: 3px;*/
 }
 
 /*

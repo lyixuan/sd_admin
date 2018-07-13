@@ -1,5 +1,10 @@
 import { message } from 'antd';
-import { getBlRefundList, preDelBlRefundList, delBlRefundList } from '../services/api';
+import {
+  getBlRefundList,
+  preDelBlRefundList,
+  delBlRefundList,
+  checkRefundList,
+} from '../services/api';
 
 export default {
   namespace: 'blRefund',
@@ -14,6 +19,16 @@ export default {
       const { params } = payload;
       const listData = yield call(getBlRefundList, { ...params });
       yield put({ type: 'save', payload: { listData } });
+    },
+    *checkRefund({ payload }, { call, put }) {
+      const { params } = payload;
+      const checkList = yield call(checkRefundList, { ...params });
+      if (checkList.code !== 2000) {
+        message.error(checkList.msg);
+        yield put({ type: 'save', payload: { current: 0 } });
+      } else {
+        yield put({ type: 'save', payload: { checkList, current: 1 } });
+      }
     },
     *preDelRefund({ payload }, { call, put }) {
       const { params } = payload;
@@ -47,6 +62,15 @@ export default {
 
   reducers: {
     save(state, action) {
+      const { checkList } = action.payload;
+      if (checkList) {
+        const { errorList } = checkList.data;
+        if (errorList) {
+          errorList.forEach((item, i) => {
+            errorList[i].key = i;
+          });
+        }
+      }
       return { ...state, ...action.payload };
     },
   },

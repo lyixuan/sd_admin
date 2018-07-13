@@ -1,5 +1,10 @@
 import { message } from 'antd';
-import { getBlComplainList, preDelBlComplainList, delBlComplainList } from '../services/api';
+import {
+  getBlComplainList,
+  preDelBlComplainList,
+  delBlComplainList,
+  checkComplainList,
+} from '../services/api';
 
 export default {
   namespace: 'blComplain',
@@ -16,6 +21,16 @@ export default {
       const { getListParams } = payload;
       const response = yield call(getBlComplainList, { ...getListParams });
       yield put({ type: 'save', payload: { response } });
+    },
+    *checkComplain({ payload }, { call, put }) {
+      const { params } = payload;
+      const checkList = yield call(checkComplainList, { ...params });
+      if (checkList.code !== 2000) {
+        message.error(checkList.msg);
+        yield put({ type: 'savePreData', payload: { current: 0 } });
+      } else {
+        yield put({ type: 'savePreData', payload: { checkList, current: 1 } });
+      }
     },
     *preDelComplain({ payload }, { call, put }) {
       const { params } = payload;
@@ -55,6 +70,15 @@ export default {
       };
     },
     savePreData(state, action) {
+      const { checkList } = action.payload;
+      if (checkList) {
+        const { errorList } = checkList.data;
+        if (errorList) {
+          errorList.forEach((item, i) => {
+            errorList[i].key = i;
+          });
+        }
+      }
       return { ...state, ...action.payload };
     },
   },

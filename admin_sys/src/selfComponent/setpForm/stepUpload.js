@@ -8,7 +8,9 @@ let isLt10M = false;
 class stepUpload extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      fileList: this.props.fileList,
+    };
   }
   handleChange = info => {
     // todo 目前支持上传一个文件
@@ -19,9 +21,12 @@ class stepUpload extends Component {
         this.setState({ fileList });
       }
     }
-
+    const { callBackParent, saveFileList } = this.props;
     if (info.file.response && info.file.response.code === 2000) {
-      this.props.callBackParent(false);
+      callBackParent(false, info.file.response.data);
+      if (saveFileList) {
+        saveFileList(fileList);
+      }
     }
   };
   render() {

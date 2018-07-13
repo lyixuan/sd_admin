@@ -12,7 +12,9 @@ class stepTable extends Component {
     const { dataSource, columns, tableTitle, onlyTable } = this.props;
     return (
       <div className={styles.tableWrap}>
-        {tableTitle ? <div className={styles.tableTitle}> {tableTitle} </div> : null}
+        {tableTitle ? (
+          <div className={onlyTable ? styles.centerTxt : styles.tableTitle}> {tableTitle} </div>
+        ) : null}
         {dataSource ? (
           <div className={onlyTable ? styles.onlyTable : styles.tableList}>
             <Table

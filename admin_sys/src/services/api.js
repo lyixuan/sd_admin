@@ -387,6 +387,13 @@ export async function getBlComplainList(params) {
     body: params,
   });
 }
+// 校验质检excel文件
+export async function checkComplainList(params) {
+  return request(`${HOST}/blComplain/verifyDataFromExcel`, {
+    method: 'POST',
+    body: params,
+  });
+}
 // 预删除投诉列表
 export async function preDelBlComplainList(params) {
   return request(`${HOST}/blComplain/preDelete`, {
@@ -414,26 +421,27 @@ export async function getQualityList(params) {
   });
 }
 // 校验质检excel文件
-export async function checkQuality(params) {
+export async function checkQualityList(params) {
   return request(`${HOST}/metaQuality/verifyDataFromExcel`, {
     method: 'POST',
     body: params,
   });
 }
-// 预删除质检列表 todo edit interface
+// 预删除质检列表
 export async function preDelQualityList(params) {
-  return request(`${HOST}/blComplain/preDelete`, {
+  return request(`${HOST}/metaQuality/preDelete`, {
     method: 'POST',
     body: params,
   });
 }
-// 删除质检列表 todo edit interface
+// 删除质检列表
 export async function delQualityList(params) {
-  return request(`${HOST}/blComplain/confirmDelete`, {
+  return request(`${HOST}/metaQuality/confirmDelete`, {
     method: 'POST',
     body: params,
   });
 }
+// 上传图片地址
 export function qualityUpload() {
   return `${HOST}/metaQuality/uploadFile`;
 }
@@ -444,6 +452,13 @@ export function qualityUpload() {
 export async function getBlRefundList(params) {
   return request(`${HOST}/blRefund/list?${stringify(params)}`, {
     method: 'GET',
+    body: params,
+  });
+}
+// 校验退费excel文件
+export async function checkRefundList(params) {
+  return request(`${HOST}/blRefund/verifyDataFromExcel`, {
+    method: 'POST',
     body: params,
   });
 }

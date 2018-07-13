@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { qualityUpload } from '../../services/api';
+import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 import StepLayout from '../../layouts/stepLayout';
 import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
-import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 
 @connect(({ blRefund, loading }) => ({
   blRefund,
@@ -14,121 +14,31 @@ import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 class RefundAdd extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
-      {
-        title: '子订单编号',
-        dataIndex: 'name',
-        width: '93px',
-      },
-      {
-        title: '编号已存在',
-        dataIndex: 'role',
-        width: '92px',
-      },
-      {
-        title: '必填项缺失',
-        dataIndex: 'email',
-        width: '92px',
-      },
-      {
-        title: '班主任组织关系匹配失败',
-        dataIndex: 'status',
-        width: '164px',
-      },
-      {
-        title: '学院/家族/小组不存在',
-        dataIndex: 'status2',
-        width: '152px',
-      },
-      {
-        title: '编号重复',
-        dataIndex: 'status1',
-        width: '82px',
-      },
-    ];
-
-    const dataSource = [
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-    ];
     this.state = {
-      dataSource: !dataSource ? [] : dataSource,
       isDisabled: true,
+      checkParams: '',
     };
   }
 
   componentDidMount() {
+    // init current
     this.editCurrent(0);
-    setConfirm();
   }
   componentWillUnmount() {
     clearConfirm();
   }
   // 回调
-  onChildChange = bol => {
+  onChildChange = (bol, checkParams) => {
     this.setState({
       isDisabled: bol,
+      checkParams,
+    });
+  };
+  // 校验excel文件
+  fetchCheckData = params => {
+    this.props.dispatch({
+      type: 'blRefund/checkRefund',
+      payload: { params },
     });
   };
   editCurrent = current => {
@@ -142,44 +52,99 @@ class RefundAdd extends Component {
       pathname: '/refund/refundList',
     });
   }
-  render() {
-    const { current } = this.props.blRefund;
-    const { dataSource, isDisabled } = this.state;
-    const columns = !this.columns ? [] : this.columns;
 
-    const tipSucess = '您已成功上传 1500 条数据！';
+  columnsData = () => {
+    const columns = [
+      {
+        title: '子订单编号',
+        dataIndex: 'bottomLinueNum',
+        width: '93px',
+      },
+      {
+        title: '编号已存在',
+        dataIndex: 'countValue',
+        width: '92px',
+      },
+      {
+        title: '必填项缺失',
+        dataIndex: 'complainTime',
+        width: '92px',
+      },
+      {
+        title: '班主任组织关系匹配失败',
+        dataIndex: 'stuId',
+        width: '164px',
+      },
+      {
+        title: '学院/家族/小组不存在',
+        dataIndex: 'cpId',
+        width: '152px',
+      },
+      {
+        title: '编号重复',
+        dataIndex: 'stuName',
+        width: '82px',
+      },
+    ];
+    return columns;
+  };
+  render() {
+    const { current, checkList } = this.props.blRefund;
+    const { isDisabled, checkParams } = this.state;
+
+    const sucessNum = !checkList ? 0 : checkList.data.num;
+    const errorList = !checkList ? [] : checkList.data.errorList;
+
+    const dataSource = !errorList.length > 0 ? null : errorList;
+    const columns = !this.columnsData() ? [] : this.columnsData();
+    const tableTitle =
+      !errorList.length > 0 ? `本次添加退费数量 ${sucessNum} 条数据！确定上传？` : null;
+
+    // 有数据之后刷新页面提示弹框
+    if (!isDisabled) {
+      setConfirm();
+    } else {
+      clearConfirm();
+    }
+
     const steps = [
       {
         title: '选择Excel',
         content: (
           <StepUpload
             uploadUrl={qualityUpload()}
-            callBackParent={bol => {
-              this.onChildChange(bol);
+            callBackParent={(bol, params) => {
+              this.onChildChange(bol, params);
             }}
           />
         ),
       },
       {
         title: '校验文件',
-        content: <StepTable onlyTable="true" dataSource={dataSource} columns={columns} />,
+        content: (
+          <StepTable
+            tableTitle={tableTitle}
+            onlyTable="true"
+            dataSource={dataSource}
+            columns={columns}
+          />
+        ),
       },
       {
         title: '上传成功',
-        content: <StepSucess isDelImg="false" tipSucess={tipSucess} />,
+        content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
       },
     ];
     return (
       <StepLayout
         title="添加退费"
         steps={steps}
-        tipSucess={tipSucess}
         isDisabled={isDisabled}
         goBack={() => {
           this.historyFn();
         }}
         step1Fetch={() => {
-          this.editCurrent(1);
+          this.fetchCheckData({ filePath: checkParams });
         }}
         step2Fetch={() => {
           this.editCurrent(2);

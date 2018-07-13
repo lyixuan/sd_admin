@@ -7,6 +7,8 @@ import common from '../Common/common.css';
 
 const FormItem = Form.Item;
 let propsVal = '';
+let firstTeaName = '';
+let firstQualityNum = '';
 @connect(({ quality, loading }) => ({
   quality,
   loading,
@@ -23,6 +25,10 @@ class QualityList extends Component {
       type: 'quality/getQualityList',
       payload: { qualityListParams },
     });
+  }
+  componentWillUnmount() {
+    firstTeaName = null;
+    firstQualityNum = null;
   }
 
   // 点击显示每页多少条数据函数
@@ -45,33 +51,47 @@ class QualityList extends Component {
   // 表单搜索函数
   handleSearch = e => {
     e.preventDefault();
-    let val = {};
     propsVal.form.validateFields((err, values) => {
-      val = values;
+      if (!err) {
+        firstTeaName = values.teaName;
+        firstQualityNum = values.qualityNum;
+        const qualityListParams = {
+          size: 30,
+          number: 0,
+          teaName: !values.teaName ? undefined : values.teaName,
+          qualityNum: !values.qualityNum ? undefined : values.qualityNum,
+        };
+        this.props.dispatch({
+          type: 'quality/getQualityList',
+          payload: { qualityListParams },
+        });
+      }
     });
-    this.props.setCurrentUrlParams(val);
   };
   // 表单重置
   handleReset = () => {
+    firstTeaName = '';
+    firstQualityNum = '';
     propsVal.form.resetFields();
     this.props.setCurrentUrlParams({});
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
+  fillDataSource = val => {
     const data = [];
-    for (let i = 0; i < 50; i += 1) {
+    val.map((item, index) =>
       data.push({
-        key: i,
-        college: `自变量学院`,
-        family: `第二家族`,
-        familytype: `自己`,
-        teacher: `杨紫`,
-        name: `张三`,
-        status: `二级`,
-        nums: `110110110110`,
-      });
-    }
+        key: index,
+        id: item.id,
+        collegeName: item.collegeName,
+        familyName: item.familyName,
+        groupName: item.groupName,
+        teaName: item.teaName,
+        stuName: item.stuName,
+        qualityTypeName: item.qualityTypeName,
+        qualityNum: item.qualityNum,
+      })
+    );
     return data;
   };
 
@@ -79,32 +99,36 @@ class QualityList extends Component {
   columnsData = () => {
     const columns = [
       {
+        title: '序列',
+        dataIndex: 'id',
+      },
+      {
         title: '学院',
-        dataIndex: 'college',
+        dataIndex: 'collegeName',
       },
       {
         title: '家族',
-        dataIndex: 'family',
+        dataIndex: 'familyName',
       },
       {
-        title: '族别',
-        dataIndex: 'familytype',
+        title: '组别',
+        dataIndex: 'groupName',
       },
       {
         title: '归属班主任',
-        dataIndex: 'teacher',
+        dataIndex: 'teaName',
       },
       {
         title: '学员姓名',
-        dataIndex: 'name',
+        dataIndex: 'stuName',
       },
       {
         title: '违规等级',
-        dataIndex: 'status',
+        dataIndex: 'qualityTypeName',
       },
       {
         title: '质检单号',
-        dataIndex: 'nums',
+        dataIndex: 'qualityNum',
       },
     ];
     return columns;
@@ -127,8 +151,10 @@ class QualityList extends Component {
   };
 
   render() {
-    console.log(this.props.quality.qualityList)
-    const dataSource = !this.fillDataSource() ? [] : this.fillDataSource();
+    const val = this.props.quality.qualityList;
+    const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
+    const totalNum = !data.totalElements ? 0 : data.totalElements;
+    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -138,23 +164,15 @@ class QualityList extends Component {
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <FormItem>
-              {getFieldDecorator('teacher', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入归属班主任!',
-                  },
-                ],
+              {getFieldDecorator('teaName', {
+                initialValue: firstTeaName,
+                rules: [],
               })(<Input placeholder="请输入归属班主任" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem style={{ marginLeft: 119 }}>
-              {getFieldDecorator('numbers', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入质检单号!',
-                  },
-                ],
+              {getFieldDecorator('qualityNum', {
+                initialValue: firstQualityNum,
+                rules: [],
               })(<Input placeholder="请输入质检单号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem style={{ marginLeft: 119 }}>
@@ -194,7 +212,7 @@ class QualityList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：500条</p>
+            <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
               dataSource={dataSource}
@@ -210,7 +228,7 @@ class QualityList extends Component {
             onChange={this.changePage}
             onShowSizeChange={this.onShowSizeChange}
             defaultCurrent={1}
-            total={100}
+            total={totalNum}
             className={common.paginationStyle}
           />
         }
