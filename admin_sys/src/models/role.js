@@ -32,7 +32,7 @@ export default {
       const { paramsObj } = payload;
       const getCode = yield call(getRoleAdd, { ...paramsObj });
       if (getCode.code === 2000) {
-        message.success('角色创建成功！');
+        message.success('成功创建角色！');
         yield put(routerRedux.push('/role/roleList'));
       } else {
         message.error(getCode.msg);
@@ -62,7 +62,7 @@ export default {
       const { paramsObj } = payload;
       const getCode = yield call(getRoleUpdate, { ...paramsObj });
       if (getCode.code === 2000) {
-        message.success('角色创建成功！');
+        message.success('成功编辑角色！');
         yield put(routerRedux.push('/role/roleList'));
       } else {
         message.error(getCode.msg);

@@ -32,6 +32,7 @@ class College extends Component {
       collegeName: record.collegeName,
       id: record.id,
       visible: true,
+      name: '',
     });
   };
 
@@ -112,6 +113,7 @@ class College extends Component {
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}> {collegeName} </p>
         <Input
+          maxlength={20}
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
             this.handelChange(e);
@@ -151,7 +153,7 @@ class College extends Component {
           visible={visible}
           modalContent={modalContent}
           showModal={bol => this.showModal(bol)}
-          clickOK={() => this.clickModalOK(id)}
+          clickOK={() => this.clickModalOK(id, name)}
         />
       </div>
     );

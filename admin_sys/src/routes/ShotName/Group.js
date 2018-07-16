@@ -36,6 +36,7 @@ class Group extends Component {
       groupName: record.groupName,
       id: record.id,
       visible: true,
+      name: '',
     });
   };
 
@@ -126,6 +127,7 @@ class Group extends Component {
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
         <Input
+          maxlength={20}
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
             this.handelChange(e);

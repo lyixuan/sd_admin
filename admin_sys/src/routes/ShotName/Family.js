@@ -32,6 +32,7 @@ class Family extends Component {
       familyName: record.familyName,
       id: record.id,
       visible: true,
+      name: '',
     });
   };
 
@@ -120,6 +121,7 @@ class Family extends Component {
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
         <Input
+          maxlength={20}
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
             this.handelChange(e);
