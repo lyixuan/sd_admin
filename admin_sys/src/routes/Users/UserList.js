@@ -162,7 +162,6 @@ class UserList extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
-          console.log(record)
           return (
             <div>
               {record.changeShowName!=="" && record.changeShowName!==record.showName?(
