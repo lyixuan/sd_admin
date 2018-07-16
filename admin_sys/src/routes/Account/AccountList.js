@@ -8,7 +8,7 @@ import common from '../Common/common.css';
 
 @connect(({ account, loading }) => ({
   account,
-  loading,
+  loading: loading.models.account,
 }))
 class AccountList extends Component {
   constructor(props) {
@@ -129,6 +129,7 @@ class AccountList extends Component {
   };
 
   render() {
+    const { loading } = this.props;
     const data = !this.props.account.accountList.response
       ? []
       : !this.props.account.accountList.response.data
@@ -154,6 +155,7 @@ class AccountList extends Component {
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
+              loading={loading}
               dataSource={dataSource}
               columns={columns}
               pagination={false}
