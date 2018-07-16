@@ -40,9 +40,9 @@ export default {
       const excelData = yield call(saveDataQuality, { ...params });
       if (excelData.code !== 2000) {
         message.error(excelData.msg);
-        yield put({ type: 'savePreData', payload: { current: 1 } });
+        yield put({ type: 'save', payload: { current: 1 } });
       } else {
-        yield put({ type: 'savePreData', payload: { current: 2 } });
+        yield put({ type: 'save', payload: { current: 2 } });
       }
     },
     *preDelQuality({ payload }, { call, put }) {

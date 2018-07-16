@@ -39,9 +39,9 @@ export default {
       const excelData = yield call(saveDataRefund, { ...params });
       if (excelData.code !== 2000) {
         message.error(excelData.msg);
-        yield put({ type: 'savePreData', payload: { current: 1 } });
+        yield put({ type: 'save', payload: { current: 1 } });
       } else {
-        yield put({ type: 'savePreData', payload: { excelData, current: 2 } });
+        yield put({ type: 'save', payload: { excelData, current: 2 } });
       }
     },
     *preDelRefund({ payload }, { call, put }) {
