@@ -30,7 +30,7 @@ class PermissionForm extends Component {
       parentIdList: !parentIdValues.data ? [] : parentIdValues.data,
       id: !fromWhere.id ? '' : fromWhere.id,
     };
-    console.log(this.state)
+    // console.log(this.state)
   }
 
   componentDidMount() {
@@ -167,16 +167,16 @@ class PermissionForm extends Component {
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('parentId', {
               initialValue: [!this.state.id?'':!arrValue.parentId?'':arrValue.parentId],
-              // rules: [
-              //   {
-              //     validator(rule, value, callback) {
-              //       if (!value[0]) {
-              //         callback({ message: '请选择权上级！' });
-              //       }
-              //       callback();
-              //     },
-              //   },
-              // ],
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    if (!value[0]&&flag !== '一级页面') {
+                      callback({ message: '请选择权上级！' });
+                    }
+                    callback();
+                  },
+                },
+              ],
             })(
               <Cascader
                 options={parentList}
@@ -187,17 +187,17 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
             {getFieldDecorator('iconUrl', {
-              initialValue: [!this.state.id?'':!arrValue.iconUrl?'':arrValue.iconUrl],
-              rules: [{ max: 50, message: '权限路由长度最多50个字节!' },
-                // {
-                //   validator(rule, value, callback) {
-                //     console.log(value)
-                //     if (!value) {
-                //       callback({ message: '一级页面下的页面图标为必填项，请填写！' });
-                //     }
-                //     callback();
-                //   },
-                // },
+              initialValue: !this.state.id?'':!arrValue.iconUrl?'':arrValue.iconUrl,
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    if (!value&&flag === '一级页面') {
+                      callback({ message: '一级页面下的页面图标为必填项，请填写！' });
+                    }
+                    callback();
+                  },
+                },
+                { max: 50, message: '字符长度最多50个字节!' },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
