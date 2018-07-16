@@ -58,54 +58,69 @@ class RefundDel extends Component {
       pathname: '/quality/qualityList',
     });
   }
+  // 初始化tabale 列数据
+  fillDataSource = val => {
+    const data = [];
+    val.map((item, index) =>
+      data.push({
+        key: index + 1,
+        qualityNum: item.qualityNum,
+        countValue: item.countValue,
+        qualityType: item.qualityType,
+        teaName: item.teaName,
+        name: `${item.collegeName} / ${item.familyName} / ${item.groupName}`,
+      })
+    );
+    return data;
+  };
   columnsData = () => {
     const columns = [
       {
-        title: '子订单编号',
+        title: '序号',
+        dataIndex: 'key',
+        width: '70px',
+      },
+      {
+        title: '质检编号',
+        dataIndex: 'qualityNum',
+        width: '130px',
+      },
+      {
+        title: '扣除学分',
+        dataIndex: 'countValue',
+        width: '90px',
+      },
+      {
+        title: '质检等级',
+        dataIndex: 'qualityType',
+        width: '90px',
+      },
+      {
+        title: '老师名称',
+        dataIndex: 'teaName',
+        width: '90px',
+      },
+      {
+        title: '学院/家族/小组',
         dataIndex: 'name',
-        width: '100px',
-      },
-      {
-        title: '编号已存在',
-        dataIndex: 'role',
-        width: '100px',
-      },
-      {
-        title: '必填项缺失',
-        dataIndex: 'email',
-        width: '100px',
-      },
-      {
-        title: '班主任组织关系匹配失败',
-        dataIndex: 'status',
-        width: '100px',
-      },
-      {
-        title: '学院/家族/小组不存在',
-        dataIndex: 'status2',
-        width: '150px',
-      },
-      {
-        title: '编号重复',
-        dataIndex: 'status1',
-        width: '100px',
+        width: '250px',
       },
     ];
 
     return columns;
   };
   render() {
-    const { preDelData, checkDelList, nums, current } = this.props.quality;
+    const { preDelData, nums, current } = this.props.quality;
     const { isDisabled } = this.state;
+    const data = preDelData ? preDelData.data : null;
 
-    const dataSource = !checkDelList ? null : checkDelList;
+    const dataSource = !data || !data.successNums ? [] : this.fillDataSource(data.successNums);
     const columns = !this.columnsData() ? [] : this.columnsData();
 
-    const data = preDelData ? preDelData.data : null;
-    const successArr = [];
-    if (data && data.successNums.length > 0) {
+    const successNums = [];
+    if (dataSource.length > 0) {
       data.successNums.forEach(item => {
-        successArr.push(item.qualityNum);
+        successNums.push(item.qualityNum);
       });
     }
     const failNums = data ? data.failNums : [];
@@ -183,7 +198,7 @@ class RefundDel extends Component {
           this.editCurrent(2);
         }}
         step3Fetch={() => {
-          this.fetchDel({ nums: successArr.join(' ') });
+          this.fetchDel({ nums: successNums.join(' ') });
         }}
         current={current}
         editCurrent={param => {

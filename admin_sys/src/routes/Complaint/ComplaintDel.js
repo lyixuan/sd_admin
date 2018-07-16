@@ -60,56 +60,72 @@ class ComplaintDel extends Component {
       pathname: '/complaint/complaintList',
     });
   }
+  // 初始化tabale 列数据
+  fillDataSource = val => {
+    const data = [];
+    val.map((item, index) =>
+      data.push({
+        key: index + 1,
+        complainTime: item.complainTime,
+        countValue: item.countValue,
+        stuName: `${item.stuName}/${item.stuId}`,
+        cpName: item.cpName,
+        bottomLineNum: item.bottomLineNum,
+        name: `${item.collegeName} / ${item.familyName} / ${item.groupName}`,
+      })
+    );
+    return data;
+  };
   columnsData = () => {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'role',
+        dataIndex: 'key',
         width: '100px',
       },
       {
         title: '投诉时间',
-        dataIndex: 'email',
+        dataIndex: 'complainTime',
         width: '100px',
       },
       {
         title: '学生名称/id',
-        dataIndex: 'status1',
+        dataIndex: 'stuName',
         width: '100px',
       },
       {
         title: '老师名称',
-        dataIndex: 'status2',
+        dataIndex: 'cpName',
         width: '150px',
       },
       {
         title: '学院/家族/小组',
-        dataIndex: 'status',
-        width: '100px',
-      },
-      {
-        title: '扣分值',
-        dataIndex: 'role3',
+        dataIndex: 'name',
         width: '100px',
       },
       {
         title: '编号',
-        dataIndex: 'role2',
+        dataIndex: 'bottomLineNum',
+        width: '100px',
+      },
+      {
+        title: '扣分值',
+        dataIndex: 'countValue',
         width: '100px',
       },
     ];
     return columns;
   };
   render() {
-    const { preDelData, checkDelList, nums, current } = this.props.blComplain;
+    const { preDelData, nums, current } = this.props.blComplain;
     const { isDisabled } = this.state;
+    const data = preDelData ? preDelData.data : null;
 
-    const dataSource = !checkDelList ? null : checkDelList;
+    const dataSource = !data || !data.successNums ? [] : this.fillDataSource(data.successNums);
     const columns = !this.columnsData() ? [] : this.columnsData();
 
-    const data = preDelData ? preDelData.data : null;
     const successArr = [];
-    if (data && data.successNums.length > 0) {
+    if (dataSource.length > 0) {
       data.successNums.forEach(item => {
         successArr.push(item.ordId);
       });
