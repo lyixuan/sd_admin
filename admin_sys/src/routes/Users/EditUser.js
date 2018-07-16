@@ -64,10 +64,10 @@ class EditUser extends Component {
       wechatDepartmentId: Number(newRoleId),
       wechatDepartmentName: !rname ? undefined : rname,
     };
-    // this.props.dispatch({
-    //   type: 'user/updateUserInfo',
-    //   payload: { updateUserInfoParams },
-    // });
+    this.props.dispatch({
+      type: 'user/updateUserInfo',
+      payload: { updateUserInfoParams },
+    });
   };
 
   resetContent = () => {
