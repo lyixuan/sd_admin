@@ -28,6 +28,7 @@ const map = {
       {
         required: true,
         min: 6,
+        max: 16,
         message: '密码由6-16位英文字母、数字或符号组成',
       },
     ],
