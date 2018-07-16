@@ -1,5 +1,5 @@
 import { updatePwd, findBackPwd, resetPwd } from '../services/api';
-import { setAuthority, getAuthority } from '../utils/authority';
+import { setAuthority, getAuthority, removeStorge } from '../utils/authority';
 import { handleSuccess } from '../utils/Handle';
 
 export default {
@@ -21,8 +21,9 @@ export default {
         payload: response,
       });
       if (response.code === 2000) {
-        const { password } = payload;
-        setAuthority('admin_user', { ...adminUser, password }); // 存储用户信息
+        removeStorge('admin_user');
+        // const { password } = payload;
+        // setAuthority('admin_user', { ...adminUser, password }); // 存储用户信息
         yield fork(handleSuccess, { content: '密码修改成功', pathname: '/userLayout/login' });
       }
     },
