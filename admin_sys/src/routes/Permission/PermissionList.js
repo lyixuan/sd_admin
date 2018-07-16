@@ -21,7 +21,7 @@ class PermissionList extends Component {
   }
 
   componentDidMount() {
-    const permissionListParams = {size: 50, number: 0,sort:'id'};
+    const permissionListParams = {size: 30, number: 0,sort:'id'};
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -60,7 +60,11 @@ class PermissionList extends Component {
   handleReset = () => {
     firstName = '';
     propsVal.form.resetFields();
-    this.props.setCurrentUrlParams({});
+    const permissionListParams = {size: 30, number: 0 , sort:'id'};
+    this.props.dispatch({
+      type: 'permission/permissionList',
+      payload: { permissionListParams },
+    });
   };
 
   // 表单搜索
@@ -69,7 +73,7 @@ class PermissionList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         firstName = values.name;
-        const permissionListParams = { name: !values.name?undefined:values.name ,sort:'id'};
+        const permissionListParams = { name: !values.name?undefined:values.name ,sort:'id',size: 30, number: 0 ,};
         this.props.dispatch({
           type: 'permission/permissionList',
           payload: { permissionListParams },
