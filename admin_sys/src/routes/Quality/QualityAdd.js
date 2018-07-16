@@ -52,11 +52,10 @@ class RefundAdd extends Component {
     });
   };
   // 保存excel数据
-  saveExcelData = file => {
-    console.log(file);
+  saveExcelData = params => {
     this.props.dispatch({
       type: 'quality/saveExcel',
-      payload: { file },
+      payload: { params },
     });
   };
 
