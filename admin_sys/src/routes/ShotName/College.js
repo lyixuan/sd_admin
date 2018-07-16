@@ -70,7 +70,7 @@ class College extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序号',
+        title: 'id',
         dataIndex: 'id',
       },
       {
