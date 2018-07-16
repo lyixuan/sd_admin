@@ -105,7 +105,7 @@ class RefundDel extends Component {
     const successArr = [];
     if (data && data.successNums.length > 0) {
       data.successNums.forEach(item => {
-        successArr.push(item.ordId);
+        successArr.push(item.qualityNum);
       });
     }
     const failNums = data ? data.failNums : [];
@@ -155,7 +155,7 @@ class RefundDel extends Component {
         title: '复核数据',
         content: (
           <StepTable
-            tableTitle="请确认是否删除以下'质检'编号："
+            tableTitle="请确认是否删除以下数据："
             dataSource={dataSource}
             columns={columns}
             scroll={{ y: 264 }}
