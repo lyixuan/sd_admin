@@ -25,7 +25,7 @@ class CreateAccount extends Component {
   handleSubmit = (values) => {
     const rname = values.rname[0];
     let newRoleId = 0;
-    const roleList = this.props.account.getRoleList.data.content
+    const roleList = this.props.account.getRoleList.data
     roleList.map(item => {
       if (item.name === rname) {
         newRoleId = item.id;
