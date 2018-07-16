@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Input, Cascader, Button } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
-// import { levelDataReset } from '../utils/dataDictionary';
+import { userTypeData } from '../utils/dataDictionary';
 
 const FormItem = Form.Item;
 
@@ -43,17 +43,16 @@ class UserForm extends Component {
     const arrValue = this.props.jumpFunction.getUrlParams();
     const wechatValues = this.props.jumpFunction.user.wechatList.response.data;
     const listOrgValues = this.props.jumpFunction.user.listOrg.response.data;
+
+    const aaa = this.props.jumpFunction.user.userList.response.data.content[0];
+    console.log(aaa)
     this.state = {
       wechatList: !wechatValues.department ? [] : wechatValues.department,
       listOrgLiost: listOrgValues,
-      name: !arrValue.name ? null : arrValue.name,
-      phone: !arrValue.phone ? null : arrValue.phone,
-      email: !arrValue.email ? null : formatEmail(arrValue.email),
-      userType: !arrValue.userType ? null : arrValue.userType,
-      responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
-      wechatDepartmentName: !arrValue.wechatDepartmentName ? null : arrValue.wechatDepartmentName,
+      id: !arrValue.id ? '' : arrValue.id,
+      userType:!aaa.userType?'':userTypeData[aaa.userType],
     };
-    console.log(this.state.responseCom)
+    console.log(this.state)
   }
   componentDidMount() {
     responseComListBackup = !this.state.listOrgLiost
@@ -179,6 +178,7 @@ class UserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        console.log(values)
         this.props.handleSubmit(values);
       }
     });
@@ -222,18 +222,22 @@ class UserForm extends Component {
         },
       },
     };
+    const aaa = this.props.jumpFunction.user.userList
+    const arrValue = !aaa?[]:!aaa.response?[]:!aaa.response.data?[]:!aaa.response.data.content?[]:aaa.response.data.content[0];
+    // const responseColl =arrValue.
+    console.log(responseComList)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓 名">
             {getFieldDecorator('name', {
-              initialValue: this.state.name,
+              initialValue: !this.state.id?'':!arrValue.name?'':arrValue.name,
               rules: [{ min: 2, required: true, message: '您输入姓名不合法!', whitespace: true }],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="手 机">
             {getFieldDecorator('phone', {
-              initialValue: this.state.phone,
+              initialValue: !this.state.id?'':!arrValue.mobile?'':arrValue.mobile,
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -249,14 +253,14 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*邮 箱">
             {getFieldDecorator('email', {
-              initialValue: this.state.email,
+              initialValue: !this.state.id?'':!arrValue.mail?'':formatEmail(arrValue.mail),
               rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
             })(<Input style={{ width: 264 }} disabled={!this.state.email ? false : disabled} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*级 别">
             {getFieldDecorator('userType', {
-              initialValue: [this.state.userType],
+              initialValue: [!this.state.id?'':!arrValue.userType?'':userTypeData[arrValue.userType]],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -277,7 +281,8 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*负责单位">
             {getFieldDecorator('responseCom', {
-              initialValue: [this.state.responseCom],
+              initialValue: [!this.state.id?'':!arrValue.responseCom?'':arrValue.responseCom],
+              // initialValue: [100,101],
               rules: [
               //   flag === '系统管理员' || flag === '高级管理员'?{}:{
               //   validator(rule, value, callback) {
@@ -310,7 +315,7 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*微信部门">
             {getFieldDecorator('wechatDepartmentName', {
-              initialValue: [this.state.wechatDepartmentName],
+              initialValue: [!this.state.id?'':!arrValue.wechatDepartmentName?'':arrValue.wechatDepartmentName],
               rules: [
                 {
                   validator(rule, value, callback) {

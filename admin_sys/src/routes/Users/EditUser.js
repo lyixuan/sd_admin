@@ -30,6 +30,11 @@ class EditUser extends Component {
       type: 'user/listOrg',
       payload: { listOrgParams },
     });
+    const userListParams = {id :this.state.id};
+    this.props.dispatch({
+      type: 'user/userList',
+      payload: { userListParams },
+    });
   }
 
   handleSubmit = values => {
@@ -48,6 +53,7 @@ class EditUser extends Component {
       }
       return 0;
     });
+    console.log(rUserType,typeId)
     const updateUserInfoParams = {
       name: values.name,
       mail: `${values.email}@sunlands.com`,
@@ -58,10 +64,10 @@ class EditUser extends Component {
       wechatDepartmentId: Number(newRoleId),
       wechatDepartmentName: !rname ? undefined : rname,
     };
-    this.props.dispatch({
-      type: 'user/updateUserInfo',
-      payload: { updateUserInfoParams },
-    });
+    // this.props.dispatch({
+    //   type: 'user/updateUserInfo',
+    //   payload: { updateUserInfoParams },
+    // });
   };
 
   resetContent = () => {
@@ -69,7 +75,9 @@ class EditUser extends Component {
   };
   render() {
     const userListValue = this.props.user;
-    return !userListValue.wechatList.response ? null: !userListValue.wechatList.response.data ? null: !userListValue.listOrg.response ? null : !userListValue.listOrg.response.data ? null : (
+    // console.log(userListValue.userList)
+    return !userListValue.userList.response ? null: !userListValue.userList.response.data ? null:
+    !userListValue.wechatList.response ? null: !userListValue.wechatList.response.data ? null: !userListValue.listOrg.response ? null : !userListValue.listOrg.response.data ? null : (
       <ContentLayout
         contentForm={
           <WrappedRegistrationForm

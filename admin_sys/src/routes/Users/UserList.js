@@ -76,14 +76,6 @@ class UserList extends Component {
   onEdit = val => {
     this.props.setRouteUrlParams('/user/editUser', {
       id: val.id,
-      name: val.name,
-      phone: val.mobile,
-      email: val.mail,
-      userType: val.userType,
-      showName: val.showName,
-      responseCom: val.changeShowName,
-      wechatDepartmentId: val.wechatDepartmentId,
-      wechatDepartmentName: val.wechatDepartmentName,
     });
   };
 
