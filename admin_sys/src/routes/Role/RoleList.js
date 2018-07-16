@@ -8,7 +8,7 @@ import common from '../Common/common.css';
 
 @connect(({ role, loading }) => ({
   role,
-  loading,
+  loading: loading.models.role,
 }))
 class RoleList extends Component {
   constructor(props) {
@@ -102,6 +102,7 @@ class RoleList extends Component {
           <div>
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
+              loading={this.props.loading}
               bordered
               dataSource={dataSource}
               columns={columns}

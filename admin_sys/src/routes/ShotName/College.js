@@ -9,7 +9,7 @@ import common from '../Common/common.css';
 
 @connect(({ shortName, loading }) => ({
   shortName,
-  loading,
+  loading: loading.models.shortName,
 }))
 class College extends Component {
   constructor(props) {
@@ -105,7 +105,8 @@ class College extends Component {
   };
 
   render() {
-    const { collegeList } = this.props.shortName;
+    const { loading, shortName } = this.props;
+    const { collegeList } = shortName;
     const dataSource = !collegeList ? [] : collegeList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, collegeName, id, name } = this.state;
@@ -113,7 +114,7 @@ class College extends Component {
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}> {collegeName} </p>
         <Input
-          maxlength={20}
+          maxLength={20}
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
             this.handelChange(e);
@@ -131,6 +132,7 @@ class College extends Component {
             <div>
               <p className={common.totalNum}>总数：{dataSource.length} 条</p>
               <Table
+                loading={loading}
                 bordered
                 dataSource={dataSource}
                 columns={columns}

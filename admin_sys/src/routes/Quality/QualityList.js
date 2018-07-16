@@ -11,7 +11,7 @@ let firstTeaName = '';
 let firstQualityNum = '';
 @connect(({ quality, loading }) => ({
   quality,
-  loading,
+  loading: loading.models.quality,
 }))
 class QualityList extends Component {
   constructor(props) {
@@ -214,6 +214,7 @@ class QualityList extends Component {
           <div>
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
+              loading={this.props.loading}
               bordered
               dataSource={dataSource}
               columns={columns}

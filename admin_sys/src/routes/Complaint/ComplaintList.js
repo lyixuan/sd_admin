@@ -17,7 +17,7 @@ const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ blComplain, loading }) => ({
   blComplain,
-  loading,
+  loading: loading.models.blComplain,
 }))
 class ComplainList extends Component {
   constructor(props) {
@@ -257,6 +257,7 @@ class ComplainList extends Component {
           <div>
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
+              loading={this.props.loading}
               bordered
               dataSource={dataSource}
               columns={columns}

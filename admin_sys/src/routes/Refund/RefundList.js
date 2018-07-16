@@ -17,13 +17,12 @@ const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ blRefund, loading }) => ({
   blRefund,
-  loading,
+  loading: loading.models.blRefund,
 }))
 class RefundList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -103,7 +102,7 @@ class RefundList extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = (val) => {
+  fillDataSource = val => {
     const data = [];
     val.map((item, index) =>
       data.push({
@@ -111,7 +110,7 @@ class RefundList extends Component {
         ordId: item.ordId,
         complainTime: item.complainTime,
         id: item.id,
-        collegeName:item.collegeName,
+        collegeName: item.collegeName,
         familyName: item.familyName,
         groupName: item.groupName,
         cpName: item.cpName,
@@ -182,11 +181,11 @@ class RefundList extends Component {
   };
 
   render() {
-    const data = !this.props.blRefund.listData?null:!this.props.blRefund.listData.data
-        ? null
-        : this.props.blRefund.listData.data;
-    const totalNum = !data?null:!data.totalElements ? 0 : data.totalElements;
-    const dataSource = !data?null:!data.content ? [] : this.fillDataSource(data.content);
+    const data = !this.props.blRefund.listData
+      ? null
+      : !this.props.blRefund.listData.data ? null : this.props.blRefund.listData.data;
+    const totalNum = !data ? null : !data.totalElements ? 0 : data.totalElements;
+    const dataSource = !data ? null : !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -255,6 +254,7 @@ class RefundList extends Component {
           <div>
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
+              loading={this.props.loading}
               bordered
               dataSource={dataSource}
               columns={columns}

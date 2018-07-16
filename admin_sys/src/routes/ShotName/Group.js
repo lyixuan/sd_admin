@@ -9,7 +9,7 @@ import common from '../Common/common.css';
 
 @connect(({ shortName, loading }) => ({
   shortName,
-  loading,
+  loading: loading.models.shortName,
 }))
 class Group extends Component {
   constructor(props) {
@@ -118,7 +118,8 @@ class Group extends Component {
   };
 
   render() {
-    const { groupList } = this.props.shortName;
+    const { loading, shortName } = this.props;
+    const { groupList } = shortName;
     const dataSource = !groupList ? [] : groupList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, collegeName, familyName, groupName, id, name } = this.state;
@@ -127,7 +128,7 @@ class Group extends Component {
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
         <Input
-          maxlength={20}
+          maxLength={20}
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
             this.handelChange(e);
@@ -145,6 +146,7 @@ class Group extends Component {
             <div>
               <p className={common.totalNum}>总数：{dataSource.length} 条</p>
               <Table
+                loading={loading}
                 bordered
                 dataSource={dataSource}
                 columns={columns}
