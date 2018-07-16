@@ -14,16 +14,16 @@ let firstPhone = '';
 let firstUpdate = '';
 const residences = [
   {
-    value: 'no',
-    label: '----',
+    value: 0,
+    label: '全部',
   },
   {
-    value: 'true',
+    value: 1,
     label: '是',
   },
   {
-    value: 'false',
-    label: '全部',
+    value: 2,
+    label: '否',
   },
 ];
 
@@ -162,15 +162,16 @@ class UserList extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
+          console.log(record)
           return (
             <div>
-              {record.changeShowName!==record.showName ? null: (
+              {record.changeShowName!=="" && record.changeShowName!==record.showName?(
                 <AuthorizedButton authority="/user/checkUser">
                   <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
                     更新
                   </span>
                 </AuthorizedButton>
-              )}
+              ): null }
               <AuthorizedButton authority="/user/editUser">
                 <span
                   style={{ color: '#52C9C2', marginLeft: 12 }}
@@ -209,15 +210,14 @@ class UserList extends Component {
         firstPhone = values.mobile;
         const aa = values.isUpdate[0]
         firstUpdate =aa ;
+        // console.log(values.isUpdate[0])
         const userListParams = {
-          isUpdate: !values.isUpdate
-            ? undefined
-            : !values.isUpdate[0]
-              ? undefined
-              : values.isUpdate[0] === 'no' ? false : values.isUpdate[0],
+          isUpdate: values.isUpdate[0],
           name: !values.name ? undefined : values.name,
           mobile: !values.mobile ? undefined : values.mobile,
+          pageSize: 30, pageNum: 0,
         };
+        // console.log(userListParams)
         this.props.dispatch({
           type: 'user/userList',
           payload: { userListParams },
@@ -261,7 +261,7 @@ class UserList extends Component {
             </FormItem>
             <FormItem label="需要更新">
               {getFieldDecorator('isUpdate', {
-                initialValue: [firstUpdate],
+                initialValue: [!firstUpdate?0:firstUpdate],
               })(
                 <Cascader options={residences} style={{ width: 230, height: 32 }} />
               )}

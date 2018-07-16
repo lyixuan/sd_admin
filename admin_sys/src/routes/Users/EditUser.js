@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form , message } from 'antd';
+import { Form  } from 'antd';
 import { connect } from 'dva';
 import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
