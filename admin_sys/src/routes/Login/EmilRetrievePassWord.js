@@ -21,7 +21,7 @@ export default class RetrievePassWord extends Component {
       status: null,
       showCaptcha: '',
       mail: '',
-      showSuccessModal: true,
+      showSuccessModal: false,
     };
   }
 
@@ -39,14 +39,15 @@ export default class RetrievePassWord extends Component {
       });
     }
   }
-  onFocus = () => {
-    if (!this.state.showCaptcha) {
-      this.getAuthCode();
-    }
+
+  onBlur = e => {
+    const mail = e.target.value ? `${e.target.value}@sunlands.com` : '';
+    this.setState({ mail }, this.getAuthCode);
   };
   getAuthCode = () => {
     const self = this;
-    generateAuthCode().then(src => {
+    const [mail, v] = [this.state.mail, new Date().valueOf()];
+    generateAuthCode({ mail, v }).then(src => {
       const showCaptcha = src;
       self.setState({ showCaptcha });
     });
@@ -91,7 +92,7 @@ export default class RetrievePassWord extends Component {
           <PassWordErrorAlert style={{ width: '360px' }} errorMes={msg} isShow={status === false} />
           <div style={{ width: '360px' }}>
             <span className={styles.loginLabel}>邮箱</span>
-            <Emil name="mail" placeholder="请输入邮箱" onFocus={this.onFocus} />
+            <Emil name="mail" placeholder="请输入邮箱" onBlur={this.onBlur} />
             {showCaptcha ? (
               <div>
                 <span className={styles.loginLabel}>验证码</span>

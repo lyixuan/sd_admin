@@ -64,9 +64,9 @@ export async function findBackPwd(params) {
  *获取验证码接口,不需要加验证,使用tag请求
  * params:{}
  */
-export async function generateAuthCode() {
+export async function generateAuthCode(params) {
   const image = new Image();
-  image.src = `${HOST}/token/generateAuthCode?v=${new Date().valueOf()}`;
+  image.src = `${HOST}/token/generateAuthCode?${stringify(params)}`;
   return image.src;
 }
 /*
