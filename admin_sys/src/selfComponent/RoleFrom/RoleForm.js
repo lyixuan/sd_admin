@@ -123,7 +123,7 @@ class RoleForm extends Component {
       return (
         <div>
           <p className={styles.littleTitle}>{name}</p>
-          {item.length===0?null: (
+          {item.length === 0 ? null : (
             <div>
               <Checkbox
                 onChange={this.onCheckAllChange.bind(this, item, checkAllKey, listKey)}
@@ -141,8 +141,7 @@ class RoleForm extends Component {
                 className={styles.checkboxGroup}
               />
             </div>
-          )
-          }
+          )}
         </div>
       );
     };
@@ -152,7 +151,14 @@ class RoleForm extends Component {
           <FormItem {...formItemLayout} label="*角色名称：">
             {getFieldDecorator('name', {
               rules: [{ required: true, message: '请输入角色名称!', whitespace: true }],
-            })(<Input disabled={isDisabled} style={{ width: '220px', height: '32px' }} />)}
+            })(
+              <Input
+                maxLength={25}
+                minLength={1}
+                disabled={isDisabled}
+                style={{ width: '220px', height: '32px' }}
+              />
+            )}
           </FormItem>
           <FormItem {...formItemLayout} label=" *角色权限：">
             {getFieldDecorator('privilegeIds', {})(

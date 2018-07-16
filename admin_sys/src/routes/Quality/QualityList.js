@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Button, Form, Input, Pagination } from 'antd';
+import { Table, Button, Form, Input } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
@@ -88,6 +89,7 @@ class QualityList extends Component {
         groupName: item.groupName,
         teaName: item.teaName,
         stuName: item.stuName,
+        countValue: item.countValue,
         qualityTypeName: item.qualityTypeName,
         qualityNum: item.qualityNum,
       })
@@ -99,8 +101,9 @@ class QualityList extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序列',
+        title: 'id',
         dataIndex: 'id',
+        width: '65px',
       },
       {
         title: '学院',
@@ -125,6 +128,10 @@ class QualityList extends Component {
       {
         title: '违规等级',
         dataIndex: 'qualityTypeName',
+      },
+      {
+        title: '扣除学分',
+        dataIndex: 'countValue',
       },
       {
         title: '质检单号',
@@ -173,7 +180,13 @@ class QualityList extends Component {
               {getFieldDecorator('qualityNum', {
                 initialValue: firstQualityNum,
                 rules: [],
-              })(<Input placeholder="请输入质检单号" style={{ width: 230, height: 32 }} />)}
+              })(
+                <Input
+                  placeholder="请输入质检单号"
+                  maxLength={20}
+                  style={{ width: 230, height: 32 }}
+                />
+              )}
             </FormItem>
             <FormItem style={{ marginLeft: 119 }}>
               <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
@@ -190,7 +203,7 @@ class QualityList extends Component {
     return (
       <ContentLayout
         pageHeraderUnvisible="visible"
-        title="质检列表"
+        title="质检信息"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>
@@ -224,13 +237,14 @@ class QualityList extends Component {
           </div>
         }
         contentPagination={
-          <Pagination
-            showSizeChanger
-            onChange={this.changePage}
-            onShowSizeChange={this.onShowSizeChange}
-            defaultCurrent={1}
+          <SelfPagination
+            onChange={(current, pageSize) => {
+              this.changePage(current, pageSize);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              this.onShowSizeChange(current, pageSize);
+            }}
             total={totalNum}
-            className={common.paginationStyle}
           />
         }
       />

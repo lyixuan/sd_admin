@@ -126,8 +126,9 @@ class ComplainList extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序号',
+        title: 'id',
         dataIndex: 'id',
+        width: '80px',
       },
       {
         title: '子订单编号',
@@ -217,7 +218,14 @@ class ComplainList extends Component {
                 { min: 2, message: '编号长度不得低于2!' },
                 { max: 20, message: '编号长度不得高于20!' },
               ],
-            })(<Input placeholder="请输入编号" style={{ width: 230, height: 32 }} />)}
+            })(
+              <Input
+                maxLength={20}
+                minLength={2}
+                placeholder="请输入编号"
+                style={{ width: 230, height: 32 }}
+              />
+            )}
           </FormItem>
           <FormItem style={{ marginLeft: 119 }}>
             <Button type="primary" htmlType="submit" className={common.searchButton}>
