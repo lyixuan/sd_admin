@@ -79,32 +79,27 @@ class RefundAdd extends Component {
         width: '70px',
       },
       {
-        title: '编号',
-        dataIndex: 'countValue',
+        title: '质检单号',
+        dataIndex: 'qualityNum',
         width: '92px',
       },
       {
-        title: '投诉时间',
-        dataIndex: 'complainTime',
+        title: '监控日期',
+        dataIndex: 'qualityDate',
         width: '105px',
       },
       {
-        title: '学生id',
-        dataIndex: 'stuId',
-        width: '133px',
-      },
-      {
-        title: '学生姓名',
-        dataIndex: 'stuName',
-        width: '92px',
-      },
-      {
-        title: '老师id',
-        dataIndex: 'cpId',
+        title: '班主任id',
+        dataIndex: 'teaId',
         width: '160px',
       },
       {
-        title: '扣分值',
+        title: '违规等级',
+        dataIndex: 'qualityType',
+        width: '133px',
+      },
+      {
+        title: '扣除学分',
         dataIndex: 'countValue',
       },
     ];
