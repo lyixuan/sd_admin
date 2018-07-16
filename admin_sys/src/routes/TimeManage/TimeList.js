@@ -13,14 +13,18 @@ const FormItem = Form.Item;
 let propsVal = '';
 const dateFormat = 'YYYY-MM-DD';
 
-@connect(({ time, loading }) => ({ time, loading }))
+@connect(({ time, loading }) => ({
+  time,
+  loading: loading.models.time,
+  addDisabileTime: loading.effects['time/addDisableTime'],
+}))
 class TimeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       params: {
-        orderDirection: 'asc',
-        orderType: 'id',
+        orderDirection: 'desc',
+        orderType: 'dateTime',
         pageNum: 0,
         pageSize: 30,
       },
@@ -161,6 +165,7 @@ class TimeList extends Component {
   render() {
     const { visible, hintVisible, changeVisible, dateArea } = this.state;
     const { dateListObj = {} } = this.props.time;
+    const { loading, addDisabileTime } = this.props;
     const { content = [], size = 0 } = dateListObj;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
@@ -224,6 +229,7 @@ class TimeList extends Component {
                 <span className={styles.txt}>设置不可用的日期（指定日期将不参与学分计算）</span>
                 <AuthorizedButton authority="/timeManage/TimeList">
                   <Button
+                    loading={addDisabileTime}
                     onClick={this.onAdd}
                     type="primary"
                     className={common.searchButton}
@@ -239,6 +245,7 @@ class TimeList extends Component {
             <div style={{ width: '590px' }}>
               <Table
                 bordered
+                loading={loading}
                 dataSource={dataSorce}
                 columns={columns}
                 useFixedHeader
