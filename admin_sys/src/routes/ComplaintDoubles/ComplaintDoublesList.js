@@ -214,6 +214,7 @@ class ComplaintDoublesList extends Component {
           visible={visible}
           modalContent={modalContent}
           clickOK={() => this.editName()}
+          footButton={['取消','提交']}
           showModal={(bol)=>{this.setDialogSHow(bol)}}
         />
       </div>
