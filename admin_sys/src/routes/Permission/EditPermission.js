@@ -33,7 +33,6 @@ class EditPermission extends Component {
   }
 
   handleSubmit = (values) => {
-    console.log(values)
     const parentIdName = !values.parentId[0]?1:values.parentId[0];
     // console.log(parentIdName)
     // let newparentId = 1;

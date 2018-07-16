@@ -30,14 +30,19 @@ class PermissionForm extends Component {
       parentIdList: !parentIdValues.data ? [] : parentIdValues.data,
       id: !fromWhere.id ? '' : fromWhere.id,
     };
-    // console.log(this.state)
   }
 
   componentDidMount() {
     parentListBackup = !this.state.parentIdList ? [] : this.fullListFun(this.state.parentIdList);
     parentList = this.roleListFun();
     const arrValue = !this.props.jumpFunction.permission.permissionById?[]:!this.props.jumpFunction.permission.permissionById.response?[]:this.props.jumpFunction.permission.permissionById.response.data;
+    console.log(arrValue,levelData[arrValue.level])
     flag = levelData[arrValue.level];
+  }
+  componentWillUnmount() {
+    flag = null;
+    parentList=null;
+    parentListBackup=null;
   }
 
   handleSubmit = e => {

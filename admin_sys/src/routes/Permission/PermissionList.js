@@ -32,7 +32,7 @@ class PermissionList extends Component {
   }
   // 权限编辑
   onEdit = val => {
-    console.log(val);
+    console.log(val)
     this.props.setRouteUrlParams('/permission/editPermission', {
       id: val.id,
     });
