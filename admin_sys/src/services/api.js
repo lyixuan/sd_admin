@@ -74,7 +74,7 @@ export async function generateAuthCode(params) {
  * params:{id}  userId
  */
 export async function getUserAuth(params) {
-  return request(`${HOST}/privilege/getPrivilegeById?${stringify(params)}`, {
+  return request(`${HOST}/privilege/getPrivilegeByAccountId?${stringify(params)}`, {
     method: 'GET',
   });
 }

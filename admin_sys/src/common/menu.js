@@ -1,4 +1,5 @@
 import { isUrl } from '../utils/utils';
+import { getAuthority } from '../utils/authority';
 
 const menuData = [
   {
@@ -245,6 +246,21 @@ const menuData = [
   },
 ];
 
+function getAuthData() {
+  const authData = getAuthority('admin_auth') || [];
+  return authData.map(item => {
+    // const { name, iconUrl } = item;
+    // const [path] = [item.resourceUrl];
+    const result = {
+      path: '/quality/qualityList',
+      name: '质检',
+      authority: item.authority || '',
+      hideInMenu: item.hideInMenu || false,
+    };
+    return result;
+  });
+}
+
 function formatter(data, parentPath = '/', parentAuthority) {
   return data.map(item => {
     let { path } = item;
@@ -264,4 +280,7 @@ function formatter(data, parentPath = '/', parentAuthority) {
   });
 }
 
-export const getMenuData = () => formatter(menuData);
+export const getMenuData = () => {
+  console.log(getAuthData());
+  return formatter(menuData);
+};

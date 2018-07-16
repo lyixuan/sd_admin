@@ -35,7 +35,7 @@ class ChangePwd extends React.Component {
             modalContent="确定停止修改密码"
             clickOK={e => this.backHome(e)}
             title="回到首页确认"
-            showModal={bol => this.fnTiggleModal(bol)}
+            showModal={bol => this.showDiaLog(bol)}
           />
           {!this.state.isChangePwd ? null : (
             <span className={styles.backHome} onClick={this.showDiaLog.bind(this, true)}>

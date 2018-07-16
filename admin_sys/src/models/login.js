@@ -62,8 +62,9 @@ export default {
     },
     *getAuthList(_, { call, put }) {
       const admin = getAuthority('admin_user') || {};
-      const response = yield call(getUserAuth, { id: admin.userId });
+      const response = yield call(getUserAuth, { accountId: admin.userId });
       if (response.code === 2000) {
+        setAuthority('admin_auth', response.data);
         yield put({
           type: 'saveAuthList',
           payload: response.data,

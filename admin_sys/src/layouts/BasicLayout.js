@@ -99,6 +99,9 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
     };
   }
+  componentWillMount() {
+    this.getuserAuthList();
+  }
 
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
@@ -107,7 +110,6 @@ class BasicLayout extends React.PureComponent {
       });
     });
     this.handleUserInfo();
-    this.getuserAuthList();
   }
 
   componentWillUnmount() {

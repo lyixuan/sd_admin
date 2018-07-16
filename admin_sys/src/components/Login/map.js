@@ -27,7 +27,8 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Wrong mobile number format!',
+        min: 6,
+        message: '密码由6-16位英文字母、数字或符号组成',
       },
     ],
   },
