@@ -181,7 +181,7 @@ class PermissionForm extends Component {
               <Cascader
                 options={parentList}
                 style={{ width: 380 }}
-                disabled={flag === '一级页面' ? disabled : false}
+                disabled={!this.state.id ? false : flag === '一级页面'? disabled : false}
               />
             )}
           </FormItem>
