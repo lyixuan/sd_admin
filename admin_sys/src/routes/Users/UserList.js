@@ -182,7 +182,7 @@ class UserList extends Component {
         },
       },
     ];
-    return columns;
+    return columns||[];
   };
 
   // 表单重置
@@ -230,7 +230,7 @@ class UserList extends Component {
       : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const columns = !this.columnsData() ? [] : this.columnsData();
+    const columns = this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;

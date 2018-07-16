@@ -120,7 +120,7 @@ class AccountList extends Component {
         },
       },
     ];
-    return columns;
+    return columns||[];
   };
 
   // 创建账号函数
@@ -137,9 +137,8 @@ class AccountList extends Component {
         : this.props.account.accountList.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const columns = !this.columnsData() ? [] : this.columnsData();
-    const val = this.props.account.accountList.response
-    return !val ? null: !val ? null: (
+    const columns = this.columnsData();
+    return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
         title="账号列表"

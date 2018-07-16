@@ -100,7 +100,7 @@ class ComplaintDoublesList extends Component {
         },
       },
     ];
-    return columns;
+    return columns||[];
   };
 
   // input双向绑定
@@ -160,7 +160,7 @@ class ComplaintDoublesList extends Component {
         : this.props.complaintDoubles.complaintDoublesList.response.data;
     const totalNum = !data ? 0 : data.length;
     const dataSource = !data ? [] : this.fillDataSource(data);
-    const columns = !this.columnsData() ? [] : this.columnsData();
+    const columns = this.columnsData();
     const { visible,collegeName,multiplePoints,collegeId,effectiveDate} = this.state;
     const modalContent = (
       <div>

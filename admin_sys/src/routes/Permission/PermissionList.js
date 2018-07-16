@@ -156,7 +156,7 @@ class PermissionList extends Component {
         },
       },
     ];
-    return columns;
+    return columns||[];
   };
 
   // 创建权限
@@ -173,7 +173,7 @@ class PermissionList extends Component {
         : this.props.permission.permissionList.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const columns = !this.columnsData() ? [] : this.columnsData();
+    const columns = this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
