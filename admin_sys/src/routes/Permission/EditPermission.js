@@ -33,21 +33,24 @@ class EditPermission extends Component {
   }
 
   handleSubmit = (values) => {
-    const parentIdName = !values.parentId[0]?'':values.parentId[0];
-    let newparentId = 1;
-    const parentIdList = this.props.permission.permissionListAllName.data
-    parentIdList.map(item => {
-      if (item.name === parentIdName) {
-        newparentId = item.id;
-      }
-      return 0;
-    });
+    console.log(values)
+    const parentIdName = !values.parentId[0]?1:values.parentId[0];
+    // console.log(parentIdName)
+    // let newparentId = 1;
+    // const parentIdList = this.props.permission.permissionListAllName.data
+    // console.log(parentIdList)
+    // parentIdList.map(item => {
+    //   if (item.name === parentIdName) {
+    //     newparentId = item.id;
+    //   }
+    //   return 0;
+    // });
     const updatePermissionParams = {
       name: values.name,
       iconUrl: values.iconUrl[0],
       id: Number(this.state.id),
       level: levelDataReset[values.level[0]]||1,
-      parentId: newparentId,
+      parentId: parentIdName,
       sort: Number(values.sort),
       resourceUrl: values.resourceUrl,
     };

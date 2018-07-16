@@ -202,26 +202,31 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('sort', {
-              initialValue: !this.state.id?'':arrValue.sort===0?'0':arrValue.sort,
-              rules: [{ required: true, message: '权限排序为必填项，请填写!', whitespace: true },
-                { max: 10, message: '权限排序长度最多10个字节!' },
+              // initialValue: !this.state.id?'':arrValue.sort===0?'0':arrValue.sort,
+              initialValue: !this.state.id?'':!arrValue.sort?'0':arrValue.sort,
+
+              rules: [
+                { required: true, message: '权限排序为必填项，请填写!'},
+                // { max: 10, message: '权限排序长度在最长为10个字符!'},
                 {
                     validator(rule, value, callback) {
                       const re = /^[0-9]*[0-9]$/i; // 校验是否为数字
                       if (flag === '一级页面') {
                         if(re.test(value) && value%100===0){
                           callback();
+                        }else{
+                          callback({ message: '一级页面排序应为100的整数倍！' });
                         }
-                        callback({ message: '一级页面排序应为100的整数倍！' });
+
                       }else if(flag === '二级页面'){
                         if(re.test(value) && value%10===0){
                           callback();
-                        }
-                        callback({ message: '二级页面排序应为10的整数倍！' });
+                        }else{callback({ message: '二级页面排序应为10的整数倍！' });}
+
                       }
                       callback();
                     },
-                  },
+                },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
