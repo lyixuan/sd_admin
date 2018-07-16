@@ -44,7 +44,6 @@ class PermissionForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('进入提交函数');
         this.props.handleSubmit(values);
       }
     });
@@ -181,7 +180,7 @@ class PermissionForm extends Component {
               <Cascader
                 options={parentList}
                 style={{ width: 380 }}
-                disabled={!this.state.id ? false : flag === '一级页面'? disabled : false}
+                disabled={!this.state.id ? flag === '一级页面'? disabled : false : flag === '一级页面'? disabled : false}
               />
             )}
           </FormItem>
