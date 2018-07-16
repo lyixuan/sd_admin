@@ -12,7 +12,7 @@ let propsVal = '';
 let firstName = '';
 @connect(({ permission, loading }) => ({
   permission,
-  loading,
+  loading: loading.models.permission,
 }))
 class PermissionList extends Component {
   constructor(props) {
@@ -73,7 +73,7 @@ class PermissionList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         firstName = values.name;
-        const permissionListParams = { name: !values.name?undefined:values.name ,sort:'id',size: 30, number: 0 ,};
+        const permissionListParams = { name: !values.name?undefined:values.name ,sort:'id',size: 30, number: 0 };
         this.props.dispatch({
           type: 'permission/permissionList',
           payload: { permissionListParams },
@@ -165,6 +165,7 @@ class PermissionList extends Component {
   };
 
   render() {
+    const { loading } = this.props;
     const data = !this.props.permission.permissionList.response
       ? []
       : !this.props.permission.permissionList.response.data
@@ -214,6 +215,7 @@ class PermissionList extends Component {
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
+              loading={loading}
               dataSource={dataSource}
               columns={columns}
               pagination={false}
