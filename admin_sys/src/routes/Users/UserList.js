@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 let propsVal = '';
 let firstName = '';
 let firstPhone = '';
-let firstUpdate = '';
+let firstUpdate = 0;
 const residences = [
   {
     value: 0,
@@ -29,7 +29,7 @@ const residences = [
 
 @connect(({ user, loading }) => ({
   user,
-  loading,
+  loading: loading.models.user,
 }))
 class UserList extends Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    const userListParams = { pageSize: 30, pageNum: 0 };
+    const userListParams = { pageSize: 30, pageNum: 0 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -54,7 +54,7 @@ class UserList extends Component {
   onDelete = val => {
     console.log(val.id);
     const userDeleteParams = { id: val.id };
-    const userListParams = {};
+    const userListParams = {pageSize: 30, pageNum: 0 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/userDelete',
       payload: { userDeleteParams, userListParams },
@@ -65,7 +65,7 @@ class UserList extends Component {
   onUpdate = val => {
     console.log(val.id);
     const updateUserOrgParams = { id: val.id };
-    const userListParams = {};
+    const userListParams = {pageSize: 30, pageNum: 0 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/updateUserOrg',
       payload: { updateUserOrgParams, userListParams },
@@ -81,7 +81,7 @@ class UserList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, Size) => {
-    const userListParams = { pageSize : Size, pageNum: current - 1 };
+    const userListParams = { pageSize : Size, pageNum: current - 1 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -90,7 +90,7 @@ class UserList extends Component {
 
   // 点击某一页函数
   changePage = (current, Size) => {
-    const userListParams = { pageSize: Size, pageNum: current - 1 };
+    const userListParams = { pageSize: Size, pageNum: current - 1 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -223,6 +223,7 @@ class UserList extends Component {
   };
 
   render() {
+    const { loading } = this.props;
     const data = !this.props.user.userList.response
       ? []
       : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
@@ -302,6 +303,7 @@ class UserList extends Component {
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
+              loading={loading}
               dataSource={dataSource}
               columns={columns}
               pagination={false}
