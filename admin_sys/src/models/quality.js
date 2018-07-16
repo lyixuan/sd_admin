@@ -19,8 +19,8 @@ export default {
 
   effects: {
     *getQualityList({ payload }, { call, put }) {
-      const response = yield call(getQualityList, payload.qualityListParams);
-      // console.log(response);
+      const { qualityListParams } = payload;
+      const response = yield call(getQualityList, { qualityListParams });
       yield put({ type: 'qualityListSave', payload: { response } });
     },
     *checkQuality({ payload }, { call, put }) {

@@ -441,7 +441,6 @@ export async function delBlComplainList(params) {
 export async function getQualityList(params) {
   return request(`${HOST}/metaQuality/list?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 // 校验质检excel文件
