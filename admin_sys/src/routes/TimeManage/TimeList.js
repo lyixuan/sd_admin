@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Popconfirm, DatePicker } from 'antd';
+import { Table, Button, Form, Popconfirm, DatePicker, message } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -17,6 +17,7 @@ const dateFormat = 'YYYY-MM-DD';
   time,
   loading: loading.models.time,
   addDisabileTime: loading.effects['time/addDisableTime'],
+  changeDateArea: loading.effects['time/updateAreaDate'],
 }))
 class TimeList extends Component {
   constructor(props) {
@@ -42,6 +43,17 @@ class TimeList extends Component {
 
   componentDidMount() {
     this.fillDataSource();
+    this.getRange();
+    console.log(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(nextProps.time.dateArea) !== JSON.stringify(this.props.time.dateArea)) {
+      const beginTime = this.changeFormat(nextProps.time.dateArea.beginTime);
+      const endTime = this.changeFormat(nextProps.time.dateArea.endTime);
+      const dateArea = { ...nextProps.time.dateArea, beginTime, endTime };
+      this.setState({ dateArea });
+    }
   }
 
   // 添加
@@ -62,17 +74,23 @@ class TimeList extends Component {
   onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
   };
-  // 点击选择添加不可选时间
-  selectDisableTime = (date, dateString) => {
-    this.setState({ dateTime: dateString });
+  // 初始化回显时间日期
+  getRange = () => {
+    this.props.dispatch({
+      type: 'time/getRange',
+    });
   };
   addDisableTime = () => {
     const { dateTime = '', params } = this.state;
-    this.props.dispatch({
-      type: 'time/addDisableTime',
-      payload: { dateTime, params },
-    });
-    this.setState({ visible: false });
+    if (dateTime) {
+      this.props.dispatch({
+        type: 'time/addDisableTime',
+        payload: { dateTime, params },
+      });
+      this.setState({ visible: false });
+    } else {
+      message.error('添加失败,日期不可为空');
+    }
   };
   showModal = bol => {
     this.setState({
@@ -125,7 +143,23 @@ class TimeList extends Component {
       },
     });
   };
+  changeFormat = tmp => {
+    return tmp ? moment.unix(tmp / 1000).format(dateFormat) : '';
+  };
 
+  // 点击选择添加不可选时间
+  selectDisableTime = (date, dateString) => {
+    const { dateListObj = {} } = this.props.time;
+    const { content = [] } = dateListObj;
+    const isHasDate = content.find(item => {
+      const formatDate = moment.unix(item.dateTime / 1000).format(dateFormat);
+      return formatDate === dateString;
+    });
+    if (isHasDate) {
+      message.error('添加失败,日期不可重复');
+    }
+    this.setState({ dateTime: dateString });
+  };
   // 初始化tabale 列数据
   fillDataSource = value => {
     const { params } = this.state;
@@ -165,7 +199,7 @@ class TimeList extends Component {
   render() {
     const { visible, hintVisible, changeVisible, dateArea } = this.state;
     const { dateListObj = {} } = this.props.time;
-    const { loading, addDisabileTime } = this.props;
+    const { loading, addDisabileTime, changeDateArea } = this.props;
     const { content = [], size = 0 } = dateListObj;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
@@ -206,6 +240,7 @@ class TimeList extends Component {
               <Button
                 type="primary"
                 htmlType="submit"
+                loading={changeDateArea}
                 className={common.searchButton}
                 style={{ margin: '0' }}
               >

@@ -385,15 +385,14 @@ export async function updateDate(params) {
     body: params,
   });
 }
-// /*
-// 设置可选日期区间回显
-//  */
-// export async function updateDate(params) {
-//   return request(`${HOST}/time/updateDate`, {
-//     method: 'PUT',
-//     body: params,
-//   });
-// }
+/*
+设置可选日期区间回显
+ */
+export async function getRangeDate(params) {
+  return request(`${HOST}/time/getRange?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
 
 /*
 以下接口为投诉管理模块相关

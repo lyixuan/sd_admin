@@ -1,11 +1,16 @@
 import { message } from 'antd';
-import { getDate, addDate, deleteDate, updateDate } from '../services/api';
+import { getDate, addDate, deleteDate, updateDate, getRangeDate } from '../services/api';
 
 export default {
   namespace: 'time',
 
   state: {
     dateListObj: {},
+    dateArea: {
+      beginTime: '',
+      endTime: '',
+      id: 1,
+    },
   },
 
   effects: {
@@ -18,6 +23,16 @@ export default {
       });
       if (reponse.code !== 2000) {
         message.error(reponse.msg);
+      }
+    },
+    *getRange(_, { call, put }) {
+      const response = yield call(getRangeDate);
+      if (response.code === 2000) {
+        const [dateArea] = response.data || [];
+        yield put({
+          type: 'saveTimeArea',
+          payload: { dateArea },
+        });
       }
     },
     *addDisableTime({ payload }, { put, call }) {
@@ -61,6 +76,8 @@ export default {
       return { ...state, ...payload };
     },
     saveTimeArea(state, { payload }) {
+      console.log(payload);
+      // const [rangeDate]=payload
       return { ...state, ...payload };
     },
   },
