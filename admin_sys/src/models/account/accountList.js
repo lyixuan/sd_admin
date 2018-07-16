@@ -14,20 +14,21 @@ export default {
 
   state: {
     // 请求接口上送参数
-    accountListParams: { size: 30, number: 0 ,orderType:'name'},
+    accountListParams: { size: 30, number: 0, orderType: 'name' },
     addAccountParams: {},
     updateAccountParams: {},
     deleteAccountParams: {},
     getRoleListParams: {},
-    accountInfoParams:{},
+    accountInfoParams: {},
     // 接口返回数据存储
     accountList: [],
     getRoleList: [],
-    accountInfo:[],
+    accountInfo: [],
   },
 
   effects: {
     *accountList({ payload }, { call, put }) {
+      console.log(payload);
       const { accountListParams } = payload;
       const response = yield call(queryAccountList, { ...accountListParams });
       yield put({ type: 'accountListSave', payload: { response } });
@@ -63,7 +64,7 @@ export default {
       } else {
         message.error(result.msg);
       }
-      const response = yield call(queryAccountList, { size: 30, number: 0,orderType:'name' });
+      const response = yield call(queryAccountList, { size: 30, number: 0, orderType: 'name' });
       console.log(response);
       yield put({
         type: 'accountListSave',

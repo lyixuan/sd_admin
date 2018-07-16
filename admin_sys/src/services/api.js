@@ -85,7 +85,6 @@ export async function getUserAuth(params) {
 export async function queryAccountList(params) {
   return request(`${HOST}/account/list?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 
@@ -93,7 +92,6 @@ export async function queryAccountList(params) {
 export async function queryAccountInfo(params) {
   return request(`${HOST}/account/info?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 
@@ -115,7 +113,6 @@ export async function updateAccount(params) {
 export async function deleteAccount(params) {
   return request(`${HOST}/account/delete?${stringify(params)}`, {
     method: 'DELETE',
-    body: params,
   });
 }
 
@@ -123,7 +120,6 @@ export async function deleteAccount(params) {
 export async function getRolePrivilegesList(params) {
   return request(`${HOST}/rolePrivilege/list?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 
@@ -134,7 +130,6 @@ export async function getRolePrivilegesList(params) {
 export async function getCollegeList(params) {
   return request(`${HOST}/sn/listCollege?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 export async function updateCollege(params) {
@@ -147,7 +142,6 @@ export async function updateCollege(params) {
 export async function getFamilyList(params) {
   return request(`${HOST}/sn/listFamily?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 export async function updateFamily(params) {
@@ -160,7 +154,6 @@ export async function updateFamily(params) {
 export async function getGroupList(params) {
   return request(`${HOST}/sn/listGroup?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 export async function updateGroup(params) {
@@ -176,7 +169,6 @@ export async function updateGroup(params) {
 export async function getRoleInfo(params) {
   return request(`${HOST}/role/info?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 
@@ -187,7 +179,6 @@ export async function getRoleInfo(params) {
 export async function getRoleList(params) {
   return request(`${HOST}/role/list?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 /*
@@ -210,7 +201,6 @@ export async function getRoleAdd(params) {
 export async function getRoleListAll(params) {
   return request(`${HOST}/privilege/listAll?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 /*
@@ -220,7 +210,6 @@ export async function getRoleListAll(params) {
 export async function getRoleDelete(params) {
   return request(`${HOST}/role/delete?${stringify(params)}`, {
     method: 'DELETE',
-    body: params,
   });
 }
 /*
@@ -244,7 +233,6 @@ export async function getRoleUpdate(params) {
 export async function getRolePrivileges(params) {
   return request(`${HOST}/rolePrivilege/getRolePrivileges?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 
@@ -262,7 +250,6 @@ export async function addPermission(params) {
 export async function getPermissionById(params) {
   return request(`${HOST}/privilege/getPrivilegeById?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 // 修改权限接口
@@ -276,7 +263,6 @@ export async function updatePermission(params) {
 export async function permissionListAllName(params) {
   return request(`${HOST}/privilege/listAllName?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 
@@ -287,28 +273,24 @@ export async function permissionListAllName(params) {
 export async function userList(params) {
   return request(`${HOST}/user/list?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 // 更新用户组织结构  慧慧提示该put接口要在url后面添加参数
 export async function updateUserOrg(params) {
   return request(`${HOST}/user/updateOrg?${stringify(params)}`, {
     method: 'PUT',
-    body: params,
   });
 }
 // 更新用户信息 慧慧提示该put接口要在url后面添加参数
 export async function updateUserInfo(params) {
   return request(`${HOST}/user/updateUserInfo?${stringify(params)}`, {
     method: 'PUT',
-    body: params,
   });
 }
 // 删除用户
 export async function userDelete(params) {
   return request(`${HOST}/user/delete?${stringify(params)}`, {
     method: 'DELETE',
-    body: params,
   });
 }
 // 创建用户
@@ -322,14 +304,12 @@ export async function userAdd(params) {
 export async function listOrg(params) {
   return request(`${HOST}/user/listOrg?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 // 查看微信部门
 export async function wechatList(params) {
   return request(`${HOST}/user/wechatList?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 
@@ -340,7 +320,6 @@ export async function wechatList(params) {
 export async function complaintDoublesList(params) {
   return request(`${HOST}/complainMultiple/list?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 // 修改投诉扣分倍数
@@ -401,7 +380,6 @@ export async function getRangeDate(params) {
 export async function getBlComplainList(params) {
   return request(`${HOST}/blComplain/list?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 // 校验质检excel文件
@@ -482,7 +460,6 @@ export function qualityUpload() {
 export async function getBlRefundList(params) {
   return request(`${HOST}/blRefund/list?${stringify(params)}`, {
     method: 'GET',
-    body: params,
   });
 }
 // 校验退费excel文件
