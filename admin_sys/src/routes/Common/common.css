@@ -284,3 +284,6 @@
   color:#fff;
 }
 
+:global(.ant-btn:hover, .ant-btn:focus) {
+  color: #fff;}
+
