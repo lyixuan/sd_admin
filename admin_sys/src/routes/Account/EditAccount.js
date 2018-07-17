@@ -58,8 +58,7 @@ class EditAccount extends Component {
   };
 
   render() {
-    return (!this.props.account.getRoleList ? null : !this.props.account.getRoleList.data ? null:
-        !this.props.account.accountInfo.response ? null : !this.props.account.accountInfo.response.data ? null:
+    return (
       (
         <ContentLayout
           contentForm={<WrappedRegistrationForm

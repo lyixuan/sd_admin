@@ -48,7 +48,7 @@ class CreateAccount extends Component {
   };
 
   render() {
-    return (!this.props.account.getRoleList ? null : !this.props.account.getRoleList.data ? null :
+    return (
         (
           <ContentLayout
             contentForm={<WrappedRegistrationForm
