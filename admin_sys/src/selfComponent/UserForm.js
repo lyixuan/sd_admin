@@ -41,10 +41,11 @@ class UserForm extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
-    const wechatValues = !this.props.jumpFunction.user.wechatList.response.data?[]:this.props.jumpFunction.user.wechatList.response.data.department;
-    const listOrgValues = !this.props.jumpFunction.user.listOrg.response.data?[]:this.props.jumpFunction.user.listOrg.response.data;
+    const userVal = this.props.jumpFunction.user
+    const wechatValues = !userVal.wechatList.response?[]:!userVal.wechatList.response.data?[]:userVal.wechatList.response.data.department;
+    const listOrgValues = !userVal.listOrg.response?[]:!userVal.listOrg.response.data?[]:userVal.listOrg.response.data;
 
-    const aaa = this.props.jumpFunction.user.userList.response.data.content[0];
+    const aaa = !userVal.userList.response?[]:!userVal.userList.response.data?[]:userVal.userList.response.data.content[0];
     console.log(aaa)
     this.state = {
       wechatList: wechatValues||[],
@@ -225,7 +226,7 @@ class UserForm extends Component {
     const aaa = this.props.jumpFunction.user.userList
     const arrValue = !aaa?[]:!aaa.response?[]:!aaa.response.data?[]:!aaa.response.data.content?[]:aaa.response.data.content[0];
     // const responseColl =arrValue.
-    console.log(responseComList)
+    // console.log(responseComList)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>

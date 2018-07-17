@@ -37,9 +37,6 @@ class CreateUser extends Component {
     let typeId = values.responseCom[len - 1];
     if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
       typeId = undefined;
-    }else {
-      const aa = !typeId?message.error('请选择负责单位'):null;
-      return aa;
     }
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;

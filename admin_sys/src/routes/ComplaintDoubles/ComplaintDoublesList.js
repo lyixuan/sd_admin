@@ -8,7 +8,7 @@ import common from '../Common/common.css';
 
 @connect(({ complaintDoubles, loading }) => ({
   complaintDoubles,
-  loading,
+  loading: loading.models.complaintDoubles,
 }))
 class ComplaintDoublesList extends Component {
   constructor(props) {
@@ -106,8 +106,8 @@ class ComplaintDoublesList extends Component {
   // input双向绑定
   handelChange(e) {
     console.log(e.target.value||this.state.multiplePoints)
-    const points = e.target.value||this.state.multiplePoints;
-    if(/(^[1-9]\d*$)/.test(points)){
+    const points = e.target.value;
+    if(/(^[1-9]\d*$)/.test(points||1)){
       this.setState({
         multiplePoints: points,
       });
@@ -149,6 +149,7 @@ class ComplaintDoublesList extends Component {
   };
 
   render() {
+    const { loading } = this.props;
     const data = !this.props.complaintDoubles.complaintDoublesList.response
       ? []
       : !this.props.complaintDoubles.complaintDoublesList.response.data
@@ -196,6 +197,7 @@ class ComplaintDoublesList extends Component {
               <p className={common.totalNum}>总数：{totalNum}条</p>
               <Table
                 bordered
+                loading={loading}
                 dataSource={dataSource}
                 columns={columns}
                 pagination={false}

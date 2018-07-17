@@ -204,7 +204,11 @@ class UserList extends Component {
     firstPhone = '';
     firstUpdate = '';
     propsVal.form.resetFields();
-    this.props.setCurrentUrlParams({});
+    const userListParams = { pageSize: 30, pageNum: 0 ,isUpdate:!firstUpdate?0:firstUpdate};
+    this.props.dispatch({
+      type: 'user/userList',
+      payload: { userListParams },
+    });
   };
   // 表单搜索
   handleSearch = e => {
@@ -254,7 +258,7 @@ class UserList extends Component {
             <FormItem label="姓名">
               {getFieldDecorator('name', {
                 initialValue: firstName,
-                rules: [{ min: 2, max:50, message: '您输入姓名不合法!', whitespace: true }],
+                rules: [{ max:50, message: '您输入姓名不合法!', whitespace: true }],
               })(
                 <Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />
               )}
