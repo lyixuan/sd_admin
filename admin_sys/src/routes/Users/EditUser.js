@@ -56,7 +56,7 @@ class EditUser extends Component {
     console.log(rUserType,typeId)
     const updateUserInfoParams = {
       name: values.name,
-      mail: `${values.email}@sunlands.com`,
+      mail: values.email,
       mobile: values.phone,
       id: Number(this.state.id),
       userType: userTypeDataReset[rUserType],

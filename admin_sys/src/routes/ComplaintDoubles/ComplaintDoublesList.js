@@ -107,9 +107,6 @@ class ComplaintDoublesList extends Component {
   handelChange(e) {
     console.log(e.target.value||this.state.multiplePoints)
     const points = e.target.value;
-    if(!e.target.value){
-      message.error("投诉扣分倍数不可为空")
-    }
     if(/(^[1-9]\d*$)/.test(points||1)){
       this.setState({
         multiplePoints: points,

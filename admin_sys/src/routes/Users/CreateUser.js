@@ -48,7 +48,7 @@ class CreateUser extends Component {
     });
     const userAddParams = {
       name: values.name,
-      mail: `${values.email}@sunlands.com`,
+      mail: values.email,
       mobile: values.phone,
       userType: userTypeDataReset[rUserType],
       userTypeId: typeId,
