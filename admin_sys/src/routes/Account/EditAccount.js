@@ -59,15 +59,14 @@ class EditAccount extends Component {
 
   render() {
     return (
-      (
-        <ContentLayout
-          contentForm={<WrappedRegistrationForm
+      <ContentLayout
+        contentForm={
+          <WrappedRegistrationForm
             jumpFunction={this.props}
             resetContent={()=>{this.resetContent()}}
             handleSubmit={(values)=>{this.handleSubmit(values)}}
           />}
-        />
-      )
+      />
     );
   }
 }

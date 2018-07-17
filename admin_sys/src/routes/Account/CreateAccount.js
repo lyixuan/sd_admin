@@ -49,17 +49,16 @@ class CreateAccount extends Component {
 
   render() {
     return (
-        (
-          <ContentLayout
-            contentForm={<WrappedRegistrationForm
-              jumpFunction={this.props}
-              resetContent={()=>{this.resetContent()}}
-              handleSubmit={(values)=>{this.handleSubmit(values)}}
-            />}
-          />
-        )
+      <ContentLayout
+        contentForm={
+          <WrappedRegistrationForm
+            jumpFunction={this.props}
+            resetContent={()=>{this.resetContent()}}
+            handleSubmit={(values)=>{this.handleSubmit(values)}}
+          />}
+      />
     );
-    }
+  }
 }
 
 export default CreateAccount;
