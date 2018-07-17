@@ -1,4 +1,3 @@
-
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import {
@@ -18,7 +17,7 @@ export default {
     // 接口返回数据存储
     permissionList: [],
     permissionListAllNameSave: [],
-    permissionById:[],
+    permissionById: [],
   },
 
   effects: {
@@ -31,9 +30,9 @@ export default {
       yield put({ type: 'permissionByIdSave', payload: { response } });
     },
     *addPermission({ payload }, { call, put }) {
-      const result = call(addPermission, payload.addPermissionParams);
-      if(result.code === 0 || result.code === 2000){
-        message.success('成功创建权限！')
+      const result = yield call(addPermission, payload.addPermissionParams);
+      if (result.code === 0 || result.code === 2000) {
+        message.success('成功创建权限！');
         yield put(routerRedux.push('/permission/permissionList'));
       } else {
         message.error(result.msg);
@@ -41,8 +40,8 @@ export default {
     },
     *updatePermission({ payload }, { call, put }) {
       const result = yield call(updatePermission, payload.updatePermissionParams);
-      if(result.code === 0 || result.code === 2000){
-        message.success('成功编辑权限！')
+      if (result.code === 0 || result.code === 2000) {
+        message.success('成功编辑权限！');
         yield put(routerRedux.push('/permission/permissionList'));
       } else {
         message.error(result.msg);

@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import PermissionForm from '../../selfComponent/PermissionForm';
-import {levelDataReset} from '../../utils/dataDictionary';
+import { levelDataReset } from '../../utils/dataDictionary';
 
 const WrappedRegistrationForm = Form.create()(PermissionForm);
 @connect(({ permission, loading }) => ({
@@ -23,9 +23,8 @@ class CreatePermission extends Component {
     });
   }
 
-
-  handleSubmit = (values) => {
-    const parentIdName = !values.parentId[0]?1:values.parentId[0];;
+  handleSubmit = values => {
+    const parentIdName = values.parentId[0] || 0;
     // let newparentId = 1;
     // const parentIdList = this.props.permission.permissionListAllName.data
     // parentIdList.map(item => {
@@ -36,8 +35,8 @@ class CreatePermission extends Component {
     // });
     const addPermissionParams = {
       name: values.name,
-      iconUrl: values.iconUrl[0],
-      level: levelDataReset[values.level[0]]||1,
+      iconUrl: values.iconUrl,
+      level: levelDataReset[values.level[0]] || 1,
       parentId: parentIdName,
       sort: Number(values.sort),
       resourceUrl: values.resourceUrl,
@@ -52,17 +51,23 @@ class CreatePermission extends Component {
     this.props.setRouteUrlParams('/permission/permissionList');
   };
 
-
   render() {
-    return (!this.props.permission.permissionListAllName ? null : !this.props.permission.permissionListAllName.data ? null : (
+    return !this.props.permission.permissionListAllName ? null : !this.props.permission
+      .permissionListAllName.data ? null : (
       <ContentLayout
-        contentForm={<WrappedRegistrationForm
-          jumpFunction={this.props}
-          resetContent={()=>{this.resetContent()}}
-          handleSubmit={(values)=>{this.handleSubmit(values)}}
-        />}
+        contentForm={
+          <WrappedRegistrationForm
+            jumpFunction={this.props}
+            resetContent={() => {
+              this.resetContent();
+            }}
+            handleSubmit={values => {
+              this.handleSubmit(values);
+            }}
+          />
+        }
       />
-    ));
+    );
   }
 }
 

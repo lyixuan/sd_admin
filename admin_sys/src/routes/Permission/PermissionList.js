@@ -5,7 +5,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import {levelData} from '../../utils/dataDictionary';
+import { levelData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 let propsVal = '';
@@ -21,7 +21,7 @@ class PermissionList extends Component {
   }
 
   componentDidMount() {
-    const permissionListParams = {size: 30, number: 0,sort:'id'};
+    const permissionListParams = { size: 30, number: 0, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -32,7 +32,7 @@ class PermissionList extends Component {
   }
   // 权限编辑
   onEdit = val => {
-    console.log(val)
+    console.log(val);
     this.props.setRouteUrlParams('/permission/editPermission', {
       id: val.id,
     });
@@ -40,7 +40,7 @@ class PermissionList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const permissionListParams = {size: pageSize, number: current - 1,sort:'id' };
+    const permissionListParams = { size: pageSize, number: current - 1, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -49,7 +49,7 @@ class PermissionList extends Component {
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const permissionListParams = {size: pageSize, number: current - 1 ,sort:'id'};
+    const permissionListParams = { size: pageSize, number: current - 1, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -60,7 +60,7 @@ class PermissionList extends Component {
   handleReset = () => {
     firstName = '';
     propsVal.form.resetFields();
-    const permissionListParams = {size: 30, number: 0 , sort:'id'};
+    const permissionListParams = { size: 30, number: 0, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -73,7 +73,12 @@ class PermissionList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         firstName = values.name;
-        const permissionListParams = { name: !values.name?undefined:values.name ,sort:'id',size: 30, number: 0 };
+        const permissionListParams = {
+          name: !values.name ? undefined : values.name,
+          sort: 'id',
+          size: 30,
+          number: 0,
+        };
         this.props.dispatch({
           type: 'permission/permissionList',
           payload: { permissionListParams },
@@ -127,10 +132,12 @@ class PermissionList extends Component {
         title: '一级页面图标',
         dataIndex: 'iconUrl',
         render: record => {
-          return (
-            !record ? <span>{!record?'':record}</span>:<img src={record} alt='上一级页面图标' />
-            // <span>{record}</span>
+          return !record ? (
+            <span>{!record ? '' : record}</span>
+          ) : (
+            <img src={record} alt="上一级页面图标" style={{ width: '30px' }} />
           );
+          // <span>{record}</span>
         },
       },
       {
@@ -156,7 +163,7 @@ class PermissionList extends Component {
         },
       },
     ];
-    return columns||[];
+    return columns || [];
   };
 
   // 创建权限
@@ -236,7 +243,7 @@ class PermissionList extends Component {
             defaultPageSize={30}
             pageSizeOptions={['30']}
           />
-      }
+        }
       />
     );
   }
