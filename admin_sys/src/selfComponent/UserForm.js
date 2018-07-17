@@ -41,14 +41,14 @@ class UserForm extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
-    const wechatValues = this.props.jumpFunction.user.wechatList.response.data;
-    const listOrgValues = this.props.jumpFunction.user.listOrg.response.data;
+    const wechatValues = !this.props.jumpFunction.user.wechatList.response.data?[]:this.props.jumpFunction.user.wechatList.response.data.department;
+    const listOrgValues = !this.props.jumpFunction.user.listOrg.response.data?[]:this.props.jumpFunction.user.listOrg.response.data;
 
     const aaa = this.props.jumpFunction.user.userList.response.data.content[0];
     console.log(aaa)
     this.state = {
-      wechatList: !wechatValues.department ? [] : wechatValues.department,
-      listOrgLiost: listOrgValues,
+      wechatList: wechatValues||[],
+      listOrgLiost: listOrgValues||[],
       id: !arrValue.id ? '' : arrValue.id,
       userType:!aaa.userType?'':userTypeData[aaa.userType],
     };

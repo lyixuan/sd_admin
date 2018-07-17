@@ -76,8 +76,7 @@ class EditUser extends Component {
   render() {
     const userListValue = this.props.user;
     // console.log(userListValue.userList)
-    return !userListValue.userList.response ? null: !userListValue.userList.response.data ? null:
-    !userListValue.wechatList.response ? null: !userListValue.wechatList.response.data ? null: !userListValue.listOrg.response ? null : !userListValue.listOrg.response.data ? null : (
+    return !userListValue.userList.response ? null: !userListValue.userList.response.data ? null:(
       <ContentLayout
         contentForm={
           <WrappedRegistrationForm

@@ -69,8 +69,8 @@ class CreateUser extends Component {
   };
 
   render() {
-    const userListValue = this.props.user;
-    return !userListValue.wechatList.response ? null : !userListValue.wechatList.response.data ? null : !userListValue.listOrg.response ? null : !userListValue.listOrg.response.data ? null: (
+    // const userListValue = this.props.user;
+    return (
       <ContentLayout
         contentForm={
           <WrappedRegistrationForm
