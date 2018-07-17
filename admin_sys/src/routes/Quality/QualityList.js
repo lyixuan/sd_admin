@@ -207,12 +207,12 @@ class QualityList extends Component {
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>
-            <AuthorizedButton authority="/user/createUser">
+            <AuthorizedButton authority="/quality/qualityAdd">
               <Button onClick={this.qualityAdd} type="primary" className={common.addQualityButton}>
                 添加质检
               </Button>
             </AuthorizedButton>
-            <AuthorizedButton authority="/account/accountList">
+            <AuthorizedButton authority="/quality/qualityDel">
               <Button
                 onClick={this.qualityDel}
                 type="primary"
