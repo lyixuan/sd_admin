@@ -259,6 +259,13 @@ export async function updatePermission(params) {
     body: params,
   });
 }
+// 查询权限列表接口
+export async function roleList(params) {
+  return request(`${HOST}/privilege/listAll?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
 // 查询上级权限列表接口
 export async function permissionListAllName(params) {
   return request(`${HOST}/privilege/listAllName?${stringify(params)}`, {

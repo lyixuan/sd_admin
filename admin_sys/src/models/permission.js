@@ -1,7 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import {
-  getRoleListAll,
+  roleList,
   addPermission,
   getPermissionById,
   updatePermission,
@@ -22,7 +22,7 @@ export default {
 
   effects: {
     *permissionList({ payload }, { call, put }) {
-      const response = yield call(getRoleListAll, payload.permissionListParams);
+      const response = yield call(roleList, payload.permissionListParams);
       yield put({ type: 'permissionListSave', payload: { response } });
     },
     *permissionById({ payload }, { call, put }) {
