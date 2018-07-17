@@ -35,6 +35,7 @@ class RoleForm extends Component {
   onChange = (pid, secList, key, listKey, checkedList) => {
     isClick = true;
     let len = 0;
+    let checkLists = [];
     secList.forEach(n => {
       checkedList.forEach(m => {
         if (n.id === m) {
@@ -42,14 +43,14 @@ class RoleForm extends Component {
         }
       });
     });
-    if (checkedList.length === 1 && checkedList[0] === pid) {
-      checkedList.pop();
+    // 功能有勾选，则自动上传他上级id
+    if (checkedList.length === 0) {
+      checkLists = [];
     } else {
-      checkedList.push(pid);
+      checkLists = checkedList.concat(pid);
     }
-    console.log(Array.from(new Set(checkedList)));
 
-    checkAllObj[listKey] = Array.from(new Set(checkedList));
+    checkAllObj[listKey] = Array.from(new Set(checkLists));
     checkAllObj[key] = len === secList.length;
   };
   /*
@@ -62,9 +63,7 @@ class RoleForm extends Component {
       nodeIDs.push(key.id);
     });
 
-    nodeIDs.push(pid);
-
-    checkAllObj[listKey] = e.target.checked ? Array.from(new Set(nodeIDs)) : [];
+    checkAllObj[listKey] = e.target.checked ? Array.from(new Set(nodeIDs.concat(pid))) : [];
     checkAllObj[allKey] = e.target.checked;
   };
   /*
@@ -110,7 +109,8 @@ class RoleForm extends Component {
     /*
     * 复选框
     * */
-    const secLevel = (name, item, checkAllKey, listKey, pid) => {
+    const secLevel = (name, item, checkAllKey, listKey, pid, gid) => {
+      const parentIds = [pid, gid];
       let len = 0;
       const plainOptions = [];
       item.forEach(key => {
@@ -135,7 +135,7 @@ class RoleForm extends Component {
           {item.length === 0 ? null : (
             <div>
               <Checkbox
-                onChange={this.onCheckAllChange.bind(this, pid, item, checkAllKey, listKey)}
+                onChange={this.onCheckAllChange.bind(this, parentIds, item, checkAllKey, listKey)}
                 checked={checkAllObj[checkAllKey]}
                 disabled={isDisabled}
                 className={styles.checkBox}
@@ -146,7 +146,7 @@ class RoleForm extends Component {
                 options={plainOptions}
                 value={!checkAllObj[listKey] ? getRoleIds : checkAllObj[listKey]}
                 disabled={isDisabled}
-                onChange={this.onChange.bind(this, pid, item, checkAllKey, listKey)}
+                onChange={this.onChange.bind(this, parentIds, item, checkAllKey, listKey)}
                 className={styles.checkboxGroup}
               />
             </div>
@@ -190,6 +190,7 @@ class RoleForm extends Component {
                                   nodes[item2].nodes,
                                   checkAll,
                                   checkedList,
+                                  firNodes.id,
                                   nodes[item2].id
                                 )}
                               </div>

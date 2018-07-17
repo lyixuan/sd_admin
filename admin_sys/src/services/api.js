@@ -195,11 +195,11 @@ export async function getRoleAdd(params) {
   });
 }
 /*
-* 角色添加/编辑>角色权限
+* 角色添加>角色权限
 * params：{name}
 * */
 export async function getRoleListAll(params) {
-  return request(`${HOST}/privilege/listAll?${stringify(params)}`, {
+  return request(`${HOST}/privilege/listAllName?${stringify(params)}`, {
     method: 'GET',
   });
 }

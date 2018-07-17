@@ -44,7 +44,7 @@ class EditRole extends Component {
   render() {
     const getRoleData = !this.props.role.getRoleData ? [] : this.props.role.getRoleData;
     const getRoleIds = !this.props.role.getRoleIds ? [] : this.props.role.getRoleIds;
-    console.log(getRoleIds);
+
     const baseLayout = (
       <WrappedRoleForm
         listAll={getRoleData}

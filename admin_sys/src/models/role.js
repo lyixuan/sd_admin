@@ -109,20 +109,11 @@ export default {
     },
     saveListAll(state, action) {
       let { listAll } = action.payload;
-      /*
-      * 生成map表
-      * */
-      const { content } = listAll;
-      const mapIdtoName = {};
-      Object.keys(content).map(key => {
-        mapIdtoName[content[key].name] = content[key].id;
-        return mapIdtoName;
-      });
 
       // 生成树状数据结构
-      listAll = getJsonTree(content, 0);
+      listAll = getJsonTree(listAll, 0);
 
-      return { ...state, listAll, mapIdtoName };
+      return { ...state, listAll };
     },
   },
 };

@@ -13,7 +13,7 @@ class CreateRole extends Component {
   componentDidMount() {
     this.props.dispatch({
       type: 'role/roleListAll',
-      payload: { name: '' },
+      payload: {},
     });
   }
   submitInfo = (values, privilegeIds) => {
