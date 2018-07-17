@@ -158,10 +158,7 @@ class PermissionList extends Component {
           return (
             <div>
               <AuthorizedButton authority="/permission/editPermission">
-                <span
-                  style={{ color: '#52C9C2', marginLeft: 12 }}
-                  onClick={() => this.onEdit(record)}
-                >
+                <span style={{ color: '#52C9C2', marginLeft: 12}} onClick={() => this.onEdit(record)}>
                   编辑
                 </span>
               </AuthorizedButton>

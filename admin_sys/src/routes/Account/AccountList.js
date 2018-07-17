@@ -117,7 +117,7 @@ class AccountList extends Component {
               </AuthorizedButton>
               <AuthorizedButton authority="/account/editAccount">
                 <Popconfirm title="是否确认删除该账号?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
+                  <span style={{ color: '#52C9C2', marginLeft: 4 }}>| 删除</span>
                 </Popconfirm>
               </AuthorizedButton>
             </div>
