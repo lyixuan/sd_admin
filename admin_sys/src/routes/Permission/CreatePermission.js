@@ -52,8 +52,7 @@ class CreatePermission extends Component {
   };
 
   render() {
-    return !this.props.permission.permissionListAllName ? null : !this.props.permission
-      .permissionListAllName.data ? null : (
+    return  (
       <ContentLayout
         contentForm={
           <WrappedRegistrationForm

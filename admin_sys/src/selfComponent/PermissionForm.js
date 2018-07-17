@@ -6,7 +6,7 @@ import {levelData, levelDataReset} from '../utils/dataDictionary';
 const FormItem = Form.Item;
 let parentList = [];
 let parentListBackup = [];
-let flag = '页面功能';
+let flag = 'c';
 const residences = [
   {
     value: '一级页面',
@@ -25,9 +25,9 @@ class PermissionForm extends Component {
   constructor(props) {
     super(props);
     const fromWhere = this.props.jumpFunction.getUrlParams();
-    const parentIdValues = this.props.jumpFunction.permission.permissionListAllName;
+    const parentIdValues = !this.props.jumpFunction.permission.permissionListAllName?[]:this.props.jumpFunction.permission.permissionListAllName.data;
     this.state = {
-      parentIdList: !parentIdValues.data ? [] : parentIdValues.data,
+      parentIdList: !parentIdValues ? [] : parentIdValues,
       id: !fromWhere.id ? '' : fromWhere.id,
     };
   }
@@ -37,7 +37,7 @@ class PermissionForm extends Component {
     parentList = this.roleListFun();
     const arrValue = !this.props.jumpFunction.permission.permissionById?[]:!this.props.jumpFunction.permission.permissionById.response?[]:this.props.jumpFunction.permission.permissionById.response.data;
     console.log(arrValue,levelData[arrValue.level])
-    flag = levelData[arrValue.level];
+    flag = !this.state.id?'页面功能':levelData[arrValue.level];
   }
   componentWillUnmount() {
     flag = null;
