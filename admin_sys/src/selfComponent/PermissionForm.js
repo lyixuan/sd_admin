@@ -6,7 +6,7 @@ import {levelData, levelDataReset} from '../utils/dataDictionary';
 const FormItem = Form.Item;
 let parentList = [];
 let parentListBackup = [];
-let flag = 'c';
+let flag = '页面功能';
 const residences = [
   {
     value: '一级页面',
@@ -29,15 +29,15 @@ class PermissionForm extends Component {
     this.state = {
       parentIdList: !parentIdValues ? [] : parentIdValues,
       id: !fromWhere.id ? '' : fromWhere.id,
+      level:!fromWhere.level ? '' : fromWhere.level,
     };
+    console.log(this.state)
   }
 
   componentDidMount() {
     parentListBackup = !this.state.parentIdList ? [] : this.fullListFun(this.state.parentIdList);
     parentList = this.roleListFun();
-    const arrValue = !this.props.jumpFunction.permission.permissionById?[]:!this.props.jumpFunction.permission.permissionById.response?[]:this.props.jumpFunction.permission.permissionById.response.data;
-    console.log(arrValue,levelData[arrValue.level])
-    flag = !this.state.id?'页面功能':levelData[arrValue.level];
+    flag= this.state.level;
   }
   componentWillUnmount() {
     flag = null;
@@ -68,8 +68,8 @@ class PermissionForm extends Component {
 
   roleListFun = () => {
     const parentIdList = [];
-    const listValue = parentListBackup;
-    const levelValue = !this.state.level ? '页面功能' : this.state.level;
+    const listValue = parentListBackup||[];
+    const levelValue = !this.state.level?'页面功能':this.state.level;
     listValue.map(obj => {
       if (obj.level < levelDataReset[levelValue]) {
         parentIdList.push({
@@ -85,7 +85,7 @@ class PermissionForm extends Component {
 
   handleSelectChange = value => {
     const level = value[0];
-    flag = level;
+    flag=level;
     const listValue = parentListBackup;
     const rObj = [];
     listValue.map(obj => {
