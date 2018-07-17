@@ -34,16 +34,6 @@ class EditPermission extends Component {
 
   handleSubmit = (values) => {
     const parentIdName = values.parentId[0] || 0;
-    // console.log(parentIdName)
-    // let newparentId = 1;
-    // const parentIdList = this.props.permission.permissionListAllName.data
-    // console.log(parentIdList)
-    // parentIdList.map(item => {
-    //   if (item.name === parentIdName) {
-    //     newparentId = item.id;
-    //   }
-    //   return 0;
-    // });
     const updatePermissionParams = {
       name: values.name,
       iconUrl: values.iconUrl,
@@ -64,17 +54,14 @@ class EditPermission extends Component {
   };
 
   render() {
-    const permissionVal = this.props.permission;
-    return (!permissionVal.permissionById.response?null:
-      !permissionVal.permissionById.response.data?null: (
-        <ContentLayout
-          contentForm={<WrappedRegistrationForm
-            jumpFunction={this.props}
-            resetContent={()=>{this.resetContent()}}
-            handleSubmit={(values)=>{this.handleSubmit(values)}}
-          />}
-        />
-    ));
+    return (
+      <ContentLayout  contentForm={
+        <WrappedRegistrationForm
+          jumpFunction={this.props}
+          resetContent={()=>{this.resetContent()}}
+          handleSubmit={(values)=>{this.handleSubmit(values)}}
+        />}
+      />);
   }
 }
 

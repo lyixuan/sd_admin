@@ -25,14 +25,6 @@ class CreatePermission extends Component {
 
   handleSubmit = values => {
     const parentIdName = values.parentId[0] || 0;
-    // let newparentId = 1;
-    // const parentIdList = this.props.permission.permissionListAllName.data
-    // parentIdList.map(item => {
-    //   if (item.name === parentIdName) {
-    //     newparentId = item.id;
-    //   }
-    //   return 0;
-    // });
     const addPermissionParams = {
       name: values.name,
       iconUrl: values.iconUrl,
