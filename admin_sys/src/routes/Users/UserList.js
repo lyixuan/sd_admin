@@ -159,10 +159,12 @@ class UserList extends Component {
       {
         title: '负责单位',
         dataIndex: 'showName',
+        width:150,
       },
       {
         title: '企业家单位',
         dataIndex: 'changeShowName',
+        width:150,
       },
       {
         title: '操作',
@@ -172,22 +174,15 @@ class UserList extends Component {
             <div>
               {record.changeShowName&&record.changeShowName!=="" && record.changeShowName!==record.showName?(
                 <AuthorizedButton authority="/user/checkUser">
-                  <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
-                    更新
-                  </span>
+                  <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>更新 |</span>
                 </AuthorizedButton>
               ): null }
               <AuthorizedButton authority="/user/editUser">
-                <span
-                  style={{ color: '#52C9C2', marginLeft: 12 }}
-                  onClick={() => this.onEdit(record)}
-                >
-                  编辑
-                </span>
+                <span style={{ color: '#52C9C2', marginLeft: 4 }} onClick={() => this.onEdit(record)} >编辑</span>
               </AuthorizedButton>
               <AuthorizedButton authority="/user/editUser">
                 <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
+                  <span style={{ color: '#52C9C2', marginLeft: 4 }}>| 删除</span>
                 </Popconfirm>
               </AuthorizedButton>
             </div>
@@ -219,7 +214,7 @@ class UserList extends Component {
         firstPhone = values.mobile;
         const aa = values.isUpdate[0]
         firstUpdate =aa ;
-        // console.log(values.isUpdate[0])
+        console.log(values.isUpdate[0])
         const userListParams = {
           isUpdate: values.isUpdate[0],
           name: !values.name ? undefined : values.name,
