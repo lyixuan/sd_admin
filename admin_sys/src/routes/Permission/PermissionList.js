@@ -26,6 +26,12 @@ class PermissionList extends Component {
       type: 'permission/permissionList',
       payload: { permissionListParams },
     });
+
+    const permissionListAllNameParams = {};
+    this.props.dispatch({
+      type: 'permission/permissionListAllName',
+      payload: { permissionListAllNameParams },
+    });
   }
   componentWillUnmount() {
     firstName = null;
@@ -35,6 +41,7 @@ class PermissionList extends Component {
     console.log(val);
     this.props.setRouteUrlParams('/permission/editPermission', {
       id: val.id,
+      level:val.level,
     });
   };
 

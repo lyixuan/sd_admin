@@ -22,6 +22,11 @@ class AccountList extends Component {
       type: 'account/accountList',
       payload: { accountListParams },
     });
+    const getRoleListParams = {};
+    this.props.dispatch({
+      type: 'account/getRoleList',
+      payload: { getRoleListParams },
+    });
   }
 
   // 删除账号函数  删除后数据更新？
