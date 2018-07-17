@@ -1,5 +1,5 @@
 import { isUrl } from '../utils/utils';
-// import { getAuthority } from '../utils/authority';
+// import {getAuthority} from '../utils/authority';
 
 const menuData = [
   {
@@ -249,11 +249,11 @@ const menuData = [
 // function getAuthData() {
 //   const authData = getAuthority('admin_auth') || [];
 //   return authData.map(item => {
-//     // const { name, iconUrl } = item;
-//     // const [path] = [item.resourceUrl];
+//     const {name, iconUrl} = item;
+//     const [path] = [item.resourceUrl];
 //     const result = {
-//       path: '/quality/qualityList',
-//       name: '质检',
+//      path,
+//      name,
 //       authority: item.authority || '',
 //       hideInMenu: item.hideInMenu || false,
 //     };
