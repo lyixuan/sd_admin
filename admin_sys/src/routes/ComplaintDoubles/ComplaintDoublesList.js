@@ -105,18 +105,14 @@ class ComplaintDoublesList extends Component {
 
   // input双向绑定
   handelChange(e) {
-    console.log(e.target.value)
-    if(e.target.value){
-      if(/(^[1-9]\d*$)/.test(e.target.value)){
-        this.setState({
-          multiplePoints: e.target.value,
-        });
-      }else{
-        message.error("投诉扣分倍数需要为正整数")
-      }
-    }
-    else{
-        message.error("投诉扣分倍数不能为空")
+    console.log(e.target.value||this.state.multiplePoints)
+    const points = e.target.value||this.state.multiplePoints;
+    if(/(^[1-9]\d*$)/.test(points)){
+      this.setState({
+        multiplePoints: points,
+      });
+    }else{
+      message.error("投诉扣分倍数需要为正整数")
     }
   }
 
