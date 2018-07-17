@@ -180,7 +180,7 @@ class UserList extends Component {
               <AuthorizedButton authority="/user/editUser">
                 <span style={{ color: '#52C9C2', marginLeft: 4 }} onClick={() => this.onEdit(record)} >编辑</span>
               </AuthorizedButton>
-              <AuthorizedButton authority="/user/editUser">
+              <AuthorizedButton authority="/user/deleteUser">
                 <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
                   <span style={{ color: '#52C9C2', marginLeft: 4 }}>| 删除</span>
                 </Popconfirm>

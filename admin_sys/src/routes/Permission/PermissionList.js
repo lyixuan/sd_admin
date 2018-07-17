@@ -215,7 +215,7 @@ class PermissionList extends Component {
         title="权限列表"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
-          <AuthorizedButton authority="/user/createUser">
+          <AuthorizedButton authority="/permission/createPermission">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
               创 建
             </Button>
