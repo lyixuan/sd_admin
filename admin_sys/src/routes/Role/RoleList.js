@@ -17,7 +17,7 @@ class RoleList extends Component {
   }
 
   componentDidMount() {
-    this.getData({ size: 30, number: 0 });
+    this.getData({ size: 30, number: 0,orderType:'name' });
   }
 
   getData = params => {
@@ -30,7 +30,7 @@ class RoleList extends Component {
 
   changePage = (current, pageSize) => {
     console.log(current, pageSize);
-    this.getData({ size: pageSize, number: current - 1 });
+    this.getData({ size: pageSize, number: current - 1,orderType:'name' });
   };
 
   handleNextPage = (pathName, params) => {
