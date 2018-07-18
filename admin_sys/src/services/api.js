@@ -26,7 +26,7 @@ export async function queryCurrentUser(params) {
 * params：{name，password}
 * */
 export async function userLogout(params) {
-  return request(`${HOST}/token/login`, {
+  return request(`${HOST}/token/logout`, {
     method: 'POST',
     body: params,
   });

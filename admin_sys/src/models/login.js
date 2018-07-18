@@ -29,7 +29,7 @@ export default {
       });
       // Login successfully
       if (response.code === 2000) {
-        const { userId, token } = response.data;
+        const { userId, token, userName } = response.data;
         const authData = yield call(getUserAuth, { accountId: userId });
         if (authData.code === 2000) {
           setTimeout(() => {
@@ -40,9 +40,9 @@ export default {
         }
 
         if (payload.autoLogin === true) {
-          setAuthority('admin_user', { mail, password, userId }); // 存储用户信息
+          setAuthority('admin_user', { mail, password, userId, userName }); // 存储用户信息
         } else {
-          setAuthoritySeccion('admin_user', { mail, password, userId });
+          setAuthoritySeccion('admin_user', { mail, password, userId, userName });
         }
         setAuthority('admin_token', { userId, token }); // 存储api token
         reloadAuthorized();
