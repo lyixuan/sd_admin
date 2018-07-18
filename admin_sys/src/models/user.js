@@ -40,7 +40,7 @@ export default {
       const result = yield call(updateUserInfo, payload.updateUserInfoParams);
       if (result.code === 2000) {
         message.success('用户编辑成功！');
-        yield put(routerRedux.push('/user/userList'));
+        yield put(routerRedux.push('/config/userList'));
       } else {
         message.error(result.msg);
       }
@@ -59,7 +59,7 @@ export default {
       const result = yield call(userAdd, payload.userAddParams);
       if (result.code === 2000) {
         message.success('用户创建成功！');
-        yield put(routerRedux.push('/user/userList'));
+        yield put(routerRedux.push('/config/userList'));
       } else {
         message.error(result.msg);
       }

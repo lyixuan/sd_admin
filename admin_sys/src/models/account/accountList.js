@@ -42,7 +42,7 @@ export default {
       const result = yield call(addAccount, payload.addAccountParams);
       if (result.code === 0 || result.code === 2000) {
         message.success('成功创建账号！');
-        yield put(routerRedux.push('/account/accountList'));
+        yield put(routerRedux.push('/config/accountList'));
       } else {
         message.error(result.msg);
       }
@@ -51,7 +51,7 @@ export default {
       const result = yield call(updateAccount, payload.updateAccountParams);
       if (result.code === 0 || result.code === 2000) {
         message.success('成功编辑账号！');
-        yield put(routerRedux.push('/account/accountList'));
+        yield put(routerRedux.push('/config/accountList'));
       } else {
         message.error(result.msg);
       }

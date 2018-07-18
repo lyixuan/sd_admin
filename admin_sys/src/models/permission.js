@@ -33,7 +33,7 @@ export default {
       const result = yield call(addPermission, payload.addPermissionParams);
       if (result.code === 0 || result.code === 2000) {
         message.success('成功创建权限！');
-        yield put(routerRedux.push('/permission/permissionList'));
+        yield put(routerRedux.push('/config/permissionList'));
       } else {
         message.error(result.msg);
       }
@@ -42,7 +42,7 @@ export default {
       const result = yield call(updatePermission, payload.updatePermissionParams);
       if (result.code === 0 || result.code === 2000) {
         message.success('成功编辑权限！');
-        yield put(routerRedux.push('/permission/permissionList'));
+        yield put(routerRedux.push('/config/permissionList'));
       } else {
         message.error(result.msg);
       }

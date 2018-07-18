@@ -44,7 +44,7 @@ class CreateAccount extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/account/accountList', {});
+    this.props.setRouteUrlParams('/config/accountList', {});
   };
 
   render() {

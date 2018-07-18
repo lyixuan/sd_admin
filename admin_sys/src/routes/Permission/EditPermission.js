@@ -50,7 +50,7 @@ class EditPermission extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/permission/permissionList');
+    this.props.setRouteUrlParams('/config/permissionList');
   };
 
   render() {

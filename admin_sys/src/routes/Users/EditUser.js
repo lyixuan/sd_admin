@@ -73,7 +73,7 @@ class EditUser extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/user/userList', {});
+    this.props.setRouteUrlParams('/config/userList', {});
   };
 
   render() {

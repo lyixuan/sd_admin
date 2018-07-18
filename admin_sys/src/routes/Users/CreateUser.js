@@ -62,7 +62,7 @@ class CreateUser extends Component {
   };
   // 点击取消按钮跳转到list页面
   resetContent = () => {
-    this.props.setRouteUrlParams('/user/userList', {});
+    this.props.setRouteUrlParams('/config/userList', {});
   };
 
   render() {
