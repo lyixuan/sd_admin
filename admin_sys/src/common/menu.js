@@ -16,7 +16,7 @@ function formatter(data, parentId) {
     // 如果level是3的话,是功能页面,并不展示
     if (Number(node.parentId) === Number(parentId) || Number(node.pid) === Number(parentId)) {
       const newNode = {
-        level: node.level,
+        icon: node.iconUrl,
         id: node.id,
         name: node.name,
         path: node.resourceUrl,
