@@ -22,6 +22,9 @@ const urlPathMap = {
   '/timeManage/deleteDate': {
     name: '删除不可用日期',
   },
+  '/timeManage/updateArea': {
+    name: '删除不可用日期',
+  },
   '/user/updateUser': {
     name: '更新用户',
   },

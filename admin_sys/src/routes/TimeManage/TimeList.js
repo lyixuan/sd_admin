@@ -193,7 +193,7 @@ class TimeList extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/account/editAccount">
+              <AuthorizedButton authority="/timeManage/deleteDate">
                 <Popconfirm title="是否确认删除时间?" onConfirm={() => this.onDelete(record)}>
                   <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
                 </Popconfirm>
@@ -247,15 +247,17 @@ class TimeList extends Component {
               })(dateAreaPicker)}
             </FormItem>
             <FormItem style={{ marginLeft: 30 }}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={changeDateArea}
-                className={common.searchButton}
-                style={{ margin: '0' }}
-              >
-                保存
-              </Button>
+              <AuthorizedButton authority="/timeManage/updateArea">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={changeDateArea}
+                  className={common.searchButton}
+                  style={{ margin: '0' }}
+                >
+                  保存
+                </Button>
+              </AuthorizedButton>
             </FormItem>
           </div>
         </Form>
@@ -272,7 +274,7 @@ class TimeList extends Component {
               <p className={styles.tableTitle}>“不可用日期”设置</p>
               <p className={styles.content}>
                 <span className={styles.txt}>设置不可用的日期（指定日期将不参与学分计算）</span>
-                <AuthorizedButton authority="/timeManage/TimeList">
+                <AuthorizedButton authority="/timeManage/unAddDate">
                   <Button
                     loading={addDisabileTime}
                     onClick={this.onAdd}
