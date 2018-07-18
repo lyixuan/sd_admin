@@ -134,8 +134,18 @@ class PermissionForm extends Component {
             {getFieldDecorator('name', {
               initialValue: !this.state.id?'':!arrValue.name?'':arrValue.name,
               rules: [
-                { min: 2, max: 50, message: '权限名称长度在2-50!', whitespace: true },
-                { required: true, message: '权限名称为必填项，请填写!', whitespace: true },
+                {
+                  validator(rule, value, callback) {
+                    const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                    if (!reg) {
+                      callback({ message: '权限名称为必填项，请填写!' });
+                    } else if (reg.length < 2 || reg.length > 20) {
+                      callback({ message: '权限名称长度在2-50，请修改!' });
+                    } else {
+                      callback();
+                    }
+                  },
+                },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
@@ -211,24 +221,39 @@ class PermissionForm extends Component {
               initialValue: !this.state.id?'':!arrValue.sort?'0':arrValue.sort,
 
               rules: [
-                { required: true, message: '权限排序为必填项，请填写!'},
+                // { required: true, message: '权限排序为必填项，请填写!'},
                 // { max: 10, message: '权限排序长度在最长为10个字符!'},
                 {
                     validator(rule, value, callback) {
                       const re = /^[0-9]*[0-9]$/i; // 校验是否为数字
+                      const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                      if (!reg) {
+                        callback({ message: '权限排序为必填项，请填写!' });
+                      } else if (reg.length > 10) {
+                        callback({ message: '权限排序长度在最长为10个字符，请填写!' });
+                      }
                       if (flag === '一级页面') {
                         if(re.test(value) && value%100===0){
                           callback();
                         }else{
                           callback({ message: '一级页面排序应为100的整数倍！' });
                         }
-
                       }else if(flag === '二级页面'){
                         if(re.test(value) && value%10===0){
                           callback();
                         }else{callback({ message: '二级页面排序应为10的整数倍！' });}
 
                       }
+                      // const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                      // if (!reg) {
+                      //   callback({ message: '权限排序为必填项，请填写!' });
+                      // } else if (reg.length > 10) {
+                      //   callback({ message: '权限排序长度在最长为10个字符，请填写!' });
+                      // } else {
+                      //   callback();
+                      // }
+
+
                       callback();
                     },
                 },

@@ -68,9 +68,21 @@ class AccountForm extends Component {
             {getFieldDecorator('name', {
               initialValue: !this.state.id?'':!arrValue.name?'':arrValue.name,
               rules: [
-                // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
-                { required: true, message: '姓名为必填项，请填写!', whitespace: true },
-                { min: 2,max: 20, message: '姓名长度在2-20字符之间!' },
+                // // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
+                // { required: true, message: '姓名为必填项，请填写!', whitespace: true },
+                // { min: 2,max: 20, message: '姓名长度在2-20字符之间!' },
+                {
+                  validator(rule, value, callback) {
+                    const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                    if (!reg) {
+                      callback({ message: '姓名为必填项，请填写!' });
+                    } else if (reg.length < 2 || reg.length > 20) {
+                      callback({ message: '姓名在2-20个字符之间，请填写!' });
+                    } else {
+                      callback();
+                    }
+                  },
+                },
               ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
