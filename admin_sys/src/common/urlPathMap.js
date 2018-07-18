@@ -19,5 +19,8 @@ const urlPathMap = {
   '/complaintDoubles/editecomplaintDoubles': {
     name: '投诉翻倍编辑',
   },
+  '/timeManage/unAddDate': {
+    name: '不可选日期',
+  },
 };
 export { urlPathMap };
