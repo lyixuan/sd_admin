@@ -96,11 +96,6 @@ class RefundDel extends Component {
         width: '70px',
       },
       {
-        title: '扣分类型',
-        dataIndex: 'bottomLineType',
-        width: '90px',
-      },
-      {
         title: '子订单编号',
         dataIndex: 'orderId',
         width: '100px',
