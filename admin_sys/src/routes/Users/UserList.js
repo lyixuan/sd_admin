@@ -270,25 +270,24 @@ class UserList extends Component {
             <FormItem label="姓名">
               {getFieldDecorator('name', {
                 initialValue: firstName,
-                rules: [{ max: 50, message: '您输入姓名不合法!', whitespace: true }],
+                rules: [
+                  // { max: 50, message: '您输入姓名不合法!', whitespace: true },
+                  {
+                    validator(rule, value, callback) {
+                      const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                      if (reg.length > 50) {
+                        callback({ message: '姓名最长为50个字符!' });
+                      } else {
+                        callback();
+                      }
+                    },
+                  },
+                ],
               })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem label="手机">
               {getFieldDecorator('mobile', {
                 initialValue: firstPhone,
-                // rules: [
-                //   {
-                //     validator(rule, value, callback) {
-                //       const reg = /^0?1\d{10}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
-                //       if(!value){
-                //         if (!reg.test(value)) {
-                //           callback({ message: '手机号是以1开头的11位数字组成' });
-                //         }
-                //       }
-                //       callback();
-                //     },
-                //   },
-                // ],
               })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
             <FormItem label="需要更新">
