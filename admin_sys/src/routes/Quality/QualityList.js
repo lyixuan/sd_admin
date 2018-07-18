@@ -19,14 +19,10 @@ class QualityList extends Component {
     super(props);
     this.state = {};
   }
-
   componentDidMount() {
-    const qualityListParams = { size: 30, number: 0 };
-    this.props.dispatch({
-      type: 'quality/getQualityList',
-      payload: { qualityListParams },
-    });
+    this.getData({ size: 30, number: 0 });
   }
+
   componentWillUnmount() {
     firstTeaName = null;
     firstQualityNum = null;
@@ -34,7 +30,10 @@ class QualityList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const qualityListParams = { size: pageSize, number: current - 1 };
+    this.getData({ size: pageSize, number: current - 1 });
+  };
+
+  getData = qualityListParams => {
     this.props.dispatch({
       type: 'quality/getQualityList',
       payload: { qualityListParams },
@@ -42,11 +41,7 @@ class QualityList extends Component {
   };
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const qualityListParams = { size: pageSize, number: current - 1 };
-    this.props.dispatch({
-      type: 'quality/getQualityList',
-      payload: { qualityListParams },
-    });
+    this.getData({ size: pageSize, number: current - 1 });
   };
 
   // 表单搜索函数
@@ -62,10 +57,7 @@ class QualityList extends Component {
           teaName: !values.teaName ? undefined : values.teaName,
           qualityNum: !values.qualityNum ? undefined : values.qualityNum,
         };
-        this.props.dispatch({
-          type: 'quality/getQualityList',
-          payload: { qualityListParams },
-        });
+        this.getData(qualityListParams);
       }
     });
   };
@@ -193,7 +185,7 @@ class QualityList extends Component {
                 搜 索
               </Button>
               <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
-                取 消
+                重 置
               </Button>
             </FormItem>
           </Form>
