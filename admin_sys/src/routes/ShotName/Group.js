@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Input } from 'antd';
+import { Table, Input ,message} from 'antd';
 // import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -50,14 +50,20 @@ class Group extends Component {
 
   // 模态框确定
   clickModalOK = (id, groupShortName) => {
-    const paramsObj = {
-      id,
-      groupShortName,
-    };
-    this.props.dispatch({
-      type: 'shortName/editGroup',
-      payload: { paramsObj },
-    });
+    if(!groupShortName){
+      message.error("小组简称不可为空")
+      this.showModal(true)
+    }else{
+      const paramsObj = {
+        id,
+        groupShortName,
+      };
+      this.props.dispatch({
+        type: 'shortName/editGroup',
+        payload: { paramsObj },
+      });
+      this.showModal(false)
+    }
   };
   // input双向绑定
   handelChange(e) {

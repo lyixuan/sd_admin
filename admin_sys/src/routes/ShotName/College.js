@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Input } from 'antd';
+import { Table, Input,message } from 'antd';
 // import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -45,14 +45,20 @@ class College extends Component {
 
   // 模态框回显
   clickModalOK = (id, collegeShortName) => {
-    const paramsObj = {
-      id,
-      collegeShortName,
-    };
-    this.props.dispatch({
-      type: 'shortName/editCollege',
-      payload: { paramsObj },
-    });
+    if(!collegeShortName){
+      message.error("学院简称不可为空")
+      this.showModal(true)
+    }else{
+      const paramsObj = {
+        id,
+        collegeShortName,
+      };
+      this.props.dispatch({
+        type: 'shortName/editCollege',
+        payload: { paramsObj },
+      });
+      this.showModal(false)
+    }
   };
   // input双向绑定
   handelChange(e) {

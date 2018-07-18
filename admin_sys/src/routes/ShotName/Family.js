@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Input } from 'antd';
+import { Table, Input ,message} from 'antd';
 import { connect } from 'dva';
 // import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -46,14 +46,20 @@ class Family extends Component {
 
   // 模态框回显
   clickModalOK = (id, familyShortName) => {
-    const paramsObj = {
-      id,
-      familyShortName,
-    };
-    this.props.dispatch({
-      type: 'shortName/editFamily',
-      payload: { paramsObj },
-    });
+    if(!familyShortName){
+      message.error("家族简称不可为空")
+      this.showModal(true)
+    }else{
+      const paramsObj = {
+        id,
+        familyShortName,
+      };
+      this.props.dispatch({
+        type: 'shortName/editFamily',
+        payload: { paramsObj },
+      });
+      this.showModal(false)
+    }
   };
   // input双向绑定
   handelChange(e) {
