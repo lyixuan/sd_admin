@@ -13,7 +13,7 @@ export default {
   state: {
     nums: '',
     current: 0,
-    disableFlag: false,
+    disableDel: null, // 根据接口返回决定是否禁止下一步按钮：true--禁止
     qualityList: [],
   },
 
@@ -30,9 +30,9 @@ export default {
         message.error(checkList.msg);
         yield put({ type: 'save', payload: { current: 0 } });
       } else if (checkList.data.errorList.length > 0) {
-        yield put({ type: 'save', payload: { checkList, current: 1 } });
+        yield put({ type: 'save', payload: { checkList, current: 1, disableDel: true } });
       } else {
-        yield put({ type: 'save', payload: { checkList, current: 1, disableFlag: true } });
+        yield put({ type: 'save', payload: { checkList, current: 1, disableDel: false } });
       }
     },
     *saveExcel({ payload }, { call, put }) {
@@ -48,11 +48,14 @@ export default {
     *preDelQuality({ payload }, { call, put }) {
       const { params } = payload;
       const preDelData = yield call(preDelQualityList, { ...params });
+
       if (preDelData.code !== 2000) {
         message.error(preDelData.msg);
         yield put({ type: 'save', payload: { current: 0 } });
+      } else if (preDelData.data.successSize > 0) {
+        yield put({ type: 'save', payload: { preDelData, current: 1, disableDel: false } });
       } else {
-        yield put({ type: 'save', payload: { preDelData, current: 1 } });
+        yield put({ type: 'save', payload: { preDelData, current: 1, disableDel: true } });
       }
     },
     *delQuality({ payload }, { call, put }) {
@@ -76,6 +79,10 @@ export default {
     *editCurrent({ payload }, { put }) {
       const { current } = payload;
       yield put({ type: 'save', payload: { current } });
+    },
+    *initParams({ payload }, { put }) {
+      const { disableDel, nums } = payload;
+      yield put({ type: 'save', payload: { disableDel, nums } });
     },
   },
 

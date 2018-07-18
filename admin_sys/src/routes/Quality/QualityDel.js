@@ -23,6 +23,12 @@ class RefundDel extends Component {
     // init current
     this.editCurrent(0);
   }
+
+  // 离开页面的时候，把disableDel，nums恢复默认值null
+  componentWillUnmount() {
+    clearConfirm();
+    this.initParamsFn(null, 'clear');
+  }
   // 回调
   onChildChange = bol => {
     this.setState({
@@ -33,6 +39,14 @@ class RefundDel extends Component {
     this.props.dispatch({
       type: 'quality/getNums',
       payload: nums,
+    });
+  };
+  // 初始化一些值
+  initParamsFn = (disableDel, nums) => {
+    const num = !nums ? this.props.quality.nums : '';
+    this.props.dispatch({
+      type: 'quality/initParams',
+      payload: { disableDel, nums: num },
     });
   };
   fetchPreDel = params => {
@@ -110,7 +124,7 @@ class RefundDel extends Component {
     return columns;
   };
   render() {
-    const { preDelData, nums, current } = this.props.quality;
+    const { preDelData, nums, current, disableDel } = this.props.quality;
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
@@ -146,6 +160,7 @@ class RefundDel extends Component {
             inputTitle="请输入想删除的 “质检编号”："
             inputContent="true"
             inputTip="true"
+            nums={nums}
             getNums={param => {
               this.getNums(param);
             }}
@@ -188,8 +203,15 @@ class RefundDel extends Component {
         steps={steps}
         tipSucess={tipSucess}
         isDisabled={isDisabled}
+        disableDel={disableDel}
         goBack={() => {
           this.historyFn();
+        }}
+        callBackParent={bol => {
+          this.onChildChange(bol);
+        }}
+        initParamsFn={dis => {
+          this.initParamsFn(dis);
         }}
         step1Fetch={() => {
           this.fetchPreDel({ nums });

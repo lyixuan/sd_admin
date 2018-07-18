@@ -19,10 +19,7 @@ const { Step } = Steps;
 class StepLayout extends Component {
   // 下一页
   next() {
-    const { step1Fetch, step2Fetch, step3Fetch, current, callBackParent, disableFlag } = this.props;
-    if (disableFlag === false) {
-      callBackParent(true);
-    }
+    const { step1Fetch, step2Fetch, step3Fetch, current } = this.props;
     if (current === 0) {
       if (step1Fetch) {
         step1Fetch();
@@ -47,9 +44,14 @@ class StepLayout extends Component {
   }
   // 上一页
   prev() {
-    const { editCurrent, current } = this.props;
+    const { editCurrent, current, callBackParent, initParamsFn } = this.props;
     editCurrent(current - 1);
+    callBackParent(false);
+    if (current === 1 && initParamsFn) {
+      initParamsFn(null);
+    }
   }
+
   // 取消---回到列表页
   cancel = () => {
     window.history.go(-1);
@@ -59,7 +61,8 @@ class StepLayout extends Component {
     this.props.goBack();
   };
   render() {
-    const { title, steps, baseLayout, isDisabled, current } = this.props;
+    const { title, steps, baseLayout, isDisabled, disableDel, current } = this.props;
+    const dis = disableDel === null ? isDisabled : disableDel;
 
     const stepBlock = (
       <div>
@@ -86,7 +89,7 @@ class StepLayout extends Component {
                   className={common.submitButton}
                   type="primary"
                   onClick={() => this.next()}
-                  disabled={isDisabled}
+                  disabled={dis}
                 >
                   下一步
                 </Button>

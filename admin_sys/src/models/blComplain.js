@@ -15,7 +15,7 @@ export default {
     getList: [],
     nums: '',
     current: 0,
-    disableFlag: false,
+    disableDel: null,
   },
 
   effects: {
@@ -27,13 +27,14 @@ export default {
     *checkComplain({ payload }, { call, put }) {
       const { params } = payload;
       const checkList = yield call(checkComplainList, { ...params });
+
       if (checkList.code !== 2000) {
         message.error(checkList.msg);
         yield put({ type: 'savePreData', payload: { current: 0 } });
       } else if (checkList.data.errorList.length > 0) {
-        yield put({ type: 'savePreData', payload: { checkList, current: 1 } });
+        yield put({ type: 'savePreData', payload: { checkList, current: 1, disableDel: true } });
       } else {
-        yield put({ type: 'savePreData', payload: { checkList, current: 1, disableFlag: true } });
+        yield put({ type: 'savePreData', payload: { checkList, current: 1, disableDel: false } });
       }
     },
     *saveExcel({ payload }, { call, put }) {
@@ -52,8 +53,10 @@ export default {
       if (preDelData.code !== 2000) {
         message.error(preDelData.msg);
         yield put({ type: 'savePreData', payload: { current: 0 } });
+      } else if (preDelData.data.successSize > 0) {
+        yield put({ type: 'save', payload: { preDelData, current: 1, disableDel: false } });
       } else {
-        yield put({ type: 'savePreData', payload: { preDelData, current: 1 } });
+        yield put({ type: 'save', payload: { preDelData, current: 1, disableDel: true } });
       }
     },
     *delComplain({ payload }, { call, put }) {
@@ -73,6 +76,10 @@ export default {
     *editCurrent({ payload }, { put }) {
       const { current } = payload;
       yield put({ type: 'savePreData', payload: { current } });
+    },
+    *initParams({ payload }, { put }) {
+      const { disableDel, nums } = payload;
+      yield put({ type: 'save', payload: { disableDel, nums } });
     },
   },
 

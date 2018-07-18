@@ -23,8 +23,10 @@ class RefundDel extends Component {
     // init current
     this.editCurrent(0);
   }
+  // 离开页面的时候，把disableDel，nums恢复默认值null
   componentWillUnmount() {
     clearConfirm();
+    this.initParamsFn(null, 'clear');
   }
   // 回调
   onChildChange = bol => {
@@ -37,6 +39,14 @@ class RefundDel extends Component {
     this.props.dispatch({
       type: 'blRefund/getNums',
       payload: nums,
+    });
+  };
+  // 初始化一些值
+  initParamsFn = (disableDel, nums) => {
+    const num = !nums ? this.props.blRefund.nums : '';
+    this.props.dispatch({
+      type: 'blRefund/initParams',
+      payload: { disableDel, nums: num },
     });
   };
   fetchPreDel = params => {
@@ -119,7 +129,7 @@ class RefundDel extends Component {
     return columns;
   };
   render() {
-    const { preDelData, nums, current } = this.props.blRefund;
+    const { preDelData, nums, current, disableDel } = this.props.blRefund;
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
@@ -155,6 +165,7 @@ class RefundDel extends Component {
             inputTitle="请输入想删除的 “退费编号”："
             inputContent="true"
             inputTip="true"
+            nums={nums}
             getNums={param => {
               this.getNums(param);
             }}
@@ -199,6 +210,12 @@ class RefundDel extends Component {
         goBack={() => {
           this.historyFn();
         }}
+        callBackParent={bol => {
+          this.onChildChange(bol);
+        }}
+        initParamsFn={dis => {
+          this.initParamsFn(dis);
+        }}
         step1Fetch={() => {
           this.fetchPreDel({ nums });
         }}
@@ -209,6 +226,7 @@ class RefundDel extends Component {
           this.fetchDel({ nums: successArr.join(' ') });
         }}
         isDisabled={isDisabled}
+        disableDel={disableDel}
         current={current}
         editCurrent={param => {
           this.editCurrent(param);
