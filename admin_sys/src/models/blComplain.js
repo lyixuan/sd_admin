@@ -13,6 +13,7 @@ export default {
   state: {
     getListParams: { size: 30, number: 0 },
     getList: [],
+    fileList: [],
     nums: '',
     current: 0,
     disableDel: null,

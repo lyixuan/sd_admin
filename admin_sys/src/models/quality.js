@@ -15,6 +15,7 @@ export default {
     current: 0,
     disableDel: null, // 根据接口返回决定是否禁止下一步按钮：true--禁止
     qualityList: [],
+    fileList: [],
     isLoading: null,
   },
 
