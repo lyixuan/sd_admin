@@ -123,8 +123,10 @@ class TimeList extends Component {
         !beginTime ||
         (endTime && typeof endTime === 'object' && moment(beginTime).isAfter(endTime))
       ) {
+        const dateArea = { ...this.state.dateArea, endTime, beginTime };
         this.setState({
           hintVisible: true,
+          dateArea,
         });
       } else {
         const dateArea = { ...this.state.dateArea, endTime, beginTime };
@@ -144,6 +146,7 @@ class TimeList extends Component {
         ...dateArea,
       },
     });
+    this.showChangeDateModal(false);
   };
   changeFormat = tmp => {
     return tmp ? moment.unix(tmp / 1000).format(dateFormat) : '';
