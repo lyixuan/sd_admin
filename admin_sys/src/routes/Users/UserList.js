@@ -38,7 +38,7 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
+    const userListParams = { pageSize: 30, pageNum: 0 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -55,6 +55,7 @@ class UserList extends Component {
       type: 'user/listOrg',
       payload: { listOrgParams },
     });
+
   }
   componentWillUnmount() {
     firstName = null;
@@ -66,7 +67,7 @@ class UserList extends Component {
   onDelete = val => {
     console.log(val.id);
     const userDeleteParams = { id: val.id };
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
+    const userListParams = {pageSize: 30, pageNum: 0 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/userDelete',
       payload: { userDeleteParams, userListParams },
@@ -77,7 +78,7 @@ class UserList extends Component {
   onUpdate = val => {
     console.log(val.id);
     const updateUserOrgParams = { id: val.id };
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
+    const userListParams = {pageSize: 30, pageNum: 0 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/updateUserOrg',
       payload: { updateUserOrgParams, userListParams },
@@ -88,17 +89,13 @@ class UserList extends Component {
   onEdit = val => {
     this.props.setRouteUrlParams('/user/editUser', {
       id: val.id,
-      userType: val.userType,
+      userType:val.userType,
     });
   };
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, Size) => {
-    const userListParams = {
-      pageSize: Size,
-      pageNum: current - 1,
-      isUpdate: !firstUpdate ? 0 : firstUpdate,
-    };
+    const userListParams = { pageSize : Size, pageNum: current - 1 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -107,11 +104,7 @@ class UserList extends Component {
 
   // 点击某一页函数
   changePage = (current, Size) => {
-    const userListParams = {
-      pageSize: Size,
-      pageNum: current - 1,
-      isUpdate: !firstUpdate ? 0 : firstUpdate,
-    };
+    const userListParams = { pageSize: Size, pageNum: current - 1 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -129,7 +122,7 @@ class UserList extends Component {
         mobile: item.mobile,
         mail: item.entUserId,
         userType: userTypeData[item.userType],
-        showName: item.showName,
+        showName: item.showName, // showName.replace(/\,/g,"|")
         changeShowName: item.changeShowName,
         id: item.id,
         wechatDepartmentId: item.wechatDepartmentId,
@@ -139,6 +132,7 @@ class UserList extends Component {
 
     return data;
   };
+
 
   // 获取table列表头
   columnsData = () => {
@@ -166,12 +160,12 @@ class UserList extends Component {
       {
         title: '负责单位',
         dataIndex: 'showName',
-        width: 150,
+        width:150,
       },
       {
         title: '企业家单位',
         dataIndex: 'changeShowName',
-        width: 150,
+        width:150,
       },
       {
         title: '操作',
@@ -179,22 +173,13 @@ class UserList extends Component {
         render: (text, record) => {
           return (
             <div>
-              {record.changeShowName &&
-              record.changeShowName !== '' &&
-              record.changeShowName !== record.showName ? (
+              {record.changeShowName&&record.changeShowName!=="" && record.changeShowName!==record.showName?(
                 <AuthorizedButton authority="/user/checkUser">
-                  <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
-                    更新 |
-                  </span>
+                  <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>更新 |</span>
                 </AuthorizedButton>
-              ) : null}
+              ): null }
               <AuthorizedButton authority="/user/editUser">
-                <span
-                  style={{ color: '#52C9C2', marginLeft: 4 }}
-                  onClick={() => this.onEdit(record)}
-                >
-                  编辑
-                </span>
+                <span style={{ color: '#52C9C2', marginLeft: 4 }} onClick={() => this.onEdit(record)} >编辑</span>
               </AuthorizedButton>
               <AuthorizedButton authority="/user/deleteUser">
                 <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
@@ -206,7 +191,7 @@ class UserList extends Component {
         },
       },
     ];
-    return columns || [];
+    return columns||[];
   };
 
   // 表单重置
@@ -215,7 +200,7 @@ class UserList extends Component {
     firstPhone = '';
     firstUpdate = '';
     propsVal.form.resetFields();
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
+    const userListParams = { pageSize: 30, pageNum: 0 ,isUpdate:!firstUpdate?0:firstUpdate};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -228,15 +213,14 @@ class UserList extends Component {
       if (!err) {
         firstName = values.name;
         firstPhone = values.mobile;
-        const aa = values.isUpdate[0];
-        firstUpdate = aa;
-        console.log(values.isUpdate[0]);
+        const aa = values.isUpdate[0]
+        firstUpdate =aa ;
+        console.log(values.isUpdate[0])
         const userListParams = {
           isUpdate: values.isUpdate[0],
           name: !values.name ? undefined : values.name,
           mobile: !values.mobile ? undefined : values.mobile,
-          pageSize: 30,
-          pageNum: 0,
+          pageSize: 30, pageNum: 0,
         };
         // console.log(userListParams)
         this.props.dispatch({
@@ -270,8 +254,10 @@ class UserList extends Component {
             <FormItem label="姓名">
               {getFieldDecorator('name', {
                 initialValue: firstName,
-                rules: [{ max: 50, message: '您输入姓名不合法!', whitespace: true }],
-              })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
+                rules: [{ max:50, message: '您输入姓名不合法!', whitespace: true }],
+              })(
+                <Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />
+              )}
             </FormItem>
             <FormItem label="手机">
               {getFieldDecorator('mobile', {
@@ -289,12 +275,16 @@ class UserList extends Component {
                 //     },
                 //   },
                 // ],
-              })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
+              })(
+                <Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />
+              )}
             </FormItem>
             <FormItem label="需要更新">
               {getFieldDecorator('isUpdate', {
-                initialValue: [!firstUpdate ? 0 : firstUpdate],
-              })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
+                initialValue: [!firstUpdate?0:firstUpdate],
+              })(
+                <Cascader options={residences} style={{ width: 230, height: 32 }} />
+              )}
             </FormItem>
             <FormItem>
               <div className={common.totalNum}>
