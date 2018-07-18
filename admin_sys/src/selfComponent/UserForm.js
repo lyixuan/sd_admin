@@ -256,7 +256,7 @@ class UserForm extends Component {
             {getFieldDecorator('email', {
               initialValue: !this.state.id?'':!arrValue.mail?'':formatEmail(arrValue.mail),
               rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
-            })(<Input style={{ width: 264 }} disabled={!this.state.email ? false : disabled} />)}
+            })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*级 别">

@@ -155,6 +155,7 @@
 .searchButton:hover{
   background-color: #52C9C2;
   border-color: #52C9C2;
+  color: #fff;
 }
 .searchButton:focus{
   background-color: #52C9C2;
@@ -284,6 +285,4 @@
   color:#fff;
 }
 
-:global(.ant-btn:hover) {
-  color: #fff !important;}
 
