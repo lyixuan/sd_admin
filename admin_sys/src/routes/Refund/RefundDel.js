@@ -78,7 +78,7 @@ class RefundDel extends Component {
     val.map((item, index) =>
       data.push({
         key: index + 1,
-        bottomLineType: item.bottomLineType,
+        orderId: item.orderId,
         ordId: item.ordId,
         complainTime: item.complainTime,
         stuName: `${item.stuName}/${item.stuId}`,
