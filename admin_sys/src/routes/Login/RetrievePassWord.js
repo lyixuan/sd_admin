@@ -39,7 +39,6 @@ export default class RetrievePassWord extends Component {
       JSON.stringify(nextProps.password.resertPwdObj) !==
       JSON.stringify(this.props.password.resertPwdObj)
     ) {
-      console.log(nextProps.password.resertPwdObj);
       const { msg, status } = nextProps.password.resertPwdObj;
       if (!status) {
         this.setState({
@@ -85,7 +84,7 @@ export default class RetrievePassWord extends Component {
             <span className={styles.loginLabel}>重复新密码</span>
             <Password name="rePassword" placeholder="请重复密码" />
             <Submit loading={submitting} type="primary" className={common.searchButton}>
-              登录
+              确定
             </Submit>
           </div>
         </Login>
