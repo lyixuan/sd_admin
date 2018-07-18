@@ -102,7 +102,7 @@ class BasicLayout extends React.PureComponent {
   }
 
   componentWillMount() {
-    this.getuserAuthList();
+    // this.getuserAuthList();
   }
 
   componentDidMount() {

@@ -30,6 +30,15 @@ export default {
       // Login successfully
       if (response.code === 2000) {
         const { userId, token } = response.data;
+        const authData = yield call(getUserAuth, { accountId: userId });
+        if (authData.code === 2000) {
+          setTimeout(() => {
+            setAuthority('admin_auth', authData.data);
+          }, 10);
+        } else {
+          message.error(authData.msg);
+        }
+
         if (payload.autoLogin === true) {
           setAuthority('admin_user', { mail, password, userId }); // 存储用户信息
         } else {

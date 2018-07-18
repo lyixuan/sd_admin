@@ -150,7 +150,7 @@ export const getRouterData = app => {
     '/refund/refundDel': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundDel')),
     },
-    '/bottomLine/complaint/complaintList': {
+    '/bottomLine/complaintList': {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintList')
       ),
