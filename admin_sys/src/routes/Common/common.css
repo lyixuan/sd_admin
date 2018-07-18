@@ -285,4 +285,6 @@
   color:#fff;
 }
 
-
+:global(.ant-btn){
+  padding: 0 12px;
+}
