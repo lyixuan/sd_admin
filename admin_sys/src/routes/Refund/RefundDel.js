@@ -79,7 +79,7 @@ class RefundDel extends Component {
       data.push({
         key: index + 1,
         bottomLineType: item.bottomLineType,
-        bottomLineNum: item.bottomLineNum,
+        ordId: item.ordId,
         complainTime: item.complainTime,
         stuName: `${item.stuName}/${item.stuId}`,
         cpName: item.cpName,
@@ -94,11 +94,6 @@ class RefundDel extends Component {
         title: '序号',
         dataIndex: 'key',
         width: '70px',
-      },
-      {
-        title: '扣分类型',
-        dataIndex: 'bottomLineType',
-        width: '90px',
       },
       {
         title: '子订单编号',

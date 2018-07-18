@@ -80,7 +80,7 @@ class RefundDel extends Component {
         key: index + 1,
         qualityNum: item.qualityNum,
         countValue: item.countValue,
-        qualityType: item.qualityType,
+        qualityTypeName: item.qualityTypeName,
         teaName: item.teaName,
         name: `${item.collegeName} / ${item.familyName} / ${item.groupName}`,
       })
@@ -106,7 +106,7 @@ class RefundDel extends Component {
       },
       {
         title: '质检等级',
-        dataIndex: 'qualityType',
+        dataIndex: 'qualityTypeName',
         width: '90px',
       },
       {
