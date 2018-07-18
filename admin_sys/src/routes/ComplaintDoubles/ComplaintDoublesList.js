@@ -20,6 +20,7 @@ class ComplaintDoublesList extends Component {
       id: 0,
       effectiveDate: '',
       collegeId:0,
+      // flag:true,
     };
   }
 
@@ -105,17 +106,11 @@ class ComplaintDoublesList extends Component {
 
   // input双向绑定
   handelChange(e) {
-    console.log(e.target.value||this.state.multiplePoints)
     const points = e.target.value;
-    if(/(^[1-9]\d*$)/.test(points||1)){
-      this.setState({
-        multiplePoints: points,
-      });
-    }else{
-      message.error("投诉扣分倍数需要为正整数")
-    }
+    this.setState({
+      multiplePoints: points,
+    });
   }
-
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
@@ -134,18 +129,26 @@ class ComplaintDoublesList extends Component {
 
   // 模态框回显
   editName = () => {
-    const upateComplaintDoublesParams = {
-      collegeName: this.state.collegeName,
-      multiplePoints: Number(this.state.multiplePoints),
-      id: this.state.id,
-      effectiveDate: this.state.effectiveDate,
-      collegeId:this.state.collegeId,
-
-    };
-    this.props.dispatch({
-      type: 'complaintDoubles/upateComplaintDoubles',
-      payload: { upateComplaintDoublesParams },
-    });
+    if(!this.state.multiplePoints){
+      message.error("投诉扣分倍数不可为空")
+      this.setDialogSHow(true)
+    }else if(!/(^[1-9]\d*$)/.test(this.state.multiplePoints)){
+      message.error("投诉扣分倍数需要为正整数")
+      this.setDialogSHow(true)
+    }else{
+      const upateComplaintDoublesParams = {
+        collegeName: this.state.collegeName,
+        multiplePoints: Number(this.state.multiplePoints),
+        id: this.state.id,
+        effectiveDate: this.state.effectiveDate,
+        collegeId:this.state.collegeId,
+      };
+      this.props.dispatch({
+        type: 'complaintDoubles/upateComplaintDoubles',
+        payload: { upateComplaintDoublesParams },
+      });
+      this.setDialogSHow(false)
+    }
   };
 
   render() {
