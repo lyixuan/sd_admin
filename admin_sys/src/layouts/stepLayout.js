@@ -11,15 +11,16 @@
 * */
 import React, { Component } from 'react';
 import { Steps, Button } from 'antd';
-import styles from './stepLayout.css';
 import common from '../routes/Common/common.css';
+import styles from './stepLayout.css';
 
 const { Step } = Steps;
 
 class StepLayout extends Component {
   // 下一页
   next() {
-    const { step1Fetch, step2Fetch, step3Fetch, current } = this.props;
+    const { step1Fetch, step2Fetch, step3Fetch, current, editLoading } = this.props;
+    editLoading(true);
     if (current === 0) {
       if (step1Fetch) {
         step1Fetch();
@@ -61,7 +62,7 @@ class StepLayout extends Component {
     this.props.goBack();
   };
   render() {
-    const { title, steps, baseLayout, isDisabled, disableDel, current } = this.props;
+    const { title, steps, baseLayout, isDisabled, disableDel, current, isLoading } = this.props;
     const dis = disableDel === null ? isDisabled : disableDel;
 
     const stepBlock = (
@@ -90,6 +91,7 @@ class StepLayout extends Component {
                   type="primary"
                   onClick={() => this.next()}
                   disabled={dis}
+                  loading={isLoading}
                 >
                   下一步
                 </Button>

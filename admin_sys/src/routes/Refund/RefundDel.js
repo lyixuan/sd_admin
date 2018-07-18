@@ -67,6 +67,13 @@ class RefundDel extends Component {
       payload: { current },
     });
   };
+  editLoading = isLoading => {
+    console.log(isLoading);
+    this.props.dispatch({
+      type: 'blRefund/editLoading',
+      payload: { isLoading },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/refund/refundList',
@@ -124,7 +131,7 @@ class RefundDel extends Component {
     return columns;
   };
   render() {
-    const { preDelData, nums, current, disableDel } = this.props.blRefund;
+    const { preDelData, nums, current, disableDel, isLoading } = this.props.blRefund;
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
@@ -220,6 +227,10 @@ class RefundDel extends Component {
         step3Fetch={() => {
           this.fetchDel({ nums: successArr.join(' ') });
         }}
+        editLoading={loading => {
+          this.editLoading(loading);
+        }}
+        isLoading={isLoading}
         isDisabled={isDisabled}
         disableDel={disableDel}
         current={current}

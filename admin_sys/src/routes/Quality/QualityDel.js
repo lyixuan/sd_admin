@@ -67,6 +67,13 @@ class RefundDel extends Component {
       payload: { current },
     });
   };
+  editLoading = isLoading => {
+    console.log(isLoading);
+    this.props.dispatch({
+      type: 'quality/editLoading',
+      payload: { isLoading },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/quality/qualityList',
@@ -124,7 +131,7 @@ class RefundDel extends Component {
     return columns;
   };
   render() {
-    const { preDelData, nums, current, disableDel } = this.props.quality;
+    const { preDelData, nums, current, disableDel, isLoading } = this.props.quality;
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
@@ -222,6 +229,10 @@ class RefundDel extends Component {
         step3Fetch={() => {
           this.fetchDel({ nums: successNums.join(' ') });
         }}
+        editLoading={loading => {
+          this.editLoading(loading);
+        }}
+        isLoading={isLoading}
         current={current}
         editCurrent={param => {
           this.editCurrent(param);

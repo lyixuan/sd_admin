@@ -69,6 +69,13 @@ class ComplaintAdd extends Component {
       payload: { current },
     });
   };
+  editLoading = isLoading => {
+    console.log(isLoading);
+    this.props.dispatch({
+      type: 'blComplain/editLoading',
+      payload: { isLoading },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/complaint/complaintList',
@@ -114,7 +121,9 @@ class ComplaintAdd extends Component {
     return columns;
   };
   render() {
-    const { current, checkList, fileList, disableDel } = this.props.blComplain;
+    let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
+
+    const { current, checkList, fileList, disableDel, isLoading } = this.props.blComplain;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;
@@ -179,6 +188,7 @@ class ComplaintAdd extends Component {
         content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
       },
     ];
+    fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
     return (
       <StepLayout
         title="添加投诉"
@@ -195,11 +205,15 @@ class ComplaintAdd extends Component {
           this.initParamsFn(dis);
         }}
         step1Fetch={() => {
-          this.fetchCheckData({ filePath: checkParams });
+          this.fetchCheckData({ filePath: fileData });
         }}
         step2Fetch={() => {
-          this.saveExcelData({ filePath: checkParams });
+          this.saveExcelData({ filePath: fileData });
         }}
+        editLoading={loading => {
+          this.editLoading(loading);
+        }}
+        isLoading={isLoading}
         current={current}
         editCurrent={param => {
           this.editCurrent(param);

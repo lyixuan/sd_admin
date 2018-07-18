@@ -35,7 +35,6 @@ class stepUpload extends Component {
       action: uploadUrl,
       beforeUpload(file) {
         console.log(file.name.split('.')[1]);
-        // isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         isExcel = file.name.split('.')[1] === 'xlsx' || file.name.split('.')[1] === 'xls';
         if (!isExcel) {
           message.error('请上传 Excel 文件！');

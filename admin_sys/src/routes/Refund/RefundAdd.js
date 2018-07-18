@@ -25,6 +25,7 @@ class RefundAdd extends Component {
     this.editCurrent(0);
   }
   componentWillUnmount() {
+    console.log(22);
     clearConfirm();
     this.initParamsFn(null);
     // 点击添加的时候清除文件
@@ -68,6 +69,13 @@ class RefundAdd extends Component {
     this.props.dispatch({
       type: 'blRefund/editCurrent',
       payload: { current },
+    });
+  };
+  editLoading = isLoading => {
+    console.log(isLoading);
+    this.props.dispatch({
+      type: 'blRefund/editLoading',
+      payload: { isLoading },
     });
   };
   historyFn() {
@@ -117,7 +125,8 @@ class RefundAdd extends Component {
     return columns;
   };
   render() {
-    const { current, checkList, fileList, disableDel } = this.props.blRefund;
+    let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
+    const { current, checkList, fileList, disableDel, isLoading } = this.props.blRefund;
     const { isDisabled, checkParams } = this.state;
 
     const sucessNum = !checkList ? 0 : checkList.data.num;
@@ -183,6 +192,8 @@ class RefundAdd extends Component {
         content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
       },
     ];
+
+    fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
     return (
       <StepLayout
         title="添加退费"
@@ -198,11 +209,15 @@ class RefundAdd extends Component {
         callBackParent={bol => {
           this.onChildChange(bol);
         }}
+        editLoading={loading => {
+          this.editLoading(loading);
+        }}
+        isLoading={isLoading}
         step1Fetch={() => {
-          this.fetchCheckData({ filePath: checkParams });
+          this.fetchCheckData({ filePath: fileData });
         }}
         step2Fetch={() => {
-          this.saveExcelData({ filePath: checkParams });
+          this.saveExcelData({ filePath: fileData });
         }}
         current={current}
         editCurrent={param => {
