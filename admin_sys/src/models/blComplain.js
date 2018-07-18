@@ -54,9 +54,9 @@ export default {
         message.error(preDelData.msg);
         yield put({ type: 'savePreData', payload: { current: 0 } });
       } else if (preDelData.data.successSize > 0) {
-        yield put({ type: 'save', payload: { preDelData, current: 1, disableDel: false } });
+        yield put({ type: 'savePreData', payload: { preDelData, current: 1, disableDel: false } });
       } else {
-        yield put({ type: 'save', payload: { preDelData, current: 1, disableDel: true } });
+        yield put({ type: 'savePreData', payload: { preDelData, current: 1, disableDel: true } });
       }
     },
     *delComplain({ payload }, { call, put }) {
@@ -75,7 +75,7 @@ export default {
     },
     *saveFileList({ payload }, { put }) {
       const { fileList } = payload;
-      yield put({ type: 'save', payload: { fileList } });
+      yield put({ type: 'savePreData', payload: { fileList } });
     },
     *editCurrent({ payload }, { put }) {
       const { current } = payload;
@@ -83,7 +83,7 @@ export default {
     },
     *initParams({ payload }, { put }) {
       const { disableDel, nums } = payload;
-      yield put({ type: 'save', payload: { disableDel, nums } });
+      yield put({ type: 'savePreData', payload: { disableDel, nums } });
     },
   },
 
