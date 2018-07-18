@@ -1,5 +1,5 @@
 import { updatePwd, findBackPwd, resetPwd } from '../services/api';
-import { setAuthority, getAuthority, removeStorge } from '../utils/authority';
+import { getAuthority, removeStorge } from '../utils/authority';
 import { handleSuccess } from '../utils/Handle';
 
 export default {
@@ -36,15 +36,16 @@ export default {
       });
     },
     *resetPwd({ payload }, { call, put, fork }) {
-      const { password } = payload;
+      // const { password } = payload;
       const response = yield call(resetPwd, { ...payload });
       yield put({
         type: 'saveResetPwd',
         payload: response,
       });
       if (response.code === 2000) {
-        const adminUser = getAuthority('admin_user') || {};
-        setAuthority('admin_user', { ...adminUser, password }); // 存储用户信息
+        // const adminUser = getAuthority('admin_user') || {};
+        removeStorge('admin_user');
+        // setAuthority('admin_user', { ...adminUser, password }); // 存储用户信息
         yield fork(handleSuccess, { content: '密码重置成功', pathname: '/userLayout/login' });
       }
     },
