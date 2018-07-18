@@ -129,7 +129,7 @@ class UserList extends Component {
         mobile: item.mobile,
         mail: item.entUserId,
         userType: userTypeData[item.userType],
-        showName: item.showName,
+        showName: item.showName, // showName.replace(/\,/g,"|")
         changeShowName: item.changeShowName,
         id: item.id,
         wechatDepartmentId: item.wechatDepartmentId,
