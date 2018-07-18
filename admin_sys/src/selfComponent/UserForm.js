@@ -240,14 +240,27 @@ class UserForm extends Component {
     const str = arrValue.showNameIds
     const strs=!str?[]:str.split(",");
     const arr = !strs?[]:strs.map((el)=>{return Number(el);});
-    // console.log(arr)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓 名">
             {getFieldDecorator('name', {
               initialValue: !this.state.id?'':!arrValue.name?'':arrValue.name,
-              rules: [{ min: 2, required: true, message: '您输入姓名不合法!', whitespace: true }],
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    const reg = value.replace(/(^\s*)|(\s*$)/g,"")
+                    console.log(reg,reg.length)
+                    if(!reg){
+                      callback({ message: '姓名为必填项，请填写!' });
+                    }else if (reg.length<2||reg.length>20) {
+                      callback({ message: '姓名在2-20个字符之间，请填写!' });
+                    }else{
+                      callback();
+                    }
+                  },
+                },
+              ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="手 机">
