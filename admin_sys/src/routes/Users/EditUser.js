@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Form  } from 'antd';
+import { Form } from 'antd';
 import { connect } from 'dva';
 import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import { userTypeDataReset } from '../../utils/dataDictionary';
 
 const WrappedRegistrationForm = Form.create()(UserForm);
+
 @connect(({ user, loading }) => ({
   user,
   loading,
@@ -18,6 +19,7 @@ class EditUser extends Component {
       id: !arrValue.id ? null : arrValue.id,
     };
   }
+
   componentDidMount() {
     const wechatListParams = {};
     this.props.dispatch({
@@ -30,7 +32,7 @@ class EditUser extends Component {
       type: 'user/listOrg',
       payload: { listOrgParams },
     });
-    const userListParams = {id :this.state.id};
+    const userListParams = { id: this.state.id };
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -53,10 +55,10 @@ class EditUser extends Component {
       }
       return 0;
     });
-    console.log(rUserType,typeId)
+    console.log(rUserType, typeId);
     const updateUserInfoParams = {
       name: values.name,
-      mail: `${values.email}@sunlands.com`,
+      mail: values.email,
       mobile: values.phone,
       id: Number(this.state.id),
       userType: userTypeDataReset[rUserType],
@@ -73,14 +75,16 @@ class EditUser extends Component {
   resetContent = () => {
     this.props.setRouteUrlParams('/user/userList', {});
   };
+
   render() {
-    const userListValue = this.props.user;
+    // const userListValue = this.props.user;
+    // const {data = {}} = userListValue.userList.response;
     // console.log(userListValue.userList)
-    return !userListValue.userList.response ? null: !userListValue.userList.response.data ? null:(
+    return (
       <ContentLayout
         contentForm={
           <WrappedRegistrationForm
-            jumpFunction={this.props}
+            jumpFunction={this.props || {}}
             resetContent={() => {
               this.resetContent();
             }}

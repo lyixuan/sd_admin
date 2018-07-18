@@ -23,7 +23,11 @@ class ComplaintDel extends Component {
     // init current
     this.editCurrent(0);
   }
-
+  // 离开页面的时候，把disableDel，nums恢复默认值null
+  componentWillUnmount() {
+    clearConfirm();
+    this.initParamsFn(null, 'clear');
+  }
   // 回调
   onChildChange = bol => {
     this.setState({
@@ -34,6 +38,14 @@ class ComplaintDel extends Component {
     this.props.dispatch({
       type: 'blComplain/getNums',
       payload: nums,
+    });
+  };
+  // 初始化一些值
+  initParamsFn = (disableDel, nums) => {
+    const num = !nums ? this.props.blComplain.nums : '';
+    this.props.dispatch({
+      type: 'blComplain/initParams',
+      payload: { disableDel, nums: num },
     });
   };
   fetchPreDel = params => {
@@ -117,7 +129,7 @@ class ComplaintDel extends Component {
     return columns;
   };
   render() {
-    const { preDelData, nums, current } = this.props.blComplain;
+    const { preDelData, nums, current, disableDel } = this.props.blComplain;
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
@@ -154,6 +166,7 @@ class ComplaintDel extends Component {
             inputTitle="请输入想删除的 “子订单编号”："
             inputContent="true"
             inputTip="true"
+            nums={nums}
             getNums={param => {
               this.getNums(param);
             }}
@@ -199,6 +212,12 @@ class ComplaintDel extends Component {
           goBack={() => {
             this.historyFn();
           }}
+          callBackParent={bol => {
+            this.onChildChange(bol);
+          }}
+          initParamsFn={dis => {
+            this.initParamsFn(dis);
+          }}
           step1Fetch={() => {
             this.fetchPreDel({ nums });
           }}
@@ -209,6 +228,7 @@ class ComplaintDel extends Component {
             this.fetchDel({ nums: successArr.join(' ') });
           }}
           isDisabled={isDisabled}
+          disableDel={disableDel}
           current={current}
           editCurrent={param => {
             this.editCurrent(param);

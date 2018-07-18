@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form ,message} from 'antd';
+import { Form } from 'antd';
 import { connect } from 'dva';
 import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -48,7 +48,7 @@ class CreateUser extends Component {
     });
     const userAddParams = {
       name: values.name,
-      mail: `${values.email}@sunlands.com`,
+      mail: values.email,
       mobile: values.phone,
       userType: userTypeDataReset[rUserType],
       userTypeId: typeId,
@@ -81,8 +81,8 @@ class CreateUser extends Component {
           />
         }
       />
-    );}
+    );
+  }
 }
-
 
 export default CreateUser;

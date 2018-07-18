@@ -12,7 +12,7 @@ export default {
 
   state: {
     nums: '',
-    disableFlag: false,
+    disableDel: null,
     current: 0,
   },
 
@@ -29,13 +29,14 @@ export default {
         message.error(checkList.msg);
         yield put({ type: 'save', payload: { current: 0 } });
       } else if (checkList.data.errorList.length > 0) {
-        yield put({ type: 'save', payload: { checkList, current: 1 } });
+        yield put({ type: 'save', payload: { checkList, current: 1, disableDel: true } });
       } else {
-        yield put({ type: 'save', payload: { checkList, current: 1, disableFlag: true } });
+        yield put({ type: 'save', payload: { checkList, current: 1, disableDel: false } });
       }
     },
     *saveExcel({ payload }, { call, put }) {
       const { params } = payload;
+      console.log(params);
       const excelData = yield call(saveDataRefund, { ...params });
       if (excelData.code !== 2000) {
         message.error(excelData.msg);
@@ -50,8 +51,10 @@ export default {
       if (preDelData.code !== 2000) {
         message.error(preDelData.msg);
         yield put({ type: 'save', payload: { current: 0 } });
+      } else if (preDelData.data.successSize > 0) {
+        yield put({ type: 'save', payload: { preDelData, current: 1, disableDel: false } });
       } else {
-        yield put({ type: 'save', payload: { preDelData, current: 1 } });
+        yield put({ type: 'save', payload: { preDelData, current: 1, disableDel: true } });
       }
     },
     *delRefund({ payload }, { call, put }) {
@@ -71,6 +74,10 @@ export default {
     *editCurrent({ payload }, { put }) {
       const { current } = payload;
       yield put({ type: 'save', payload: { current } });
+    },
+    *initParams({ payload }, { put }) {
+      const { disableDel, nums } = payload;
+      yield put({ type: 'save', payload: { disableDel, nums } });
     },
   },
 

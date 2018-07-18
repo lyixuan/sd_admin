@@ -41,7 +41,7 @@ class PermissionList extends Component {
     console.log(val);
     this.props.setRouteUrlParams('/permission/editPermission', {
       id: val.id,
-      level:val.level,
+      level: val.level,
     });
   };
 
@@ -218,7 +218,7 @@ class PermissionList extends Component {
         title="权限列表"
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
-          <AuthorizedButton authority="/user/createUser">
+          <AuthorizedButton authority="/permission/createPermission">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
               创 建
             </Button>

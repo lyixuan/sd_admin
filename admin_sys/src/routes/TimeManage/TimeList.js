@@ -58,6 +58,7 @@ class TimeList extends Component {
 
   // 添加
   onAdd = () => {
+    this.setState({ dateTime: '' });
     this.showModal(true);
   };
 
@@ -90,6 +91,7 @@ class TimeList extends Component {
       this.setState({ visible: false });
     } else {
       message.error('添加失败,日期不可为空');
+      this.setState({ visible: true });
     }
   };
   showModal = bol => {
@@ -157,8 +159,13 @@ class TimeList extends Component {
     });
     if (isHasDate) {
       message.error('添加失败,日期不可重复');
+      this.setState({ visible: true, dateTime: '' });
+    } else if (!dateString) {
+      message.error('添加失败,日期不可为空');
+      this.setState({ visible: true, dateTime: '' });
+    } else {
+      this.setState({ dateTime: dateString });
     }
-    this.setState({ dateTime: dateString });
   };
   // 初始化tabale 列数据
   fillDataSource = value => {

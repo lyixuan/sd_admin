@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button } from 'antd';
+import { Form, Input, Cascader, Button, message } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 import { userTypeData } from '../utils/dataDictionary';
@@ -41,19 +41,19 @@ class UserForm extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
-    const userVal = this.props.jumpFunction.user
-    const wechatValues = !userVal.wechatList.response?[]:!userVal.wechatList.response.data?[]:userVal.wechatList.response.data.department;
-    const listOrgValues = !userVal.listOrg.response?[]:!userVal.listOrg.response.data?[]:userVal.listOrg.response.data;
-
-    const aaa = !userVal.userList.response?[]:!userVal.userList.response.data?[]:userVal.userList.response.data.content[0];
-    console.log(aaa)
+    const userVal = this.props.jumpFunction.user;
+    const wechatValues = !userVal.wechatList.response
+      ? []
+      : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
-      wechatList: wechatValues||[],
-      listOrgLiost: listOrgValues||[],
+      wechatList: wechatValues || [],
+      listOrgLiost: listOrgValues || [],
       id: !arrValue.id ? '' : arrValue.id,
-      userType:!aaa.userType?'':userTypeData[aaa.userType],
+      userType: !arrValue.userType ? '' : arrValue.userType,
     };
-    console.log(this.state)
   }
   componentDidMount() {
     responseComListBackup = !this.state.listOrgLiost
@@ -179,8 +179,23 @@ class UserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values)
-        this.props.handleSubmit(values);
+        const rUserType = values.userType[0];
+        const len = values.responseCom.length;
+        if (rUserType === '小组') {
+          if (len !== 3) {
+            message.error('负责单位请选择到对应小组');
+          } else {
+            this.props.handleSubmit(values);
+          }
+        } else if (rUserType === '家族') {
+          if (len !== 2) {
+            message.error('负责单位请选择到对应家族');
+          } else {
+            this.props.handleSubmit(values);
+          }
+        } else {
+          this.props.handleSubmit(values);
+        }
       }
     });
   };
@@ -223,27 +238,50 @@ class UserForm extends Component {
         },
       },
     };
-    const aaa = this.props.jumpFunction.user.userList
-    const arrValue = !aaa?[]:!aaa.response?[]:!aaa.response.data?[]:!aaa.response.data.content?[]:aaa.response.data.content[0];
-    // const responseColl =arrValue.
-    // console.log(responseComList)
+    const aaa = this.props.jumpFunction.user.userList;
+    const arrValue = !aaa
+      ? []
+      : !aaa.response
+        ? []
+        : !aaa.response.data ? [] : !aaa.response.data.content ? [] : aaa.response.data.content[0];
+    const str = arrValue.showNameIds;
+    const strs = !str ? [] : str.split(',');
+    const arr = !strs
+      ? []
+      : strs.map(el => {
+          return Number(el);
+        });
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓 名">
             {getFieldDecorator('name', {
-              initialValue: !this.state.id?'':!arrValue.name?'':arrValue.name,
-              rules: [{ min: 2, required: true, message: '您输入姓名不合法!', whitespace: true }],
+              initialValue: !this.state.id ? '' : !arrValue.name ? '' : arrValue.name,
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                    console.log(reg, reg.length);
+                    if (!reg) {
+                      callback({ message: '姓名为必填项，请填写!' });
+                    } else if (reg.length < 2 || reg.length > 20) {
+                      callback({ message: '姓名在2-20个字符之间，请填写!' });
+                    } else {
+                      callback();
+                    }
+                  },
+                },
+              ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="手 机">
             {getFieldDecorator('phone', {
-              initialValue: !this.state.id?'':!arrValue.mobile?'':arrValue.mobile,
+              initialValue: !this.state.id ? '' : !arrValue.mobile ? '' : arrValue.mobile,
               rules: [
                 {
                   validator(rule, value, callback) {
                     const reg = /^0?1\d{10}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
-                    if (!reg.test(value)) {
+                    if (!reg.test(value) && value) {
                       callback({ message: '手机号是以1开头的11位数字组成' });
                     }
                     callback();
@@ -254,14 +292,16 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*邮 箱">
             {getFieldDecorator('email', {
-              initialValue: !this.state.id?'':!arrValue.mail?'':formatEmail(arrValue.mail),
+              initialValue: !this.state.id ? '' : !arrValue.mail ? '' : formatEmail(arrValue.mail),
               rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
-            })(<Input style={{ width: 264 }} disabled={!this.state.email ? false : disabled} />)}
+            })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*级 别">
             {getFieldDecorator('userType', {
-              initialValue: [!this.state.id?'':!arrValue.userType?'':userTypeData[arrValue.userType]],
+              initialValue: [
+                !this.state.id ? '' : !arrValue.userType ? '' : userTypeData[arrValue.userType],
+              ],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -282,17 +322,8 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*负责单位">
             {getFieldDecorator('responseCom', {
-              initialValue: [!this.state.id?'':!arrValue.responseCom?'':arrValue.responseCom],
-              // initialValue: [100,101],
+              initialValue: !this.state.id ? [] : arr,
               rules: [
-              //   flag === '系统管理员' || flag === '高级管理员'?{}:{
-              //   validator(rule, value, callback) {
-              //     if (typeof value[0] === 'string' || !value[0]) {
-              //       callback({ message: '请选择负责单位！' });
-              //     }
-              //     callback();
-              //   },
-              // },
                 {
                   validator(rule, value, callback) {
                     if (typeof value[0] === 'string' || !value[0]) {
@@ -316,7 +347,11 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*微信部门">
             {getFieldDecorator('wechatDepartmentName', {
-              initialValue: [!this.state.id?'':!arrValue.wechatDepartmentName?'':arrValue.wechatDepartmentName],
+              initialValue: [
+                !this.state.id
+                  ? ''
+                  : !arrValue.wechatDepartmentName ? '' : arrValue.wechatDepartmentName,
+              ],
               rules: [
                 {
                   validator(rule, value, callback) {

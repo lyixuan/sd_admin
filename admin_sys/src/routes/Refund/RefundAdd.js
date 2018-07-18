@@ -24,19 +24,22 @@ class RefundAdd extends Component {
     // init current
     this.editCurrent(0);
   }
-  componentWillReceiveProps() {
-    if (this.props.blRefund.disableFlag) {
-      this.onChildChange(false);
-    }
-  }
   componentWillUnmount() {
     clearConfirm();
+    this.initParamsFn(null);
   }
   // 回调
   onChildChange = (bol, checkParams) => {
     this.setState({
       isDisabled: bol,
       checkParams,
+    });
+  };
+  // 初始化一些值
+  initParamsFn = disableDel => {
+    this.props.dispatch({
+      type: 'blRefund/initParams',
+      payload: { disableDel },
     });
   };
   // 校验excel文件
@@ -47,11 +50,10 @@ class RefundAdd extends Component {
     });
   };
   // 保存excel数据
-  saveExcelData = file => {
-    console.log(file);
+  saveExcelData = params => {
     this.props.dispatch({
       type: 'blRefund/saveExcel',
-      payload: { file },
+      payload: { params },
     });
   };
   editCurrent = current => {
@@ -107,7 +109,7 @@ class RefundAdd extends Component {
     return columns;
   };
   render() {
-    const { current, checkList, disableFlag } = this.props.blRefund;
+    const { current, checkList, disableDel } = this.props.blRefund;
     const { isDisabled, checkParams } = this.state;
 
     const sucessNum = !checkList ? 0 : checkList.data.num;
@@ -160,6 +162,7 @@ class RefundAdd extends Component {
             onlyTable="true"
             dataSource={dataSource}
             columns={columns}
+            scroll={{ y: 264 }}
           />
         ),
       },
@@ -173,9 +176,12 @@ class RefundAdd extends Component {
         title="添加退费"
         steps={steps}
         isDisabled={isDisabled}
-        disableFlag={disableFlag}
+        disableDel={disableDel}
         goBack={() => {
           this.historyFn();
+        }}
+        initParamsFn={dis => {
+          this.initParamsFn(dis);
         }}
         callBackParent={bol => {
           this.onChildChange(bol);

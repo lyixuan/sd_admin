@@ -17,7 +17,7 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const accountListParams = { size: 30, number: 0 ,orderType:'name'};
+    const accountListParams = { size: 30, number: 0, orderType: 'name' };
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
@@ -50,7 +50,7 @@ class AccountList extends Component {
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     console.log(pageSize, current);
-    const accountListParams = { size: pageSize, number: current - 1 ,orderType:'name'};
+    const accountListParams = { size: pageSize, number: current - 1, orderType: 'name' };
     console.log(accountListParams);
     this.props.dispatch({
       type: 'account/accountList',
@@ -61,7 +61,7 @@ class AccountList extends Component {
   // 点击某一页函数
   changePage = (current, pageSize) => {
     console.log(pageSize, current);
-    const accountListParams = { size: pageSize, number: current - 1,orderType:'name' };
+    const accountListParams = { size: pageSize, number: current - 1, orderType: 'name' };
     console.log(accountListParams);
     this.props.dispatch({
       type: 'account/accountList',
@@ -115,9 +115,9 @@ class AccountList extends Component {
                   编辑
                 </span>
               </AuthorizedButton>
-              <AuthorizedButton authority="/account/editAccount">
+              <AuthorizedButton authority="/account/deleteAccout">
                 <Popconfirm title="是否确认删除该账号?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
+                  <span style={{ color: '#52C9C2', marginLeft: 4 }}>| 删除</span>
                 </Popconfirm>
               </AuthorizedButton>
             </div>
@@ -125,7 +125,7 @@ class AccountList extends Component {
         },
       },
     ];
-    return columns||[];
+    return columns || [];
   };
 
   // 创建账号函数

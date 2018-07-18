@@ -100,7 +100,7 @@ export default {
 
       const ids = [];
       getRoleIds.forEach(item => {
-        if (item.checked && item.level === 3) {
+        if (item.checked) {
           ids.push(item.id);
         }
       });

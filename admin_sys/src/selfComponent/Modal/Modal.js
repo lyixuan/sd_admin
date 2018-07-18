@@ -17,7 +17,7 @@ class ModalDemo extends React.Component {
     if (clickOK) {
       clickOK(e);
     }
-    this.handleCancel(false);
+    // this.handleCancel(false);
   };
   handleCancel = () => {
     if (this.props.showModal) {

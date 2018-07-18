@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table,Input,Row,Col,message} from 'antd';
+import { Table, Input, Row, Col, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -14,12 +14,13 @@ class ComplaintDoublesList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible:false,
+      visible: false,
       collegeName: '',
       multiplePoints: 0,
       id: 0,
       effectiveDate: '',
-      collegeId:0,
+      collegeId: 0,
+      // flag:true,
     };
   }
 
@@ -38,15 +39,15 @@ class ComplaintDoublesList extends Component {
       multiplePoints: key.multiplePoints,
       id: key.id,
       effectiveDate: key.effectiveDate,
-      collegeId:key.collegeId,
+      collegeId: key.collegeId,
     });
     this.setDialogSHow(true);
   };
 
-  setDialogSHow(bol){
+  setDialogSHow(bol) {
     this.setState({
-      visible:bol,
-    })
+      visible: bol,
+    });
   }
 
   // 初始化tabale 列数据
@@ -55,7 +56,7 @@ class ComplaintDoublesList extends Component {
     val.map((item, index) =>
       data.push({
         key: index,
-        id:item.id,
+        id: item.id,
         collegeName: item.collegeName,
         multiplePoints: item.multiplePoints,
         collegeId: item.collegeId,
@@ -90,7 +91,7 @@ class ComplaintDoublesList extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/account/editAccount">
+              <AuthorizedButton authority="/complaintDoubles/editecomplaintDoubles">
                 <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record)}>
                   编辑
                 </span>
@@ -100,22 +101,16 @@ class ComplaintDoublesList extends Component {
         },
       },
     ];
-    return columns||[];
+    return columns || [];
   };
 
   // input双向绑定
   handelChange(e) {
-    console.log(e.target.value||this.state.multiplePoints)
     const points = e.target.value;
-    if(/(^[1-9]\d*$)/.test(points||1)){
-      this.setState({
-        multiplePoints: points,
-      });
-    }else{
-      message.error("投诉扣分倍数需要为正整数")
-    }
+    this.setState({
+      multiplePoints: points,
+    });
   }
-
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
@@ -126,7 +121,7 @@ class ComplaintDoublesList extends Component {
         multiplePoints: item.multiplePoints,
         id: item.id,
         effectiveDate: item.effectiveDate,
-        collegeId:item.collegeId,
+        collegeId: item.collegeId,
       })
     );
     return data;
@@ -134,18 +129,26 @@ class ComplaintDoublesList extends Component {
 
   // 模态框回显
   editName = () => {
-    const upateComplaintDoublesParams = {
-      collegeName: this.state.collegeName,
-      multiplePoints: Number(this.state.multiplePoints),
-      id: this.state.id,
-      effectiveDate: this.state.effectiveDate,
-      collegeId:this.state.collegeId,
-
-    };
-    this.props.dispatch({
-      type: 'complaintDoubles/upateComplaintDoubles',
-      payload: { upateComplaintDoublesParams },
-    });
+    if (!this.state.multiplePoints) {
+      message.error('投诉扣分倍数不可为空');
+      this.setDialogSHow(true);
+    } else if (!/(^[1-9]\d*$)/.test(this.state.multiplePoints)) {
+      message.error('投诉扣分倍数需要为正整数');
+      this.setDialogSHow(true);
+    } else {
+      const upateComplaintDoublesParams = {
+        collegeName: this.state.collegeName,
+        multiplePoints: Number(this.state.multiplePoints),
+        id: this.state.id,
+        effectiveDate: this.state.effectiveDate,
+        collegeId: this.state.collegeId,
+      };
+      this.props.dispatch({
+        type: 'complaintDoubles/upateComplaintDoubles',
+        payload: { upateComplaintDoublesParams },
+      });
+      this.setDialogSHow(false);
+    }
   };
 
   render() {
@@ -158,23 +161,37 @@ class ComplaintDoublesList extends Component {
     const totalNum = !data ? 0 : data.length;
     const dataSource = !data ? [] : this.fillDataSource(data);
     const columns = this.columnsData();
-    const { visible,collegeName,multiplePoints,collegeId,effectiveDate} = this.state;
+    const { visible, collegeName, multiplePoints, collegeId, effectiveDate } = this.state;
     const modalContent = (
       <div>
         <Row>
-          <Col span={3} offset={9}>学院id:</Col>
-          <Col style={{textAlign:'left'}} offset={0}>{collegeId}</Col>
+          <Col span={3} offset={9}>
+            学院id:
+          </Col>
+          <Col style={{ textAlign: 'left' }} offset={0}>
+            {collegeId}
+          </Col>
         </Row>
         <Row>
-          <Col span={4} offset={8}>学院名称:</Col>
-          <Col  offset={1} style={{textAlign:'left'}}>{collegeName}</Col>
+          <Col span={4} offset={8}>
+            学院名称:
+          </Col>
+          <Col offset={1} style={{ textAlign: 'left' }}>
+            {collegeName}
+          </Col>
         </Row>
         <Row>
-          <Col span={4} offset={8}>生效月份:</Col>
-          <Col style={{textAlign:'left'}} offset={1}>{effectiveDate}</Col>
+          <Col span={4} offset={8}>
+            生效月份:
+          </Col>
+          <Col style={{ textAlign: 'left' }} offset={1}>
+            {effectiveDate}
+          </Col>
         </Row>
         <Row>
-          <Col span={6} offset={6}>*投诉扣分倍数:</Col>
+          <Col span={6} offset={6}>
+            *投诉扣分倍数:
+          </Col>
           <Col span={4} offset={0}>
             <Input
               onChange={e => {
@@ -187,7 +204,7 @@ class ComplaintDoublesList extends Component {
         </Row>
       </div>
     );
-    return(
+    return (
       <div>
         <ContentLayout
           pageHeraderUnvisible="unvisible"
@@ -212,11 +229,13 @@ class ComplaintDoublesList extends Component {
           visible={visible}
           modalContent={modalContent}
           clickOK={() => this.editName()}
-          footButton={['取消','提交']}
-          showModal={(bol)=>{this.setDialogSHow(bol)}}
+          footButton={['取消', '提交']}
+          showModal={bol => {
+            this.setDialogSHow(bol);
+          }}
         />
       </div>
-        )
+    );
   }
 }
 export default ComplaintDoublesList;

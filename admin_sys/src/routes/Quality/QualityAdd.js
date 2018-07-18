@@ -22,13 +22,10 @@ class RefundAdd extends Component {
   componentDidMount() {
     this.editCurrent(0);
   }
-  componentWillReceiveProps() {
-    if (this.props.quality.disableFlag) {
-      this.onChildChange(false);
-    }
-  }
+
   componentWillUnmount() {
     clearConfirm();
+    this.initParamsFn(null);
   }
   // 回调
   onChildChange = (bol, checkParams) => {
@@ -43,7 +40,13 @@ class RefundAdd extends Component {
       });
     }
   };
-
+  // 初始化一些值
+  initParamsFn = disableDel => {
+    this.props.dispatch({
+      type: 'quality/initParams',
+      payload: { disableDel },
+    });
+  };
   // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
@@ -105,7 +108,7 @@ class RefundAdd extends Component {
     return columns;
   };
   render() {
-    const { current, checkList, disableFlag } = this.props.quality;
+    const { current, checkList, disableDel } = this.props.quality;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;
@@ -171,12 +174,15 @@ class RefundAdd extends Component {
         title="添加质检"
         steps={steps}
         isDisabled={isDisabled}
-        disableFlag={disableFlag}
+        disableDel={disableDel}
         goBack={() => {
           this.historyFn();
         }}
         callBackParent={bol => {
           this.onChildChange(bol);
+        }}
+        initParamsFn={dis => {
+          this.initParamsFn(dis);
         }}
         step1Fetch={() => {
           this.fetchCheckData({ filePath: checkParams });
