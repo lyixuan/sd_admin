@@ -100,18 +100,13 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
     };
   }
-
-  componentWillMount() {
-    // this.getuserAuthList();
-  }
-
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
       this.setState({
         isMobile: mobile,
       });
     });
-    this.handleUserInfo();
+    // this.handleUserInfo();
   }
 
   componentWillUnmount() {
@@ -153,17 +148,14 @@ class BasicLayout extends React.PureComponent {
     }
     return redirect;
   };
-  getuserAuthList = () => {
-    this.props.dispatch({
-      type: 'login/getAuthList',
-    });
-  };
   handleUserInfo = () => {
-    const { userId = '' } = getAuthority('admin_user');
-    this.props.dispatch({
-      type: 'login/fetchCurrent',
-      payload: { id: userId },
-    });
+    const { name = '小德' } = getAuthority('admin_user');
+    return { name };
+
+    // this.props.dispatch({
+    //   type: 'login/fetchCurrent',
+    //   payload: { id: userId },
+    // });
   };
   handleMenuCollapse = collapsed => {
     this.props.dispatch({
@@ -180,7 +172,6 @@ class BasicLayout extends React.PureComponent {
     if (key === 'logout') {
       this.props.dispatch({
         type: 'login/logout',
-        payload: { a: 1 },
       });
     }
   };
@@ -193,15 +184,9 @@ class BasicLayout extends React.PureComponent {
   };
 
   render() {
-    const {
-      currentUser,
-      collapsed,
-      fetchingNotices,
-      notices,
-      routerData,
-      match,
-      location,
-    } = this.props;
+    const { collapsed, fetchingNotices, notices, routerData, match, location } = this.props;
+
+    const currentUser = this.handleUserInfo();
     currentUser.avatar = logo;
     const bashRedirect = this.getBaseRedirect();
     const menuData = getMenuData();
@@ -270,7 +255,7 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-export default connect(({ global, login }) => ({
-  currentUser: login.currentUser,
+export default connect(({ global }) => ({
+  // currentUser: login.currentUser,
   collapsed: global.collapsed,
 }))(BasicLayout);

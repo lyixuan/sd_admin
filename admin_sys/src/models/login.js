@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { userLogin, userLogout, queryCurrentUser, getUserAuth } from '../services/api';
+import { userLogin, userLogout, getUserAuth } from '../services/api';
 import { setAuthority, setAuthoritySeccion, removeStorge, getAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import { handleSuccess } from '../utils/Handle';
@@ -49,18 +49,18 @@ export default {
         yield put(routerRedux.push('/'));
       }
     },
-    *fetchCurrent({ payload }, { call, put }) {
-      const { id } = payload;
-      const response = yield call(queryCurrentUser, { id });
-      if (response.code === 2000) {
-        yield put({
-          type: 'saveCurrentUser',
-          payload: response,
-        });
-      } else {
-        message.error('获取账号信息失败,请刷新页面');
-      }
-    },
+    // *fetchCurrent({ payload }, { call, put }) {
+    //   const { id } = payload;
+    //   const response = yield call(queryCurrentUser, { id });
+    //   if (response.code === 2000) {
+    //     yield put({
+    //       type: 'saveCurrentUser',
+    //       payload: response,
+    //     });
+    //   } else {
+    //     message.error('获取账号信息失败,请刷新页面');
+    //   }
+    // },
     *logout(_, { call }) {
       try {
         yield call(userLogout);
@@ -96,10 +96,10 @@ export default {
         loginStatusObj,
       };
     },
-    saveCurrentUser(state, { payload }) {
-      const currentUser = payload.data;
-      return { ...state, currentUser };
-    },
+    // saveCurrentUser(state, { payload }) {
+    //   const currentUser = payload.data;
+    //   return { ...state, currentUser };
+    // },
     saveAuthList(state, { payload }) {
       const authList = payload || [];
       return { ...state, authList };

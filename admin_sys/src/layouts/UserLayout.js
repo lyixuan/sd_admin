@@ -17,7 +17,6 @@ class UserLayout extends React.PureComponent {
     }
     return title;
   }
-
   render() {
     const { routerData, match } = this.props;
     return (
