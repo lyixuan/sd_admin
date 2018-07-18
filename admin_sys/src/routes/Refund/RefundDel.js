@@ -79,7 +79,7 @@ class RefundDel extends Component {
       data.push({
         key: index + 1,
         bottomLineType: item.bottomLineType,
-        bottomLineNum: item.bottomLineNum,
+        ordId: item.ordId,
         complainTime: item.complainTime,
         stuName: `${item.stuName}/${item.stuId}`,
         cpName: item.cpName,
