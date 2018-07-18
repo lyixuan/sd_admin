@@ -26,6 +26,8 @@ class ComplaintAdd extends Component {
   componentWillUnmount() {
     clearConfirm();
     this.initParamsFn(null);
+    // 点击添加的时候清除文件
+    this.saveFileList(null);
   }
   // 回调
   onChildChange = (bol, checkParams) => {
@@ -53,6 +55,12 @@ class ComplaintAdd extends Component {
     this.props.dispatch({
       type: 'blComplain/saveExcel',
       payload: { params },
+    });
+  };
+  saveFileList = fileList => {
+    this.props.dispatch({
+      type: 'blComplain/saveFileList',
+      payload: { fileList },
     });
   };
   editCurrent = current => {
@@ -106,7 +114,7 @@ class ComplaintAdd extends Component {
     return columns;
   };
   render() {
-    const { current, checkList, disableDel } = this.props.blComplain;
+    const { current, checkList, fileList, disableDel } = this.props.blComplain;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;
@@ -144,8 +152,12 @@ class ComplaintAdd extends Component {
         content: (
           <StepUpload
             uploadUrl={qualityUpload()}
+            fileList={fileList}
             callBackParent={(bol, params) => {
               this.onChildChange(bol, params);
+            }}
+            saveFileList={param => {
+              this.saveFileList(param);
             }}
           />
         ),

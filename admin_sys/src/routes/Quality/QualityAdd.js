@@ -26,6 +26,8 @@ class RefundAdd extends Component {
   componentWillUnmount() {
     clearConfirm();
     this.initParamsFn(null);
+    // 点击添加的时候清除文件
+    this.saveFileList(null);
   }
   // 回调
   onChildChange = (bol, checkParams) => {
@@ -62,6 +64,12 @@ class RefundAdd extends Component {
     });
   };
 
+  saveFileList = fileList => {
+    this.props.dispatch({
+      type: 'quality/saveFileList',
+      payload: { fileList },
+    });
+  };
   editCurrent = current => {
     this.props.dispatch({
       type: 'quality/editCurrent',
@@ -108,7 +116,7 @@ class RefundAdd extends Component {
     return columns;
   };
   render() {
-    const { current, checkList, disableDel } = this.props.quality;
+    const { current, checkList, fileList, disableDel } = this.props.quality;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;
@@ -146,8 +154,12 @@ class RefundAdd extends Component {
         content: (
           <StepUpload
             uploadUrl={qualityUpload()}
+            fileList={fileList}
             callBackParent={(bol, params) => {
               this.onChildChange(bol, params);
+            }}
+            saveFileList={param => {
+              this.saveFileList(param);
             }}
           />
         ),

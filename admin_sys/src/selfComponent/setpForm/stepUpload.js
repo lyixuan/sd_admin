@@ -21,9 +21,12 @@ class stepUpload extends Component {
         this.setState({ fileList });
       }
     }
-    const { callBackParent } = this.props;
+    const { callBackParent, saveFileList } = this.props;
     if (info.file.response && info.file.response.code === 2000) {
       callBackParent(false, info.file.response.data);
+      if (saveFileList) {
+        saveFileList(fileList);
+      }
     }
   };
   render() {

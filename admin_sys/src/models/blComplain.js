@@ -73,6 +73,10 @@ export default {
       const { nums } = payload;
       yield put({ type: 'savePreData', payload: { nums } });
     },
+    *saveFileList({ payload }, { put }) {
+      const { fileList } = payload;
+      yield put({ type: 'save', payload: { fileList } });
+    },
     *editCurrent({ payload }, { put }) {
       const { current } = payload;
       yield put({ type: 'savePreData', payload: { current } });
