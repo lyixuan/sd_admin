@@ -51,14 +51,13 @@ class ComplaintDel extends Component {
   fetchPreDel = params => {
     this.props.dispatch({
       type: 'blComplain/preDelComplain',
-      payload: params,
+      payload: { params },
     });
   };
   fetchDel = params => {
-    console.log(params);
     this.props.dispatch({
       type: 'blComplain/delComplain',
-      payload: params,
+      payload: { params },
     });
   };
   editCurrent = current => {
@@ -163,7 +162,7 @@ class ComplaintDel extends Component {
         title: '输入编号',
         content: (
           <StepInput
-            inputTitle="请输入想删除的 “子订单编号”："
+            inputTitle="请输入想删除的 “投诉编号”："
             inputContent="true"
             inputTip="true"
             nums={nums}

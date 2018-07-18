@@ -108,7 +108,7 @@ class ComplainList extends Component {
     val.map((item, index) =>
       data.push({
         key: index,
-        ordId: item.ordId,
+        countValue: item.countValue,
         complainTime: item.complainTime,
         id: item.id,
         collegeName: item.collegeName,
@@ -129,10 +129,6 @@ class ComplainList extends Component {
         title: 'id',
         dataIndex: 'id',
         width: '80px',
-      },
-      {
-        title: '子订单编号',
-        dataIndex: 'ordId',
       },
       {
         title: '投诉时间',
@@ -157,6 +153,11 @@ class ComplainList extends Component {
       {
         title: '编号',
         dataIndex: 'bottomLineNum',
+      },
+      {
+        title: '扣分值',
+        dataIndex: 'countValue',
+        width: '80px',
       },
       {
         title: '渠道',
