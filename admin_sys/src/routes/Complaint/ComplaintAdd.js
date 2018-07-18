@@ -27,7 +27,7 @@ class ComplaintAdd extends Component {
     clearConfirm();
     this.initParamsFn(null);
     // 点击添加的时候清除文件
-    this.saveFileList(null);
+    this.saveFileList([]);
   }
   // 回调
   onChildChange = (bol, checkParams) => {
