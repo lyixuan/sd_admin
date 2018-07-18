@@ -87,9 +87,7 @@ class RoleForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        if (privilegeIds.length === 0) {
-          privilegeIds = this.props.getRoleIds;
-        }
+        privilegeIds = privilegeIds.concat(this.props.getRoleIds);
         this.props.submitInfo(values, Array.from(new Set(privilegeIds)));
       } else {
         console.error(err);
