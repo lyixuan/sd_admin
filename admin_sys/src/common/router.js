@@ -1,7 +1,7 @@
 import { createElement } from 'react';
 import dynamic from 'dva/dynamic';
-import pathToRegexp from 'path-to-regexp';
-import { getMenuData } from './menu';
+// import pathToRegexp from 'path-to-regexp';
+// import { getMenuData } from './menu';
 
 let routerDataCache;
 
@@ -55,18 +55,19 @@ const dynamicWrapper = (app, models, component) => {
   });
 };
 
-function getFlatMenuData(menus) {
-  let keys = {};
-  menus.forEach(item => {
-    if (item.children) {
-      keys[item.path] = { ...item };
-      keys = { ...keys, ...getFlatMenuData(item.children) };
-    } else {
-      keys[item.path] = { ...item };
-    }
-  });
-  return keys;
-}
+// function getFlatMenuData(menus) {
+//   let keys = {};
+//   menus.forEach(item => {
+//     if (item.children) {
+//       keys[item.path] = { ...item };
+//       keys = { ...keys, ...getFlatMenuData(item.children) };
+//     } else {
+//       keys[item.path] = { ...item };
+//     }
+//   });
+//   return keys;
+// }
+
 export const getRouterData = app => {
   const routerConfig = {
     '/': {
@@ -84,7 +85,7 @@ export const getRouterData = app => {
     '/quality/qualityDel': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityDel')),
     },
-    '/account/accountList': {
+    '/config/accountList': {
       component: dynamicWrapper(app, ['account/accountList'], () =>
         import('../routes/Account/AccountList')
       ),
@@ -108,7 +109,7 @@ export const getRouterData = app => {
     '/user/checkUser': {
       component: dynamicWrapper(app, [], () => import('../routes/Users/CheckUser')),
     },
-    '/user/userList': {
+    '/config/userList': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/UserList')),
     },
 
@@ -122,7 +123,7 @@ export const getRouterData = app => {
         import('../routes/Permission/CreatePermission')
       ),
     },
-    '/permission/permissionList': {
+    '/config/permissionList': {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/PermissionList')
       ),
@@ -137,10 +138,10 @@ export const getRouterData = app => {
     '/role/checkRole': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/CheckRole')),
     },
-    '/role/roleList': {
+    '/config/roleList': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/RoleList')),
     },
-    '/refund/refundList': {
+    '/bottomLine/refundList': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundList')),
     },
     '/refund/refundAdd': {
@@ -149,7 +150,7 @@ export const getRouterData = app => {
     '/refund/refundDel': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundDel')),
     },
-    '/complaint/complaintList': {
+    '/bottomLine/complaint/complaintList': {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintList')
       ),
@@ -164,19 +165,19 @@ export const getRouterData = app => {
         import('../routes/Complaint/ComplaintDel')
       ),
     },
-    '/timeManage/timeList': {
+    '/config/timeList': {
       component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),
     },
-    '/shotName/Group': {
+    '/config/Group': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
     },
-    '/shotName/family': {
+    '/config/family': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Family')),
     },
-    '/shotName/college': {
+    '/config/college': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/College')),
     },
-    '/complaintDoubles/complaintDoublesList': {
+    '/config/complaintDoublesList': {
       component: dynamicWrapper(app, ['complaintDoubles'], () =>
         import('../routes/ComplaintDoubles/ComplaintDoublesList')
       ),
@@ -220,7 +221,7 @@ export const getRouterData = app => {
     },
   };
   // Get name from ./menu.js or just set it in the router data.
-  const menuData = getFlatMenuData(getMenuData());
+  // const menuData = getFlatMenuData(getMenuData());
   // Route configuration data
   // eg. {name,authority ...routerConfig }
   const routerData = {};
@@ -228,24 +229,23 @@ export const getRouterData = app => {
   Object.keys(routerConfig).forEach(path => {
     // Regular match item name
     // eg.  router /user/:id === /user/chen
-    const pathRegexp = pathToRegexp(path);
-    const menuKey = Object.keys(menuData).find(key => pathRegexp.test(`${key}`));
-    let menuItem = {};
+    // const pathRegexp = pathToRegexp(path);
+    // const menuKey = Object.keys(menuData).find(key => pathRegexp.test(`${key}`));
+    // let menuItem = {};
     // If menuKey is not empty
-    if (menuKey) {
-      menuItem = menuData[menuKey];
-    }
+    // if (menuKey) {
+    //   menuItem = menuData[menuKey];
+    // }
     let router = routerConfig[path];
     // If you need to configure complex parameter routing,
     // https://github.com/ant-design/ant-design-pro-site/blob/master/docs/router-and-nav.md#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%B7%AF%E7%94%B1%E8%8F%9C%E5%8D%95
     // eg . /list/:type/user/info/:id
-
     router = {
       ...router,
-      name: router.name || menuItem.name,
-      authority: router.authority || menuItem.authority,
-      hideInBreadcrumb: router.hideInBreadcrumb || menuItem.hideInBreadcrumb,
-      hideInMenu: router.hideInMenu || menuItem.hideInMenu,
+      // name: router.name || menuItem.name,
+      // authority: router.authority || menuItem.authority,
+      // hideInBreadcrumb: router.hideInBreadcrumb || menuItem.hideInBreadcrumb,
+      // hideInMenu: router.hideInMenu || menuItem.hideInMenu,
     };
     routerData[path] = router;
   });

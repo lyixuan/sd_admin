@@ -16,7 +16,7 @@ export default {
       status: false,
     },
     currentUser: {},
-    authList: {},
+    authList: [],
   },
 
   effects: {
@@ -63,6 +63,7 @@ export default {
     *getAuthList(_, { call, put }) {
       const admin = getAuthority('admin_user') || {};
       const response = yield call(getUserAuth, { accountId: admin.userId });
+      removeStorge('admin_auth');
       if (response.code === 2000) {
         setAuthority('admin_auth', response.data);
         yield put({
@@ -91,7 +92,8 @@ export default {
       return { ...state, currentUser };
     },
     saveAuthList(state, { payload }) {
-      return { ...state, ...payload };
+      const authList = payload || [];
+      return { ...state, authList };
     },
   },
 };

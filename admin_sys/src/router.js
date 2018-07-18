@@ -13,6 +13,7 @@ const { AuthorizedRoute } = Authorized;
 dynamic.setDefaultLoadingComponent(() => {
   return <Spin size="large" className={styles.globalSpin} />;
 });
+
 function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
   const UserLayout = routerData['/userLayout'].component;

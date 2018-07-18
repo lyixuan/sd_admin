@@ -3,9 +3,8 @@
  * @type {{/: {name: string, pathname: string}, /indexPage: {name: string, pathname: string}}}
  */
 const urlPathMap = {
-  '/': {
-    name: '首页',
-    pathname: '/',
+  '/account/del': {
+    name: '账号删除',
   },
   '/indexPage': {
     name: '首页',

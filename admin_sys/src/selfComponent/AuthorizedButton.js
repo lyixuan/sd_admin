@@ -1,24 +1,17 @@
-import React from 'react'
-import {checkoutAuthRoute} from '../utils/checkoutUserAuthInfo'
+import React from 'react';
+import { checkPathname } from '../common/isCheckAuth';
 
 function checkoutAuthoried(authority) {
   if (!authority) {
     return true;
   }
   if (typeof authority === 'string') {
-    if (checkoutAuthRoute(authority)) {
+    if (checkPathname(authority)) {
       return true;
     }
     return false;
   }
-  if (Array.isArray(authority)) {
-    return authority.find((item) => {
-      if (checkoutAuthRoute(item)) {
-        return item
-      }
-    }) ? true : false
-  }
-  if(typeof authority === 'function'){
+  if (typeof authority === 'function') {
     try {
       const bool = authority();
       if (bool) {
@@ -29,29 +22,20 @@ function checkoutAuthoried(authority) {
       throw error;
     }
   }
-
 }
 
 class AuthorizedButton extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+    const { authority } = this.props;
     this.state = {
-      isShowElement: false,
-      authority: this.props.authority || null,
-    }
-  }
-
-  componentDidMount() {
-    const authority = this.state.authority;
-    let isShowElement = checkoutAuthoried(authority);
-    this.setState({isShowElement});
+      isShowElement: checkoutAuthoried(authority),
+    };
   }
 
   render() {
-    return (
-      !this.state.isShowElement ? null : {...this.props.children}
-    )
+    return !this.state.isShowElement ? null : { ...this.props.children };
   }
 }
 
-export default AuthorizedButton
+export default AuthorizedButton;

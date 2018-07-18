@@ -16,6 +16,7 @@ import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.png';
 import { getAuthority } from '../utils/authority';
+import { checkPathname } from '../common/isCheckAuth';
 
 const { Content, Header } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -99,6 +100,7 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
     };
   }
+
   componentWillMount() {
     this.getuserAuthList();
   }
@@ -202,6 +204,7 @@ class BasicLayout extends React.PureComponent {
     } = this.props;
     currentUser.avatar = logo;
     const bashRedirect = this.getBaseRedirect();
+    const menuData = getMenuData();
     const layout = (
       <Layout>
         <SiderMenu
@@ -210,7 +213,7 @@ class BasicLayout extends React.PureComponent {
           // If you do not have the Authorized parameter
           // you will be forced to jump to the 403 interface without permission
           Authorized={Authorized}
-          menuData={getMenuData()}
+          menuData={menuData}
           collapsed={collapsed}
           location={location}
           isMobile={this.state.isMobile}
@@ -236,13 +239,15 @@ class BasicLayout extends React.PureComponent {
                 <Redirect key={item.from} exact from={item.from} to={item.to} />
               ))}
               {getRoutes(match.path, routerData).map(item => {
+                const patchname = item.path;
+
                 return (
                   <AuthorizedRoute
                     key={item.key}
                     path={item.path}
                     component={item.component}
                     exact={item.exact}
-                    authority={item.authority}
+                    authority={checkPathname.bind(null, patchname)}
                     redirectPath="/exception/403"
                   />
                 );
