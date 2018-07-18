@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button } from 'antd';
+import { Form, Input, Cascader, Button,message } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 import { userTypeData } from '../utils/dataDictionary';
@@ -44,16 +44,12 @@ class UserForm extends Component {
     const userVal = this.props.jumpFunction.user
     const wechatValues = !userVal.wechatList.response?[]:!userVal.wechatList.response.data?[]:userVal.wechatList.response.data.department;
     const listOrgValues = !userVal.listOrg.response?[]:!userVal.listOrg.response.data?[]:userVal.listOrg.response.data;
-
-    const aaa = !userVal.userList.response?[]:!userVal.userList.response.data?[]:userVal.userList.response.data.content[0];
-    console.log(aaa)
     this.state = {
       wechatList: wechatValues||[],
       listOrgLiost: listOrgValues||[],
       id: !arrValue.id ? '' : arrValue.id,
-      userType:!aaa.userType?'':userTypeData[aaa.userType],
+      userType:!arrValue.userType?'':arrValue.userType,
     };
-    console.log(this.state)
   }
   componentDidMount() {
     responseComListBackup = !this.state.listOrgLiost
@@ -179,8 +175,24 @@ class UserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values)
-        this.props.handleSubmit(values);
+        const rUserType = values.userType[0];
+        const len = values.responseCom.length;
+        if(rUserType==='小组'){
+          if(len!==3){
+            message.error('负责单位请选择到对应小组')
+          }else{
+            this.props.handleSubmit(values);
+          }
+        }else if(rUserType==='家族'){
+          if(len!==2){
+            message.error('负责单位请选择到对应家族')
+          }else{
+            this.props.handleSubmit(values);
+          }
+        }
+        else{
+          this.props.handleSubmit(values);
+        }
       }
     });
   };
@@ -225,8 +237,10 @@ class UserForm extends Component {
     };
     const aaa = this.props.jumpFunction.user.userList
     const arrValue = !aaa?[]:!aaa.response?[]:!aaa.response.data?[]:!aaa.response.data.content?[]:aaa.response.data.content[0];
-    // const responseColl =arrValue.
-    // console.log(responseComList)
+    const str = arrValue.showNameIds
+    const strs=!str?[]:str.split(",");
+    const arr = !strs?[]:strs.map((el)=>{return Number(el);});
+    // console.log(arr)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -243,7 +257,7 @@ class UserForm extends Component {
                 {
                   validator(rule, value, callback) {
                     const reg = /^0?1\d{10}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
-                    if (!reg.test(value)) {
+                    if (!reg.test(value)&&value) {
                       callback({ message: '手机号是以1开头的11位数字组成' });
                     }
                     callback();
@@ -282,17 +296,8 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*负责单位">
             {getFieldDecorator('responseCom', {
-              initialValue: [!this.state.id?'':!arrValue.responseCom?'':arrValue.responseCom],
-              // initialValue: [100,101],
+              initialValue: !this.state.id?[]:arr,
               rules: [
-              //   flag === '系统管理员' || flag === '高级管理员'?{}:{
-              //   validator(rule, value, callback) {
-              //     if (typeof value[0] === 'string' || !value[0]) {
-              //       callback({ message: '请选择负责单位！' });
-              //     }
-              //     callback();
-              //   },
-              // },
                 {
                   validator(rule, value, callback) {
                     if (typeof value[0] === 'string' || !value[0]) {
