@@ -21,7 +21,7 @@ class PermissionList extends Component {
   }
 
   componentDidMount() {
-    const permissionListParams = { size: 50, number: 0, sort: 'id' };
+    const permissionListParams = { size: 30, number: 0, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -47,7 +47,7 @@ class PermissionList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const permissionListParams = { size: 50, number: current - 1, sort: 'id' };
+    const permissionListParams = { size: pageSize, number: current - 1, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -56,7 +56,7 @@ class PermissionList extends Component {
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const permissionListParams = { size: 50, number: current - 1, sort: 'id' };
+    const permissionListParams = { size: pageSize, number: current - 1, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -247,8 +247,8 @@ class PermissionList extends Component {
             }}
             defaultCurrent={1}
             total={totalNum}
-            defaultPageSize={50}
-            pageSizeOptions={['50']}
+            defaultPageSize={30}
+            pageSizeOptions={['30']}
           />
         }
       />
