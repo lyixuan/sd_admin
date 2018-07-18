@@ -26,11 +26,7 @@ class ComplainList extends Component {
   }
 
   componentDidMount() {
-    const getListParams = { size: 30, number: 0 };
-    this.props.dispatch({
-      type: 'blComplain/getList',
-      payload: { getListParams },
-    });
+    this.getData({ size: 30, number: 0 });
   }
   componentWillUnmount() {
     firstBeginTime = null;
@@ -47,19 +43,18 @@ class ComplainList extends Component {
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     const getListParams = { size: pageSize, number: current - 1 };
+    this.getData(getListParams);
+  };
+  getData = params => {
+    const getListParams = { ...this.props.blComplain.getListParams, ...params };
     this.props.dispatch({
       type: 'blComplain/getList',
       payload: { getListParams },
     });
   };
-
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const getListParams = { size: pageSize, number: current - 1 };
-    this.props.dispatch({
-      type: 'blComplain/getList',
-      payload: { getListParams },
-    });
+    this.getData({ size: pageSize, number: current - 1 });
   };
 
   // 表单搜索
@@ -70,10 +65,7 @@ class ComplainList extends Component {
         firstBottomLineNum = values.bottomLineNum;
         if (!values.dateRange) {
           const getListParams = { size: 30, number: 0, bottomLineNum: values.bottomLineNum };
-          this.props.dispatch({
-            type: 'blComplain/getList',
-            payload: { getListParams },
-          });
+          this.getData(getListParams);
         } else {
           const beginTime = firstBeginTime;
           const endTime = firstEndTime;
@@ -84,10 +76,7 @@ class ComplainList extends Component {
             endTime,
             bottomLineNum: values.bottomLineNum,
           };
-          this.props.dispatch({
-            type: 'blComplain/getList',
-            payload: { getListParams },
-          });
+          this.getData(getListParams);
         }
       }
     });

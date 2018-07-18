@@ -20,9 +20,9 @@ export default {
 
   effects: {
     *refundList({ payload }, { call, put }) {
-      const { params } = payload;
-      const listData = yield call(getBlRefundList, { ...params });
-      yield put({ type: 'save', payload: { listData } });
+      const { getListParams } = payload;
+      const listData = yield call(getBlRefundList, { ...getListParams });
+      yield put({ type: 'save', payload: { listData, getListParams } });
     },
     *checkRefund({ payload }, { call, put }) {
       const { params } = payload;

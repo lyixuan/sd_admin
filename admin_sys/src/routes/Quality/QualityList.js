@@ -33,10 +33,11 @@ class QualityList extends Component {
     this.getData({ size: pageSize, number: current - 1 });
   };
 
-  getData = qualityListParams => {
+  getData = params => {
+    const getListParams = { ...this.props.quality.getListParams, ...params };
     this.props.dispatch({
       type: 'quality/getQualityList',
-      payload: { qualityListParams },
+      payload: { getListParams },
     });
   };
   // 点击某一页函数

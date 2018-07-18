@@ -26,11 +26,7 @@ class RefundList extends Component {
   }
 
   componentDidMount() {
-    const params = { size: 30, number: 0 };
-    this.props.dispatch({
-      type: 'blRefund/refundList',
-      payload: { params },
-    });
+    this.getData({ size: 30, number: 0 });
   }
   componentWillUnmount() {
     firstBeginTime = null;
@@ -48,19 +44,19 @@ class RefundList extends Component {
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     const params = { size: pageSize, number: current - 1 };
+    this.getData(params);
+  };
+  getData = params => {
+    const getListParams = { ...this.props.blRefund.getListParams, ...params };
     this.props.dispatch({
       type: 'blRefund/refundList',
-      payload: { params },
+      payload: { getListParams },
     });
   };
-
   // 点击某一页函数
   changePage = (current, pageSize) => {
     const params = { size: pageSize, number: current - 1 };
-    this.props.dispatch({
-      type: 'blRefund/refundList',
-      payload: { params },
-    });
+    this.getData(params);
   };
 
   // 表单搜索
@@ -70,10 +66,7 @@ class RefundList extends Component {
       firstOrdId = values.ordId;
       if (!values.dateRange) {
         const params = { size: 30, number: 0, ordId: values.ordId };
-        this.props.dispatch({
-          type: 'blRefund/refundList',
-          payload: { params },
-        });
+        this.getData(params);
       } else {
         const beginTime = firstBeginTime;
         const endTime = firstEndTime;
@@ -84,10 +77,7 @@ class RefundList extends Component {
           endTime,
           ordId: values.ordId,
         };
-        this.props.dispatch({
-          type: 'blRefund/refundList',
-          payload: { params },
-        });
+        this.getData(params);
       }
     });
   };

@@ -23,7 +23,7 @@ export default {
     *getList({ payload }, { call, put }) {
       const { getListParams } = payload;
       const response = yield call(getBlComplainList, { ...getListParams });
-      yield put({ type: 'save', payload: { response } });
+      yield put({ type: 'save', payload: { response, getListParams } });
     },
     *checkComplain({ payload }, { call, put }) {
       const { params } = payload;
