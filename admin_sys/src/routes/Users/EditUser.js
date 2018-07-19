@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import { userTypeDataReset } from '../../utils/dataDictionary';
@@ -72,8 +73,8 @@ class EditUser extends Component {
   };
 
   resetContent = () => {
-    window.history.go(-1);
-    // this.props.setRouteUrlParams('/config/userList', {});
+    this.props.dispatch(
+      routerRedux.goBack())
   };
 
   render() {

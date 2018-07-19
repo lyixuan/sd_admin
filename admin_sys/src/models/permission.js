@@ -42,7 +42,7 @@ export default {
       const result = yield call(updatePermission, payload.updatePermissionParams);
       if (result.code === 0 || result.code === 2000) {
         message.success('成功编辑权限！');
-        yield put(routerRedux.push('/config/permissionList'));
+        yield put(routerRedux.goBack());
       } else {
         message.error(result.msg);
       }

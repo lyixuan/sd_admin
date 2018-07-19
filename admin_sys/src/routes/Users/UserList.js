@@ -12,6 +12,7 @@ let propsVal = '';
 let firstName = '';
 let firstPhone = '';
 let firstUpdate = 0;
+
 const residences = [
   {
     value: 0,
@@ -38,18 +39,24 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate , name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone};
+    const initVal = this.props.getUrlParams();
+    firstName = !initVal.firstName ? '' : initVal.firstName;
+    firstPhone = !initVal.firstPhone ? '' : initVal.firstPhone;
+    firstUpdate = !initVal.firstUpdate ? 0 : initVal.firstUpdate;
+    // firstName = initVal.firstName;
+    console.log(initVal)
+    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !initVal.firstUpdate ? 0 : initVal.firstUpdate  , name: !initVal.firstName ? undefined : initVal.firstName,
+      mobile: !initVal.firstPhone ? undefined : initVal.firstPhone};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
     });
   }
-  // componentWillUnmount() {
-  //   firstName = null;
-  //   firstPhone = null;
-  //   firstUpdate = null;
-  // }
+  componentWillUnmount() {
+    firstName = null;
+    firstPhone = null;
+    firstUpdate = null;
+  }
 
   // 删除用户
   onDelete = val => {
@@ -204,7 +211,13 @@ class UserList extends Component {
     firstName = '';
     firstPhone = '';
     firstUpdate = '';
+    this.props.setCurrentUrlParams({
+      firstUpdate: null,
+      firstName: null,
+      firstPhone: null,
+    })
     propsVal.form.resetFields();
+    this.props.setRouteUrlParams('/config/userList');
     const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
     this.props.dispatch({
       type: 'user/userList',
@@ -220,7 +233,14 @@ class UserList extends Component {
         firstPhone = values.mobile;
         const aa = values.isUpdate[0];
         firstUpdate = aa;
-        console.log(values.isUpdate[0]);
+
+        this.props.setCurrentUrlParams({
+          firstUpdate: values.isUpdate[0],
+          firstName: !values.name ? undefined : values.name,
+          firstPhone: !values.mobile ? undefined : values.mobile,
+          }
+        )
+
         const userListParams = {
           isUpdate: values.isUpdate[0],
           name: !values.name ? undefined : values.name,

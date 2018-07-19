@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import ContentLayout from '../../layouts/ContentLayout';
 import PermissionForm from '../../selfComponent/PermissionForm';
 import {levelDataReset} from '../../utils/dataDictionary';
+
 
 const WrappedRegistrationForm = Form.create()(PermissionForm);
 @connect(({ permission, loading }) => ({
@@ -51,7 +53,8 @@ class EditPermission extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/config/permissionList');
+    this.props.dispatch(
+      routerRedux.goBack())
   };
 
   render() {
