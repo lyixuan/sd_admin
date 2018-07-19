@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button } from 'antd';
+import { Form, Input, Cascader, Button , Row, Col} from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
@@ -121,16 +121,24 @@ class AccountForm extends Component {
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
-          <FormItem>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button onClick={this.props.resetContent} type="primary" className={common.cancleButton}>
-                取消
-              </Button>
-              <Button htmlType="submit" type="primary" className={common.submitButton}>
-                提交
-              </Button>
-            </div>
-          </FormItem>
+          <Row>
+            <Col span={6} offset={7}>
+              <FormItem>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    onClick={this.props.resetContent}
+                    type="primary"
+                    className={common.cancleButton}
+                  >
+                    取消
+                  </Button>
+                  <Button htmlType="submit" type="primary" className={common.submitButton}>
+                    提交
+                  </Button>
+                </div>
+              </FormItem>
+            </Col>
+          </Row>
         </Form>
       </div>
     );

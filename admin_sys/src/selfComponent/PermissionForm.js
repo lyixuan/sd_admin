@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button } from 'antd';
+import { Form, Input, Cascader, Button , Row, Col} from 'antd';
 import common from '../routes/Common/common.css';
 import {levelData, levelDataReset} from '../utils/dataDictionary';
 
@@ -242,18 +242,7 @@ class PermissionForm extends Component {
                         if(re.test(value) && value%10===0){
                           callback();
                         }else{callback({ message: '二级页面排序应为10的整数倍！' });}
-
                       }
-                      // const reg = value.replace(/(^\s*)|(\s*$)/g, '');
-                      // if (!reg) {
-                      //   callback({ message: '权限排序为必填项，请填写!' });
-                      // } else if (reg.length > 10) {
-                      //   callback({ message: '权限排序长度在最长为10个字符，请填写!' });
-                      // } else {
-                      //   callback();
-                      // }
-
-
                       callback();
                     },
                 },
@@ -261,20 +250,24 @@ class PermissionForm extends Component {
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
-          <FormItem>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button
-                onClick={this.props.resetContent}
-                type="primary"
-                className={common.cancleButton}
-              >
-                取消
-              </Button>
-              <Button htmlType="submit" type="primary" className={common.submitButton}>
-                提交
-              </Button>
-            </div>
-          </FormItem>
+          <Row>
+            <Col span={6} offset={7}>
+              <FormItem>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    onClick={this.props.resetContent}
+                    type="primary"
+                    className={common.cancleButton}
+                  >
+                    取消
+                  </Button>
+                  <Button htmlType="submit" type="primary" className={common.submitButton}>
+                    提交
+                  </Button>
+                </div>
+              </FormItem>
+            </Col>
+          </Row>
         </Form>
       </div>
     );
