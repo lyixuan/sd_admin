@@ -65,6 +65,7 @@ class AccountForm extends Component {
       : !this.props.jumpFunction.account.accountInfo.response
         ? []
         : this.props.jumpFunction.account.accountInfo.response.data;
+    const {submit}= this.props.jumpFunction
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -136,7 +137,7 @@ class AccountForm extends Component {
                   >
                     取消
                   </Button>
-                  <Button htmlType="submit" type="primary" className={common.submitButton}>
+                  <Button htmlType="submit" type="primary" className={common.submitButton} loading={submit}>
                     提交
                   </Button>
                 </div>

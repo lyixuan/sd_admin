@@ -7,7 +7,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 const WrappedRegistrationForm = Form.create()(AccountForm);
 @connect(({ account, loading }) => ({
   account,
-  loading,
+  submit: loading.effects['account/updateAccount'],
 }))
 class EditAccount extends Component {
   constructor(props) {
