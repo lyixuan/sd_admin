@@ -17,7 +17,7 @@ const urlPathMap = {
     name: '编辑扣分倍数',
   },
   '/timeManage/unAddDate': {
-    name: '不可选日期',
+    name: '不可用日期',
   },
   '/timeManage/deleteDate': {
     name: '删除不可用日期',
