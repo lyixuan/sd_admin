@@ -43,8 +43,6 @@ class UserList extends Component {
     firstName = !initVal.firstName ? '' : initVal.firstName;
     firstPhone = !initVal.firstPhone ? '' : initVal.firstPhone;
     firstUpdate = !initVal.firstUpdate ? 0 : initVal.firstUpdate;
-    // firstName = initVal.firstName;
-    console.log(initVal)
     const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !initVal.firstUpdate ? 0 : initVal.firstUpdate  , name: !initVal.firstName ? undefined : initVal.firstName,
       mobile: !initVal.firstPhone ? undefined : initVal.firstPhone};
     this.props.dispatch({
