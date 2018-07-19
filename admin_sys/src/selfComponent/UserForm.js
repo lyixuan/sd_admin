@@ -260,7 +260,7 @@ class UserForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                    const reg = !value?'':value.replace(/(^\s*)|(\s*$)/g, '');
                     if (!reg) {
                       callback({ message: '姓名为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
