@@ -238,11 +238,11 @@ class PermissionForm extends Component {
                 // { max: 10, message: '权限排序长度在最长为10个字符!'},
                 {
                   validator(rule, value, callback) {
+
                     const re = /^[0-9]*[0-9]$/i; // 校验是否为数字
-                    const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
-                    if (!reg) {
+                    if (!value) {
                       callback({ message: '权限排序为必填项，请填写!' });
-                    } else if (reg.length > 10) {
+                    } else if (value.length > 10) {
                       callback({ message: '权限排序长度在最长为10个字符，请填写!' });
                     }
                     if (flag === '一级页面') {
