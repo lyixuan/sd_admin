@@ -226,7 +226,6 @@ class BasicLayout extends React.PureComponent {
               ))}
               {getRoutes(match.path, routerData).map(item => {
                 const patchname = item.path;
-
                 return (
                   <AuthorizedRoute
                     key={item.key}

@@ -64,15 +64,6 @@ export default class SiderMenu extends PureComponent {
         openKeys: this.getDefaultCollapsedSubMenus(nextProps),
       });
     }
-    if (JSON.stringify(nextProps.menuData) !== JSON.stringify(this.props.menuData)) {
-      const menus = nextProps.menuData;
-      this.setState({ menus }, () => {
-        console.log(menus);
-        setTimeout(() => {
-          console.log(this.getNavMenuItems(menus));
-        }, 1000);
-      });
-    }
   }
 
   /**
@@ -205,12 +196,15 @@ export default class SiderMenu extends PureComponent {
   render() {
     const { logo, collapsed, onCollapse } = this.props;
     const { openKeys } = this.state;
+    /*
+     *  待优化
+    * */
     // Don't show popup menu when it is been collapsed
-    const menuProps = collapsed
-      ? {}
-      : {
-          openKeys,
-        };
+    // const menuProps = collapsed
+    //   ? {}
+    //   : {
+    //       openKeys,
+    //     };
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys();
     if (!selectedKeys.length) {
@@ -236,7 +230,7 @@ export default class SiderMenu extends PureComponent {
           key="Menu"
           theme="dark"
           mode="inline"
-          {...menuProps}
+          // {/*{...menuProps}*/}
           onOpenChange={this.handleOpenChange}
           selectedKeys={selectedKeys}
           style={{ padding: '16px 0', width: '100%' }}
