@@ -76,7 +76,7 @@ class RefundDel extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/refund/refundList',
+      pathname: '/bottomLine/refundList',
     });
   }
   // 初始化tabale 列数据

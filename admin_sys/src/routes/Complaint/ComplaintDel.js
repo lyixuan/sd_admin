@@ -75,7 +75,7 @@ class ComplaintDel extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/complaint/complaintList',
+      pathname: '/bottomLine/complaintList',
     });
   }
   // 初始化tabale 列数据
