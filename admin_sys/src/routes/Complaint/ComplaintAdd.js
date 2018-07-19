@@ -78,7 +78,7 @@ class ComplaintAdd extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/complaint/complaintList',
+      pathname: '/bottomLine/complaintList',
     });
   }
   columnsData = () => {

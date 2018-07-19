@@ -80,7 +80,7 @@ class RefundAdd extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/refund/refundList',
+      pathname: '/bottomLine/refundList',
     });
   }
 
