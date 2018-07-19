@@ -136,18 +136,12 @@ class QualityList extends Component {
 
   // 删除质检
   qualityDel = () => {
-    this.props.setRouteUrlParams('/quality/qualityDel', {
-      a: 2,
-      b: 3,
-    });
+    this.props.setRouteUrlParams('/quality/qualityDel');
   };
 
   // 添加质检
   qualityAdd = () => {
-    this.props.setRouteUrlParams('/quality/qualityAdd', {
-      a: 2,
-      b: 3,
-    });
+    this.props.setRouteUrlParams('/quality/qualityAdd');
   };
 
   render() {

@@ -159,7 +159,6 @@ class RefundList extends Component {
   refundAdd = () => {
     this.props.history.push({
       pathname: '/refund/refundAdd',
-      search: JSON.stringify({ type: 'add' }),
     });
   };
 
@@ -167,7 +166,6 @@ class RefundList extends Component {
   refundDel = () => {
     this.props.history.push({
       pathname: '/refund/refundDel',
-      search: JSON.stringify({ type: 'del' }),
     });
   };
 

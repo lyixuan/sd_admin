@@ -160,7 +160,6 @@ class ComplainList extends Component {
   refundAdd = () => {
     this.props.history.push({
       pathname: '/complaint/complaintAdd',
-      search: JSON.stringify({ type: 'add' }),
     });
   };
 
@@ -168,7 +167,6 @@ class ComplainList extends Component {
   refundDel = () => {
     this.props.history.push({
       pathname: '/complaint/complaintDel',
-      search: JSON.stringify({ type: 'del' }),
     });
   };
 
