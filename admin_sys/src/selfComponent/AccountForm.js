@@ -8,9 +8,7 @@ class AccountForm extends Component {
   constructor(props) {
     super(props);
     const fromWhere = this.props.jumpFunction.getUrlParams();
-    const roleValues = this.props.jumpFunction.account.getRoleList;
     this.state = {
-      roleList: !roleValues ? [] : !roleValues.data ? [] : roleValues.data,
       id: !fromWhere.id ? '' : fromWhere.id,
     };
   }
@@ -59,7 +57,9 @@ class AccountForm extends Component {
       },
     };
     const disabled = true;
-    const residences = !this.state.roleList ? [] : this.roleListFun(this.state.roleList);
+    const roleValues = this.props.jumpFunction.account.getRoleList;
+    const roleList = !roleValues ? [] : !roleValues.data ? [] : roleValues.data
+    const residences = !roleList ? [] : this.roleListFun(roleList);
     const arrValue = !this.props.jumpFunction.account.accountInfo
       ? []
       : !this.props.jumpFunction.account.accountInfo.response
