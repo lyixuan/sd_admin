@@ -97,7 +97,7 @@ class College extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/account/editAccount">
+              <AuthorizedButton authority="/college/editeCollegeShortName">
                 <span
                   style={{ color: '#52C9C2', cursor: 'pointer' }}
                   onClick={() => this.onEdit(record)}
