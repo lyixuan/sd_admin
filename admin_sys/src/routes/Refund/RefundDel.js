@@ -85,7 +85,6 @@ class RefundDel extends Component {
     val.map((item, index) =>
       data.push({
         key: index + 1,
-        orderId: item.orderId,
         ordId: item.ordId,
         complainTime: item.complainTime,
         stuName: `${item.stuName}/${item.stuId}`,
@@ -104,18 +103,18 @@ class RefundDel extends Component {
       },
       {
         title: '子订单编号',
-        dataIndex: 'orderId',
+        dataIndex: 'ordId',
         width: '100px',
       },
       {
         title: '投诉时间',
         dataIndex: 'complainTime',
-        width: '100px',
+        width: '200px',
       },
       {
         title: '学生名称/id',
         dataIndex: 'stuName',
-        width: '100px',
+        width: '154px',
       },
       {
         title: '老师名称',
