@@ -36,11 +36,12 @@ export default {
       const response = yield call(userList, { size: 30, number: 0 });
       yield put({ type: 'userListSave', payload: { response } });
     },
-    *updateUserInfo({ payload }, { call, put }) {
+    *updateUserInfo({ payload }, { call }) {
       const result = yield call(updateUserInfo, payload.updateUserInfoParams);
       if (result.code === 2000) {
         message.success('用户编辑成功！');
-        yield put(routerRedux.push('/config/userList'));
+        window.history.go(-1);
+        // yield put(routerRedux.push('/config/userList'));
       } else {
         message.error(result.msg);
       }

@@ -151,7 +151,7 @@
 * stepTable
 */
 .tableWrap{
-  width: 804px;
+  width: 100%;
   margin: 0 auto;
 }
 .tableTitle{
@@ -172,7 +172,6 @@
   overflow-y: scroll;
 }
 .tableList{
-  width: 768px;
   margin-bottom: 40px;
 }
 

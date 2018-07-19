@@ -64,7 +64,6 @@ class UserList extends Component {
 
   // 删除用户
   onDelete = val => {
-    console.log(val.id);
     const userDeleteParams = { id: val.id };
     const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
     this.props.dispatch({
@@ -75,7 +74,6 @@ class UserList extends Component {
 
   // 更新用户
   onUpdate = val => {
-    console.log(val.id);
     const updateUserOrgParams = { id: val.id };
     const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
     this.props.dispatch({
@@ -93,9 +91,9 @@ class UserList extends Component {
   };
 
   // 点击显示每页多少条数据函数
-  onShowSizeChange = (current, Size) => {
+  onShowSizeChange = (current, size) => {
     const userListParams = {
-      pageSize: Size,
+      pageSize: size,
       pageNum: current - 1,
       isUpdate: !firstUpdate ? 0 : firstUpdate,
     };
@@ -106,9 +104,9 @@ class UserList extends Component {
   };
 
   // 点击某一页函数
-  changePage = (current, Size) => {
+  changePage = (current, size) => {
     const userListParams = {
-      pageSize: Size,
+      pageSize: size,
       pageNum: current - 1,
       isUpdate: !firstUpdate ? 0 : firstUpdate,
     };
@@ -129,8 +127,8 @@ class UserList extends Component {
         mobile: item.mobile,
         mail: item.entUserId,
         userType: userTypeData[item.userType],
-        showName: !item.showName?null:item.showName.replace(/,/g," | "), // showName.replace(/\,/g,"|")
-        changeShowName: !item.changeShowName?null:item.changeShowName.replace(/,/g," | "),
+        showName: !item.showName ? null : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
+        changeShowName: !item.changeShowName ? null : item.changeShowName.replace(/,/g, ' | '),
         id: item.id,
         wechatDepartmentId: item.wechatDepartmentId,
         wechatDepartmentName: item.wechatDepartmentName,
@@ -183,14 +181,17 @@ class UserList extends Component {
               record.changeShowName !== '' &&
               record.changeShowName !== record.showName ? (
                 <AuthorizedButton authority="/user/checkUser">
-                  <span style={{ color: '#52C9C2' }} onClick={() => this.onUpdate(record)}>
+                  <span
+                    style={{ color: '#52C9C2', cursor: 'pointer' }}
+                    onClick={() => this.onUpdate(record)}
+                  >
                     更新 |
                   </span>
                 </AuthorizedButton>
               ) : null}
               <AuthorizedButton authority="/user/editUser">
                 <span
-                  style={{ color: '#52C9C2', marginLeft: 4 }}
+                  style={{ color: '#52C9C2', marginLeft: 4, cursor: 'pointer' }}
                   onClick={() => this.onEdit(record)}
                 >
                   编辑
@@ -198,7 +199,7 @@ class UserList extends Component {
               </AuthorizedButton>
               <AuthorizedButton authority="/user/deleteUser">
                 <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', marginLeft: 4 }}>| 删除</span>
+                  <span style={{ color: '#52C9C2', marginLeft: 4, cursor: 'pointer' }}>| 删除</span>
                 </Popconfirm>
               </AuthorizedButton>
             </div>
@@ -274,7 +275,7 @@ class UserList extends Component {
                   // { max: 50, message: '您输入姓名不合法!', whitespace: true },
                   {
                     validator(rule, value, callback) {
-                      const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                      const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
                       if (reg.length > 50) {
                         callback({ message: '姓名最长为50个字符!' });
                       } else {

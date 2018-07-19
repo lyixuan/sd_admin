@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button } from 'antd';
+import { Form, Input, Cascader, Button, Row, Col } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
@@ -8,7 +8,7 @@ class AccountForm extends Component {
   constructor(props) {
     super(props);
     const fromWhere = this.props.jumpFunction.getUrlParams();
-    const roleValues = this.props.jumpFunction.account.getRoleList
+    const roleValues = this.props.jumpFunction.account.getRoleList;
     this.state = {
       roleList: !roleValues ? [] : !roleValues.data ? [] : roleValues.data,
       id: !fromWhere.id ? '' : fromWhere.id,
@@ -18,7 +18,7 @@ class AccountForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.handleSubmit(values)
+        this.props.handleSubmit(values);
       }
     });
   };
@@ -28,7 +28,7 @@ class AccountForm extends Component {
       residences.push({
         value: item.name,
         label: item.name,
-        key:index,
+        key: index,
       })
     );
     return residences;
@@ -60,20 +60,24 @@ class AccountForm extends Component {
     };
     const disabled = true;
     const residences = !this.state.roleList ? [] : this.roleListFun(this.state.roleList);
-    const arrValue = !this.props.jumpFunction.account.accountInfo?[]:!this.props.jumpFunction.account.accountInfo.response?[]:this.props.jumpFunction.account.accountInfo.response.data;
+    const arrValue = !this.props.jumpFunction.account.accountInfo
+      ? []
+      : !this.props.jumpFunction.account.accountInfo.response
+        ? []
+        : this.props.jumpFunction.account.accountInfo.response.data;
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓名">
             {getFieldDecorator('name', {
-              initialValue: !this.state.id?'':!arrValue.name?'':arrValue.name,
+              initialValue: !this.state.id ? '' : !arrValue.name ? '' : arrValue.name,
               rules: [
                 // // {validator:nameReg=()=>{},message:'您输入姓名不正确!'},自定义校验规则
                 // { required: true, message: '姓名为必填项，请填写!', whitespace: true },
                 // { min: 2,max: 20, message: '姓名长度在2-20字符之间!' },
                 {
                   validator(rule, value, callback) {
-                    const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                    const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
                     if (!reg) {
                       callback({ message: '姓名为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
@@ -88,7 +92,7 @@ class AccountForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*邮箱">
             {getFieldDecorator('mail', {
-              initialValue: !this.state.id?'':!arrValue.mail?'':formatEmail(arrValue.mail),
+              initialValue: !this.state.id ? '' : !arrValue.mail ? '' : formatEmail(arrValue.mail),
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -100,14 +104,14 @@ class AccountForm extends Component {
                   },
                 },
                 { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
-                { min: 3,max: 50,required: true, message: '邮箱账号长度需要在3-50字符之间!' },
+                { min: 3, max: 50, required: true, message: '邮箱账号长度需要在3-50字符之间!' },
               ],
             })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">
             {getFieldDecorator('rname', {
-              initialValue: [!this.state.id?null:!arrValue.rname?null:arrValue.rname],
+              initialValue: [!this.state.id ? null : !arrValue.rname ? null : arrValue.rname],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -121,16 +125,24 @@ class AccountForm extends Component {
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
-          <FormItem>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button onClick={this.props.resetContent} type="primary" className={common.cancleButton}>
-                取消
-              </Button>
-              <Button htmlType="submit" type="primary" className={common.submitButton}>
-                提交
-              </Button>
-            </div>
-          </FormItem>
+          <Row>
+            <Col span={6} offset={7}>
+              <FormItem>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    onClick={this.props.resetContent}
+                    type="primary"
+                    className={common.cancleButton}
+                  >
+                    取消
+                  </Button>
+                  <Button htmlType="submit" type="primary" className={common.submitButton}>
+                    提交
+                  </Button>
+                </div>
+              </FormItem>
+            </Col>
+          </Row>
         </Form>
       </div>
     );

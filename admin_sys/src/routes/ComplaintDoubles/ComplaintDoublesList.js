@@ -92,7 +92,10 @@ class ComplaintDoublesList extends Component {
           return (
             <div>
               <AuthorizedButton authority="/complaintDoubles/editecomplaintDoubles">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record)}>
+                <span
+                  style={{ color: '#52C9C2', cursor: 'pointer' }}
+                  onClick={() => this.onEdit(record)}
+                >
                   编辑
                 </span>
               </AuthorizedButton>

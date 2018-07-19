@@ -55,7 +55,6 @@ class EditUser extends Component {
       }
       return 0;
     });
-    console.log(rUserType, typeId);
     const updateUserInfoParams = {
       name: values.name,
       mail: values.email,
@@ -73,7 +72,8 @@ class EditUser extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/config/userList', {});
+    window.history.go(-1);
+    // this.props.setRouteUrlParams('/config/userList', {});
   };
 
   render() {
