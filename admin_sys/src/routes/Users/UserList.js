@@ -29,7 +29,7 @@ const residences = [
 
 @connect(({ user, loading }) => ({
   user,
-  loading: loading.effects['user/userList'],//loading.models.user,
+  loading: loading.effects['user/userList'],
 }))
 class UserList extends Component {
   constructor(props) {
@@ -166,7 +166,7 @@ class UserList extends Component {
           return (
             <div>
               {record.changeShowName &&
-              record.changeShowName !== '' &&
+              record.changeShowName !== '' &&record.userType!=="admib" &&record.userType!=="boss"&&
               record.changeShowName !== record.showName ? (
                 <AuthorizedButton authority="/user/checkUser">
                   <span
