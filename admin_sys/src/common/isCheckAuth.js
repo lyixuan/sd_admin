@@ -17,11 +17,11 @@ export function addRouteData(routerData = {}) {
   return returnRouteData;
 }
 
-export function checkPathname(path) {
+export function checkPathname(path = '') {
   const data1 = getAuthority('admin_auth') || [];
   const pathRegexp = pathToRegexp(path);
   const menuKey = data1.find(key => pathRegexp.test(`${key.resourceUrl}`));
   if (menuKey) {
     return menuKey.checked;
-  } else return true;
+  } else return false;
 }
