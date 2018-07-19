@@ -272,7 +272,7 @@ class UserList extends Component {
                   // { max: 50, message: '您输入姓名不合法!', whitespace: true },
                   {
                     validator(rule, value, callback) {
-                      const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                      const reg = !value?'':value.replace(/(^\s*)|(\s*$)/g, '');
                       if (reg.length > 50) {
                         callback({ message: '姓名最长为50个字符!' });
                       } else {

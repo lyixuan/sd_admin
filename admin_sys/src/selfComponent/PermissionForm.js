@@ -136,7 +136,7 @@ class PermissionForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                    const reg = !value?'':value.replace(/(^\s*)|(\s*$)/g, '');
                     if (!reg) {
                       callback({ message: '权限名称为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
@@ -226,7 +226,7 @@ class PermissionForm extends Component {
                 {
                     validator(rule, value, callback) {
                       const re = /^[0-9]*[0-9]$/i; // 校验是否为数字
-                      const reg = value.replace(/(^\s*)|(\s*$)/g, '');
+                      const reg = !value?'':value.replace(/(^\s*)|(\s*$)/g, '');
                       if (!reg) {
                         callback({ message: '权限排序为必填项，请填写!' });
                       } else if (reg.length > 10) {
