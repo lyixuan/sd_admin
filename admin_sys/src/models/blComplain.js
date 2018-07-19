@@ -86,9 +86,9 @@ export default {
       const delData = yield call(delBlComplainList, { ...params });
       if (delData.code !== 2000) {
         message.error(delData.msg);
-        yield put({ type: 'savePreData', payload: { current: 1, isLoading: false } });
+        yield put({ type: 'savePreData', payload: { current: 2, isLoading: false } });
       } else {
-        yield put({ type: 'savePreData', payload: { delData, current: 2, isLoading: false } });
+        yield put({ type: 'savePreData', payload: { delData, current: 3, isLoading: false } });
       }
     },
     *getNums({ payload }, { put }) {

@@ -145,7 +145,7 @@ class ComplaintDel extends Component {
     const successArr = [];
     if (dataSource.length > 0) {
       data.successNums.forEach(item => {
-        successArr.push(item.ordId);
+        successArr.push(item.bottomLineNum);
       });
     }
 
