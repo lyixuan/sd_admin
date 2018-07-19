@@ -99,27 +99,27 @@ class ComplaintDel extends Component {
       {
         title: '序号',
         dataIndex: 'key',
-        width: '100px',
+        width: '70px',
       },
       {
         title: '投诉时间',
         dataIndex: 'complainTime',
-        width: '100px',
+        width: '150px',
       },
       {
         title: '学生名称/id',
         dataIndex: 'stuName',
-        width: '100px',
+        width: '130px',
       },
       {
         title: '老师名称',
         dataIndex: 'cpName',
-        width: '150px',
+        width: '90px',
       },
       {
         title: '学院/家族/小组',
         dataIndex: 'name',
-        width: '100px',
+        width: '260px',
       },
       {
         title: '编号',
@@ -129,7 +129,7 @@ class ComplaintDel extends Component {
       {
         title: '扣分值',
         dataIndex: 'countValue',
-        width: '100px',
+        width: '80px',
       },
     ];
     return columns;

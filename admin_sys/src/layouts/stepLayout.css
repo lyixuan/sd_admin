@@ -64,3 +64,6 @@
   color: #fff!important;
   margin-left: -5px!important;
 }
+:global(.ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon){
+  margin-left: -34px!important;
+}
