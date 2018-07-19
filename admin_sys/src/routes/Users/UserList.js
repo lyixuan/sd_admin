@@ -43,18 +43,6 @@ class UserList extends Component {
       type: 'user/userList',
       payload: { userListParams },
     });
-
-    const wechatListParams = {};
-    this.props.dispatch({
-      type: 'user/wechatList',
-      payload: { wechatListParams },
-    });
-
-    const listOrgParams = {};
-    this.props.dispatch({
-      type: 'user/listOrg',
-      payload: { listOrgParams },
-    });
   }
   componentWillUnmount() {
     firstName = null;

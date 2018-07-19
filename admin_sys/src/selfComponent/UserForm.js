@@ -42,25 +42,21 @@ class UserForm extends Component {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
     const userVal = this.props.jumpFunction.user;
-    const wechatValues = !userVal.wechatList.response
-      ? []
-      : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
     const listOrgValues = !userVal.listOrg.response
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
-      wechatList: wechatValues || [],
       listOrgLiost: listOrgValues || [],
       id: !arrValue.id ? '' : arrValue.id,
       userType: !arrValue.userType ? '' : arrValue.userType,
     };
   }
   componentDidMount() {
+    flag = this.state.userType;
     responseComListBackup = !this.state.listOrgLiost
       ? []
       : this.fullListFun(this.state.listOrgLiost);
     responseComList = this.responseComListFun();
-    flag = this.state.userType;
   }
 
   fullListFun = val => {
@@ -100,10 +96,14 @@ class UserForm extends Component {
 
   responseComListFun = () => {
     const responseValue = [];
-    const newResponseComList = this.state.listOrgLiost;
+    const userVal = this.props.jumpFunction.user;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    const newResponseComList = listOrgValues;
     const levelValue = !this.state.userType ? '小组' : this.state.userType;
     flag = levelValue;
-    if (levelValue === '家族') {
+    if (flag === '家族') {
       newResponseComList.map(item => {
         const firstChldren = [];
         const chldren1 = item.sub;
@@ -124,7 +124,7 @@ class UserForm extends Component {
         return 0;
       });
     }
-    if (levelValue === '学院') {
+    if (flag === '学院') {
       newResponseComList.map(item => {
         responseValue.push({
           value: item.id,
@@ -134,14 +134,18 @@ class UserForm extends Component {
         return 0;
       });
     }
-    return responseValue.length === 0 ? responseComListBackup : responseValue;
+    return responseValue.length===0?responseComListBackup:responseValue;
   };
 
   handleSelectChange = value => {
     const aa = value[0];
     flag = aa;
     const responseValue = [];
-    const newResponseComList = this.state.listOrgLiost;
+    const userVal = this.props.jumpFunction.user;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    const newResponseComList = listOrgValues;
     if (value[0] === '家族') {
       newResponseComList.map(item => {
         const firstChldren = [];
@@ -172,7 +176,7 @@ class UserForm extends Component {
         return 0;
       });
     }
-    responseComList = responseValue.length === 0 ? responseComListBackup : responseValue;
+    responseComList = responseValue.length===0?responseComListBackup:responseValue;
   };
 
   handleSubmit = e => {
@@ -214,7 +218,15 @@ class UserForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const residences = !this.state.wechatList ? [] : this.roleListFun(this.state.wechatList);
+    const userVal = this.props.jumpFunction.user;
+    const wechatValues = !userVal.wechatList.response
+      ? []
+      : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
+    const residences = !wechatValues ? [] : this.roleListFun(wechatValues);
+    // console.log(residences)
+    const listOrgValues = !userVal.listOrg.response ? [] : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
+    responseComList = !responseComList||responseComList.length===0?this.responseComListFun():responseComList;
     const disabled = true;
     const formItemLayout = {
       labelCol: {

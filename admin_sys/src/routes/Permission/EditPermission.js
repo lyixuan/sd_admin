@@ -16,6 +16,7 @@ class EditPermission extends Component {
     const arrValue = this.props.getUrlParams();
     this.state = {
       id: !arrValue.id ? '' : arrValue.id,
+      // parentIdList:[],
     };
   }
   componentDidMount() {
@@ -54,6 +55,7 @@ class EditPermission extends Component {
   };
 
   render() {
+    // const parentIdList=!this.state.parentIdList?[]:this.reloadNum()
     return (
       <ContentLayout  contentForm={
         <WrappedRegistrationForm

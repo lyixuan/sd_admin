@@ -87,7 +87,6 @@ class PermissionForm extends Component {
 
   handleSelectChange = value => {
     const level = !value[0]?flag:value[0];
-    console.log(level)
     flag = level;
     const listValue = parentListBackup;
     const rObj = [];
@@ -138,11 +137,7 @@ class PermissionForm extends Component {
       ? []
       : this.props.jumpFunction.permission.permissionListAllName.data;
     parentListBackup = !parentIdValues ? [] : this.fullListFun(parentIdValues);
-    console.log('变化前',parentList)
-
-    parentList = !parentList ||parentList.length===0?this.roleListFun():parentList;
-    console.log('变化后',parentList)
-
+    parentList = !parentList ||parentList.length===0?parentListBackup:parentList;
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
