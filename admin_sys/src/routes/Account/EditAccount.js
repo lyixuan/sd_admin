@@ -54,7 +54,8 @@ class EditAccount extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/config/accountList', {});
+    window.history.go(-1);
+    // this.props.setRouteUrlParams('/config/accountList', {});
   };
 
   render() {
