@@ -176,12 +176,11 @@ class RefundList extends Component {
     const totalNum = !data ? null : !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data ? null : !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
       return (
-        <Form onSubmit={this.handleSearch} layout={formLayout}>
+        <Form layout="inline" onSubmit={this.handleSearch}>
           <FormItem label="投诉时间">
             {getFieldDecorator('dateRange', {
               // rules: [{ required: true, message: '请选择生效日期' }],
@@ -196,7 +195,7 @@ class RefundList extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="子订单编号" style={{ marginLeft: 119 }}>
+          <FormItem label="子订单编号" style={{ marginLeft: 60 }}>
             {getFieldDecorator('ordId', {
               initialValue: firstOrdId,
               rules: [
@@ -212,7 +211,7 @@ class RefundList extends Component {
               />
             )}
           </FormItem>
-          <FormItem style={{ marginLeft: 119 }}>
+          <FormItem style={{ marginLeft: 60 }}>
             <Button type="primary" htmlType="submit" className={common.searchButton}>
               搜索
             </Button>

@@ -97,7 +97,7 @@ export default {
     },
     *editLoading({ payload }, { put }) {
       const { isLoading } = payload;
-      yield put({ type: 'save', payload: { isLoading } });
+      yield put({ type: 'savePreData', payload: { isLoading } });
     },
     *initParams({ payload }, { put }) {
       const { disableDel, nums } = payload;
