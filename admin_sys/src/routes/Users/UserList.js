@@ -29,7 +29,7 @@ const residences = [
 
 @connect(({ user, loading }) => ({
   user,
-  loading: loading.models.user,
+  loading: loading.effects['user/userList'],//loading.models.user,
 }))
 class UserList extends Component {
   constructor(props) {

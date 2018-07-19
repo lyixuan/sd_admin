@@ -12,7 +12,7 @@ let propsVal = '';
 let firstName = '';
 @connect(({ permission, loading }) => ({
   permission,
-  loading: loading.models.permission,
+  loading: loading.effects['permission/permissionList'],
 }))
 class PermissionList extends Component {
   constructor(props) {

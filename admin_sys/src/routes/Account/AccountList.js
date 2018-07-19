@@ -8,7 +8,7 @@ import common from '../Common/common.css';
 
 @connect(({ account, loading }) => ({
   account,
-  loading: loading.models.account,
+  loading: loading.effects['account/accountList'],
 }))
 class AccountList extends Component {
   constructor(props) {
