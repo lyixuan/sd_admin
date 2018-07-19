@@ -26,12 +26,6 @@ class PermissionList extends Component {
       type: 'permission/permissionList',
       payload: { permissionListParams },
     });
-
-    const permissionListAllNameParams = {};
-    this.props.dispatch({
-      type: 'permission/permissionListAllName',
-      payload: { permissionListAllNameParams },
-    });
   }
   componentWillUnmount() {
     firstName = null;

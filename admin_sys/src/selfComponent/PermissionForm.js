@@ -86,12 +86,13 @@ class PermissionForm extends Component {
   };
 
   handleSelectChange = value => {
-    const level = value[0];
+    const level = !value[0]?flag:value[0];
+    console.log(level)
     flag = level;
     const listValue = parentListBackup;
     const rObj = [];
     listValue.map(obj => {
-      if (obj.level < levelDataReset[level]) {
+      if (obj.level < levelDataReset[flag]) {
         rObj.push({
           value: obj.value,
           label: obj.label,
@@ -133,6 +134,15 @@ class PermissionForm extends Component {
         ? []
         : this.props.jumpFunction.permission.permissionById.response.data;
     const disabled = true;
+    const parentIdValues = !this.props.jumpFunction.permission.permissionListAllName
+      ? []
+      : this.props.jumpFunction.permission.permissionListAllName.data;
+    parentListBackup = !parentIdValues ? [] : this.fullListFun(parentIdValues);
+    console.log('变化前',parentList)
+
+    parentList = !parentList ||parentList.length===0?this.roleListFun():parentList;
+    console.log('变化后',parentList)
+
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -234,11 +244,8 @@ class PermissionForm extends Component {
               initialValue: !this.state.id ? '' : !arrValue.sort ? '0' : arrValue.sort,
 
               rules: [
-                // { required: true, message: '权限排序为必填项，请填写!'},
-                // { max: 10, message: '权限排序长度在最长为10个字符!'},
                 {
                   validator(rule, value, callback) {
-
                     const re = /^[0-9]*[0-9]$/i; // 校验是否为数字
                     if (!value) {
                       callback({ message: '权限排序为必填项，请填写!' });
