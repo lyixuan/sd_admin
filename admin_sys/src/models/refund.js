@@ -25,10 +25,19 @@ export default {
       yield put({ type: 'save', payload: { listData, getListParams } });
     },
     *checkRefund({ payload }, { call, put }) {
+      const logMsg = [];
       const { params } = payload;
       const checkList = yield call(checkRefundList, { ...params });
+
       if (checkList.code !== 2000) {
-        message.error(checkList.msg);
+        if (checkList.data.excelError) {
+          checkList.data.excelError.forEach(item => {
+            logMsg.push(item.log);
+          });
+          message.error(logMsg.join(','));
+        } else {
+          message.error(checkList.msg);
+        }
         yield put({ type: 'save', payload: { current: 0, isLoading: false } });
       } else if (checkList.data.errorList.length > 0) {
         yield put({
