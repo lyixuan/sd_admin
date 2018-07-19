@@ -64,7 +64,7 @@ class StepLayout extends Component {
   render() {
     const { title, steps, baseLayout, isDisabled, disableDel, current, isLoading } = this.props;
     const dis = disableDel === null ? isDisabled : disableDel;
-    console.log(steps);
+
     const stepBlock = (
       <div>
         {steps ? (
