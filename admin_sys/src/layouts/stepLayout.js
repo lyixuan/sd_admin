@@ -64,7 +64,7 @@ class StepLayout extends Component {
   render() {
     const { title, steps, baseLayout, isDisabled, disableDel, current, isLoading } = this.props;
     const dis = disableDel === null ? isDisabled : disableDel;
-
+    console.log(steps);
     const stepBlock = (
       <div>
         {steps ? (
@@ -72,7 +72,7 @@ class StepLayout extends Component {
             <Steps current={current} progressDot>
               {steps.map(item => <Step key={item.title} title={item.title} />)}
             </Steps>
-            <div>{steps[current].content}</div>
+            <div>{steps[current] ? steps[current].content : null}</div>
             <div className={styles.stepsAction}>
               {current === 0 && (
                 <Button onClick={() => this.cancel()} className={common.cancleButton}>
