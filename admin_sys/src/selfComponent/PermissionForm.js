@@ -105,6 +105,7 @@ class PermissionForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const {submit}= this.props.jumpFunction
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -278,7 +279,7 @@ class PermissionForm extends Component {
                   >
                     取消
                   </Button>
-                  <Button htmlType="submit" type="primary" className={common.submitButton}>
+                  <Button htmlType="submit" type="primary" className={common.submitButton} loading={submit} >
                     提交
                   </Button>
                 </div>

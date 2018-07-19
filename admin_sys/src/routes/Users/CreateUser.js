@@ -8,7 +8,7 @@ import { userTypeDataReset } from '../../utils/dataDictionary';
 const WrappedRegistrationForm = Form.create()(UserForm);
 @connect(({ user, loading }) => ({
   user,
-  loading,
+  submit: loading.effects['user/userAdd'],
 }))
 class CreateUser extends Component {
   constructor(props) {

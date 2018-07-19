@@ -9,7 +9,7 @@ const WrappedRegistrationForm = Form.create()(UserForm);
 
 @connect(({ user, loading }) => ({
   user,
-  loading,
+  submit: loading.effects['user/updateUserInfo'],
 }))
 class EditUser extends Component {
   constructor(props) {

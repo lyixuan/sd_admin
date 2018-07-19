@@ -219,6 +219,7 @@ class UserForm extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const userVal = this.props.jumpFunction.user;
+    const {submit}= this.props.jumpFunction
     const wechatValues = !userVal.wechatList.response
       ? []
       : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
@@ -387,7 +388,7 @@ class UserForm extends Component {
                   >
                     取消
                   </Button>
-                  <Button htmlType="submit" type="primary" className={common.submitButton}>
+                  <Button htmlType="submit" type="primary" className={common.submitButton} loading={submit}>
                     提交
                   </Button>
                 </div>
