@@ -1,18 +1,20 @@
 import pathToRegexp from 'path-to-regexp';
 import { getAuthority } from '../utils/authority';
 
-export function checkAuth(authList, routeData) {
-  const newRouterData = {};
-  authList.forEach(item => {
-    let router = routeData[item.resourceUrl];
-    router = {
-      ...router,
-      name: item.name,
-      authority: item.checked,
+export function addRouteData(routerData = {}) {
+  const menuData = getAuthority('admin_auth') || [];
+  const returnRouteData = {};
+  Object.keys(routerData).forEach(key => {
+    let route = routerData[key];
+    const pathRegexp = pathToRegexp(key);
+    const pathObj = menuData.find(item => pathRegexp.test(`${item.resourceUrl}`)) || {};
+    route = {
+      ...route,
+      name: pathObj.name || route.name || '',
     };
-    newRouterData[item.resourceUrl] = router;
+    returnRouteData[key] = route;
   });
-  return Object.assign({}, routeData, newRouterData);
+  return returnRouteData;
 }
 
 export function checkPathname(path) {

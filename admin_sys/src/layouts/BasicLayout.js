@@ -16,7 +16,7 @@ import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.png';
 import { getAuthority } from '../utils/authority';
-import { checkPathname } from '../common/isCheckAuth';
+import { checkPathname, addRouteData } from '../common/isCheckAuth';
 
 const { Content, Header } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -184,12 +184,13 @@ class BasicLayout extends React.PureComponent {
   };
 
   render() {
-    const { collapsed, fetchingNotices, notices, routerData, match, location } = this.props;
-
+    const { collapsed, fetchingNotices, notices, match, location } = this.props;
+    let { routerData } = this.props;
+    const menuData = getMenuData();
     const currentUser = this.handleUserInfo();
     currentUser.avatar = logo;
     const bashRedirect = this.getBaseRedirect();
-    const menuData = getMenuData();
+    routerData = addRouteData(routerData);
     const layout = (
       <Layout>
         <SiderMenu
