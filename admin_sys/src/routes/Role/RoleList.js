@@ -56,7 +56,7 @@ class RoleList extends Component {
             <div>
               <AuthorizedButton authority="/role/checkRole">
                 <span
-                  style={{ color: '#52C9C2', marginLeft: '12px' }}
+                  style={{ color: '#52C9C2', marginLeft: '12px' ,cursor: 'pointer'}}
                   onClick={() => this.handleNextPage('/role/checkRole', { id, name })}
                 >
                   查看详情
@@ -64,7 +64,7 @@ class RoleList extends Component {
               </AuthorizedButton>
               <AuthorizedButton authority="/role/editRole">
                 <span
-                  style={{ color: '#52C9C2', marginLeft: 4 }}
+                  style={{ color: '#52C9C2', marginLeft: 4 ,cursor: 'pointer'}}
                   onClick={() => this.handleNextPage('/role/editRole', { id, name })}
                 >
                   | 编辑
