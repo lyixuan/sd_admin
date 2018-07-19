@@ -9,7 +9,7 @@ import common from '../Common/common.css';
 import { getAuthority } from '../../utils/authority';
 import { formatEmail } from '../../utils/email';
 
-const { Emil, Password, Submit } = Login;
+const { Emil, Submit, NoHintPwd } = Login;
 function checkoutLoginObj(loginObj, key) {
   if (loginObj && typeof loginObj === 'object' && loginObj[key]) {
     return loginObj[key];
@@ -91,7 +91,7 @@ export default class LoginPage extends Component {
             <span className={styles.loginLabel}>邮箱</span>
             <Emil name="mail" placeholder="请输入邮箱" defaultValue={adminUser.mail} />
             <span className={styles.loginLabel}>密码</span>
-            <Password name="password" placeholder="请输入密码" defaultValue={adminUser.password} />
+            <NoHintPwd name="password" placeholder="请输入密码" defaultValue={adminUser.password} />
             <div className={styles.loginStatusBox}>
               <span style={{ float: 'left' }}>
                 <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>

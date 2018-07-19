@@ -33,6 +33,20 @@ const map = {
       },
     ],
   },
+  NoHintPwd: {
+    component: Input,
+    props: {
+      size: 'large',
+      prefix: <Icon type="lock" className={styles.prefixIcon} />,
+      type: 'password',
+      placeholder: '请输入密码',
+    },
+    rules: [
+      {
+        required: true,
+      },
+    ],
+  },
   Mobile: {
     component: Input,
     props: {
