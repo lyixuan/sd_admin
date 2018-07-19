@@ -21,15 +21,15 @@ class PermissionList extends Component {
   }
 
   componentDidMount() {
-    const permissionListParams = { size: 30, number: 0, sort: 'id' };
+    const permissionListParams = { size: 30, number: 0, sort: 'id', name: !firstName ? undefined : firstName };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
     });
   }
-  componentWillUnmount() {
-    firstName = null;
-  }
+  // componentWillUnmount() {
+  //   firstName = null;
+  // }
   // 权限编辑
   onEdit = val => {
     console.log(val);

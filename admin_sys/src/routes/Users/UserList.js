@@ -38,17 +38,18 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
+    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate , name: !firstName ? undefined : firstName,
+      mobile: !firstPhone ? undefined : firstPhone};
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
     });
   }
-  componentWillUnmount() {
-    firstName = null;
-    firstPhone = null;
-    firstUpdate = null;
-  }
+  // componentWillUnmount() {
+  //   firstName = null;
+  //   firstPhone = null;
+  //   firstUpdate = null;
+  // }
 
   // 删除用户
   onDelete = val => {
