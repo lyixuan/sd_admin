@@ -83,15 +83,22 @@ class TimeList extends Component {
   };
   addDisableTime = () => {
     const { dateTime = '', params } = this.state;
-    if (dateTime) {
+    const { dateListObj = {} } = this.props.time;
+    const { content = [] } = dateListObj;
+    const isHasDate = content.find(item => {
+      const formatDate = moment.unix(item.dateTime / 1000).format(dateFormat);
+      return formatDate === dateTime;
+    });
+    if (isHasDate) {
+      message.error('添加失败,日期不可重复');
+    } else if (!dateTime) {
+      message.error('添加失败,日期不可为空');
+    } else {
       this.props.dispatch({
         type: 'time/addDisableTime',
         payload: { dateTime, params },
       });
-      this.setState({ visible: false });
-    } else {
-      message.error('添加失败,日期不可为空');
-      this.setState({ visible: true });
+      this.showModal(false);
     }
   };
   showModal = bol => {
@@ -136,7 +143,6 @@ class TimeList extends Component {
         });
       }
     });
-    // this.props.setCurrentUrlParams(val);
   };
   changeDate = () => {
     const { dateArea = {} } = this.state;
@@ -154,21 +160,10 @@ class TimeList extends Component {
 
   // 点击选择添加不可选时间
   selectDisableTime = (date, dateString) => {
-    const { dateListObj = {} } = this.props.time;
-    const { content = [] } = dateListObj;
-    const isHasDate = content.find(item => {
-      const formatDate = moment.unix(item.dateTime / 1000).format(dateFormat);
-      return formatDate === dateString;
-    });
-    if (isHasDate) {
-      message.error('添加失败,日期不可重复');
-      this.setState({ visible: true, dateTime: '' });
-    } else if (!dateString) {
-      message.error('添加失败,日期不可为空');
-      this.setState({ visible: true, dateTime: '' });
-    } else {
-      this.setState({ dateTime: dateString });
-    }
+    this.setState({ dateTime: dateString });
+  };
+  closeErrorModal = () => {
+    this.showHintModal(false);
   };
   // 初始化tabale 列数据
   fillDataSource = value => {
@@ -328,6 +323,7 @@ class TimeList extends Component {
           visible={hintVisible}
           modalContent="时间可选范围有误"
           showModal={bol => this.showHintModal(bol)}
+          clickOK={this.closeErrorModal}
         />
         <ModalDialog
           title="修改&quot;自定义时间&quot;可选范围"
