@@ -24,16 +24,16 @@ const residences = [
 class PermissionForm extends Component {
   constructor(props) {
     super(props);
-    const fromWhere = this.props.jumpFunction.getUrlParams();
-    const parentIdValues = !this.props.jumpFunction.permission.permissionListAllName
+    const preList = this.props.jumpFunction;
+    const fromWhere = preList.getUrlParams();
+    const parentIdValues = !preList.permission.permissionListAllName
       ? []
-      : this.props.jumpFunction.permission.permissionListAllName.data;
+      : preList.permission.permissionListAllName.data;
     this.state = {
       parentIdList: !parentIdValues ? [] : parentIdValues,
       id: !fromWhere.id ? '' : fromWhere.id,
       level: !fromWhere.level ? '' : fromWhere.level,
     };
-    console.log(this.state);
   }
 
   componentDidMount() {
@@ -41,6 +41,7 @@ class PermissionForm extends Component {
     parentList = this.roleListFun();
     flag = this.state.level;
   }
+
   componentWillUnmount() {
     flag = null;
     parentList = null;
@@ -86,7 +87,7 @@ class PermissionForm extends Component {
   };
 
   handleSelectChange = value => {
-    const level = !value[0]?flag:value[0];
+    const level = !value[0] ? flag : value[0];
     flag = level;
     const listValue = parentListBackup;
     const rObj = [];
@@ -105,7 +106,8 @@ class PermissionForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const {submit}= this.props.jumpFunction
+    const { submit } = this.props.jumpFunction;
+    const disabled = true;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -128,17 +130,15 @@ class PermissionForm extends Component {
         },
       },
     };
-    const arrValue = !this.props.jumpFunction.permission.permissionById
+    const getListValue = this.props.jumpFunction.permission;
+    const arrValue = !getListValue.permissionById
       ? []
-      : !this.props.jumpFunction.permission.permissionById.response
-        ? []
-        : this.props.jumpFunction.permission.permissionById.response.data;
-    const disabled = true;
-    const parentIdValues = !this.props.jumpFunction.permission.permissionListAllName
+      : !getListValue.permissionById.response ? [] : getListValue.permissionById.response.data;
+    const parentIdValues = !getListValue.permissionListAllName
       ? []
-      : this.props.jumpFunction.permission.permissionListAllName.data;
+      : getListValue.permissionListAllName.data;
     parentListBackup = !parentIdValues ? [] : this.fullListFun(parentIdValues);
-    parentList = !parentList ||parentList.length===0?parentListBackup:parentList;
+    parentList = !parentList || parentList.length === 0 ? parentListBackup : parentList;
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -148,11 +148,11 @@ class PermissionForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
+                    const reg = !value ? '' : value.replace(/\s*/g, ''); // 去除字符串中全局空格
                     if (!reg) {
                       callback({ message: '权限名称为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
-                      callback({ message: '权限名称长度在2-50，请修改!' });
+                      callback({ message: '权限名称长度在2-20，请修改!' });
                     } else {
                       callback();
                     }
@@ -236,9 +236,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('sort', {
-              // initialValue: !this.state.id?'':arrValue.sort===0?'0':arrValue.sort,
-              initialValue: !this.state.id ? '' : !arrValue.sort ? '0' : arrValue.sort,
-
+              initialValue: !this.state.id ? '' : !arrValue.sort ? 0 : arrValue.sort,
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -279,7 +277,12 @@ class PermissionForm extends Component {
                   >
                     取消
                   </Button>
-                  <Button htmlType="submit" type="primary" className={common.submitButton} loading={submit} >
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    className={common.submitButton}
+                    loading={submit}
+                  >
                     提交
                   </Button>
                 </div>

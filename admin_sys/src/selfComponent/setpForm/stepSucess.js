@@ -13,7 +13,7 @@ class stepSucess extends Component {
     return (
       <div className={styles.wrapSucess}>
         <div className={styles.imgSucess}>
-          <img src={isDelImg === 'true' ? sucessImg : delImg} alt="" />
+          <img src={isDelImg === 'true' ? delImg : sucessImg} alt="" />
         </div>
         {tipSucess ? <div className={styles.tipSucess}> {tipSucess} </div> : null}
       </div>

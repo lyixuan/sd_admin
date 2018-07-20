@@ -12,8 +12,7 @@ const WrappedRegistrationForm = Form.create()(AccountForm);
 class CreateAccount extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
   componentDidMount() {
     const getRoleListParams = {};
@@ -22,10 +21,10 @@ class CreateAccount extends Component {
       payload: { getRoleListParams },
     });
   }
-  handleSubmit = (values) => {
+  handleSubmit = values => {
     const rname = values.rname[0];
     let newRoleId = 0;
-    const roleList = this.props.account.getRoleList.data
+    const roleList = this.props.account.getRoleList.data;
     roleList.map(item => {
       if (item.name === rname) {
         newRoleId = item.id;
@@ -33,7 +32,7 @@ class CreateAccount extends Component {
       return 0;
     });
     const addAccountParams = {
-      name: values.name,
+      name: values.name.replace(/\s*/g, ''),
       mail: `${values.mail}@sunlands.com`,
       roleId: newRoleId,
     };
@@ -53,9 +52,14 @@ class CreateAccount extends Component {
         contentForm={
           <WrappedRegistrationForm
             jumpFunction={this.props}
-            resetContent={()=>{this.resetContent()}}
-            handleSubmit={(values)=>{this.handleSubmit(values)}}
-          />}
+            resetContent={() => {
+              this.resetContent();
+            }}
+            handleSubmit={values => {
+              this.handleSubmit(values);
+            }}
+          />
+        }
       />
     );
   }

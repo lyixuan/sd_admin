@@ -134,7 +134,7 @@ class UserForm extends Component {
         return 0;
       });
     }
-    return responseValue.length===0?responseComListBackup:responseValue;
+    return responseValue.length === 0 ? responseComListBackup : responseValue;
   };
 
   handleSelectChange = value => {
@@ -176,7 +176,7 @@ class UserForm extends Component {
         return 0;
       });
     }
-    responseComList = responseValue.length===0?responseComListBackup:responseValue;
+    responseComList = responseValue.length === 0 ? responseComListBackup : responseValue;
   };
 
   handleSubmit = e => {
@@ -218,17 +218,21 @@ class UserForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const disabled = true;
     const userVal = this.props.jumpFunction.user;
-    const {submit}= this.props.jumpFunction
+    const { submit } = this.props.jumpFunction;
     const wechatValues = !userVal.wechatList.response
       ? []
       : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
     const residences = !wechatValues ? [] : this.roleListFun(wechatValues);
-    // console.log(residences)
-    const listOrgValues = !userVal.listOrg.response ? [] : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
-    responseComList = !responseComList||responseComList.length===0?this.responseComListFun():responseComList;
-    const disabled = true;
+    responseComList =
+      !responseComList || responseComList.length === 0
+        ? this.responseComListFun()
+        : responseComList;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -273,7 +277,8 @@ class UserForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
+                    // const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');// 去除字符串前后的空格
+                    const reg = !value ? '' : value.replace(/\s*/g, ''); // 去除字符串中全局空格
                     if (!reg) {
                       callback({ message: '姓名为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
@@ -304,8 +309,22 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*邮 箱">
             {getFieldDecorator('email', {
-              initialValue: !this.state.id ? '' : !arrValue.mail ? '' : formatEmail(arrValue.mail),
-              rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
+              initialValue: !this.state.id
+                ? ''
+                : !arrValue.entUserId ? '' : formatEmail(arrValue.entUserId),
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    const strExp = /^[A-Za-z0-9]+$/;
+                    if (!strExp.test(value)) {
+                      callback({ message: '请输入合法邮箱' });
+                    }
+                    callback();
+                  },
+                },
+                { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
+                { min: 3, max: 50, required: true, message: '邮箱账号长度需要在3-50字符之间!' },
+              ],
             })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
@@ -388,7 +407,12 @@ class UserForm extends Component {
                   >
                     取消
                   </Button>
-                  <Button htmlType="submit" type="primary" className={common.submitButton} loading={submit}>
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    className={common.submitButton}
+                    loading={submit}
+                  >
                     提交
                   </Button>
                 </div>

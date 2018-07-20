@@ -8,6 +8,8 @@ const CheckboxGroup = Checkbox.Group;
 
 let checkAllObj = {};
 let isClick = false;
+let initAllVal = [];
+let allIdsVal = {};
 
 class RoleForm extends Component {
   constructor(props) {
@@ -32,37 +34,97 @@ class RoleForm extends Component {
   /*
   * 单选按钮事件
   * */
-  onChange = (pid, secList, key, listKey, checkedList) => {
+  onChange = (gid, pid, secList, key, listKey, checkedList) => {
     isClick = true;
     let len = 0;
     let checkLists = [];
+    let hasCheck = false;
     secList.forEach(n => {
       checkedList.forEach(m => {
         if (n.id === m) {
           len += 1;
+          hasCheck = true;
         }
       });
     });
+
     // 功能有勾选，则自动上传他上级id
-    if (checkedList.length === 0) {
-      checkLists = [];
+    if (!hasCheck) {
+      checkedList.forEach(m => {
+        if (secList[0].parentId === m) {
+          const index = checkedList.indexOf(secList[0].parentId);
+          if (index > -1) {
+            checkedList.splice(index, 1);
+          }
+        }
+      });
+      checkLists = checkedList;
     } else {
       checkLists = checkedList.concat(pid);
     }
 
-    checkAllObj[listKey] = Array.from(new Set(checkLists));
+    initAllVal = Array.from(new Set(checkLists));
+
+    // 删除一级id
+    let kkk = 0;
+    allIdsVal[gid].forEach(k => {
+      initAllVal.forEach(m => {
+        if (k === m) {
+          kkk += 1;
+        }
+      });
+    });
+    if (kkk === 0) {
+      const index = initAllVal.indexOf(gid);
+      if (index > -1) {
+        initAllVal.splice(index, 1);
+      }
+    }
+    checkAllObj[listKey] = initAllVal;
     checkAllObj[key] = len === secList.length;
   };
   /*
   * 全选按钮事件
   * */
-  onCheckAllChange = (pid, secList, allKey, listKey, e) => {
+  onCheckAllChange = (gid, pid, secList, allKey, listKey, e) => {
+    const initVal = this.props.getRoleIds;
+
     isClick = true;
     const nodeIDs = [];
     secList.forEach(key => {
       nodeIDs.push(key.id);
+      nodeIDs.push(key.parentId);
     });
 
+    // 取消全选的时候同时删除父级id
+    if (!e.target.checked) {
+      nodeIDs.forEach(n => {
+        initVal.forEach(m => {
+          if (n === m) {
+            const index = initVal.indexOf(n);
+            if (index > -1) {
+              initVal.splice(index, 1);
+            }
+          }
+        });
+      });
+      let kkk = 0;
+      // 删除一级id
+      allIdsVal[gid].forEach(k => {
+        initAllVal.forEach(m => {
+          if (k === m) {
+            kkk += 1;
+          }
+        });
+      });
+      if (kkk === 0) {
+        const index = initAllVal.indexOf(gid);
+        if (index > -1) {
+          initAllVal.splice(index, 1);
+        }
+      }
+    }
+    initAllVal = initVal;
     checkAllObj[listKey] = e.target.checked ? Array.from(new Set(nodeIDs.concat(pid))) : [];
     checkAllObj[allKey] = e.target.checked;
   };
@@ -87,7 +149,7 @@ class RoleForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        privilegeIds = privilegeIds.concat(this.props.getRoleIds);
+        privilegeIds = privilegeIds.concat(initAllVal);
         this.props.submitInfo(values, Array.from(new Set(privilegeIds)));
       } else {
         console.error(err);
@@ -95,7 +157,20 @@ class RoleForm extends Component {
     });
   };
   render() {
+    const allIds = {};
     const { listAll, isShowFooter, getRoleIds } = this.props;
+    listAll.forEach(item => {
+      allIds[item.id] = [];
+      item.nodes.forEach(item1 => {
+        allIds[item.id].push(item1.id);
+        item1.nodes.forEach(item2 => {
+          allIds[item.id].push(item2.id);
+        });
+      });
+      allIdsVal = allIds;
+      return allIdsVal;
+    });
+
     const { getFieldDecorator } = this.props.form;
     let isDisabled = true;
     if (isShowFooter) isDisabled = false;
@@ -112,7 +187,7 @@ class RoleForm extends Component {
       let len = 0;
       const plainOptions = [];
       item.forEach(key => {
-        plainOptions.push({ label: key.name, value: key.id });
+        plainOptions.push({ label: key.name, value: key.id, parentId: '0' });
       });
       if (getRoleIds) {
         plainOptions.forEach(n => {
@@ -133,7 +208,14 @@ class RoleForm extends Component {
           {item.length === 0 ? null : (
             <div>
               <Checkbox
-                onChange={this.onCheckAllChange.bind(this, parentIds, item, checkAllKey, listKey)}
+                onChange={this.onCheckAllChange.bind(
+                  this,
+                  pid,
+                  parentIds,
+                  item,
+                  checkAllKey,
+                  listKey
+                )}
                 checked={checkAllObj[checkAllKey]}
                 disabled={isDisabled}
                 className={styles.checkBox}
@@ -144,7 +226,7 @@ class RoleForm extends Component {
                 options={plainOptions}
                 value={!checkAllObj[listKey] ? getRoleIds : checkAllObj[listKey]}
                 disabled={isDisabled}
-                onChange={this.onChange.bind(this, parentIds, item, checkAllKey, listKey)}
+                onChange={this.onChange.bind(this, pid, parentIds, item, checkAllKey, listKey)}
                 className={styles.checkboxGroup}
               />
             </div>
@@ -157,7 +239,20 @@ class RoleForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*角色名称：">
             {getFieldDecorator('name', {
-              rules: [{ required: true, message: '请输入角色名称!', whitespace: true }],
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    const reg = !value ? '' : value.replace(/\s*/g, '');
+                    if (!reg) {
+                      callback({ message: '角色名称为必填项，请填写!' });
+                    } else if (reg.length < 2 || reg.length > 20) {
+                      callback({ message: '角色名称在2-20个字符之间，请填写!' });
+                    } else {
+                      callback();
+                    }
+                  },
+                },
+              ],
             })(
               <Input
                 maxLength={25}

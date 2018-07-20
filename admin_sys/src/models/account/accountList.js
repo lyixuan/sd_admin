@@ -28,7 +28,6 @@ export default {
 
   effects: {
     *accountList({ payload }, { call, put }) {
-      console.log(payload);
       const { accountListParams } = payload;
       const response = yield call(queryAccountList, { ...accountListParams });
       yield put({ type: 'accountListSave', payload: { response } });

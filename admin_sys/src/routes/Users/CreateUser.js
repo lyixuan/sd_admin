@@ -47,7 +47,7 @@ class CreateUser extends Component {
       return 0;
     });
     const userAddParams = {
-      name: values.name,
+      name: values.name.replace(/\s*/g, ''),
       mail: values.email,
       mobile: values.phone,
       userType: userTypeDataReset[rUserType],
@@ -62,7 +62,8 @@ class CreateUser extends Component {
   };
   // 点击取消按钮跳转到list页面
   resetContent = () => {
-    this.props.setRouteUrlParams('/config/userList', {});
+    window.history.go(-1);
+    // this.props.setRouteUrlParams('/config/userList', {});
   };
 
   render() {

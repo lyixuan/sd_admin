@@ -58,14 +58,14 @@ class AccountForm extends Component {
     };
     const disabled = true;
     const roleValues = this.props.jumpFunction.account.getRoleList;
-    const roleList = !roleValues ? [] : !roleValues.data ? [] : roleValues.data
+    const roleList = !roleValues ? [] : !roleValues.data ? [] : roleValues.data;
     const residences = !roleList ? [] : this.roleListFun(roleList);
     const arrValue = !this.props.jumpFunction.account.accountInfo
       ? []
       : !this.props.jumpFunction.account.accountInfo.response
         ? []
         : this.props.jumpFunction.account.accountInfo.response.data;
-    const {submit}= this.props.jumpFunction
+    const { submit } = this.props.jumpFunction;
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -78,7 +78,7 @@ class AccountForm extends Component {
                 // { min: 2,max: 20, message: '姓名长度在2-20字符之间!' },
                 {
                   validator(rule, value, callback) {
-                    const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
+                    const reg = !value ? '' : value.replace(/\s*/g, ''); // 去除字符串中全局空格
                     if (!reg) {
                       callback({ message: '姓名为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
@@ -137,7 +137,12 @@ class AccountForm extends Component {
                   >
                     取消
                   </Button>
-                  <Button htmlType="submit" type="primary" className={common.submitButton} loading={submit}>
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    className={common.submitButton}
+                    loading={submit}
+                  >
                     提交
                   </Button>
                 </div>

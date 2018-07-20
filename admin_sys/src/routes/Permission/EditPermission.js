@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import ContentLayout from '../../layouts/ContentLayout';
 import PermissionForm from '../../selfComponent/PermissionForm';
-import {levelDataReset} from '../../utils/dataDictionary';
+import { levelDataReset } from '../../utils/dataDictionary';
 
 const WrappedRegistrationForm = Form.create()(PermissionForm);
 @connect(({ permission, loading }) => ({
@@ -26,20 +27,20 @@ class EditPermission extends Component {
       payload: { permissionListAllNameParams },
     });
 
-    const permissionByIdParams = {id:this.state.id};
+    const permissionByIdParams = { id: this.state.id };
     this.props.dispatch({
       type: 'permission/permissionById',
       payload: { permissionByIdParams },
     });
   }
 
-  handleSubmit = (values) => {
+  handleSubmit = values => {
     const parentIdName = values.parentId[0] || 0;
     const updatePermissionParams = {
-      name: values.name,
+      name: values.name.replace(/\s*/g, ''),
       iconUrl: values.iconUrl,
       id: Number(this.state.id),
-      level: levelDataReset[values.level[0]]||1,
+      level: levelDataReset[values.level[0]] || 1,
       parentId: parentIdName,
       sort: Number(values.sort),
       resourceUrl: values.resourceUrl,
@@ -51,19 +52,26 @@ class EditPermission extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/config/permissionList');
+    this.props.dispatch(routerRedux.goBack());
   };
 
   render() {
     // const parentIdList=!this.state.parentIdList?[]:this.reloadNum()
     return (
-      <ContentLayout  contentForm={
-        <WrappedRegistrationForm
-          jumpFunction={this.props}
-          resetContent={()=>{this.resetContent()}}
-          handleSubmit={(values)=>{this.handleSubmit(values)}}
-        />}
-      />);
+      <ContentLayout
+        contentForm={
+          <WrappedRegistrationForm
+            jumpFunction={this.props}
+            resetContent={() => {
+              this.resetContent();
+            }}
+            handleSubmit={values => {
+              this.handleSubmit(values);
+            }}
+          />
+        }
+      />
+    );
   }
 }
 

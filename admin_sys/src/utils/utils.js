@@ -15,6 +15,7 @@ export function getJsonTree(data, parentId) {
         checkAll: `checkAll${node.id}`,
         checkedList: `checkedList${node.id}`,
         nodes: getJsonTree(data, node.id),
+        parentId,
       };
       itemArr.push(newNode);
     }

@@ -21,18 +21,24 @@ class PermissionList extends Component {
   }
 
   componentDidMount() {
-    const permissionListParams = { size: 30, number: 0, sort: 'id', name: !firstName ? undefined : firstName };
+    const initVal = this.props.getUrlParams();
+    firstName = !initVal.firstName ? '' : initVal.firstName;
+    const permissionListParams = {
+      size: 30,
+      number: 0,
+      sort: 'id',
+      name: !initVal.firstName ? undefined : initVal.firstName,
+    };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
     });
   }
-  // componentWillUnmount() {
-  //   firstName = null;
-  // }
+  componentWillUnmount() {
+    firstName = null;
+  }
   // 权限编辑
   onEdit = val => {
-    console.log(val);
     this.props.setRouteUrlParams('/permission/editPermission', {
       id: val.id,
       level: val.level,
@@ -60,7 +66,11 @@ class PermissionList extends Component {
   // 表单重置
   handleReset = () => {
     firstName = '';
+    this.props.setCurrentUrlParams({
+      firstName: null,
+    });
     propsVal.form.resetFields();
+    this.props.setRouteUrlParams('/config/permissionList');
     const permissionListParams = { size: 30, number: 0, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
@@ -74,8 +84,11 @@ class PermissionList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         firstName = values.name;
+        this.props.setCurrentUrlParams({
+          firstName: !values.name ? undefined : values.name,
+        });
         const permissionListParams = {
-          name: !values.name ? undefined : values.name,
+          name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
           sort: 'id',
           size: 30,
           number: 0,
