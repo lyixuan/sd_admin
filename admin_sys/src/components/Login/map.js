@@ -44,6 +44,7 @@ const map = {
     rules: [
       {
         required: true,
+        message: '密码不能为空!',
       },
     ],
   },
