@@ -88,9 +88,11 @@ class ComplaintDel extends Component {
         countValue: item.countValue,
         stuName: `${item.stuName} | ${item.stuId}`,
         cpName: item.cpName,
-
         bottomLineNum: item.bottomLineNum,
-        name: `${item.collegeName} | ${item.familyName} | ${item.groupName}`,
+        name:
+          item.groupName && item.familyName
+            ? `${item.collegeName} | ${item.familyName} | ${item.groupName}`
+            : item.familyName ? `${item.collegeName} | ${item.familyName}` : `${item.collegeName}`,
       })
     );
     return data;

@@ -89,7 +89,10 @@ class RefundDel extends Component {
         complainTime: item.complainTime,
         stuName: `${item.stuName} | ${item.stuId}`,
         cpName: item.cpName,
-        name: `${item.collegeName} | ${item.familyName} | ${item.groupName}`,
+        name:
+          item.groupName && item.familyName
+            ? `${item.collegeName} | ${item.familyName} | ${item.groupName}`
+            : item.familyName ? `${item.collegeName} | ${item.familyName}` : `${item.collegeName}`,
       })
     );
     return data;
