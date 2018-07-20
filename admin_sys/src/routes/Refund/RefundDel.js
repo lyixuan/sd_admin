@@ -87,9 +87,9 @@ class RefundDel extends Component {
         key: index + 1,
         ordId: item.ordId,
         complainTime: item.complainTime,
-        stuName: `${item.stuName}/${item.stuId}`,
+        stuName: `${item.stuName} | ${item.stuId}`,
         cpName: item.cpName,
-        name: `${item.collegeName} / ${item.familyName} / ${item.groupName}`,
+        name: `${item.collegeName} | ${item.familyName} | ${item.groupName}`,
       })
     );
     return data;
@@ -112,7 +112,7 @@ class RefundDel extends Component {
         width: '200px',
       },
       {
-        title: '学生名称/id',
+        title: '学生名称 | id',
         dataIndex: 'stuName',
         width: '154px',
       },
@@ -122,7 +122,7 @@ class RefundDel extends Component {
         width: '90px',
       },
       {
-        title: '学院/家族/小组',
+        title: '学院 | 家族 | 小组',
         dataIndex: 'name',
         width: '250px',
       },

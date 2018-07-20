@@ -126,7 +126,7 @@ class Family extends Component {
     const dataSource = !familyList ? [] : familyList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, collegeName, familyName, id, name } = this.state;
-    const modalTitle = `${collegeName} / ${familyName}`;
+    const modalTitle = `${collegeName} | ${familyName}`;
     const modalContent = (
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>

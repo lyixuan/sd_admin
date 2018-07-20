@@ -89,7 +89,7 @@ class RefundDel extends Component {
         countValue: item.countValue,
         qualityTypeName: item.qualityTypeName,
         teaName: item.teaName,
-        name: `${item.collegeName} / ${item.familyName} / ${item.groupName}`,
+        name: `${item.collegeName} | ${item.familyName} | ${item.groupName}`,
       })
     );
     return data;
@@ -122,7 +122,7 @@ class RefundDel extends Component {
         width: '90px',
       },
       {
-        title: '学院/家族/小组',
+        title: '学院 | 家族 | 小组',
         dataIndex: 'name',
         width: '250px',
       },

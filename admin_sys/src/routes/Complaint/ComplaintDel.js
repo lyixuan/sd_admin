@@ -86,10 +86,11 @@ class ComplaintDel extends Component {
         key: index + 1,
         complainTime: item.complainTime,
         countValue: item.countValue,
-        stuName: `${item.stuName}/${item.stuId}`,
+        stuName: `${item.stuName} | ${item.stuId}`,
         cpName: item.cpName,
+
         bottomLineNum: item.bottomLineNum,
-        name: `${item.collegeName} / ${item.familyName} / ${item.groupName}`,
+        name: `${item.collegeName} | ${item.familyName} | ${item.groupName}`,
       })
     );
     return data;
@@ -107,7 +108,7 @@ class ComplaintDel extends Component {
         width: '150px',
       },
       {
-        title: '学生名称/id',
+        title: '学生名称 | id',
         dataIndex: 'stuName',
         width: '130px',
       },
@@ -117,7 +118,7 @@ class ComplaintDel extends Component {
         width: '90px',
       },
       {
-        title: '学院/家族/小组',
+        title: '学院 | 家族 | 小组',
         dataIndex: 'name',
         width: '260px',
       },

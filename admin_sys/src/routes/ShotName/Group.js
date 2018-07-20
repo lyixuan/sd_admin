@@ -132,7 +132,7 @@ class Group extends Component {
     const dataSource = !groupList ? [] : groupList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, collegeName, familyName, groupName, id, name } = this.state;
-    const modalTitle = `${collegeName} / ${familyName}  / ${groupName}`;
+    const modalTitle = `${collegeName} | ${familyName} | ${groupName}`;
     const modalContent = (
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
