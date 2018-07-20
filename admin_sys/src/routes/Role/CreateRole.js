@@ -7,18 +7,18 @@ import RoleForm from '../../selfComponent/RoleFrom/RoleForm';
 const WrappedRoleForm = Form.create()(RoleForm);
 @connect(({ role, loading }) => ({
   role,
-  loading,
+  loading: loading.effects['role/roleAdd'],
 }))
 class CreateRole extends Component {
   componentDidMount() {
     this.props.dispatch({
       type: 'role/roleListAll',
-      payload: { name: '' },
+      payload: {},
     });
   }
   submitInfo = (values, privilegeIds) => {
     const paramsObj = {
-      name: values.name,
+      name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
       privilegeIds,
     };
     this.props.dispatch({
@@ -27,17 +27,18 @@ class CreateRole extends Component {
     });
   };
   render() {
-    const listAll = !this.props.role.listAll ? [] : this.props.role.listAll;
+    const { listAll = [] } = this.props.role;
     const baseLayout = (
       <WrappedRoleForm
         listAll={listAll}
+        loading={this.props.loading}
         isShowFooter="true"
         submitInfo={(values, privilegeIds) => {
           this.submitInfo(values, privilegeIds);
         }}
       />
     );
-    return <StepLayout title="创建角色" baseLayout={baseLayout} />;
+    return <StepLayout routerData={this.props.routerData} baseLayout={baseLayout} />;
   }
 }
 

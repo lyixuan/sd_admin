@@ -19,17 +19,21 @@ export default {
     *roleList({ payload }, { put, call }) {
       const { paramsObj } = payload;
       const dataList = yield call(getRoleList, { ...paramsObj });
-      yield put({
-        type: 'saveList',
-        payload: { dataList: dataList.data },
-      });
+      if (dataList.code !== 2000) {
+        message.error(dataList.msg);
+      } else {
+        yield put({
+          type: 'saveList',
+          payload: { dataList: dataList.data },
+        });
+      }
     },
     *roleAdd({ payload }, { put, call }) {
       const { paramsObj } = payload;
       const getCode = yield call(getRoleAdd, { ...paramsObj });
       if (getCode.code === 2000) {
-        message.success('角色创建成功！');
-        yield put(routerRedux.push('/role/roleList'));
+        message.success('成功创建角色！');
+        yield put(routerRedux.push('/config/roleList'));
       } else {
         message.error(getCode.msg);
       }
@@ -37,10 +41,14 @@ export default {
     *roleListAll({ payload }, { put, call }) {
       const { paramsObj } = payload;
       const listAll = yield call(getRoleListAll, { ...paramsObj });
-      yield put({
-        type: 'saveListAll',
-        payload: { listAll: listAll.data },
-      });
+      if (listAll.code !== 2000) {
+        message.error(listAll.msg);
+      } else {
+        yield put({
+          type: 'saveListAll',
+          payload: { listAll: listAll.data },
+        });
+      }
     },
     *roleDelete({ payload }, { put, call }) {
       const { paramsObj } = payload;
@@ -54,8 +62,12 @@ export default {
       const { paramsObj } = payload;
       const getCode = yield call(getRoleUpdate, { ...paramsObj });
       if (getCode.code === 2000) {
-        message.success('角色创建成功！');
-        yield put(routerRedux.push('/role/roleList'));
+        message.success('成功编辑角色！');
+        yield put(routerRedux.push('/config/roleList'));
+        yield put({
+          type: 'save',
+          payload: paramsObj,
+        });
       } else {
         message.error(getCode.msg);
       }
@@ -63,10 +75,14 @@ export default {
     *rolePrivileges({ payload }, { put, call }) {
       const { paramsIds } = payload;
       const getRoleIds = yield call(getRolePrivileges, { ...paramsIds });
-      yield put({
-        type: 'savePrivileges',
-        payload: { getRoleIds: getRoleIds.data },
-      });
+      if (getRoleIds.code !== 2000) {
+        message.error(getRoleIds.msg);
+      } else {
+        yield put({
+          type: 'savePrivileges',
+          payload: { getRoleIds: getRoleIds.data },
+        });
+      }
     },
   },
 
@@ -88,29 +104,21 @@ export default {
 
       const ids = [];
       getRoleIds.forEach(item => {
-        if (item.checked && item.level === 3) {
+        if (item.checked) {
           ids.push(item.id);
         }
       });
       getRoleIds = ids;
+      console.log(getRoleIds);
       return { ...state, getRoleIds, getRoleData };
     },
     saveListAll(state, action) {
       let { listAll } = action.payload;
-      /*
-      * 生成map表
-      * */
-      const { content } = listAll;
-      const mapIdtoName = {};
-      Object.keys(content).map(key => {
-        mapIdtoName[content[key].name] = content[key].id;
-        return mapIdtoName;
-      });
 
       // 生成树状数据结构
-      listAll = getJsonTree(content, 1);
+      listAll = getJsonTree(listAll, 0);
 
-      return { ...state, listAll, mapIdtoName };
+      return { ...state, listAll };
     },
   },
 };

@@ -21,8 +21,15 @@ function isPromise(obj) {
 const checkPermissions = (authority, currentAuthority, target, Exception) => {
   // 没有判定权限.默认查看所有
   // Retirement authority, return target;
-  if (!authority) {
+  if (!authority && typeof authority !== 'boolean') {
     return target;
+  }
+  // bol类型处理
+  if (typeof authority === 'boolean') {
+    if (authority === true) {
+      return target;
+    }
+    return Exception;
   }
   // 数组处理
   if (Array.isArray(authority)) {

@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import ContentLayout from '../../layouts/ContentLayout';
 import PermissionForm from '../../selfComponent/PermissionForm';
-import {levelDataReset} from '../../utils/dataDictionary';
+import { levelDataReset } from '../../utils/dataDictionary';
 
 const WrappedRegistrationForm = Form.create()(PermissionForm);
 @connect(({ permission, loading }) => ({
   permission,
-  loading,
+  submit: loading.effects['permission/updatePermission'],
 }))
 class EditPermission extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class EditPermission extends Component {
     const arrValue = this.props.getUrlParams();
     this.state = {
       id: !arrValue.id ? '' : arrValue.id,
+      // parentIdList:[],
     };
   }
   componentDidMount() {
@@ -25,29 +27,21 @@ class EditPermission extends Component {
       payload: { permissionListAllNameParams },
     });
 
-    const permissionByIdParams = {id:this.state.id};
+    const permissionByIdParams = { id: this.state.id };
     this.props.dispatch({
       type: 'permission/permissionById',
       payload: { permissionByIdParams },
     });
   }
 
-  handleSubmit = (values) => {
-    const parentIdName = !values.parentId[0]?'':values.parentId[0];
-    let newparentId = 1;
-    const parentIdList = this.props.permission.permissionListAllName.data
-    parentIdList.map(item => {
-      if (item.name === parentIdName) {
-        newparentId = item.id;
-      }
-      return 0;
-    });
+  handleSubmit = values => {
+    const parentIdName = values.parentId[0] || 0;
     const updatePermissionParams = {
-      name: values.name,
-      iconUrl: values.iconUrl[0],
+      name: values.name.replace(/\s*/g, ''),
+      iconUrl: values.iconUrl,
       id: Number(this.state.id),
-      level: levelDataReset[values.level[0]]||1,
-      parentId: newparentId,
+      level: levelDataReset[values.level[0]] || 1,
+      parentId: parentIdName,
       sort: Number(values.sort),
       resourceUrl: values.resourceUrl,
     };
@@ -58,22 +52,27 @@ class EditPermission extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/permission/permissionList');
+    this.props.dispatch(routerRedux.goBack());
   };
 
   render() {
-    const permissionVal = this.props.permission;
-    return (!permissionVal.permissionListAllName ? null :
-      !permissionVal.permissionListAllName.data ? null:!permissionVal.permissionById.response?null:
-      !permissionVal.permissionById.response.data?null: (
-        <ContentLayout
-          contentForm={<WrappedRegistrationForm
+    // const parentIdList=!this.state.parentIdList?[]:this.reloadNum()
+    return (
+      <ContentLayout
+        routerData={this.props.routerData}
+        contentForm={
+          <WrappedRegistrationForm
             jumpFunction={this.props}
-            resetContent={()=>{this.resetContent()}}
-            handleSubmit={(values)=>{this.handleSubmit(values)}}
-          />}
-        />
-    ));
+            resetContent={() => {
+              this.resetContent();
+            }}
+            handleSubmit={values => {
+              this.handleSubmit(values);
+            }}
+          />
+        }
+      />
+    );
   }
 }
 

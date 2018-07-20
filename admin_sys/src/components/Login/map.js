@@ -27,7 +27,24 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Wrong mobile number format!',
+        min: 6,
+        max: 16,
+        message: '密码由6-16位英文字母、数字或符号组成',
+      },
+    ],
+  },
+  NoHintPwd: {
+    component: Input,
+    props: {
+      size: 'large',
+      prefix: <Icon type="lock" className={styles.prefixIcon} />,
+      type: 'password',
+      placeholder: '请输入密码',
+    },
+    rules: [
+      {
+        required: true,
+        message: '密码不能为空!',
       },
     ],
   },

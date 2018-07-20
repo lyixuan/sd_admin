@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Input } from 'antd';
+import { Table, Input, message } from 'antd';
 import { connect } from 'dva';
 // import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -9,7 +9,7 @@ import common from '../Common/common.css';
 
 @connect(({ shortName, loading }) => ({
   shortName,
-  loading,
+  loading: loading.models.shortName,
 }))
 class Family extends Component {
   constructor(props) {
@@ -32,6 +32,7 @@ class Family extends Component {
       familyName: record.familyName,
       id: record.id,
       visible: true,
+      name: '',
     });
   };
 
@@ -45,14 +46,20 @@ class Family extends Component {
 
   // 模态框回显
   clickModalOK = (id, familyShortName) => {
-    const paramsObj = {
-      id,
-      familyShortName,
-    };
-    this.props.dispatch({
-      type: 'shortName/editFamily',
-      payload: { paramsObj },
-    });
+    if (!familyShortName) {
+      message.error('家族简称不可为空');
+      this.showModal(true);
+    } else {
+      const paramsObj = {
+        id,
+        familyShortName,
+      };
+      this.props.dispatch({
+        type: 'shortName/editFamily',
+        payload: { paramsObj },
+      });
+      this.showModal(false);
+    }
   };
   // input双向绑定
   handelChange(e) {
@@ -72,7 +79,7 @@ class Family extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序号',
+        title: 'id',
         dataIndex: 'id',
       },
       {
@@ -97,8 +104,11 @@ class Family extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/account/editAccount">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record)}>
+              <AuthorizedButton authority="/family/editeFamilyShortName">
+                <span
+                  style={{ color: '#52C9C2', cursor: 'pointer' }}
+                  onClick={() => this.onEdit(record)}
+                >
                   编辑
                 </span>
               </AuthorizedButton>
@@ -111,15 +121,17 @@ class Family extends Component {
   };
 
   render() {
-    const { familyList } = this.props.shortName;
+    const { loading, shortName } = this.props;
+    const { familyList } = shortName;
     const dataSource = !familyList ? [] : familyList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, collegeName, familyName, id, name } = this.state;
-    const modalTitle = `${collegeName} / ${familyName}`;
+    const modalTitle = `${collegeName} | ${familyName}`;
     const modalContent = (
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
         <Input
+          maxLength={20}
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
             this.handelChange(e);
@@ -131,12 +143,12 @@ class Family extends Component {
     return (
       <div>
         <ContentLayout
-          pageHeraderUnvisible="unvisible"
-          title="家族"
+          routerData={this.props.routerData}
           contentTable={
             <div>
               <p className={common.totalNum}>总数：{dataSource.length} 条</p>
               <Table
+                loading={loading}
                 bordered
                 dataSource={dataSource}
                 columns={columns}

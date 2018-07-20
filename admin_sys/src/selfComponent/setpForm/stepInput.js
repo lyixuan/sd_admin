@@ -10,19 +10,9 @@ import styles from './step.css';
 const { TextArea } = Input;
 
 class stepInput extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      nums: '',
-    };
-  }
-
   // input双向绑定
   handelChange(e) {
     const { getNums, callBackParent } = this.props;
-    this.setState({
-      nums: e.target.value,
-    });
     if (getNums) {
       getNums({ nums: e.target.value });
     }
@@ -34,8 +24,8 @@ class stepInput extends Component {
     }
   }
   render() {
-    const { inputTitle, inputInfo, inputContent, inputTip, disabled, faileData } = this.props;
-    const valueData = !faileData ? this.state.nums : faileData.slice(1, faileData.length - 1);
+    const { inputTitle, inputInfo, inputContent, inputTip, disabled, faileData, nums } = this.props;
+    const valueData = !faileData ? nums : faileData.slice(1, faileData.length - 1);
     return (
       <div className={styles.wrap}>
         {inputTitle ? <div className={styles.inputTitle}>{inputTitle}</div> : null}

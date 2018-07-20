@@ -1,20 +1,34 @@
 import React, { Component } from 'react';
 import Content from './Content';
+import PageHead from '../selfComponent/pageHead/pageHead';
+import styles from './Content.less';
 
 class ContentLayout extends Component {
-  // constructor(props) {
-  //   super(props);}
-
+  getRouterPathname = () => {
+    const { routerData = {} } = this.props;
+    const { pathname = '' } = window.location;
+    const routeObj = routerData[pathname];
+    return routeObj || {};
+  };
   render() {
-    const flag = !this.props.pageHeraderUnvisible ? 'unvisible' : null;
-    const title = !this.props.title ? null : this.props.title;
+    // const title = !this.props.title ? null : this.props.title;
+    const { routerData = null } = this.props;
+    const routeObj = this.getRouterPathname();
+    const { name = '', bread } = routeObj;
     return (
-      <Content flag={flag} title={title}>
-        {!this.props.contentForm ? null : this.props.contentForm}
-        {!this.props.contentButton ? null : this.props.contentButton}
-        {!this.props.contentTable ? null : this.props.contentTable}
-        {!this.props.contentPagination ? null : this.props.contentPagination}
-      </Content>
+      <div className={styles.contentLayout}>
+        <div className={styles.bread}>
+          {routerData && bread && <PageHead routerData={routerData} />}
+        </div>
+        {name && <div className={styles.title}>{name}</div>}
+        <Content>
+          {!this.props.contentForm ? null : this.props.contentForm}
+          {!this.props.contentButton ? null : this.props.contentButton}
+          {!this.props.contentTable ? null : this.props.contentTable}
+          {!this.props.contentPagination ? null : this.props.contentPagination}
+          {!this.props.bottomLine ? null : this.props.bottomLine}
+        </Content>
+      </div>
     );
   }
 }

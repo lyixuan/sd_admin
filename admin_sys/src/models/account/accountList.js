@@ -5,7 +5,7 @@ import {
   addAccount,
   updateAccount,
   deleteAccount,
-  getRoleList,
+  getRolePrivilegesList,
   queryAccountInfo,
 } from '../../services/api';
 
@@ -14,16 +14,16 @@ export default {
 
   state: {
     // 请求接口上送参数
-    accountListParams: { size: 30, number: 0 },
+    accountListParams: { size: 30, number: 0, orderType: 'name' },
     addAccountParams: {},
     updateAccountParams: {},
     deleteAccountParams: {},
     getRoleListParams: {},
-    accountInfoParams:{},
+    accountInfoParams: {},
     // 接口返回数据存储
     accountList: [],
     getRoleList: [],
-    accountInfo:[],
+    accountInfo: [],
   },
 
   effects: {
@@ -41,7 +41,7 @@ export default {
       const result = yield call(addAccount, payload.addAccountParams);
       if (result.code === 0 || result.code === 2000) {
         message.success('成功创建账号！');
-        yield put(routerRedux.push('/account/accountList'));
+        yield put(routerRedux.push('/config/accountList'));
       } else {
         message.error(result.msg);
       }
@@ -50,7 +50,7 @@ export default {
       const result = yield call(updateAccount, payload.updateAccountParams);
       if (result.code === 0 || result.code === 2000) {
         message.success('成功编辑账号！');
-        yield put(routerRedux.push('/account/accountList'));
+        yield put(routerRedux.push('/config/accountList'));
       } else {
         message.error(result.msg);
       }
@@ -63,7 +63,7 @@ export default {
       } else {
         message.error(result.msg);
       }
-      const response = yield call(queryAccountList, { size: 30, number: 0 });
+      const response = yield call(queryAccountList, { size: 30, number: 0, orderType: 'name' });
       console.log(response);
       yield put({
         type: 'accountListSave',
@@ -71,7 +71,7 @@ export default {
       });
     },
     *getRoleList({ payload }, { call, put }) {
-      const response = yield call(getRoleList, payload.getRoleListParams);
+      const response = yield call(getRolePrivilegesList, payload.getRoleListParams);
       yield put({
         type: 'getRoleListSave',
         payload: response,

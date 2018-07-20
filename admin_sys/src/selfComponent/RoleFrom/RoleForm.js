@@ -6,14 +6,18 @@ import styles from './RoleForm.css';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 
-let checkAllObj = {};
-let isClick = false;
+let checkAllObj = {}; // 存储选中项
+let isClick = false; // 区分创建和编辑
+let initAllVal = []; // 传参数
+let allIdsVal = {}; // 所有一级id
 
 class RoleForm extends Component {
   constructor(props) {
     super(props);
     checkAllObj = {};
     isClick = false;
+    initAllVal = [];
+    allIdsVal = {};
   }
   // getCheckObj = {
   //   checkAllObj:{},
@@ -24,38 +28,107 @@ class RoleForm extends Component {
   //     this.checkAllObj = checkAllObj;
   //   }
   // };
-
   componentWillUnmount() {
     checkAllObj = null;
     isClick = null;
+    allIdsVal = null;
+    initAllVal = null;
   }
   /*
   * 单选按钮事件
   * */
-  onChange = (secList, key, listKey, checkedList) => {
+  onChange = (gid, pid, secList, key, listKey, checkedList) => {
     isClick = true;
     let len = 0;
+    let checkLists = [];
+    let hasCheck = false;
     secList.forEach(n => {
       checkedList.forEach(m => {
         if (n.id === m) {
           len += 1;
+          hasCheck = true;
         }
       });
     });
-    checkAllObj[listKey] = checkedList;
+
+    // 功能有勾选，则自动上传他上级id
+    if (!hasCheck) {
+      checkedList.forEach(m => {
+        if (secList[0].parentId === m) {
+          const index = checkedList.indexOf(secList[0].parentId);
+          if (index > -1) {
+            checkedList.splice(index, 1);
+          }
+        }
+      });
+      checkLists = checkedList;
+    } else {
+      checkLists = checkedList.concat(pid);
+    }
+
+    initAllVal = Array.from(new Set(checkLists));
+
+    // 删除一级id
+    let hasChildren = 0;
+    allIdsVal[gid].forEach(k => {
+      initAllVal.forEach(m => {
+        if (k === m) {
+          hasChildren += 1;
+        }
+      });
+    });
+    if (hasChildren === 0) {
+      const index = initAllVal.indexOf(gid);
+      if (index > -1) {
+        initAllVal.splice(index, 1);
+      }
+    }
+    checkAllObj[listKey] = initAllVal;
     checkAllObj[key] = len === secList.length;
   };
   /*
   * 全选按钮事件
   * */
-  onCheckAllChange = (secList, allKey, listKey, e) => {
+  onCheckAllChange = (gid, pid, secList, allKey, listKey, e) => {
+    const initVal = initAllVal.length > 0 ? initAllVal : this.props.getRoleIds;
+
     isClick = true;
     const nodeIDs = [];
     secList.forEach(key => {
       nodeIDs.push(key.id);
+      nodeIDs.push(key.parentId);
     });
 
-    checkAllObj[listKey] = e.target.checked ? nodeIDs : [];
+    // 取消全选的时候同时删除父级id
+    if (!e.target.checked) {
+      nodeIDs.forEach(n => {
+        initVal.forEach(m => {
+          if (n === m) {
+            const index = initVal.indexOf(n);
+            if (index > -1) {
+              initVal.splice(index, 1);
+            }
+          }
+        });
+      });
+      let hasChildren = 0;
+      // 删除一级id
+      allIdsVal[gid].forEach(k => {
+        initVal.forEach(m => {
+          if (k === m) {
+            hasChildren += 1;
+          }
+        });
+      });
+      if (hasChildren === 0) {
+        const index = initVal.indexOf(gid);
+        if (index > -1) {
+          initVal.splice(index, 1);
+        }
+      }
+    }
+    initAllVal = initVal;
+    checkAllObj[listKey] = e.target.checked ? Array.from(new Set(nodeIDs.concat(pid))) : [];
     checkAllObj[allKey] = e.target.checked;
   };
   /*
@@ -79,9 +152,7 @@ class RoleForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        if (privilegeIds.length === 0) {
-          privilegeIds = this.props.getRoleIds;
-        }
+        privilegeIds = privilegeIds.concat(initAllVal);
         this.props.submitInfo(values, Array.from(new Set(privilegeIds)));
       } else {
         console.error(err);
@@ -89,7 +160,21 @@ class RoleForm extends Component {
     });
   };
   render() {
-    const { listAll, isShowFooter, getRoleIds } = this.props;
+    const allIds = {};
+    const { listAll, isShowFooter, getRoleIds, checkdIds, loading } = this.props;
+
+    listAll.forEach(item => {
+      allIds[item.id] = [];
+      item.nodes.forEach(item1 => {
+        allIds[item.id].push(item1.id);
+        item1.nodes.forEach(item2 => {
+          allIds[item.id].push(item2.id);
+        });
+      });
+      allIdsVal = allIds;
+      return allIdsVal;
+    });
+
     const { getFieldDecorator } = this.props.form;
     let isDisabled = true;
     if (isShowFooter) isDisabled = false;
@@ -101,15 +186,17 @@ class RoleForm extends Component {
     /*
     * 复选框
     * */
-    const secLevel = (name, item, checkAllKey, listKey) => {
+    const secLevel = (name, item, checkAllKey, listKey, gid, pid) => {
+      const parentIds = [pid, gid];
       let len = 0;
       const plainOptions = [];
       item.forEach(key => {
-        plainOptions.push({ label: key.name, value: key.id });
+        plainOptions.push({ label: key.name, value: key.id, parentId: pid });
       });
-      if (getRoleIds) {
+      const isCheckedAll = checkdIds && checkdIds.length > 0 ? checkdIds : getRoleIds;
+      if (isCheckedAll) {
         plainOptions.forEach(n => {
-          getRoleIds.forEach(m => {
+          isCheckedAll.forEach(m => {
             if (n.value === m) {
               len += 1;
             }
@@ -123,10 +210,17 @@ class RoleForm extends Component {
       return (
         <div>
           <p className={styles.littleTitle}>{name}</p>
-          {item.length===0?null: (
+          {item.length === 0 ? null : (
             <div>
               <Checkbox
-                onChange={this.onCheckAllChange.bind(this, item, checkAllKey, listKey)}
+                onChange={this.onCheckAllChange.bind(
+                  this,
+                  gid,
+                  parentIds,
+                  item,
+                  checkAllKey,
+                  listKey
+                )}
                 checked={checkAllObj[checkAllKey]}
                 disabled={isDisabled}
                 className={styles.checkBox}
@@ -137,12 +231,11 @@ class RoleForm extends Component {
                 options={plainOptions}
                 value={!checkAllObj[listKey] ? getRoleIds : checkAllObj[listKey]}
                 disabled={isDisabled}
-                onChange={this.onChange.bind(this, item, checkAllKey, listKey)}
+                onChange={this.onChange.bind(this, gid, parentIds, item, checkAllKey, listKey)}
                 className={styles.checkboxGroup}
               />
             </div>
-          )
-          }
+          )}
         </div>
       );
     };
@@ -151,8 +244,28 @@ class RoleForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*角色名称：">
             {getFieldDecorator('name', {
-              rules: [{ required: true, message: '请输入角色名称!', whitespace: true }],
-            })(<Input disabled={isDisabled} style={{ width: '220px', height: '32px' }} />)}
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    const reg = !value ? '' : value.replace(/\s*/g, '');
+                    if (!reg) {
+                      callback({ message: '角色名称为必填项，请填写!' });
+                    } else if (reg.length < 2 || reg.length > 20) {
+                      callback({ message: '角色名称在2-20个字符之间，请填写!' });
+                    } else {
+                      callback();
+                    }
+                  },
+                },
+              ],
+            })(
+              <Input
+                maxLength={25}
+                minLength={1}
+                disabled={isDisabled}
+                style={{ width: '220px', height: '32px' }}
+              />
+            )}
           </FormItem>
           <FormItem {...formItemLayout} label=" *角色权限：">
             {getFieldDecorator('privilegeIds', {})(
@@ -174,7 +287,9 @@ class RoleForm extends Component {
                                   nodes[item2].name,
                                   nodes[item2].nodes,
                                   checkAll,
-                                  checkedList
+                                  checkedList,
+                                  firNodes.id,
+                                  nodes[item2].id
                                 )}
                               </div>
                             );
@@ -192,7 +307,12 @@ class RoleForm extends Component {
                 <Button onClick={this.cancel} type="primary" className={common.cancleButton}>
                   取消
                 </Button>
-                <Button htmlType="submit" type="primary" className={common.submitButton}>
+                <Button
+                  loading={loading}
+                  htmlType="submit"
+                  type="primary"
+                  className={common.submitButton}
+                >
                   提交
                 </Button>
               </div>

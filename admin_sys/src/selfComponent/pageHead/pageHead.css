@@ -1,0 +1,10 @@
+.pagehead{
+  background: #f0f2f5;
+  height:54px;
+  line-height: 54px;
+  font-size: 14px;
+}
+:global(.ant-breadcrumb) {
+  line-height: 54px !important;
+}
+

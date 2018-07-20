@@ -61,7 +61,7 @@
 }
 
 :global(.ant-popover-inner-content){
-  padding: 32px 24px;
+  padding: 28px 24px;
   width: 356px;
   height: 136px;
 }
@@ -74,10 +74,10 @@
 :global(.ant-popover-buttons) {
   text-align: right;
   margin-bottom: 4px;
-  margin-top: 8px;
+  margin-top: 16px;
 }
 :global(.ant-popover-buttons button) {
-    width: 70px;
+    width: 80px;
     height: 32px;
 }
 :global(.ant-popover-buttons .ant-btn-primary) {
@@ -130,7 +130,7 @@
   margin: 0;
   background-color: #52C9C2;
   font-size: 14px;
-  width: 70px;
+  width: 80px;
   height: 32px;
   border-color: #52C9C2;
 }
@@ -147,7 +147,7 @@
   margin: 0 10px 24px 0;
   background-color: #52C9C2;
   font-size: 14px;
-  width: 70px;
+  width: 80px;
   height: 32px;
   border-color: #52C9C2;
   color: #fff;
@@ -155,13 +155,14 @@
 .searchButton:hover{
   background-color: #52C9C2;
   border-color: #52C9C2;
+  color: #fff;
 }
 .searchButton:focus{
   background-color: #52C9C2;
   border-color: #52C9C2;
 }
 .addQualityButton{
-  margin: 0 10px 24px 0;
+  margin: 0 10px 0 0;
   background-color: #46A3EF;
   font-size: 14px;
   width: 80px;
@@ -197,7 +198,7 @@
   margin: 0;
   background-color: #fff;
   font-size: 14px;
-  width: 70px;
+  width: 80px;
   height: 32px;
   border: 1px solid #DCDDE0;
   color: #000;
@@ -217,7 +218,7 @@
   margin: 0 10px;
   background-color: #52C9C2;
   font-size: 14px;
-  width: 70px;
+  width: 80px;
   height: 32px;
   border-color: #52C9C2;
 }
@@ -234,6 +235,9 @@
   justify-content: flex-end;
   font-size: 14px;
   color: #000;
+  height: 14px;
+  line-height: 14px;
+  margin-bottom: 10px;
 }
 .leftInput{
   display: flex;
@@ -284,3 +288,27 @@
   color:#fff;
 }
 
+:global(.ant-btn){
+  padding: 0 12px;
+}
+
+:global(.ant-calendar-picker-input) {
+  padding: 4px 4px !important;
+}
+
+:global(.ant-calendar-range-picker-input) {
+  width: 40%;
+}
+
+:global(.ant-calendar-picker-clear, .ant-calendar-picker-icon) {
+  right: 16px;
+}
+
+:global(.ant-pagination-options-quick-jumper input:focus) {
+  border-color: #52C9C2;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+
+:global(.ant-pagination-options-quick-jumper input:hover) {
+  border-color: #52C9C2;
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Popconfirm, DatePicker } from 'antd';
+import { Table, Button, Form, Popconfirm, DatePicker, message } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -13,14 +13,19 @@ const FormItem = Form.Item;
 let propsVal = '';
 const dateFormat = 'YYYY-MM-DD';
 
-@connect(({ time, loading }) => ({ time, loading }))
+@connect(({ time, loading }) => ({
+  time,
+  loading: loading.models.time,
+  addDisabileTime: loading.effects['time/addDisableTime'],
+  changeDateArea: loading.effects['time/updateAreaDate'],
+}))
 class TimeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       params: {
-        orderDirection: 'asc',
-        orderType: 'id',
+        orderDirection: 'desc',
+        orderType: 'dateTime',
         pageNum: 0,
         pageSize: 30,
       },
@@ -38,10 +43,22 @@ class TimeList extends Component {
 
   componentDidMount() {
     this.fillDataSource();
+    this.getRange();
+    console.log(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(nextProps.time.dateArea) !== JSON.stringify(this.props.time.dateArea)) {
+      const beginTime = this.changeFormat(nextProps.time.dateArea.beginTime);
+      const endTime = this.changeFormat(nextProps.time.dateArea.endTime);
+      const dateArea = { ...nextProps.time.dateArea, beginTime, endTime };
+      this.setState({ dateArea });
+    }
   }
 
   // 添加
   onAdd = () => {
+    this.setState({ dateTime: '' });
     this.showModal(true);
   };
 
@@ -58,17 +75,31 @@ class TimeList extends Component {
   onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
   };
-  // 点击选择添加不可选时间
-  selectDisableTime = (date, dateString) => {
-    this.setState({ dateTime: dateString });
+  // 初始化回显时间日期
+  getRange = () => {
+    this.props.dispatch({
+      type: 'time/getRange',
+    });
   };
   addDisableTime = () => {
     const { dateTime = '', params } = this.state;
-    this.props.dispatch({
-      type: 'time/addDisableTime',
-      payload: { dateTime, params },
+    const { dateListObj = {} } = this.props.time;
+    const { content = [] } = dateListObj;
+    const isHasDate = content.find(item => {
+      const formatDate = moment.unix(item.dateTime / 1000).format(dateFormat);
+      return formatDate === dateTime;
     });
-    this.setState({ visible: false });
+    if (isHasDate) {
+      message.error('添加失败,日期不可重复');
+    } else if (!dateTime) {
+      message.error('添加失败,日期不可为空');
+    } else {
+      this.props.dispatch({
+        type: 'time/addDisableTime',
+        payload: { dateTime, params },
+      });
+      this.showModal(false);
+    }
   };
   showModal = bol => {
     this.setState({
@@ -99,8 +130,10 @@ class TimeList extends Component {
         !beginTime ||
         (endTime && typeof endTime === 'object' && moment(beginTime).isAfter(endTime))
       ) {
+        const dateArea = { ...this.state.dateArea, endTime, beginTime };
         this.setState({
           hintVisible: true,
+          dateArea,
         });
       } else {
         const dateArea = { ...this.state.dateArea, endTime, beginTime };
@@ -110,7 +143,6 @@ class TimeList extends Component {
         });
       }
     });
-    // this.props.setCurrentUrlParams(val);
   };
   changeDate = () => {
     const { dateArea = {} } = this.state;
@@ -120,8 +152,19 @@ class TimeList extends Component {
         ...dateArea,
       },
     });
+    this.showChangeDateModal(false);
+  };
+  changeFormat = tmp => {
+    return tmp ? moment.unix(tmp / 1000).format(dateFormat) : '';
   };
 
+  // 点击选择添加不可选时间
+  selectDisableTime = (date, dateString) => {
+    this.setState({ dateTime: dateString });
+  };
+  closeErrorModal = () => {
+    this.showHintModal(false);
+  };
   // 初始化tabale 列数据
   fillDataSource = value => {
     const { params } = this.state;
@@ -145,9 +188,9 @@ class TimeList extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/account/editAccount">
+              <AuthorizedButton authority="/timeManage/deleteDate">
                 <Popconfirm title="是否确认删除时间?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
+                  <span style={{ color: '#52C9C2', marginLeft: 12, cursor: 'pointer' }}>删除</span>
                 </Popconfirm>
               </AuthorizedButton>
             </div>
@@ -161,6 +204,7 @@ class TimeList extends Component {
   render() {
     const { visible, hintVisible, changeVisible, dateArea } = this.state;
     const { dateListObj = {} } = this.props.time;
+    const { loading, addDisabileTime, changeDateArea } = this.props;
     const { content = [], size = 0 } = dateListObj;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
@@ -198,14 +242,17 @@ class TimeList extends Component {
               })(dateAreaPicker)}
             </FormItem>
             <FormItem style={{ marginLeft: 30 }}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className={common.searchButton}
-                style={{ margin: '0' }}
-              >
-                保存
-              </Button>
+              <AuthorizedButton authority="/timeManage/updateArea">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={changeDateArea}
+                  className={common.searchButton}
+                  style={{ margin: '0' }}
+                >
+                  保存
+                </Button>
+              </AuthorizedButton>
             </FormItem>
           </div>
         </Form>
@@ -214,16 +261,16 @@ class TimeList extends Component {
     return (
       <div>
         <ContentLayout
-          pageHeraderUnvisible="unvisible"
-          title="时间管理"
+          routerData={this.props.routerData}
           contentForm={<WrappedAdvancedSearchForm />}
           contentButton={
             <div>
               <p className={styles.tableTitle}>“不可用日期”设置</p>
               <p className={styles.content}>
                 <span className={styles.txt}>设置不可用的日期（指定日期将不参与学分计算）</span>
-                <AuthorizedButton authority="/timeManage/TimeList">
+                <AuthorizedButton authority="/timeManage/unAddDate">
                   <Button
+                    loading={addDisabileTime}
                     onClick={this.onAdd}
                     type="primary"
                     className={common.searchButton}
@@ -239,6 +286,7 @@ class TimeList extends Component {
             <div style={{ width: '590px' }}>
               <Table
                 bordered
+                loading={loading}
                 dataSource={dataSorce}
                 columns={columns}
                 useFixedHeader
@@ -274,6 +322,7 @@ class TimeList extends Component {
           visible={hintVisible}
           modalContent="时间可选范围有误"
           showModal={bol => this.showHintModal(bol)}
+          clickOK={this.closeErrorModal}
         />
         <ModalDialog
           title="修改&quot;自定义时间&quot;可选范围"

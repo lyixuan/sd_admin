@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Input } from 'antd';
+import { Table, Input, message } from 'antd';
 // import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -9,7 +9,7 @@ import common from '../Common/common.css';
 
 @connect(({ shortName, loading }) => ({
   shortName,
-  loading,
+  loading: loading.models.shortName,
 }))
 class College extends Component {
   constructor(props) {
@@ -32,6 +32,7 @@ class College extends Component {
       collegeName: record.collegeName,
       id: record.id,
       visible: true,
+      name: '',
     });
   };
 
@@ -44,14 +45,20 @@ class College extends Component {
 
   // 模态框回显
   clickModalOK = (id, collegeShortName) => {
-    const paramsObj = {
-      id,
-      collegeShortName,
-    };
-    this.props.dispatch({
-      type: 'shortName/editCollege',
-      payload: { paramsObj },
-    });
+    if (!collegeShortName) {
+      message.error('学院简称不可为空');
+      this.showModal(true);
+    } else {
+      const paramsObj = {
+        id,
+        collegeShortName,
+      };
+      this.props.dispatch({
+        type: 'shortName/editCollege',
+        payload: { paramsObj },
+      });
+      this.showModal(false);
+    }
   };
   // input双向绑定
   handelChange(e) {
@@ -69,7 +76,7 @@ class College extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序号',
+        title: 'id',
         dataIndex: 'id',
       },
       {
@@ -90,8 +97,11 @@ class College extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/account/editAccount">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record)}>
+              <AuthorizedButton authority="/college/editeCollegeShortName">
+                <span
+                  style={{ color: '#52C9C2', cursor: 'pointer' }}
+                  onClick={() => this.onEdit(record)}
+                >
                   编辑
                 </span>
               </AuthorizedButton>
@@ -104,7 +114,8 @@ class College extends Component {
   };
 
   render() {
-    const { collegeList } = this.props.shortName;
+    const { loading, shortName } = this.props;
+    const { collegeList } = shortName;
     const dataSource = !collegeList ? [] : collegeList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, collegeName, id, name } = this.state;
@@ -112,6 +123,7 @@ class College extends Component {
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}> {collegeName} </p>
         <Input
+          maxLength={20}
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
             this.handelChange(e);
@@ -123,12 +135,12 @@ class College extends Component {
     return (
       <div>
         <ContentLayout
-          pageHeraderUnvisible="unvisible"
-          title="学院"
+          routerData={this.props.routerData}
           contentTable={
             <div>
               <p className={common.totalNum}>总数：{dataSource.length} 条</p>
               <Table
+                loading={loading}
                 bordered
                 dataSource={dataSource}
                 columns={columns}
@@ -151,7 +163,7 @@ class College extends Component {
           visible={visible}
           modalContent={modalContent}
           showModal={bol => this.showModal(bol)}
-          clickOK={() => this.clickModalOK(id)}
+          clickOK={() => this.clickModalOK(id, name)}
         />
       </div>
     );

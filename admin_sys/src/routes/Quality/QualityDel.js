@@ -14,64 +14,7 @@ import { clearConfirm, setConfirm } from '../../utils/reloadConfirm';
 class RefundDel extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
-      {
-        title: '子订单编号',
-        dataIndex: 'name',
-        width: '100px',
-      },
-      {
-        title: '编号已存在',
-        dataIndex: 'role',
-        width: '100px',
-      },
-      {
-        title: '必填项缺失',
-        dataIndex: 'email',
-        width: '100px',
-      },
-      {
-        title: '班主任组织关系匹配失败',
-        dataIndex: 'status',
-        width: '100px',
-      },
-      {
-        title: '学院/家族/小组不存在',
-        dataIndex: 'status2',
-        width: '150px',
-      },
-      {
-        title: '编号重复',
-        dataIndex: 'status1',
-        width: '100px',
-      },
-    ];
-
-    const dataSource = [
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-    ];
     this.state = {
-      dataSource: !dataSource ? [] : dataSource,
       isDisabled: true,
     };
   }
@@ -79,6 +22,12 @@ class RefundDel extends Component {
   componentDidMount() {
     // init current
     this.editCurrent(0);
+  }
+
+  // 离开页面的时候，把disableDel，nums恢复默认值null
+  componentWillUnmount() {
+    clearConfirm();
+    this.initParamsFn(null, 'clear');
   }
   // 回调
   onChildChange = bol => {
@@ -90,6 +39,14 @@ class RefundDel extends Component {
     this.props.dispatch({
       type: 'quality/getNums',
       payload: nums,
+    });
+  };
+  // 初始化一些值
+  initParamsFn = (disableDel, nums) => {
+    const num = !nums ? this.props.quality.nums : '';
+    this.props.dispatch({
+      type: 'quality/initParams',
+      payload: { disableDel, nums: num },
     });
   };
   fetchPreDel = params => {
@@ -110,20 +67,86 @@ class RefundDel extends Component {
       payload: { current },
     });
   };
+  editLoading = isLoading => {
+    console.log(isLoading);
+    this.props.dispatch({
+      type: 'quality/editLoading',
+      payload: { isLoading },
+    });
+  };
   historyFn() {
     this.props.history.push({
       pathname: '/quality/qualityList',
     });
   }
+  // 初始化tabale 列数据
+  fillDataSource = val => {
+    const data = [];
+    val.map((item, index) =>
+      data.push({
+        key: index + 1,
+        qualityNum: item.qualityNum,
+        countValue: item.countValue,
+        qualityTypeName: item.qualityTypeName,
+        teaName: item.teaName,
+        name: `${item.collegeName} | ${item.familyName} | ${item.groupName}`,
+      })
+    );
+    return data;
+  };
+  columnsData = () => {
+    const columns = [
+      {
+        title: '序号',
+        dataIndex: 'key',
+        width: '70px',
+      },
+      {
+        title: '质检编号',
+        dataIndex: 'qualityNum',
+        width: '130px',
+      },
+      {
+        title: '扣除学分',
+        dataIndex: 'countValue',
+        width: '90px',
+      },
+      {
+        title: '质检等级',
+        dataIndex: 'qualityTypeName',
+        width: '90px',
+      },
+      {
+        title: '老师名称',
+        dataIndex: 'teaName',
+        width: '90px',
+      },
+      {
+        title: '学院 | 家族 | 小组',
+        dataIndex: 'name',
+        width: '250px',
+      },
+    ];
+
+    return columns;
+  };
   render() {
-    const { preDelData, nums, current } = this.props.quality;
+    const { preDelData, nums, current, disableDel, isLoading } = this.props.quality;
+    const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
-    const failNums = data ? data.failNums : 'ww';
-    const successNums = data ? data.successNums : 'ww';
-    const inputContent = data ? data.failSize > 0 : null;
+    const dataSource = !data || !data.successNums ? [] : this.fillDataSource(data.successNums);
+    const columns = !this.columnsData() ? [] : this.columnsData();
 
-    const { dataSource, isDisabled } = this.state;
+    const successNums = [];
+    if (dataSource.length > 0) {
+      data.successNums.forEach(item => {
+        successNums.push(item.qualityNum);
+      });
+    }
+    const failNums = data ? data.failNums : [];
+    const successSize = data ? data.successSize : 0;
+    const inputContent = data ? data.failSize > 0 : null;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -132,15 +155,9 @@ class RefundDel extends Component {
       clearConfirm();
     }
 
-    const columns = !this.columns ? [] : this.columns;
-
-    const tipSucess = '您已成功删除 1500 条数据！';
+    const tipSucess = `您已成功删除 ${successSize} 条数据！`;
     const checkRes = !data ? null : (
-      <CheckResult
-        totalSize={data.totalSize}
-        successSize={data.successSize}
-        failSize={data.failSize}
-      />
+      <CheckResult totalSize={data.totalSize} successSize={successSize} failSize={data.failSize} />
     );
     const steps = [
       {
@@ -150,6 +167,7 @@ class RefundDel extends Component {
             inputTitle="请输入想删除的 “质检编号”："
             inputContent="true"
             inputTip="true"
+            nums={nums}
             getNums={param => {
               this.getNums(param);
             }}
@@ -174,10 +192,9 @@ class RefundDel extends Component {
         title: '复核数据',
         content: (
           <StepTable
-            tableTitle="请确认是否删除以下'质检'编号："
+            tableTitle="请确认是否删除以下数据："
             dataSource={dataSource}
             columns={columns}
-            scroll={{ y: 264 }}
           />
         ),
       },
@@ -188,19 +205,34 @@ class RefundDel extends Component {
     ];
     return (
       <StepLayout
+        routerData={this.props.routerData}
         title="删除质检"
         steps={steps}
         tipSucess={tipSucess}
         isDisabled={isDisabled}
+        disableDel={disableDel}
         goBack={() => {
           this.historyFn();
+        }}
+        callBackParent={bol => {
+          this.onChildChange(bol);
+        }}
+        initParamsFn={dis => {
+          this.initParamsFn(dis);
         }}
         step1Fetch={() => {
           this.fetchPreDel({ nums });
         }}
         step2Fetch={() => {
-          this.fetchDel({ nums: successNums });
+          this.editCurrent(2);
         }}
+        step3Fetch={() => {
+          this.fetchDel({ nums: successNums.join(' ') });
+        }}
+        editLoading={loading => {
+          this.editLoading(loading);
+        }}
+        isLoading={isLoading}
         current={current}
         editCurrent={param => {
           this.editCurrent(param);

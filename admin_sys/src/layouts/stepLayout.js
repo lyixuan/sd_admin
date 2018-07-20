@@ -11,15 +11,17 @@
 * */
 import React, { Component } from 'react';
 import { Steps, Button } from 'antd';
-import styles from './stepLayout.css';
 import common from '../routes/Common/common.css';
+import ContentLayout from './ContentLayout';
+import styles from './stepLayout.css';
 
 const { Step } = Steps;
 
 class StepLayout extends Component {
   // 下一页
   next() {
-    const { step1Fetch, step2Fetch, step3Fetch, current } = this.props;
+    const { step1Fetch, step2Fetch, step3Fetch, current, editLoading } = this.props;
+    editLoading(true);
     if (current === 0) {
       if (step1Fetch) {
         step1Fetch();
@@ -44,9 +46,14 @@ class StepLayout extends Component {
   }
   // 上一页
   prev() {
-    const { editCurrent, current } = this.props;
+    const { editCurrent, current, callBackParent, initParamsFn } = this.props;
     editCurrent(current - 1);
+    callBackParent(false);
+    if (current === 1 && initParamsFn) {
+      initParamsFn(null);
+    }
   }
+
   // 取消---回到列表页
   cancel = () => {
     window.history.go(-1);
@@ -56,7 +63,16 @@ class StepLayout extends Component {
     this.props.goBack();
   };
   render() {
-    const { title, steps, baseLayout, isDisabled, current } = this.props;
+    const {
+      steps,
+      baseLayout,
+      isDisabled,
+      disableDel,
+      current,
+      isLoading,
+      routerData,
+    } = this.props;
+    const dis = disableDel === null ? isDisabled : disableDel;
 
     const stepBlock = (
       <div>
@@ -65,7 +81,7 @@ class StepLayout extends Component {
             <Steps current={current} progressDot>
               {steps.map(item => <Step key={item.title} title={item.title} />)}
             </Steps>
-            <div>{steps[current].content}</div>
+            <div>{steps[current] ? steps[current].content : null}</div>
             <div className={styles.stepsAction}>
               {current === 0 && (
                 <Button onClick={() => this.cancel()} className={common.cancleButton}>
@@ -83,7 +99,8 @@ class StepLayout extends Component {
                   className={common.submitButton}
                   type="primary"
                   onClick={() => this.next()}
-                  disabled={isDisabled}
+                  disabled={dis}
+                  loading={isLoading}
                 >
                   下一步
                 </Button>
@@ -99,10 +116,14 @@ class StepLayout extends Component {
       </div>
     );
     return (
-      <div className={styles.normal}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.content}>{!baseLayout ? stepBlock : baseLayout}</div>
-      </div>
+      <ContentLayout
+        routerData={routerData}
+        bottomLine={<div className={styles.content}>{!baseLayout ? stepBlock : baseLayout}</div>}
+      />
+      // <div className={styles.normal}>
+      //   <div className={styles.title}>{title}</div>
+      //   <div className={styles.content}>{!baseLayout ? stepBlock : baseLayout}</div>
+      // </div>
     );
   }
 }

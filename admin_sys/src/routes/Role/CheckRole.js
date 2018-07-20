@@ -31,13 +31,11 @@ class CheckRole extends Component {
   }
 
   render() {
-    const getRoleData = !this.props.role.getRoleData ? [] : this.props.role.getRoleData;
-    const getRoleIds = !this.props.role.getRoleIds ? [] : this.props.role.getRoleIds;
-
+    const { getRoleData = [], getRoleIds = [] } = this.props.role;
     const baseLayout = (
       <WrappedRoleForm listAll={getRoleData} getRoleIds={getRoleIds} selfProps={this.props} />
     );
-    return <StepLayout title="查看角色" baseLayout={baseLayout} />;
+    return <StepLayout routerData={this.props.routerData} baseLayout={baseLayout} />;
   }
 }
 

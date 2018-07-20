@@ -17,7 +17,7 @@ class SelfPagination extends Component {
     const {
       defaultCurrent,
       defaultPageSize,
-      pageSizeOptions,
+      // pageSizeOptions,
       total,
       onChange,
       onShowSizeChange,
@@ -26,14 +26,14 @@ class SelfPagination extends Component {
     const isShowPage = showPageSize ? total > showPageSize : total > 30;
     return isShowPage ? (
       <Pagination
-        showSizeChanger
+        showQuickJumper
         className={common.paginationStyle}
         onChange={onChange}
         onShowSizeChange={onShowSizeChange}
         defaultCurrent={defaultCurrent || 1}
         total={total || 0}
         defaultPageSize={defaultPageSize || 30}
-        pageSizeOptions={pageSizeOptions || ['30']}
+        // pageSizeOptions={pageSizeOptions || ['30']}
       />
     ) : null;
   }

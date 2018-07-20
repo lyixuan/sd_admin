@@ -17,7 +17,7 @@ const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ blComplain, loading }) => ({
   blComplain,
-  loading,
+  loading: loading.models.blComplain,
 }))
 class ComplainList extends Component {
   constructor(props) {
@@ -26,11 +26,7 @@ class ComplainList extends Component {
   }
 
   componentDidMount() {
-    const getListParams = { size: 30, number: 0 };
-    this.props.dispatch({
-      type: 'blComplain/getList',
-      payload: { getListParams },
-    });
+    this.getData({ size: 30, number: 0 });
   }
   componentWillUnmount() {
     firstBeginTime = null;
@@ -47,19 +43,18 @@ class ComplainList extends Component {
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     const getListParams = { size: pageSize, number: current - 1 };
+    this.getData(getListParams);
+  };
+  getData = params => {
+    const getListParams = { ...this.props.blComplain.getListParams, ...params };
     this.props.dispatch({
       type: 'blComplain/getList',
       payload: { getListParams },
     });
   };
-
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const getListParams = { size: pageSize, number: current - 1 };
-    this.props.dispatch({
-      type: 'blComplain/getList',
-      payload: { getListParams },
-    });
+    this.getData({ size: pageSize, number: current - 1 });
   };
 
   // 表单搜索
@@ -70,10 +65,7 @@ class ComplainList extends Component {
         firstBottomLineNum = values.bottomLineNum;
         if (!values.dateRange) {
           const getListParams = { size: 30, number: 0, bottomLineNum: values.bottomLineNum };
-          this.props.dispatch({
-            type: 'blComplain/getList',
-            payload: { getListParams },
-          });
+          this.getData(getListParams);
         } else {
           const beginTime = firstBeginTime;
           const endTime = firstEndTime;
@@ -84,10 +76,7 @@ class ComplainList extends Component {
             endTime,
             bottomLineNum: values.bottomLineNum,
           };
-          this.props.dispatch({
-            type: 'blComplain/getList',
-            payload: { getListParams },
-          });
+          this.getData(getListParams);
         }
       }
     });
@@ -108,7 +97,7 @@ class ComplainList extends Component {
     val.map((item, index) =>
       data.push({
         key: index,
-        ordId: item.ordId,
+        countValue: item.countValue,
         complainTime: item.complainTime,
         id: item.id,
         collegeName: item.collegeName,
@@ -126,12 +115,9 @@ class ComplainList extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序号',
+        title: 'id',
         dataIndex: 'id',
-      },
-      {
-        title: '子订单编号',
-        dataIndex: 'ordId',
+        width: '80px',
       },
       {
         title: '投诉时间',
@@ -158,6 +144,11 @@ class ComplainList extends Component {
         dataIndex: 'bottomLineNum',
       },
       {
+        title: '扣分值',
+        dataIndex: 'countValue',
+        width: '80px',
+      },
+      {
         title: '渠道',
         dataIndex: 'complainChannel',
       },
@@ -169,7 +160,6 @@ class ComplainList extends Component {
   refundAdd = () => {
     this.props.history.push({
       pathname: '/complaint/complaintAdd',
-      search: JSON.stringify({ type: 'add' }),
     });
   };
 
@@ -177,7 +167,6 @@ class ComplainList extends Component {
   refundDel = () => {
     this.props.history.push({
       pathname: '/complaint/complaintDel',
-      search: JSON.stringify({ type: 'del' }),
     });
   };
 
@@ -190,12 +179,12 @@ class ComplainList extends Component {
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const formLayout = 'inline';
+
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
       return (
-        <Form onSubmit={this.handleSearch} layout={formLayout}>
+        <Form onSubmit={this.handleSearch} layout="inline">
           <FormItem label="投诉时间">
             {getFieldDecorator('dateRange', {
               // rules: [{ required: true, message: '请选择生效日期' }],
@@ -210,16 +199,23 @@ class ComplainList extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="编号" style={{ marginLeft: 119 }}>
+          <FormItem label="编号" style={{ marginLeft: 60 }}>
             {getFieldDecorator('bottomLineNum', {
               initialValue: firstBottomLineNum,
               rules: [
                 { min: 2, message: '编号长度不得低于2!' },
                 { max: 20, message: '编号长度不得高于20!' },
               ],
-            })(<Input placeholder="请输入编号" style={{ width: 230, height: 32 }} />)}
+            })(
+              <Input
+                maxLength={20}
+                minLength={2}
+                placeholder="请输入编号"
+                style={{ width: 230, height: 32 }}
+              />
+            )}
           </FormItem>
-          <FormItem style={{ marginLeft: 119 }}>
+          <FormItem style={{ marginLeft: 60 }}>
             <Button type="primary" htmlType="submit" className={common.searchButton}>
               搜索
             </Button>
@@ -257,6 +253,7 @@ class ComplainList extends Component {
           <div>
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
+              loading={this.props.loading}
               bordered
               dataSource={dataSource}
               columns={columns}

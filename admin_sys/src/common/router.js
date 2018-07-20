@@ -1,7 +1,7 @@
 import { createElement } from 'react';
 import dynamic from 'dva/dynamic';
-import pathToRegexp from 'path-to-regexp';
-import { getMenuData } from './menu';
+// import pathToRegexp from 'path-to-regexp';
+// import { getMenuData } from './menu';
 
 let routerDataCache;
 
@@ -55,18 +55,19 @@ const dynamicWrapper = (app, models, component) => {
   });
 };
 
-function getFlatMenuData(menus) {
-  let keys = {};
-  menus.forEach(item => {
-    if (item.children) {
-      keys[item.path] = { ...item };
-      keys = { ...keys, ...getFlatMenuData(item.children) };
-    } else {
-      keys[item.path] = { ...item };
-    }
-  });
-  return keys;
-}
+// function getFlatMenuData(menus) {
+//   let keys = {};
+//   menus.forEach(item => {
+//     if (item.children) {
+//       keys[item.path] = { ...item };
+//       keys = { ...keys, ...getFlatMenuData(item.children) };
+//     } else {
+//       keys[item.path] = { ...item };
+//     }
+//   });
+//   return keys;
+// }
+
 export const getRouterData = app => {
   const routerConfig = {
     '/': {
@@ -77,109 +78,201 @@ export const getRouterData = app => {
     },
     '/quality/qualityList': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityList')),
+      name: '质检管理',
     },
     '/quality/qualityAdd': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityAdd')),
+      bread: {
+        name: '质检管理',
+        path: '/quality/qualityList',
+      },
+      name: '添加质检',
     },
     '/quality/qualityDel': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityDel')),
+      bread: {
+        name: '质检管理',
+        path: '/quality/qualityList',
+      },
+      name: '删除质检',
     },
-    '/account/accountList': {
+    '/config/accountList': {
       component: dynamicWrapper(app, ['account/accountList'], () =>
         import('../routes/Account/AccountList')
       ),
+      name: '账号管理',
     },
     '/account/createAccount': {
       component: dynamicWrapper(app, ['account/accountList'], () =>
         import('../routes/Account/CreateAccount')
       ),
+      bread: {
+        name: '账号管理',
+        path: '/config/accountList',
+      },
+      name: '创建账号',
     },
     '/account/editAccount': {
       component: dynamicWrapper(app, ['account/accountList'], () =>
         import('../routes/Account/EditAccount')
       ),
+      bread: {
+        name: '账号管理',
+        path: '/config/accountList',
+      },
+      name: '编辑账号',
     },
     '/user/editUser': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/EditUser')),
+      bread: {
+        name: '用户管理',
+        path: '/config/userList',
+      },
+      name: '编辑用户',
     },
     '/user/createUser': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/CreateUser')),
+      bread: {
+        name: '用户管理',
+        path: '/config/userList',
+      },
+      name: '创建用户',
     },
     '/user/checkUser': {
       component: dynamicWrapper(app, [], () => import('../routes/Users/CheckUser')),
+      bread: {
+        name: '用户管理',
+        path: '/config/userList',
+      },
+      name: '查看用户',
     },
-    '/user/userList': {
+    '/config/userList': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/UserList')),
+      name: '用户管理',
     },
 
     '/permission/editPermission': {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/EditPermission')
       ),
+      bread: {
+        name: '权限管理',
+        path: '/config/permissionList',
+      },
+      name: '编辑权限',
     },
     '/permission/createPermission': {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/CreatePermission')
       ),
+      bread: {
+        name: '权限管理',
+        path: '/config/permissionList',
+      },
+      name: '创建权限',
     },
-    '/permission/permissionList': {
+    '/config/permissionList': {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/PermissionList')
       ),
+      name: '权限管理',
     },
 
     '/role/editRole': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/EditRole')),
+      bread: {
+        name: '角色管理',
+        path: '/config/roleList',
+      },
+      name: '编辑角色',
     },
     '/role/createrole': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/CreateRole')),
+      bread: {
+        name: '角色管理',
+        path: '/config/roleList',
+      },
+      name: '创建角色',
     },
     '/role/checkRole': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/CheckRole')),
+      bread: {
+        name: '角色管理',
+        path: '/config/roleList',
+      },
+      name: '查看劫色',
     },
-    '/role/roleList': {
+    '/config/roleList': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/RoleList')),
+      name: '角色管理',
     },
-    '/refund/refundList': {
+    '/bottomLine/refundList': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundList')),
+      name: '退费管理',
     },
     '/refund/refundAdd': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundAdd')),
+      bread: {
+        name: '退费管理',
+        path: '/bottomLine/refundList',
+      },
+      name: '添加退费',
     },
     '/refund/refundDel': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundDel')),
+      bread: {
+        name: '退费管理',
+        path: '/bottomLine/refundList',
+      },
+      name: '删除退费',
     },
-    '/complaint/complaintList': {
+    '/bottomLine/complaintList': {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintList')
       ),
+      name: '投诉管理',
     },
     '/complaint/complaintAdd': {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintAdd')
       ),
+      bread: {
+        name: '投数管理',
+        path: '/bottomLine/complaintList',
+      },
+      name: '添加投诉',
     },
     '/complaint/complaintDel': {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintDel')
       ),
+      bread: {
+        name: '投数管理',
+        path: '/bottomLine/complaintList',
+      },
+      name: '删除投数',
     },
-    '/timeManage/timeList': {
+    '/config/timeList': {
       component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),
+      name: '时间管理',
     },
-    '/shotName/Group': {
+    '/config/Group': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
+      name: '小组短名称',
     },
-    '/shotName/family': {
+    '/config/family': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Family')),
+      name: '家族短名称',
     },
-    '/shotName/college': {
+    '/config/college': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/College')),
+      name: '学院短名称',
     },
-    '/complaintDoubles/complaintDoublesList': {
+    '/config/complaintDoublesList': {
       component: dynamicWrapper(app, ['complaintDoubles'], () =>
         import('../routes/ComplaintDoubles/ComplaintDoublesList')
       ),
+      name: '投数倍数管理',
     },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
@@ -220,7 +313,7 @@ export const getRouterData = app => {
     },
   };
   // Get name from ./menu.js or just set it in the router data.
-  const menuData = getFlatMenuData(getMenuData());
+  // const menuData = getFlatMenuData(getMenuData());
   // Route configuration data
   // eg. {name,authority ...routerConfig }
   const routerData = {};
@@ -228,24 +321,23 @@ export const getRouterData = app => {
   Object.keys(routerConfig).forEach(path => {
     // Regular match item name
     // eg.  router /user/:id === /user/chen
-    const pathRegexp = pathToRegexp(path);
-    const menuKey = Object.keys(menuData).find(key => pathRegexp.test(`${key}`));
-    let menuItem = {};
+    // const pathRegexp = pathToRegexp(path);
+    // const menuKey = Object.keys(menuData).find(key => pathRegexp.test(`${key}`));
+    // let menuItem = {};
     // If menuKey is not empty
-    if (menuKey) {
-      menuItem = menuData[menuKey];
-    }
+    // if (menuKey) {
+    //   menuItem = menuData[menuKey];
+    // }
     let router = routerConfig[path];
     // If you need to configure complex parameter routing,
     // https://github.com/ant-design/ant-design-pro-site/blob/master/docs/router-and-nav.md#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%B7%AF%E7%94%B1%E8%8F%9C%E5%8D%95
     // eg . /list/:type/user/info/:id
-
     router = {
       ...router,
-      name: router.name || menuItem.name,
-      authority: router.authority || menuItem.authority,
-      hideInBreadcrumb: router.hideInBreadcrumb || menuItem.hideInBreadcrumb,
-      hideInMenu: router.hideInMenu || menuItem.hideInMenu,
+      // name: router.name || menuItem.name,
+      // authority: router.authority || menuItem.authority,
+      // hideInBreadcrumb: router.hideInBreadcrumb || menuItem.hideInBreadcrumb,
+      // hideInMenu: router.hideInMenu || menuItem.hideInMenu,
     };
     routerData[path] = router;
   });

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form ,message} from 'antd';
+import { Form } from 'antd';
 import { connect } from 'dva';
 import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -8,7 +8,7 @@ import { userTypeDataReset } from '../../utils/dataDictionary';
 const WrappedRegistrationForm = Form.create()(UserForm);
 @connect(({ user, loading }) => ({
   user,
-  loading,
+  submit: loading.effects['user/userAdd'],
 }))
 class CreateUser extends Component {
   constructor(props) {
@@ -37,9 +37,6 @@ class CreateUser extends Component {
     let typeId = values.responseCom[len - 1];
     if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
       typeId = undefined;
-    }else {
-      const aa = !typeId?message.error('请选择负责单位'):null;
-      return aa;
     }
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
@@ -50,8 +47,8 @@ class CreateUser extends Component {
       return 0;
     });
     const userAddParams = {
-      name: values.name,
-      mail: `${values.email}@sunlans.com`,
+      name: values.name.replace(/\s*/g, ''),
+      mail: values.email,
       mobile: values.phone,
       userType: userTypeDataReset[rUserType],
       userTypeId: typeId,
@@ -65,13 +62,15 @@ class CreateUser extends Component {
   };
   // 点击取消按钮跳转到list页面
   resetContent = () => {
-    this.props.setRouteUrlParams('/user/userList', {});
+    window.history.go(-1);
+    // this.props.setRouteUrlParams('/config/userList', {});
   };
 
   render() {
-    const userListValue = this.props.user;
-    return !userListValue.wechatList.response ? null : !userListValue.wechatList.response.data ? null : !userListValue.listOrg.response ? null : !userListValue.listOrg.response.data ? null: (
+    // const userListValue = this.props.user;
+    return (
       <ContentLayout
+        routerData={this.props.routerData}
         contentForm={
           <WrappedRegistrationForm
             jumpFunction={this.props}
@@ -84,8 +83,8 @@ class CreateUser extends Component {
           />
         }
       />
-    );}
+    );
+  }
 }
-
 
 export default CreateUser;

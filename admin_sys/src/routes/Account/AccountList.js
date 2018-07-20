@@ -8,7 +8,7 @@ import common from '../Common/common.css';
 
 @connect(({ account, loading }) => ({
   account,
-  loading,
+  loading: loading.effects['account/accountList'],
 }))
 class AccountList extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const accountListParams = { size: 30, number: 0 };
+    const accountListParams = { size: 30, number: 0, orderType: 'name' };
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
@@ -36,7 +36,6 @@ class AccountList extends Component {
 
   // 编辑账号函数
   onEdit = key => {
-    console.log(key);
     this.props.setRouteUrlParams('/account/editAccount', {
       id: key.id,
     });
@@ -45,7 +44,7 @@ class AccountList extends Component {
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     console.log(pageSize, current);
-    const accountListParams = { size: pageSize, number: current - 1 };
+    const accountListParams = { size: pageSize, number: current - 1, orderType: 'name' };
     console.log(accountListParams);
     this.props.dispatch({
       type: 'account/accountList',
@@ -56,7 +55,7 @@ class AccountList extends Component {
   // 点击某一页函数
   changePage = (current, pageSize) => {
     console.log(pageSize, current);
-    const accountListParams = { size: pageSize, number: current - 1 };
+    const accountListParams = { size: pageSize, number: current - 1, orderType: 'name' };
     console.log(accountListParams);
     this.props.dispatch({
       type: 'account/accountList',
@@ -84,7 +83,7 @@ class AccountList extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序号',
+        title: 'id',
         dataIndex: 'id',
       },
       {
@@ -106,13 +105,16 @@ class AccountList extends Component {
           return (
             <div>
               <AuthorizedButton authority="/account/editAccount">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record)}>
+                <span
+                  style={{ color: '#52C9C2', cursor: 'pointer' }}
+                  onClick={() => this.onEdit(record)}
+                >
                   编辑
                 </span>
               </AuthorizedButton>
-              <AuthorizedButton authority="/account/editAccount">
+              <AuthorizedButton authority="/account/deleteAccout">
                 <Popconfirm title="是否确认删除该账号?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', marginLeft: 12 }}>删除</span>
+                  <span style={{ color: '#52C9C2', marginLeft: 8, cursor: 'pointer' }}> 删除</span>
                 </Popconfirm>
               </AuthorizedButton>
             </div>
@@ -120,7 +122,7 @@ class AccountList extends Component {
         },
       },
     ];
-    return columns;
+    return columns || [];
   };
 
   // 创建账号函数
@@ -129,6 +131,7 @@ class AccountList extends Component {
   };
 
   render() {
+    const { loading } = this.props;
     const data = !this.props.account.accountList.response
       ? []
       : !this.props.account.accountList.response.data
@@ -136,15 +139,10 @@ class AccountList extends Component {
         : this.props.account.accountList.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const columns = !this.columnsData() ? [] : this.columnsData();
-    return !this.props.account.accountList.response ? (
-      <div />
-    ) : !this.props.account.accountList.response.data ? (
-      <div />
-    ) : (
+    const columns = this.columnsData();
+    return (
       <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="账号列表"
+        routerData={this.props.routerData}
         contentButton={
           <AuthorizedButton authority="/account/createAccount">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
@@ -157,6 +155,7 @@ class AccountList extends Component {
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
+              loading={loading}
               dataSource={dataSource}
               columns={columns}
               pagination={false}

@@ -8,7 +8,7 @@ import common from '../Common/common.css';
 
 @connect(({ role, loading }) => ({
   role,
-  loading,
+  loading: loading.models.role,
 }))
 class RoleList extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class RoleList extends Component {
   }
 
   componentDidMount() {
-    this.getData({ size: 30, number: 0 });
+    this.getData({ size: 30, number: 0, orderType: 'name' });
   }
 
   getData = params => {
@@ -30,7 +30,7 @@ class RoleList extends Component {
 
   changePage = (current, pageSize) => {
     console.log(current, pageSize);
-    this.getData({ size: pageSize, number: current - 1 });
+    this.getData({ size: pageSize, number: current - 1, orderType: 'name' });
   };
 
   handleNextPage = (pathName, params) => {
@@ -56,7 +56,7 @@ class RoleList extends Component {
             <div>
               <AuthorizedButton authority="/role/checkRole">
                 <span
-                  style={{ color: '#52C9C2', marginRight: '20px' }}
+                  style={{ color: '#52C9C2', marginLeft: '12px', cursor: 'pointer' }}
                   onClick={() => this.handleNextPage('/role/checkRole', { id, name })}
                 >
                   查看详情
@@ -64,7 +64,7 @@ class RoleList extends Component {
               </AuthorizedButton>
               <AuthorizedButton authority="/role/editRole">
                 <span
-                  style={{ color: '#52C9C2' }}
+                  style={{ color: '#52C9C2', marginLeft: 8, cursor: 'pointer' }}
                   onClick={() => this.handleNextPage('/role/editRole', { id, name })}
                 >
                   编辑
@@ -86,7 +86,7 @@ class RoleList extends Component {
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
-        title="角色列表"
+        routerData={this.props.routerData}
         contentButton={
           <AuthorizedButton authority="/role/createRole">
             <Button
@@ -102,6 +102,7 @@ class RoleList extends Component {
           <div>
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
+              loading={this.props.loading}
               bordered
               dataSource={dataSource}
               columns={columns}

@@ -16,7 +16,7 @@ const WrappedRoleForm = Form.create({
 })(RoleForm);
 @connect(({ role, loading }) => ({
   role,
-  loading,
+  loading: loading.effects['role/roleUpdate'],
 }))
 class EditRole extends Component {
   componentDidMount() {
@@ -28,12 +28,14 @@ class EditRole extends Component {
       type: 'role/rolePrivileges',
       payload: { paramsIds },
     });
+    console.log('-------');
   }
+
   submitInfo = (values, privilegeIds) => {
     const params = this.props.getUrlParams();
     const paramsObj = {
       id: params.id,
-      name: values.name,
+      name: values.name.replace(/\s*/g, ''),
       privilegeIds,
     };
     this.props.dispatch({
@@ -42,12 +44,12 @@ class EditRole extends Component {
     });
   };
   render() {
-    const getRoleData = !this.props.role.getRoleData ? [] : this.props.role.getRoleData;
-    const getRoleIds = !this.props.role.getRoleIds ? [] : this.props.role.getRoleIds;
-    console.log(getRoleIds);
+    const { getRoleData = [], getRoleIds = [], privilegeId = [] } = this.props.role;
     const baseLayout = (
       <WrappedRoleForm
+        checkdIds={privilegeId}
         listAll={getRoleData}
+        loading={this.props.loading}
         isShowFooter="true"
         getRoleIds={getRoleIds}
         submitInfo={(values, privilegeIds) => {
@@ -56,7 +58,7 @@ class EditRole extends Component {
         selfProps={this.props}
       />
     );
-    return <StepLayout title="编辑角色" baseLayout={baseLayout} />;
+    return <StepLayout routerData={this.props.routerData} baseLayout={baseLayout} />;
   }
 }
 

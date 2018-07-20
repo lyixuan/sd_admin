@@ -8,13 +8,14 @@ export function getJsonTree(data, parentId) {
   const itemArr = [];
   for (let i = 0; i < data.length; i += 1) {
     const node = data[i];
-    if (node.parentId === Number(parentId) || node.pid === Number(parentId)) {
+    if (Number(node.parentId) === Number(parentId) || Number(node.pid) === Number(parentId)) {
       const newNode = {
         id: node.id,
         name: node.name,
         checkAll: `checkAll${node.id}`,
         checkedList: `checkedList${node.id}`,
         nodes: getJsonTree(data, node.id),
+        parentId,
       };
       itemArr.push(newNode);
     }

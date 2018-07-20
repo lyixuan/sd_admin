@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Input } from 'antd';
+import { Table, Input, message } from 'antd';
 // import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -9,7 +9,7 @@ import common from '../Common/common.css';
 
 @connect(({ shortName, loading }) => ({
   shortName,
-  loading,
+  loading: loading.models.shortName,
 }))
 class Group extends Component {
   constructor(props) {
@@ -36,6 +36,7 @@ class Group extends Component {
       groupName: record.groupName,
       id: record.id,
       visible: true,
+      name: '',
     });
   };
 
@@ -49,14 +50,20 @@ class Group extends Component {
 
   // 模态框确定
   clickModalOK = (id, groupShortName) => {
-    const paramsObj = {
-      id,
-      groupShortName,
-    };
-    this.props.dispatch({
-      type: 'shortName/editGroup',
-      payload: { paramsObj },
-    });
+    if (!groupShortName) {
+      message.error('小组简称不可为空');
+      this.showModal(true);
+    } else {
+      const paramsObj = {
+        id,
+        groupShortName,
+      };
+      this.props.dispatch({
+        type: 'shortName/editGroup',
+        payload: { paramsObj },
+      });
+      this.showModal(false);
+    }
   };
   // input双向绑定
   handelChange(e) {
@@ -74,7 +81,7 @@ class Group extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序号',
+        title: 'id',
         dataIndex: 'id',
       },
       {
@@ -103,8 +110,11 @@ class Group extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/account/editAccount">
-                <span style={{ color: '#52C9C2' }} onClick={() => this.onEdit(record)}>
+              <AuthorizedButton authority="/group/editeGroupShortName">
+                <span
+                  style={{ color: '#52C9C2', cursor: 'pointer' }}
+                  onClick={() => this.onEdit(record)}
+                >
                   编辑
                 </span>
               </AuthorizedButton>
@@ -117,15 +127,17 @@ class Group extends Component {
   };
 
   render() {
-    const { groupList } = this.props.shortName;
+    const { loading, shortName } = this.props;
+    const { groupList } = shortName;
     const dataSource = !groupList ? [] : groupList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const { visible, collegeName, familyName, groupName, id, name } = this.state;
-    const modalTitle = `${collegeName} / ${familyName}  / ${groupName}`;
+    const modalTitle = `${collegeName} | ${familyName} | ${groupName}`;
     const modalContent = (
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
         <Input
+          maxLength={20}
           style={{ width: '300px', margin: '0 100px' }}
           onChange={e => {
             this.handelChange(e);
@@ -137,12 +149,12 @@ class Group extends Component {
     return (
       <div>
         <ContentLayout
-          pageHeraderUnvisible="unvisible"
-          title="小组"
+          routerData={this.props.routerData}
           contentTable={
             <div>
               <p className={common.totalNum}>总数：{dataSource.length} 条</p>
               <Table
+                loading={loading}
                 bordered
                 dataSource={dataSource}
                 columns={columns}

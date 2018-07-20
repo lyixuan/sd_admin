@@ -5,14 +5,14 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import {levelData} from '../../utils/dataDictionary';
+import { levelData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 let propsVal = '';
 let firstName = '';
 @connect(({ permission, loading }) => ({
   permission,
-  loading,
+  loading: loading.effects['permission/permissionList'],
 }))
 class PermissionList extends Component {
   constructor(props) {
@@ -21,7 +21,14 @@ class PermissionList extends Component {
   }
 
   componentDidMount() {
-    const permissionListParams = {size: 50, number: 0};
+    const initVal = this.props.getUrlParams();
+    firstName = !initVal.firstName ? '' : initVal.firstName;
+    const permissionListParams = {
+      size: 30,
+      number: 0,
+      sort: 'id',
+      name: !initVal.firstName ? undefined : initVal.firstName,
+    };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -32,15 +39,15 @@ class PermissionList extends Component {
   }
   // 权限编辑
   onEdit = val => {
-    console.log(val);
     this.props.setRouteUrlParams('/permission/editPermission', {
       id: val.id,
+      level: val.level,
     });
   };
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const permissionListParams = {size: pageSize, number: current - 1 };
+    const permissionListParams = { size: pageSize, number: current - 1, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -49,7 +56,7 @@ class PermissionList extends Component {
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const permissionListParams = {size: pageSize, number: current - 1 };
+    const permissionListParams = { size: pageSize, number: current - 1, sort: 'id' };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -59,8 +66,16 @@ class PermissionList extends Component {
   // 表单重置
   handleReset = () => {
     firstName = '';
+    this.props.setCurrentUrlParams({
+      firstName: null,
+    });
     propsVal.form.resetFields();
-    this.props.setCurrentUrlParams({});
+    this.props.setRouteUrlParams('/config/permissionList');
+    const permissionListParams = { size: 30, number: 0, sort: 'id' };
+    this.props.dispatch({
+      type: 'permission/permissionList',
+      payload: { permissionListParams },
+    });
   };
 
   // 表单搜索
@@ -69,7 +84,15 @@ class PermissionList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         firstName = values.name;
-        const permissionListParams = { name: !values.name?undefined:values.name };
+        this.props.setCurrentUrlParams({
+          firstName: !values.name ? undefined : values.name,
+        });
+        const permissionListParams = {
+          name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
+          sort: 'id',
+          size: 30,
+          number: 0,
+        };
         this.props.dispatch({
           type: 'permission/permissionList',
           payload: { permissionListParams },
@@ -100,7 +123,7 @@ class PermissionList extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '编号',
+        title: 'id',
         dataIndex: 'id',
       },
       {
@@ -123,10 +146,12 @@ class PermissionList extends Component {
         title: '一级页面图标',
         dataIndex: 'iconUrl',
         render: record => {
-          return (
-            // !record ? <span>{!record?'':record}</span>:<img src={record} alt='上一级页面图标' />
-            <span>{record}</span>
+          return !record ? (
+            <span>{!record ? '' : record}</span>
+          ) : (
+            <img src={record} alt="上一级页面图标" style={{ width: '30px' }} />
           );
+          // <span>{record}</span>
         },
       },
       {
@@ -141,7 +166,7 @@ class PermissionList extends Component {
             <div>
               <AuthorizedButton authority="/permission/editPermission">
                 <span
-                  style={{ color: '#52C9C2', marginLeft: 12 }}
+                  style={{ color: '#52C9C2', marginLeft: 12, cursor: 'pointer' }}
                   onClick={() => this.onEdit(record)}
                 >
                   编辑
@@ -152,7 +177,7 @@ class PermissionList extends Component {
         },
       },
     ];
-    return columns;
+    return columns || [];
   };
 
   // 创建权限
@@ -161,6 +186,7 @@ class PermissionList extends Component {
   };
 
   render() {
+    const { loading } = this.props;
     const data = !this.props.permission.permissionList.response
       ? []
       : !this.props.permission.permissionList.response.data
@@ -168,7 +194,7 @@ class PermissionList extends Component {
         : this.props.permission.permissionList.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const columns = !this.columnsData() ? [] : this.columnsData();
+    const columns = this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -195,11 +221,10 @@ class PermissionList extends Component {
     });
     return (
       <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="权限列表"
+        routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
-          <AuthorizedButton authority="/user/createUser">
+          <AuthorizedButton authority="/permission/createPermission">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
               创 建
             </Button>
@@ -210,6 +235,7 @@ class PermissionList extends Component {
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
+              loading={loading}
               dataSource={dataSource}
               columns={columns}
               pagination={false}
@@ -230,7 +256,7 @@ class PermissionList extends Component {
             defaultPageSize={30}
             pageSizeOptions={['30']}
           />
-      }
+        }
       />
     );
   }

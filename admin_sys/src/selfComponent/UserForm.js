@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button } from 'antd';
+import { Form, Input, Cascader, Button, message, Row, Col } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
-// import { levelDataReset } from '../utils/dataDictionary';
+import { userTypeData } from '../utils/dataDictionary';
 
 const FormItem = Form.Item;
 
@@ -41,26 +41,22 @@ class UserForm extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
-    const wechatValues = this.props.jumpFunction.user.wechatList.response.data;
-    const listOrgValues = this.props.jumpFunction.user.listOrg.response.data;
+    const userVal = this.props.jumpFunction.user;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
-      wechatList: !wechatValues.department ? [] : wechatValues.department,
-      listOrgLiost: listOrgValues,
-      name: !arrValue.name ? null : arrValue.name,
-      phone: !arrValue.phone ? null : arrValue.phone,
-      email: !arrValue.email ? null : formatEmail(arrValue.email),
-      userType: !arrValue.userType ? null : arrValue.userType,
-      responseCom: !arrValue.responseCom ? null : arrValue.responseCom,
-      wechatDepartmentName: !arrValue.wechatDepartmentName ? null : arrValue.wechatDepartmentName,
+      listOrgLiost: listOrgValues || [],
+      id: !arrValue.id ? '' : arrValue.id,
+      userType: !arrValue.userType ? '' : arrValue.userType,
     };
-    console.log(this.state.responseCom)
   }
   componentDidMount() {
+    flag = this.state.userType;
     responseComListBackup = !this.state.listOrgLiost
       ? []
       : this.fullListFun(this.state.listOrgLiost);
     responseComList = this.responseComListFun();
-    flag = this.state.userType;
   }
 
   fullListFun = val => {
@@ -100,10 +96,14 @@ class UserForm extends Component {
 
   responseComListFun = () => {
     const responseValue = [];
-    const newResponseComList = this.state.listOrgLiost;
+    const userVal = this.props.jumpFunction.user;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    const newResponseComList = listOrgValues;
     const levelValue = !this.state.userType ? '小组' : this.state.userType;
     flag = levelValue;
-    if (levelValue === '家族') {
+    if (flag === '家族') {
       newResponseComList.map(item => {
         const firstChldren = [];
         const chldren1 = item.sub;
@@ -124,7 +124,7 @@ class UserForm extends Component {
         return 0;
       });
     }
-    if (levelValue === '学院') {
+    if (flag === '学院') {
       newResponseComList.map(item => {
         responseValue.push({
           value: item.id,
@@ -141,7 +141,11 @@ class UserForm extends Component {
     const aa = value[0];
     flag = aa;
     const responseValue = [];
-    const newResponseComList = this.state.listOrgLiost;
+    const userVal = this.props.jumpFunction.user;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    const newResponseComList = listOrgValues;
     if (value[0] === '家族') {
       newResponseComList.map(item => {
         const firstChldren = [];
@@ -179,7 +183,23 @@ class UserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.handleSubmit(values);
+        const rUserType = values.userType[0];
+        const len = values.responseCom.length;
+        if (rUserType === '小组' || rUserType === '无底表权限') {
+          if (len !== 3) {
+            message.error('负责单位请选择到对应小组');
+          } else {
+            this.props.handleSubmit(values);
+          }
+        } else if (rUserType === '家族') {
+          if (len !== 2) {
+            message.error('负责单位请选择到对应家族');
+          } else {
+            this.props.handleSubmit(values);
+          }
+        } else {
+          this.props.handleSubmit(values);
+        }
       }
     });
   };
@@ -198,8 +218,21 @@ class UserForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const residences = !this.state.wechatList ? [] : this.roleListFun(this.state.wechatList);
     const disabled = true;
+    const userVal = this.props.jumpFunction.user;
+    const { submit } = this.props.jumpFunction;
+    const wechatValues = !userVal.wechatList.response
+      ? []
+      : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
+    const residences = !wechatValues ? [] : this.roleListFun(wechatValues);
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
+    responseComList =
+      !responseComList || responseComList.length === 0
+        ? this.responseComListFun()
+        : responseComList;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -222,23 +255,50 @@ class UserForm extends Component {
         },
       },
     };
+    const aaa = this.props.jumpFunction.user.userList;
+    const arrValue = !aaa
+      ? []
+      : !aaa.response
+        ? []
+        : !aaa.response.data ? [] : !aaa.response.data.content ? [] : aaa.response.data.content[0];
+    const str = arrValue.showNameIds;
+    const strs = !str ? [] : str.split(',');
+    const arr = !strs
+      ? []
+      : strs.map(el => {
+          return Number(el);
+        });
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓 名">
             {getFieldDecorator('name', {
-              initialValue: this.state.name,
-              rules: [{ min: 2, required: true, message: '您输入姓名不合法!', whitespace: true }],
+              initialValue: !this.state.id ? '' : !arrValue.name ? '' : arrValue.name,
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    // const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');// 去除字符串前后的空格
+                    const reg = !value ? '' : value.replace(/\s*/g, ''); // 去除字符串中全局空格
+                    if (!reg) {
+                      callback({ message: '姓名为必填项，请填写!' });
+                    } else if (reg.length < 2 || reg.length > 20) {
+                      callback({ message: '姓名在2-20个字符之间，请填写!' });
+                    } else {
+                      callback();
+                    }
+                  },
+                },
+              ],
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="手 机">
             {getFieldDecorator('phone', {
-              initialValue: this.state.phone,
+              initialValue: !this.state.id ? '' : !arrValue.mobile ? '' : arrValue.mobile,
               rules: [
                 {
                   validator(rule, value, callback) {
                     const reg = /^0?1\d{10}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
-                    if (!reg.test(value)) {
+                    if (!reg.test(value) && value) {
                       callback({ message: '手机号是以1开头的11位数字组成' });
                     }
                     callback();
@@ -249,14 +309,30 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*邮 箱">
             {getFieldDecorator('email', {
-              initialValue: this.state.email,
-              rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
-            })(<Input style={{ width: 264 }} disabled={!this.state.email ? false : disabled} />)}
+              initialValue: !this.state.id
+                ? ''
+                : !arrValue.entUserId ? '' : formatEmail(arrValue.entUserId),
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    const strExp = /^[A-Za-z0-9]+$/;
+                    if (!strExp.test(value)) {
+                      callback({ message: '请输入合法邮箱' });
+                    }
+                    callback();
+                  },
+                },
+                { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
+                { min: 3, max: 50, required: true, message: '邮箱账号长度需要在3-50字符之间!' },
+              ],
+            })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*级 别">
             {getFieldDecorator('userType', {
-              initialValue: [this.state.userType],
+              initialValue: [
+                !this.state.id ? '' : !arrValue.userType ? '' : userTypeData[arrValue.userType],
+              ],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -277,16 +353,8 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*负责单位">
             {getFieldDecorator('responseCom', {
-              initialValue: [this.state.responseCom],
+              initialValue: !this.state.id ? [] : arr,
               rules: [
-              //   flag === '系统管理员' || flag === '高级管理员'?{}:{
-              //   validator(rule, value, callback) {
-              //     if (typeof value[0] === 'string' || !value[0]) {
-              //       callback({ message: '请选择负责单位！' });
-              //     }
-              //     callback();
-              //   },
-              // },
                 {
                   validator(rule, value, callback) {
                     if (typeof value[0] === 'string' || !value[0]) {
@@ -310,7 +378,11 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*微信部门">
             {getFieldDecorator('wechatDepartmentName', {
-              initialValue: [this.state.wechatDepartmentName],
+              initialValue: [
+                !this.state.id
+                  ? ''
+                  : !arrValue.wechatDepartmentName ? '' : arrValue.wechatDepartmentName,
+              ],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -324,20 +396,29 @@ class UserForm extends Component {
             })(<Cascader options={residences} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
-          <FormItem>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button
-                onClick={this.props.resetContent}
-                type="primary"
-                className={common.cancleButton}
-              >
-                取消
-              </Button>
-              <Button htmlType="submit" type="primary" className={common.submitButton}>
-                提交
-              </Button>
-            </div>
-          </FormItem>
+          <Row>
+            <Col span={6} offset={7}>
+              <FormItem>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    onClick={this.props.resetContent}
+                    type="primary"
+                    className={common.cancleButton}
+                  >
+                    取消
+                  </Button>
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    className={common.submitButton}
+                    loading={submit}
+                  >
+                    提交
+                  </Button>
+                </div>
+              </FormItem>
+            </Col>
+          </Row>
         </Form>
       </div>
     );

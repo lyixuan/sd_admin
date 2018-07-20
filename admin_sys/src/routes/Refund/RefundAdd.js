@@ -25,13 +25,24 @@ class RefundAdd extends Component {
     this.editCurrent(0);
   }
   componentWillUnmount() {
+    console.log(22);
     clearConfirm();
+    this.initParamsFn(null);
+    // 点击添加的时候清除文件
+    this.saveFileList([]);
   }
   // 回调
   onChildChange = (bol, checkParams) => {
     this.setState({
       isDisabled: bol,
       checkParams,
+    });
+  };
+  // 初始化一些值
+  initParamsFn = disableDel => {
+    this.props.dispatch({
+      type: 'blRefund/initParams',
+      payload: { disableDel },
     });
   };
   // 校验excel文件
@@ -41,55 +52,81 @@ class RefundAdd extends Component {
       payload: { params },
     });
   };
+  // 保存excel数据
+  saveExcelData = params => {
+    this.props.dispatch({
+      type: 'blRefund/saveExcel',
+      payload: { params },
+    });
+  };
+  saveFileList = fileList => {
+    this.props.dispatch({
+      type: 'blRefund/saveFileList',
+      payload: { fileList },
+    });
+  };
   editCurrent = current => {
     this.props.dispatch({
       type: 'blRefund/editCurrent',
       payload: { current },
     });
   };
+  editLoading = isLoading => {
+    console.log(isLoading);
+    this.props.dispatch({
+      type: 'blRefund/editLoading',
+      payload: { isLoading },
+    });
+  };
   historyFn() {
     this.props.history.push({
-      pathname: '/refund/refundList',
+      pathname: '/bottomLine/refundList',
     });
   }
 
   columnsData = () => {
     const columns = [
       {
+        title: '行数',
+        dataIndex: 'rowNum',
+        width: '70px',
+      },
+      {
         title: '子订单编号',
-        dataIndex: 'bottomLinueNum',
+        dataIndex: 'ordId',
         width: '93px',
       },
       {
-        title: '编号已存在',
-        dataIndex: 'countValue',
-        width: '92px',
-      },
-      {
-        title: '必填项缺失',
-        dataIndex: 'complainTime',
-        width: '92px',
-      },
-      {
-        title: '班主任组织关系匹配失败',
+        title: '学生id',
         dataIndex: 'stuId',
-        width: '164px',
+        width: '133px',
       },
       {
-        title: '学院/家族/小组不存在',
-        dataIndex: 'cpId',
-        width: '152px',
-      },
-      {
-        title: '编号重复',
+        title: '学生姓名',
         dataIndex: 'stuName',
-        width: '82px',
+        width: '92px',
+      },
+      {
+        title: '老师id',
+        dataIndex: 'cpId',
+        width: '160px',
+      },
+      {
+        title: '编号',
+        dataIndex: 'bottomLineNum',
+        width: '92px',
+      },
+      {
+        title: '投诉时间',
+        dataIndex: 'complainTime',
+        width: '105px',
       },
     ];
     return columns;
   };
   render() {
-    const { current, checkList } = this.props.blRefund;
+    let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
+    const { current, checkList, fileList, disableDel, isLoading } = this.props.blRefund;
     const { isDisabled, checkParams } = this.state;
 
     const sucessNum = !checkList ? 0 : checkList.data.num;
@@ -98,7 +135,22 @@ class RefundAdd extends Component {
     const dataSource = !errorList.length > 0 ? null : errorList;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const tableTitle =
-      !errorList.length > 0 ? `本次添加退费数量 ${sucessNum} 条数据！确定上传？` : null;
+      !errorList.length > 0 ? (
+        <div
+          style={{
+            width: '590px',
+            height: '58px',
+            background: '#F6F7FA',
+            borderRadius: '3px',
+            lineHeight: '58px',
+            margin: '116px auto 0',
+          }}
+        >
+          本次添加退费数量
+          <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
+          条！确定上传？
+        </div>
+      ) : null;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -113,8 +165,12 @@ class RefundAdd extends Component {
         content: (
           <StepUpload
             uploadUrl={qualityUpload()}
+            fileList={fileList}
             callBackParent={(bol, params) => {
               this.onChildChange(bol, params);
+            }}
+            saveFileList={param => {
+              this.saveFileList(param);
             }}
           />
         ),
@@ -135,19 +191,33 @@ class RefundAdd extends Component {
         content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
       },
     ];
+
+    fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
     return (
       <StepLayout
+        routerData={this.props.routerData}
         title="添加退费"
         steps={steps}
         isDisabled={isDisabled}
+        disableDel={disableDel}
         goBack={() => {
           this.historyFn();
         }}
+        initParamsFn={dis => {
+          this.initParamsFn(dis);
+        }}
+        callBackParent={bol => {
+          this.onChildChange(bol);
+        }}
+        editLoading={loading => {
+          this.editLoading(loading);
+        }}
+        isLoading={isLoading}
         step1Fetch={() => {
-          this.fetchCheckData({ filePath: checkParams });
+          this.fetchCheckData({ filePath: fileData });
         }}
         step2Fetch={() => {
-          this.editCurrent(2);
+          this.saveExcelData({ filePath: fileData });
         }}
         current={current}
         editCurrent={param => {

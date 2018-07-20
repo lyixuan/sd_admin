@@ -14,69 +14,7 @@ import { clearConfirm, setConfirm } from '../../utils/reloadConfirm';
 class ComplaintDel extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
-      {
-        title: '序号',
-        dataIndex: 'role',
-        width: '100px',
-      },
-      {
-        title: '投诉时间',
-        dataIndex: 'email',
-        width: '100px',
-      },
-      {
-        title: '学生名称/id',
-        dataIndex: 'status1',
-        width: '100px',
-      },
-      {
-        title: '老师名称',
-        dataIndex: 'status2',
-        width: '150px',
-      },
-      {
-        title: '学院/家族/小组',
-        dataIndex: 'status',
-        width: '100px',
-      },
-      {
-        title: '扣分值',
-        dataIndex: 'role3',
-        width: '100px',
-      },
-      {
-        title: '编号',
-        dataIndex: 'role2',
-        width: '100px',
-      },
-    ];
-
-    const dataSource = [
-      {
-        key: 1,
-        name: `张三`,
-        role: `院长`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 2,
-        name: `王五`,
-        role: `学员`,
-        status: `启用`,
-        email: `hello@sunlands.com`,
-      },
-      {
-        key: 3,
-        name: `赵六`,
-        role: `院长`,
-        status: `禁止`,
-        email: `hello@sunlands.com`,
-      },
-    ];
     this.state = {
-      dataSource: !dataSource ? [] : dataSource,
       isDisabled: true,
     };
   }
@@ -85,7 +23,11 @@ class ComplaintDel extends Component {
     // init current
     this.editCurrent(0);
   }
-
+  // 离开页面的时候，把disableDel，nums恢复默认值null
+  componentWillUnmount() {
+    clearConfirm();
+    this.initParamsFn(null, 'clear');
+  }
   // 回调
   onChildChange = bol => {
     this.setState({
@@ -96,6 +38,14 @@ class ComplaintDel extends Component {
     this.props.dispatch({
       type: 'blComplain/getNums',
       payload: nums,
+    });
+  };
+  // 初始化一些值
+  initParamsFn = (disableDel, nums) => {
+    const num = !nums ? this.props.blComplain.nums : '';
+    this.props.dispatch({
+      type: 'blComplain/initParams',
+      payload: { disableDel, nums: num },
     });
   };
   fetchPreDel = params => {
@@ -116,20 +66,93 @@ class ComplaintDel extends Component {
       payload: { current },
     });
   };
+  editLoading = isLoading => {
+    console.log(isLoading);
+    this.props.dispatch({
+      type: 'blComplain/editLoading',
+      payload: { isLoading },
+    });
+  };
   historyFn() {
     this.props.history.push({
-      pathname: '/complaint/complaintList',
+      pathname: '/bottomLine/complaintList',
     });
   }
+  // 初始化tabale 列数据
+  fillDataSource = val => {
+    const data = [];
+    val.map((item, index) =>
+      data.push({
+        key: index + 1,
+        complainTime: item.complainTime,
+        countValue: item.countValue,
+        stuName: `${item.stuName} | ${item.stuId}`,
+        cpName: item.cpName,
+
+        bottomLineNum: item.bottomLineNum,
+        name: `${item.collegeName} | ${item.familyName} | ${item.groupName}`,
+      })
+    );
+    return data;
+  };
+  columnsData = () => {
+    const columns = [
+      {
+        title: '序号',
+        dataIndex: 'key',
+        width: '70px',
+      },
+      {
+        title: '投诉时间',
+        dataIndex: 'complainTime',
+        width: '150px',
+      },
+      {
+        title: '学生名称 | id',
+        dataIndex: 'stuName',
+        width: '130px',
+      },
+      {
+        title: '老师名称',
+        dataIndex: 'cpName',
+        width: '90px',
+      },
+      {
+        title: '学院 | 家族 | 小组',
+        dataIndex: 'name',
+        width: '260px',
+      },
+      {
+        title: '编号',
+        dataIndex: 'bottomLineNum',
+        width: '100px',
+      },
+      {
+        title: '扣分值',
+        dataIndex: 'countValue',
+        width: '80px',
+      },
+    ];
+    return columns;
+  };
   render() {
-    const { preDelData, nums, current } = this.props.blComplain;
+    const { preDelData, nums, current, disableDel, isLoading } = this.props.blComplain;
+    const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
-    const failNums = data ? data.failNums : 'ww';
-    const successNums = data ? data.successNums : 'ww';
-    const inputContent = data ? data.failSize > 0 : null;
+    const dataSource = !data || !data.successNums ? [] : this.fillDataSource(data.successNums);
+    const columns = !this.columnsData() ? [] : this.columnsData();
 
-    const { dataSource, isDisabled } = this.state;
+    const successArr = [];
+    if (dataSource.length > 0) {
+      data.successNums.forEach(item => {
+        successArr.push(item.bottomLineNum);
+      });
+    }
+
+    const failNums = data ? data.failNums : [];
+    const successSize = data ? data.successSize : 0;
+    const inputContent = data ? data.failSize > 0 : null;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -138,24 +161,19 @@ class ComplaintDel extends Component {
       clearConfirm();
     }
 
-    const columns = !this.columns ? [] : this.columns;
-
-    const tipSucess = '您已成功删除 1500 条数据！';
+    const tipSucess = `您已成功删除 ${successSize} 条数据！`;
     const checkRes = !data ? null : (
-      <CheckResult
-        totalSize={data.totalSize}
-        successSize={data.successSize}
-        failSize={data.failSize}
-      />
+      <CheckResult totalSize={data.totalSize} failSize={data.failSize} successSize={successSize} />
     );
     const steps = [
       {
         title: '输入编号',
         content: (
           <StepInput
-            inputTitle="请输入想删除的 “子订单编号”："
+            inputTitle="请输入想删除的 “投诉编号”："
             inputContent="true"
             inputTip="true"
+            nums={nums}
             getNums={param => {
               this.getNums(param);
             }}
@@ -183,7 +201,6 @@ class ComplaintDel extends Component {
             tableTitle="请确认是否删除以下数据："
             dataSource={dataSource}
             columns={columns}
-            scroll={{ y: 264 }}
           />
         ),
       },
@@ -195,19 +212,34 @@ class ComplaintDel extends Component {
     return (
       <div>
         <StepLayout
+          routerData={this.props.routerData}
           title="删除投诉"
           steps={steps}
           tipSucess={tipSucess}
           goBack={() => {
             this.historyFn();
           }}
+          callBackParent={bol => {
+            this.onChildChange(bol);
+          }}
+          initParamsFn={dis => {
+            this.initParamsFn(dis);
+          }}
           step1Fetch={() => {
             this.fetchPreDel({ nums });
           }}
           step2Fetch={() => {
-            this.fetchDel({ nums: successNums });
+            this.editCurrent(2);
           }}
+          step3Fetch={() => {
+            this.fetchDel({ nums: successArr.join(' ') });
+          }}
+          editLoading={loading => {
+            this.editLoading(loading);
+          }}
+          isLoading={isLoading}
           isDisabled={isDisabled}
+          disableDel={disableDel}
           current={current}
           editCurrent={param => {
             this.editCurrent(param);

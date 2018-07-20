@@ -7,7 +7,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 const WrappedRegistrationForm = Form.create()(AccountForm);
 @connect(({ account, loading }) => ({
   account,
-  loading,
+  submit: loading.effects['account/updateAccount'],
 }))
 class EditAccount extends Component {
   constructor(props) {
@@ -24,51 +24,56 @@ class EditAccount extends Component {
       payload: { getRoleListParams },
     });
 
-    const accountInfoParams = {id:this.state.id};
+    const accountInfoParams = { id: this.state.id };
     this.props.dispatch({
       type: 'account/accountInfo',
       payload: { accountInfoParams },
     });
   }
 
-  handleSubmit = (values) => {
-        const rname = values.rname[0];
-        let newRoleId = 0;
-        const roleList = this.props.account.getRoleList.data.content
-        roleList.map(item => {
-          if (item.name === rname) {
-            newRoleId = item.id;
-          }
-          return 0;
-        });
-        const updateAccountParams = {
-            name: values.name,
-            mail: `${values.mail}@sunlans.com`,
-            roleId: newRoleId,
-            id: Number(this.state.id),
-        };
-        this.props.dispatch({
-            type: 'account/updateAccount',
-            payload: { updateAccountParams },
-        });
+  handleSubmit = values => {
+    const rname = values.rname[0];
+    let newRoleId = 0;
+    const roleList = this.props.account.getRoleList.data;
+    roleList.map(item => {
+      if (item.name === rname) {
+        newRoleId = item.id;
+      }
+      return 0;
+    });
+    const updateAccountParams = {
+      name: values.name.replace(/\s*/g, ''),
+      mail: `${values.mail}@sunlands.com`,
+      roleId: newRoleId,
+      id: Number(this.state.id),
+    };
+    this.props.dispatch({
+      type: 'account/updateAccount',
+      payload: { updateAccountParams },
+    });
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/account/accountList', {});
+    window.history.go(-1);
+    // this.props.setRouteUrlParams('/config/accountList', {});
   };
 
   render() {
-    return (!this.props.account.getRoleList ? null : !this.props.account.getRoleList.data ? null:
-        !this.props.account.accountInfo.response ? null : !this.props.account.accountInfo.response.data ? null:
-      (
-        <ContentLayout
-          contentForm={<WrappedRegistrationForm
+    return (
+      <ContentLayout
+        routerData={this.props.routerData}
+        contentForm={
+          <WrappedRegistrationForm
             jumpFunction={this.props}
-            resetContent={()=>{this.resetContent()}}
-            handleSubmit={(values)=>{this.handleSubmit(values)}}
-          />}
-        />
-      )
+            resetContent={() => {
+              this.resetContent();
+            }}
+            handleSubmit={values => {
+              this.handleSubmit(values);
+            }}
+          />
+        }
+      />
     );
   }
 }

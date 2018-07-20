@@ -25,7 +25,8 @@
 }
 
 .stepsAction {
-  margin-top: 50px;
+  text-align: center;
+  padding: 30px;
 }
 
 :global(.ant-steps){
@@ -56,11 +57,13 @@
   left: -2px;
   top: -2px!important;
 }
-:global(.stepLayout__stepsAction___3CEGD){
-  padding: 30px!important;
-  text-align: center!important;
-}
 :global(.ant-btn){
   border: 1px solid #d9d9d9;
 }
-
+:global(.anticon-paper-clip:before),:global(.anticon-spin:before){
+  color: #fff!important;
+  margin-left: -5px!important;
+}
+:global(.ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon){
+  margin-left: -34px!important;
+}

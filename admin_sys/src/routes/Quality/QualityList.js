@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Button, Form, Input, Pagination } from 'antd';
+import { Table, Button, Form, Input } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 
 const FormItem = Form.Item;
@@ -11,21 +12,17 @@ let firstTeaName = '';
 let firstQualityNum = '';
 @connect(({ quality, loading }) => ({
   quality,
-  loading,
+  loading: loading.models.quality,
 }))
 class QualityList extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-
   componentDidMount() {
-    const qualityListParams = { size: 30, number: 0 };
-    this.props.dispatch({
-      type: 'quality/getQualityList',
-      payload: { qualityListParams },
-    });
+    this.getData({ size: 30, number: 0 });
   }
+
   componentWillUnmount() {
     firstTeaName = null;
     firstQualityNum = null;
@@ -33,19 +30,19 @@ class QualityList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const qualityListParams = { size: pageSize, number: current - 1 };
+    this.getData({ size: pageSize, number: current - 1 });
+  };
+
+  getData = params => {
+    const getListParams = { ...this.props.quality.getListParams, ...params };
     this.props.dispatch({
       type: 'quality/getQualityList',
-      payload: { qualityListParams },
+      payload: { getListParams },
     });
   };
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const qualityListParams = { size: pageSize, number: current - 1 };
-    this.props.dispatch({
-      type: 'quality/getQualityList',
-      payload: { qualityListParams },
-    });
+    this.getData({ size: pageSize, number: current - 1 });
   };
 
   // 表单搜索函数
@@ -55,11 +52,13 @@ class QualityList extends Component {
       if (!err) {
         firstTeaName = values.teaName;
         firstQualityNum = values.qualityNum;
-        const qualityListParams = { size: 30, number: 0, teaName: !values.teaName?undefined:values.teaName,qualityNum:!values.qualityNum?undefined:values.qualityNum };
-        this.props.dispatch({
-          type: 'quality/getQualityList',
-          payload: { qualityListParams },
-        });
+        const qualityListParams = {
+          size: 30,
+          number: 0,
+          teaName: !values.teaName ? undefined : values.teaName,
+          qualityNum: !values.qualityNum ? undefined : values.qualityNum,
+        };
+        this.getData(qualityListParams);
       }
     });
   };
@@ -72,17 +71,18 @@ class QualityList extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = (val) => {
+  fillDataSource = val => {
     const data = [];
     val.map((item, index) =>
       data.push({
         key: index,
-        id:item.id,
+        id: item.id,
         collegeName: item.collegeName,
         familyName: item.familyName,
         groupName: item.groupName,
         teaName: item.teaName,
         stuName: item.stuName,
+        countValue: item.countValue,
         qualityTypeName: item.qualityTypeName,
         qualityNum: item.qualityNum,
       })
@@ -94,8 +94,9 @@ class QualityList extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序列',
+        title: 'id',
         dataIndex: 'id',
+        width: '65px',
       },
       {
         title: '学院',
@@ -122,6 +123,10 @@ class QualityList extends Component {
         dataIndex: 'qualityTypeName',
       },
       {
+        title: '扣除学分',
+        dataIndex: 'countValue',
+      },
+      {
         title: '质检单号',
         dataIndex: 'qualityNum',
       },
@@ -131,22 +136,16 @@ class QualityList extends Component {
 
   // 删除质检
   qualityDel = () => {
-    this.props.setRouteUrlParams('/quality/qualityDel', {
-      a: 2,
-      b: 3,
-    });
+    this.props.setRouteUrlParams('/quality/qualityDel');
   };
 
   // 添加质检
   qualityAdd = () => {
-    this.props.setRouteUrlParams('/quality/qualityAdd', {
-      a: 2,
-      b: 3,
-    });
+    this.props.setRouteUrlParams('/quality/qualityAdd');
   };
 
   render() {
-    const val = this.props.quality.qualityList
+    const val = this.props.quality.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
@@ -158,24 +157,30 @@ class QualityList extends Component {
       return (
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
-            <FormItem>
+            <FormItem label="归属班主任">
               {getFieldDecorator('teaName', {
                 initialValue: firstTeaName,
                 rules: [],
               })(<Input placeholder="请输入归属班主任" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem style={{ marginLeft: 119 }}>
+            <FormItem style={{ marginLeft: 119 }} label="质检单号">
               {getFieldDecorator('qualityNum', {
                 initialValue: firstQualityNum,
                 rules: [],
-              })(<Input placeholder="请输入质检单号" style={{ width: 230, height: 32 }} />)}
+              })(
+                <Input
+                  placeholder="请输入质检单号"
+                  maxLength={20}
+                  style={{ width: 230, height: 32 }}
+                />
+              )}
             </FormItem>
             <FormItem style={{ marginLeft: 119 }}>
               <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
                 搜 索
               </Button>
               <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
-                取 消
+                重 置
               </Button>
             </FormItem>
           </Form>
@@ -184,17 +189,16 @@ class QualityList extends Component {
     });
     return (
       <ContentLayout
-        pageHeraderUnvisible="visible"
-        title="质检列表"
+        routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>
-            <AuthorizedButton authority="/user/createUser">
+            <AuthorizedButton authority="/quality/qualityAdd">
               <Button onClick={this.qualityAdd} type="primary" className={common.addQualityButton}>
                 添加质检
               </Button>
             </AuthorizedButton>
-            <AuthorizedButton authority="/account/accountList">
+            <AuthorizedButton authority="/quality/qualityDel">
               <Button
                 onClick={this.qualityDel}
                 type="primary"
@@ -209,6 +213,7 @@ class QualityList extends Component {
           <div>
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
+              loading={this.props.loading}
               bordered
               dataSource={dataSource}
               columns={columns}
@@ -218,13 +223,14 @@ class QualityList extends Component {
           </div>
         }
         contentPagination={
-          <Pagination
-            showSizeChanger
-            onChange={this.changePage}
-            onShowSizeChange={this.onShowSizeChange}
-            defaultCurrent={1}
+          <SelfPagination
+            onChange={(current, pageSize) => {
+              this.changePage(current, pageSize);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              this.onShowSizeChange(current, pageSize);
+            }}
             total={totalNum}
-            className={common.paginationStyle}
           />
         }
       />

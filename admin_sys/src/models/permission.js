@@ -1,8 +1,7 @@
-
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import {
-  getRoleListAll,
+  roleList,
   addPermission,
   getPermissionById,
   updatePermission,
@@ -18,12 +17,12 @@ export default {
     // 接口返回数据存储
     permissionList: [],
     permissionListAllNameSave: [],
-    permissionById:[],
+    permissionById: [],
   },
 
   effects: {
     *permissionList({ payload }, { call, put }) {
-      const response = yield call(getRoleListAll, payload.permissionListParams);
+      const response = yield call(roleList, payload.permissionListParams);
       yield put({ type: 'permissionListSave', payload: { response } });
     },
     *permissionById({ payload }, { call, put }) {
@@ -31,19 +30,19 @@ export default {
       yield put({ type: 'permissionByIdSave', payload: { response } });
     },
     *addPermission({ payload }, { call, put }) {
-      const result = call(addPermission, payload.addPermissionParams);
-      if(result.code === 0 || result.code === 2000){
-        message.success('成功创建权限！')
-        yield put(routerRedux.push('/permission/permissionList'));
+      const result = yield call(addPermission, payload.addPermissionParams);
+      if (result.code === 0 || result.code === 2000) {
+        message.success('成功创建权限！');
+        yield put(routerRedux.push('/config/permissionList'));
       } else {
         message.error(result.msg);
       }
     },
     *updatePermission({ payload }, { call, put }) {
       const result = yield call(updatePermission, payload.updatePermissionParams);
-      if(result.code === 0 || result.code === 2000){
-        message.success('成功编辑权限！')
-        yield put(routerRedux.push('/permission/permissionList'));
+      if (result.code === 0 || result.code === 2000) {
+        message.success('成功编辑权限！');
+        yield put(routerRedux.goBack());
       } else {
         message.error(result.msg);
       }

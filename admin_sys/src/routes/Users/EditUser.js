@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Form , message } from 'antd';
+import { Form } from 'antd';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import UserForm from '../../selfComponent/UserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import { userTypeDataReset } from '../../utils/dataDictionary';
 
 const WrappedRegistrationForm = Form.create()(UserForm);
+
 @connect(({ user, loading }) => ({
   user,
-  loading,
+  submit: loading.effects['user/updateUserInfo'],
 }))
 class EditUser extends Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class EditUser extends Component {
       id: !arrValue.id ? null : arrValue.id,
     };
   }
+
   componentDidMount() {
     const wechatListParams = {};
     this.props.dispatch({
@@ -29,6 +32,11 @@ class EditUser extends Component {
     this.props.dispatch({
       type: 'user/listOrg',
       payload: { listOrgParams },
+    });
+    const userListParams = { id: this.state.id };
+    this.props.dispatch({
+      type: 'user/userList',
+      payload: { userListParams },
     });
   }
 
@@ -49,8 +57,8 @@ class EditUser extends Component {
       return 0;
     });
     const updateUserInfoParams = {
-      name: values.name,
-      mail: `${values.email}@sunlans.com`,
+      name: values.name.replace(/\s*/g, ''),
+      mail: values.email,
       mobile: values.phone,
       id: Number(this.state.id),
       userType: userTypeDataReset[rUserType],
@@ -65,15 +73,19 @@ class EditUser extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/user/userList', {});
+    this.props.dispatch(routerRedux.goBack());
   };
+
   render() {
-    const userListValue = this.props.user;
-    return !userListValue.wechatList.response ? null: !userListValue.wechatList.response.data ? null: !userListValue.listOrg.response ? null : !userListValue.listOrg.response.data ? null : (
+    // const userListValue = this.props.user;
+    // const {data = {}} = userListValue.userList.response;
+    // console.log(userListValue.userList)
+    return (
       <ContentLayout
+        routerData={this.props.routerData}
         contentForm={
           <WrappedRegistrationForm
-            jumpFunction={this.props}
+            jumpFunction={this.props || {}}
             resetContent={() => {
               this.resetContent();
             }}

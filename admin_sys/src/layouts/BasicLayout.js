@@ -15,7 +15,9 @@ import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.png';
+import biIcon from '../assets/biIcon.png';
 import { getAuthority } from '../utils/authority';
+import { checkPathname, addRouteData } from '../common/isCheckAuth';
 
 const { Content, Header } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -99,15 +101,13 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
     };
   }
-
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
       this.setState({
         isMobile: mobile,
       });
     });
-    this.handleUserInfo();
-    this.getuserAuthList();
+    // this.handleUserInfo();
   }
 
   componentWillUnmount() {
@@ -149,17 +149,14 @@ class BasicLayout extends React.PureComponent {
     }
     return redirect;
   };
-  getuserAuthList = () => {
-    this.props.dispatch({
-      type: 'login/getAuthList',
-    });
-  };
   handleUserInfo = () => {
-    const { userId = '' } = getAuthority('admin_user');
-    this.props.dispatch({
-      type: 'login/fetchCurrent',
-      payload: { id: userId },
-    });
+    const { userName = '小德' } = getAuthority('admin_user');
+    return { name: userName };
+
+    // this.props.dispatch({
+    //   type: 'login/fetchCurrent',
+    //   payload: { id: userId },
+    // });
   };
   handleMenuCollapse = collapsed => {
     this.props.dispatch({
@@ -176,7 +173,6 @@ class BasicLayout extends React.PureComponent {
     if (key === 'logout') {
       this.props.dispatch({
         type: 'login/logout',
-        payload: { a: 1 },
       });
     }
   };
@@ -189,17 +185,13 @@ class BasicLayout extends React.PureComponent {
   };
 
   render() {
-    const {
-      currentUser,
-      collapsed,
-      fetchingNotices,
-      notices,
-      routerData,
-      match,
-      location,
-    } = this.props;
-    currentUser.avatar = logo;
+    const { collapsed, fetchingNotices, notices, match, location } = this.props;
+    let { routerData } = this.props;
+    const menuData = getMenuData();
+    const currentUser = this.handleUserInfo();
+    currentUser.avatar = biIcon;
     const bashRedirect = this.getBaseRedirect();
+    routerData = addRouteData(routerData);
     const layout = (
       <Layout>
         <SiderMenu
@@ -208,7 +200,7 @@ class BasicLayout extends React.PureComponent {
           // If you do not have the Authorized parameter
           // you will be forced to jump to the 403 interface without permission
           Authorized={Authorized}
-          menuData={getMenuData()}
+          menuData={menuData}
           collapsed={collapsed}
           location={location}
           isMobile={this.state.isMobile}
@@ -217,7 +209,7 @@ class BasicLayout extends React.PureComponent {
         <Layout>
           <Header style={{ padding: 0 }}>
             <GlobalHeader
-              logo={logo}
+              logo={biIcon}
               currentUser={currentUser}
               fetchingNotices={fetchingNotices}
               notices={notices}
@@ -228,19 +220,20 @@ class BasicLayout extends React.PureComponent {
               onNoticeVisibleChange={this.handleNoticeVisibleChange}
             />
           </Header>
-          <Content style={{ margin: '24px 18px', height: '100%' }}>
+          <Content>
             <Switch>
               {redirectData.map(item => (
                 <Redirect key={item.from} exact from={item.from} to={item.to} />
               ))}
               {getRoutes(match.path, routerData).map(item => {
+                const patchname = item.path;
                 return (
                   <AuthorizedRoute
                     key={item.key}
                     path={item.path}
                     component={item.component}
                     exact={item.exact}
-                    authority={item.authority}
+                    authority={checkPathname.bind(null, patchname)}
                     redirectPath="/exception/403"
                   />
                 );
@@ -263,7 +256,7 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-export default connect(({ global, login }) => ({
-  currentUser: login.currentUser,
+export default connect(({ global }) => ({
+  // currentUser: login.currentUser,
   collapsed: global.collapsed,
 }))(BasicLayout);
