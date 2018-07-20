@@ -261,7 +261,8 @@ class UserForm extends Component {
       : !aaa.response
         ? []
         : !aaa.response.data ? [] : !aaa.response.data.content ? [] : aaa.response.data.content[0];
-    const str = arrValue.showNameIds;
+    console.log(arrValue)
+    const str = !arrValue?'':arrValue.showNameIds?'':arrValue.showNameIds;
     const strs = !str ? [] : str.split(',');
     const arr = !strs
       ? []
