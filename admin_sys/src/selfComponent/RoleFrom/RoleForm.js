@@ -9,6 +9,7 @@ const CheckboxGroup = Checkbox.Group;
 let checkAllObj = {};
 let isClick = false;
 let initAllVal = [];
+let allIdsVal = {};
 
 class RoleForm extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class RoleForm extends Component {
   /*
   * 单选按钮事件
   * */
-  onChange = (pid, secList, key, listKey, checkedList) => {
+  onChange = (gid, pid, secList, key, listKey, checkedList) => {
     isClick = true;
     let len = 0;
     let checkLists = [];
@@ -61,14 +62,31 @@ class RoleForm extends Component {
     } else {
       checkLists = checkedList.concat(pid);
     }
+
     initAllVal = Array.from(new Set(checkLists));
-    checkAllObj[listKey] = Array.from(new Set(checkLists));
+
+    // 删除一级id
+    let kkk = 0;
+    allIdsVal[gid].forEach(k => {
+      initAllVal.forEach(m => {
+        if (k === m) {
+          kkk += 1;
+        }
+      });
+    });
+    if (kkk === 0) {
+      const index = initAllVal.indexOf(gid);
+      if (index > -1) {
+        initAllVal.splice(index, 1);
+      }
+    }
+    checkAllObj[listKey] = initAllVal;
     checkAllObj[key] = len === secList.length;
   };
   /*
   * 全选按钮事件
   * */
-  onCheckAllChange = (pid, secList, allKey, listKey, e) => {
+  onCheckAllChange = (gid, pid, secList, allKey, listKey, e) => {
     const initVal = this.props.getRoleIds;
 
     isClick = true;
@@ -77,6 +95,8 @@ class RoleForm extends Component {
       nodeIDs.push(key.id);
       nodeIDs.push(key.parentId);
     });
+
+    // 取消全选的时候同时删除父级id
     if (!e.target.checked) {
       nodeIDs.forEach(n => {
         initVal.forEach(m => {
@@ -88,6 +108,21 @@ class RoleForm extends Component {
           }
         });
       });
+      let kkk = 0;
+      // 删除一级id
+      allIdsVal[gid].forEach(k => {
+        initAllVal.forEach(m => {
+          if (k === m) {
+            kkk += 1;
+          }
+        });
+      });
+      if (kkk === 0) {
+        const index = initAllVal.indexOf(gid);
+        if (index > -1) {
+          initAllVal.splice(index, 1);
+        }
+      }
     }
     initAllVal = initVal;
     checkAllObj[listKey] = e.target.checked ? Array.from(new Set(nodeIDs.concat(pid))) : [];
@@ -122,7 +157,20 @@ class RoleForm extends Component {
     });
   };
   render() {
+    const allIds = {};
     const { listAll, isShowFooter, getRoleIds } = this.props;
+    listAll.forEach(item => {
+      allIds[item.id] = [];
+      item.nodes.forEach(item1 => {
+        allIds[item.id].push(item1.id);
+        item1.nodes.forEach(item2 => {
+          allIds[item.id].push(item2.id);
+        });
+      });
+      allIdsVal = allIds;
+      return allIdsVal;
+    });
+
     const { getFieldDecorator } = this.props.form;
     let isDisabled = true;
     if (isShowFooter) isDisabled = false;
@@ -160,7 +208,14 @@ class RoleForm extends Component {
           {item.length === 0 ? null : (
             <div>
               <Checkbox
-                onChange={this.onCheckAllChange.bind(this, parentIds, item, checkAllKey, listKey)}
+                onChange={this.onCheckAllChange.bind(
+                  this,
+                  pid,
+                  parentIds,
+                  item,
+                  checkAllKey,
+                  listKey
+                )}
                 checked={checkAllObj[checkAllKey]}
                 disabled={isDisabled}
                 className={styles.checkBox}
@@ -171,7 +226,7 @@ class RoleForm extends Component {
                 options={plainOptions}
                 value={!checkAllObj[listKey] ? getRoleIds : checkAllObj[listKey]}
                 disabled={isDisabled}
-                onChange={this.onChange.bind(this, parentIds, item, checkAllKey, listKey)}
+                onChange={this.onChange.bind(this, pid, parentIds, item, checkAllKey, listKey)}
                 className={styles.checkboxGroup}
               />
             </div>
