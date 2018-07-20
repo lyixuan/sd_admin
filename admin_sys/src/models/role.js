@@ -13,7 +13,7 @@ import { getJsonTree } from '../utils/utils';
 export default {
   namespace: 'role',
 
-  state: { checkIds: [] },
+  state: {},
 
   effects: {
     *roleList({ payload }, { put, call }) {
@@ -64,6 +64,10 @@ export default {
       if (getCode.code === 2000) {
         message.success('成功编辑角色！');
         yield put(routerRedux.push('/config/roleList'));
+        yield put({
+          type: 'save',
+          payload: paramsObj,
+        });
       } else {
         message.error(getCode.msg);
       }
@@ -99,18 +103,14 @@ export default {
       const getRoleData = getJsonTree(getRoleIds, 0);
 
       const ids = [];
-      const checkIds = [];
       getRoleIds.forEach(item => {
         if (item.checked) {
           ids.push(item.id);
         }
-        if (item.checked && item.level === 3) {
-          checkIds.push(item.id);
-        }
       });
       getRoleIds = ids;
-      console.log(checkIds);
-      return { ...state, getRoleIds, getRoleData, checkIds };
+      console.log(getRoleIds);
+      return { ...state, getRoleIds, getRoleData };
     },
     saveListAll(state, action) {
       let { listAll } = action.payload;

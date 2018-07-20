@@ -161,8 +161,8 @@ class RoleForm extends Component {
   };
   render() {
     const allIds = {};
-    const { listAll, isShowFooter, getRoleIds, checkIds } = this.props;
-
+    const { listAll, isShowFooter, getRoleIds, checkdIds } = this.props;
+    console.log(checkdIds);
     listAll.forEach(item => {
       allIds[item.id] = [];
       item.nodes.forEach(item1 => {
@@ -193,9 +193,10 @@ class RoleForm extends Component {
       item.forEach(key => {
         plainOptions.push({ label: key.name, value: key.id, parentId: pid });
       });
-      if (checkIds) {
+      const isCheckedAll = checkdIds.length > 0 ? checkdIds : getRoleIds;
+      if (isCheckedAll) {
         plainOptions.forEach(n => {
-          checkIds.forEach(m => {
+          isCheckedAll.forEach(m => {
             if (n.value === m) {
               len += 1;
             }

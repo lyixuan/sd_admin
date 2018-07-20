@@ -28,7 +28,9 @@ class EditRole extends Component {
       type: 'role/rolePrivileges',
       payload: { paramsIds },
     });
+    console.log('-------');
   }
+
   submitInfo = (values, privilegeIds) => {
     const params = this.props.getUrlParams();
     const paramsObj = {
@@ -44,11 +46,11 @@ class EditRole extends Component {
   render() {
     const getRoleData = !this.props.role.getRoleData ? [] : this.props.role.getRoleData;
     const getRoleIds = !this.props.role.getRoleIds ? [] : this.props.role.getRoleIds;
-    const checkIds = !this.props.role.checkIds ? [] : this.props.role.checkIds;
+    const privilegeId = !this.props.role.privilegeIds ? [] : this.props.role.privilegeIds;
 
     const baseLayout = (
       <WrappedRoleForm
-        checkIds={checkIds}
+        checkdIds={privilegeId}
         listAll={getRoleData}
         isShowFooter="true"
         getRoleIds={getRoleIds}
