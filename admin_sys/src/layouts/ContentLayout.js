@@ -22,11 +22,11 @@ class ContentLayout extends Component {
     // const title = !this.props.title ? null : this.props.title;
     const { routerData = null } = this.props;
     const routeObj = this.getRouterPathname();
-    const { name = '', bread } = routeObj;
+    const { name = '', bread = {} } = routeObj;
     return (
       <div className={styles.contentLayout}>
         <div className={styles.bread}>
-          {routerData && bread && <PageHead routerData={routerData} />}
+          {routerData && bread.path && <PageHead routerData={routeObj} />}
         </div>
         {name && <div className={styles.title}>{name}</div>}
         <Content>
