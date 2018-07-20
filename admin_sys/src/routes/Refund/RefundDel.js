@@ -102,32 +102,26 @@ class RefundDel extends Component {
       {
         title: '序号',
         dataIndex: 'key',
-        width: '70px',
       },
       {
         title: '子订单编号',
         dataIndex: 'ordId',
-        width: '100px',
       },
       {
         title: '投诉时间',
         dataIndex: 'complainTime',
-        width: '200px',
       },
       {
         title: '学生名称 | id',
         dataIndex: 'stuName',
-        width: '154px',
       },
       {
         title: '老师名称',
         dataIndex: 'cpName',
-        width: '90px',
       },
       {
         title: '学院 | 家族 | 小组',
         dataIndex: 'name',
-        width: '250px',
       },
     ];
     return columns;

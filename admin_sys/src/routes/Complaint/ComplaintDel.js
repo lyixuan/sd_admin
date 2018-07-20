@@ -102,37 +102,30 @@ class ComplaintDel extends Component {
       {
         title: '序号',
         dataIndex: 'key',
-        width: '70px',
       },
       {
         title: '投诉时间',
         dataIndex: 'complainTime',
-        width: '150px',
       },
       {
         title: '学生名称 | id',
         dataIndex: 'stuName',
-        width: '130px',
       },
       {
         title: '老师名称',
         dataIndex: 'cpName',
-        width: '90px',
       },
       {
         title: '学院 | 家族 | 小组',
         dataIndex: 'name',
-        width: '260px',
       },
       {
         title: '编号',
         dataIndex: 'bottomLineNum',
-        width: '100px',
       },
       {
         title: '扣分值',
         dataIndex: 'countValue',
-        width: '80px',
       },
     ];
     return columns;
