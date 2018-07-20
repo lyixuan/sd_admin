@@ -212,6 +212,7 @@ class ComplaintDel extends Component {
     return (
       <div>
         <StepLayout
+          routerData={this.props.routerData}
           title="删除投诉"
           steps={steps}
           tipSucess={tipSucess}

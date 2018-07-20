@@ -206,6 +206,7 @@ class RefundDel extends Component {
     ];
     return (
       <StepLayout
+        routerData={this.props.routerData}
         title="删除质检"
         steps={steps}
         tipSucess={tipSucess}

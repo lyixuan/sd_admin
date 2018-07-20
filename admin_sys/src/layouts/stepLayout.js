@@ -12,6 +12,7 @@
 import React, { Component } from 'react';
 import { Steps, Button } from 'antd';
 import common from '../routes/Common/common.css';
+import ContentLayout from './ContentLayout';
 import styles from './stepLayout.css';
 
 const { Step } = Steps;
@@ -62,7 +63,16 @@ class StepLayout extends Component {
     this.props.goBack();
   };
   render() {
-    const { title, steps, baseLayout, isDisabled, disableDel, current, isLoading } = this.props;
+    const {
+      title,
+      steps,
+      baseLayout,
+      isDisabled,
+      disableDel,
+      current,
+      isLoading,
+      routerData,
+    } = this.props;
     const dis = disableDel === null ? isDisabled : disableDel;
 
     const stepBlock = (
@@ -107,10 +117,15 @@ class StepLayout extends Component {
       </div>
     );
     return (
-      <div className={styles.normal}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.content}>{!baseLayout ? stepBlock : baseLayout}</div>
-      </div>
+      <ContentLayout
+        routerData={routerData}
+        title={title}
+        bottomLine={<div className={styles.content}>{!baseLayout ? stepBlock : baseLayout}</div>}
+      />
+      // <div className={styles.normal}>
+      //   <div className={styles.title}>{title}</div>
+      //   <div className={styles.content}>{!baseLayout ? stepBlock : baseLayout}</div>
+      // </div>
     );
   }
 }
