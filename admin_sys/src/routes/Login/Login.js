@@ -102,7 +102,7 @@ export default class LoginPage extends Component {
                 忘记密码
               </span>
             </div>
-            <Submit loading={submitting} type="primary" className={common.searchButton}>
+            <Submit loading={submitting} type="primary" className={styles.searchButton}>
               登录
             </Submit>
           </div>
