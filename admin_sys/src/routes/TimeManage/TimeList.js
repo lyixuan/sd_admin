@@ -261,8 +261,7 @@ class TimeList extends Component {
     return (
       <div>
         <ContentLayout
-          pageHeraderUnvisible="unvisible"
-          title="时间管理"
+          routerData={this.props.routerData}
           contentForm={<WrappedAdvancedSearchForm />}
           contentButton={
             <div>

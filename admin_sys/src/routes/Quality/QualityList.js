@@ -189,8 +189,7 @@ class QualityList extends Component {
     });
     return (
       <ContentLayout
-        pageHeraderUnvisible="visible"
-        title="质检信息"
+        routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>

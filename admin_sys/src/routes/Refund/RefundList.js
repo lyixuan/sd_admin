@@ -224,8 +224,7 @@ class RefundList extends Component {
     });
     return (
       <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="退费列表"
+        routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>

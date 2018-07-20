@@ -135,8 +135,7 @@ class College extends Component {
     return (
       <div>
         <ContentLayout
-          pageHeraderUnvisible="unvisible"
-          title="学院"
+          routerData={this.props.routerData}
           contentTable={
             <div>
               <p className={common.totalNum}>总数：{dataSource.length} 条</p>

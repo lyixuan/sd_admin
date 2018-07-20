@@ -78,6 +78,7 @@ export const getRouterData = app => {
     },
     '/quality/qualityList': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityList')),
+      name: '质检管理',
     },
     '/quality/qualityAdd': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityAdd')),
@@ -99,6 +100,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['account/accountList'], () =>
         import('../routes/Account/AccountList')
       ),
+      name: '账号管理',
     },
     '/account/createAccount': {
       component: dynamicWrapper(app, ['account/accountList'], () =>
@@ -146,6 +148,7 @@ export const getRouterData = app => {
     },
     '/config/userList': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/UserList')),
+      name: '用户管理',
     },
 
     '/permission/editPermission': {
@@ -172,6 +175,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/PermissionList')
       ),
+      name: '权限管理',
     },
 
     '/role/editRole': {
@@ -200,9 +204,11 @@ export const getRouterData = app => {
     },
     '/config/roleList': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/RoleList')),
+      name: '角色管理',
     },
     '/bottomLine/refundList': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundList')),
+      name: '退费管理',
     },
     '/refund/refundAdd': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundAdd')),
@@ -224,6 +230,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintList')
       ),
+      name: '投诉管理',
     },
     '/complaint/complaintAdd': {
       component: dynamicWrapper(app, ['blComplain'], () =>
@@ -247,20 +254,25 @@ export const getRouterData = app => {
     },
     '/config/timeList': {
       component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),
+      name: '时间管理',
     },
     '/config/Group': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
+      name: '小组短名称',
     },
     '/config/family': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Family')),
+      name: '家族短名称',
     },
     '/config/college': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/College')),
+      name: '学院短名称',
     },
     '/config/complaintDoublesList': {
       component: dynamicWrapper(app, ['complaintDoubles'], () =>
         import('../routes/ComplaintDoubles/ComplaintDoublesList')
       ),
+      name: '投数倍数管理',
     },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
