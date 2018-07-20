@@ -64,12 +64,10 @@ export default {
       }
     },
     *deleteAccount({ payload }, { call, put }) {
-      console.log(payload.deleteAccountParams);
       const result = yield call(deleteAccount, payload.deleteAccountParams);
       if (result.code === 2000) {
         message.success('账号删除成功！');
         const response = yield call(queryAccountList, { size: 30, number: 0, orderType: 'name' });
-        console.log(response);
         yield put({
           type: 'accountListSave',
           payload: { response },

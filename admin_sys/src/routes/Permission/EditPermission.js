@@ -42,9 +42,10 @@ class EditPermission extends Component {
       id: Number(this.state.id),
       level: levelDataReset[values.level[0]] || 1,
       parentId: parentIdName,
-      sort: Number(values.sort),
+      sortFlag: Number(values.sortFlag),
       resourceUrl: values.resourceUrl,
     };
+
     this.props.dispatch({
       type: 'permission/updatePermission',
       payload: { updatePermissionParams },

@@ -17,7 +17,12 @@ export default {
   effects: {
     *complaintDoublesList({ payload }, { call, put }) {
       const response = yield call(complaintDoublesList, payload.complaintDoublesListParams);
-      yield put({ type: 'complaintDoublesListSave', payload: { response } });
+      if (response.code === 2000) {
+        yield put({ type: 'complaintDoublesListSave', payload: { response } });
+      } else {
+        message.error(response.msg);
+      }
+
     },
     *upateComplaintDoubles({ payload }, { call, put }) {
       const result = yield call(upateComplaintDoubles, payload.upateComplaintDoublesParams);

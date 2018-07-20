@@ -30,7 +30,7 @@ class CreatePermission extends Component {
       iconUrl: values.iconUrl,
       level: levelDataReset[values.level[0]] || 1,
       parentId: parentIdName,
-      sort: Number(values.sort),
+      sortFlag: Number(values.sortFlag),
       resourceUrl: values.resourceUrl,
     };
     this.props.dispatch({
