@@ -210,8 +210,7 @@ class ComplaintDoublesList extends Component {
     return (
       <div>
         <ContentLayout
-          pageHeraderUnvisible="unvisible"
-          title="投诉翻倍"
+          routerData={this.props.routerData}
           contentTable={
             <div>
               <p className={common.totalNum}>总数：{totalNum}条</p>

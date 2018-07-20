@@ -3,7 +3,6 @@ import { Breadcrumb } from 'antd';
 import { Link } from 'dva/router';
 
 export default class PageHead extends React.Component {
-  componentDidMount() {}
   getRouterPathname = () => {
     const { routerData = {} } = this.props;
     const { pathname = '' } = window.location;

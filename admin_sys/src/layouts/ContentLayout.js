@@ -4,15 +4,22 @@ import PageHead from '../selfComponent/pageHead/pageHead';
 import styles from './Content.less';
 
 class ContentLayout extends Component {
+  getRouterPathname = () => {
+    const { routerData = {} } = this.props;
+    const { pathname = '' } = window.location;
+    const routeObj = routerData[pathname];
+    return routeObj || {};
+  };
   render() {
-    const flag = !this.props.pageHeraderUnvisible ? 'unvisible' : null;
-    const title = !this.props.title ? null : this.props.title;
+    // const title = !this.props.title ? null : this.props.title;
     const { routerData = null } = this.props;
+    const routeObj = this.getRouterPathname();
+    const { name = '', bread } = routeObj;
     return (
       <div>
-        {routerData && <PageHead routerData={routerData} />}
-        {title && <div className={styles.title}>{title}</div>}
-        <Content flag={flag} title={title}>
+        {routerData && bread && <PageHead routerData={routerData} />}
+        {name && <div className={styles.title}>{name}</div>}
+        <Content>
           {!this.props.contentForm ? null : this.props.contentForm}
           {!this.props.contentButton ? null : this.props.contentButton}
           {!this.props.contentTable ? null : this.props.contentTable}

@@ -142,8 +142,7 @@ class AccountList extends Component {
     const columns = this.columnsData();
     return (
       <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="账号列表"
+        routerData={this.props.routerData}
         contentButton={
           <AuthorizedButton authority="/account/createAccount">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>

@@ -221,8 +221,7 @@ class PermissionList extends Component {
     });
     return (
       <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="权限列表"
+        routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <AuthorizedButton authority="/permission/createPermission">

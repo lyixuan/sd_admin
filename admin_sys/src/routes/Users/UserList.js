@@ -325,8 +325,7 @@ class UserList extends Component {
     });
     return (
       <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="用户列表"
+        routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <AuthorizedButton authority="/user/createUser">
