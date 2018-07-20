@@ -293,7 +293,7 @@
 }
 
 :global(.ant-calendar-picker-input) {
-  padding: 4px 0px !important;
+  padding: 4px 4px !important;
 }
 
 :global(.ant-calendar-range-picker-input) {
