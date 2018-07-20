@@ -81,9 +81,19 @@ export const getRouterData = app => {
     },
     '/quality/qualityAdd': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityAdd')),
+      bread: {
+        name: '质检管理',
+        path: '/quality/qualityList',
+      },
+      name: '添加质检',
     },
     '/quality/qualityDel': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityDel')),
+      bread: {
+        name: '质检管理',
+        path: '/quality/qualityList',
+      },
+      name: '删除质检',
     },
     '/config/accountList': {
       component: dynamicWrapper(app, ['account/accountList'], () =>
@@ -94,20 +104,45 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['account/accountList'], () =>
         import('../routes/Account/CreateAccount')
       ),
+      bread: {
+        name: '账号管理',
+        path: '/config/accountList',
+      },
+      name: '创建账号',
     },
     '/account/editAccount': {
       component: dynamicWrapper(app, ['account/accountList'], () =>
         import('../routes/Account/EditAccount')
       ),
+      bread: {
+        name: '账号管理',
+        path: '/config/accountList',
+      },
+      name: '编辑账号',
     },
     '/user/editUser': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/EditUser')),
+      bread: {
+        name: '用户管理',
+        path: '/config/userList',
+      },
+      name: '编辑用户',
     },
     '/user/createUser': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/CreateUser')),
+      bread: {
+        name: '用户管理',
+        path: '/config/userList',
+      },
+      name: '创建用户',
     },
     '/user/checkUser': {
       component: dynamicWrapper(app, [], () => import('../routes/Users/CheckUser')),
+      bread: {
+        name: '用户管理',
+        path: '/config/userList',
+      },
+      name: '查看用户',
     },
     '/config/userList': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/UserList')),
@@ -117,11 +152,21 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/EditPermission')
       ),
+      bread: {
+        name: '权限管理',
+        path: '/config/permissionList',
+      },
+      name: '编辑权限',
     },
     '/permission/createPermission': {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/CreatePermission')
       ),
+      bread: {
+        name: '权限管理',
+        path: '/config/permissionList',
+      },
+      name: '创建权限',
     },
     '/config/permissionList': {
       component: dynamicWrapper(app, ['permission'], () =>
@@ -131,12 +176,27 @@ export const getRouterData = app => {
 
     '/role/editRole': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/EditRole')),
+      bread: {
+        name: '角色管理',
+        path: '/config/roleList',
+      },
+      name: '编辑角色',
     },
     '/role/createrole': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/CreateRole')),
+      bread: {
+        name: '角色管理',
+        path: '/config/roleList',
+      },
+      name: '创建角色',
     },
     '/role/checkRole': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/CheckRole')),
+      bread: {
+        name: '角色管理',
+        path: '/config/roleList',
+      },
+      name: '查看劫色',
     },
     '/config/roleList': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/RoleList')),
@@ -146,9 +206,19 @@ export const getRouterData = app => {
     },
     '/refund/refundAdd': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundAdd')),
+      bread: {
+        name: '退费管理',
+        path: '/bottomLine/refundList',
+      },
+      name: '添加退费',
     },
     '/refund/refundDel': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundDel')),
+      bread: {
+        name: '退费管理',
+        path: '/bottomLine/refundList',
+      },
+      name: '删除退费',
     },
     '/bottomLine/complaintList': {
       component: dynamicWrapper(app, ['blComplain'], () =>
@@ -159,11 +229,21 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintAdd')
       ),
+      bread: {
+        name: '投数管理',
+        path: '/bottomLine/complaintList',
+      },
+      name: '添加投诉',
     },
     '/complaint/complaintDel': {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintDel')
       ),
+      bread: {
+        name: '投数管理',
+        path: '/bottomLine/complaintList',
+      },
+      name: '删除投数',
     },
     '/config/timeList': {
       component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),

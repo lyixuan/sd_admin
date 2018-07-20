@@ -57,7 +57,7 @@ class EditUser extends Component {
       return 0;
     });
     const updateUserInfoParams = {
-      name: values.name.replace(/\s*/g,""),
+      name: values.name.replace(/\s*/g, ''),
       mail: values.email,
       mobile: values.phone,
       id: Number(this.state.id),
@@ -73,8 +73,7 @@ class EditUser extends Component {
   };
 
   resetContent = () => {
-    this.props.dispatch(
-      routerRedux.goBack())
+    this.props.dispatch(routerRedux.goBack());
   };
 
   render() {

@@ -26,7 +26,7 @@ class CreatePermission extends Component {
   handleSubmit = values => {
     const parentIdName = values.parentId[0] || 0;
     const addPermissionParams = {
-      name: values.name.replace(/\s*/g,""),
+      name: values.name.replace(/\s*/g, ''),
       iconUrl: values.iconUrl,
       level: levelDataReset[values.level[0]] || 1,
       parentId: parentIdName,
@@ -44,7 +44,7 @@ class CreatePermission extends Component {
   };
 
   render() {
-    return  (
+    return (
       <ContentLayout
         contentForm={
           <WrappedRegistrationForm

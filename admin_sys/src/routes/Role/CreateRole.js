@@ -18,7 +18,7 @@ class CreateRole extends Component {
   }
   submitInfo = (values, privilegeIds) => {
     const paramsObj = {
-      name: !values.name?undefined:values.name.replace(/\s*/g,""),
+      name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
       privilegeIds,
     };
     this.props.dispatch({

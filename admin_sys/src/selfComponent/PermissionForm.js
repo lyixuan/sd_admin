@@ -24,9 +24,11 @@ const residences = [
 class PermissionForm extends Component {
   constructor(props) {
     super(props);
-    const preList = this.props.jumpFunction
+    const preList = this.props.jumpFunction;
     const fromWhere = preList.getUrlParams();
-    const parentIdValues = !preList.permission.permissionListAllName ? [] : preList.permission.permissionListAllName.data;
+    const parentIdValues = !preList.permission.permissionListAllName
+      ? []
+      : preList.permission.permissionListAllName.data;
     this.state = {
       parentIdList: !parentIdValues ? [] : parentIdValues,
       id: !fromWhere.id ? '' : fromWhere.id,
@@ -85,7 +87,7 @@ class PermissionForm extends Component {
   };
 
   handleSelectChange = value => {
-    const level = !value[0]?flag:value[0];
+    const level = !value[0] ? flag : value[0];
     flag = level;
     const listValue = parentListBackup;
     const rObj = [];
@@ -104,7 +106,7 @@ class PermissionForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const {submit}= this.props.jumpFunction
+    const { submit } = this.props.jumpFunction;
     const disabled = true;
     const formItemLayout = {
       labelCol: {
@@ -128,11 +130,15 @@ class PermissionForm extends Component {
         },
       },
     };
-    const getListValue = this.props.jumpFunction.permission
-    const arrValue = !getListValue.permissionById ? [] : !getListValue.permissionById.response ? [] : getListValue.permissionById.response.data;
-    const parentIdValues = !getListValue.permissionListAllName ? [] : getListValue.permissionListAllName.data;
+    const getListValue = this.props.jumpFunction.permission;
+    const arrValue = !getListValue.permissionById
+      ? []
+      : !getListValue.permissionById.response ? [] : getListValue.permissionById.response.data;
+    const parentIdValues = !getListValue.permissionListAllName
+      ? []
+      : getListValue.permissionListAllName.data;
     parentListBackup = !parentIdValues ? [] : this.fullListFun(parentIdValues);
-    parentList = !parentList ||parentList.length===0?parentListBackup:parentList;
+    parentList = !parentList || parentList.length === 0 ? parentListBackup : parentList;
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -142,7 +148,7 @@ class PermissionForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const reg = !value ? '' : value.replace(/\s*/g,"");// 去除字符串中全局空格
+                    const reg = !value ? '' : value.replace(/\s*/g, ''); // 去除字符串中全局空格
                     if (!reg) {
                       callback({ message: '权限名称为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
@@ -157,7 +163,9 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
             {getFieldDecorator('level', {
-              initialValue: [!this.state.id ? '' : !arrValue.level ? '' : levelData[arrValue.level]],
+              initialValue: [
+                !this.state.id ? '' : !arrValue.level ? '' : levelData[arrValue.level],
+              ],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -228,7 +236,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('sort', {
-              initialValue: !this.state.id ?'':!arrValue.sort?0:arrValue.sort,
+              initialValue: !this.state.id ? '' : !arrValue.sort ? 0 : arrValue.sort,
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -269,7 +277,12 @@ class PermissionForm extends Component {
                   >
                     取消
                   </Button>
-                  <Button htmlType="submit" type="primary" className={common.submitButton} loading={submit} >
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    className={common.submitButton}
+                    loading={submit}
+                  >
                     提交
                   </Button>
                 </div>

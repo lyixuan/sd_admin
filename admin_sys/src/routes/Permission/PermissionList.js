@@ -23,7 +23,12 @@ class PermissionList extends Component {
   componentDidMount() {
     const initVal = this.props.getUrlParams();
     firstName = !initVal.firstName ? '' : initVal.firstName;
-    const permissionListParams = { size: 30, number: 0, sort: 'id', name: !initVal.firstName ? undefined : initVal.firstName};
+    const permissionListParams = {
+      size: 30,
+      number: 0,
+      sort: 'id',
+      name: !initVal.firstName ? undefined : initVal.firstName,
+    };
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -63,7 +68,7 @@ class PermissionList extends Component {
     firstName = '';
     this.props.setCurrentUrlParams({
       firstName: null,
-    })
+    });
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/config/permissionList');
     const permissionListParams = { size: 30, number: 0, sort: 'id' };
@@ -80,11 +85,10 @@ class PermissionList extends Component {
       if (!err) {
         firstName = values.name;
         this.props.setCurrentUrlParams({
-            firstName: !values.name ? undefined : values.name,
-          }
-        )
+          firstName: !values.name ? undefined : values.name,
+        });
         const permissionListParams = {
-          name: !values.name ? undefined : values.name.replace(/\s*/g,""),
+          name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
           sort: 'id',
           size: 30,
           number: 0,

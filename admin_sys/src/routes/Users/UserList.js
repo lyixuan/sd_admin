@@ -43,8 +43,13 @@ class UserList extends Component {
     firstName = !initVal.firstName ? '' : initVal.firstName;
     firstPhone = !initVal.firstPhone ? '' : initVal.firstPhone;
     firstUpdate = !initVal.firstUpdate ? 0 : initVal.firstUpdate;
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !initVal.firstUpdate ? 0 : initVal.firstUpdate  , name: !initVal.firstName ? undefined : initVal.firstName,
-      mobile: !initVal.firstPhone ? undefined : initVal.firstPhone};
+    const userListParams = {
+      pageSize: 30,
+      pageNum: 0,
+      isUpdate: !initVal.firstUpdate ? 0 : initVal.firstUpdate,
+      name: !initVal.firstName ? undefined : initVal.firstName,
+      mobile: !initVal.firstPhone ? undefined : initVal.firstPhone,
+    };
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -172,7 +177,9 @@ class UserList extends Component {
           return (
             <div>
               {record.changeShowName &&
-              record.changeShowName !== '' &&record.userType!=="admib" &&record.userType!=="boss"&&
+              record.changeShowName !== '' &&
+              record.userType !== 'admib' &&
+              record.userType !== 'boss' &&
               record.changeShowName !== record.showName ? (
                 <AuthorizedButton authority="/user/checkUser">
                   <span
@@ -213,7 +220,7 @@ class UserList extends Component {
       firstUpdate: null,
       firstName: null,
       firstPhone: null,
-    })
+    });
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/config/userList');
     const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
@@ -236,12 +243,11 @@ class UserList extends Component {
           firstUpdate: values.isUpdate[0],
           firstName: !values.name ? undefined : values.name,
           firstPhone: !values.mobile ? undefined : values.mobile,
-          }
-        )
+        });
 
         const userListParams = {
           isUpdate: values.isUpdate[0],
-          name: !values.name ? undefined : values.name.replace(/\s*/g,""),
+          name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
           mobile: !values.mobile ? undefined : values.mobile,
           pageSize: 30,
           pageNum: 0,

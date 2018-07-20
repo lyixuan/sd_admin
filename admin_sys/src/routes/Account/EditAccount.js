@@ -42,7 +42,7 @@ class EditAccount extends Component {
       return 0;
     });
     const updateAccountParams = {
-      name: values.name.replace(/\s*/g,""),
+      name: values.name.replace(/\s*/g, ''),
       mail: `${values.mail}@sunlands.com`,
       roleId: newRoleId,
       id: Number(this.state.id),

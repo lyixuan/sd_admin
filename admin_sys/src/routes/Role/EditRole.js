@@ -33,7 +33,7 @@ class EditRole extends Component {
     const params = this.props.getUrlParams();
     const paramsObj = {
       id: params.id,
-      name: values.name.replace(/\s*/g,""),
+      name: values.name.replace(/\s*/g, ''),
       privilegeIds,
     };
     this.props.dispatch({
