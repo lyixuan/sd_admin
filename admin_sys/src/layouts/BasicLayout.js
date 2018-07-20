@@ -15,6 +15,7 @@ import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.png';
+import biIcon from '../assets/biIcon.png';
 import { getAuthority } from '../utils/authority';
 import { checkPathname, addRouteData } from '../common/isCheckAuth';
 
@@ -188,7 +189,7 @@ class BasicLayout extends React.PureComponent {
     let { routerData } = this.props;
     const menuData = getMenuData();
     const currentUser = this.handleUserInfo();
-    currentUser.avatar = logo;
+    currentUser.avatar = biIcon;
     const bashRedirect = this.getBaseRedirect();
     routerData = addRouteData(routerData);
     const layout = (
@@ -208,7 +209,7 @@ class BasicLayout extends React.PureComponent {
         <Layout>
           <Header style={{ padding: 0 }}>
             <GlobalHeader
-              logo={logo}
+              logo={biIcon}
               currentUser={currentUser}
               fetchingNotices={fetchingNotices}
               notices={notices}
