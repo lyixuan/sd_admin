@@ -17,13 +17,7 @@ class stepTable extends Component {
         ) : null}
         {dataSource ? (
           <div className={onlyTable ? styles.onlyTable : styles.tableList}>
-            <Table
-              bordered
-              dataSource={dataSource}
-              columns={columns}
-              pagination={false}
-              scroll={{ y: 264 }}
-            />
+            <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
           </div>
         ) : null}
       </div>

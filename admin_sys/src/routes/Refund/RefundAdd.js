@@ -183,7 +183,6 @@ class RefundAdd extends Component {
             onlyTable="true"
             dataSource={dataSource}
             columns={columns}
-            scroll={{ y: 264 }}
           />
         ),
       },
