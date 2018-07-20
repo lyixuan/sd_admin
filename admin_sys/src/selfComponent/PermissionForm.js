@@ -200,7 +200,7 @@ class PermissionForm extends Component {
                 {
                   validator(rule, value, callback) {
                     if (!value[0] && flag !== '一级页面') {
-                      callback({ message: '请选择权上级！' });
+                      callback({ message: '非一级页面,请选择上级权限！' });
                     }
                     callback();
                   },
