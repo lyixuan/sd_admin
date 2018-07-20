@@ -184,7 +184,20 @@ class RoleForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*角色名称：">
             {getFieldDecorator('name', {
-              rules: [{ required: true, message: '请输入角色名称!', whitespace: true }],
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    const reg = !value ? '' : value.replace(/\s*/g,"");
+                    if (!reg) {
+                      callback({ message: '角色名称为必填项，请填写!' });
+                    } else if (reg.length < 2 || reg.length > 20) {
+                      callback({ message: '角色名称在2-20个字符之间，请填写!' });
+                    } else {
+                      callback();
+                    }
+                  },
+                },
+              ],
             })(
               <Input
                 maxLength={25}

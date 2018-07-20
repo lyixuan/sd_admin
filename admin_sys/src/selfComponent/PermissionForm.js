@@ -142,7 +142,7 @@ class PermissionForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
+                    const reg = !value ? '' : value.replace(/\s*/g,"");// 去除字符串中全局空格
                     if (!reg) {
                       callback({ message: '权限名称为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {

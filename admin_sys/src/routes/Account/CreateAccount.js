@@ -33,7 +33,7 @@ class CreateAccount extends Component {
       return 0;
     });
     const addAccountParams = {
-      name: values.name,
+      name: values.name.replace(/\s*/g,""),
       mail: `${values.mail}@sunlands.com`,
       roleId: newRoleId,
     };
