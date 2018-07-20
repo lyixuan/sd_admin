@@ -1,6 +1,7 @@
 import React from 'react';
 import { Breadcrumb } from 'antd';
 import { Link } from 'dva/router';
+import style from './pageHead.css';
 
 export default class PageHead extends React.Component {
   getRouterPathname = () => {
@@ -13,7 +14,7 @@ export default class PageHead extends React.Component {
     const routeObj = this.getRouterPathname();
     const { bread, name } = routeObj;
     return (
-      <div>
+      <div className={style.pagehead}>
         <Breadcrumb>
           <Breadcrumb.Item>
             <Link to={bread.path}>{bread.name}</Link>
