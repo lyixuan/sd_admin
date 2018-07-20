@@ -38,7 +38,7 @@ class EditPermission extends Component {
   handleSubmit = (values) => {
     const parentIdName = values.parentId[0] || 0;
     const updatePermissionParams = {
-      name: values.name,
+      name: values.name.replace(/\s*/g,""),
       iconUrl: values.iconUrl,
       id: Number(this.state.id),
       level: levelDataReset[values.level[0]]||1,

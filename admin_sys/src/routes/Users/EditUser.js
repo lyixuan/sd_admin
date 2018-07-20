@@ -57,7 +57,7 @@ class EditUser extends Component {
       return 0;
     });
     const updateUserInfoParams = {
-      name: values.name,
+      name: values.name.replace(/\s*/g,""),
       mail: values.email,
       mobile: values.phone,
       id: Number(this.state.id),

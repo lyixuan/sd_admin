@@ -262,7 +262,8 @@ class UserForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
+                    // const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');// 去除字符串前后的空格
+                    const reg = !value ? '' : value.replace(/\s*/g,"");// 去除字符串中全局空格
                     if (!reg) {
                       callback({ message: '姓名为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
@@ -294,7 +295,20 @@ class UserForm extends Component {
           <FormItem {...formItemLayout} label="*邮 箱">
             {getFieldDecorator('email', {
               initialValue: !this.state.id ? '' : !arrValue.entUserId ? '' : formatEmail(arrValue.entUserId),
-              rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    const strExp = /^[A-Za-z0-9]+$/;
+                    if (!strExp.test(value)) {
+                      callback({ message: '请输入合法邮箱' });
+                    }
+                    callback();
+                  },
+                },
+                { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
+                { min: 3, max: 50, required: true, message: '邮箱账号长度需要在3-50字符之间!' },
+              ],
+
             })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>
           </FormItem>

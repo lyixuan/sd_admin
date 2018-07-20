@@ -241,7 +241,7 @@ class UserList extends Component {
 
         const userListParams = {
           isUpdate: values.isUpdate[0],
-          name: !values.name ? undefined : values.name,
+          name: !values.name ? undefined : values.name.replace(/\s*/g,""),
           mobile: !values.mobile ? undefined : values.mobile,
           pageSize: 30,
           pageNum: 0,

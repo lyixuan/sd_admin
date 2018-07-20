@@ -84,7 +84,7 @@ class PermissionList extends Component {
           }
         )
         const permissionListParams = {
-          name: !values.name ? undefined : values.name,
+          name: !values.name ? undefined : values.name.replace(/\s*/g,""),
           sort: 'id',
           size: 30,
           number: 0,

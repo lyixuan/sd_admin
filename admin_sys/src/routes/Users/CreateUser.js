@@ -47,7 +47,7 @@ class CreateUser extends Component {
       return 0;
     });
     const userAddParams = {
-      name: values.name,
+      name: values.name.replace(/\s*/g,""),
       mail: values.email,
       mobile: values.phone,
       userType: userTypeDataReset[rUserType],
