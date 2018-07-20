@@ -16,7 +16,7 @@ const WrappedRoleForm = Form.create({
 })(RoleForm);
 @connect(({ role, loading }) => ({
   role,
-  loading,
+  loading: loading.effects['role/roleUpdate'],
 }))
 class EditRole extends Component {
   componentDidMount() {
@@ -44,14 +44,12 @@ class EditRole extends Component {
     });
   };
   render() {
-    const getRoleData = !this.props.role.getRoleData ? [] : this.props.role.getRoleData;
-    const getRoleIds = !this.props.role.getRoleIds ? [] : this.props.role.getRoleIds;
-    const privilegeId = !this.props.role.privilegeIds ? [] : this.props.role.privilegeIds;
-
+    const { getRoleData = [], getRoleIds = [], privilegeId = [] } = this.props.role;
     const baseLayout = (
       <WrappedRoleForm
         checkdIds={privilegeId}
         listAll={getRoleData}
+        loading={this.props.loading}
         isShowFooter="true"
         getRoleIds={getRoleIds}
         submitInfo={(values, privilegeIds) => {

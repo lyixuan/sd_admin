@@ -31,9 +31,7 @@ class CheckRole extends Component {
   }
 
   render() {
-    const getRoleData = !this.props.role.getRoleData ? [] : this.props.role.getRoleData;
-    const getRoleIds = !this.props.role.getRoleIds ? [] : this.props.role.getRoleIds;
-
+    const { getRoleData = [], getRoleIds = [] } = this.props.role;
     const baseLayout = (
       <WrappedRoleForm listAll={getRoleData} getRoleIds={getRoleIds} selfProps={this.props} />
     );

@@ -7,7 +7,7 @@ import RoleForm from '../../selfComponent/RoleFrom/RoleForm';
 const WrappedRoleForm = Form.create()(RoleForm);
 @connect(({ role, loading }) => ({
   role,
-  loading,
+  loading: loading.effects['role/roleAdd'],
 }))
 class CreateRole extends Component {
   componentDidMount() {
@@ -27,10 +27,11 @@ class CreateRole extends Component {
     });
   };
   render() {
-    const listAll = !this.props.role.listAll ? [] : this.props.role.listAll;
+    const { listAll = [] } = this.props.role;
     const baseLayout = (
       <WrappedRoleForm
         listAll={listAll}
+        loading={this.props.loading}
         isShowFooter="true"
         submitInfo={(values, privilegeIds) => {
           this.submitInfo(values, privilegeIds);

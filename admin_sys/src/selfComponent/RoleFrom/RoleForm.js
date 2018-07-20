@@ -161,7 +161,7 @@ class RoleForm extends Component {
   };
   render() {
     const allIds = {};
-    const { listAll, isShowFooter, getRoleIds, checkdIds } = this.props;
+    const { listAll, isShowFooter, getRoleIds, checkdIds, loading } = this.props;
 
     listAll.forEach(item => {
       allIds[item.id] = [];
@@ -307,7 +307,12 @@ class RoleForm extends Component {
                 <Button onClick={this.cancel} type="primary" className={common.cancleButton}>
                   取消
                 </Button>
-                <Button htmlType="submit" type="primary" className={common.submitButton}>
+                <Button
+                  loading={loading}
+                  htmlType="submit"
+                  type="primary"
+                  className={common.submitButton}
+                >
                   提交
                 </Button>
               </div>
