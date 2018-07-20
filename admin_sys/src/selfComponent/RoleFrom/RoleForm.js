@@ -111,16 +111,16 @@ class RoleForm extends Component {
       let kkk = 0;
       // 删除一级id
       allIdsVal[gid].forEach(k => {
-        initAllVal.forEach(m => {
+        initVal.forEach(m => {
           if (k === m) {
             kkk += 1;
           }
         });
       });
       if (kkk === 0) {
-        const index = initAllVal.indexOf(gid);
+        const index = initVal.indexOf(gid);
         if (index > -1) {
-          initAllVal.splice(index, 1);
+          initVal.splice(index, 1);
         }
       }
     }
@@ -242,7 +242,7 @@ class RoleForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const reg = !value ? '' : value.replace(/\s*/g,"");
+                    const reg = !value ? '' : value.replace(/\s*/g, '');
                     if (!reg) {
                       callback({ message: '角色名称为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
