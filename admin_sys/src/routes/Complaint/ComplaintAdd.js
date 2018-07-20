@@ -89,7 +89,7 @@ class ComplaintAdd extends Component {
       },
       {
         title: '编号',
-        dataIndex: 'bottomLinueNum',
+        dataIndex: 'bottomLineNum',
       },
       {
         title: '投诉时间',
