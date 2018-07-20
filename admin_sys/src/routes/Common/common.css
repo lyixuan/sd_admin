@@ -300,3 +300,12 @@
 :global(.ant-calendar-picker-clear, .ant-calendar-picker-icon) {
   right: 16px;
 }
+
+:global(.ant-pagination-options-quick-jumper input:focus) {
+  border-color: #52C9C2;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+
+:global(.ant-pagination-options-quick-jumper input:hover) {
+  border-color: #52C9C2;
+}
