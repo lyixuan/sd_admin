@@ -24,17 +24,21 @@ export default {
     *userList({ payload }, { call, put }) {
       const response = yield call(userList, payload.userListParams);
       // console.log(response);
-      yield put({ type: 'userListSave', payload: { response } });
+      if (response.code === 2000) {
+        yield put({ type: 'userListSave', payload: { response } });
+      } else {
+        message.error(response.msg);
+      }
     },
     *updateUserOrg({ payload }, { call, put }) {
       const result = yield call(updateUserOrg, payload.updateUserOrgParams);
       if (result.code === 2000) {
         message.success('更新成功！');
+        const response = yield call(userList, { size: 30, number: 0 });
+        yield put({ type: 'userListSave', payload: { response } });
       } else {
         message.error(result.msg);
       }
-      const response = yield call(userList, { size: 30, number: 0 });
-      yield put({ type: 'userListSave', payload: { response } });
     },
     *updateUserInfo({ payload }, { call, put }) {
       const result = yield call(updateUserInfo, payload.updateUserInfoParams);
@@ -49,11 +53,11 @@ export default {
       const result = yield call(userDelete, payload.userDeleteParams);
       if (result.code === 2000) {
         message.success('用户删除成功！');
+        const response = yield call(userList, { size: 30, number: 0 });
+        yield put({ type: 'userListSave', payload: { response } });
       } else {
         message.error(result.msg);
       }
-      const response = yield call(userList, { size: 30, number: 0 });
-      yield put({ type: 'userListSave', payload: { response } });
     },
     *userAdd({ payload }, { call, put }) {
       const result = yield call(userAdd, payload.userAddParams);
@@ -66,11 +70,19 @@ export default {
     },
     *wechatList({ payload }, { call, put }) {
       const response = yield call(wechatList, payload.wechatListParams);
-      yield put({ type: 'wechatListSave', payload: { response } });
+      if (response.code === 2000) {
+        yield put({ type: 'wechatListSave', payload: { response } });
+      } else {
+        message.error(response.msg);
+      }
     },
     *listOrg({ payload }, { call, put }) {
       const response = yield call(listOrg, payload.listOrgParams);
-      yield put({ type: 'listOrgSave', payload: { response } });
+      if (response.code === 2000) {
+        yield put({ type: 'listOrgSave', payload: { response } });
+      } else {
+        message.error(response.msg);
+      }
     },
   },
 

@@ -236,7 +236,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('sort', {
-              initialValue: !this.state.id ? '' : !arrValue.sort ? 0 : arrValue.sort,
+              initialValue: !this.state.id ? '' : !arrValue.sortFlag ? 0 : arrValue.sortFlag,
               rules: [
                 {
                   validator(rule, value, callback) {
