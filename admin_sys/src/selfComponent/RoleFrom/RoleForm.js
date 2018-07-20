@@ -90,7 +90,7 @@ class RoleForm extends Component {
   * 全选按钮事件
   * */
   onCheckAllChange = (gid, pid, secList, allKey, listKey, e) => {
-    const initVal = initAllVal.length > 0 ? initAllVal : this.props.getRoleIds;
+    const initVal = initAllVal && initAllVal.length > 0 ? initAllVal : this.props.getRoleIds;
 
     isClick = true;
     const nodeIDs = [];
