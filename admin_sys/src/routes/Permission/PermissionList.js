@@ -123,7 +123,7 @@ class PermissionList extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '编号',
+        title: 'id',
         dataIndex: 'id',
       },
       {
