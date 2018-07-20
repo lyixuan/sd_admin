@@ -69,6 +69,7 @@ class CreateUser extends Component {
     // const userListValue = this.props.user;
     return (
       <ContentLayout
+        routerData={this.props.routerData}
         contentForm={
           <WrappedRegistrationForm
             jumpFunction={this.props}
