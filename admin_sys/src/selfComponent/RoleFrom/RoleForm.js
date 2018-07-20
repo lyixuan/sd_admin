@@ -8,6 +8,7 @@ const CheckboxGroup = Checkbox.Group;
 
 let checkAllObj = {};
 let isClick = false;
+let initAllVal = [];
 
 class RoleForm extends Component {
   constructor(props) {
@@ -36,20 +37,31 @@ class RoleForm extends Component {
     isClick = true;
     let len = 0;
     let checkLists = [];
+    let hasCheck = false;
     secList.forEach(n => {
       checkedList.forEach(m => {
         if (n.id === m) {
           len += 1;
+          hasCheck = true;
         }
       });
     });
+
     // 功能有勾选，则自动上传他上级id
-    if (checkedList.length === 0) {
-      checkLists = [];
+    if (!hasCheck) {
+      checkedList.forEach(m => {
+        if (secList[0].parentId === m) {
+          const index = checkedList.indexOf(secList[0].parentId);
+          if (index > -1) {
+            checkedList.splice(index, 1);
+          }
+        }
+      });
+      checkLists = checkedList;
     } else {
       checkLists = checkedList.concat(pid);
     }
-
+    initAllVal = Array.from(new Set(checkLists));
     checkAllObj[listKey] = Array.from(new Set(checkLists));
     checkAllObj[key] = len === secList.length;
   };
@@ -57,12 +69,27 @@ class RoleForm extends Component {
   * 全选按钮事件
   * */
   onCheckAllChange = (pid, secList, allKey, listKey, e) => {
+    const initVal = this.props.getRoleIds;
+
     isClick = true;
     const nodeIDs = [];
     secList.forEach(key => {
       nodeIDs.push(key.id);
+      nodeIDs.push(key.parentId);
     });
-
+    if (!e.target.checked) {
+      nodeIDs.forEach(n => {
+        initVal.forEach(m => {
+          if (n === m) {
+            const index = initVal.indexOf(n);
+            if (index > -1) {
+              initVal.splice(index, 1);
+            }
+          }
+        });
+      });
+    }
+    initAllVal = initVal;
     checkAllObj[listKey] = e.target.checked ? Array.from(new Set(nodeIDs.concat(pid))) : [];
     checkAllObj[allKey] = e.target.checked;
   };
@@ -87,7 +114,7 @@ class RoleForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        privilegeIds = privilegeIds.concat(this.props.getRoleIds);
+        privilegeIds = privilegeIds.concat(initAllVal);
         this.props.submitInfo(values, Array.from(new Set(privilegeIds)));
       } else {
         console.error(err);
@@ -112,7 +139,7 @@ class RoleForm extends Component {
       let len = 0;
       const plainOptions = [];
       item.forEach(key => {
-        plainOptions.push({ label: key.name, value: key.id });
+        plainOptions.push({ label: key.name, value: key.id, parentId: '0' });
       });
       if (getRoleIds) {
         plainOptions.forEach(n => {
