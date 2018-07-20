@@ -6,8 +6,8 @@ import styles from './RoleForm.css';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 
-let checkAllObj = {};
-let isClick = false;
+let checkAllObj = {}; // 存储选中项
+let isClick = false; // 区分创建和编辑
 let initAllVal = []; // 传参数
 let allIdsVal = {}; // 所有一级id
 
@@ -162,7 +162,7 @@ class RoleForm extends Component {
   render() {
     const allIds = {};
     const { listAll, isShowFooter, getRoleIds, checkdIds } = this.props;
-    console.log(checkdIds);
+
     listAll.forEach(item => {
       allIds[item.id] = [];
       item.nodes.forEach(item1 => {
@@ -193,7 +193,7 @@ class RoleForm extends Component {
       item.forEach(key => {
         plainOptions.push({ label: key.name, value: key.id, parentId: pid });
       });
-      const isCheckedAll = checkdIds.length > 0 ? checkdIds : getRoleIds;
+      const isCheckedAll = checkdIds && checkdIds.length > 0 ? checkdIds : getRoleIds;
       if (isCheckedAll) {
         plainOptions.forEach(n => {
           isCheckedAll.forEach(m => {
