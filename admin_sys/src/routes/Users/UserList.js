@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, Popconfirm, Cascader } from 'antd';
+import { Table, Button, Form, Input, Popconfirm, Cascader , Row, Col} from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
@@ -298,26 +298,30 @@ class UserList extends Component {
                 ],
               })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="手机">
+            <FormItem label="手机" style={{ marginLeft: 119 }}>
               {getFieldDecorator('mobile', {
                 initialValue: firstPhone,
               })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="需要更新">
+            <FormItem label="需要更新" style={{ marginLeft: 119 }}>
               {getFieldDecorator('isUpdate', {
                 initialValue: [!firstUpdate ? 0 : firstUpdate],
               })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem>
-              <div className={common.totalNum}>
-                <Button htmlType="submit" type="primary" className={common.searchButton}>
-                  搜 索
-                </Button>
-                <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
-                  重 置
-                </Button>
-              </div>
-            </FormItem>
+            <Row style={{marginTop:'12px'}}>
+              <Col span={7} offset={20}>
+                <FormItem>
+                  <div className={common.totalNum}>
+                    <Button htmlType="submit" type="primary" className={common.searchButton}>
+                      搜 索
+                    </Button>
+                    <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
+                      重 置
+                    </Button>
+                  </div>
+                </FormItem>
+              </Col>
+            </Row>
           </Form>
         </div>
       );

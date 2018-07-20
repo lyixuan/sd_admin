@@ -185,7 +185,7 @@ class UserForm extends Component {
       if (!err) {
         const rUserType = values.userType[0];
         const len = values.responseCom.length;
-        if (rUserType === '小组') {
+        if (rUserType === '小组'||rUserType === '无底表权限') {
           if (len !== 3) {
             message.error('负责单位请选择到对应小组');
           } else {
