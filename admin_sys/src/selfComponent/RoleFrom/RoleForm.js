@@ -16,6 +16,8 @@ class RoleForm extends Component {
     super(props);
     checkAllObj = {};
     isClick = false;
+    initAllVal = [];
+    allIdsVal = {};
   }
   // getCheckObj = {
   //   checkAllObj:{},
@@ -26,10 +28,11 @@ class RoleForm extends Component {
   //     this.checkAllObj = checkAllObj;
   //   }
   // };
-
   componentWillUnmount() {
     checkAllObj = null;
     isClick = null;
+    allIdsVal = null;
+    initAllVal = null;
   }
   /*
   * 单选按钮事件

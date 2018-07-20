@@ -99,13 +99,17 @@ export default {
       const getRoleData = getJsonTree(getRoleIds, 0);
 
       const ids = [];
+      const checkIds = [];
       getRoleIds.forEach(item => {
         if (item.checked) {
           ids.push(item.id);
         }
+        if (item.checked && item.level === 3) {
+          checkIds.push(item.id);
+        }
       });
       getRoleIds = ids;
-      return { ...state, getRoleIds, getRoleData };
+      return { ...state, getRoleIds, getRoleData, checkIds };
     },
     saveListAll(state, action) {
       let { listAll } = action.payload;

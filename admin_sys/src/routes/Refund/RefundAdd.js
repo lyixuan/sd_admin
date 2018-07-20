@@ -93,7 +93,7 @@ class RefundAdd extends Component {
       },
       {
         title: '子订单编号',
-        dataIndex: 'bottomLinueNum',
+        dataIndex: 'ordId',
         width: '93px',
       },
       {
@@ -113,7 +113,7 @@ class RefundAdd extends Component {
       },
       {
         title: '编号',
-        dataIndex: 'countValue',
+        dataIndex: 'bottomLineNum',
         width: '92px',
       },
       {
