@@ -8,8 +8,8 @@ const CheckboxGroup = Checkbox.Group;
 
 let checkAllObj = {};
 let isClick = false;
-let initAllVal = [];
-let allIdsVal = {};
+let initAllVal = []; // 传参数
+let allIdsVal = {}; // 所有一级id
 
 class RoleForm extends Component {
   constructor(props) {
@@ -66,15 +66,15 @@ class RoleForm extends Component {
     initAllVal = Array.from(new Set(checkLists));
 
     // 删除一级id
-    let kkk = 0;
+    let hasChildren = 0;
     allIdsVal[gid].forEach(k => {
       initAllVal.forEach(m => {
         if (k === m) {
-          kkk += 1;
+          hasChildren += 1;
         }
       });
     });
-    if (kkk === 0) {
+    if (hasChildren === 0) {
       const index = initAllVal.indexOf(gid);
       if (index > -1) {
         initAllVal.splice(index, 1);
@@ -87,7 +87,7 @@ class RoleForm extends Component {
   * 全选按钮事件
   * */
   onCheckAllChange = (gid, pid, secList, allKey, listKey, e) => {
-    const initVal = this.props.getRoleIds;
+    const initVal = initAllVal.length > 0 ? initAllVal : this.props.getRoleIds;
 
     isClick = true;
     const nodeIDs = [];
@@ -108,16 +108,16 @@ class RoleForm extends Component {
           }
         });
       });
-      let kkk = 0;
+      let hasChildren = 0;
       // 删除一级id
       allIdsVal[gid].forEach(k => {
         initVal.forEach(m => {
           if (k === m) {
-            kkk += 1;
+            hasChildren += 1;
           }
         });
       });
-      if (kkk === 0) {
+      if (hasChildren === 0) {
         const index = initVal.indexOf(gid);
         if (index > -1) {
           initVal.splice(index, 1);

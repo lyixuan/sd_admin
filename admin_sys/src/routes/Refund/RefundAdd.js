@@ -196,6 +196,7 @@ class RefundAdd extends Component {
     fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
     return (
       <StepLayout
+        routerData={this.props.routerData}
         title="添加退费"
         steps={steps}
         isDisabled={isDisabled}
