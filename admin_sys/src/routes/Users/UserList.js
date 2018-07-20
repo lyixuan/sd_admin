@@ -298,30 +298,26 @@ class UserList extends Component {
                 ],
               })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="手机" style={{ marginLeft: 119 }}>
+            <FormItem label="手机" >
               {getFieldDecorator('mobile', {
                 initialValue: firstPhone,
               })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem label="需要更新" style={{ marginLeft: 119 }}>
+            <FormItem label="需要更新" >
               {getFieldDecorator('isUpdate', {
                 initialValue: [!firstUpdate ? 0 : firstUpdate],
               })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <Row style={{marginTop:'12px'}}>
-              <Col span={7} offset={20}>
-                <FormItem>
-                  <div className={common.totalNum}>
-                    <Button htmlType="submit" type="primary" className={common.searchButton}>
-                      搜 索
-                    </Button>
-                    <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
-                      重 置
-                    </Button>
-                  </div>
-                </FormItem>
-              </Col>
-            </Row>
+            <FormItem style={{marginLeft:'44px',marginTop:'2px'}}>
+              <div className={common.totalNum}>
+                <Button htmlType="submit" type="primary" className={common.searchButton}>
+                  搜 索
+                </Button>
+                <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
+                  重 置
+                </Button>
+              </div>
+            </FormItem>
           </Form>
         </div>
       );
@@ -332,7 +328,7 @@ class UserList extends Component {
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <AuthorizedButton authority="/user/createUser">
-            <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
+            <Button onClick={this.handleAdd} type="primary" style={{marginTop:'24px'}} className={common.createButton}>
               创 建
             </Button>
           </AuthorizedButton>
