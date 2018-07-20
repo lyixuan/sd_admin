@@ -42,7 +42,7 @@ class UserList extends Component {
     const initVal = this.props.getUrlParams();
     firstName = !initVal.firstName ? '' : initVal.firstName;
     firstPhone = !initVal.firstPhone ? '' : initVal.firstPhone;
-    firstUpdate = !initVal.firstUpdate ? 0 : initVal.firstUpdate;
+    firstUpdate = !initVal.firstUpdate ? 0 : Number(initVal.firstUpdate);
     const userListParams = {
       pageSize: 30,
       pageNum: 0,
@@ -177,11 +177,11 @@ class UserList extends Component {
           return (
             <div>
               {record.changeShowName &&
-              record.changeShowName !== '' &&
-              record.userType !== 'admib' &&
-              record.userType !== 'boss' &&
+              record.changeShowName !== '' &&(
+              record.userType !== 'admin' ||
+              record.userType !== 'boss') &&
               record.changeShowName !== record.showName ? (
-                <AuthorizedButton authority="/user/checkUser">
+                <AuthorizedButton authority="/user/updateUser">
                   <span
                     style={{ color: '#52C9C2', cursor: 'pointer' }}
                     onClick={() => this.onUpdate(record)}
