@@ -157,13 +157,13 @@ class QualityList extends Component {
       return (
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
-            <FormItem>
+            <FormItem label="归属班主任">
               {getFieldDecorator('teaName', {
                 initialValue: firstTeaName,
                 rules: [],
               })(<Input placeholder="请输入归属班主任" style={{ width: 230, height: 32 }} />)}
             </FormItem>
-            <FormItem style={{ marginLeft: 119 }}>
+            <FormItem style={{ marginLeft: 119 }} label="质检单号">
               {getFieldDecorator('qualityNum', {
                 initialValue: firstQualityNum,
                 rules: [],
