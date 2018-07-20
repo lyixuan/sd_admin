@@ -244,7 +244,7 @@ class PermissionForm extends Component {
                     if (!value) {
                       callback({ message: '权限排序为必填项，请填写!' });
                     } else if (value.length > 10) {
-                      callback({ message: '权限排序长度在最长为10个字符，请填写!' });
+                      callback({ message: '权限排序长度最长为10个字符，请填写!' });
                     }
                     if (flag === '一级页面') {
                       if (re.test(value) && value % 100 === 0) {

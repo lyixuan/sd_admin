@@ -215,7 +215,7 @@ class UserList extends Component {
   handleReset = () => {
     firstName = '';
     firstPhone = '';
-    firstUpdate = '';
+    firstUpdate = 0;
     this.props.setCurrentUrlParams({
       firstUpdate: null,
       firstName: null,
@@ -234,15 +234,14 @@ class UserList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        firstName = values.name;
-        firstPhone = values.mobile;
-        const aa = values.isUpdate[0];
-        firstUpdate = aa;
+        firstName = !values.name ? undefined : values.name.replace(/\s*/g, '');
+        firstPhone = !values.mobile ? undefined : values.mobile;
+        firstUpdate = !values.isUpdate[0]?0:values.isUpdate[0];
 
         this.props.setCurrentUrlParams({
-          firstUpdate: values.isUpdate[0],
-          firstName: !values.name ? undefined : values.name,
-          firstPhone: !values.mobile ? undefined : values.mobile,
+          firstUpdate,
+          firstName,
+          firstPhone,
         });
 
         const userListParams = {
@@ -252,7 +251,7 @@ class UserList extends Component {
           pageSize: 30,
           pageNum: 0,
         };
-        // console.log(userListParams)
+
         this.props.dispatch({
           type: 'user/userList',
           payload: { userListParams },
