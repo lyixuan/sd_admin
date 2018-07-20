@@ -64,10 +64,10 @@ class RoleList extends Component {
               </AuthorizedButton>
               <AuthorizedButton authority="/role/editRole">
                 <span
-                  style={{ color: '#52C9C2', marginLeft: 4, cursor: 'pointer' }}
+                  style={{ color: '#52C9C2', marginLeft: 8, cursor: 'pointer' }}
                   onClick={() => this.handleNextPage('/role/editRole', { id, name })}
                 >
-                  | 编辑
+                   编辑
                 </span>
               </AuthorizedButton>
             </div>

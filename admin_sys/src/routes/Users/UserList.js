@@ -186,21 +186,21 @@ class UserList extends Component {
                     style={{ color: '#52C9C2', cursor: 'pointer' }}
                     onClick={() => this.onUpdate(record)}
                   >
-                    更新 |
+                    更新
                   </span>
                 </AuthorizedButton>
               ) : null}
               <AuthorizedButton authority="/user/editUser">
                 <span
-                  style={{ color: '#52C9C2', marginLeft: 4, cursor: 'pointer' }}
+                  style={{ color: '#52C9C2', marginLeft: 8, cursor: 'pointer' }}
                   onClick={() => this.onEdit(record)}
                 >
-                  编辑 |
+                  编辑
                 </span>
               </AuthorizedButton>
               <AuthorizedButton authority="/user/deleteUser">
                 <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', marginLeft: 4, cursor: 'pointer' }}>删除</span>
+                  <span style={{ color: '#52C9C2', marginLeft: 8, cursor: 'pointer' }}>删除</span>
                 </Popconfirm>
               </AuthorizedButton>
             </div>
