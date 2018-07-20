@@ -37,7 +37,7 @@ class CreateRole extends Component {
         }}
       />
     );
-    return <StepLayout title="创建角色" baseLayout={baseLayout} />;
+    return <StepLayout routerData={this.props.routerData} baseLayout={baseLayout} />;
   }
 }
 

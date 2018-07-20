@@ -161,7 +161,8 @@ class RoleForm extends Component {
   };
   render() {
     const allIds = {};
-    const { listAll, isShowFooter, getRoleIds } = this.props;
+    const { listAll, isShowFooter, getRoleIds, checkIds } = this.props;
+
     listAll.forEach(item => {
       allIds[item.id] = [];
       item.nodes.forEach(item1 => {
@@ -185,16 +186,16 @@ class RoleForm extends Component {
     /*
     * 复选框
     * */
-    const secLevel = (name, item, checkAllKey, listKey, pid, gid) => {
+    const secLevel = (name, item, checkAllKey, listKey, gid, pid) => {
       const parentIds = [pid, gid];
       let len = 0;
       const plainOptions = [];
       item.forEach(key => {
-        plainOptions.push({ label: key.name, value: key.id, parentId: '0' });
+        plainOptions.push({ label: key.name, value: key.id, parentId: pid });
       });
-      if (getRoleIds) {
+      if (checkIds) {
         plainOptions.forEach(n => {
-          getRoleIds.forEach(m => {
+          checkIds.forEach(m => {
             if (n.value === m) {
               len += 1;
             }
@@ -213,7 +214,7 @@ class RoleForm extends Component {
               <Checkbox
                 onChange={this.onCheckAllChange.bind(
                   this,
-                  pid,
+                  gid,
                   parentIds,
                   item,
                   checkAllKey,
@@ -229,7 +230,7 @@ class RoleForm extends Component {
                 options={plainOptions}
                 value={!checkAllObj[listKey] ? getRoleIds : checkAllObj[listKey]}
                 disabled={isDisabled}
-                onChange={this.onChange.bind(this, pid, parentIds, item, checkAllKey, listKey)}
+                onChange={this.onChange.bind(this, gid, parentIds, item, checkAllKey, listKey)}
                 className={styles.checkboxGroup}
               />
             </div>

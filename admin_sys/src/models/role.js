@@ -13,7 +13,7 @@ import { getJsonTree } from '../utils/utils';
 export default {
   namespace: 'role',
 
-  state: {},
+  state: { checkIds: [] },
 
   effects: {
     *roleList({ payload }, { put, call }) {
@@ -109,6 +109,7 @@ export default {
         }
       });
       getRoleIds = ids;
+      console.log(checkIds);
       return { ...state, getRoleIds, getRoleData, checkIds };
     },
     saveListAll(state, action) {

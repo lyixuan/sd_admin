@@ -86,7 +86,7 @@ class RoleList extends Component {
     return (
       <ContentLayout
         pageHeraderUnvisible="unvisible"
-        title="角色列表"
+        routerData={this.props.routerData}
         contentButton={
           <AuthorizedButton authority="/role/createRole">
             <Button

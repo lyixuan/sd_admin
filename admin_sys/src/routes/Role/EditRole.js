@@ -44,9 +44,11 @@ class EditRole extends Component {
   render() {
     const getRoleData = !this.props.role.getRoleData ? [] : this.props.role.getRoleData;
     const getRoleIds = !this.props.role.getRoleIds ? [] : this.props.role.getRoleIds;
+    const checkIds = !this.props.role.checkIds ? [] : this.props.role.checkIds;
 
     const baseLayout = (
       <WrappedRoleForm
+        checkIds={checkIds}
         listAll={getRoleData}
         isShowFooter="true"
         getRoleIds={getRoleIds}
@@ -56,7 +58,7 @@ class EditRole extends Component {
         selfProps={this.props}
       />
     );
-    return <StepLayout title="编辑角色" baseLayout={baseLayout} />;
+    return <StepLayout routerData={this.props.routerData} baseLayout={baseLayout} />;
   }
 }
 

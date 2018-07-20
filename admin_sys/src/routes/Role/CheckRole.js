@@ -37,7 +37,7 @@ class CheckRole extends Component {
     const baseLayout = (
       <WrappedRoleForm listAll={getRoleData} getRoleIds={getRoleIds} selfProps={this.props} />
     );
-    return <StepLayout title="查看角色" baseLayout={baseLayout} />;
+    return <StepLayout routerData={this.props.routerData} baseLayout={baseLayout} />;
   }
 }
 
