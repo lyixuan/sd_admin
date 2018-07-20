@@ -113,7 +113,7 @@ class PermissionList extends Component {
         resourceUrl: item.resourceUrl,
         parentId: item.parentId,
         iconUrl: item.iconUrl,
-        sort: item.sort,
+        sortFlag: item.sortFlag,
       })
     );
     return data;
@@ -156,7 +156,7 @@ class PermissionList extends Component {
       },
       {
         title: '权限排序',
-        dataIndex: 'sort',
+        dataIndex: 'sortFlag',
       },
       {
         title: '操作',
