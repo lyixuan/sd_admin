@@ -89,7 +89,10 @@ class RefundDel extends Component {
         countValue: item.countValue,
         qualityTypeName: item.qualityTypeName,
         teaName: item.teaName,
-        name: `${item.collegeName} | ${item.familyName} | ${item.groupName}`,
+        name:
+          item.groupName && item.familyName
+            ? `${item.collegeName} | ${item.familyName} | ${item.groupName}`
+            : item.familyName ? `${item.collegeName} | ${item.familyName}` : `${item.collegeName}`,
       })
     );
     return data;
@@ -99,32 +102,26 @@ class RefundDel extends Component {
       {
         title: '序号',
         dataIndex: 'key',
-        width: '70px',
       },
       {
         title: '质检编号',
         dataIndex: 'qualityNum',
-        width: '130px',
       },
       {
         title: '扣除学分',
         dataIndex: 'countValue',
-        width: '90px',
       },
       {
         title: '质检等级',
         dataIndex: 'qualityTypeName',
-        width: '90px',
       },
       {
         title: '老师名称',
         dataIndex: 'teaName',
-        width: '90px',
       },
       {
         title: '学院 | 家族 | 小组',
         dataIndex: 'name',
-        width: '250px',
       },
     ];
 

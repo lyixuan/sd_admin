@@ -30,16 +30,24 @@ export default {
     *accountList({ payload }, { call, put }) {
       const { accountListParams } = payload;
       const response = yield call(queryAccountList, { ...accountListParams });
-      yield put({ type: 'accountListSave', payload: { response } });
+      if (response.code === 2000) {
+        yield put({ type: 'accountListSave', payload: { response } });
+      } else {
+        message.error(response.msg);
+      }
     },
     *accountInfo({ payload }, { call, put }) {
       const { accountInfoParams } = payload;
       const response = yield call(queryAccountInfo, { ...accountInfoParams });
-      yield put({ type: 'accountInfoSave', payload: { response } });
+      if (response.code === 2000) {
+        yield put({ type: 'accountInfoSave', payload: { response } });
+      } else {
+        message.error(response.msg);
+      }
     },
     *addAccount({ payload }, { call, put }) {
       const result = yield call(addAccount, payload.addAccountParams);
-      if (result.code === 0 || result.code === 2000) {
+      if (result.code === 2000) {
         message.success('成功创建账号！');
         yield put(routerRedux.push('/config/accountList'));
       } else {
@@ -48,7 +56,7 @@ export default {
     },
     *updateAccount({ payload }, { call, put }) {
       const result = yield call(updateAccount, payload.updateAccountParams);
-      if (result.code === 0 || result.code === 2000) {
+      if (result.code === 2000) {
         message.success('成功编辑账号！');
         yield put(routerRedux.push('/config/accountList'));
       } else {
@@ -56,26 +64,28 @@ export default {
       }
     },
     *deleteAccount({ payload }, { call, put }) {
-      console.log(payload.deleteAccountParams);
       const result = yield call(deleteAccount, payload.deleteAccountParams);
-      if (result.code === 0 || result.code === 2000) {
+      if (result.code === 2000) {
         message.success('账号删除成功！');
+        const response = yield call(queryAccountList, { size: 30, number: 0, orderType: 'name' });
+        yield put({
+          type: 'accountListSave',
+          payload: { response },
+        });
       } else {
         message.error(result.msg);
       }
-      const response = yield call(queryAccountList, { size: 30, number: 0, orderType: 'name' });
-      console.log(response);
-      yield put({
-        type: 'accountListSave',
-        payload: { response },
-      });
     },
     *getRoleList({ payload }, { call, put }) {
       const response = yield call(getRolePrivilegesList, payload.getRoleListParams);
-      yield put({
-        type: 'getRoleListSave',
-        payload: response,
-      });
+      if (response.code === 2000) {
+        yield put({
+          type: 'getRoleListSave',
+          payload: response,
+        });
+      } else {
+        message.error(response.msg);
+      }
     },
   },
 

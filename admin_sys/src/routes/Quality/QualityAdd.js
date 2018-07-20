@@ -93,27 +93,22 @@ class RefundAdd extends Component {
       {
         title: '行数',
         dataIndex: 'rowNum',
-        width: '70px',
       },
       {
         title: '质检单号',
         dataIndex: 'qualityNum',
-        width: '92px',
       },
       {
         title: '监控日期',
         dataIndex: 'qualityDate',
-        width: '105px',
       },
       {
         title: '班主任id',
         dataIndex: 'teaId',
-        width: '160px',
       },
       {
         title: '违规等级',
         dataIndex: 'qualityType',
-        width: '133px',
       },
       {
         title: '扣除学分',

@@ -23,11 +23,19 @@ export default {
   effects: {
     *permissionList({ payload }, { call, put }) {
       const response = yield call(roleList, payload.permissionListParams);
-      yield put({ type: 'permissionListSave', payload: { response } });
+      if (response.code === 2000) {
+        yield put({ type: 'permissionListSave', payload: { response } });
+      } else {
+        message.error(response.msg);
+      }
     },
     *permissionById({ payload }, { call, put }) {
       const response = yield call(getPermissionById, payload.permissionByIdParams);
-      yield put({ type: 'permissionByIdSave', payload: { response } });
+      if (response.code === 2000) {
+        yield put({ type: 'permissionByIdSave', payload: { response } });
+      } else {
+        message.error(response.msg);
+      }
     },
     *addPermission({ payload }, { call, put }) {
       const result = yield call(addPermission, payload.addPermissionParams);
@@ -49,10 +57,14 @@ export default {
     },
     *permissionListAllName({ payload }, { call, put }) {
       const response = yield call(permissionListAllName, payload.permissionListAllNameParams);
-      yield put({
-        type: 'permissionListAllNameSave',
-        payload: response,
-      });
+      if (response.code === 2000) {
+        yield put({
+          type: 'permissionListAllNameSave',
+          payload: response,
+        });
+      } else {
+        message.error(response.msg);
+      }
     },
   },
 

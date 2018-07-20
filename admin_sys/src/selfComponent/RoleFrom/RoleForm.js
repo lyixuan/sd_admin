@@ -90,7 +90,7 @@ class RoleForm extends Component {
   * 全选按钮事件
   * */
   onCheckAllChange = (gid, pid, secList, allKey, listKey, e) => {
-    const initVal = initAllVal.length > 0 ? initAllVal : this.props.getRoleIds;
+    const initVal = initAllVal || this.props.getRoleIds || [];
 
     isClick = true;
     const nodeIDs = [];
@@ -194,6 +194,7 @@ class RoleForm extends Component {
         plainOptions.push({ label: key.name, value: key.id, parentId: pid });
       });
       const isCheckedAll = checkdIds && checkdIds.length > 0 ? checkdIds : getRoleIds;
+
       if (isCheckedAll) {
         plainOptions.forEach(n => {
           isCheckedAll.forEach(m => {

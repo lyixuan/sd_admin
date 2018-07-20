@@ -1,3 +1,8 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
 .paginationStyle{
   margin: 24px 0 !important;
   display: flex;
@@ -116,6 +121,7 @@
 
 :global(.ant-input:hover){
   border: 1px solid #52C9C2;
+  border-color: #52C9C2;
   box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
 }
 :global(.ant-input:focus){

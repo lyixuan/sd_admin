@@ -1,7 +1,13 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
+import config from '../config';
 
-const HOST = 'http://test-api.bd.ministudy.com';
+const { NODE_ENV = 'pro' } = config;
+const hostObj = {
+  pro: 'http://bd.ministudy.com',
+  dev: 'http://test-api.bd.ministudy.com',
+};
+const HOST = hostObj[NODE_ENV];
 /*
 * 用户登录接口
 * params：{name，password}

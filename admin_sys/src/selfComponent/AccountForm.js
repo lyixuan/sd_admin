@@ -108,7 +108,7 @@ class AccountForm extends Component {
                 { min: 3, max: 50, required: true, message: '邮箱账号长度需要在3-50字符之间!' },
               ],
             })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
-            <span style={{ width: 101 }}> @sunlands.com</span>
+            <span style={{ width: 101, marginLeft: '6px' }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">
             {getFieldDecorator('rname', {

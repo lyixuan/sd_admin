@@ -200,7 +200,7 @@ class PermissionForm extends Component {
                 {
                   validator(rule, value, callback) {
                     if (!value[0] && flag !== '一级页面') {
-                      callback({ message: '请选择权上级！' });
+                      callback({ message: '非一级页面,请选择上级权限！' });
                     }
                     callback();
                   },
@@ -235,30 +235,31 @@ class PermissionForm extends Component {
             })(<Input style={{ width: 380 }} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
-            {getFieldDecorator('sort', {
-              initialValue: !this.state.id ? '' : !arrValue.sort ? 0 : arrValue.sort,
+            {getFieldDecorator('sortFlag', {
+              initialValue: !this.state.id ? '' : !arrValue.sortFlag ? 0 : arrValue.sortFlag,
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const re = /^[0-9]*[0-9]$/i; // 校验是否为数字
+                    // const re = /^[0-9]*[0-9]$/i; // 校验是否为数字
                     if (!value) {
                       callback({ message: '权限排序为必填项，请填写!' });
-                    } else if (value.length > 10) {
-                      callback({ message: '权限排序长度最长为10个字符，请填写!' });
                     }
-                    if (flag === '一级页面') {
-                      if (re.test(value) && value % 100 === 0) {
-                        callback();
-                      } else {
-                        callback({ message: '一级页面排序应为100的整数倍！' });
-                      }
-                    } else if (flag === '二级页面') {
-                      if (re.test(value) && value % 10 === 0) {
-                        callback();
-                      } else {
-                        callback({ message: '二级页面排序应为10的整数倍！' });
-                      }
-                    }
+                    // else if (value.length > 10) {
+                    //   callback({ message: '权限排序长度最长为10个字符，请填写!' });
+                    // }
+                    // if (flag === '一级页面') {
+                    //   if (re.test(value) && value % 100 === 0) {
+                    //     callback();
+                    //   } else {
+                    //     callback({ message: '一级页面排序应为100的整数倍！' });
+                    //   }
+                    // } else if (flag === '二级页面') {
+                    //   if (re.test(value) && value % 10 === 0) {
+                    //     callback();
+                    //   } else {
+                    //     callback({ message: '二级页面排序应为10的整数倍！' });
+                    //   }
+                    // }
                     callback();
                   },
                 },

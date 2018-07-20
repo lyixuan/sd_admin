@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import pathToRegexp from 'path-to-regexp';
 import Content from './Content';
 import PageHead from '../selfComponent/pageHead/pageHead';
 import styles from './Content.less';
@@ -7,18 +8,25 @@ class ContentLayout extends Component {
   getRouterPathname = () => {
     const { routerData = {} } = this.props;
     const { pathname = '' } = window.location;
-    const routeObj = routerData[pathname];
+    const pathRegexp = pathToRegexp(pathname);
+    let routeObj = {};
+    Object.keys(routerData).forEach(item => {
+      if (pathRegexp.test(`${item}`)) {
+        routeObj = routerData[item];
+      }
+    });
     return routeObj || {};
   };
+
   render() {
     // const title = !this.props.title ? null : this.props.title;
     const { routerData = null } = this.props;
     const routeObj = this.getRouterPathname();
-    const { name = '', bread } = routeObj;
+    const { name = '', bread = {} } = routeObj;
     return (
       <div className={styles.contentLayout}>
         <div className={styles.bread}>
-          {routerData && bread && <PageHead routerData={routerData} />}
+          {routerData && bread.path && <PageHead routerData={routeObj} />}
         </div>
         {name && <div className={styles.title}>{name}</div>}
         <Content>

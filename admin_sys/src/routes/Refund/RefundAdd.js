@@ -89,37 +89,30 @@ class RefundAdd extends Component {
       {
         title: '行数',
         dataIndex: 'rowNum',
-        width: '70px',
       },
       {
         title: '子订单编号',
         dataIndex: 'ordId',
-        width: '93px',
       },
       {
         title: '学生id',
         dataIndex: 'stuId',
-        width: '133px',
       },
       {
         title: '学生姓名',
         dataIndex: 'stuName',
-        width: '92px',
       },
       {
         title: '老师id',
         dataIndex: 'cpId',
-        width: '160px',
       },
       {
         title: '编号',
         dataIndex: 'bottomLineNum',
-        width: '92px',
       },
       {
         title: '投诉时间',
         dataIndex: 'complainTime',
-        width: '105px',
       },
     ];
     return columns;

@@ -6,7 +6,10 @@ function getAuthData() {
   return formatter(newArr, 0);
 }
 function filterMenu(data) {
-  return data.filter(item => item.level <= 2);
+  // 将首页过滤掉
+  return data.filter(
+    item => item.level <= 2 && item.resourceUrl !== '/' && item.resourceUrl !== '/indexPage'
+  );
 }
 
 function formatter(data, parentId) {

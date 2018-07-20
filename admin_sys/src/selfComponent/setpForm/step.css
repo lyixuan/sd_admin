@@ -26,7 +26,8 @@
   border-radius: 4px;
   box-sizing: border-box;
   padding: 22px 20px;
-  margin-top: 60px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 .title{
   font-size: 12px;
@@ -135,13 +136,14 @@
   padding: 22px 20px;
   background: #F6F7FA;
   border-radius: 3px;
-  margin: 20px auto 52px;
+  margin: 20px auto 10px auto;
 }
 .inputTip_txt{
   font-size: 12px;
   color: #000000;
   letter-spacing: 0;
   line-height: 18px;
+  margin-bottom: 10px;
 }
 :global(textarea.ant-input:hover),:global(textarea.ant-input:focus){
   box-shadow: 0 0 !important;
