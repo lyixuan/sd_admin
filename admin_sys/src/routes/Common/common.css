@@ -318,3 +318,17 @@
 :global(.ant-pagination-options-quick-jumper input:hover) {
   border-color: #52C9C2;
 }
+
+
+:global(.ant-checkbox-inner:after) {
+  left: 5.571429px!important;
+  top: 2.742857px!important;
+}
+
+:global(.ant-checkbox:hover .ant-checkbox-inner) {
+  border-color: #52C9C2!important;
+}
+
+
+
+
