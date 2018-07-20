@@ -16,8 +16,10 @@ class ContentLayout extends Component {
     const routeObj = this.getRouterPathname();
     const { name = '', bread } = routeObj;
     return (
-      <div>
-        {routerData && bread && <PageHead routerData={routerData} />}
+      <div className={styles.contentLayout}>
+        <div className={styles.bread}>
+          {routerData && bread && <PageHead routerData={routerData} />}
+        </div>
         {name && <div className={styles.title}>{name}</div>}
         <Content>
           {!this.props.contentForm ? null : this.props.contentForm}
