@@ -59,6 +59,7 @@ class EditPermission extends Component {
     // const parentIdList=!this.state.parentIdList?[]:this.reloadNum()
     return (
       <ContentLayout
+        routerData={this.props.routerData}
         contentForm={
           <WrappedRegistrationForm
             jumpFunction={this.props}

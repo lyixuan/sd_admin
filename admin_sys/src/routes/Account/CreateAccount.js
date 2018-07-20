@@ -49,6 +49,7 @@ class CreateAccount extends Component {
   render() {
     return (
       <ContentLayout
+        routerData={this.props.routerData}
         contentForm={
           <WrappedRegistrationForm
             jumpFunction={this.props}

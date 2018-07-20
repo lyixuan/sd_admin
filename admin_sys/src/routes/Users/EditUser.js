@@ -82,6 +82,7 @@ class EditUser extends Component {
     // console.log(userListValue.userList)
     return (
       <ContentLayout
+        routerData={this.props.routerData}
         contentForm={
           <WrappedRegistrationForm
             jumpFunction={this.props || {}}
