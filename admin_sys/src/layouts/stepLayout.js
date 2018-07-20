@@ -64,7 +64,6 @@ class StepLayout extends Component {
   };
   render() {
     const {
-      title,
       steps,
       baseLayout,
       isDisabled,
@@ -119,7 +118,6 @@ class StepLayout extends Component {
     return (
       <ContentLayout
         routerData={routerData}
-        title={title}
         bottomLine={<div className={styles.content}>{!baseLayout ? stepBlock : baseLayout}</div>}
       />
       // <div className={styles.normal}>
