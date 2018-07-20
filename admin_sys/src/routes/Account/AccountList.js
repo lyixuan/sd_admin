@@ -36,7 +36,6 @@ class AccountList extends Component {
 
   // 编辑账号函数
   onEdit = key => {
-    console.log(key);
     this.props.setRouteUrlParams('/account/editAccount', {
       id: key.id,
     });

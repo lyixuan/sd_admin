@@ -218,17 +218,14 @@ class UserForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const disabled = true;
     const userVal = this.props.jumpFunction.user;
     const {submit}= this.props.jumpFunction
-    const wechatValues = !userVal.wechatList.response
-      ? []
-      : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
+    const wechatValues = !userVal.wechatList.response ? [] : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
     const residences = !wechatValues ? [] : this.roleListFun(wechatValues);
-    // console.log(residences)
     const listOrgValues = !userVal.listOrg.response ? [] : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
     responseComList = !responseComList||responseComList.length===0?this.responseComListFun():responseComList;
-    const disabled = true;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -252,18 +249,10 @@ class UserForm extends Component {
       },
     };
     const aaa = this.props.jumpFunction.user.userList;
-    const arrValue = !aaa
-      ? []
-      : !aaa.response
-        ? []
-        : !aaa.response.data ? [] : !aaa.response.data.content ? [] : aaa.response.data.content[0];
+    const arrValue = !aaa ? [] : !aaa.response ? [] : !aaa.response.data ? [] : !aaa.response.data.content ? [] : aaa.response.data.content[0];
     const str = arrValue.showNameIds;
     const strs = !str ? [] : str.split(',');
-    const arr = !strs
-      ? []
-      : strs.map(el => {
-          return Number(el);
-        });
+    const arr = !strs ? [] : strs.map(el => {return Number(el);});
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -304,7 +293,7 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*邮 箱">
             {getFieldDecorator('email', {
-              initialValue: !this.state.id ? '' : !arrValue.mail ? '' : formatEmail(arrValue.mail),
+              initialValue: !this.state.id ? '' : !arrValue.entUserId ? '' : formatEmail(arrValue.entUserId),
               rules: [{ type: 'string', required: true, message: '请输入合法邮箱!' }],
             })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
             <span style={{ width: 101 }}> @sunlands.com</span>

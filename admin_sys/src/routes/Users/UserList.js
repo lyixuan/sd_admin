@@ -119,7 +119,7 @@ class UserList extends Component {
         key: index,
         name: item.name,
         mobile: item.mobile,
-        mail: item.entUserId,
+        mail: `${item.entUserId}@sunlands.com`,
         userType: userTypeData[item.userType],
         showName: !item.showName ? null : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
         changeShowName: !item.changeShowName ? null : item.changeShowName.replace(/,/g, ' | '),

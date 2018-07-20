@@ -24,16 +24,14 @@ const residences = [
 class PermissionForm extends Component {
   constructor(props) {
     super(props);
-    const fromWhere = this.props.jumpFunction.getUrlParams();
-    const parentIdValues = !this.props.jumpFunction.permission.permissionListAllName
-      ? []
-      : this.props.jumpFunction.permission.permissionListAllName.data;
+    const preList = this.props.jumpFunction
+    const fromWhere = preList.getUrlParams();
+    const parentIdValues = !preList.permission.permissionListAllName ? [] : preList.permission.permissionListAllName.data;
     this.state = {
       parentIdList: !parentIdValues ? [] : parentIdValues,
       id: !fromWhere.id ? '' : fromWhere.id,
       level: !fromWhere.level ? '' : fromWhere.level,
     };
-    console.log(this.state);
   }
 
   componentDidMount() {
@@ -41,6 +39,7 @@ class PermissionForm extends Component {
     parentList = this.roleListFun();
     flag = this.state.level;
   }
+
   componentWillUnmount() {
     flag = null;
     parentList = null;
@@ -106,6 +105,7 @@ class PermissionForm extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const {submit}= this.props.jumpFunction
+    const disabled = true;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -128,15 +128,9 @@ class PermissionForm extends Component {
         },
       },
     };
-    const arrValue = !this.props.jumpFunction.permission.permissionById
-      ? []
-      : !this.props.jumpFunction.permission.permissionById.response
-        ? []
-        : this.props.jumpFunction.permission.permissionById.response.data;
-    const disabled = true;
-    const parentIdValues = !this.props.jumpFunction.permission.permissionListAllName
-      ? []
-      : this.props.jumpFunction.permission.permissionListAllName.data;
+    const getListValue = this.props.jumpFunction.permission
+    const arrValue = !getListValue.permissionById ? [] : !getListValue.permissionById.response ? [] : getListValue.permissionById.response.data;
+    const parentIdValues = !getListValue.permissionListAllName ? [] : getListValue.permissionListAllName.data;
     parentListBackup = !parentIdValues ? [] : this.fullListFun(parentIdValues);
     parentList = !parentList ||parentList.length===0?parentListBackup:parentList;
     return (
@@ -152,7 +146,7 @@ class PermissionForm extends Component {
                     if (!reg) {
                       callback({ message: '权限名称为必填项，请填写!' });
                     } else if (reg.length < 2 || reg.length > 20) {
-                      callback({ message: '权限名称长度在2-50，请修改!' });
+                      callback({ message: '权限名称长度在2-20，请修改!' });
                     } else {
                       callback();
                     }
@@ -163,9 +157,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
             {getFieldDecorator('level', {
-              initialValue: [
-                !this.state.id ? '' : !arrValue.level ? '' : levelData[arrValue.level],
-              ],
+              initialValue: [!this.state.id ? '' : !arrValue.level ? '' : levelData[arrValue.level]],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -236,9 +228,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限排序">
             {getFieldDecorator('sort', {
-              // initialValue: !this.state.id?'':arrValue.sort===0?'0':arrValue.sort,
-              initialValue: !this.state.id ? '' : !arrValue.sort ? '0' : arrValue.sort,
-
+              initialValue: !this.state.id ?'':!arrValue.sort?0:arrValue.sort,
               rules: [
                 {
                   validator(rule, value, callback) {
