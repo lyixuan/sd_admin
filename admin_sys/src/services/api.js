@@ -5,7 +5,7 @@ import config from '../config';
 const { NODE_ENV = 'pro' } = config;
 const hostObj = {
   pro: 'http://172.16.225.8:8090',
-  dev: 'http://172.16.117.64:8090',
+  dev: 'http://172.16.117.65:8090',
   // dev: 'http://172.16.56.186:8090',
 };
 const HOST = hostObj[NODE_ENV];
