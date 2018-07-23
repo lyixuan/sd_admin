@@ -279,45 +279,58 @@ class UserList extends Component {
       const { getFieldDecorator } = props.form;
       return (
         <div>
-          <Form layout={formLayout} onSubmit={this.handleSearch}>
-            <FormItem label="姓名">
-              {getFieldDecorator('name', {
-                initialValue: firstName,
-                rules: [
-                  // { max: 50, message: '您输入姓名不合法!', whitespace: true },
-                  {
-                    validator(rule, value, callback) {
-                      const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
-                      if (reg.length > 50) {
-                        callback({ message: '姓名最长为50个字符!' });
-                      } else {
-                        callback();
-                      }
-                    },
-                  },
-                ],
-              })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
-            </FormItem>
-            <FormItem label="手机" >
-              {getFieldDecorator('mobile', {
-                initialValue: firstPhone,
-              })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
-            </FormItem>
-            <FormItem label="需要更新" >
-              {getFieldDecorator('isUpdate', {
-                initialValue: [!firstUpdate ? 0 : firstUpdate],
-              })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
-            </FormItem>
-            <FormItem style={{marginLeft:'44px',marginTop:'2px'}}>
-              <div className={common.totalNum}>
-                <Button htmlType="submit" type="primary" className={common.searchButton}>
-                  搜 索
-                </Button>
-                <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
-                  重 置
-                </Button>
-              </div>
-            </FormItem>
+          <Form layout={formLayout} onSubmit={this.handleSearch} >
+
+            <Row gutter={24}>
+              <Col span={8} >
+                <FormItem label="姓名">
+                  {getFieldDecorator('name', {
+                    initialValue: firstName,
+                    rules: [
+                      // { max: 50, message: '您输入姓名不合法!', whitespace: true },
+                      {
+                        validator(rule, value, callback) {
+                          const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
+                          if (reg.length > 50) {
+                            callback({ message: '姓名最长为50个字符!' });
+                          } else {
+                            callback();
+                          }
+                        },
+                      },
+                    ],
+                  })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
+                </FormItem>
+              </Col>
+              <Col span={8} style={{ textAlign: 'center' }}>
+                <FormItem label="手机" >
+                  {getFieldDecorator('mobile', {
+                    initialValue: firstPhone,
+                  })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
+                </FormItem>
+              </Col>
+              <Col span={8} style={{ textAlign: 'right' }} >
+                <FormItem label="需要更新"  >
+                  {getFieldDecorator('isUpdate', {
+                    initialValue: [!firstUpdate ? 0 : firstUpdate],
+                  })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24} style={{ textAlign: 'right',marginTop:'12px' }}>
+                <FormItem  >
+                  <div>
+                    <Button htmlType="submit" type="primary" className={common.searchButton}>
+                      搜 索
+                    </Button>
+                    <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
+                      重 置
+                    </Button>
+                  </div>
+                </FormItem>
+              </Col>
+            </Row>
           </Form>
         </div>
       );
@@ -328,7 +341,7 @@ class UserList extends Component {
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <AuthorizedButton authority="/user/createUser">
-            <Button onClick={this.handleAdd} type="primary" style={{marginTop:'24px'}} className={common.createButton}>
+            <Button onClick={this.handleAdd} type="primary"  className={common.createButton}>
               创 建
             </Button>
           </AuthorizedButton>

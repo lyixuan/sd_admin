@@ -119,9 +119,17 @@
   color: rgba(0, 0, 0, 0.65);
 }
 
+:global(.ant-form-inline .ant-form-item) {
+ margin:0
+}
+
+
+:global(.ant-cascader-picker-label) {
+  text-align: left;
+}
+
 :global(.ant-input:hover){
   border: 1px solid #52C9C2;
-  border-color: #52C9C2;
   box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
 }
 :global(.ant-input:focus){
