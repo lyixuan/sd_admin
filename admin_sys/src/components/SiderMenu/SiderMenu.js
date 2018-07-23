@@ -200,11 +200,6 @@ export default class SiderMenu extends PureComponent {
      *  待优化
     * */
     // Don't show popup menu when it is been collapsed
-    // const menuProps = collapsed
-    //   ? {}
-    //   : {
-    //       openKeys,
-    //     };
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys();
     if (!selectedKeys.length) {
@@ -230,7 +225,6 @@ export default class SiderMenu extends PureComponent {
           key="Menu"
           theme="dark"
           mode="inline"
-          // {/*{...menuProps}*/}
           onOpenChange={this.handleOpenChange}
           selectedKeys={selectedKeys}
           style={{ padding: '16px 0', width: '100%' }}

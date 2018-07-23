@@ -1,8 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { userLogin, userLogout, getUserAuth } from '../services/api';
-import { setAuthority, setAuthoritySeccion, removeStorge, getAuthority } from '../utils/authority';
-import { reloadAuthorized } from '../utils/Authorized';
+import { userLogin, userLogout } from '../services/api';
+import { setAuthority, setAuthoritySeccion, removeStorge } from '../utils/authority';
 import { handleSuccess } from '../utils/Handle';
 
 export default {
@@ -29,58 +28,26 @@ export default {
       });
       // Login successfully
       if (response.code === 2000) {
-        const { userId, token, userName } = response.data;
-        const authData = yield call(getUserAuth, { accountId: userId });
-        if (authData.code === 2000) {
-          setTimeout(() => {
-            setAuthority('admin_auth', authData.data);
-          }, 10);
-        } else {
-          message.error(authData.msg);
-        }
-
+        const { userId, token, userName, privilegeList = [] } = response.data;
         if (payload.autoLogin === true) {
-          setAuthority('admin_user', { mail, password, userId, userName }); // 存储用户信息
+          setAuthority('admin_user', { mail, password, userId, userName, token }); // 存储用户信息
         } else {
-          setAuthoritySeccion('admin_user', { mail, password, userId, userName });
+          setAuthoritySeccion('admin_user', { mail, password, userId, userName, token });
         }
-        setAuthority('admin_token', { userId, token }); // 存储api token
-        reloadAuthorized();
+        setAuthority('admin_auth', privilegeList);
+        // setAuthority('admin_token', { userId, token }); // 存储api token
+        // reloadAuthorized();
         yield put(routerRedux.push('/'));
+      } else {
+        message.error(response.msg);
       }
     },
-    // *fetchCurrent({ payload }, { call, put }) {
-    //   const { id } = payload;
-    //   const response = yield call(queryCurrentUser, { id });
-    //   if (response.code === 2000) {
-    //     yield put({
-    //       type: 'saveCurrentUser',
-    //       payload: response,
-    //     });
-    //   } else {
-    //     message.error('获取账号信息失败,请刷新页面');
-    //   }
-    // },
     *logout(_, { call }) {
       try {
         yield call(userLogout);
       } finally {
         removeStorge('admin_user');
         yield call(handleSuccess, { content: '退出登录', pathname: '/userLayout/login' });
-      }
-    },
-    *getAuthList(_, { call, put }) {
-      const admin = getAuthority('admin_user') || {};
-      const response = yield call(getUserAuth, { accountId: admin.userId });
-      removeStorge('admin_auth');
-      if (response.code === 2000) {
-        setAuthority('admin_auth', response.data);
-        yield put({
-          type: 'saveAuthList',
-          payload: response.data,
-        });
-      } else {
-        message.error(response.msg);
       }
     },
   },

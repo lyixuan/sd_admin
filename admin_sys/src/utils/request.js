@@ -34,10 +34,10 @@ function checkStatus(response) {
   throw error;
 }
 
-function checkoutToken(tokenObj) {
-  if (tokenObj && typeof tokenObj === 'object' && tokenObj.token) {
-    return tokenObj.token;
-  } else return '';
+function checkoutToken(tokenObJ) {
+  const userObj = tokenObJ || {};
+  const { userId = '', token = '' } = userObj;
+  return `${userId}_${token}`;
 }
 
 /**
@@ -48,12 +48,11 @@ function checkoutToken(tokenObj) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
-  const tokenObj = getAuthority('admin_token');
-
+  const tokenObj = getAuthority('admin_user');
   const defaultOptions = {
     credentials: 'include',
     headers: {
-      Authorization: checkoutToken(tokenObj),
+      authorization: checkoutToken(tokenObj),
     },
   };
   const newOptions = { ...defaultOptions, ...options };
