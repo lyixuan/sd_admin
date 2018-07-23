@@ -63,7 +63,8 @@ class UserList extends Component {
       pageNum: !firstPage?0:firstPage,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] ,
       name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,};
+      mobile: !firstPhone ? undefined : firstPhone,
+    };
     this.props.dispatch({
       type: 'user/userDelete',
       payload: { userDeleteParams, userListParams },
