@@ -1,32 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, Popconfirm, Cascader , Row, Col} from 'antd';
+import { Table, Button, Form, Input, Popconfirm , Row, Col,Select} from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import { userTypeData } from '../../utils/dataDictionary';
+import { userTypeData ,isUpdateDataReset} from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
+const {Option} = Select;
 let propsVal = '';
 let firstName = '';
 let firstPhone = '';
-let firstUpdate = 0;
+let firstUpdate = '全部';
 
-const residences = [
-  {
-    value: 0,
-    label: '全部',
-  },
-  {
-    value: 1,
-    label: '是',
-  },
-  {
-    value: 2,
-    label: '否',
-  },
-];
+
 
 @connect(({ user, loading }) => ({
   user,
@@ -42,11 +30,11 @@ class UserList extends Component {
     const initVal = this.props.getUrlParams();
     firstName = !initVal.firstName ? '' : initVal.firstName;
     firstPhone = !initVal.firstPhone ? '' : initVal.firstPhone;
-    firstUpdate = !initVal.firstUpdate ? 0 : Number(initVal.firstUpdate);
+    firstUpdate = !initVal.firstUpdate ? '全部' : initVal.firstUpdate;
     const userListParams = {
       pageSize: 30,
       pageNum: 0,
-      isUpdate: !initVal.firstUpdate ? 0 : initVal.firstUpdate,
+      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !initVal.firstName ? undefined : initVal.firstName,
       mobile: !initVal.firstPhone ? undefined : initVal.firstPhone,
     };
@@ -64,7 +52,7 @@ class UserList extends Component {
   // 删除用户
   onDelete = val => {
     const userDeleteParams = { id: val.id };
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
+    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
     this.props.dispatch({
       type: 'user/userDelete',
       payload: { userDeleteParams, userListParams },
@@ -74,7 +62,7 @@ class UserList extends Component {
   // 更新用户
   onUpdate = val => {
     const updateUserOrgParams = { id: val.id };
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
+    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
     this.props.dispatch({
       type: 'user/updateUserOrg',
       payload: { updateUserOrgParams, userListParams },
@@ -94,7 +82,7 @@ class UserList extends Component {
     const userListParams = {
       pageSize: size,
       pageNum: current - 1,
-      isUpdate: !firstUpdate ? 0 : firstUpdate,
+      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
     };
     this.props.dispatch({
       type: 'user/userList',
@@ -107,7 +95,7 @@ class UserList extends Component {
     const userListParams = {
       pageSize: size,
       pageNum: current - 1,
-      isUpdate: !firstUpdate ? 0 : firstUpdate,
+      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
     };
     this.props.dispatch({
       type: 'user/userList',
@@ -117,7 +105,6 @@ class UserList extends Component {
 
   // 初始化tabale 列数据
   fillDataSource = val => {
-    // console.log(val)
     const data = [];
     val.map((item, index) =>
       data.push({
@@ -215,7 +202,7 @@ class UserList extends Component {
   handleReset = () => {
     firstName = '';
     firstPhone = '';
-    firstUpdate = 0;
+    firstUpdate = '全部';
     this.props.setCurrentUrlParams({
       firstUpdate: null,
       firstName: null,
@@ -223,7 +210,7 @@ class UserList extends Component {
     });
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/config/userList');
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : firstUpdate };
+    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -236,8 +223,7 @@ class UserList extends Component {
       if (!err) {
         firstName = !values.name ? undefined : values.name.replace(/\s*/g, '');
         firstPhone = !values.mobile ? undefined : values.mobile;
-        firstUpdate = !values.isUpdate[0]?0:values.isUpdate[0];
-
+        firstUpdate = !values.isUpdate?'全部':values.isUpdate;
         this.props.setCurrentUrlParams({
           firstUpdate,
           firstName,
@@ -245,13 +231,12 @@ class UserList extends Component {
         });
 
         const userListParams = {
-          isUpdate: values.isUpdate[0],
+          isUpdate: isUpdateDataReset[firstUpdate],
           name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
           mobile: !values.mobile ? undefined : values.mobile,
           pageSize: 30,
           pageNum: 0,
         };
-
         this.props.dispatch({
           type: 'user/userList',
           payload: { userListParams },
@@ -309,13 +294,31 @@ class UserList extends Component {
                   })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>
+
+
               <Col span={8} style={{ textAlign: 'right' }} >
-                <FormItem label="需要更新"  >
+                <FormItem
+                  label="需要更新"
+                >
                   {getFieldDecorator('isUpdate', {
-                    initialValue: [!firstUpdate ? 0 : firstUpdate],
-                  })(<Cascader options={residences} style={{ width: 230, height: 32 }} />)}
+                    initialValue: !firstUpdate ? '全部' : firstUpdate,
+                  })(
+                    <Select placeholder="全部" style={{ width: 230, height: 32 }}>
+                      <Option value="全部">全部</Option>
+                      <Option value="是">是</Option>
+                      <Option value="否">否</Option>
+                    </Select>
+                  )}
                 </FormItem>
               </Col>
+
+
+
+
+
+
+
+
             </Row>
             <Row>
               <Col span={24} style={{ textAlign: 'right',marginTop:'12px' }}>

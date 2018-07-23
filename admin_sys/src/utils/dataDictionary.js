@@ -29,4 +29,10 @@ const levelDataReset={
   "一级页面":1,
 }
 
-export{userTypeData,userTypeDataReset,levelData,levelDataReset}
+const isUpdateDataReset={
+  "全部":0,
+  "是":1,
+  "否":2,
+}
+
+export{userTypeData,userTypeDataReset,levelData,levelDataReset,isUpdateDataReset}
