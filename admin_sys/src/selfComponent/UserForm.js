@@ -261,13 +261,14 @@ class UserForm extends Component {
       : !aaa.response
         ? []
         : !aaa.response.data ? [] : !aaa.response.data.content ? [] : aaa.response.data.content[0];
-    const str = !arrValue?'':arrValue.showNameIds?'':arrValue.showNameIds;
+    const str = !arrValue?'':!arrValue.showNameIds?'':arrValue.showNameIds;
     const strs = !str ? [] : str.split(',');
     const arr = !strs
       ? []
       : strs.map(el => {
           return Number(el);
         });
+    console.log(arr,str,arrValue.showNameIds)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
