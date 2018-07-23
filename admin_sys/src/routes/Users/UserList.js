@@ -10,10 +10,12 @@ import { userTypeData ,isUpdateDataReset} from '../../utils/dataDictionary';
 const FormItem = Form.Item;
 const {Option} = Select;
 let propsVal = '';
-let firstName = '';
-let firstPhone = '';
-let firstUpdate = '全部';
-let firstPage = 0;
+
+// 添加全局变量 ，记录搜索或是跳转到某一页到编辑页面之后返回到list页面回显所用。
+let firstName = ''; // 搜索框的姓名字段
+let firstPhone = ''; // 搜索框的电话字段
+let firstUpdate = '全部'; // 搜索框的需要更新字段
+let firstPage = 0; // 分页的默认起开页面
 
 
 @connect(({ user, loading }) => ({
@@ -26,6 +28,7 @@ class UserList extends Component {
     this.state = {};
   }
 
+  // 页面render之前需要请求的接口
   componentDidMount() {
     const initVal = this.props.getUrlParams();
     firstName = !initVal.firstName ? '' : initVal.firstName;
@@ -34,7 +37,7 @@ class UserList extends Component {
     firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
     const userListParams = {
       pageSize: 30,
-      pageNum: firstPage,
+      pageNum: !firstPage?0:firstPage,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !firstName ? undefined : firstName,
       mobile: !firstPhone ? undefined : firstPhone,
@@ -44,6 +47,7 @@ class UserList extends Component {
       payload: { userListParams },
     });
   }
+  // 组件卸载时清除声明的变量
   componentWillUnmount() {
     firstName = null;
     firstPhone = null;
@@ -240,6 +244,7 @@ class UserList extends Component {
       payload: { userListParams },
     });
   };
+
   // 表单搜索
   handleSearch = e => {
     e.preventDefault();
@@ -298,7 +303,6 @@ class UserList extends Component {
                   {getFieldDecorator('name', {
                     initialValue: firstName,
                     rules: [
-                      // { max: 50, message: '您输入姓名不合法!', whitespace: true },
                       {
                         validator(rule, value, callback) {
                           const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
