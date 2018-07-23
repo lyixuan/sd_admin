@@ -138,7 +138,7 @@
   font-size: 14px;
   width: 80px;
   height: 32px;
-  border-color: #52C9C2;
+  border: 1px solid #52C9C2;
 }
 .createButton:hover{
   background-color: #52C9C2;
@@ -146,7 +146,7 @@
 }
 .createButton:focus{
   background-color: #52C9C2;
-  border-color: #52C9C2;
+  border: 1px solid #52C9C2;
 }
 
 .searchButton{
@@ -155,17 +155,17 @@
   font-size: 14px;
   width: 80px;
   height: 32px;
-  border-color: #52C9C2;
+  border: 1px solid #52C9C2;
   color: #fff;
 }
 .searchButton:hover{
   background-color: #52C9C2;
-  border-color: #52C9C2;
+  border: 1px solid #52C9C2;
   color: #fff;
 }
 .searchButton:focus{
   background-color: #52C9C2;
-  border-color: #52C9C2;
+  border: 1px solid #52C9C2;
 }
 .addQualityButton{
   margin: 0 10px 0 0;
@@ -173,15 +173,15 @@
   font-size: 14px;
   width: 80px;
   height: 32px;
-  border-color: #46A3EF;
+  border: 1px solid #46A3EF;
 }
 .addQualityButton:hover{
   background-color: #46A3EF;
-  border-color: #46A3EF;
+  border: 1px solid #46A3EF;
 }
 .addQualityButton:focus{
   background-color: #46A3EF;
-  border-color: #46A3EF;
+  border: 1px solid #46A3EF;
 }
 .deleteQualityButton{
   margin: 0 ;
@@ -189,15 +189,15 @@
   font-size: 14px;
   width: 80px;
   height: 32px;
-  border-color: #F29F38;
+  border: 1px solid #F29F38;
 }
 .deleteQualityButton:hover{
   background-color: #F29F38;
-  border-color: #F29F38;
+  border: 1px solid #F29F38;
 }
 .deleteQualityButton:focus{
   background-color: #F29F38;
-  border-color: #F29F38;
+  border: 1px solid #F29F38;
 }
 
 .cancleButton{
@@ -226,15 +226,15 @@
   font-size: 14px;
   width: 80px;
   height: 32px;
-  border-color: #52C9C2;
+  border: 1px solid #52C9C2;
 }
 .submitButton:hover{
   background-color: #52C9C2;
-  border-color: #52C9C2;
+  border: 1px solid #52C9C2;
 }
 .submitButton:focus{
   background-color: #52C9C2;
-  border-color: #52C9C2;
+  border: 1px solid #52C9C2;
 }
 .totalNum{
   display: flex;
