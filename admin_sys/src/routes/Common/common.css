@@ -123,6 +123,9 @@
  margin:0
 }
 
+:global(.ant-btn) {
+   border: 1px solid #52C9C2;
+}
 
 :global(.ant-cascader-picker-label) {
   text-align: left;
