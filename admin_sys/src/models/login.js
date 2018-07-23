@@ -31,14 +31,6 @@ export default {
       if (response.code === 2000) {
         const { userId, token, userName } = response.data;
         const authData = yield call(getUserAuth, { accountId: userId });
-        if (authData.code === 2000) {
-          setTimeout(() => {
-            setAuthority('admin_auth', authData.data);
-          }, 10);
-        } else {
-          message.error(authData.msg);
-        }
-
         if (payload.autoLogin === true) {
           setAuthority('admin_user', { mail, password, userId, userName }); // 存储用户信息
         } else {
@@ -46,6 +38,13 @@ export default {
         }
         setAuthority('admin_token', { userId, token }); // 存储api token
         reloadAuthorized();
+        if (authData.code === 2000) {
+          setTimeout(() => {
+            setAuthority('admin_auth', authData.data);
+          }, 10);
+        } else {
+          message.error(authData.msg);
+        }
         yield put(routerRedux.push('/'));
       }
     },

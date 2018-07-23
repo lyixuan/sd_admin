@@ -17,21 +17,7 @@ English | [简体中文](./README.zh-CN.md)
 ## Templates未完待续
 
 ```
-- Account
-  - AccountList
-  - CreateAccount
-  - EditAccount
-- Result
-  - Success
-  - Failed
-- Exception
-  - 403
-  - 404
-  - 500
-- User
-  - Login
-  - Register
-  - Register Result
+
 ```
 
 ## Usage
