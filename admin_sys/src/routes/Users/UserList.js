@@ -36,8 +36,8 @@ class UserList extends Component {
       pageSize: 30,
       pageNum: firstPage,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !initVal.firstName ? undefined : initVal.firstName,
-      mobile: !initVal.firstPhone ? undefined : initVal.firstPhone,
+      name: !firstName ? undefined : firstName,
+      mobile: !firstPhone ? undefined : firstPhone,
     };
     this.props.dispatch({
       type: 'user/userList',
@@ -54,7 +54,12 @@ class UserList extends Component {
   // 删除用户
   onDelete = val => {
     const userDeleteParams = { id: val.id };
-    const userListParams = { pageSize: 30, pageNum: !firstPage?0:firstPage, isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
+    const userListParams = {
+      pageSize: 30,
+      pageNum: !firstPage?0:firstPage,
+      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] ,
+      name: !firstName ? undefined : firstName,
+      mobile: !firstPhone ? undefined : firstPhone,};
     this.props.dispatch({
       type: 'user/userDelete',
       payload: { userDeleteParams, userListParams },
@@ -64,7 +69,13 @@ class UserList extends Component {
   // 更新用户
   onUpdate = val => {
     const updateUserOrgParams = { id: val.id };
-    const userListParams = { pageSize: 30, pageNum:!firstPage?0:firstPage , isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
+    const userListParams = {
+      pageSize: 30,
+      pageNum:!firstPage?0:firstPage ,
+      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
+      name: !firstName ? undefined : firstName,
+      mobile: !firstPhone ? undefined : firstPhone,
+    };
     this.props.dispatch({
       type: 'user/updateUserOrg',
       payload: { updateUserOrgParams, userListParams },
@@ -89,6 +100,8 @@ class UserList extends Component {
       pageSize: size,
       pageNum: current - 1,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
+      name: !firstName ? undefined : firstName,
+      mobile: !firstPhone ? undefined : firstPhone,
     };
     this.props.dispatch({
       type: 'user/userList',
@@ -103,6 +116,8 @@ class UserList extends Component {
       pageSize: size,
       pageNum: current - 1,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
+      name: !firstName ? undefined : firstName,
+      mobile: !firstPhone ? undefined : firstPhone,
     };
     this.props.dispatch({
       type: 'user/userList',
@@ -210,10 +225,12 @@ class UserList extends Component {
     firstName = '';
     firstPhone = '';
     firstUpdate = '全部';
+    firstPage = 0;
     this.props.setCurrentUrlParams({
       firstUpdate: null,
       firstName: null,
       firstPhone: null,
+      firstPage: null,
     });
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/config/userList');
@@ -231,10 +248,12 @@ class UserList extends Component {
         firstName = !values.name ? undefined : values.name.replace(/\s*/g, '');
         firstPhone = !values.mobile ? undefined : values.mobile;
         firstUpdate = !values.isUpdate?'全部':values.isUpdate;
+        firstPage = 0;
         this.props.setCurrentUrlParams({
           firstUpdate,
           firstName,
           firstPhone,
+          firstPage : 0,
         });
 
         const userListParams = {
