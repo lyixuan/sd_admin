@@ -22,6 +22,8 @@ const dateFormat = 'YYYY-MM-DD';
 class TimeList extends Component {
   constructor(props) {
     super(props);
+    const { dateArea = {} } = this.props.time;
+
     this.state = {
       params: {
         orderDirection: 'desc',
@@ -30,9 +32,9 @@ class TimeList extends Component {
         pageSize: 30,
       },
       dateArea: {
-        beginTime: '',
-        endTime: '',
         id: 1,
+        beginTime: this.changeFormat(dateArea.beginTime),
+        endTime: this.changeFormat(dateArea.endTime),
       },
       visible: false,
       dateTime: '',
@@ -44,7 +46,6 @@ class TimeList extends Component {
   componentDidMount() {
     this.fillDataSource();
     this.getRange();
-    console.log(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,7 +56,6 @@ class TimeList extends Component {
       this.setState({ dateArea });
     }
   }
-
   // 添加
   onAdd = () => {
     this.setState({ dateTime: '' });
@@ -207,7 +207,6 @@ class TimeList extends Component {
     const { loading, addDisabileTime, changeDateArea } = this.props;
     const { content = [], size = 0 } = dateListObj;
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const formLayout = 'inline';
     const dataSorce = content.map(item => ({
       key: item.id,
       dateTime: moment.unix(item.dateTime / 1000).format(dateFormat),
@@ -221,12 +220,11 @@ class TimeList extends Component {
       />
     );
     const dateAreaPicker = <DatePicker format={dateFormat} style={{ width: 230, height: 32 }} />;
-
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
       return (
-        <Form onSubmit={this.handleSearch} layout={formLayout}>
+        <Form onSubmit={this.handleSearch} layout="inline">
           <p className={styles.formTitle}>“自定义时间”可选范围设置</p>
           <div className={styles.formCls}>
             <FormItem label="开始日期">
