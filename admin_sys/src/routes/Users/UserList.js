@@ -348,7 +348,7 @@ class UserList extends Component {
                     <Button htmlType="submit" type="primary" className={common.searchButton}>
                       搜 索
                     </Button>
-                    <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
+                    <Button onClick={this.handleReset} type="primary" className={common.resetButton}>
                       重 置
                     </Button>
                   </div>

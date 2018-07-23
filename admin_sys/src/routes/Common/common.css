@@ -161,7 +161,7 @@
 }
 
 .searchButton{
-  margin: 0 10px 24px 0;
+  margin: 0 0px 24px 0;
   background-color: #52C9C2;
   font-size: 14px;
   width: 80px;
@@ -178,6 +178,27 @@
   background-color: #52C9C2;
   border: 1px solid #52C9C2;
 }
+
+.resetButton{
+  margin: auto 0 auto 10px;
+  background-color: #fff;
+  font-size: 14px;
+  width: 80px;
+  height: 32px;
+  border: 1px solid #DCDDE0;
+  color: #000;
+}
+.resetButton:hover{
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #DCDDE0;
+}
+.resetButton:focus {
+  background-color: #fff;
+  border: 1px solid #DCDDE0;
+  color: #000;
+}
+
 .addQualityButton{
   margin: 0 10px 0 0;
   background-color: #46A3EF;

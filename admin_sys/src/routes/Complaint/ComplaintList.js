@@ -219,7 +219,7 @@ class ComplainList extends Component {
             <Button type="primary" htmlType="submit" className={common.searchButton}>
               搜索
             </Button>
-            <Button onClick={this.handleReset} className={common.cancleButton}>
+            <Button onClick={this.handleReset} className={common.resetButton}>
               重置
             </Button>
           </FormItem>
