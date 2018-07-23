@@ -166,7 +166,7 @@ class PermissionList extends Component {
             <div>
               <AuthorizedButton authority="/permission/editPermission">
                 <span
-                  style={{ color: '#52C9C2', marginLeft: 12, cursor: 'pointer' }}
+                  style={{ color: '#52C9C2', cursor: 'pointer' }}
                   onClick={() => this.onEdit(record)}
                 >
                   编辑
