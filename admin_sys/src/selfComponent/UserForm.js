@@ -268,7 +268,7 @@ class UserForm extends Component {
       : strs.map(el => {
           return Number(el);
         });
-    console.log(arr,str,arrValue.showNameIds)
+    // console.log(arr,str,arrValue.showNameIds)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
