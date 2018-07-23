@@ -13,7 +13,7 @@ let propsVal = '';
 let firstName = '';
 let firstPhone = '';
 let firstUpdate = '全部';
-
+let firstPage = 0;
 
 
 @connect(({ user, loading }) => ({
@@ -31,9 +31,10 @@ class UserList extends Component {
     firstName = !initVal.firstName ? '' : initVal.firstName;
     firstPhone = !initVal.firstPhone ? '' : initVal.firstPhone;
     firstUpdate = !initVal.firstUpdate ? '全部' : initVal.firstUpdate;
+    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
     const userListParams = {
       pageSize: 30,
-      pageNum: 0,
+      pageNum: firstPage,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !initVal.firstName ? undefined : initVal.firstName,
       mobile: !initVal.firstPhone ? undefined : initVal.firstPhone,
@@ -47,12 +48,13 @@ class UserList extends Component {
     firstName = null;
     firstPhone = null;
     firstUpdate = null;
+    firstPage = null;
   }
 
   // 删除用户
   onDelete = val => {
     const userDeleteParams = { id: val.id };
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
+    const userListParams = { pageSize: 30, pageNum: !firstPage?0:firstPage, isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
     this.props.dispatch({
       type: 'user/userDelete',
       payload: { userDeleteParams, userListParams },
@@ -62,7 +64,7 @@ class UserList extends Component {
   // 更新用户
   onUpdate = val => {
     const updateUserOrgParams = { id: val.id };
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
+    const userListParams = { pageSize: 30, pageNum:!firstPage?0:firstPage , isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
     this.props.dispatch({
       type: 'user/updateUserOrg',
       payload: { updateUserOrgParams, userListParams },
@@ -71,6 +73,9 @@ class UserList extends Component {
 
   // 编辑用户
   onEdit = val => {
+    this.props.setCurrentUrlParams({
+      firstPage:!firstPage?0:firstPage,
+    });
     this.props.setRouteUrlParams('/user/editUser', {
       id: val.id,
       userType: val.userType,
@@ -79,6 +84,7 @@ class UserList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, size) => {
+    firstPage = current-1;
     const userListParams = {
       pageSize: size,
       pageNum: current - 1,
@@ -92,6 +98,7 @@ class UserList extends Component {
 
   // 点击某一页函数
   changePage = (current, size) => {
+    firstPage = current-1;
     const userListParams = {
       pageSize: size,
       pageNum: current - 1,
@@ -294,8 +301,6 @@ class UserList extends Component {
                   })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>
-
-
               <Col span={8} style={{ textAlign: 'right' }} >
                 <FormItem
                   label="需要更新"
@@ -311,14 +316,6 @@ class UserList extends Component {
                   )}
                 </FormItem>
               </Col>
-
-
-
-
-
-
-
-
             </Row>
             <Row>
               <Col span={24} style={{ textAlign: 'right',marginTop:'12px' }}>
@@ -370,7 +367,7 @@ class UserList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={1}
+            defaultCurrent={!firstPage ?1:firstPage+1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}
