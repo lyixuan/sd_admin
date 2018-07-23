@@ -272,7 +272,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['complaintDoubles'], () =>
         import('../routes/ComplaintDoubles/ComplaintDoublesList')
       ),
-      name: '投数倍数管理',
+      name: '投诉倍数管理',
     },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
