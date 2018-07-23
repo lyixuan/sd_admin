@@ -247,7 +247,7 @@ export const getRouterData = app => {
         import('../routes/Complaint/ComplaintDel')
       ),
       bread: {
-        name: '投数管理',
+        name: '投诉管理',
         path: '/bottomLine/complaintList',
       },
       name: '删除投数',
