@@ -26,16 +26,16 @@
   border-radius: 4px;
   box-sizing: border-box;
   padding: 22px 20px;
-  margin-top: 20px;
+  margin-top: 60px;
   margin-bottom: 10px;
 }
 .title{
   font-size: 12px;
-  color: #000000;
+  color: #000;
 }
 .txt{
   font-size: 12px;
-  color: #000000;
+  color: #000;
   margin-top: 10px;
 }
 .uploadImg{
@@ -48,7 +48,7 @@
   letter-spacing: 0;
   line-height: 28px;
 }
-/*progress*/
+
 :global(.ant-upload-list){
   position: absolute;
   top: 142px;
@@ -140,7 +140,7 @@
 }
 .inputTip_txt{
   font-size: 12px;
-  color: #000000;
+  color: #000;
   letter-spacing: 0;
   line-height: 18px;
   margin-bottom: 10px;
@@ -181,9 +181,6 @@
 * stepSucess
 */
 
-.wrapSucess{
-
-}
 .imgSucess{
   width: 113px;
   height: 113px;
@@ -199,7 +196,9 @@
   text-align: center;
 }
 
-/*校验结果*/
+/*
+校验结果
+*/
 .marRight_50{
   margin-right: 50px;
 }
