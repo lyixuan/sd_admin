@@ -8,7 +8,9 @@ import { levelDataReset } from '../../utils/dataDictionary';
 const WrappedRegistrationForm = Form.create()(PermissionForm);
 @connect(({ permission, loading }) => ({
   permission,
+  loading:false,
   submit: loading.effects['permission/addPermission'],
+  permissionListAllName:loading.effects['permission/permissionListAllName'],
 }))
 class CreatePermission extends Component {
   constructor(props) {

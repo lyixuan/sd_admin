@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select } from 'antd';
+import { Form, Input, Button, Row, Col, Select ,Spin} from 'antd';
 import common from '../routes/Common/common.css';
 import { levelData, levelDataReset } from '../utils/dataDictionary';
 
@@ -93,7 +93,8 @@ class PermissionForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { submit } = this.props.jumpFunction;
+    const { submit ,loading,permissionListAllName} = this.props.jumpFunction;
+    console.log(loading,permissionListAllName,loading&&permissionListAllName)
     const disabled = true;
     const formItemLayout = {
       labelCol: {
@@ -127,7 +128,7 @@ class PermissionForm extends Component {
     parentListBackup = !parentIdValues ? [] : this.fullListFun(parentIdValues);
     parentList = !parentList || parentList.length === 0 ? parentListBackup : parentList;
     return (
-      <div>
+      <Spin spinning={loading||permissionListAllName} >
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*权限名称">
             {getFieldDecorator('name', {
@@ -275,7 +276,7 @@ class PermissionForm extends Component {
             </Col>
           </Row>
         </Form>
-      </div>
+      </Spin>
     );
   }
 }
