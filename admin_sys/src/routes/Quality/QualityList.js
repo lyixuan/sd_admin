@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Form, Input } from 'antd';
+import { Table, Button, Form, Input ,Row, Col } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -157,32 +157,40 @@ class QualityList extends Component {
       return (
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
-            <FormItem label="归属班主任">
-              {getFieldDecorator('teaName', {
-                initialValue: firstTeaName,
-                rules: [],
-              })(<Input placeholder="请输入归属班主任" style={{ width: 230, height: 32 }} />)}
-            </FormItem>
-            <FormItem style={{ marginLeft: 119 }} label="质检单号">
-              {getFieldDecorator('qualityNum', {
-                initialValue: firstQualityNum,
-                rules: [],
-              })(
-                <Input
-                  placeholder="请输入质检单号"
-                  maxLength={20}
-                  style={{ width: 230, height: 32 }}
-                />
-              )}
-            </FormItem>
-            <FormItem style={{ marginLeft: 119 }}>
-              <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
-                搜 索
-              </Button>
-              <Button onClick={this.handleReset} type="primary" className={common.resetButton}>
-                重 置
-              </Button>
-            </FormItem>
+            <Row gutter={24}>
+              <Col span={8} >
+                <FormItem label="归属班主任">
+                  {getFieldDecorator('teaName', {
+                    initialValue: firstTeaName,
+                    rules: [],
+                  })(<Input placeholder="请输入归属班主任" style={{ width: 230, height: 32 }} />)}
+                </FormItem>
+              </Col>
+              <Col span={8} style={{ textAlign: 'center' }}>
+                <FormItem label="质检单号">
+                  {getFieldDecorator('qualityNum', {
+                    initialValue: firstQualityNum,
+                    rules: [],
+                  })(
+                    <Input
+                      placeholder="请输入质检单号"
+                      maxLength={20}
+                      style={{ width: 230, height: 32 }}
+                    />
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={8} style={{ textAlign: 'right' }} >
+                <FormItem>
+                  <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
+                    搜 索
+                  </Button>
+                  <Button onClick={this.handleReset} type="primary" className={common.resetButton}>
+                    重 置
+                  </Button>
+                </FormItem>
+              </Col>
+            </Row>
           </Form>
         </div>
       );
