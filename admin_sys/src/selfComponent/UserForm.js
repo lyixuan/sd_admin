@@ -177,10 +177,11 @@ class UserForm extends Component {
     });
   };
 
-  roleListFun = val => {
+  roleListFun = (val=[]) => {
+    const list = !val ? [] : val ;
     return (
       <Select  style={{ width: 380 }}>
-        {val.map((item) => (
+        {list.map((item) => (
           <Option value={item.name} key={item.id}>{item.name}</Option>
         ))}
       </Select>)

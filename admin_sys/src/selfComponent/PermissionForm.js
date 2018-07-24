@@ -45,7 +45,6 @@ class PermissionForm extends Component {
   };
 
   fullListFun = val => {
-    // console.log(val)
     const parentIdList = [];
     val.map(item =>
       parentIdList.push({
@@ -77,7 +76,6 @@ class PermissionForm extends Component {
   handleSelectChange = value => {
     const level = !value ? flag : value;
     flag = level;
-    // console.log(flag,value)
     const listValue = parentListBackup;
     const rObj = [];
     listValue.map(obj => {
