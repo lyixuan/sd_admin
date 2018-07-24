@@ -10,33 +10,6 @@ let responseComList = [];
 let responseComListBackup = [];
 let flag = '小组';
 
-const userTypeList = [
-  {
-    value: '学院',
-    label: '学院',
-  },
-  {
-    value: '家族',
-    label: '家族',
-  },
-  {
-    value: '小组',
-    label: '小组',
-  },
-  {
-    value: '系统管理员',
-    label: '系统管理员',
-  },
-  {
-    value: '高级管理员',
-    label: '高级管理员',
-  },
-  {
-    value: '无底表权限',
-    label: '无底表权限',
-  },
-];
-
 class UserForm extends Component {
   constructor(props) {
     super(props);
