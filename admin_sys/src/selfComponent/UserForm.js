@@ -184,7 +184,6 @@ class UserForm extends Component {
           <Option value={item.name} key={item.id}>{item.name}</Option>
         ))}
       </Select>)
-
   };
 
   render() {
@@ -351,11 +350,7 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*微信部门">
             {getFieldDecorator('wechatDepartmentName', {
-              initialValue: [
-                !this.state.id
-                  ? ''
-                  : !arrValue.wechatDepartmentName ? '' : arrValue.wechatDepartmentName,
-              ],
+              initialValue: !this.state.id ? '' : !arrValue.wechatDepartmentName ? '' : arrValue.wechatDepartmentName,
               rules: [
                 {
                   validator(rule, value, callback) {

@@ -24,7 +24,7 @@ class CreatePermission extends Component {
   }
 
   handleSubmit = values => {
-    const parentIdName = values.parentId[0] || 0;
+    const parentIdName = values.parentId || 0;
     const addPermissionParams = {
       name: values.name.replace(/\s*/g, ''),
       iconUrl: values.iconUrl,

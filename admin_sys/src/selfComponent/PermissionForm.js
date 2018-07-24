@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, Row, Col, Select } from 'antd';
+import { Form, Input, Button, Row, Col, Select } from 'antd';
 import common from '../routes/Common/common.css';
 import { levelData, levelDataReset } from '../utils/dataDictionary';
 
@@ -45,6 +45,7 @@ class PermissionForm extends Component {
   };
 
   fullListFun = val => {
+    // console.log(val)
     const parentIdList = [];
     val.map(item =>
       parentIdList.push({
@@ -89,7 +90,7 @@ class PermissionForm extends Component {
       }
       return 0;
     });
-    parentList = rObj;
+    parentList =rObj
   };
 
   render() {
@@ -181,11 +182,11 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('parentId', {
-              initialValue: [!this.state.id ? '' : !arrValue.parentId ? '' : arrValue.parentId],
+              initialValue: !this.state.id ? '' : !arrValue.parentId ? '' : arrValue.parentId,
               rules: [
                 {
                   validator(rule, value, callback) {
-                    if (!value[0] && flag !== '一级页面') {
+                    if (!value && flag !== '一级页面') {
                       callback({ message: '非一级页面,请选择上级权限！' });
                     }
                     callback();
@@ -193,15 +194,14 @@ class PermissionForm extends Component {
                 },
               ],
             })(
-              <Cascader
-                options={parentList}
-                style={{ width: 380 }}
-                disabled={
-                  !this.state.id
-                    ? flag === '一级页面' ? disabled : false
-                    : flag === '一级页面' ? disabled : false
+              <Select style={{ width: 380 }}  disabled={!this.state.id ? flag === '一级页面' ? disabled : false : flag === '一级页面' ? disabled : false} >
+                {
+                  parentList.map((item) => (
+                    <Option value={item.value} key={item.value}>{item.label}</Option>
+                  ))
                 }
-              />
+              </Select>
+
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
