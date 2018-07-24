@@ -34,9 +34,9 @@ function checkStatus(response) {
   throw error;
 }
 
-function checkoutToken(tokenObJ) {
-  const userObj = tokenObJ || {};
-  const { userId = '', token = '' } = userObj;
+export function checkoutToken() {
+  const tokenObj = getAuthority('admin_user') || {};
+  const { userId = '', token = '' } = tokenObj;
   return `${userId}_${token}`;
 }
 
@@ -48,11 +48,10 @@ function checkoutToken(tokenObJ) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
-  const tokenObj = getAuthority('admin_user');
   const defaultOptions = {
     credentials: 'include',
     headers: {
-      authorization: checkoutToken(tokenObj),
+      authorization: checkoutToken(),
     },
   };
   const newOptions = { ...defaultOptions, ...options };

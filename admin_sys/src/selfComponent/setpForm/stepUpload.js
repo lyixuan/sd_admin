@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { message, Upload } from 'antd';
 import uploadImg from '../../assets/uploadImg.png';
 import styles from './step.css';
+import { checkoutToken } from '../../utils/request';
 
 let isExcel = false;
 let isLt10M = false;
@@ -36,9 +37,11 @@ class stepUpload extends Component {
   render() {
     const { uploadUrl } = this.props;
     const props = {
+      headers: {
+        authorization: checkoutToken(),
+      },
       action: uploadUrl,
       beforeUpload(file) {
-        console.log(file.name.split('.')[1]);
         isExcel = file.name.split('.')[1] === 'xlsx' || file.name.split('.')[1] === 'xls';
         if (!isExcel) {
           message.error('请上传 Excel 文件！');
