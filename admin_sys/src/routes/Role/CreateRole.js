@@ -8,6 +8,7 @@ const WrappedRoleForm = Form.create()(RoleForm);
 @connect(({ role, loading }) => ({
   role,
   loading: loading.effects['role/roleAdd'],
+  rolePrivileges:loading.effects['role/roleListAll'],
 }))
 class CreateRole extends Component {
   componentDidMount() {
@@ -33,6 +34,7 @@ class CreateRole extends Component {
         listAll={listAll}
         loading={this.props.loading}
         isShowFooter="true"
+        selfProps={this.props}
         submitInfo={(values, privilegeIds) => {
           this.submitInfo(values, privilegeIds);
         }}
