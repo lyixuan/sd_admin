@@ -2,7 +2,7 @@ import { getAuthority } from '../utils/authority';
 
 function getAuthData() {
   const data1 = getAuthority('admin_auth') || [];
-  const newArr = filterMenu(data1).sort((a, b) => a.sort - b.sort);
+  const newArr = filterMenu(data1).sort((a, b) => a.sortFlag - b.sortFlag);
   return formatter(newArr, 0);
 }
 function filterMenu(data) {
