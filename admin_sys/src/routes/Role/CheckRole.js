@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form } from 'antd';
-import StepLayout from '../../layouts/stepLayout';
+import ContentLayout from '../../layouts/ContentLayout';
 import RoleForm from '../../selfComponent/RoleFrom/RoleForm';
 
 const WrappedRoleForm = Form.create({
@@ -40,7 +40,7 @@ class CheckRole extends Component {
         selfProps={this.props}
       />
     );
-    return <StepLayout routerData={this.props.routerData} baseLayout={baseLayout} />;
+    return <ContentLayout routerData={this.props.routerData} contentForm={baseLayout} />;
   }
 }
 
