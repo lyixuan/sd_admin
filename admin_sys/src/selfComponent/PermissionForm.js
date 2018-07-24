@@ -94,7 +94,6 @@ class PermissionForm extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { submit ,loading,permissionListAllName} = this.props.jumpFunction;
-    console.log(loading,permissionListAllName,loading&&permissionListAllName)
     const disabled = true;
     const formItemLayout = {
       labelCol: {

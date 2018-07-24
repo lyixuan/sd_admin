@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, message, Row, Col,Select } from 'antd';
+import { Form, Input, Cascader, Button, message, Row, Col,Select ,Spin} from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 import { userTypeData } from '../utils/dataDictionary';
@@ -191,7 +191,6 @@ class UserForm extends Component {
     const { getFieldDecorator } = this.props.form;
     const disabled = true;
     const userVal = this.props.jumpFunction.user;
-    const { submit } = this.props.jumpFunction;
     const wechatValues = !userVal.wechatList.response
       ? []
       : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
@@ -240,8 +239,9 @@ class UserForm extends Component {
           return Number(el);
         });
     // console.log(arr,str,arrValue.showNameIds)
+    const { submit ,wechatList,listOrg,userList} = this.props.jumpFunction;
     return (
-      <div>
+      <Spin spinning={wechatList||listOrg||userList} >
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓 名">
             {getFieldDecorator('name', {
@@ -389,7 +389,7 @@ class UserForm extends Component {
             </Col>
           </Row>
         </Form>
-      </div>
+      </Spin>
     );
   }
 }

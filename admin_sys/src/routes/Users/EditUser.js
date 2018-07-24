@@ -11,6 +11,9 @@ const WrappedRegistrationForm = Form.create()(UserForm);
 @connect(({ user, loading }) => ({
   user,
   submit: loading.effects['user/updateUserInfo'],
+  wechatList:loading.effects['user/wechatList'],
+  listOrg:loading.effects['user/listOrg'],
+  userList:loading.effects['user/userList'],
 }))
 class EditUser extends Component {
   constructor(props) {

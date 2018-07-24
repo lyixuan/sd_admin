@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col,Select } from 'antd';
+import { Form, Input, Button, Row, Col,Select,Spin } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
@@ -64,9 +64,9 @@ class AccountForm extends Component {
       : !this.props.jumpFunction.account.accountInfo.response
         ? []
         : this.props.jumpFunction.account.accountInfo.response.data;
-    const { submit } = this.props.jumpFunction;
+    const { submit,getRoleList,accountInfo } = this.props.jumpFunction;
     return (
-      <div>
+      <Spin spinning={getRoleList||accountInfo} >
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓名">
             {getFieldDecorator('name', {
@@ -149,7 +149,7 @@ class AccountForm extends Component {
             </Col>
           </Row>
         </Form>
-      </div>
+      </Spin>
     );
   }
 }

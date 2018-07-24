@@ -67,7 +67,7 @@ class RoleForm extends Component {
     }
     this.getVal.setInitAllVal(initAllVal);
     checkAllObj[listKey] = initAllVal;
-    checkAllObj[key] = len === secList.length;
+    checkAllObj[key] = (len === secList.length)&&(len!==0);
   };
   /*
   * 全选按钮事件

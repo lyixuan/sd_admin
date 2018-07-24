@@ -8,6 +8,8 @@ const WrappedRegistrationForm = Form.create()(AccountForm);
 @connect(({ account, loading }) => ({
   account,
   submit: loading.effects['account/updateAccount'],
+  getRoleList: loading.effects['account/getRoleList'],
+  accountInfo: loading.effects['account/accountInfo'],
 }))
 class EditAccount extends Component {
   constructor(props) {
