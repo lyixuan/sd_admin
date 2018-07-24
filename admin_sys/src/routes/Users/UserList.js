@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, Popconfirm , Row, Col,Select} from 'antd';
+import { Table, Button, Form, Input, Popconfirm, Row, Col, Select } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import { userTypeData ,isUpdateDataReset} from '../../utils/dataDictionary';
+import { userTypeData, isUpdateDataReset } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
-const {Option} = Select;
+const { Option } = Select;
 let propsVal = '';
 
 // 添加全局变量 ，记录搜索或是跳转到某一页到编辑页面之后返回到list页面回显所用。
@@ -16,7 +16,6 @@ let firstName = ''; // 搜索框的姓名字段
 let firstPhone = ''; // 搜索框的电话字段
 let firstUpdate = '全部'; // 搜索框的需要更新字段
 let firstPage = 0; // 分页的默认起开页面
-
 
 @connect(({ user, loading }) => ({
   user,
@@ -37,7 +36,7 @@ class UserList extends Component {
     firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
     const userListParams = {
       pageSize: 30,
-      pageNum: !firstPage?0:firstPage,
+      pageNum: !firstPage ? 0 : firstPage,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !firstName ? undefined : firstName,
       mobile: !firstPhone ? undefined : firstPhone,
@@ -60,8 +59,8 @@ class UserList extends Component {
     const userDeleteParams = { id: val.id };
     const userListParams = {
       pageSize: 30,
-      pageNum: !firstPage?0:firstPage,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] ,
+      pageNum: !firstPage ? 0 : firstPage,
+      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !firstName ? undefined : firstName,
       mobile: !firstPhone ? undefined : firstPhone,
     };
@@ -76,7 +75,7 @@ class UserList extends Component {
     const updateUserOrgParams = { id: val.id };
     const userListParams = {
       pageSize: 30,
-      pageNum:!firstPage?0:firstPage ,
+      pageNum: !firstPage ? 0 : firstPage,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !firstName ? undefined : firstName,
       mobile: !firstPhone ? undefined : firstPhone,
@@ -90,7 +89,7 @@ class UserList extends Component {
   // 编辑用户
   onEdit = val => {
     this.props.setCurrentUrlParams({
-      firstPage:!firstPage?0:firstPage,
+      firstPage: !firstPage ? 0 : firstPage,
     });
     this.props.setRouteUrlParams('/user/editUser', {
       id: val.id,
@@ -100,7 +99,7 @@ class UserList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, size) => {
-    firstPage = current-1;
+    firstPage = current - 1;
     const userListParams = {
       pageSize: size,
       pageNum: current - 1,
@@ -116,7 +115,7 @@ class UserList extends Component {
 
   // 点击某一页函数
   changePage = (current, size) => {
-    firstPage = current-1;
+    firstPage = current - 1;
     const userListParams = {
       pageSize: size,
       pageNum: current - 1,
@@ -165,6 +164,7 @@ class UserList extends Component {
       {
         title: '手机',
         dataIndex: 'mobile',
+        width: 120,
       },
       {
         title: '邮箱',
@@ -173,31 +173,32 @@ class UserList extends Component {
       {
         title: '级别',
         dataIndex: 'userType',
+        width: 110,
       },
       {
         title: '负责单位',
         dataIndex: 'showName',
-        width: 150,
+        width: 170,
       },
       {
         title: '企业家单位',
         dataIndex: 'changeShowName',
-        width: 150,
+        width: 170,
       },
       {
         title: '操作',
         dataIndex: 'operation',
+        width: 150,
         render: (text, record) => {
           return (
             <div>
               {record.changeShowName &&
-              record.changeShowName !== '' &&(
-              record.userType !== 'admin' ||
-              record.userType !== 'boss') &&
+              record.changeShowName !== '' &&
+              (record.userType !== 'admin' || record.userType !== 'boss') &&
               record.changeShowName !== record.showName ? (
                 <AuthorizedButton authority="/user/updateUser">
                   <span
-                    style={{ color: '#52C9C2',marginRight: 16, cursor: 'pointer' }}
+                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                     onClick={() => this.onUpdate(record)}
                   >
                     更新
@@ -214,7 +215,7 @@ class UserList extends Component {
               </AuthorizedButton>
               <AuthorizedButton authority="/user/deleteUser">
                 <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2',  cursor: 'pointer' }}>删除</span>
+                  <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
                 </Popconfirm>
               </AuthorizedButton>
             </div>
@@ -239,7 +240,11 @@ class UserList extends Component {
     });
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/config/userList');
-    const userListParams = { pageSize: 30, pageNum: 0, isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate] };
+    const userListParams = {
+      pageSize: 30,
+      pageNum: 0,
+      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
+    };
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -253,13 +258,13 @@ class UserList extends Component {
       if (!err) {
         firstName = !values.name ? undefined : values.name.replace(/\s*/g, '');
         firstPhone = !values.mobile ? undefined : values.mobile;
-        firstUpdate = !values.isUpdate?'全部':values.isUpdate;
+        firstUpdate = !values.isUpdate ? '全部' : values.isUpdate;
         firstPage = 0;
         this.props.setCurrentUrlParams({
           firstUpdate,
           firstName,
           firstPhone,
-          firstPage : 0,
+          firstPage: 0,
         });
 
         const userListParams = {
@@ -296,10 +301,9 @@ class UserList extends Component {
       const { getFieldDecorator } = props.form;
       return (
         <div>
-          <Form layout={formLayout} onSubmit={this.handleSearch} >
-
+          <Form layout={formLayout} onSubmit={this.handleSearch}>
             <Row gutter={24}>
-              <Col span={8} >
+              <Col span={8}>
                 <FormItem label="姓名">
                   {getFieldDecorator('name', {
                     initialValue: firstName,
@@ -319,16 +323,14 @@ class UserList extends Component {
                 </FormItem>
               </Col>
               <Col span={8} style={{ textAlign: 'center' }}>
-                <FormItem label="手机" >
+                <FormItem label="手机">
                   {getFieldDecorator('mobile', {
                     initialValue: firstPhone,
                   })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>
-              <Col span={8} style={{ textAlign: 'right' }} >
-                <FormItem
-                  label="需要更新"
-                >
+              <Col span={8} style={{ textAlign: 'right' }}>
+                <FormItem label="需要更新">
                   {getFieldDecorator('isUpdate', {
                     initialValue: !firstUpdate ? '全部' : firstUpdate,
                   })(
@@ -342,13 +344,17 @@ class UserList extends Component {
               </Col>
             </Row>
             <Row>
-              <Col span={24} style={{ textAlign: 'right',marginTop:'12px' }}>
-                <FormItem  >
+              <Col span={24} style={{ textAlign: 'right', marginTop: '12px' }}>
+                <FormItem>
                   <div>
                     <Button htmlType="submit" type="primary" className={common.searchButton}>
                       搜 索
                     </Button>
-                    <Button onClick={this.handleReset} type="primary" className={common.resetButton}>
+                    <Button
+                      onClick={this.handleReset}
+                      type="primary"
+                      className={common.resetButton}
+                    >
                       重 置
                     </Button>
                   </div>
@@ -365,7 +371,7 @@ class UserList extends Component {
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <AuthorizedButton authority="/user/createUser">
-            <Button onClick={this.handleAdd} type="primary"  className={common.createButton}>
+            <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
               创 建
             </Button>
           </AuthorizedButton>
@@ -391,7 +397,7 @@ class UserList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={!firstPage ?1:firstPage+1}
+            defaultCurrent={!firstPage ? 1 : firstPage + 1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}

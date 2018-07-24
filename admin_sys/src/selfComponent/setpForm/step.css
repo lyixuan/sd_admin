@@ -66,7 +66,7 @@
   padding-bottom: 13px!important;
   font-size: 12px!important;
 }
-:global(.anticon-paper-clip:before),:global(.anticon-spin:before){
+:global(.anticon-paper-clip:before){
   color: #52c9c2;
   font-size: 12px;
   margin-left: 13px!important;
@@ -97,7 +97,7 @@
   padding: 19px auto;
   background: #F6F7FA;
   border-radius: 3px;
-  margin: 80px auto 34px;
+  margin: 120px auto 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -182,7 +182,7 @@
 */
 
 .imgSucess{
-  width: 113px;
+  width: 133px;
   height: 113px;
   margin: 92px auto 33px;
 }
