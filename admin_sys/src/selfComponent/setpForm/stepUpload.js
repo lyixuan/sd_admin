@@ -22,10 +22,14 @@ class stepUpload extends Component {
       }
     }
     const { callBackParent, saveFileList } = this.props;
-    if (info.file.response && info.file.response.code === 2000) {
-      callBackParent(false, info.file.response.data);
-      if (saveFileList) {
-        saveFileList(fileList);
+    if (info.file.response) {
+      if (info.file.response.code === 2000) {
+        callBackParent(false, info.file.response.data);
+        if (saveFileList) {
+          saveFileList(fileList);
+        }
+      } else {
+        message.error(info.file.response.msg);
       }
     }
   };
