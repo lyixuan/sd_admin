@@ -26,7 +26,7 @@
   border-radius: 4px;
   box-sizing: border-box;
   padding: 22px 20px;
-  margin-top: 60px;
+  margin-top: 50px;
   margin-bottom: 10px;
 }
 .title{
@@ -51,7 +51,7 @@
 
 :global(.ant-upload-list){
   position: absolute;
-  top: 142px;
+  top: 140px;
   left: 0;
   background: rgba(203,235,233,0.40);
   border-radius: 3px;
