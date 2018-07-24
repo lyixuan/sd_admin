@@ -107,7 +107,6 @@ export default class SiderMenu extends PureComponent {
             : undefined
         }
       >
-        {icon}
         <span>{name}</span>
       </Link>
     );
