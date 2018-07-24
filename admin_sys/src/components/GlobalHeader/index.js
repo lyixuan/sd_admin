@@ -3,6 +3,7 @@ import { Menu, Icon, Spin, Dropdown, Avatar, Divider } from 'antd';
 import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'dva/router';
 import styles from './index.less';
+import bilogo  from '../../assets/logo.png';
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
@@ -45,7 +46,7 @@ export default class GlobalHeader extends PureComponent {
       <div className={styles.header}>
         {isMobile && [
           <Link to="/" className={styles.logo} key="logo">
-            <img src={logo} alt="logo" width="32" />
+            <img src={bilogo} alt="logo" width="24" />
           </Link>,
           <Divider type="vertical" key="line" />,
         ]}
