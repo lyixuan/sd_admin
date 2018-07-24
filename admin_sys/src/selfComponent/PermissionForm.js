@@ -151,9 +151,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
             {getFieldDecorator('level', {
-              initialValue: [
-                !this.state.id ? '' : !arrValue.level ? '' : levelData[arrValue.level],
-              ],
+              initialValue: !this.state.id ? '' : !arrValue.level ? '' : levelData[arrValue.level],
               rules: [
                 {
                   validator(rule, value, callback) {

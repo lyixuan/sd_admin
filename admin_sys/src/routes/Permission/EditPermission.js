@@ -40,12 +40,12 @@ class EditPermission extends Component {
       name: values.name.replace(/\s*/g, ''),
       iconUrl: values.iconUrl,
       id: Number(this.state.id),
-      level: levelDataReset[values.level[0]] || 1,
+      level: levelDataReset[values.level] || 1,
       parentId: parentIdName,
       sortFlag: Number(values.sortFlag),
       resourceUrl: values.resourceUrl,
     };
-
+    // console.log(values,updatePermissionParams)
     this.props.dispatch({
       type: 'permission/updatePermission',
       payload: { updatePermissionParams },

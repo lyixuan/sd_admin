@@ -32,7 +32,7 @@ class CreateUser extends Component {
   // 点击确定按钮请求接口
   handleSubmit = values => {
     const rname = values.wechatDepartmentName[0];
-    const rUserType = values.userType[0];
+    const rUserType = values.userType;
     const len = values.responseCom.length;
     let typeId = values.responseCom[len - 1];
     if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
@@ -55,6 +55,7 @@ class CreateUser extends Component {
       wechatDepartmentId: Number(newRoleId),
       wechatDepartmentName: !rname ? undefined : rname,
     };
+    // console.log(rUserType,userAddParams)
     this.props.dispatch({
       type: 'user/userAdd',
       payload: { userAddParams },

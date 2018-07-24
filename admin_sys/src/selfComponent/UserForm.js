@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, message, Row, Col } from 'antd';
+import { Form, Input, Cascader, Button, message, Row, Col,Select } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 import { userTypeData } from '../utils/dataDictionary';
 
 const FormItem = Form.Item;
-
+const {Option} = Select;
 let responseComList = [];
 let responseComListBackup = [];
 let flag = '小组';
@@ -138,7 +138,7 @@ class UserForm extends Component {
   };
 
   handleSelectChange = value => {
-    const aa = value[0];
+    const aa = value;
     flag = aa;
     const responseValue = [];
     const userVal = this.props.jumpFunction.user;
@@ -146,7 +146,7 @@ class UserForm extends Component {
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
-    if (value[0] === '家族') {
+    if (flag === '家族') {
       newResponseComList.map(item => {
         const firstChldren = [];
         const chldren1 = item.sub;
@@ -166,7 +166,7 @@ class UserForm extends Component {
         });
         return 0;
       });
-    } else if (value[0] === '学院') {
+    } else if (flag === '学院') {
       newResponseComList.map(item => {
         responseValue.push({
           value: item.id,
@@ -183,7 +183,7 @@ class UserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const rUserType = values.userType[0];
+        const rUserType = values.userType;
         const len = values.responseCom.length;
         if (rUserType === '小组'||rUserType === '无底表权限') {
           if (len !== 3) {
@@ -331,9 +331,7 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*级 别">
             {getFieldDecorator('userType', {
-              initialValue: [
-                !this.state.id ? '' : !arrValue.userType ? '' : userTypeData[arrValue.userType],
-              ],
+              initialValue: !this.state.id ? '' : !arrValue.userType ? '' : userTypeData[arrValue.userType],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -345,11 +343,14 @@ class UserForm extends Component {
                 },
               ],
             })(
-              <Cascader
-                options={userTypeList}
-                onChange={this.handleSelectChange}
-                style={{ width: 380 }}
-              />
+              <Select  style={{ width: 380 }} onChange={this.handleSelectChange}>
+                <Option value="学院">学院</Option>
+                <Option value="家族">家族</Option>
+                <Option value="小组">小组</Option>
+                <Option value="系统管理员">系统管理员</Option>
+                <Option value="高级管理员">高级管理员</Option>
+                <Option value="无底表权限">无底表权限</Option>
+              </Select>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="*负责单位">
