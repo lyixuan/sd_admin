@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, Row, Col } from 'antd';
+import { Form, Input, Button, Row, Col,Select } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
+const {Option} = Select;
 class AccountForm extends Component {
   constructor(props) {
     super(props);
@@ -21,15 +22,12 @@ class AccountForm extends Component {
     });
   };
   roleListFun = val => {
-    const residences = [];
-    val.map((item, index) =>
-      residences.push({
-        value: item.name,
-        label: item.name,
-        key: index,
-      })
-    );
-    return residences;
+    return (
+      <Select  style={{ width: 380 }}>
+        {val.map((item) => (
+          <Option value={item.name} key={item.id}>{item.name}</Option>
+        ))}
+      </Select>)
   };
 
   render() {
@@ -123,7 +121,7 @@ class AccountForm extends Component {
                   },
                 },
               ],
-            })(<Cascader options={residences} style={{ width: 380 }} />)}
+            })(residences)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
           <Row>
