@@ -16,7 +16,10 @@ p{
   padding-left: 17px;
 }
 .content{
-  padding:15px 17px;
+  padding:13px 17px 20px;
+}
+.contentTxt{
+  margin-top: -6px;
 }
 .contentTxt:not(:first-of-type):before{
   content: '';
@@ -27,22 +30,30 @@ p{
 }
 .littleTitle{
   font-size: 14px;
-  color: #000000;
+  color: #000;
+  margin-bottom: -5px;
 }
 .littleTitle:before{
   content: '';
   display: inline-block;
   width: 2px;
   height: 12px;
-  margin-right: 4px;
+  margin-right: 6px;
   background: #52C9C2;
 }
 .checkBox, .checkboxGroup{
   font-size: 14px;
   color: #000;
 }
-
+:global(.ant-checkbox-group-item),.checkBox{
+margin-right: 130px;
+}
 :global(.ant-checkbox-checked .ant-checkbox-inner),:global(.ant-checkbox-indeterminate .ant-checkbox-inner){
   background-color: #52c9c2!important;
   border: #52c9c2!important;
+}
+:global(.ant-form-item-label label){
+  display: inline-block;
+  width: 100%;
+  text-align: left;
 }
