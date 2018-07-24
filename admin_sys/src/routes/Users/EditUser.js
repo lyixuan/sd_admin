@@ -41,7 +41,7 @@ class EditUser extends Component {
   }
 
   handleSubmit = values => {
-    const rname = values.wechatDepartmentName[0];
+    const rname = values.wechatDepartmentName;
     const rUserType = values.userType;
     const len = values.responseCom.length;
     let typeId = values.responseCom[len - 1];

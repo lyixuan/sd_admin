@@ -31,7 +31,7 @@ class CreateUser extends Component {
 
   // 点击确定按钮请求接口
   handleSubmit = values => {
-    const rname = values.wechatDepartmentName[0];
+    const rname = values.wechatDepartmentName;
     const rUserType = values.userType;
     const len = values.responseCom.length;
     let typeId = values.responseCom[len - 1];

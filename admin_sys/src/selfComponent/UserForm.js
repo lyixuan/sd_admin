@@ -178,15 +178,13 @@ class UserForm extends Component {
   };
 
   roleListFun = val => {
-    const residences = [];
-    val.map((item, index) =>
-      residences.push({
-        value: item.name,
-        label: item.name,
-        key: index,
-      })
-    );
-    return residences;
+    return (
+      <Select  style={{ width: 380 }}>
+        {val.map((item) => (
+          <Option value={item.name} key={item.id}>{item.name}</Option>
+        ))}
+      </Select>)
+
   };
 
   render() {
@@ -368,7 +366,7 @@ class UserForm extends Component {
                   },
                 },
               ],
-            })(<Cascader options={residences} style={{ width: 380 }} />)}
+            })(residences)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
           <Row>
