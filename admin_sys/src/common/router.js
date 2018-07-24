@@ -200,7 +200,7 @@ export const getRouterData = app => {
         name: '角色管理',
         path: '/config/roleList',
       },
-      name: '查看劫色',
+      name: '查看角色',
     },
     '/config/roleList': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/RoleList')),
