@@ -61,9 +61,23 @@
   border: 1px solid #d9d9d9;
 }
 :global(.anticon-paper-clip:before),:global(.anticon-spin:before){
-  color: #fff!important;
-  margin-left: -5px!important;
+  /*color: #fff!important;*/
+  /*margin-left: -5px!important;*/
 }
 :global(.ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon){
   margin-left: -34px!important;
+}
+
+.submitButton{
+  margin: 0 10px;
+  background-color: #52C9C2;
+  font-size: 14px;
+  width: 80px;
+  height: 32px;
+}
+.submitButton:hover{
+  background-color: #52C9C2;
+}
+.submitButton:focus{
+  background-color: #52C9C2;
 }
