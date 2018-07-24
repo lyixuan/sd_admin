@@ -82,13 +82,15 @@ export default class LoginPage extends Component {
     return (
       <div className={styles.main}>
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <PassWordErrorAlert
-            style={{ width: '340px' }}
-            errorMes={errorMessage}
-            isShow={!isShowErrorBox}
-          />
+          <div style={{ width: '340px' ,height:'42px'}}>
+            <PassWordErrorAlert
+              style={{ width: '340px' }}
+              errorMes={errorMessage}
+              isShow={!isShowErrorBox}
+            />
+          </div>
           <div style={{ width: '340px' }}>
-            <span className={styles.loginLabel}>邮箱</span>
+            <span className={styles.loginLabel} style={{marginTop: '0px'}}>邮箱</span>
             <Emil name="mail" placeholder="请输入邮箱" defaultValue={adminUser.mail} />
             <span className={styles.loginLabel}>密码</span>
             <NoHintPwd name="password" placeholder="请输入密码" defaultValue={adminUser.password} />
