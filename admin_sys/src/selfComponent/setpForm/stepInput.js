@@ -29,7 +29,9 @@ class stepInput extends Component {
     return (
       <div className={styles.wrap}>
         {inputTitle ? <div className={styles.inputTitle}>{inputTitle}</div> : null}
-        {inputInfo ? <div className={styles.inputInfo}>{inputInfo}</div> : null}
+        {inputInfo ? (
+          <div className={inputContent ? styles.inputInfo1 : styles.inputInfo}>{inputInfo}</div>
+        ) : null}
         {inputContent ? (
           <div className={styles.inputContent}>
             {!inputTip ? <div className={styles.inputContent_title}>搜索失败的编号：</div> : null}

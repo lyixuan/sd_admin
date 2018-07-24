@@ -61,6 +61,9 @@
 :global(.ant-progress-bg){
   background-color: #52c9c2!important;
 }
+:global(.ant-upload-list-item){
+  margin: 6px 0 2px!important;
+}
 :global(.ant-upload-list-item-name){
   padding-left: 33px!important;
   padding-bottom: 13px!important;
@@ -81,7 +84,9 @@
   font-size: 12px!important;
   color: #52c9c2!important;
 }
-
+:global(.anticon-cross:before){
+  margin-right: 8px!important;
+}
 /*
 * stepInput
 */
@@ -102,11 +107,23 @@
   justify-content: center;
   align-items: center;
 }
-
+.inputInfo1{
+  width: 100%;
+  height: 58px;
+  box-sizing: border-box;
+  padding: 19px auto;
+  background: #F6F7FA;
+  border-radius: 3px;
+  margin: 80px auto 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .inputContent{
   width: 100%;
   border: 1px solid #D9D9D9;
   border-radius: 3px;
+  margin-bottom: 10px;
 }
 .inputTextArea{
   padding: 18px 25px!important;
