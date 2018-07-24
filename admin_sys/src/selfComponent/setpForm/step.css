@@ -97,7 +97,7 @@
   padding: 19px auto;
   background: #F6F7FA;
   border-radius: 3px;
-  margin: 80px auto 34px;
+  margin: 120px auto 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -182,7 +182,7 @@
 */
 
 .imgSucess{
-  width: 113px;
+  width: 133px;
   height: 113px;
   margin: 92px auto 33px;
 }
