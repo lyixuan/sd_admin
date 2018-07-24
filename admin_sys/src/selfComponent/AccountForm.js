@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col,Select } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
-const {Option} = Select;
+const { Option } = Select;
 class AccountForm extends Component {
   constructor(props) {
     super(props);
@@ -21,14 +21,17 @@ class AccountForm extends Component {
       }
     });
   };
-  roleListFun = (val=[]) => {
-    const list = !val ? [] : val ;
+  roleListFun = (val = []) => {
+    const list = !val ? [] : val;
     return (
-      <Select  style={{ width: 380 }}>
-        {list.map((item) => (
-          <Option value={item.name} key={item.id}>{item.name}</Option>
+      <Select style={{ width: 380 }}>
+        {list.map(item => (
+          <Option value={item.name} key={item.id}>
+            {item.name}
+          </Option>
         ))}
-      </Select>)
+      </Select>
+    );
   };
 
   render() {
@@ -64,9 +67,9 @@ class AccountForm extends Component {
       : !this.props.jumpFunction.account.accountInfo.response
         ? []
         : this.props.jumpFunction.account.accountInfo.response.data;
-    const { submit } = this.props.jumpFunction;
+    const { submit, getRoleList, accountInfo } = this.props.jumpFunction;
     return (
-      <div>
+      <Spin spinning={getRoleList || accountInfo}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓名">
             {getFieldDecorator('name', {
@@ -107,7 +110,7 @@ class AccountForm extends Component {
                 { min: 3, max: 50, required: true, message: '邮箱账号长度需要在3-50字符之间!' },
               ],
             })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
-            <span style={{ width: 101,marginLeft:'6px' }}> @sunlands.com</span>
+            <span style={{ width: 101, marginLeft: '6px' }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*角色">
             {getFieldDecorator('rname', {
@@ -149,7 +152,7 @@ class AccountForm extends Component {
             </Col>
           </Row>
         </Form>
-      </div>
+      </Spin>
     );
   }
 }

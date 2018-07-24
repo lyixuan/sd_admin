@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, message, Row, Col,Select } from 'antd';
+import { Form, Input, Cascader, Button, message, Row, Col, Select, Spin } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 import { userTypeData } from '../utils/dataDictionary';
 
 const FormItem = Form.Item;
-const {Option} = Select;
+const { Option } = Select;
 let responseComList = [];
 let responseComListBackup = [];
 let flag = '小组';
@@ -158,7 +158,7 @@ class UserForm extends Component {
       if (!err) {
         const rUserType = values.userType;
         const len = values.responseCom.length;
-        if (rUserType === '小组'||rUserType === '无底表权限') {
+        if (rUserType === '小组' || rUserType === '无底表权限') {
           if (len !== 3) {
             message.error('负责单位请选择到对应小组');
           } else {
@@ -177,21 +177,23 @@ class UserForm extends Component {
     });
   };
 
-  roleListFun = (val=[]) => {
-    const list = !val ? [] : val ;
+  roleListFun = (val = []) => {
+    const list = !val ? [] : val;
     return (
-      <Select  style={{ width: 380 }}>
-        {list.map((item) => (
-          <Option value={item.name} key={item.id}>{item.name}</Option>
+      <Select style={{ width: 380 }}>
+        {list.map(item => (
+          <Option value={item.name} key={item.id}>
+            {item.name}
+          </Option>
         ))}
-      </Select>)
+      </Select>
+    );
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const disabled = true;
     const userVal = this.props.jumpFunction.user;
-    const { submit } = this.props.jumpFunction;
     const wechatValues = !userVal.wechatList.response
       ? []
       : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
@@ -232,7 +234,7 @@ class UserForm extends Component {
       : !aaa.response
         ? []
         : !aaa.response.data ? [] : !aaa.response.data.content ? [] : aaa.response.data.content[0];
-    const str = !arrValue?'':!arrValue.showNameIds?'':arrValue.showNameIds;
+    const str = !arrValue ? '' : !arrValue.showNameIds ? '' : arrValue.showNameIds;
     const strs = !str ? [] : str.split(',');
     const arr = !strs
       ? []
@@ -240,8 +242,9 @@ class UserForm extends Component {
           return Number(el);
         });
     // console.log(arr,str,arrValue.showNameIds)
+    const { submit, wechatList, listOrg, userList } = this.props.jumpFunction;
     return (
-      <div>
+      <Spin spinning={wechatList || listOrg || userList}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓 名">
             {getFieldDecorator('name', {
@@ -298,11 +301,13 @@ class UserForm extends Component {
                 { min: 3, max: 50, required: true, message: '邮箱账号长度需要在3-50字符之间!' },
               ],
             })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
-            <span style={{ width: 101,marginLeft:'6px' }}> @sunlands.com</span>
+            <span style={{ width: 101, marginLeft: '6px' }}> @sunlands.com</span>
           </FormItem>
           <FormItem {...formItemLayout} label="*级 别">
             {getFieldDecorator('userType', {
-              initialValue: !this.state.id ? '' : !arrValue.userType ? '' : userTypeData[arrValue.userType],
+              initialValue: !this.state.id
+                ? ''
+                : !arrValue.userType ? '' : userTypeData[arrValue.userType],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -314,7 +319,7 @@ class UserForm extends Component {
                 },
               ],
             })(
-              <Select  style={{ width: 380 }} onChange={this.handleSelectChange}>
+              <Select style={{ width: 380 }} onChange={this.handleSelectChange}>
                 <Option value="学院">学院</Option>
                 <Option value="家族">家族</Option>
                 <Option value="小组">小组</Option>
@@ -351,7 +356,9 @@ class UserForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*微信部门">
             {getFieldDecorator('wechatDepartmentName', {
-              initialValue: !this.state.id ? '' : !arrValue.wechatDepartmentName ? '' : arrValue.wechatDepartmentName,
+              initialValue: !this.state.id
+                ? ''
+                : !arrValue.wechatDepartmentName ? '' : arrValue.wechatDepartmentName,
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -389,7 +396,7 @@ class UserForm extends Component {
             </Col>
           </Row>
         </Form>
-      </div>
+      </Spin>
     );
   }
 }
