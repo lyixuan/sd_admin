@@ -22,6 +22,6 @@ export function checkPathname(path = '') {
   const pathRegexp = pathToRegexp(path);
   const menuKey = data1.find(key => pathRegexp.test(`${key.resourceUrl}`));
   if (menuKey) {
-    return menuKey.checked;
+    return true;
   } else return false;
 }

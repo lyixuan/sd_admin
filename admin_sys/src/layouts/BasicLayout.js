@@ -152,11 +152,6 @@ class BasicLayout extends React.PureComponent {
   handleUserInfo = () => {
     const { userName = '小德' } = getAuthority('admin_user');
     return { name: userName };
-
-    // this.props.dispatch({
-    //   type: 'login/fetchCurrent',
-    //   payload: { id: userId },
-    // });
   };
   handleMenuCollapse = collapsed => {
     this.props.dispatch({

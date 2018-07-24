@@ -96,7 +96,7 @@ class StepLayout extends Component {
                 )}
               {current < steps.length - 1 && (
                 <Button
-                  className={common.submitButton}
+                  className={styles.submitButton}
                   type="primary"
                   onClick={() => this.next()}
                   disabled={dis}

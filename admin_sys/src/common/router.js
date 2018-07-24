@@ -78,7 +78,7 @@ export const getRouterData = app => {
     },
     '/quality/qualityList': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityList')),
-      name: '质检管理',
+      name: '质检信息',
     },
     '/quality/qualityAdd': {
       component: dynamicWrapper(app, ['quality'], () => import('../routes/Quality/QualityAdd')),
@@ -100,7 +100,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['account/accountList'], () =>
         import('../routes/Account/AccountList')
       ),
-      name: '账号管理',
+      name: '账号信息',
     },
     '/account/createAccount': {
       component: dynamicWrapper(app, ['account/accountList'], () =>
@@ -148,7 +148,7 @@ export const getRouterData = app => {
     },
     '/config/userList': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/UserList')),
-      name: '用户管理',
+      name: '用户信息',
     },
 
     '/permission/editPermission': {
@@ -175,7 +175,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/PermissionList')
       ),
-      name: '权限管理',
+      name: '权限信息',
     },
 
     '/role/editRole': {
@@ -204,11 +204,11 @@ export const getRouterData = app => {
     },
     '/config/roleList': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/RoleList')),
-      name: '角色管理',
+      name: '角色信息',
     },
     '/bottomLine/refundList': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundList')),
-      name: '退费管理',
+      name: '退费信息',
     },
     '/refund/refundAdd': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundAdd')),
@@ -230,7 +230,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintList')
       ),
-      name: '投诉管理',
+      name: '投诉信息',
     },
     '/complaint/complaintAdd': {
       component: dynamicWrapper(app, ['blComplain'], () =>
@@ -247,7 +247,7 @@ export const getRouterData = app => {
         import('../routes/Complaint/ComplaintDel')
       ),
       bread: {
-        name: '投数管理',
+        name: '投诉管理',
         path: '/bottomLine/complaintList',
       },
       name: '删除投数',
@@ -272,7 +272,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['complaintDoubles'], () =>
         import('../routes/ComplaintDoubles/ComplaintDoublesList')
       ),
-      name: '投数倍数管理',
+      name: '投诉倍数管理',
     },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),

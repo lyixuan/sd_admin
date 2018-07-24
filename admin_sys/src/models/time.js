@@ -76,7 +76,6 @@ export default {
       return { ...state, ...payload };
     },
     saveTimeArea(state, { payload }) {
-      console.log(payload);
       // const [rangeDate]=payload
       return { ...state, ...payload };
     },

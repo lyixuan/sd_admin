@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, DatePicker } from 'antd';
+import { Table, Button, Form, Input, DatePicker, Row, Col } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -185,51 +185,58 @@ class ComplainList extends Component {
       const { getFieldDecorator } = props.form;
       return (
         <Form onSubmit={this.handleSearch} layout="inline">
-          <FormItem label="投诉时间">
-            {getFieldDecorator('dateRange', {
-              // rules: [{ required: true, message: '请选择生效日期' }],
-              initialValue: !firstEndTime
-                ? null
-                : [moment(firstBeginTime, dateFormat), moment(firstEndTime, dateFormat)],
-            })(
-              <RangePicker
-                format={dateFormat}
-                style={{ width: 230, height: 32 }}
-                onChange={this.onChange}
-              />
-            )}
-          </FormItem>
-          <FormItem label="编号" style={{ marginLeft: 60 }}>
-            {getFieldDecorator('bottomLineNum', {
-              initialValue: firstBottomLineNum,
-              rules: [
-                { min: 2, message: '编号长度不得低于2!' },
-                { max: 20, message: '编号长度不得高于20!' },
-              ],
-            })(
-              <Input
-                maxLength={20}
-                minLength={2}
-                placeholder="请输入编号"
-                style={{ width: 230, height: 32 }}
-              />
-            )}
-          </FormItem>
-          <FormItem style={{ marginLeft: 60 }}>
-            <Button type="primary" htmlType="submit" className={common.searchButton}>
-              搜索
-            </Button>
-            <Button onClick={this.handleReset} className={common.cancleButton}>
-              重置
-            </Button>
-          </FormItem>
+          <Row gutter={24}>
+            <Col span={8}>
+              <FormItem label="投诉时间">
+                {getFieldDecorator('dateRange', {
+                  // rules: [{ required: true, message: '请选择生效日期' }],
+                  initialValue: !firstEndTime
+                    ? null
+                    : [moment(firstBeginTime, dateFormat), moment(firstEndTime, dateFormat)],
+                })(
+                  <RangePicker
+                    format={dateFormat}
+                    style={{ width: 230, height: 32 }}
+                    onChange={this.onChange}
+                  />
+                )}
+              </FormItem>
+            </Col>
+            <Col span={8} style={{ textAlign: 'center' }}>
+              <FormItem label="编号">
+                {getFieldDecorator('bottomLineNum', {
+                  initialValue: firstBottomLineNum,
+                  rules: [
+                    { min: 2, message: '编号长度不得低于2!' },
+                    { max: 20, message: '编号长度不得高于20!' },
+                  ],
+                })(
+                  <Input
+                    maxLength={20}
+                    minLength={2}
+                    placeholder="请输入编号"
+                    style={{ width: 230, height: 32 }}
+                  />
+                )}
+              </FormItem>
+            </Col>
+            <Col span={8} style={{ textAlign: 'right' }}>
+              <FormItem>
+                <Button type="primary" htmlType="submit" className={common.searchButton}>
+                  搜索
+                </Button>
+                <Button onClick={this.handleReset} className={common.resetButton}>
+                  重置
+                </Button>
+              </FormItem>
+            </Col>
+          </Row>
         </Form>
       );
     });
     return (
       <ContentLayout
-        pageHeraderUnvisible="unvisible"
-        title="投诉列表"
+        routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>

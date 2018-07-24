@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Form, Input } from 'antd';
+import { Table, Button, Form, Input, Row, Col } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -166,7 +166,7 @@ class PermissionList extends Component {
             <div>
               <AuthorizedButton authority="/permission/editPermission">
                 <span
-                  style={{ color: '#52C9C2', marginLeft: 12, cursor: 'pointer' }}
+                  style={{ color: '#52C9C2', cursor: 'pointer' }}
                   onClick={() => this.onEdit(record)}
                 >
                   编辑
@@ -202,19 +202,25 @@ class PermissionList extends Component {
       return (
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
-            <FormItem label="权限名称">
-              {getFieldDecorator('name', {
-                initialValue: firstName,
-              })(<Input placeholder="请输入权限名称" style={{ width: 230, height: 32 }} />)}
-            </FormItem>
-            <FormItem style={{ marginLeft: 119 }}>
-              <Button htmlType="submit" type="primary" className={common.searchButton}>
-                搜 索
-              </Button>
-              <Button onClick={this.handleReset} type="primary" className={common.cancleButton}>
-                重 置
-              </Button>
-            </FormItem>
+            <Row gutter={24}>
+              <Col span={8}>
+                <FormItem label="权限名称">
+                  {getFieldDecorator('name', {
+                    initialValue: firstName,
+                  })(<Input placeholder="请输入权限名称" style={{ width: 230, height: 32 }} />)}
+                </FormItem>
+              </Col>
+              <Col span={8} style={{ textAlign: 'center' }}>
+                <FormItem>
+                  <Button htmlType="submit" type="primary" className={common.searchButton}>
+                    搜 索
+                  </Button>
+                  <Button onClick={this.handleReset} type="primary" className={common.resetButton}>
+                    重 置
+                  </Button>
+                </FormItem>
+              </Col>
+            </Row>
           </Form>
         </div>
       );
