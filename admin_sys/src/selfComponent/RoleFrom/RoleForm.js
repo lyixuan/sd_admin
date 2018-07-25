@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Spin } from 'antd';
 import common from '../../routes/Common/common.css';
 import styles from './RoleForm.css';
 
@@ -67,7 +67,7 @@ class RoleForm extends Component {
     }
     this.getVal.setInitAllVal(initAllVal);
     checkAllObj[listKey] = initAllVal;
-    checkAllObj[key] = len === secList.length;
+    checkAllObj[key] = len === secList.length && len !== 0;
   };
   /*
   * 全选按钮事件
@@ -247,7 +247,7 @@ class RoleForm extends Component {
   render() {
     const { listAll, isShowFooter, loading } = this.props;
     const { getFieldDecorator } = this.props.form;
-
+    const { rolePrivileges } = this.props.selfProps;
     this.getAllIdsFn(listAll);
 
     const formItemLayout = {
@@ -255,7 +255,7 @@ class RoleForm extends Component {
       wrapperCol: { span: 22 },
     };
     return (
-      <div>
+      <Spin spinning={rolePrivileges}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*角色名称：">
             {getFieldDecorator('name', {
@@ -334,7 +334,7 @@ class RoleForm extends Component {
             </FormItem>
           )}
         </Form>
-      </div>
+      </Spin>
     );
   }
 }

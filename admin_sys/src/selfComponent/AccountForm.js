@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, Row, Col } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin } from 'antd';
 import { formatEmail } from '../utils/email';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
+const { Option } = Select;
 class AccountForm extends Component {
   constructor(props) {
     super(props);
@@ -20,16 +21,17 @@ class AccountForm extends Component {
       }
     });
   };
-  roleListFun = val => {
-    const residences = [];
-    val.map((item, index) =>
-      residences.push({
-        value: item.name,
-        label: item.name,
-        key: index,
-      })
+  roleListFun = (val = []) => {
+    const list = !val ? [] : val;
+    return (
+      <Select style={{ width: 380 }}>
+        {list.map(item => (
+          <Option value={item.name} key={item.id}>
+            {item.name}
+          </Option>
+        ))}
+      </Select>
     );
-    return residences;
   };
 
   render() {
@@ -65,9 +67,9 @@ class AccountForm extends Component {
       : !this.props.jumpFunction.account.accountInfo.response
         ? []
         : this.props.jumpFunction.account.accountInfo.response.data;
-    const { submit } = this.props.jumpFunction;
+    const { submit, getRoleList, accountInfo } = this.props.jumpFunction;
     return (
-      <div>
+      <Spin spinning={getRoleList || accountInfo}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*姓名">
             {getFieldDecorator('name', {
@@ -123,7 +125,7 @@ class AccountForm extends Component {
                   },
                 },
               ],
-            })(<Cascader options={residences} style={{ width: 380 }} />)}
+            })(residences)}
           </FormItem>
           <FormItem {...tailFormItemLayout} />
           <Row>
@@ -150,7 +152,7 @@ class AccountForm extends Component {
             </Col>
           </Row>
         </Form>
-      </div>
+      </Spin>
     );
   }
 }

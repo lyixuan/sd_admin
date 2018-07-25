@@ -1,26 +1,13 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, Row, Col } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin } from 'antd';
 import common from '../routes/Common/common.css';
 import { levelData, levelDataReset } from '../utils/dataDictionary';
 
 const FormItem = Form.Item;
+const { Option } = Select;
 let parentList = [];
 let parentListBackup = [];
 let flag = '页面功能';
-const residences = [
-  {
-    value: '一级页面',
-    label: '一级页面',
-  },
-  {
-    value: '二级页面',
-    label: '二级页面',
-  },
-  {
-    value: '页面功能',
-    label: '页面功能',
-  },
-];
 class PermissionForm extends Component {
   constructor(props) {
     super(props);
@@ -87,7 +74,7 @@ class PermissionForm extends Component {
   };
 
   handleSelectChange = value => {
-    const level = !value[0] ? flag : value[0];
+    const level = !value ? flag : value;
     flag = level;
     const listValue = parentListBackup;
     const rObj = [];
@@ -106,7 +93,7 @@ class PermissionForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { submit } = this.props.jumpFunction;
+    const { submit, loading, permissionListAllName } = this.props.jumpFunction;
     const disabled = true;
     const formItemLayout = {
       labelCol: {
@@ -140,7 +127,7 @@ class PermissionForm extends Component {
     parentListBackup = !parentIdValues ? [] : this.fullListFun(parentIdValues);
     parentList = !parentList || parentList.length === 0 ? parentListBackup : parentList;
     return (
-      <div>
+      <Spin spinning={loading || permissionListAllName}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*权限名称">
             {getFieldDecorator('name', {
@@ -163,9 +150,7 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="*权限类型">
             {getFieldDecorator('level', {
-              initialValue: [
-                !this.state.id ? '' : !arrValue.level ? '' : levelData[arrValue.level],
-              ],
+              initialValue: !this.state.id ? '' : !arrValue.level ? '' : levelData[arrValue.level],
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -177,11 +162,11 @@ class PermissionForm extends Component {
                 },
               ],
             })(
-              <Cascader
-                options={residences}
-                onChange={this.handleSelectChange}
-                style={{ width: 380 }}
-              />
+              <Select style={{ width: 380 }} onChange={this.handleSelectChange}>
+                <Option value="一级页面">一级页面</Option>
+                <Option value="二级页面">二级页面</Option>
+                <Option value="页面功能">页面功能</Option>
+              </Select>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="*权限路由">
@@ -195,11 +180,11 @@ class PermissionForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="上级权限">
             {getFieldDecorator('parentId', {
-              initialValue: [!this.state.id ? '' : !arrValue.parentId ? '' : arrValue.parentId],
+              initialValue: !this.state.id ? '' : !arrValue.parentId ? '' : arrValue.parentId,
               rules: [
                 {
                   validator(rule, value, callback) {
-                    if (!value[0] && flag !== '一级页面') {
+                    if (!value && flag !== '一级页面') {
                       callback({ message: '非一级页面,请选择上级权限！' });
                     }
                     callback();
@@ -207,15 +192,20 @@ class PermissionForm extends Component {
                 },
               ],
             })(
-              <Cascader
-                options={parentList}
+              <Select
                 style={{ width: 380 }}
                 disabled={
                   !this.state.id
                     ? flag === '一级页面' ? disabled : false
                     : flag === '一级页面' ? disabled : false
                 }
-              />
+              >
+                {parentList.map(item => (
+                  <Option value={item.value} key={item.value}>
+                    {item.label}
+                  </Option>
+                ))}
+              </Select>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">
@@ -291,7 +281,7 @@ class PermissionForm extends Component {
             </Col>
           </Row>
         </Form>
-      </div>
+      </Spin>
     );
   }
 }

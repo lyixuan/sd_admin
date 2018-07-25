@@ -8,6 +8,8 @@ const WrappedRegistrationForm = Form.create()(AccountForm);
 @connect(({ account, loading }) => ({
   account,
   submit: loading.effects['account/updateAccount'],
+  getRoleList: loading.effects['account/getRoleList'],
+  accountInfo: loading.effects['account/accountInfo'],
 }))
 class EditAccount extends Component {
   constructor(props) {
@@ -32,7 +34,7 @@ class EditAccount extends Component {
   }
 
   handleSubmit = values => {
-    const rname = values.rname[0];
+    const { rname } = !values ? '' : values;
     let newRoleId = 0;
     const roleList = this.props.account.getRoleList.data;
     roleList.map(item => {

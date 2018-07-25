@@ -164,6 +164,7 @@ class UserList extends Component {
       {
         title: '手机',
         dataIndex: 'mobile',
+        width: 120,
       },
       {
         title: '邮箱',
@@ -172,20 +173,22 @@ class UserList extends Component {
       {
         title: '级别',
         dataIndex: 'userType',
+        width: 110,
       },
       {
         title: '负责单位',
         dataIndex: 'showName',
-        width: 150,
+        width: 170,
       },
       {
         title: '企业家单位',
         dataIndex: 'changeShowName',
-        width: 150,
+        width: 170,
       },
       {
         title: '操作',
         dataIndex: 'operation',
+        width: 150,
         render: (text, record) => {
           return (
             <div>

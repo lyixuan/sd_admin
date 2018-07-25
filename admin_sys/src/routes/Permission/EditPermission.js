@@ -9,7 +9,9 @@ import { levelDataReset } from '../../utils/dataDictionary';
 const WrappedRegistrationForm = Form.create()(PermissionForm);
 @connect(({ permission, loading }) => ({
   permission,
+  loading: loading.effects['permission/permissionById'],
   submit: loading.effects['permission/updatePermission'],
+  permissionListAllName: loading.effects['permission/permissionListAllName'],
 }))
 class EditPermission extends Component {
   constructor(props) {
@@ -35,17 +37,17 @@ class EditPermission extends Component {
   }
 
   handleSubmit = values => {
-    const parentIdName = values.parentId[0] || 0;
+    const parentIdName = values.parentId || 0;
     const updatePermissionParams = {
       name: values.name.replace(/\s*/g, ''),
       iconUrl: values.iconUrl,
       id: Number(this.state.id),
-      level: levelDataReset[values.level[0]] || 1,
+      level: levelDataReset[values.level] || 1,
       parentId: parentIdName,
       sortFlag: Number(values.sortFlag),
       resourceUrl: values.resourceUrl,
     };
-
+    // console.log(values,updatePermissionParams)
     this.props.dispatch({
       type: 'permission/updatePermission',
       payload: { updatePermissionParams },
