@@ -17,7 +17,7 @@ const WrappedRoleForm = Form.create({
 @connect(({ role, loading }) => ({
   role,
   loading: loading.effects['role/roleUpdate'],
-  rolePrivileges:loading.effects['role/rolePrivileges'],
+  rolePrivileges: loading.effects['role/rolePrivileges'],
 }))
 class EditRole extends Component {
   componentDidMount() {

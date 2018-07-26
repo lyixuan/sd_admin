@@ -16,7 +16,7 @@ const WrappedRoleForm = Form.create({
 })(RoleForm);
 @connect(({ role, loading }) => ({
   role,
-  rolePrivileges:loading.effects['role/rolePrivileges'],
+  rolePrivileges: loading.effects['role/rolePrivileges'],
 }))
 class CheckRole extends Component {
   componentDidMount() {

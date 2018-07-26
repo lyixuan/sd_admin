@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, DatePicker,Row, Col } from 'antd';
+import { Table, Button, Form, Input, DatePicker, Row, Col } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -186,7 +186,7 @@ class ComplainList extends Component {
       return (
         <Form onSubmit={this.handleSearch} layout="inline">
           <Row gutter={24}>
-            <Col span={8} >
+            <Col span={8}>
               <FormItem label="投诉时间">
                 {getFieldDecorator('dateRange', {
                   // rules: [{ required: true, message: '请选择生效日期' }],
@@ -203,7 +203,7 @@ class ComplainList extends Component {
               </FormItem>
             </Col>
             <Col span={8} style={{ textAlign: 'center' }}>
-              <FormItem label="编号" >
+              <FormItem label="编号">
                 {getFieldDecorator('bottomLineNum', {
                   initialValue: firstBottomLineNum,
                   rules: [
@@ -220,8 +220,8 @@ class ComplainList extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={8} style={{ textAlign: 'right' }} >
-              <FormItem >
+            <Col span={8} style={{ textAlign: 'right' }}>
+              <FormItem>
                 <Button type="primary" htmlType="submit" className={common.searchButton}>
                   搜索
                 </Button>

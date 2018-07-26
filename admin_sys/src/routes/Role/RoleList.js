@@ -67,7 +67,7 @@ class RoleList extends Component {
                   style={{ color: '#52C9C2', cursor: 'pointer' }}
                   onClick={() => this.handleNextPage('/role/editRole', { id, name })}
                 >
-                   编辑
+                  编辑
                 </span>
               </AuthorizedButton>
             </div>

@@ -102,7 +102,7 @@ class AccountList extends Component {
             <div>
               <AuthorizedButton authority="/account/editAccount">
                 <span
-                  style={{ color: '#52C9C2', marginRight: 16,cursor: 'pointer' }}
+                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                   onClick={() => this.onEdit(record)}
                 >
                   编辑

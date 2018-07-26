@@ -75,7 +75,6 @@ export default {
       } else {
         message.error(result.msg);
       }
-
     },
     *getRoleList({ payload }, { call, put }) {
       const response = yield call(getRolePrivilegesList, payload.getRoleListParams);

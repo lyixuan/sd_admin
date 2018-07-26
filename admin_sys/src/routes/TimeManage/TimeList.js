@@ -190,7 +190,7 @@ class TimeList extends Component {
             <div>
               <AuthorizedButton authority="/timeManage/deleteDate">
                 <Popconfirm title="是否确认删除时间?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2',  cursor: 'pointer' }}>删除</span>
+                  <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
                 </Popconfirm>
               </AuthorizedButton>
             </div>

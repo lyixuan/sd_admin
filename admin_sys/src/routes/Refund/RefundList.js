@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, DatePicker ,Row, Col} from 'antd';
+import { Table, Button, Form, Input, DatePicker, Row, Col } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -182,7 +182,7 @@ class RefundList extends Component {
       return (
         <Form layout="inline" onSubmit={this.handleSearch}>
           <Row gutter={24}>
-            <Col span={8} >
+            <Col span={8}>
               <FormItem label="投诉时间">
                 {getFieldDecorator('dateRange', {
                   initialValue: !firstEndTime
@@ -215,8 +215,8 @@ class RefundList extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={8} style={{ textAlign: 'right' }} >
-              <FormItem >
+            <Col span={8} style={{ textAlign: 'right' }}>
+              <FormItem>
                 <Button type="primary" htmlType="submit" className={common.searchButton}>
                   搜索
                 </Button>
