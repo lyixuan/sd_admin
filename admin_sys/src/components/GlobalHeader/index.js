@@ -35,14 +35,14 @@ export default class GlobalHeader extends PureComponent {
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="changePwd">
-          <span style={{ display: 'inline-block', width: '20px', marginLeft: '-2px' }}>
-            <Icon type="lock" style={{ fontSize: 18, position: 'relative', top: 2 }} />
+          <span style={{ display: 'inline-block', width: '20px', marginLeft: '-3px' }}>
+            <Icon type="lock" style={{ fontSize: 15, position: 'relative', top: 2 }} />
           </span>
           修改密码
         </Menu.Item>
         <Menu.Item key="logout">
           <span style={{ display: 'inline-block', width: '18px' }}>
-            <Icon type="logout" style={{ fontSize: 13 }} />
+            <Icon type="logout" style={{ fontSize: 11 }} />
           </span>
           退出登录
         </Menu.Item>

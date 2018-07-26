@@ -5,7 +5,6 @@ export interface IExceptionProps {
   desc?: React.ReactNode;
   img?: string;
   actions?: React.ReactNode;
-  linkElement?: React.ReactNode;
   style?: React.CSSProperties;
 }
 
