@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import Login from 'components/Login';
 import PassWordErrorAlert from '../../selfComponent/passWordErrot/PassWordErrorAlert';
 import styles from './Login.less';
-import common from '../Common/common.css';
 
 const { Submit, Password } = Login;
 
@@ -74,7 +73,7 @@ export default class RetrievePassWord extends Component {
             <Password name="password" placeholder="请输入密码" />
             <span className={styles.loginLabel}>重复新密码</span>
             <Password name="repeadPassword" placeholder="请输入密码" />
-            <Submit loading={submitting} type="primary" className={common.searchButton}>
+            <Submit loading={submitting} type="primary" className={styles.searchButton}>
               确认修改
             </Submit>
           </div>

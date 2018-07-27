@@ -4,7 +4,6 @@ import Login from 'components/Login';
 import { generateAuthCode } from '../../services/api';
 import PassWordErrorAlert from '../../selfComponent/passWordErrot/PassWordErrorAlert';
 import styles from './Login.less';
-import common from '../Common/common.css';
 import ModalDemo from '../../selfComponent/Modal/Modal';
 
 const { Captcha, Submit, Emil } = Login;
@@ -111,7 +110,7 @@ export default class RetrievePassWord extends Component {
                 />
               </div>
             ) : null}
-            <Submit loading={submitting} type="primary" className={common.searchButton}>
+            <Submit loading={submitting} type="primary" className={styles.searchButton}>
               确定
             </Submit>
           </div>
