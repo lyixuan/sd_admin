@@ -89,7 +89,14 @@ export default class RetrievePassWord extends Component {
           />
         )}
         <Login onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <PassWordErrorAlert style={{ width: '360px' }} errorMes={msg} isShow={status === false} />
+          <div style={{ width: '340px', height: '42px', marginTop: '12px' }}>
+            <PassWordErrorAlert
+              style={{ width: '360px' }}
+              errorMes={msg}
+              isShow={status === false}
+            />
+          </div>
+
           <div style={{ width: '360px' }}>
             <span className={styles.loginLabel}>邮箱</span>
             <Emil name="mail" placeholder="请输入邮箱" onBlur={this.onBlur} />
