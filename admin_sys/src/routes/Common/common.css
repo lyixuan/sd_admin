@@ -329,11 +329,11 @@
 
 
 :global(.ant-calendar-picker-input) {
-  padding: 4px 4px !important;
+  padding: 4px 0 !important;
 }
 
 :global(.ant-calendar-range-picker-input) {
-  width: 40%;
+  width: 40% !important;
 }
 
 :global(.ant-calendar-picker-clear, .ant-calendar-picker-icon) {
