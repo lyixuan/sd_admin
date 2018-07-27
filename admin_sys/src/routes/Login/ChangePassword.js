@@ -58,7 +58,7 @@ export default class RetrievePassWord extends Component {
     return (
       <div className={styles.main}>
         <Login onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <div style={{ width: '340px', height: '42px', marginTop: '12px' }}>
+          <div style={{ width: '340px', height: '39px', marginTop: '12px' }}>
             <PassWordErrorAlert
               style={{ width: '360px' }}
               errorMes={this.state.errorMsg}

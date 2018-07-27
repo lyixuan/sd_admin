@@ -6,6 +6,10 @@
   width: 300px;
   margin:0 100px;
 }
+.modalContent{
+  font-size: 14px;
+  color: #000000;
+}
 :global(.ant-modal-footer){
   text-align: center!important;
 }
