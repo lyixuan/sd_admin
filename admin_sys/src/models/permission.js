@@ -65,7 +65,6 @@ export default {
       } else {
         message.error(response.msg);
       }
-
     },
   },
 

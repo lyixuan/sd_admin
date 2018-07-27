@@ -24,7 +24,7 @@ class CreateAccount extends Component {
     });
   }
   handleSubmit = values => {
-    const {rname} = !values?'':values;
+    const { rname } = !values ? '' : values;
     let newRoleId = 0;
     const roleList = this.props.account.getRoleList.data;
     roleList.map(item => {

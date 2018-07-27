@@ -1,10 +1,6 @@
-
 // import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import {
-  complaintDoublesList,
-  upateComplaintDoubles,
-} from '../services/api';
+import { complaintDoublesList, upateComplaintDoubles } from '../services/api';
 
 export default {
   namespace: 'complaintDoubles',
@@ -22,7 +18,6 @@ export default {
       } else {
         message.error(response.msg);
       }
-
     },
     *upateComplaintDoubles({ payload }, { call, put }) {
       const result = yield call(upateComplaintDoubles, payload.upateComplaintDoublesParams);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Form, Input,Row, Col } from 'antd';
+import { Table, Button, Form, Input, Row, Col } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -203,7 +203,7 @@ class PermissionList extends Component {
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <Row gutter={24}>
-              <Col span={8} >
+              <Col span={8}>
                 <FormItem label="权限名称">
                   {getFieldDecorator('name', {
                     initialValue: firstName,
@@ -211,7 +211,7 @@ class PermissionList extends Component {
                 </FormItem>
               </Col>
               <Col span={8} style={{ textAlign: 'center' }}>
-                <FormItem >
+                <FormItem>
                   <Button htmlType="submit" type="primary" className={common.searchButton}>
                     搜 索
                   </Button>

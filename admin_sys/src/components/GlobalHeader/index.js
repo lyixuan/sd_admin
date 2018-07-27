@@ -3,6 +3,7 @@ import { Menu, Icon, Spin, Dropdown, Avatar, Divider } from 'antd';
 import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'dva/router';
 import styles from './index.less';
+import bilogo from '../../assets/logo.png';
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
@@ -34,10 +35,16 @@ export default class GlobalHeader extends PureComponent {
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="changePwd">
-          <Icon type="lock" />修改密码
+          <span style={{ display: 'inline-block', width: '20px', marginLeft: '-3px' }}>
+            <Icon type="lock" style={{ fontSize: 15, position: 'relative', top: 2 }} />
+          </span>
+          修改密码
         </Menu.Item>
         <Menu.Item key="logout">
-          <Icon type="logout" />退出登录
+          <span style={{ display: 'inline-block', width: '18px' }}>
+            <Icon type="logout" style={{ fontSize: 11 }} />
+          </span>
+          退出登录
         </Menu.Item>
       </Menu>
     );
@@ -45,7 +52,7 @@ export default class GlobalHeader extends PureComponent {
       <div className={styles.header}>
         {isMobile && [
           <Link to="/" className={styles.logo} key="logo">
-            <img src={logo} alt="logo" width="32" />
+            <img src={bilogo} alt="logo" width="24" />
           </Link>,
           <Divider type="vertical" key="line" />,
         ]}

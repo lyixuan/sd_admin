@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Form, Input ,Row, Col } from 'antd';
+import { Table, Button, Form, Input, Row, Col } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -158,7 +158,7 @@ class QualityList extends Component {
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <Row gutter={24}>
-              <Col span={8} >
+              <Col span={8}>
                 <FormItem label="归属班主任">
                   {getFieldDecorator('teaName', {
                     initialValue: firstTeaName,
@@ -180,9 +180,13 @@ class QualityList extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={8} style={{ textAlign: 'right' }} >
+              <Col span={8} style={{ textAlign: 'right' }}>
                 <FormItem>
-                  <Button onClick={this.handleSearch} type="primary" className={common.searchButton}>
+                  <Button
+                    onClick={this.handleSearch}
+                    type="primary"
+                    className={common.searchButton}
+                  >
                     搜 索
                   </Button>
                   <Button onClick={this.handleReset} type="primary" className={common.resetButton}>

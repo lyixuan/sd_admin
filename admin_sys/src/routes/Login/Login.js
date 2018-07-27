@@ -5,7 +5,6 @@ import { routerRedux } from 'dva/router';
 import Login from 'components/Login';
 import PassWordErrorAlert from '../../selfComponent/passWordErrot/PassWordErrorAlert';
 import styles from './Login.less';
-import common from '../Common/common.css';
 import { getAuthority } from '../../utils/authority';
 import { formatEmail } from '../../utils/email';
 
@@ -82,7 +81,7 @@ export default class LoginPage extends Component {
     return (
       <div className={styles.main}>
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <div style={{ width: '340px' ,height:'42px'}}>
+          <div style={{ width: '340px', height: '39px' }}>
             <PassWordErrorAlert
               style={{ width: '340px' }}
               errorMes={errorMessage}
@@ -90,7 +89,9 @@ export default class LoginPage extends Component {
             />
           </div>
           <div style={{ width: '340px' }}>
-            <span className={styles.loginLabel} style={{marginTop: '0px'}}>邮箱</span>
+            <span className={styles.loginLabel} style={{ marginTop: '0px' }}>
+              邮箱
+            </span>
             <Emil name="mail" placeholder="请输入邮箱" defaultValue={adminUser.mail} />
             <span className={styles.loginLabel}>密码</span>
             <NoHintPwd name="password" placeholder="请输入密码" defaultValue={adminUser.password} />

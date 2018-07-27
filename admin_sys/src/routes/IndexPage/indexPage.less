@@ -1,20 +1,53 @@
 .container {
+  position: relative;
+  top: 0;
+  left: 0;
   height: 100%;
+  box-sizing: border-box;
   background: #fff;
   text-align: center;
   .userDescription {
-    padding-top: 100px;
+    margin-top: 70px;
     font-weight: 800;
+    position: absolute;
+    left: 260px;
+    z-index: 2;
     h3 {
-      font-size: 22px;
-      color: #52c9c2;
+      height: 71px;
+      font-size: 44px;
+      color: #53c9c2;
+      letter-spacing: 4.4px;
+      line-height: 60px;
     }
     p {
-      font-size: 18px;
+      margin-top: -25px;
+      font-size: 22px;
+      color: #3c4450;
+      letter-spacing: 5.5px;
+      line-height: 30px;
+      font-weight: 400;
     }
   }
   .indexImg {
-    width: 500px;
-    margin-top: 30px;
+    position: absolute;
+    top: 233px;
+    left: 520px;
+    width: 402;
+    height: 337px;
+  }
+  .backgroundBall {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 170px;
+    height: 179px;
+    z-index: 1;
+  }
+  .backgroundRight {
+    position: absolute;
+    left: -35px;
+    top: 152px;
+    width: 451px;
+    // height: 564px;
   }
 }

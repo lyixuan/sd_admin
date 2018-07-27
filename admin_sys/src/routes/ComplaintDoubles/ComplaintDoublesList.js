@@ -167,7 +167,7 @@ class ComplaintDoublesList extends Component {
     const { visible, collegeName, multiplePoints, collegeId, effectiveDate } = this.state;
     const modalContent = (
       <div>
-        <Row style={{marginBottom:'14px'}}>
+        <Row style={{ marginBottom: '14px' }}>
           <Col span={3} offset={9}>
             学院id:
           </Col>
@@ -175,7 +175,7 @@ class ComplaintDoublesList extends Component {
             {collegeId}
           </Col>
         </Row>
-        <Row style={{marginBottom:'14px'}}>
+        <Row style={{ marginBottom: '14px' }}>
           <Col span={4} offset={8}>
             学院名称:
           </Col>
@@ -183,7 +183,7 @@ class ComplaintDoublesList extends Component {
             {collegeName}
           </Col>
         </Row>
-        <Row style={{marginBottom:'14px'}}>
+        <Row style={{ marginBottom: '14px' }}>
           <Col span={4} offset={8}>
             生效月份:
           </Col>
@@ -192,12 +192,12 @@ class ComplaintDoublesList extends Component {
           </Col>
         </Row>
         <Row>
-          <Col span={6} offset={6} style={{padding:'3px'}}>
+          <Col span={6} offset={6} style={{ padding: '3px' }}>
             *投诉扣分倍数:
           </Col>
           <Col span={4} offset={0}>
             <Input
-              style={{height:'28px'}}
+              style={{ height: '28px' }}
               onChange={e => {
                 this.handelChange(e);
               }}

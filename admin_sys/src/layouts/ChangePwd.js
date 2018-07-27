@@ -32,7 +32,7 @@ class ChangePwd extends React.Component {
         <div className={styles.header}>
           <ModalDemo
             visible={isShowDialog}
-            modalContent="确定停止修改密码"
+            modalContent={<div className={styles.dialogContent}>确定停止修改密码?</div>}
             clickOK={e => this.backHome(e)}
             title="回到首页确认"
             showModal={bol => this.showDiaLog(bol)}

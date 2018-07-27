@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select ,Spin} from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin } from 'antd';
 import common from '../routes/Common/common.css';
 import { levelData, levelDataReset } from '../utils/dataDictionary';
 
@@ -88,12 +88,12 @@ class PermissionForm extends Component {
       }
       return 0;
     });
-    parentList =rObj
+    parentList = rObj;
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { submit ,loading,permissionListAllName} = this.props.jumpFunction;
+    const { submit, loading, permissionListAllName } = this.props.jumpFunction;
     const disabled = true;
     const formItemLayout = {
       labelCol: {
@@ -127,7 +127,7 @@ class PermissionForm extends Component {
     parentListBackup = !parentIdValues ? [] : this.fullListFun(parentIdValues);
     parentList = !parentList || parentList.length === 0 ? parentListBackup : parentList;
     return (
-      <Spin spinning={loading||permissionListAllName} >
+      <Spin spinning={loading || permissionListAllName}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="*权限名称">
             {getFieldDecorator('name', {
@@ -192,14 +192,20 @@ class PermissionForm extends Component {
                 },
               ],
             })(
-              <Select style={{ width: 380 }}  disabled={!this.state.id ? flag === '一级页面' ? disabled : false : flag === '一级页面' ? disabled : false} >
-                {
-                  parentList.map((item) => (
-                    <Option value={item.value} key={item.value}>{item.label}</Option>
-                  ))
+              <Select
+                style={{ width: 380 }}
+                disabled={
+                  !this.state.id
+                    ? flag === '一级页面' ? disabled : false
+                    : flag === '一级页面' ? disabled : false
                 }
+              >
+                {parentList.map(item => (
+                  <Option value={item.value} key={item.value}>
+                    {item.label}
+                  </Option>
+                ))}
               </Select>
-
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="一级页面图标">

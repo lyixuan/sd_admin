@@ -5,7 +5,6 @@ import { routerRedux } from 'dva/router';
 import Login from 'components/Login';
 import PassWordErrorAlert from '../../selfComponent/passWordErrot/PassWordErrorAlert';
 import styles from './Login.less';
-import common from '../Common/common.css';
 
 const { Password, Submit } = Login;
 
@@ -77,13 +76,20 @@ export default class RetrievePassWord extends Component {
     return (
       <div className={styles.main}>
         <Login onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <PassWordErrorAlert style={{ width: '360px' }} errorMes={errorMsg} isShow={isShowError} />
+          <div style={{ width: '340px', height: '39px', marginTop: '12px' }}>
+            <PassWordErrorAlert
+              style={{ width: '360px' }}
+              errorMes={errorMsg}
+              isShow={isShowError}
+            />
+          </div>
+
           <div style={{ width: '360px' }}>
             <span className={styles.loginLabel}>新密码</span>
             <Password name="password" placeholder="请输入密码" />
             <span className={styles.loginLabel}>重复新密码</span>
             <Password name="rePassword" placeholder="请重复密码" />
-            <Submit loading={submitting} type="primary" className={common.searchButton}>
+            <Submit loading={submitting} type="primary" className={styles.searchButton}>
               确定
             </Submit>
           </div>
