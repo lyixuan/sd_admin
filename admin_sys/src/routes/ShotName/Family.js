@@ -30,7 +30,7 @@ class Family extends Component {
     this.setState({
       collegeName: record.collegeName,
       familyName: record.familyName,
-      id: record.id,
+      id: record.shortId,
       visible: true,
       name: '',
     });
