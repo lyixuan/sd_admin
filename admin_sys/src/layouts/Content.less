@@ -23,18 +23,24 @@
   background: #52c9c2;
   margin: 0 6px 0 22px;
 }
+:global(.ant-layout-content) {
+  -ms-flex: auto;
+  flex: auto;
+  margin-left: 18px !important;
+  background: #fff;
+  overflow: hidden;
+}
 
 @media screen and (max-width: @screen-sm) {
   .content {
     margin: 30px 32px;
   }
-}
-:global(.ant-layout-content) {
-  -ms-flex: auto;
-  flex: auto;
-
-  margin-left: 18px !important;
-  background: #fff;
+  :global(.ant-layout-content) {
+    -ms-flex: auto;
+    flex: auto;
+    margin-left: 0 !important;
+    background: #fff;
+  }
 }
 :global(.ant-layout) {
   background: #f0f2f5;

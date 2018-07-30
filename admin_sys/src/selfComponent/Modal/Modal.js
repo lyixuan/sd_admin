@@ -70,7 +70,13 @@ class ModalDemo extends React.Component {
           onCancel={this.handleCancel.bind(this, false)}
           footer={this.checkoutFootButton(footButton)}
         >
-          {!modalContent ? defaultModal : <div style={{ textAlign: 'center' }}>{modalContent}</div>}
+          {!modalContent ? (
+            defaultModal
+          ) : (
+            <div style={{ textAlign: 'center' }} className={styles.modalContent}>
+              {modalContent}
+            </div>
+          )}
         </Modal>
       </div>
     );

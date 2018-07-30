@@ -4,7 +4,6 @@ import Login from 'components/Login';
 import { generateAuthCode } from '../../services/api';
 import PassWordErrorAlert from '../../selfComponent/passWordErrot/PassWordErrorAlert';
 import styles from './Login.less';
-import common from '../Common/common.css';
 import ModalDemo from '../../selfComponent/Modal/Modal';
 
 const { Captcha, Submit, Emil } = Login;
@@ -89,7 +88,14 @@ export default class RetrievePassWord extends Component {
           />
         )}
         <Login onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <PassWordErrorAlert style={{ width: '360px' }} errorMes={msg} isShow={status === false} />
+          <div style={{ width: '340px', height: '39px', marginTop: '12px' }}>
+            <PassWordErrorAlert
+              style={{ width: '360px' }}
+              errorMes={msg}
+              isShow={status === false}
+            />
+          </div>
+
           <div style={{ width: '360px' }}>
             <span className={styles.loginLabel}>邮箱</span>
             <Emil name="mail" placeholder="请输入邮箱" onBlur={this.onBlur} />
@@ -104,7 +110,7 @@ export default class RetrievePassWord extends Component {
                 />
               </div>
             ) : null}
-            <Submit loading={submitting} type="primary" className={common.searchButton}>
+            <Submit loading={submitting} type="primary" className={styles.searchButton}>
               确定
             </Submit>
           </div>

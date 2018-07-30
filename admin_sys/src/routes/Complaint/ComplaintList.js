@@ -117,7 +117,7 @@ class ComplainList extends Component {
       {
         title: 'id',
         dataIndex: 'id',
-        width: '80px',
+        width: '90px',
       },
       {
         title: '投诉时间',

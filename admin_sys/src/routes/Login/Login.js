@@ -81,7 +81,7 @@ export default class LoginPage extends Component {
     return (
       <div className={styles.main}>
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <div style={{ width: '340px', height: '42px' }}>
+          <div style={{ width: '340px', height: '39px' }}>
             <PassWordErrorAlert
               style={{ width: '340px' }}
               errorMes={errorMessage}
