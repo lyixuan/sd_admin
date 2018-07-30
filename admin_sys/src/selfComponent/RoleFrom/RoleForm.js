@@ -256,84 +256,86 @@ class RoleForm extends Component {
     };
     return (
       <Spin spinning={rolePrivileges}>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="*角色名称：">
-            {getFieldDecorator('name', {
-              rules: [
-                {
-                  validator(rule, value, callback) {
-                    const reg = !value ? '' : value.replace(/\s*/g, '');
-                    if (!reg) {
-                      callback({ message: '角色名称为必填项，请填写!' });
-                    } else if (reg.length < 2 || reg.length > 20) {
-                      callback({ message: '角色名称在2-20个字符之间，请填写!' });
-                    } else {
-                      callback();
-                    }
+        <div className={styles.formCls}>
+          <Form onSubmit={this.handleSubmit}>
+            <FormItem {...formItemLayout} label="*角色名称：">
+              {getFieldDecorator('name', {
+                rules: [
+                  {
+                    validator(rule, value, callback) {
+                      const reg = !value ? '' : value.replace(/\s*/g, '');
+                      if (!reg) {
+                        callback({ message: '角色名称为必填项，请填写!' });
+                      } else if (reg.length < 2 || reg.length > 20) {
+                        callback({ message: '角色名称在2-20个字符之间，请填写!' });
+                      } else {
+                        callback();
+                      }
+                    },
                   },
-                },
-              ],
-            })(
-              <Input
-                maxLength={25}
-                minLength={1}
-                disabled={!(isShowFooter === 'true')}
-                style={{ width: '220px', height: '32px' }}
-              />
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label=" *角色权限：">
-            {getFieldDecorator('privilegeIds', {})(
-              <div>
-                {listAll &&
-                  Object.keys(listAll).map((key1, item1) => {
-                    const firNodes = listAll[item1];
-                    return (
-                      <div key={firNodes.id} className={styles.modelList}>
-                        <h1 className={styles.title}>{firNodes.name}</h1>
-                        <div className={styles.content}>
-                          {Object.keys(firNodes.nodes).map((key2, item2) => {
-                            const { nodes } = firNodes;
-                            const { checkAll } = nodes[item2];
-                            const { checkedList } = nodes[item2];
-                            return (
-                              <div key={nodes[item2].id} className={styles.contentTxt}>
-                                {this.secLevel(
-                                  nodes[item2].name,
-                                  nodes[item2].nodes,
-                                  checkAll,
-                                  checkedList,
-                                  firNodes.id,
-                                  nodes[item2].id
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-            )}
-          </FormItem>
-          {!isShowFooter ? null : (
-            <FormItem>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button onClick={this.cancel} type="primary" className={common.cancleButton}>
-                  取消
-                </Button>
-                <Button
-                  loading={loading}
-                  htmlType="submit"
-                  type="primary"
-                  className={common.submitButton}
-                >
-                  提交
-                </Button>
-              </div>
+                ],
+              })(
+                <Input
+                  maxLength={25}
+                  minLength={1}
+                  disabled={!(isShowFooter === 'true')}
+                  style={{ width: '220px', height: '32px' }}
+                />
+              )}
             </FormItem>
-          )}
-        </Form>
+            <FormItem {...formItemLayout} label=" *角色权限：">
+              {getFieldDecorator('privilegeIds', {})(
+                <div>
+                  {listAll &&
+                    Object.keys(listAll).map((key1, item1) => {
+                      const firNodes = listAll[item1];
+                      return (
+                        <div key={firNodes.id} className={styles.modelList}>
+                          <h1 className={styles.title}>{firNodes.name}</h1>
+                          <div className={styles.content}>
+                            {Object.keys(firNodes.nodes).map((key2, item2) => {
+                              const { nodes } = firNodes;
+                              const { checkAll } = nodes[item2];
+                              const { checkedList } = nodes[item2];
+                              return (
+                                <div key={nodes[item2].id} className={styles.contentTxt}>
+                                  {this.secLevel(
+                                    nodes[item2].name,
+                                    nodes[item2].nodes,
+                                    checkAll,
+                                    checkedList,
+                                    firNodes.id,
+                                    nodes[item2].id
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
+            </FormItem>
+            {!isShowFooter ? null : (
+              <FormItem>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Button onClick={this.cancel} type="primary" className={common.cancleButton}>
+                    取消
+                  </Button>
+                  <Button
+                    loading={loading}
+                    htmlType="submit"
+                    type="primary"
+                    className={common.submitButton}
+                  >
+                    提交
+                  </Button>
+                </div>
+              </FormItem>
+            )}
+          </Form>
+        </div>
       </Spin>
     );
   }
