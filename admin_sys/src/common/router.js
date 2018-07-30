@@ -237,7 +237,7 @@ export const getRouterData = app => {
         import('../routes/Complaint/ComplaintAdd')
       ),
       bread: {
-        name: '投数管理',
+        name: '投诉管理',
         path: '/bottomLine/complaintList',
       },
       name: '添加投诉',
@@ -250,7 +250,7 @@ export const getRouterData = app => {
         name: '投诉管理',
         path: '/bottomLine/complaintList',
       },
-      name: '删除投数',
+      name: '删除投诉',
     },
     '/config/timeList': {
       component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),
