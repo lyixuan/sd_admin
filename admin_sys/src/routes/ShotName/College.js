@@ -30,7 +30,7 @@ class College extends Component {
   onEdit = record => {
     this.setState({
       collegeName: record.collegeName,
-      id: record.id,
+      id: record.shortId,
       visible: true,
       name: '',
     });
