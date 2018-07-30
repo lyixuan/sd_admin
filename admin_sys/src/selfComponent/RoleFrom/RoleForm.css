@@ -52,7 +52,7 @@ margin-right: 130px;
   background-color: #52c9c2!important;
   border: #52c9c2!important;
 }
-:global(.ant-form-item-label label){
+.formCls :global(.ant-form-item-label label){
   display: inline-block;
   width: 100%;
   text-align: left;
