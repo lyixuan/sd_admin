@@ -34,7 +34,7 @@ class Group extends Component {
       collegeName: record.collegeName,
       familyName: record.familyName,
       groupName: record.groupName,
-      id: record.id,
+      id: record.shortId,
       visible: true,
       name: '',
     });
