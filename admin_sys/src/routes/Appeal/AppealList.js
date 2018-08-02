@@ -41,7 +41,20 @@ class AppealList extends Component {
     console.log(current,size)
   };
 
-
+  // 初始化tabale 列数据
+  fillDataSource = () => {
+    const data = [{
+      id: 1,
+      appealtype: '测试',
+      stuId: 111,
+      contentId: 222, //   const newmail = `${values.mail}@sunlans.com`;
+      countTime: '2018-08-02',
+      orderId: 333,
+      askId:555,
+      opperationTime:'2018-08-02',
+    }];
+    return data;
+  };
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -50,32 +63,32 @@ class AppealList extends Component {
         dataIndex: 'id',
       },
       {
-        title: '姓名',
-        dataIndex: 'name',
+        title: '申诉类型',
+        dataIndex: 'appealtype',
       },
       {
-        title: '手机',
-        dataIndex: 'mobile',
-        width: 120,
+        title: '学员id',
+        dataIndex: 'stuId',
       },
       {
-        title: '邮箱',
-        dataIndex: 'mail',
+        title: '扣分时间',
+        dataIndex: 'countTime',
       },
       {
-        title: '级别',
-        dataIndex: 'userType',
-        width: 110,
+        title: '订单id',
+        dataIndex: 'orderId',
       },
       {
-        title: '负责单位',
-        dataIndex: 'showName',
-        width: 170,
+        title: '工单id',
+        dataIndex: 'contentId',
       },
       {
-        title: '企业家单位',
-        dataIndex: 'changeShowName',
-        width: 170,
+        title: '咨询id',
+        dataIndex: 'askId',
+      },
+      {
+        title: '操作时间',
+        dataIndex: 'opperationTime',
       },
     ];
     return columns || [];
@@ -102,7 +115,8 @@ class AppealList extends Component {
 
   render() {
     const { loading } = this.props;
-
+    const dataSource = this.fillDataSource();
+    const columns = this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -112,31 +126,29 @@ class AppealList extends Component {
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <Row gutter={24}>
               <Col span={8}>
-                <FormItem label="姓名">
-                  {getFieldDecorator('name', {
-                    rules: [
-                      {
-                        validator(rule, value, callback) {
-                          const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
-                          if (reg.length > 50) {
-                            callback({ message: '姓名最长为50个字符!' });
-                          } else {
-                            callback();
-                          }
-                        },
-                      },
-                    ],
-                  })(<Input placeholder="请输入姓名" style={{ width: 230, height: 32 }} />)}
+                <FormItem label="申诉类型">
+                  {getFieldDecorator('type', {
+                  })(
+                    <Select placeholder="全部" style={{ width: 230, height: 32 }}>
+                      <Option value="全部">全部</Option>
+                      <Option value="1">工单减分</Option>
+                      <Option value="2">优新减分-开班电话</Option>
+                      <Option value="3">优新减分-随堂考</Option>
+                      <Option value="4">IM减分-未回复会话</Option>
+                      <Option value="5">IM减分-不满意会话</Option>
+                      <Option value="6">IM减分-不及时信息</Option>
+                    </Select>
+                  )}
                 </FormItem>
               </Col>
               <Col span={8} style={{ textAlign: 'center' }}>
-                <FormItem label="手机">
-                  {getFieldDecorator('mobile', {
+                <FormItem label="学员id">
+                  {getFieldDecorator('stuId', {
                   })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
-                <FormItem label="需要更新">
+                <FormItem label="扣分时间">
                   {getFieldDecorator('isUpdate', {
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
@@ -177,18 +189,18 @@ class AppealList extends Component {
         contentButton={
           <AuthorizedButton authority="/user/createUser">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
-              创 建
+              添加申诉
             </Button>
           </AuthorizedButton>
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：条</p>
+            <p className={common.totalNum}>总数：40条</p>
             <Table
               bordered
               loading={loading}
-              dataSource={[]}
-              columns={[]}
+              dataSource={dataSource}
+              columns={columns}
               pagination={false}
               className={common.tableContentStyle}
             />

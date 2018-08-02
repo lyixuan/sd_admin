@@ -280,7 +280,7 @@ export const getRouterData = app => {
       ),
       name: '申诉管理',
     },
-    '/appeal/AddAppeal': {
+    '/appeal/addAppeal': {
       component: dynamicWrapper(app, ['appeal'], () =>
         import('../routes/Appeal/AddAppeal')
       ),
