@@ -7,36 +7,34 @@ export default {
 
   state: {
     // 接口返回数据存储
-    appealList: [],
+    appealListData: null,
+    addAppealData:null,
   },
 
   effects: {
     *appealList({ payload }, { call, put }) {
-      const response = yield call(appealList, payload.appealListParams);
-      if (response.code === 2000) {
-        yield put({ type: 'appealListSave', payload: { response } });
+      const appealListData = yield call(appealList, payload.appealListParams);
+      if (appealListData.code === 2000) {
+        yield put({ type: 'appealListSave', payload: { appealListData } });
       } else {
-        message.error(response.msg);
+        message.error(appealListData.msg);
       }
     },
     *addAppeal({ payload }, { call, put }) {
-      const result = yield call(addAppealList, payload.addAppealParams);
-      if (result.code === 2000) {
+      const addAppealData = yield call(addAppealList, payload.addAppealParams);
+      if (addAppealData.code === 2000) {
         message.success('成功添加申诉！');
-        const response = yield call(appealList, payload.appealListParams);
-        yield put({ type: 'appealListSave', payload: { response } });
+        const appealListData = yield call(appealList, payload.appealListParams);
+        yield put({ type: 'appealListSave', payload: { appealListData } });
       } else {
-        message.error(result.msg);
+        message.error(addAppealData.msg);
       }
     },
   },
 
   reducers: {
     appealListSave(state, action) {
-      return {
-        ...state,
-        appealList: action.payload,
-      };
+      return { ...state,...action.payload};
     },
   },
 };

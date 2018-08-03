@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, Row, Col, Select } from 'antd';
+import { Table, Button, Form, Input, Row, Col, Select,DatePicker } from 'antd';
+import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
+import { formatDate } from '../../utils/FormatDate';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 let propsVal = '';
+const dateFormat = 'YYYY-MM-DD';
 
 
 @connect(({ appeal, loading }) => ({
@@ -23,6 +27,14 @@ class AppealList extends Component {
 
   // 页面render之前需要请求的接口
   componentDidMount() {
+    const appealListParams = {
+      pageSize: 30,
+      pageNum: 0 ,
+    };
+    this.props.dispatch({
+      type: 'appeal/appealList',
+      payload: { appealListParams },
+    });
 
   }
   // 组件卸载时清除声明的变量
@@ -42,17 +54,21 @@ class AppealList extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
-    const data = [{
-      id: 1,
-      appealtype: '测试',
-      stuId: 111,
-      contentId: 222, //   const newmail = `${values.mail}@sunlans.com`;
-      countTime: '2018-08-02',
-      orderId: 333,
-      askId:555,
-      opperationTime:'2018-08-02',
-    }];
+  fillDataSource = val => {
+    const data = [];
+    val.map((item, index) =>
+      data.push({
+        key: index,
+        id: item.id,
+        type: item.type,
+        stuId: item.stuId,
+        countBeginTime: formatDate(item.countBeginTime),
+        ordId: item.ordId,
+        workorderId: item.workorderId,
+        consultId: item.consultId,
+        modifyTime: formatDate(item.modifyTime),
+      })
+    );
     return data;
   };
   // 获取table列表头
@@ -64,7 +80,7 @@ class AppealList extends Component {
       },
       {
         title: '申诉类型',
-        dataIndex: 'appealtype',
+        dataIndex: 'type',
       },
       {
         title: '学员id',
@@ -72,23 +88,23 @@ class AppealList extends Component {
       },
       {
         title: '扣分时间',
-        dataIndex: 'countTime',
+        dataIndex: 'countBeginTime',
       },
       {
         title: '订单id',
-        dataIndex: 'orderId',
+        dataIndex: 'ordId',
       },
       {
         title: '工单id',
-        dataIndex: 'contentId',
+        dataIndex: 'workorderId',
       },
       {
         title: '咨询id',
-        dataIndex: 'askId',
+        dataIndex: 'consultId',
       },
       {
         title: '操作时间',
-        dataIndex: 'opperationTime',
+        dataIndex: 'modifyTime',
       },
     ];
     return columns || [];
@@ -114,8 +130,10 @@ class AppealList extends Component {
   };
 
   render() {
+    const appealList = this.props.appeal.appealListData
     const { loading } = this.props;
-    const dataSource = this.fillDataSource();
+    const totalNum = !appealList ? 0 : !appealList.data ? 0 : !appealList.data.totalElements?0:appealList.data.totalElements;
+    const dataSource = !appealList ? [] : !appealList.data ? [] : this.fillDataSource(!appealList.data.content?[]:appealList.data.content);
     const columns = this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -130,13 +148,15 @@ class AppealList extends Component {
                   {getFieldDecorator('type', {
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                      <Option value="全部">全部</Option>
-                      <Option value="1">工单减分</Option>
-                      <Option value="2">优新减分-开班电话</Option>
-                      <Option value="3">优新减分-随堂考</Option>
-                      <Option value="4">IM减分-未回复会话</Option>
+                      <Option value="0">全部</Option>
+                      <Option value="1">优新减分-开班电话</Option>
+                      <Option value="2">优新减分-随堂考</Option>
+                      <Option value="3">IM减分-未回复会话</Option>
+                      <Option value="4">IM减分-不及时信息</Option>
                       <Option value="5">IM减分-不满意会话</Option>
-                      <Option value="6">IM减分-不及时信息</Option>
+                      <Option value="6">工单24</Option>
+                      <Option value="7">工单48</Option>
+                      <Option value="8">工单72</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -147,18 +167,19 @@ class AppealList extends Component {
                   })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>
-              <Col span={8} style={{ textAlign: 'right' }}>
-                <FormItem label="扣分时间">
-                  {getFieldDecorator('isUpdate', {
+              <div style={{display:'flex',justifyContent: 'flex-end'}}>
+                <FormItem label="投诉时间" >
+                  {getFieldDecorator('dateRange', {
+                    initialValue:[moment('2018-07-30', dateFormat), moment('2018-08-03', dateFormat)],
                   })(
-                    <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                      <Option value="全部">全部</Option>
-                      <Option value="是">是</Option>
-                      <Option value="否">否</Option>
-                    </Select>
+                    <RangePicker
+                      format={dateFormat}
+                      style={{ width: 230, height: 32 }}
+                      onChange={this.onChange}
+                    />
                   )}
                 </FormItem>
-              </Col>
+              </div>
             </Row>
             <Row>
               <Col span={24} style={{ textAlign: 'right', marginTop: '12px' }}>
@@ -187,7 +208,7 @@ class AppealList extends Component {
         routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
-          <AuthorizedButton authority="/user/createUser">
+          <AuthorizedButton authority="/appeal/addAppeal">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
               添加申诉
             </Button>
@@ -195,7 +216,7 @@ class AppealList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：40条</p>
+            <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
               bordered
               loading={loading}
@@ -215,7 +236,7 @@ class AppealList extends Component {
               this.onShowSizeChange(current, pageSize);
             }}
             defaultCurrent={1}
-            total={100}
+            total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}
           />
