@@ -99,18 +99,7 @@ class UserList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, size) => {
-    firstPage = current - 1;
-    const userListParams = {
-      pageSize: size,
-      pageNum: current - 1,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,
-    };
-    this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
-    });
+    this.changePage(current,size)
   };
 
   // 点击某一页函数

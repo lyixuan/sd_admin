@@ -7,12 +7,20 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
+import { appealType } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 let propsVal = '';
 const dateFormat = 'YYYY-MM-DD';
+
+// 添加全局变量 ，记录搜索或是跳转到某一页到编辑页面之后返回到list页面回显所用。
+let firstType = '全部'; // 搜索框的申诉类型
+let firstStuId = null; // 搜索框的学员id
+let firstCountStart = null;
+let firstCountEnd = null; //
+let firstPage = 0; // 分页的默认起开页面
 
 
 @connect(({ appeal, loading }) => ({
@@ -27,30 +35,92 @@ class AppealList extends Component {
 
   // 页面render之前需要请求的接口
   componentDidMount() {
+    const initVal = this.props.getUrlParams();
+    firstType = !initVal.firstType ? '全部' : initVal.firstType;
+    firstStuId = !initVal.firstStuId ? null : Number(initVal.firstStuId);
+    firstCountStart = !initVal.firstCountStart ? null : initVal.firstCountStart;
+    firstCountEnd = !initVal.firstCountEnd ? null : initVal.firstCountEnd;
+    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
     const appealListParams = {
       pageSize: 30,
-      pageNum: 0 ,
+      pageNum: !firstPage ? 0 : firstPage,
+      type: !firstType ? undefined : appealType[firstType]===0?undefined:appealType[firstType],
+      stuId: !firstStuId ? undefined : firstStuId,
+      countStart: !firstCountStart ? undefined : firstCountStart,
+      countEnd: !firstCountEnd ? undefined : firstCountEnd,
     };
-    this.props.dispatch({
-      type: 'appeal/appealList',
-      payload: { appealListParams },
-    });
+    this.getData(appealListParams);
 
   }
   // 组件卸载时清除声明的变量
   componentWillUnmount() {
-
+    firstType = null;
+    firstStuId = null;
+    firstCountStart = null;
+    firstCountEnd = null;
+    firstPage = null;
   }
 
+  onChange = (dates, dateStrings) => {
+    const aa = dateStrings[0];
+    const bb = dateStrings[1];
+    firstCountStart = aa;
+    firstCountEnd = bb;
+  };
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, size) => {
-    console.log(current,size)
+    this.changePage(current,size)
+  };
+
+  getData = params => {
+    const appealListParams = params
+    this.props.dispatch({
+      type: 'appeal/appealList',
+      payload: { appealListParams },
+    });
+  };
+
+  // 表单搜索
+  handleSearch = e => {
+    e.preventDefault();
+    propsVal.form.validateFields((err, values) => {
+      if (!err) {
+        firstType = !values.type?'全部':values.type;
+        firstStuId = !values.stuId?undefined:Number(values.stuId);
+        firstPage = 0;
+        this.props.setCurrentUrlParams({
+          firstType ,
+          firstStuId ,
+          firstCountStart,
+          firstCountEnd,
+          firstPage,
+        });
+        const appealListParams = {
+          pageSize: 30,
+          pageNum: 0,
+          type: !firstType ? undefined : appealType[firstType]===0?undefined:appealType[firstType],
+          stuId: !firstStuId ? undefined : Number(firstStuId),
+          countStart: !values.countBeginTime ? undefined : firstCountStart,
+          countEnd: !values.countBeginTime ? undefined : firstCountEnd,
+        };
+        this.getData(appealListParams);
+      }
+    });
   };
 
   // 点击某一页函数
   changePage = (current, size) => {
-    console.log(current,size)
+    firstPage = current - 1;
+    const appealListParams = {
+      pageSize: size,
+      pageNum: current-1,
+      type: !firstType ? undefined : appealType[firstType]===0?undefined:appealType[firstType],
+      stuId: !firstStuId ? undefined : Number(firstStuId),
+      countStart: !firstCountStart ? undefined : firstCountStart,
+      countEnd: !firstCountEnd ? undefined : firstCountEnd,
+    };
+    this.getData(appealListParams);
   };
 
   // 初始化tabale 列数据
@@ -71,6 +141,7 @@ class AppealList extends Component {
     );
     return data;
   };
+
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -110,23 +181,32 @@ class AppealList extends Component {
     return columns || [];
   };
 
-  // 表单重置
-  handleReset = () => {
-  };
-
-  // 表单搜索
-  handleSearch = e => {
-    e.preventDefault();
-    propsVal.form.validateFields((err, values) => {
-      if (!err) {
-        console.log(values)
-      }
-    });
-  };
-
   // 添加申诉
   handleAdd = () => {
     this.props.setRouteUrlParams('/appeal/addAppeal');
+  };
+
+  // 表单重置
+  handleReset = () => {
+    firstType = '全部';
+    firstStuId = null;
+    firstCountStart = null;
+    firstCountEnd = null;
+    firstPage = 0;
+    this.props.setCurrentUrlParams({
+      firstType ,
+      firstStuId ,
+      firstCountStart ,
+      firstCountEnd ,
+      firstPage ,
+    });
+    propsVal.form.resetFields();
+    this.props.setRouteUrlParams('/appeal/appealList');
+    const appealListParams = {
+      pageSize: 30,
+      pageNum: 0,
+    };
+    this.getData(appealListParams);
   };
 
   render() {
@@ -146,17 +226,18 @@ class AppealList extends Component {
               <Col span={8}>
                 <FormItem label="申诉类型">
                   {getFieldDecorator('type', {
+                    initialValue:!firstType ? null : firstType,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                      <Option value="0">全部</Option>
-                      <Option value="1">优新减分-开班电话</Option>
-                      <Option value="2">优新减分-随堂考</Option>
-                      <Option value="3">IM减分-未回复会话</Option>
-                      <Option value="4">IM减分-不及时信息</Option>
-                      <Option value="5">IM减分-不满意会话</Option>
-                      <Option value="6">工单24</Option>
-                      <Option value="7">工单48</Option>
-                      <Option value="8">工单72</Option>
+                      <Option value="全部">全部</Option>
+                      <Option value="优新开班电话">优新减分-开班电话</Option>
+                      <Option value="优新随堂考">优新减分-随堂考</Option>
+                      <Option value="IM未回复">IM减分-未回复</Option>
+                      <Option value="IM不及时">IM减分-不及时</Option>
+                      <Option value="IM不满意">IM减分-不满意</Option>
+                      <Option value="工单24">工单24</Option>
+                      <Option value="工单48">工单48</Option>
+                      <Option value="工单72">工单72</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -164,13 +245,19 @@ class AppealList extends Component {
               <Col span={8} style={{ textAlign: 'center' }}>
                 <FormItem label="学员id">
                   {getFieldDecorator('stuId', {
+                    initialValue:!firstStuId ? null : firstStuId,
+                    rules: [
+                      { max: 20, message: '学员id长度不得大于20个字符!' },
+                    ],
                   })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>
               <div style={{display:'flex',justifyContent: 'flex-end'}}>
-                <FormItem label="投诉时间" >
-                  {getFieldDecorator('dateRange', {
-                    initialValue:[moment('2018-07-30', dateFormat), moment('2018-08-03', dateFormat)],
+                <FormItem label="扣分时间" >
+                  {getFieldDecorator('countBeginTime', {
+                    initialValue:!firstCountStart
+                      ? null
+                      : [moment(firstCountStart, dateFormat), moment(firstCountEnd, dateFormat)],
                   })(
                     <RangePicker
                       format={dateFormat}
