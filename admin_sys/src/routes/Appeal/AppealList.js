@@ -249,7 +249,7 @@ class AppealList extends Component {
                     rules: [
                       { max: 20, message: '学员id长度不得大于20个字符!' },
                     ],
-                  })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
+                  })(<Input placeholder="请输入学员id" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>
               <div style={{display:'flex',justifyContent: 'flex-end'}}>
