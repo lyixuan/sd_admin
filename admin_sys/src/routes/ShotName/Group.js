@@ -35,6 +35,9 @@ class Group extends Component {
       familyName: record.familyName,
       groupName: record.groupName,
       id: record.shortId,
+      objId: record.groupId,
+      objName: record.groupName,
+      objType: 'group',
       visible: true,
       name: '',
     });
@@ -49,7 +52,7 @@ class Group extends Component {
   };
 
   // 模态框确定
-  clickModalOK = (id, groupShortName) => {
+  clickModalOK = (id, groupShortName, objId, objName, objType) => {
     if (!groupShortName) {
       message.error('小组简称不可为空');
       this.showModal(true);
@@ -57,6 +60,9 @@ class Group extends Component {
       const paramsObj = {
         id,
         groupShortName,
+        objId,
+        objName,
+        objType,
       };
       this.props.dispatch({
         type: 'shortName/editGroup',
@@ -131,7 +137,17 @@ class Group extends Component {
     const { groupList } = shortName;
     const dataSource = !groupList ? [] : groupList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const { visible, collegeName, familyName, groupName, id, name } = this.state;
+    const {
+      visible,
+      collegeName,
+      familyName,
+      groupName,
+      id,
+      name,
+      objId,
+      objName,
+      objType,
+    } = this.state;
     const modalTitle = `${collegeName} | ${familyName} | ${groupName}`;
     const modalContent = (
       <div>
@@ -177,7 +193,7 @@ class Group extends Component {
           visible={visible}
           modalContent={modalContent}
           showModal={bol => this.showModal(bol)}
-          clickOK={() => this.clickModalOK(id, name)}
+          clickOK={() => this.clickModalOK(id, name, objId, objName, objType)}
         />
       </div>
     );

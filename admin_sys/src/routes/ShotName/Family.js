@@ -31,6 +31,9 @@ class Family extends Component {
       collegeName: record.collegeName,
       familyName: record.familyName,
       id: record.shortId,
+      objId: record.familyId,
+      objName: record.familyName,
+      objType: 'family',
       visible: true,
       name: '',
     });
@@ -45,7 +48,7 @@ class Family extends Component {
   };
 
   // 模态框回显
-  clickModalOK = (id, familyShortName) => {
+  clickModalOK = (id, familyShortName, objId, objName, objType) => {
     if (!familyShortName) {
       message.error('家族简称不可为空');
       this.showModal(true);
@@ -53,6 +56,9 @@ class Family extends Component {
       const paramsObj = {
         id,
         familyShortName,
+        objId,
+        objName,
+        objType,
       };
       this.props.dispatch({
         type: 'shortName/editFamily',
@@ -125,7 +131,7 @@ class Family extends Component {
     const { familyList } = shortName;
     const dataSource = !familyList ? [] : familyList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const { visible, collegeName, familyName, id, name } = this.state;
+    const { visible, collegeName, familyName, id, name, objId, objName, objType } = this.state;
     const modalTitle = `${collegeName} | ${familyName}`;
     const modalContent = (
       <div>
@@ -171,7 +177,7 @@ class Family extends Component {
           visible={visible}
           modalContent={modalContent}
           showModal={bol => this.showModal(bol)}
-          clickOK={() => this.clickModalOK(id, name)}
+          clickOK={() => this.clickModalOK(id, name, objId, objName, objType)}
         />
       </div>
     );

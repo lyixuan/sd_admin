@@ -505,3 +505,17 @@ export async function delBlRefundList(params) {
     body: params,
   });
 }
+
+// 申诉列表
+export async function appealList(params) {
+  return request(`${HOST}/appeal/list?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+// 添加申诉
+export async function addAppealList(params) {
+  return request(`${HOST}/appeal/add`, {
+    method: 'POST',
+    body: params,
+  });
+}

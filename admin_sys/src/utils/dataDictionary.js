@@ -34,4 +34,23 @@ const isUpdateDataReset = {
   否: 2,
 };
 
-export { userTypeData, userTypeDataReset, levelData, levelDataReset, isUpdateDataReset };
+const appealType = {
+  全部: 0,
+  优新开班电话: 1,
+  犹新随堂考: 2,
+  IM未回复: 3,
+  IM不及时: 4,
+  IM不满意: 5,
+  工单24: 6,
+  工单48: 7,
+  工单72: 8,
+};
+
+export {
+  appealType,
+  userTypeData,
+  userTypeDataReset,
+  levelData,
+  levelDataReset,
+  isUpdateDataReset,
+};
