@@ -20,6 +20,9 @@ class College extends Component {
       collegeName: '',
       id: 0,
       name: '',
+      objId: '',
+      objName: '',
+      objType: '',
     };
   }
   componentDidMount() {
@@ -31,6 +34,9 @@ class College extends Component {
     this.setState({
       collegeName: record.collegeName,
       id: record.shortId,
+      objId: record.collegeId,
+      objName: record.collegeName,
+      objType: 'college',
       visible: true,
       name: '',
     });
@@ -44,7 +50,7 @@ class College extends Component {
   };
 
   // 模态框回显
-  clickModalOK = (id, collegeShortName) => {
+  clickModalOK = (id, collegeShortName, objId, objName, objType) => {
     if (!collegeShortName) {
       message.error('学院简称不可为空');
       this.showModal(true);
@@ -52,6 +58,9 @@ class College extends Component {
       const paramsObj = {
         id,
         collegeShortName,
+        objId,
+        objName,
+        objType,
       };
       this.props.dispatch({
         type: 'shortName/editCollege',
@@ -118,7 +127,7 @@ class College extends Component {
     const { collegeList } = shortName;
     const dataSource = !collegeList ? [] : collegeList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const { visible, collegeName, id, name } = this.state;
+    const { visible, collegeName, id, name, objId, objName, objType } = this.state;
     const modalContent = (
       <div>
         <p style={{ textAlign: 'center', marginBottom: '10px' }}> {collegeName} </p>
@@ -163,7 +172,7 @@ class College extends Component {
           visible={visible}
           modalContent={modalContent}
           showModal={bol => this.showModal(bol)}
-          clickOK={() => this.clickModalOK(id, name)}
+          clickOK={() => this.clickModalOK(id, name, objId, objName, objType)}
         />
       </div>
     );

@@ -274,6 +274,15 @@ export const getRouterData = app => {
       ),
       name: '投诉倍数管理',
     },
+    '/appeal/appealList': {
+      component: dynamicWrapper(app, ['appeal'], () => import('../routes/Appeal/AppealList')),
+      name: '申诉管理',
+    },
+    '/appeal/addAppeal': {
+      component: dynamicWrapper(app, ['appeal'], () => import('../routes/Appeal/AddAppeal')),
+      name: '添加申诉',
+    },
+
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
     },
