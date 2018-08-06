@@ -33,7 +33,6 @@ class AppealForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    // flag = this.props.show===1?null:flag;
     const { submit, loading } = this.props.jumpFunction;
     const formItemLayout = {
       labelCol: {
