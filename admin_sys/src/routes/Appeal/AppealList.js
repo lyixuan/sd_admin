@@ -265,8 +265,8 @@ class AppealList extends Component {
                           console.log('输入时候value值',value)
                           if (isNaN(value) && value) {
                             callback({ message: '学员id需要是数字组成' });
-                          }else if(value.length>=20 && value){
-                            callback({ message: '学员id长度不得大于20个字符' });
+                          }else if(value.length>=11 && value){
+                            callback({ message: '学员id长度不得大于11个字符' });
                           }
                           callback();
                         },

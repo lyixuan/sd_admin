@@ -113,7 +113,7 @@ class AppealForm extends Component {
                     },
                   },
                   { required: true, message: '学员id必填项，请填写!', whitespace: true },
-                  { max: 20, message: '学员id长度不得大于20个字符!' },
+                  { max: 11, message: '学员id长度不得大于11个字符!' },
                 ],
               })(<Input style={{ width: 380 }} />)}
             </FormItem>
