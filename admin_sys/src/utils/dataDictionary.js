@@ -45,8 +45,19 @@ const appealType = {
   工单48: 7,
   工单72: 8,
 };
+const appealTypeRest = {
+  1:'优新减分-开班电话',
+  2:'优新减分-随堂考',
+  3: 'IM减分-未回复',
+  4: 'IM减分-不及时',
+  5: 'IM减分-不满意',
+  6: '工单初次减分',
+  7: '工单二次减分',
+  8: '工单三次减分',
+};
 
 export {
+  appealTypeRest,
   appealType,
   userTypeData,
   userTypeDataReset,

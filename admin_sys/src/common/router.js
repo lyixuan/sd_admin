@@ -182,7 +182,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['cacheManage'], () =>
         import('../routes/CacheManage/CacheManage')
       ),
-      name: '权限信息',
+      name: '缓存管理',
     },
 
     '/role/editRole': {

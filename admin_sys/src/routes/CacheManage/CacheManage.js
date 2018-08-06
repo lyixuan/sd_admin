@@ -119,7 +119,7 @@ class CacheManage extends Component {
 
     const modalContent = (
       <div>
-        <p style={{ textAlign: 'center', marginBottom: '10px' }}> 即将刷新{firstBeginTime}-{firstEndTime}的缓存，请确认 </p>
+        <p style={{ textAlign: 'center', marginBottom: '10px' }}> 即将刷新{firstBeginTime}～{firstEndTime}的缓存，请确认！ </p>
       </div>
     );
     const {loading}=this.props;

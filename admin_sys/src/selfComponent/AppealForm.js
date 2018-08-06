@@ -79,9 +79,9 @@ class AppealForm extends Component {
                 <Option value="IM未回复">IM减分-未回复</Option>
                 <Option value="IM不及时">IM减分-不及时</Option>
                 <Option value="IM不满意">IM减分-不满意</Option>
-                <Option value="工单24">工单24</Option>
-                <Option value="工单48">工单48</Option>
-                <Option value="工单72">工单72</Option>
+                <Option value="工单24">工单初次减分</Option>
+                <Option value="工单48">工单二次减分</Option>
+                <Option value="工单72">工单三次减分</Option>
               </Select>
             )}
           </FormItem>
