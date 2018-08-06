@@ -60,8 +60,8 @@ class CacheManage extends Component {
   // 模态框回显
   clearCache = () => {
     const updateCacheParams = {
-      beginDate: !firstBeginTime?undefined:firstBeginTime,
-      endDate: !firstEndTime?undefined:firstEndTime,
+      beginDate: !firstBeginTime?undefined:`${firstBeginTime} 00:00:00`,
+      endDate: !firstEndTime?undefined:`${firstEndTime} 00:00:00`,
     };
     this.props.dispatch({
       type: 'cacheManage/updateCache',

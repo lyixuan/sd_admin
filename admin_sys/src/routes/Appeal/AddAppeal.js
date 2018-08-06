@@ -34,7 +34,7 @@ class AddAppeal extends Component {
     const addAppealParams = {
       type: !type ? null : appealType[type],
       consultId: !newConsultId ? null : Number(newConsultId),
-      countTime: !countBeginTime ? null : countBeginTime,
+      countTime: !countBeginTime ? null : `${countBeginTime} 00:00:00`,
       ordId: !ordId ? null : Number(ordId),
       stuId: !stuId ? null : Number(stuId),
       workorderId: !newWorkorderId ? null : Number(newWorkorderId),

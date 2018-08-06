@@ -47,8 +47,8 @@ class AppealList extends Component {
         ? undefined
         : appealType[firstType] === 0 ? undefined : appealType[firstType],
       stuId: !firstStuId ? undefined : firstStuId,
-      countStart: !firstCountStart ? undefined : firstCountStart,
-      countEnd: !firstCountEnd ? undefined : firstCountEnd,
+      countStart: !firstCountStart ? undefined :`${firstCountStart} 00:00:00`,
+      countEnd: !firstCountEnd ? undefined :`${firstCountEnd} 00:00:00`,
     };
     this.getData(appealListParams);
   }
@@ -103,8 +103,8 @@ class AppealList extends Component {
             ? undefined
             : appealType[firstType] === 0 ? undefined : appealType[firstType],
           stuId: !firstStuId ? undefined : Number(firstStuId),
-          countStart: !values.countBeginTime ? undefined : firstCountStart,
-          countEnd: !values.countBeginTime ? undefined : firstCountEnd,
+          countStart: !values.countBeginTime  ? undefined :`${firstCountStart} 00:00:00`,
+          countEnd: !values.countBeginTime ? undefined :`${firstCountEnd} 00:00:00`,
         };
         this.getData(appealListParams);
       }
@@ -121,8 +121,9 @@ class AppealList extends Component {
         ? undefined
         : appealType[firstType] === 0 ? undefined : appealType[firstType],
       stuId: !firstStuId ? undefined : Number(firstStuId),
-      countStart: !firstCountStart ? undefined : firstCountStart,
-      countEnd: !firstCountEnd ? undefined : firstCountEnd,
+      countStart: !firstCountStart ? undefined :`${firstCountStart} 00:00:00`,
+      countEnd: !firstCountEnd ? undefined :`${firstCountEnd} 00:00:00`,
+
     };
     this.getData(appealListParams);
   };
