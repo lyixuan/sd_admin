@@ -96,6 +96,8 @@ class AppealList extends Component {
           firstCountEnd,
           firstPage,
         });
+
+        console.log(values.stuId )
         const appealListParams = {
           pageSize: 30,
           pageNum: 0,
@@ -257,7 +259,19 @@ class AppealList extends Component {
                 <FormItem label="学员id">
                   {getFieldDecorator('stuId', {
                     initialValue: !firstStuId ? null : firstStuId,
-                    rules: [{ max: 20, message: '学员id长度不得大于20个字符!' }],
+                    rules: [
+                      {
+                        validator(rule, value, callback) {
+                          console.log('输入时候value值',value)
+                          if (isNaN(value) && value) {
+                            callback({ message: '学员id需要是数字组成' });
+                          }else if(value.length>=20 && value){
+                            callback({ message: '学员id长度不得大于20个字符' });
+                          }
+                          callback();
+                        },
+                      },
+                    ],
                   })(<Input placeholder="请输入学员id" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>

@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin,DatePicker,message } from 'antd';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-let flag = null;
+let flag = '';
+const dateFormat = 'YYYY-MM-DD';
+let firstcountBeginTime = null;
 
 class AppealForm extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+  onChange = (dates, dateStrings) => {
+    const aa = dateStrings;
+    firstcountBeginTime = aa;
+  };
 
   handleSubmit = e => {
+    if (!flag){
+      message.error('请选择申诉类型');
+    }
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.handleSubmit(values);
-        flag = null;
+        this.props.handleSubmit(values,firstcountBeginTime);
+        // flag = '';
+
       }
     });
   };
@@ -27,9 +37,11 @@ class AppealForm extends Component {
   };
 
   resetContent = () => {
-    flag = null;
+    flag = '';
     this.props.resetContent();
   };
+
+
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -56,6 +68,8 @@ class AppealForm extends Component {
         },
       },
     };
+
+    const dateAreaPicker = <DatePicker format={dateFormat} style={{ width: 380}} onChange={this.onChange} />;
     return (
       <Spin spinning={loading}>
         <Form onSubmit={this.handleSubmit}>
@@ -107,10 +121,16 @@ class AppealForm extends Component {
               {getFieldDecorator('countBeginTime', {
                 initialValue: null,
                 rules: [
-                  { required: true, message: '扣分时间必填项，请填写!', whitespace: true },
-                  { max: 20, message: '扣分时间长度不得大于20个字符!' },
+                  {
+                    validator(rule, value, callback) {
+                      if (!value) {
+                        callback({ message: '扣分时间为必填项，请选择' });
+                      }
+                      callback();
+                    },
+                  },
                 ],
-              })(<Input style={{ width: 380 }} />)}
+              })(dateAreaPicker)}
             </FormItem>
             <FormItem {...formItemLayout} label="*订单id">
               {getFieldDecorator('ordId', {
