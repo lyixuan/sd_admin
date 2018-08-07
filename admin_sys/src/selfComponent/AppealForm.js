@@ -13,7 +13,8 @@ class AppealForm extends Component {
     super(props);
     this.state = {};
   }
-  onChange = (dates, dateStrings) => {
+
+  dataChange = (dates, dateStrings) => {
     const aa = dateStrings;
     firstcountBeginTime = aa;
   };
@@ -129,7 +130,7 @@ class AppealForm extends Component {
                     },
                   },
                 ],
-              })(<DatePicker format={dateFormat} style={{ width: '380px'}} onChange={this.onChange} />)}
+              })(<DatePicker format={dateFormat} style={{ width: '380px'}} onChange={this.dataChange} />)}
             </FormItem>
             <FormItem {...formItemLayout} label="*订单id">
               {getFieldDecorator('ordId', {
