@@ -72,7 +72,6 @@ class CacheManage extends Component {
 
   render() {
     const {submit} = this.props;
-    console.log(submit)
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -124,7 +123,6 @@ class CacheManage extends Component {
         <p style={{ textAlign: 'center', marginBottom: '10px' }}> 即将刷新{firstBeginTime}～{firstEndTime}的缓存，请确认！ </p>
       </div>
     );
-    const {loading}=this.props;
     return (
       <div>
         <ContentLayout
