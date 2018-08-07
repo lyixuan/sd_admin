@@ -69,8 +69,6 @@ class AppealForm extends Component {
         },
       },
     };
-
-    const dateAreaPicker = <DatePicker format={dateFormat} style={{ width: 380}} onChange={this.onChange} />;
     return (
       <Spin spinning={loading}>
         <Form onSubmit={this.handleSubmit}>
@@ -131,7 +129,7 @@ class AppealForm extends Component {
                     },
                   },
                 ],
-              })(dateAreaPicker)}
+              })(<DatePicker format={dateFormat} style={{ width: '380px'}} onChange={this.onChange} />)}
             </FormItem>
             <FormItem {...formItemLayout} label="*订单id">
               {getFieldDecorator('ordId', {
