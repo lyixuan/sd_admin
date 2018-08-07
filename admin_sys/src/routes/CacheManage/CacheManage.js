@@ -16,7 +16,7 @@ const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ cacheManage, loading }) => ({
   cacheManage,
-  loading: loading.models.cacheManage,
+  submit: loading.models.cacheManage,
 }))
 class CacheManage extends Component {
   constructor(props) {
@@ -71,6 +71,8 @@ class CacheManage extends Component {
   };
 
   render() {
+    const {submit} = this.props;
+    console.log(submit)
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -105,7 +107,7 @@ class CacheManage extends Component {
             <Col span={8} style={{ textAlign: 'center' }}>
               <FormItem>
                 <AuthorizedButton authority="/complaint/complaintAdd">
-                  <Button type="primary" htmlType="submit" className={common.createButton} loading={loading}>
+                  <Button type="primary" htmlType="submit" className={common.createButton} loading={submit}>
                     确定
                   </Button>
                 </AuthorizedButton>
