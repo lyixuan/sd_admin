@@ -6,15 +6,13 @@ export default {
 
   state: {
     // 接口返回数据存储
-    cacheData: null,
   },
 
   effects: {
-    *updateCache({ payload }, { call, put }) {
-      console.log(payload.updateCacheParams)
+    *updateCache({ payload }, { call }) {
       const cacheData = yield call(updateCache, payload.updateCacheParams);
       if (cacheData.code === 2000) {
-        yield put({ type: 'updateCacheSave', payload: { cacheData } });
+        message.success('缓存刷新成功！');
       } else {
         message.error(cacheData.msg);
       }
@@ -22,8 +20,5 @@ export default {
   },
 
   reducers: {
-    updateCacheSave(state, action) {
-      return { ...state, ...action.payload };
-    },
   },
 };
