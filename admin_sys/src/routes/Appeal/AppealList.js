@@ -143,6 +143,7 @@ class AppealList extends Component {
         ordId: item.ordId,
         workorderId: item.workorderId,
         consultId: item.consultId,
+        countValue: item.countValue,
         modifyTime: formatDate(item.modifyTime),
       })
     );
@@ -179,6 +180,10 @@ class AppealList extends Component {
       {
         title: '咨询id',
         dataIndex: 'consultId',
+      },
+      {
+        title: '申诉个数',
+        dataIndex: 'countValue',
       },
       {
         title: '操作时间',
