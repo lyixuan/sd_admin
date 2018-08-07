@@ -37,7 +37,7 @@ const isUpdateDataReset = {
 const appealType = {
   全部: 0,
   优新开班电话: 1,
-  犹新随堂考: 2,
+  优新随堂考: 2,
   IM未回复: 3,
   IM不及时: 4,
   IM不满意: 5,
