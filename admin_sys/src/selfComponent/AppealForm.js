@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Spin,DatePicker,message } from 'antd';
+import moment from 'moment';
 import common from '../routes/Common/common.css';
-import moment from 'moment/moment';
+
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -27,10 +28,15 @@ class AppealForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('提交时候的values',values)
-        this.props.handleSubmit(values,firstcountBeginTime);
-        // flag = '';
-
+        if(flag.substr(0, 2) === '工单'&&!values.workorderId){
+          message.error('请输入工单id');
+        }else if(flag.substr(0, 2) === 'IM'&&!values.consultId){
+          message.error('请输入咨询id');
+        }else if(flag==='IM不及时'&&!values.countValue){
+          message.error('请输入申诉个数');
+        }else{
+          this.props.handleSubmit(values,firstcountBeginTime);
+        }
       }
     });
   };
@@ -130,6 +136,7 @@ class AppealForm extends Component {
                       callback();
                     },
                   },
+                  // { required: true, message: '学员id必填项，请填写!', whitespace: true },
                 ],
               })(<DatePicker
                 initialValue={[moment('2018-08-01', dateFormat)]}
@@ -166,7 +173,7 @@ class AppealForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value && flag.substr(0, 2) === '工单') {
+                        if (flag.substr(0, 2) === '工单'&& !value ) {
                           callback({ message: '工单id为必填项，请填写！' });
                         } else if (isNaN(value) && value && flag.substr(0, 2) === '工单') {
                           callback({ message: '工单id需要是数字组成' });
@@ -174,7 +181,6 @@ class AppealForm extends Component {
                         callback();
                       },
                     },
-                    { max: 9, message: '工单id长度不得大于9位数字!' },
                   ],
                 })(<Input style={{ width: 380 }} />)}
               </FormItem>
@@ -190,7 +196,7 @@ class AppealForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value && flag.substr(0, 2) === 'IM') {
+                        if (flag.substr(0, 2) === 'IM'&&!value) {
                           callback({ message: '咨询id为必填项，请填写！' });
                         } else if (isNaN(value) && value && flag.substr(0, 2) === 'IM') {
                           callback({ message: '咨询id需要是数字组成' });
@@ -215,7 +221,7 @@ class AppealForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value && flag === 'IM不及时') {
+                        if (flag === 'IM不及时'&&!value ) {
                           callback({ message: '申诉个数为必填项，请填写！' });
                         } else if (value && !/(^[1-9]\d*$)/.test(value) && flag === 'IM不及时') {
                           callback({ message: '申诉个数需要是正整数组成' });
