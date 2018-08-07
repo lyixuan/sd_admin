@@ -25,10 +25,12 @@ class AddAppeal extends Component {
       ordId = null,
       stuId = null,
       workorderId = null,
+      countValue = null,
     } = values;
     const countBeginTime = !firstcountBeginTime?undefined:firstcountBeginTime;
     const newWorkorderId = type.substr(0, 2) === '工单' ? workorderId : null;
     const newConsultId = type.substr(0, 2) === 'IM' ? consultId : null;
+    const newCountValue = type === 'IM不及时' ? countValue : null;
     const localStorage = getAuthority('admin_user');
     const operator = !localStorage ? null : localStorage.userId;
     const addAppealParams = {
@@ -38,6 +40,7 @@ class AddAppeal extends Component {
       ordId: !ordId ? null : Number(ordId),
       stuId: !stuId ? null : Number(stuId),
       workorderId: !newWorkorderId ? null : Number(newWorkorderId),
+      countValue: !newCountValue ? null : Number(newCountValue),
       operator,
     };
     const appealListParams = {
