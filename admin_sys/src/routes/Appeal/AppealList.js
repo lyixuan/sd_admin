@@ -264,8 +264,8 @@ class AppealList extends Component {
                         validator(rule, value, callback) {
                           if (value&&isNaN(value)) {
                             callback({ message: '学员id需要是数字组成' });
-                          }else if( value && value.length>11){
-                            callback({ message: '学员id长度不得大于11个字符' });
+                          }else if( value && value.length>9){
+                            callback({ message: '学员id长度不得大于9位数字' });
                           }
                           callback();
                         },

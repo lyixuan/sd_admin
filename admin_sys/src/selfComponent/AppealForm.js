@@ -114,7 +114,7 @@ class AppealForm extends Component {
                     },
                   },
                   { required: true, message: '学员id必填项，请填写!', whitespace: true },
-                  { max: 11, message: '学员id长度不得大于11位数字!' },
+                  { max: 9, message: '学员id长度不得大于9位数字!' },
                 ],
               })(<Input style={{ width: 380 }} />)}
             </FormItem>
@@ -146,7 +146,7 @@ class AppealForm extends Component {
                     },
                   },
                   { required: true, message: '订单id必填项，请填写!', whitespace: true },
-                  { max: 11, message: '订单id长度不得大于11位数字!' },
+                  { max: 9, message: '订单id长度不得大于9位数字!' },
                 ],
               })(<Input style={{ width: 380 }} />)}
             </FormItem>
@@ -169,7 +169,7 @@ class AppealForm extends Component {
                         callback();
                       },
                     },
-                    { max: 11, message: '工单id长度不得大于11位数字!' },
+                    { max: 9, message: '工单id长度不得大于9位数字!' },
                   ],
                 })(<Input style={{ width: 380 }} />)}
               </FormItem>
@@ -193,7 +193,7 @@ class AppealForm extends Component {
                         callback();
                       },
                     },
-                    { max: 11, message: '咨询id长度不得大于11位数字!' },
+                    { max: 9, message: '咨询id长度不得大于9位数字!' },
                   ],
                 })(<Input style={{ width: 380 }} />)}
               </FormItem>
