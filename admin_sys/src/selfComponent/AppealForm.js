@@ -84,7 +84,7 @@ class AppealForm extends Component {
         initialValue={[moment('2015-01-01', dateFormat)]}
         onChange={this.selectDisableTime}
         format={dateFormat}
-        style={{ width: 230, height: 32 }}
+        style={{ width: 380, height: 32 }}
       />
     );
     return (
