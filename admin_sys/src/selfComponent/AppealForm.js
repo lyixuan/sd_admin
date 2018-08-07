@@ -77,6 +77,16 @@ class AppealForm extends Component {
         },
       },
     };
+
+
+    const datePicker = (
+      <DatePicker
+        initialValue={[moment('2015-01-01', dateFormat)]}
+        onChange={this.selectDisableTime}
+        format={dateFormat}
+        style={{ width: 230, height: 32 }}
+      />
+    );
     return (
       <Spin spinning={loading}>
         <Form onSubmit={this.handleSubmit}>
@@ -138,12 +148,7 @@ class AppealForm extends Component {
                   },
                   // { required: true, message: '学员id必填项，请填写!', whitespace: true },
                 ],
-              })(<DatePicker
-                initialValue={[moment('2018-08-01', dateFormat)]}
-                onChange={this.dataChange}
-                format={dateFormat}
-                style={{ width: 380, height: 32 }}
-              />)}
+              })(datePicker)}
             </FormItem>
             <FormItem {...formItemLayout} label="*订单id">
               {getFieldDecorator('ordId', {
