@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Spin,DatePicker,message } from 'antd';
 import common from '../routes/Common/common.css';
+import moment from 'moment/moment';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -130,7 +131,12 @@ class AppealForm extends Component {
                     },
                   },
                 ],
-              })(<DatePicker format={dateFormat} style={{ width: '380px'}} onChange={this.dataChange} />)}
+              })(<DatePicker
+                initialValue={[moment('2018-08-01', dateFormat)]}
+                onChange={this.dataChange}
+                format={dateFormat}
+                style={{ width: 380, height: 32 }}
+              />)}
             </FormItem>
             <FormItem {...formItemLayout} label="*订单id">
               {getFieldDecorator('ordId', {
