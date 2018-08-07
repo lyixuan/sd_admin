@@ -82,7 +82,7 @@ class AppealForm extends Component {
     const datePicker = (
       <DatePicker
         initialValue={[moment('2015-01-01', dateFormat)]}
-        onChange={this.selectDisableTime}
+        onChange={this.dataChange}
         format={dateFormat}
         style={{ width: 380, height: 32 }}
       />
