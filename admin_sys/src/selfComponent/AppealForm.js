@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Spin,DatePicker,message } from 'antd';
-import moment from 'moment';
+// import moment from 'moment';
 import common from '../routes/Common/common.css';
 
 
@@ -81,7 +81,6 @@ class AppealForm extends Component {
 
     const datePicker = (
       <DatePicker
-        initialValue={[moment('2015-01-01', dateFormat)]}
         onChange={this.dataChange}
         format={dateFormat}
         style={{ width: 380, height: 32 }}
@@ -136,7 +135,6 @@ class AppealForm extends Component {
             </FormItem>
             <FormItem {...formItemLayout} label="*扣分时间">
               {getFieldDecorator('countBeginTime', {
-                initialValue: null,
                 rules: [
                   {
                     validator(rule, value, callback) {
