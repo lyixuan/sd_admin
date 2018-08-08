@@ -42,10 +42,6 @@ class UserList extends Component {
       mobile: !firstPhone ? undefined : firstPhone,
     };
     this.getData(userListParams)
-    // this.props.dispatch({
-    //   type: 'user/userList',
-    //   payload: { userListParams },
-    // });
   }
   // 组件卸载时清除声明的变量
   componentWillUnmount() {
@@ -87,6 +83,31 @@ class UserList extends Component {
     });
   };
 
+  // 编辑用户
+  onEdit = val => {
+    this.savaParams({
+      firstPage: !firstPage ? 0 : firstPage,
+    })
+    this.props.setRouteUrlParams('/user/editUser', {
+      id: val.id,
+      userType: val.userType,
+    });
+  };
+
+
+
+  // 点击显示每页多少条数据函数
+  onShowSizeChange = (current, size) => {
+    this.changePage(current, size);
+  };
+
+  getData=(userListParams)=>{
+    this.props.dispatch({
+      type: 'user/userList',
+      payload: { userListParams },
+    });
+  }
+
   savaParams=(params)=>{
     console.log(params)
     this.props.setCurrentUrlParams(
@@ -94,26 +115,12 @@ class UserList extends Component {
     );
   }
 
-  // 编辑用户
-  onEdit = val => {
-    // this.props.setCurrentUrlParams({
-    //   firstPage: !firstPage ? 0 : firstPage,
-    // });
-
-    this.props.setRouteUrlParams('/user/editUser', {
-      id: val.id,
-      userType: val.userType,
-    });
-  };
-
-  // 点击显示每页多少条数据函数
-  onShowSizeChange = (current, size) => {
-    this.changePage(current, size);
-  };
-
   // 点击某一页函数
   changePage = (current, size) => {
     firstPage = current - 1;
+    this.savaParams({
+      firstPage: !firstPage ? 0 : firstPage,
+    })
     const userListParams = {
       pageSize: size,
       pageNum: current - 1,
@@ -121,12 +128,6 @@ class UserList extends Component {
       name: !firstName ? undefined : firstName,
       mobile: !firstPhone ? undefined : firstPhone,
     };
-    // this.props.dispatch({
-    //   type: 'user/userList',
-    //   payload: { userListParams },
-    // });
-
-
     this.getData(userListParams)
   };
 
@@ -229,29 +230,25 @@ class UserList extends Component {
 
   // 表单重置
   handleReset = () => {
+    propsVal.form.resetFields();
     firstName = '';
     firstPhone = '';
     firstUpdate = '全部';
     firstPage = 0;
-    this.props.setCurrentUrlParams({
-      firstUpdate: null,
-      firstName: null,
-      firstPhone: null,
-      firstPage: null,
-    });
-    propsVal.form.resetFields();
+    this.savaParams({
+      firstUpdate,
+      firstName,
+      firstPhone,
+      firstPage,
+    })
     this.props.setRouteUrlParams('/config/userList');
     const userListParams = {
       pageSize: 30,
       pageNum: 0,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
     };
-    // this.props.dispatch({
-    //   type: 'user/userList',
-    //   payload: { userListParams },
-    // });
-
     this.getData(userListParams)
+
   };
 
   // 表单搜索
@@ -263,12 +260,12 @@ class UserList extends Component {
         firstPhone = !values.mobile ? undefined : values.mobile;
         firstUpdate = !values.isUpdate ? '全部' : values.isUpdate;
         firstPage = 0;
-        this.props.setCurrentUrlParams({
+        this.savaParams({
           firstUpdate,
           firstName,
           firstPhone,
           firstPage: 0,
-        });
+        })
         const userListParams = {
           isUpdate: isUpdateDataReset[firstUpdate],
           name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
@@ -277,22 +274,9 @@ class UserList extends Component {
           pageNum: 0,
         };
         this.getData(userListParams)
-        // this.props.dispatch({
-        //   type: 'user/userList',
-        //   payload: { userListParams },
-        // });
-        // this.saveParams(userListParams)
       }
     });
   };
-
-  getData=(userListParams)=>{
-    this.props.dispatch({
-        type: 'user/userList',
-        payload: { userListParams },
-      });
-      // this.saveParams(userListParams)
-  }
 
   // 创建用户
   handleAdd = () => {
@@ -377,6 +361,7 @@ class UserList extends Component {
         </div>
       );
     });
+    // console.log('render时候的firtpage',firstPage)
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -409,7 +394,7 @@ class UserList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={!firstPage ? 1 : firstPage + 1}
+            defaultCurrent={firstPage+1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}
