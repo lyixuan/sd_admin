@@ -6,10 +6,13 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 
+let firstPage = 0; // 分页的默认起开页面
+
 @connect(({ account, loading }) => ({
   account,
   loading: loading.effects['account/accountList'],
 }))
+
 class AccountList extends Component {
   constructor(props) {
     super(props);
@@ -17,11 +20,18 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-    const accountListParams = { size: 30, number: 0, orderType: 'name' };
+    const initVal = this.props.getUrlParams();
+    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
+    const accountListParams = { size: 30, number: !firstPage ? 0 : firstPage, orderType: 'name' };
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
     });
+  }
+
+  // 组件卸载时清除声明的变量
+  componentWillUnmount() {
+    firstPage = null;
   }
 
   // 删除账号函数  删除后数据更新？
@@ -43,15 +53,14 @@ class AccountList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const accountListParams = { size: pageSize, number: current - 1, orderType: 'name' };
-    this.props.dispatch({
-      type: 'account/accountList',
-      payload: { accountListParams },
-    });
+    this.changePage(current, pageSize);
   };
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
+    this.props.setCurrentUrlParams(
+      {firstPage: !current ? 0 : current - 1}
+    );
     const accountListParams = { size: pageSize, number: current - 1, orderType: 'name' };
     this.props.dispatch({
       type: 'account/accountList',
@@ -167,7 +176,7 @@ class AccountList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={1}
+            defaultCurrent={firstPage}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}

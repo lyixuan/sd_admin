@@ -122,6 +122,10 @@ class AppealList extends Component {
     firstPage = current - 1;
     this.savaParams({
       firstPage: !firstPage ? 0 : firstPage,
+      firstStuId:null,
+      firstType : '全部',
+      firstCountStart : null,
+      firstCountEnd : null,
     })
     const appealListParams = {
       pageSize: size,
@@ -212,13 +216,13 @@ class AppealList extends Component {
     firstCountStart = null;
     firstCountEnd = null;
     firstPage = 0;
-    this.savaParams({
-      firstType,
-      firstStuId,
-      firstCountStart,
-      firstCountEnd,
-      firstPage,
-    })
+    // this.savaParams({
+    //   firstType,
+    //   firstStuId,
+    //   firstCountStart,
+    //   firstCountEnd,
+    //   firstPage,
+    // })
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/appeal/appealList');
     const appealListParams = {
@@ -283,7 +287,7 @@ class AppealList extends Component {
                         },
                       },
                     ],
-                  })(<Input placeholder="请输入学员id" style={{ width: 230, height: 32 }} />)}
+                  })(<Input placeholder="请输入学员id" style={{ width: '230', height: 32 }} />)}
                 </FormItem>
               </Col>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>

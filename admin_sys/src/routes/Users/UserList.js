@@ -234,13 +234,14 @@ class UserList extends Component {
     firstPhone = '';
     firstUpdate = '全部';
     firstPage = 0;
-    this.savaParams({
-      firstUpdate,
-      firstName,
-      firstPhone,
-      firstPage,
-    })
+    // this.savaParams({
+    //   firstUpdate,
+    //   firstName,
+    //   firstPhone,
+    //   firstPage,
+    // })
     this.props.setRouteUrlParams('/config/userList');
+    // window.location.reload()
     const userListParams = {
       pageSize: 30,
       pageNum: 0,
@@ -360,7 +361,7 @@ class UserList extends Component {
         </div>
       );
     });
-    // console.log('render时候的firtpage',firstPage)
+    console.log('render时候的firtpage',firstPage)
     return (
       <ContentLayout
         routerData={this.props.routerData}
