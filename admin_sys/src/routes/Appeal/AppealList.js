@@ -89,15 +89,13 @@ class AppealList extends Component {
         firstType = !values.type ? '全部' : values.type;
         firstStuId = !values.stuId ? undefined : Number(values.stuId);
         firstPage = 0;
-        this.props.setCurrentUrlParams({
+        this.savaParams({
           firstType,
           firstStuId,
           firstCountStart,
           firstCountEnd,
           firstPage,
-        });
-
-        console.log(values.stuId )
+        })
         const appealListParams = {
           pageSize: 30,
           pageNum: 0,
@@ -113,9 +111,18 @@ class AppealList extends Component {
     });
   };
 
+  savaParams=(params)=>{
+    this.props.setCurrentUrlParams(
+      params
+    );
+  }
+
   // 点击某一页函数
   changePage = (current, size) => {
     firstPage = current - 1;
+    this.savaParams({
+      firstPage: !firstPage ? 0 : firstPage,
+    })
     const appealListParams = {
       pageSize: size,
       pageNum: current - 1,
@@ -205,13 +212,13 @@ class AppealList extends Component {
     firstCountStart = null;
     firstCountEnd = null;
     firstPage = 0;
-    this.props.setCurrentUrlParams({
+    this.savaParams({
       firstType,
       firstStuId,
       firstCountStart,
       firstCountEnd,
       firstPage,
-    });
+    })
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/appeal/appealList');
     const appealListParams = {
@@ -349,7 +356,7 @@ class AppealList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={1}
+            defaultCurrent={firstPage+1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}

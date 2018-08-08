@@ -109,7 +109,6 @@ class UserList extends Component {
   }
 
   savaParams=(params)=>{
-    console.log(params)
     this.props.setCurrentUrlParams(
       params
     );
