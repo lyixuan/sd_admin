@@ -41,10 +41,11 @@ class UserList extends Component {
       name: !firstName ? undefined : firstName,
       mobile: !firstPhone ? undefined : firstPhone,
     };
-    this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
-    });
+    this.getData(userListParams)
+    // this.props.dispatch({
+    //   type: 'user/userList',
+    //   payload: { userListParams },
+    // });
   }
   // 组件卸载时清除声明的变量
   componentWillUnmount() {
@@ -86,11 +87,19 @@ class UserList extends Component {
     });
   };
 
+  savaParams=(params)=>{
+    console.log(params)
+    this.props.setCurrentUrlParams(
+      params
+    );
+  }
+
   // 编辑用户
   onEdit = val => {
-    this.props.setCurrentUrlParams({
-      firstPage: !firstPage ? 0 : firstPage,
-    });
+    // this.props.setCurrentUrlParams({
+    //   firstPage: !firstPage ? 0 : firstPage,
+    // });
+
     this.props.setRouteUrlParams('/user/editUser', {
       id: val.id,
       userType: val.userType,
@@ -112,10 +121,13 @@ class UserList extends Component {
       name: !firstName ? undefined : firstName,
       mobile: !firstPhone ? undefined : firstPhone,
     };
-    this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
-    });
+    // this.props.dispatch({
+    //   type: 'user/userList',
+    //   payload: { userListParams },
+    // });
+
+
+    this.getData(userListParams)
   };
 
   // 初始化tabale 列数据
@@ -234,10 +246,12 @@ class UserList extends Component {
       pageNum: 0,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
     };
-    this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
-    });
+    // this.props.dispatch({
+    //   type: 'user/userList',
+    //   payload: { userListParams },
+    // });
+
+    this.getData(userListParams)
   };
 
   // 表单搜索
@@ -255,7 +269,6 @@ class UserList extends Component {
           firstPhone,
           firstPage: 0,
         });
-
         const userListParams = {
           isUpdate: isUpdateDataReset[firstUpdate],
           name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
@@ -263,13 +276,23 @@ class UserList extends Component {
           pageSize: 30,
           pageNum: 0,
         };
-        this.props.dispatch({
-          type: 'user/userList',
-          payload: { userListParams },
-        });
+        this.getData(userListParams)
+        // this.props.dispatch({
+        //   type: 'user/userList',
+        //   payload: { userListParams },
+        // });
+        // this.saveParams(userListParams)
       }
     });
   };
+
+  getData=(userListParams)=>{
+    this.props.dispatch({
+        type: 'user/userList',
+        payload: { userListParams },
+      });
+      // this.saveParams(userListParams)
+  }
 
   // 创建用户
   handleAdd = () => {

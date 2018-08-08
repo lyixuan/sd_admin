@@ -156,7 +156,7 @@ class UserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('点击提交之后的values内容',values.userType,values.responseCom)
+        // console.log('点击提交之后的values内容',values.userType,values.responseCom,values.responseCom[0],values.responseCom[1],values.responseCom[2])
         const rUserType = values.userType;
         const len = values.responseCom.length;
         if (rUserType === '小组' || rUserType === '无底表权限') {
