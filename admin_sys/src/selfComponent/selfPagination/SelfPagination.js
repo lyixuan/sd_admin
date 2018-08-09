@@ -30,7 +30,7 @@ class SelfPagination extends Component {
         className={common.paginationStyle}
         onChange={onChange}
         onShowSizeChange={onShowSizeChange}
-        defaultCurrent={defaultCurrent || 1}
+        current={defaultCurrent||1}
         total={total || 0}
         defaultPageSize={defaultPageSize || 30}
         // pageSizeOptions={pageSizeOptions || ['30']}

@@ -361,7 +361,6 @@ class UserList extends Component {
         </div>
       );
     });
-    console.log('render时候的firtpage',firstPage)
     return (
       <ContentLayout
         routerData={this.props.routerData}
