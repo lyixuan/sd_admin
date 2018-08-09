@@ -23,10 +23,7 @@ class AccountList extends Component {
     const initVal = this.props.getUrlParams();
     firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
     const accountListParams = { size: 30, number: !firstPage ? 0 : firstPage, orderType: 'name' };
-    this.props.dispatch({
-      type: 'account/accountList',
-      payload: { accountListParams },
-    });
+    this.getData(accountListParams)
   }
 
   // 组件卸载时清除声明的变量
@@ -56,16 +53,19 @@ class AccountList extends Component {
     this.changePage(current, pageSize);
   };
 
-  // 点击某一页函数
-  changePage = (current, pageSize) => {
-    this.props.setCurrentUrlParams(
-      {firstPage: !current ? 0 : current - 1}
-    );
-    const accountListParams = { size: pageSize, number: current - 1, orderType: 'name' };
+  getData=(accountListParams)=>{
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
     });
+  }
+
+  // 点击某一页函数
+  changePage = (current, pageSize) => {
+    firstPage = current -1;
+    this.props.setCurrentUrlParams({firstPage});
+    const accountListParams = { size: pageSize, number: firstPage, orderType: 'name' };
+    this.getData(accountListParams)
   };
 
   // 初始化tabale 列数据

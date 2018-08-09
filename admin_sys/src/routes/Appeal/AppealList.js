@@ -216,20 +216,9 @@ class AppealList extends Component {
     firstCountStart = null;
     firstCountEnd = null;
     firstPage = 0;
-    // this.savaParams({
-    //   firstType,
-    //   firstStuId,
-    //   firstCountStart,
-    //   firstCountEnd,
-    //   firstPage,
-    // })
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/appeal/appealList');
-    const appealListParams = {
-      pageSize: 30,
-      pageNum: 0,
-    };
-    this.getData(appealListParams);
+    this.getData({pageSize: 30, pageNum: 0});
   };
 
   render() {

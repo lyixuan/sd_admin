@@ -85,7 +85,7 @@ class QualityList extends Component {
     firstPage = 0;
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/quality/qualityList');
-    this.getData( { size: 30, number: 0})
+    this.getData({size: 30, number: 0})
   };
 
   // 初始化tabale 列数据

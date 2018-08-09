@@ -85,16 +85,11 @@ class UserList extends Component {
 
   // 编辑用户
   onEdit = val => {
-    this.savaParams({
-      firstPage: !firstPage ? 0 : firstPage,
-    })
     this.props.setRouteUrlParams('/user/editUser', {
       id: val.id,
       userType: val.userType,
     });
   };
-
-
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, size) => {
@@ -235,13 +230,7 @@ class UserList extends Component {
     firstUpdate = '全部';
     firstPage = 0;
     this.props.setRouteUrlParams('/config/userList');
-    const userListParams = {
-      pageSize: 30,
-      pageNum: 0,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-    };
-    this.getData(userListParams)
-
+    this.getData({pageSize: 30, pageNum: 0, isUpdate:0 })
   };
 
   // 表单搜索
