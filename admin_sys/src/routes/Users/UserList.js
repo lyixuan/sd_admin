@@ -234,14 +234,7 @@ class UserList extends Component {
     firstPhone = '';
     firstUpdate = '全部';
     firstPage = 0;
-    // this.savaParams({
-    //   firstUpdate,
-    //   firstName,
-    //   firstPhone,
-    //   firstPage,
-    // })
     this.props.setRouteUrlParams('/config/userList');
-    // window.location.reload()
     const userListParams = {
       pageSize: 30,
       pageNum: 0,
@@ -396,7 +389,6 @@ class UserList extends Component {
             defaultCurrent={firstPage+1}
             total={totalNum}
             defaultPageSize={30}
-            pageSizeOptions={['30']}
           />
         }
       />

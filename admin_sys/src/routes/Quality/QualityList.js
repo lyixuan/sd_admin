@@ -50,10 +50,11 @@ class QualityList extends Component {
   };
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    this.props.setCurrentUrlParams({firstPage:current - 1});
+    firstPage = current -1;
+    this.props.setCurrentUrlParams({firstPage});
     this.getData({
       size: pageSize,
-      number: current - 1 ,
+      number: firstPage ,
       teaName: !firstTeaName?undefined:firstTeaName,
       qualityNum: !firstQualityNum?undefined:firstQualityNum});
   };
@@ -83,9 +84,7 @@ class QualityList extends Component {
     firstQualityNum = '';
     firstPage = 0;
     propsVal.form.resetFields();
-    // this.props.setCurrentUrlParams({});
     this.props.setRouteUrlParams('/quality/qualityList');
-    // window.location.reload()
     this.getData( { size: 30, number: 0})
   };
 
@@ -261,8 +260,9 @@ class QualityList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={!firstPage?1:firstPage+1}
+            defaultCurrent={firstPage+1}
             total={totalNum}
+            defaultPageSize={30}
           />
         }
       />
