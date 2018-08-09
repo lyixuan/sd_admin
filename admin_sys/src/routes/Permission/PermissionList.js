@@ -61,7 +61,7 @@ class PermissionList extends Component {
   changePage = (current, pageSize) => {
     firstPage = current -1;
     this.props.setCurrentUrlParams({firstPage});
-    const permissionListParams = { size: pageSize, number: firstPage, sort: 'id' };
+    const permissionListParams = { size: pageSize, number: firstPage, sort: 'id',name:!firstName?undefined:firstName};
     this.getData(permissionListParams)
   };
 

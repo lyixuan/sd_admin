@@ -13,6 +13,7 @@ let propsVal = '';
 let firstBeginTime = '';
 let firstEndTime = '';
 let firstOrdId = '';
+let firstPage = 0; // 分页的默认起开页面
 const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ blRefund, loading }) => ({
@@ -26,12 +27,24 @@ class RefundList extends Component {
   }
 
   componentDidMount() {
-    this.getData({ size: 30, number: 0 });
+    const initVal = this.props.getUrlParams();
+    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
+    firstBeginTime = !initVal.firstBeginTime ? undefined : initVal.firstBeginTime;
+    firstEndTime = !initVal.firstEndTime ? undefined : initVal.firstEndTime;
+    firstOrdId = !initVal.firstOrdId ? undefined : Number(initVal.firstOrdId);
+    this.getData({
+      size: 30,
+      number: firstPage,
+      beginTime:firstBeginTime,
+      endTime:firstEndTime,
+      ordId: firstOrdId,
+    });
   }
-  componentWillUnmount() {
+  componentWillUnmount(){
     firstBeginTime = null;
     firstEndTime = null;
     firstOrdId = null;
+    firstPage= null;
   }
 
   onChange = (dates, dateStrings) => {
@@ -43,8 +56,7 @@ class RefundList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const params = { size: pageSize, number: current - 1 };
-    this.getData(params);
+    this.changePage(current, pageSize)
   };
   getData = params => {
     const getListParams = { ...this.props.blRefund.getListParams, ...params };
@@ -53,10 +65,25 @@ class RefundList extends Component {
       payload: { getListParams },
     });
   };
+
+  savaParams=(params)=>{
+    this.props.setCurrentUrlParams(
+      params
+    );
+  }
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const params = { size: pageSize, number: current - 1 };
-    this.getData(params);
+    firstPage = current - 1;
+    this.savaParams({
+      firstPage: !firstPage ? 0 : firstPage,
+    })
+    this.getData({
+      size: pageSize,
+      number: current - 1,
+      beginTime:!firstBeginTime?undefined:firstBeginTime,
+      endTime:!firstEndTime?undefined:firstEndTime,
+      ordId:!firstOrdId?undefined:firstOrdId,
+    });
   };
 
   // 表单搜索
@@ -64,21 +91,23 @@ class RefundList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       firstOrdId = values.ordId;
-      if (!values.dateRange) {
-        const params = { size: 30, number: 0, ordId: values.ordId };
-        this.getData(params);
-      } else {
-        const beginTime = firstBeginTime;
-        const endTime = firstEndTime;
-        const params = {
-          size: 30,
-          number: 0,
-          beginTime,
-          endTime,
-          ordId: values.ordId,
-        };
-        this.getData(params);
-      }
+      firstPage = 0;
+      const beginTime = firstBeginTime;
+      const endTime = firstEndTime;
+      this.savaParams({
+        firstOrdId,
+        firstBeginTime,
+        firstEndTime,
+        firstPage,
+      })
+      const params = {
+        size: 30,
+        number: 0,
+        beginTime:!values.dateRange?undefined:beginTime,
+        endTime:!values.dateRange?undefined:endTime,
+        ordId: values.ordId,
+      };
+      this.getData(params);
     });
   };
 
@@ -87,8 +116,10 @@ class RefundList extends Component {
     firstBeginTime = '';
     firstEndTime = '';
     firstOrdId = '';
+    firstPage=0;
     propsVal.form.resetFields();
-    this.props.setCurrentUrlParams({});
+    this.props.setRouteUrlParams('/bottomLine/refundList');
+    this.getData({size: 30, number: 0});
   };
 
   // 初始化tabale 列数据
@@ -272,7 +303,7 @@ class RefundList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={1}
+            defaultCurrent={firstPage+1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}

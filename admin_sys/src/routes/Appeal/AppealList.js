@@ -122,10 +122,6 @@ class AppealList extends Component {
     firstPage = current - 1;
     this.savaParams({
       firstPage: !firstPage ? 0 : firstPage,
-      firstStuId:null,
-      firstType : '全部',
-      firstCountStart : null,
-      firstCountEnd : null,
     })
     const appealListParams = {
       pageSize: size,
@@ -136,7 +132,6 @@ class AppealList extends Component {
       stuId: !firstStuId ? undefined : Number(firstStuId),
       countStart: !firstCountStart ? undefined :`${firstCountStart} 00:00:00`,
       countEnd: !firstCountEnd ? undefined :`${firstCountEnd} 00:00:00`,
-
     };
     this.getData(appealListParams);
   };
