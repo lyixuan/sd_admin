@@ -229,7 +229,7 @@ class TimeList extends Component {
           <div className={styles.formCls}>
             <FormItem label="开始日期">
               {getFieldDecorator('beginTime', {
-                // initialValue: dateArea.beginTime ? moment(dateArea.beginTime, dateFormat) : null,
+                initialValue: dateArea.beginTime ? moment(dateArea.beginTime, dateFormat) : null,
                 rules: [{ required: false, message: '请选择生效开始日期' }],
               })(dateAreaPicker)}
             </FormItem>
