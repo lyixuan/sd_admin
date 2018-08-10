@@ -10,6 +10,7 @@ const FormItem = Form.Item;
 let propsVal = '';
 let firstTeaName = '';
 let firstQualityNum = '';
+let firstPage = 0; // 分页的默认起开页面
 @connect(({ quality, loading }) => ({
   quality,
   loading: loading.models.quality,
@@ -20,7 +21,14 @@ class QualityList extends Component {
     this.state = {};
   }
   componentDidMount() {
-    this.getData({ size: 30, number: 0 });
+    const initVal = this.props.getUrlParams();
+    firstTeaName = !initVal.firstTeaName ? '' : initVal.firstTeaName;
+    firstQualityNum = !initVal.firstQualityNum ? '' : Number(initVal.firstQualityNum);
+    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
+    const teaName = !firstTeaName ? undefined : firstTeaName;
+    const qualityNum = !firstQualityNum ? undefined : firstQualityNum;
+    const number = !firstPage ? 0 : firstPage;
+    this.getData({ size: 30, number, teaName, qualityNum });
   }
 
   componentWillUnmount() {
@@ -30,7 +38,7 @@ class QualityList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    this.getData({ size: pageSize, number: current - 1 });
+    this.changePage(current, pageSize);
   };
 
   getData = params => {
@@ -42,7 +50,14 @@ class QualityList extends Component {
   };
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    this.getData({ size: pageSize, number: current - 1 });
+    firstPage = current - 1;
+    this.props.setCurrentUrlParams({ firstPage });
+    this.getData({
+      size: pageSize,
+      number: firstPage,
+      teaName: !firstTeaName ? undefined : firstTeaName,
+      qualityNum: !firstQualityNum ? undefined : firstQualityNum,
+    });
   };
 
   // 表单搜索函数
@@ -50,15 +65,17 @@ class QualityList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        firstTeaName = values.teaName;
-        firstQualityNum = values.qualityNum;
+        firstTeaName = !values.teaName ? undefined : values.teaName;
+        firstQualityNum = !values.qualityNum ? undefined : values.qualityNum;
+        firstPage = 0;
         const qualityListParams = {
           size: 30,
           number: 0,
-          teaName: !values.teaName ? undefined : values.teaName,
-          qualityNum: !values.qualityNum ? undefined : values.qualityNum,
+          teaName: firstTeaName,
+          qualityNum: firstQualityNum,
         };
         this.getData(qualityListParams);
+        this.props.setCurrentUrlParams({ firstTeaName, firstQualityNum, firstPage });
       }
     });
   };
@@ -66,8 +83,10 @@ class QualityList extends Component {
   handleReset = () => {
     firstTeaName = '';
     firstQualityNum = '';
+    firstPage = 0;
     propsVal.form.resetFields();
-    this.props.setCurrentUrlParams({});
+    this.props.setRouteUrlParams('/quality/qualityList');
+    this.getData({ size: 30, number: 0 });
   };
 
   // 初始化tabale 列数据
@@ -242,7 +261,9 @@ class QualityList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
+            defaultCurrent={firstPage + 1}
             total={totalNum}
+            defaultPageSize={30}
           />
         }
       />

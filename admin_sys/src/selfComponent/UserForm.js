@@ -156,6 +156,7 @@ class UserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        // console.log('点击提交之后的values内容',values.userType,values.responseCom,values.responseCom[0],values.responseCom[1],values.responseCom[2])
         const rUserType = values.userType;
         const len = values.responseCom.length;
         if (rUserType === '小组' || rUserType === '无底表权限') {
@@ -165,7 +166,7 @@ class UserForm extends Component {
             this.props.handleSubmit(values);
           }
         } else if (rUserType === '家族') {
-          if (len !== 2) {
+          if (len < 2) {
             message.error('负责单位请选择到对应家族');
           } else {
             this.props.handleSubmit(values);

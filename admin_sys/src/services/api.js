@@ -519,3 +519,11 @@ export async function addAppealList(params) {
     body: params,
   });
 }
+
+// 刷新缓存
+export async function updateCache(params) {
+  return request(`${HOST}/cache/cache`, {
+    method: 'POST',
+    body: params,
+  });
+}

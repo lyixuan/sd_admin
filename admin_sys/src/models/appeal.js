@@ -1,4 +1,4 @@
-// import { routerRedux } from 'dva/router';
+import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { appealList, addAppealList } from '../services/api';
 
@@ -24,8 +24,7 @@ export default {
       const addAppealData = yield call(addAppealList, payload.addAppealParams);
       if (addAppealData.code === 2000) {
         message.success('成功添加申诉！');
-        const appealListData = yield call(appealList, payload.appealListParams);
-        yield put({ type: 'appealListSave', payload: { appealListData } });
+        yield put(routerRedux.push('/appeal/appealList'));
       } else {
         message.error(addAppealData.msg);
       }

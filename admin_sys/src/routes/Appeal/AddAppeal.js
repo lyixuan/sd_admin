@@ -18,26 +18,29 @@ class AddAppeal extends Component {
     this.state = {};
   }
   componentDidMount() {}
-  handleSubmit = values => {
+  handleSubmit = (values, firstcountBeginTime) => {
     const {
       type = null,
       consultId = null,
-      countBeginTime = null,
       ordId = null,
       stuId = null,
       workorderId = null,
+      countValue = null,
     } = values;
+    const countBeginTime = !firstcountBeginTime ? undefined : firstcountBeginTime;
     const newWorkorderId = type.substr(0, 2) === '工单' ? workorderId : null;
     const newConsultId = type.substr(0, 2) === 'IM' ? consultId : null;
+    const newCountValue = type === 'IM不及时' ? countValue : null;
     const localStorage = getAuthority('admin_user');
     const operator = !localStorage ? null : localStorage.userId;
     const addAppealParams = {
       type: !type ? null : appealType[type],
       consultId: !newConsultId ? null : Number(newConsultId),
-      countTime: !countBeginTime ? null : countBeginTime,
+      countTime: !countBeginTime ? null : `${countBeginTime} 00:00:00`,
       ordId: !ordId ? null : Number(ordId),
       stuId: !stuId ? null : Number(stuId),
       workorderId: !newWorkorderId ? null : Number(newWorkorderId),
+      countValue: !newCountValue ? null : Number(newCountValue),
       operator,
     };
     const appealListParams = {
@@ -66,8 +69,8 @@ class AddAppeal extends Component {
             resetContent={() => {
               this.resetContent();
             }}
-            handleSubmit={values => {
-              this.handleSubmit(values);
+            handleSubmit={(valuess, firstcountBeginTime) => {
+              this.handleSubmit(valuess, firstcountBeginTime);
             }}
           />
         }

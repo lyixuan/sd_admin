@@ -7,7 +7,7 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
-import { appealType } from '../../utils/dataDictionary';
+import { appealType, appealTypeRest } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -47,8 +47,8 @@ class AppealList extends Component {
         ? undefined
         : appealType[firstType] === 0 ? undefined : appealType[firstType],
       stuId: !firstStuId ? undefined : firstStuId,
-      countStart: !firstCountStart ? undefined : firstCountStart,
-      countEnd: !firstCountEnd ? undefined : firstCountEnd,
+      countStart: !firstCountStart ? undefined : `${firstCountStart} 00:00:00`,
+      countEnd: !firstCountEnd ? undefined : `${firstCountEnd} 00:00:00`,
     };
     this.getData(appealListParams);
   }
@@ -89,7 +89,7 @@ class AppealList extends Component {
         firstType = !values.type ? '全部' : values.type;
         firstStuId = !values.stuId ? undefined : Number(values.stuId);
         firstPage = 0;
-        this.props.setCurrentUrlParams({
+        this.savaParams({
           firstType,
           firstStuId,
           firstCountStart,
@@ -103,17 +103,24 @@ class AppealList extends Component {
             ? undefined
             : appealType[firstType] === 0 ? undefined : appealType[firstType],
           stuId: !firstStuId ? undefined : Number(firstStuId),
-          countStart: !values.countBeginTime ? undefined : firstCountStart,
-          countEnd: !values.countBeginTime ? undefined : firstCountEnd,
+          countStart: !values.countBeginTime ? undefined : `${firstCountStart} 00:00:00`,
+          countEnd: !values.countBeginTime ? undefined : `${firstCountEnd} 00:00:00`,
         };
         this.getData(appealListParams);
       }
     });
   };
 
+  savaParams = params => {
+    this.props.setCurrentUrlParams(params);
+  };
+
   // 点击某一页函数
   changePage = (current, size) => {
     firstPage = current - 1;
+    this.savaParams({
+      firstPage: !firstPage ? 0 : firstPage,
+    });
     const appealListParams = {
       pageSize: size,
       pageNum: current - 1,
@@ -121,8 +128,8 @@ class AppealList extends Component {
         ? undefined
         : appealType[firstType] === 0 ? undefined : appealType[firstType],
       stuId: !firstStuId ? undefined : Number(firstStuId),
-      countStart: !firstCountStart ? undefined : firstCountStart,
-      countEnd: !firstCountEnd ? undefined : firstCountEnd,
+      countStart: !firstCountStart ? undefined : `${firstCountStart} 00:00:00`,
+      countEnd: !firstCountEnd ? undefined : `${firstCountEnd} 00:00:00`,
     };
     this.getData(appealListParams);
   };
@@ -134,12 +141,13 @@ class AppealList extends Component {
       data.push({
         key: index,
         id: item.id,
-        type: item.type,
+        type: !appealTypeRest[item.type] ? null : appealTypeRest[item.type],
         stuId: item.stuId,
         countBeginTime: formatDate(item.countBeginTime),
         ordId: item.ordId,
         workorderId: item.workorderId,
         consultId: item.consultId,
+        countValue: item.countValue,
         modifyTime: formatDate(item.modifyTime),
       })
     );
@@ -178,6 +186,10 @@ class AppealList extends Component {
         dataIndex: 'consultId',
       },
       {
+        title: '申诉个数',
+        dataIndex: 'countValue',
+      },
+      {
         title: '操作时间',
         dataIndex: 'modifyTime',
       },
@@ -197,20 +209,9 @@ class AppealList extends Component {
     firstCountStart = null;
     firstCountEnd = null;
     firstPage = 0;
-    this.props.setCurrentUrlParams({
-      firstType,
-      firstStuId,
-      firstCountStart,
-      firstCountEnd,
-      firstPage,
-    });
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/appeal/appealList');
-    const appealListParams = {
-      pageSize: 30,
-      pageNum: 0,
-    };
-    this.getData(appealListParams);
+    this.getData({ pageSize: 30, pageNum: 0 });
   };
 
   render() {
@@ -245,9 +246,9 @@ class AppealList extends Component {
                       <Option value="IM未回复">IM减分-未回复</Option>
                       <Option value="IM不及时">IM减分-不及时</Option>
                       <Option value="IM不满意">IM减分-不满意</Option>
-                      <Option value="工单24">工单24</Option>
-                      <Option value="工单48">工单48</Option>
-                      <Option value="工单72">工单72</Option>
+                      <Option value="工单24">工单初次减分</Option>
+                      <Option value="工单48">工单二次减分</Option>
+                      <Option value="工单72">工单三次减分</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -256,8 +257,19 @@ class AppealList extends Component {
                 <FormItem label="学员id">
                   {getFieldDecorator('stuId', {
                     initialValue: !firstStuId ? null : firstStuId,
-                    rules: [{ max: 20, message: '学员id长度不得大于20个字符!' }],
-                  })(<Input placeholder="请输入学员id" style={{ width: 230, height: 32 }} />)}
+                    rules: [
+                      {
+                        validator(rule, value, callback) {
+                          if (value && isNaN(value)) {
+                            callback({ message: '学员id需要是数字组成' });
+                          } else if (value && value.length > 9) {
+                            callback({ message: '学员id长度不得大于9位数字' });
+                          }
+                          callback();
+                        },
+                      },
+                    ],
+                  })(<Input placeholder="请输入学员id" style={{ width: '230', height: 32 }} />)}
                 </FormItem>
               </Col>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -330,7 +342,7 @@ class AppealList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={1}
+            defaultCurrent={firstPage + 1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}

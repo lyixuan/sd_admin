@@ -10,6 +10,7 @@ import { levelData } from '../../utils/dataDictionary';
 const FormItem = Form.Item;
 let propsVal = '';
 let firstName = '';
+let firstPage = 0; // 分页的默认起开页面
 @connect(({ permission, loading }) => ({
   permission,
   loading: loading.effects['permission/permissionList'],
@@ -23,19 +24,18 @@ class PermissionList extends Component {
   componentDidMount() {
     const initVal = this.props.getUrlParams();
     firstName = !initVal.firstName ? '' : initVal.firstName;
+    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
     const permissionListParams = {
       size: 30,
-      number: 0,
+      number: !firstPage ? 0 : firstPage,
       sort: 'id',
       name: !initVal.firstName ? undefined : initVal.firstName,
     };
-    this.props.dispatch({
-      type: 'permission/permissionList',
-      payload: { permissionListParams },
-    });
+    this.getData(permissionListParams);
   }
   componentWillUnmount() {
     firstName = null;
+    firstPage = 0;
   }
   // 权限编辑
   onEdit = val => {
@@ -47,7 +47,10 @@ class PermissionList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    const permissionListParams = { size: pageSize, number: current - 1, sort: 'id' };
+    this.changePage(current, pageSize);
+  };
+
+  getData = permissionListParams => {
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
@@ -56,26 +59,24 @@ class PermissionList extends Component {
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    const permissionListParams = { size: pageSize, number: current - 1, sort: 'id' };
-    this.props.dispatch({
-      type: 'permission/permissionList',
-      payload: { permissionListParams },
-    });
+    firstPage = current - 1;
+    this.props.setCurrentUrlParams({ firstPage });
+    const permissionListParams = {
+      size: pageSize,
+      number: firstPage,
+      sort: 'id',
+      name: !firstName ? undefined : firstName,
+    };
+    this.getData(permissionListParams);
   };
 
   // 表单重置
   handleReset = () => {
     firstName = '';
-    this.props.setCurrentUrlParams({
-      firstName: null,
-    });
+    firstPage = 0;
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/config/permissionList');
-    const permissionListParams = { size: 30, number: 0, sort: 'id' };
-    this.props.dispatch({
-      type: 'permission/permissionList',
-      payload: { permissionListParams },
-    });
+    this.getData({ size: 30, number: 0, sort: 'id' });
   };
 
   // 表单搜索
@@ -84,8 +85,10 @@ class PermissionList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         firstName = values.name;
+        firstPage = 0;
         this.props.setCurrentUrlParams({
           firstName: !values.name ? undefined : values.name,
+          firstPage,
         });
         const permissionListParams = {
           name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
@@ -93,10 +96,7 @@ class PermissionList extends Component {
           size: 30,
           number: 0,
         };
-        this.props.dispatch({
-          type: 'permission/permissionList',
-          payload: { permissionListParams },
-        });
+        this.getData(permissionListParams);
       }
     });
   };
@@ -257,7 +257,7 @@ class PermissionList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={1}
+            defaultCurrent={firstPage + 1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}

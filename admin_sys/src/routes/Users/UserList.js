@@ -41,10 +41,7 @@ class UserList extends Component {
       name: !firstName ? undefined : firstName,
       mobile: !firstPhone ? undefined : firstPhone,
     };
-    this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
-    });
+    this.getData(userListParams);
   }
   // 组件卸载时清除声明的变量
   componentWillUnmount() {
@@ -88,9 +85,6 @@ class UserList extends Component {
 
   // 编辑用户
   onEdit = val => {
-    this.props.setCurrentUrlParams({
-      firstPage: !firstPage ? 0 : firstPage,
-    });
     this.props.setRouteUrlParams('/user/editUser', {
       id: val.id,
       userType: val.userType,
@@ -102,9 +96,23 @@ class UserList extends Component {
     this.changePage(current, size);
   };
 
+  getData = userListParams => {
+    this.props.dispatch({
+      type: 'user/userList',
+      payload: { userListParams },
+    });
+  };
+
+  savaParams = params => {
+    this.props.setCurrentUrlParams(params);
+  };
+
   // 点击某一页函数
   changePage = (current, size) => {
     firstPage = current - 1;
+    this.savaParams({
+      firstPage: !firstPage ? 0 : firstPage,
+    });
     const userListParams = {
       pageSize: size,
       pageNum: current - 1,
@@ -112,10 +120,7 @@ class UserList extends Component {
       name: !firstName ? undefined : firstName,
       mobile: !firstPhone ? undefined : firstPhone,
     };
-    this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
-    });
+    this.getData(userListParams);
   };
 
   // 初始化tabale 列数据
@@ -217,27 +222,13 @@ class UserList extends Component {
 
   // 表单重置
   handleReset = () => {
+    propsVal.form.resetFields();
     firstName = '';
     firstPhone = '';
     firstUpdate = '全部';
     firstPage = 0;
-    this.props.setCurrentUrlParams({
-      firstUpdate: null,
-      firstName: null,
-      firstPhone: null,
-      firstPage: null,
-    });
-    propsVal.form.resetFields();
     this.props.setRouteUrlParams('/config/userList');
-    const userListParams = {
-      pageSize: 30,
-      pageNum: 0,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-    };
-    this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
-    });
+    this.getData({ pageSize: 30, pageNum: 0, isUpdate: 0 });
   };
 
   // 表单搜索
@@ -249,13 +240,12 @@ class UserList extends Component {
         firstPhone = !values.mobile ? undefined : values.mobile;
         firstUpdate = !values.isUpdate ? '全部' : values.isUpdate;
         firstPage = 0;
-        this.props.setCurrentUrlParams({
+        this.savaParams({
           firstUpdate,
           firstName,
           firstPhone,
           firstPage: 0,
         });
-
         const userListParams = {
           isUpdate: isUpdateDataReset[firstUpdate],
           name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
@@ -263,10 +253,7 @@ class UserList extends Component {
           pageSize: 30,
           pageNum: 0,
         };
-        this.props.dispatch({
-          type: 'user/userList',
-          payload: { userListParams },
-        });
+        this.getData(userListParams);
       }
     });
   };
@@ -386,10 +373,9 @@ class UserList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={!firstPage ? 1 : firstPage + 1}
+            defaultCurrent={firstPage + 1}
             total={totalNum}
             defaultPageSize={30}
-            pageSizeOptions={['30']}
           />
         }
       />

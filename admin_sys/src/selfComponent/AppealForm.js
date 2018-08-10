@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, DatePicker, message } from 'antd';
+// import moment from 'moment';
 import common from '../routes/Common/common.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-let flag = null;
+let flag = '';
+const dateFormat = 'YYYY-MM-DD';
+let firstcountBeginTime = null;
 
 class AppealForm extends Component {
   constructor(props) {
@@ -12,12 +15,27 @@ class AppealForm extends Component {
     this.state = {};
   }
 
+  dataChange = (dates, dateStrings) => {
+    const aa = dateStrings;
+    firstcountBeginTime = aa;
+  };
+
   handleSubmit = e => {
+    if (!flag) {
+      message.error('请选择申诉类型');
+    }
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.handleSubmit(values);
-        flag = null;
+        if (flag.substr(0, 2) === '工单' && !values.workorderId) {
+          message.error('请输入工单id');
+        } else if (flag.substr(0, 2) === 'IM' && !values.consultId) {
+          message.error('请输入咨询id');
+        } else if (flag === 'IM不及时' && !values.countValue) {
+          message.error('请输入申诉个数');
+        } else {
+          this.props.handleSubmit(values, firstcountBeginTime);
+        }
       }
     });
   };
@@ -27,13 +45,12 @@ class AppealForm extends Component {
   };
 
   resetContent = () => {
-    flag = null;
+    flag = '';
     this.props.resetContent();
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    // flag = this.props.show===1?null:flag;
     const { submit, loading } = this.props.jumpFunction;
     const formItemLayout = {
       labelCol: {
@@ -57,6 +74,14 @@ class AppealForm extends Component {
         },
       },
     };
+
+    const datePicker = (
+      <DatePicker
+        onChange={this.dataChange}
+        format={dateFormat}
+        style={{ width: 380, height: 32 }}
+      />
+    );
     return (
       <Spin spinning={loading}>
         <Form onSubmit={this.handleSubmit}>
@@ -80,9 +105,9 @@ class AppealForm extends Component {
                 <Option value="IM未回复">IM减分-未回复</Option>
                 <Option value="IM不及时">IM减分-不及时</Option>
                 <Option value="IM不满意">IM减分-不满意</Option>
-                <Option value="工单24">工单24</Option>
-                <Option value="工单48">工单48</Option>
-                <Option value="工单72">工单72</Option>
+                <Option value="工单24">工单初次减分</Option>
+                <Option value="工单48">工单二次减分</Option>
+                <Option value="工单72">工单三次减分</Option>
               </Select>
             )}
           </FormItem>
@@ -100,18 +125,24 @@ class AppealForm extends Component {
                     },
                   },
                   { required: true, message: '学员id必填项，请填写!', whitespace: true },
-                  { max: 20, message: '学员id长度不得大于20个字符!' },
+                  { max: 9, message: '学员id长度不得大于9位数字!' },
                 ],
               })(<Input style={{ width: 380 }} />)}
             </FormItem>
             <FormItem {...formItemLayout} label="*扣分时间">
               {getFieldDecorator('countBeginTime', {
-                initialValue: null,
                 rules: [
-                  { required: true, message: '扣分时间必填项，请填写!', whitespace: true },
-                  { max: 20, message: '扣分时间长度不得大于20个字符!' },
+                  {
+                    validator(rule, value, callback) {
+                      if (!value) {
+                        callback({ message: '扣分时间为必填项，请选择' });
+                      }
+                      callback();
+                    },
+                  },
+                  // { required: true, message: '学员id必填项，请填写!', whitespace: true },
                 ],
-              })(<Input style={{ width: 380 }} />)}
+              })(datePicker)}
             </FormItem>
             <FormItem {...formItemLayout} label="*订单id">
               {getFieldDecorator('ordId', {
@@ -126,7 +157,7 @@ class AppealForm extends Component {
                     },
                   },
                   { required: true, message: '订单id必填项，请填写!', whitespace: true },
-                  { max: 20, message: '订单id长度不得大于20个字符!' },
+                  { max: 9, message: '订单id长度不得大于9位数字!' },
                 ],
               })(<Input style={{ width: 380 }} />)}
             </FormItem>
@@ -141,7 +172,7 @@ class AppealForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value && flag.substr(0, 2) === '工单') {
+                        if (flag.substr(0, 2) === '工单' && !value) {
                           callback({ message: '工单id为必填项，请填写！' });
                         } else if (isNaN(value) && value && flag.substr(0, 2) === '工单') {
                           callback({ message: '工单id需要是数字组成' });
@@ -149,7 +180,6 @@ class AppealForm extends Component {
                         callback();
                       },
                     },
-                    { max: 20, message: '工单id长度不得大于20个字符!' },
                   ],
                 })(<Input style={{ width: 380 }} />)}
               </FormItem>
@@ -165,7 +195,7 @@ class AppealForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value && flag.substr(0, 2) === 'IM') {
+                        if (flag.substr(0, 2) === 'IM' && !value) {
                           callback({ message: '咨询id为必填项，请填写！' });
                         } else if (isNaN(value) && value && flag.substr(0, 2) === 'IM') {
                           callback({ message: '咨询id需要是数字组成' });
@@ -173,7 +203,32 @@ class AppealForm extends Component {
                         callback();
                       },
                     },
-                    { max: 20, message: '咨询id长度不得大于20个字符!' },
+                    { max: 9, message: '咨询id长度不得大于9位数字!' },
+                  ],
+                })(<Input style={{ width: 380 }} />)}
+              </FormItem>
+            </div>
+
+            <div
+              style={{
+                display: `${!flag ? 'none' : flag === 'IM不及时' ? 'block' : 'none'}`,
+              }}
+            >
+              <FormItem {...formItemLayout} label="*申诉个数">
+                {getFieldDecorator('countValue', {
+                  initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (flag === 'IM不及时' && !value) {
+                          callback({ message: '申诉个数为必填项，请填写！' });
+                        } else if (value && !/(^[1-9]\d*$)/.test(value) && flag === 'IM不及时') {
+                          callback({ message: '申诉个数需要是正整数组成' });
+                        }
+                        callback();
+                      },
+                    },
+                    { max: 5, message: '申诉个数长度不得大于5位数字!' },
                   ],
                 })(<Input style={{ width: 380 }} />)}
               </FormItem>
