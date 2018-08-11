@@ -91,12 +91,16 @@ class ImportPerformance extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '规则',
-        dataIndex: 'actualKpi',
+        title: '行数',
+        dataIndex: 'rowNum',
       },
       {
-        title: '报错提示语',
+        title: '身份证号',
         dataIndex: 'idCard',
+      },
+      {
+        title: '实发金额',
+        dataIndex: 'actualKpi',
       },
     ];
     return columns;

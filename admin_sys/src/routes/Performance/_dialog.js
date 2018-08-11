@@ -6,14 +6,14 @@ const { Option } = Select;
 
 class DialogPerformance extends Component {
   paramObj = {
-    collegeId: '',
+    type: '',
     keyYM: '',
   };
   clickModalOK = () => {
     this.props.fetchData(this.paramObj);
   };
   handleSelectChange1 = val => {
-    this.paramObj.collegeId = val;
+    this.paramObj.type = val;
   };
   handleSelectChange2 = val => {
     this.paramObj.keyYM = val;
