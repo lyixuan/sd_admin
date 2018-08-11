@@ -50,11 +50,12 @@ class CollegePerformance extends Component {
     this.setState({ isShowModal: bol });
   };
   fetchData = param => {
-    console.log(param);
     this.props.dispatch({
       type: this.state.fetchUrl,
       payload: param,
     });
+
+    this.showModal(false);
   };
   // 初始化tabale 列数据
   fillDataSource = val => {
