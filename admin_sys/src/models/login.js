@@ -4,6 +4,9 @@ import { userLogin, userLogout } from '../services/api';
 import { setAuthority, setAuthoritySeccion, removeStorge } from '../utils/authority';
 import { handleSuccess } from '../utils/Handle';
 
+message.config({
+  maxCount: 1,
+});
 export default {
   namespace: 'login',
 
@@ -47,7 +50,11 @@ export default {
         yield call(userLogout);
       } finally {
         removeStorge('admin_user');
-        yield call(handleSuccess, { content: '退出登录', pathname: '/userLayout/login' });
+        yield call(handleSuccess, {
+          content: '退出登录',
+          pathname: '/userLayout/login',
+          time: 0.5,
+        });
       }
     },
   },

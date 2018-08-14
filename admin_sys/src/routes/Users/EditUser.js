@@ -47,7 +47,7 @@ class EditUser extends Component {
     const rname = values.wechatDepartmentName;
     const rUserType = values.userType;
     const len = values.responseCom.length;
-    let typeId = rUserType==='家族'?values.responseCom[1]:values.responseCom[len - 1];
+    let typeId = rUserType === '家族' ? values.responseCom[1] : values.responseCom[len - 1];
     if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
       typeId = undefined;
     }

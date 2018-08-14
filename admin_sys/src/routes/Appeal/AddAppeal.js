@@ -18,7 +18,7 @@ class AddAppeal extends Component {
     this.state = {};
   }
   componentDidMount() {}
-  handleSubmit = (values,firstcountBeginTime) => {
+  handleSubmit = (values, firstcountBeginTime) => {
     const {
       type = null,
       consultId = null,
@@ -27,7 +27,7 @@ class AddAppeal extends Component {
       workorderId = null,
       countValue = null,
     } = values;
-    const countBeginTime = !firstcountBeginTime?undefined:firstcountBeginTime;
+    const countBeginTime = !firstcountBeginTime ? undefined : firstcountBeginTime;
     const newWorkorderId = type.substr(0, 2) === '工单' ? workorderId : null;
     const newConsultId = type.substr(0, 2) === 'IM' ? consultId : null;
     const newCountValue = type === 'IM不及时' ? countValue : null;
@@ -69,8 +69,8 @@ class AddAppeal extends Component {
             resetContent={() => {
               this.resetContent();
             }}
-            handleSubmit={(valuess,firstcountBeginTime) => {
-              this.handleSubmit(valuess,firstcountBeginTime);
+            handleSubmit={(valuess, firstcountBeginTime) => {
+              this.handleSubmit(valuess, firstcountBeginTime);
             }}
           />
         }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin,DatePicker,message } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, DatePicker, message } from 'antd';
 // import moment from 'moment';
 import common from '../routes/Common/common.css';
-
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -22,20 +21,20 @@ class AppealForm extends Component {
   };
 
   handleSubmit = e => {
-    if (!flag){
+    if (!flag) {
       message.error('请选择申诉类型');
     }
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        if(flag.substr(0, 2) === '工单'&&!values.workorderId){
+        if (flag.substr(0, 2) === '工单' && !values.workorderId) {
           message.error('请输入工单id');
-        }else if(flag.substr(0, 2) === 'IM'&&!values.consultId){
+        } else if (flag.substr(0, 2) === 'IM' && !values.consultId) {
           message.error('请输入咨询id');
-        }else if(flag==='IM不及时'&&!values.countValue){
+        } else if (flag === 'IM不及时' && !values.countValue) {
           message.error('请输入申诉个数');
-        }else{
-          this.props.handleSubmit(values,firstcountBeginTime);
+        } else {
+          this.props.handleSubmit(values, firstcountBeginTime);
         }
       }
     });
@@ -49,8 +48,6 @@ class AppealForm extends Component {
     flag = '';
     this.props.resetContent();
   };
-
-
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -77,7 +74,6 @@ class AppealForm extends Component {
         },
       },
     };
-
 
     const datePicker = (
       <DatePicker
@@ -176,7 +172,7 @@ class AppealForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (flag.substr(0, 2) === '工单'&& !value ) {
+                        if (flag.substr(0, 2) === '工单' && !value) {
                           callback({ message: '工单id为必填项，请填写！' });
                         } else if (isNaN(value) && value && flag.substr(0, 2) === '工单') {
                           callback({ message: '工单id需要是数字组成' });
@@ -199,7 +195,7 @@ class AppealForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (flag.substr(0, 2) === 'IM'&&!value) {
+                        if (flag.substr(0, 2) === 'IM' && !value) {
                           callback({ message: '咨询id为必填项，请填写！' });
                         } else if (isNaN(value) && value && flag.substr(0, 2) === 'IM') {
                           callback({ message: '咨询id需要是数字组成' });
@@ -224,7 +220,7 @@ class AppealForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (flag === 'IM不及时'&&!value ) {
+                        if (flag === 'IM不及时' && !value) {
                           callback({ message: '申诉个数为必填项，请填写！' });
                         } else if (value && !/(^[1-9]\d*$)/.test(value) && flag === 'IM不及时') {
                           callback({ message: '申诉个数需要是正整数组成' });
@@ -237,7 +233,6 @@ class AppealForm extends Component {
                 })(<Input style={{ width: 380 }} />)}
               </FormItem>
             </div>
-
           </div>
           <FormItem {...tailFormItemLayout} />
           <Row>

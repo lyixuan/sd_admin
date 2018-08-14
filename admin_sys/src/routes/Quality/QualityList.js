@@ -25,10 +25,10 @@ class QualityList extends Component {
     firstTeaName = !initVal.firstTeaName ? '' : initVal.firstTeaName;
     firstQualityNum = !initVal.firstQualityNum ? '' : Number(initVal.firstQualityNum);
     firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
-    const teaName= !firstTeaName ? undefined : firstTeaName;
-    const qualityNum= !firstQualityNum ? undefined : firstQualityNum;
-    const number=!firstPage ? 0 : firstPage;
-    this.getData({ size: 30, number,teaName,qualityNum });
+    const teaName = !firstTeaName ? undefined : firstTeaName;
+    const qualityNum = !firstQualityNum ? undefined : firstQualityNum;
+    const number = !firstPage ? 0 : firstPage;
+    this.getData({ size: 30, number, teaName, qualityNum });
   }
 
   componentWillUnmount() {
@@ -50,13 +50,14 @@ class QualityList extends Component {
   };
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    firstPage = current -1;
-    this.props.setCurrentUrlParams({firstPage});
+    firstPage = current - 1;
+    this.props.setCurrentUrlParams({ firstPage });
     this.getData({
       size: pageSize,
-      number: firstPage ,
-      teaName: !firstTeaName?undefined:firstTeaName,
-      qualityNum: !firstQualityNum?undefined:firstQualityNum});
+      number: firstPage,
+      teaName: !firstTeaName ? undefined : firstTeaName,
+      qualityNum: !firstQualityNum ? undefined : firstQualityNum,
+    });
   };
 
   // 表单搜索函数
@@ -74,7 +75,7 @@ class QualityList extends Component {
           qualityNum: firstQualityNum,
         };
         this.getData(qualityListParams);
-        this.props.setCurrentUrlParams({firstTeaName,firstQualityNum,firstPage});
+        this.props.setCurrentUrlParams({ firstTeaName, firstQualityNum, firstPage });
       }
     });
   };
@@ -85,7 +86,7 @@ class QualityList extends Component {
     firstPage = 0;
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/quality/qualityList');
-    this.getData({size: 30, number: 0})
+    this.getData({ size: 30, number: 0 });
   };
 
   // 初始化tabale 列数据
@@ -260,7 +261,7 @@ class QualityList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={firstPage+1}
+            defaultCurrent={firstPage + 1}
             total={totalNum}
             defaultPageSize={30}
           />

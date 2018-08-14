@@ -12,7 +12,6 @@ let firstPage = 0; // 分页的默认起开页面
   account,
   loading: loading.effects['account/accountList'],
 }))
-
 class AccountList extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +22,7 @@ class AccountList extends Component {
     const initVal = this.props.getUrlParams();
     firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
     const accountListParams = { size: 30, number: !firstPage ? 0 : firstPage, orderType: 'name' };
-    this.getData(accountListParams)
+    this.getData(accountListParams);
   }
 
   // 组件卸载时清除声明的变量
@@ -53,19 +52,19 @@ class AccountList extends Component {
     this.changePage(current, pageSize);
   };
 
-  getData=(accountListParams)=>{
+  getData = accountListParams => {
     this.props.dispatch({
       type: 'account/accountList',
       payload: { accountListParams },
     });
-  }
+  };
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    firstPage = current -1;
-    this.props.setCurrentUrlParams({firstPage});
+    firstPage = current - 1;
+    this.props.setCurrentUrlParams({ firstPage });
     const accountListParams = { size: pageSize, number: firstPage, orderType: 'name' };
-    this.getData(accountListParams)
+    this.getData(accountListParams);
   };
 
   // 初始化tabale 列数据

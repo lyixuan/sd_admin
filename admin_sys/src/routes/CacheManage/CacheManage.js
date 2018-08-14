@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Form, DatePicker, Row, Col,message } from 'antd';
+import { Button, Form, DatePicker, Row, Col, message } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -46,7 +46,7 @@ class CacheManage extends Component {
   // 确定弹框
   handleSearch = e => {
     e.preventDefault();
-    propsVal.form.validateFields((err) => {
+    propsVal.form.validateFields(err => {
       if (!err) {
         if (!firstBeginTime) {
           message.error('缓存时间为必选项，请选择');
@@ -60,8 +60,8 @@ class CacheManage extends Component {
   // 模态框回显
   clearCache = () => {
     const updateCacheParams = {
-      beginDate: !firstBeginTime?undefined:`${firstBeginTime} 00:00:00`,
-      endDate: !firstEndTime?undefined:`${firstEndTime} 00:00:00`,
+      beginDate: !firstBeginTime ? undefined : `${firstBeginTime} 00:00:00`,
+      endDate: !firstEndTime ? undefined : `${firstEndTime} 00:00:00`,
     };
     this.props.dispatch({
       type: 'cacheManage/updateCache',
@@ -71,7 +71,7 @@ class CacheManage extends Component {
   };
 
   render() {
-    const {submit} = this.props;
+    const { submit } = this.props;
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -106,7 +106,12 @@ class CacheManage extends Component {
             <Col span={8} style={{ textAlign: 'center' }}>
               <FormItem>
                 <AuthorizedButton authority="/complaint/complaintAdd">
-                  <Button type="primary" htmlType="submit" className={common.createButton} loading={submit}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className={common.createButton}
+                    loading={submit}
+                  >
                     确定
                   </Button>
                 </AuthorizedButton>
@@ -117,10 +122,12 @@ class CacheManage extends Component {
       );
     });
 
-
     const modalContent = (
       <div>
-        <p style={{ textAlign: 'center', marginBottom: '10px' }}> 即将刷新{firstBeginTime}～{firstEndTime}的缓存，请确认！ </p>
+        <p style={{ textAlign: 'center', marginBottom: '10px' }}>
+          {' '}
+          即将刷新{firstBeginTime}～{firstEndTime}的缓存，请确认！{' '}
+        </p>
       </div>
     );
     return (
@@ -140,7 +147,6 @@ class CacheManage extends Component {
           }}
         />
       </div>
-
     );
   }
 }

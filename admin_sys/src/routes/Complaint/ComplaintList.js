@@ -31,12 +31,14 @@ class ComplainList extends Component {
     firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
     firstBeginTime = !initVal.firstBeginTime ? undefined : initVal.firstBeginTime;
     firstEndTime = !initVal.firstEndTime ? undefined : initVal.firstEndTime;
-    firstBottomLineNum = !initVal.firstBottomLineNum ? undefined : Number(initVal.firstBottomLineNum);
+    firstBottomLineNum = !initVal.firstBottomLineNum
+      ? undefined
+      : Number(initVal.firstBottomLineNum);
     this.getData({
       size: 30,
       number: firstPage,
-      beginTime:firstBeginTime,
-      endTime:firstEndTime,
+      beginTime: firstBeginTime,
+      endTime: firstEndTime,
       bottomLineNum: firstBottomLineNum,
     });
   }
@@ -55,7 +57,7 @@ class ComplainList extends Component {
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
-    this.changePage(current, pageSize)
+    this.changePage(current, pageSize);
   };
   getData = params => {
     const getListParams = { ...this.props.blComplain.getListParams, ...params };
@@ -65,24 +67,22 @@ class ComplainList extends Component {
     });
   };
 
-  savaParams=(params)=>{
-    this.props.setCurrentUrlParams(
-      params
-    );
-  }
+  savaParams = params => {
+    this.props.setCurrentUrlParams(params);
+  };
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
     firstPage = current - 1;
     this.savaParams({
       firstPage: !firstPage ? 0 : firstPage,
-    })
+    });
     this.getData({
       size: pageSize,
       number: current - 1,
-      beginTime:!firstBeginTime?undefined:firstBeginTime,
-      endTime:!firstEndTime?undefined:firstEndTime,
-      bottomLineNum:!firstBottomLineNum?undefined:firstBottomLineNum,
+      beginTime: !firstBeginTime ? undefined : firstBeginTime,
+      endTime: !firstEndTime ? undefined : firstEndTime,
+      bottomLineNum: !firstBottomLineNum ? undefined : firstBottomLineNum,
     });
   };
 
@@ -100,12 +100,12 @@ class ComplainList extends Component {
           firstBeginTime,
           firstEndTime,
           firstPage,
-        })
+        });
         const getListParams = {
           size: 30,
           number: 0,
-          beginTime:!values.dateRange?undefined:beginTime,
-          endTime:!values.dateRange?undefined:endTime,
+          beginTime: !values.dateRange ? undefined : beginTime,
+          endTime: !values.dateRange ? undefined : endTime,
           bottomLineNum: values.bottomLineNum,
         };
         this.getData(getListParams);
@@ -118,10 +118,10 @@ class ComplainList extends Component {
     firstBeginTime = '';
     firstEndTime = '';
     firstBottomLineNum = '';
-    firstPage=0;
+    firstPage = 0;
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/bottomLine/complaintList');
-    this.getData({size: 30, number: 0});
+    this.getData({ size: 30, number: 0 });
   };
 
   // 初始化tabale 列数据
@@ -310,7 +310,7 @@ class ComplainList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={firstPage+1}
+            defaultCurrent={firstPage + 1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}

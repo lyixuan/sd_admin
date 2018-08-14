@@ -31,7 +31,7 @@ class PermissionList extends Component {
       sort: 'id',
       name: !initVal.firstName ? undefined : initVal.firstName,
     };
-    this.getData(permissionListParams)
+    this.getData(permissionListParams);
   }
   componentWillUnmount() {
     firstName = null;
@@ -50,19 +50,24 @@ class PermissionList extends Component {
     this.changePage(current, pageSize);
   };
 
-  getData=(permissionListParams)=>{
+  getData = permissionListParams => {
     this.props.dispatch({
       type: 'permission/permissionList',
       payload: { permissionListParams },
     });
-  }
+  };
 
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    firstPage = current -1;
-    this.props.setCurrentUrlParams({firstPage});
-    const permissionListParams = { size: pageSize, number: firstPage, sort: 'id',name:!firstName?undefined:firstName};
-    this.getData(permissionListParams)
+    firstPage = current - 1;
+    this.props.setCurrentUrlParams({ firstPage });
+    const permissionListParams = {
+      size: pageSize,
+      number: firstPage,
+      sort: 'id',
+      name: !firstName ? undefined : firstName,
+    };
+    this.getData(permissionListParams);
   };
 
   // 表单重置
@@ -71,7 +76,7 @@ class PermissionList extends Component {
     firstPage = 0;
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/config/permissionList');
-    this.getData({size: 30, number: 0, sort: 'id' })
+    this.getData({ size: 30, number: 0, sort: 'id' });
   };
 
   // 表单搜索
@@ -91,7 +96,7 @@ class PermissionList extends Component {
           size: 30,
           number: 0,
         };
-        this.getData(permissionListParams)
+        this.getData(permissionListParams);
       }
     });
   };
@@ -252,7 +257,7 @@ class PermissionList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={firstPage+1}
+            defaultCurrent={firstPage + 1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}

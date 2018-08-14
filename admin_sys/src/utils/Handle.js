@@ -13,11 +13,16 @@ import store from '../index';
 * */
 export function handleSuccess(params) {
   const { dispatch } = store;
-  const { content = '操作成功', pathname = window.location.pathname, query = {} } = params;
+  const {
+    content = '操作成功',
+    pathname = window.location.pathname,
+    query = {},
+    time = 2,
+  } = params;
   const { search } = window.location;
   const originSearch = parse(search, true).query || null;
   const paramsObj = { ...originSearch, ...query };
-  message.success(content, () => {
+  message.success(content, time, () => {
     dispatch(
       routerRedux.push({
         pathname,

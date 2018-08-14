@@ -7,7 +7,7 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
-import { appealType,appealTypeRest } from '../../utils/dataDictionary';
+import { appealType, appealTypeRest } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -47,8 +47,8 @@ class AppealList extends Component {
         ? undefined
         : appealType[firstType] === 0 ? undefined : appealType[firstType],
       stuId: !firstStuId ? undefined : firstStuId,
-      countStart: !firstCountStart ? undefined :`${firstCountStart} 00:00:00`,
-      countEnd: !firstCountEnd ? undefined :`${firstCountEnd} 00:00:00`,
+      countStart: !firstCountStart ? undefined : `${firstCountStart} 00:00:00`,
+      countEnd: !firstCountEnd ? undefined : `${firstCountEnd} 00:00:00`,
     };
     this.getData(appealListParams);
   }
@@ -95,7 +95,7 @@ class AppealList extends Component {
           firstCountStart,
           firstCountEnd,
           firstPage,
-        })
+        });
         const appealListParams = {
           pageSize: 30,
           pageNum: 0,
@@ -103,26 +103,24 @@ class AppealList extends Component {
             ? undefined
             : appealType[firstType] === 0 ? undefined : appealType[firstType],
           stuId: !firstStuId ? undefined : Number(firstStuId),
-          countStart: !values.countBeginTime  ? undefined :`${firstCountStart} 00:00:00`,
-          countEnd: !values.countBeginTime ? undefined :`${firstCountEnd} 00:00:00`,
+          countStart: !values.countBeginTime ? undefined : `${firstCountStart} 00:00:00`,
+          countEnd: !values.countBeginTime ? undefined : `${firstCountEnd} 00:00:00`,
         };
         this.getData(appealListParams);
       }
     });
   };
 
-  savaParams=(params)=>{
-    this.props.setCurrentUrlParams(
-      params
-    );
-  }
+  savaParams = params => {
+    this.props.setCurrentUrlParams(params);
+  };
 
   // 点击某一页函数
   changePage = (current, size) => {
     firstPage = current - 1;
     this.savaParams({
       firstPage: !firstPage ? 0 : firstPage,
-    })
+    });
     const appealListParams = {
       pageSize: size,
       pageNum: current - 1,
@@ -130,8 +128,8 @@ class AppealList extends Component {
         ? undefined
         : appealType[firstType] === 0 ? undefined : appealType[firstType],
       stuId: !firstStuId ? undefined : Number(firstStuId),
-      countStart: !firstCountStart ? undefined :`${firstCountStart} 00:00:00`,
-      countEnd: !firstCountEnd ? undefined :`${firstCountEnd} 00:00:00`,
+      countStart: !firstCountStart ? undefined : `${firstCountStart} 00:00:00`,
+      countEnd: !firstCountEnd ? undefined : `${firstCountEnd} 00:00:00`,
     };
     this.getData(appealListParams);
   };
@@ -143,7 +141,7 @@ class AppealList extends Component {
       data.push({
         key: index,
         id: item.id,
-        type: !appealTypeRest[item.type]?null:appealTypeRest[item.type],
+        type: !appealTypeRest[item.type] ? null : appealTypeRest[item.type],
         stuId: item.stuId,
         countBeginTime: formatDate(item.countBeginTime),
         ordId: item.ordId,
@@ -213,7 +211,7 @@ class AppealList extends Component {
     firstPage = 0;
     propsVal.form.resetFields();
     this.props.setRouteUrlParams('/appeal/appealList');
-    this.getData({pageSize: 30, pageNum: 0});
+    this.getData({ pageSize: 30, pageNum: 0 });
   };
 
   render() {
@@ -262,9 +260,9 @@ class AppealList extends Component {
                     rules: [
                       {
                         validator(rule, value, callback) {
-                          if (value&&isNaN(value)) {
+                          if (value && isNaN(value)) {
                             callback({ message: '学员id需要是数字组成' });
-                          }else if( value && value.length>9){
+                          } else if (value && value.length > 9) {
                             callback({ message: '学员id长度不得大于9位数字' });
                           }
                           callback();
@@ -344,7 +342,7 @@ class AppealList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={firstPage+1}
+            defaultCurrent={firstPage + 1}
             total={totalNum}
             defaultPageSize={30}
             pageSizeOptions={['30']}
