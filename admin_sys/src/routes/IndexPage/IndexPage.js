@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
 import styles from './indexPage.less';
-import indexImg from '../../assets/indexImg.png';
-import ContentLayout from '../../layouts/ContentLayout';
-import ball from '../../assets/arch.png';
-import right from '../../assets/indexPage.png';
+import homeImg from '../../assets/homeImg.png';
+import homeText from '../../assets/homeText.png';
 
 class IndexPage extends Component {
   render() {
-    const content = (
+    return (
       <div className={styles.container}>
-        <div className={styles.userDescription}>
-          <h3>欢迎使用小德BI系统</h3>
-          <p>请在左侧导航栏中选择您想去的页面</p>
+        <div className={styles.content}>
+          <img src={homeImg} alt="首页" className={styles.homeImg} />
+          <div className={styles.userDescription}>
+            <img src={homeText} alt="首页文字" />
+          </div>
         </div>
-        <img src={ball} alt="ball" className={styles.backgroundBall} />
-        <img src={indexImg} alt="首页" className={styles.indexImg} />
-        <img src={right} alt="首页" className={styles.backgroundRight} />
       </div>
     );
-    return <ContentLayout contentForm={content} />;
   }
 }
 

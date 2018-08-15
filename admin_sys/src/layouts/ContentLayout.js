@@ -35,6 +35,7 @@ class ContentLayout extends Component {
           {!this.props.contentTable ? null : this.props.contentTable}
           {!this.props.contentPagination ? null : this.props.contentPagination}
           {!this.props.bottomLine ? null : this.props.bottomLine}
+          {this.props.children && { ...this.props.children }}
         </Content>
       </div>
     );
