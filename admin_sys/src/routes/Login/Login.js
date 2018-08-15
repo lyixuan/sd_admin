@@ -81,7 +81,7 @@ export default class LoginPage extends Component {
     return (
       <div className={styles.main}>
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <div style={{ width: '340px', height: '39px' }}>
+          <div style={{ width: '340px', height: '40px' }}>
             <PassWordErrorAlert
               style={{ width: '340px' }}
               errorMes={errorMessage}
@@ -97,7 +97,7 @@ export default class LoginPage extends Component {
             <NoHintPwd name="password" placeholder="请输入密码" defaultValue={adminUser.password} />
             <div className={styles.loginStatusBox}>
               <span style={{ float: 'left' }}>
-                <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>
+                <Checkbox checked={this.state.autoLogin} style={{color:'#787878',fontSize:'12px'}} onChange={this.changeAutoLogin}>
                   自动登录
                 </Checkbox>
               </span>
