@@ -146,7 +146,7 @@ class RefundList extends Component {
       {
         title: 'id',
         dataIndex: 'id',
-        width: '80px',
+        width: '90px',
       },
       {
         title: '子订单编号',

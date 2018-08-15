@@ -269,7 +269,7 @@ class AppealList extends Component {
                         },
                       },
                     ],
-                  })(<Input placeholder="请输入学员id" style={{ width: '230', height: 32 }} />)}
+                  })(<Input placeholder="请输入学员id" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>

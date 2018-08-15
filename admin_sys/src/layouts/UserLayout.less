@@ -3,10 +3,11 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-width: 1400px;
-  height: 100vh;
   overflow: auto;
-  background: #f0f2f5;
+  width: 100%;
+  min-width: 1000px;
+  height: 100%;
+  background-color: #60d6c9;
 }
 
 .content {
@@ -18,20 +19,9 @@
   box-sizing: border-box;
 }
 .showContent {
-  position: absolute;
-  width: 1000px;
-  height: 530px;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  .peopleImg {
-    float: left;
-    width: 320px;
-    height: 400px;
-    margin-top: 65px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .loginContainer {
   float: right;
@@ -64,23 +54,14 @@
   }
 
   .background {
-    width: 70%;
-    min-width: 1000px;
     height: 100%;
-    background: url('../assets/bj_right.png');
+    width: 100%;
+    background: url('../assets/bg_all.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
-  }
-
-  .backgroundBall {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 230px;
-    //height: 180px;
-    background: url('../assets/bj_left.png');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
