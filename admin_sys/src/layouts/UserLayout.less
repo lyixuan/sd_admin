@@ -5,7 +5,6 @@
   flex-direction: column;
   overflow: auto;
   width: 100%;
-  min-width: 1000px;
   height: 100%;
   background-color: #60d6c9;
 }
@@ -17,28 +16,11 @@
   padding: 32px 0;
   flex: 1;
   box-sizing: border-box;
+  min-width: 1000px;
 }
-.showContent {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.loginContainer {
-  float: right;
-  margin: auto;
-  width: 510px;
-  height: 530px;
-  background: #fff;
-  border-radius: 14px;
-  .loginContent {
-    width: 340px;
-    height: 370px;
-    margin: 65px 85px;
-    text-align: center;
-  }
-}
+
 .login {
-  width: 100%;
+  width: 340px;
   height: 330px;
 }
 
@@ -47,50 +29,97 @@
     //background-image: url('../assets/bj_right.png');
     //background-repeat: no-repeat;
     background-size: 100%;
+    min-width: 1000px;
   }
 
   .content {
     padding: 0;
+    min-width: 1000px;
+    position: relative;
   }
 
   .background {
     height: 100%;
     width: 100%;
+    min-width: 1000px;
     background: url('../assets/bg_all.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
   }
 }
 
-.top {
-  text-align: center;
+.imgContent {
+  position: relative;
+}
+.adminImg {
+  position: absolute;
+  height: 62px;
+  top: 66px;
+  left: 72px;
+}
+
+.showContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.logoContent {
+  position: absolute;
+  top: -50px;
+  left: 108px;
+  z-index: 10;
+}
+.logoImg {
+  width: 224px;
+  height: 135px;
+}
+
+.loginContainer {
+  margin: auto;
+  width: 430px;
+  height: 520px;
+  background: #fff;
+  border-radius: 14px;
+  .loginContent {
+    width: 322px;
+    height: 364px;
+    margin: 93px 49px 63px 49px;
+    text-align: center;
+  }
+}
+
+.wordContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #47c8c0;
+}
+.wordBottom {
+  font-size: 12px;
+  color: #fff;
+  width: 211px;
+  height: 17px;
+  line-height: 17px;
 }
 
 .header {
   display: inline-block;
-  height: 44px;
-  line-height: 44px;
-  margin: 0 auto 10px;
-  img {
-    float: left;
-    width: 40px;
-    height: 45.2px;
-  }
-  h3 {
-    float: left;
-    font-size: 24px;
-    margin-left: 10px;
-    font-weight: 800;
-  }
-}
-
-.logo {
-  height: 44px;
-  vertical-align: top;
-  margin-right: 16px;
+  height: 34px;
+  line-height: 34px;
+  margin: 0 auto;
+  font-size: 25px;
+  color: #52c9c2;
 }
 
 .title {
