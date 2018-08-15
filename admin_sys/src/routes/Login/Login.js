@@ -97,8 +97,12 @@ export default class LoginPage extends Component {
             <NoHintPwd name="password" placeholder="请输入密码" defaultValue={adminUser.password} />
             <div className={styles.loginStatusBox}>
               <span style={{ float: 'left' }}>
-                <Checkbox checked={this.state.autoLogin} style={{color:'#787878',fontSize:'12px'}} onChange={this.changeAutoLogin}>
-                  自动登录
+                <Checkbox
+                  checked={this.state.autoLogin}
+                  style={{ color: '#787878', fontSize: '12px' }}
+                  onChange={this.changeAutoLogin}
+                >
+                  记住密码
                 </Checkbox>
               </span>
               <span className={styles.callBackPwd} onClick={this.callBackPwd}>

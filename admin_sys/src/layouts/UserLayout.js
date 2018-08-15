@@ -25,7 +25,7 @@ class UserLayout extends React.PureComponent {
             <div className={styles.imgContent}>
               <img src={logoWord} alt="小德" className={styles.adminImg} />
             </div>
-            <div className={styles.background} >
+            <div className={styles.background}>
               <div className={styles.showContent}>
                 <div className={styles.logoContent}>
                   <img src={logoImg} alt="小德logo" className={styles.logoImg} />
