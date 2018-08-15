@@ -287,6 +287,10 @@ export const getRouterData = app => {
     },
     '/appeal/addAppeal': {
       component: dynamicWrapper(app, ['appeal'], () => import('../routes/Appeal/AddAppeal')),
+      bread: {
+        name: '申诉管理',
+        path: '/appeal/appealList',
+      },
       name: '添加申诉',
     },
 

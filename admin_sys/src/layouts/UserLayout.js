@@ -25,7 +25,6 @@ class UserLayout extends React.PureComponent {
             <div className={styles.imgContent}>
               <img src={logoWord} alt="小德" className={styles.adminImg} />
             </div>
-
             <div className={styles.background} >
               <div className={styles.showContent}>
                 <div className={styles.logoContent}>
@@ -51,9 +50,6 @@ class UserLayout extends React.PureComponent {
                 </div>
               </div>
             </div>
-
-
-
             <div className={styles.wordContent}>
               <span className={styles.wordBottom}>北京尚德在线教育机构 | 后端运营中心</span>
             </div>
