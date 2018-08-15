@@ -102,7 +102,7 @@ export default class LoginPage extends Component {
                   style={{ color: '#787878', fontSize: '12px' }}
                   onChange={this.changeAutoLogin}
                 >
-                  自动登录
+                  记住密码
                 </Checkbox>
               </span>
               <span className={styles.callBackPwd} onClick={this.callBackPwd}>
