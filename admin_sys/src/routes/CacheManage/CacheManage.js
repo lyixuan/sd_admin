@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Form, DatePicker, Row, Col, message } from 'antd';
+import { Button, Form, DatePicker, Row, Col, message,Table } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -16,7 +16,8 @@ const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ cacheManage, loading }) => ({
   cacheManage,
-  submit: loading.models.cacheManage,
+  submit: loading.models.updateCache,
+  cacheUpdate: loading.models.cacheList,
 }))
 class CacheManage extends Component {
   constructor(props) {
@@ -25,6 +26,13 @@ class CacheManage extends Component {
       visible: false,
     };
   }
+
+  // 页面render之前需要请求的接口
+  componentDidMount() {
+    this.getCatchData();
+  }
+
+
 
   componentWillUnmount() {
     firstBeginTime = null;
@@ -35,6 +43,14 @@ class CacheManage extends Component {
     const bb = dateStrings[1];
     firstBeginTime = aa;
     firstEndTime = bb;
+  };
+
+  getCatchData = params => {
+    const cacheListParams = params;
+    this.props.dispatch({
+      type: 'cacheManage/cacheList',
+      payload: { cacheListParams },
+    });
   };
 
   setDialogSHow(bol) {
@@ -70,8 +86,51 @@ class CacheManage extends Component {
     this.setDialogSHow(false);
   };
 
+  // 获取table列表头
+  columnsData = () => {
+    const columns = [
+      {
+        title: '时间',
+        dataIndex: 'dateTime',
+        width: 400,
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+      },
+    ];
+    return columns;
+  };
+
+  // 初始化tabale 列数据
+  fillDataSource = val => {
+    const data = [];
+    const arr =[]
+    Object.keys(val).map(key => {
+      return arr.push({ data: key,status:val[key] });
+    })
+    arr.map((item, index) =>
+      data.push({
+        key: index,
+        dateTime:item.data,
+        status:item.status==='1'?'刷新成功':(item.status==='2'?'刷新失败':'刷新中'),
+      })
+    );
+    return data;
+  };
+  fresh=()=>{
+    this.getCatchData();
+  }
+
   render() {
-    const { submit } = this.props;
+    const {cacheListData} = this.props.cacheManage;
+    const dataSource = !cacheListData
+      ? []
+      : !cacheListData.data
+        ? []
+        : this.fillDataSource(!cacheListData.data ? {} : cacheListData.data);
+
+    const { submit ,cacheUpdate} = this.props;
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -115,6 +174,17 @@ class CacheManage extends Component {
                     确定
                   </Button>
                 </AuthorizedButton>
+                <AuthorizedButton authority="/complaint/complaintAdd">
+                  <Button
+                    type="primary"
+                    onClick={this.fresh}
+                    className={common.createButton}
+                    loading={submit}
+                    style={{marginLeft:'20px'}}
+                  >
+                    刷新
+                  </Button>
+                </AuthorizedButton>
               </FormItem>
             </Col>
           </Row>
@@ -130,11 +200,28 @@ class CacheManage extends Component {
         </p>
       </div>
     );
+
+    const columns = !this.columnsData() ? [] : this.columnsData();
     return (
       <div>
         <ContentLayout
           routerData={this.props.routerData}
           contentForm={<WrappedAdvancedSearchForm />}
+
+          contentTable={
+            <div style={{ width: '590px' ,marginTop:'40px'}}>
+              <Table
+                bordered
+                loading={cacheUpdate}
+                dataSource={dataSource}
+                columns={columns}
+                useFixedHeader
+                scroll={{ y: 600 }}
+                pagination={false}
+              />
+            </div>
+          }
+
         />
         <ModalDialog
           title="确认"

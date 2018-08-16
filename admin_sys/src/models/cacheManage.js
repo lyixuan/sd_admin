@@ -1,11 +1,12 @@
 import { message } from 'antd';
-import { updateCache } from '../services/api';
+import { updateCache, cacheResult } from '../services/api';
 
 export default {
   namespace: 'cacheManage',
 
   state: {
     // 接口返回数据存储
+    cacheListData: null,
   },
 
   effects: {
@@ -17,7 +18,19 @@ export default {
         message.error(cacheData.msg);
       }
     },
+    *cacheList({ payload }, { call, put }) {
+      const cacheListData = yield call(cacheResult, payload.cacheListParams);
+      if (cacheListData.code === 2000) {
+        yield put({ type: 'appealListSave', payload: { cacheListData } });
+      } else {
+        message.error(cacheListData.msg);
+      }
+    },
   },
 
-  reducers: {},
+  reducers: {
+    appealListSave(state, action) {
+      return { ...state, ...action.payload };
+    },
+  },
 };
