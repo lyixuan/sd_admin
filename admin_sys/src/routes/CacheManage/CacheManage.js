@@ -16,7 +16,7 @@ const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ cacheManage, loading }) => ({
   cacheManage,
-  submit: loading.models.updateCache,
+  submit: loading.models.cacheManage,
   cacheUpdate: loading.models.cacheList,
 }))
 class CacheManage extends Component {
@@ -107,8 +107,10 @@ class CacheManage extends Component {
     const data = [];
     const arr =[]
     Object.keys(val).map(key => {
-      return arr.push({ data: key,status:val[key] });
+      arr.push({ data: key,status:val[key] })
+      return 0;
     })
+    // console.log(arr)
     arr.map((item, index) =>
       data.push({
         key: index,
