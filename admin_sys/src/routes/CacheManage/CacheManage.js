@@ -102,16 +102,37 @@ class CacheManage extends Component {
     return columns;
   };
 
+
+  compare = (prop)=> {
+    return function (obj1, obj2) {
+      const val1 = obj1[prop];
+      const val2 = obj2[prop];
+      if (val1 < val2) {
+        return -1;
+      } else if (val1 >val2) {
+        return 1;
+      } else  {
+        return 0;
+      }
+    }
+  }
+
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
     const arr =[]
     Object.keys(val).map(key => {
+
       arr.push({ data: key,status:val[key] })
       return 0;
     })
-    // console.log(arr)
-    arr.map((item, index) =>
+
+   const aa = arr.sort(this.compare('data'))
+console.log(aa)
+
+
+
+    aa.map((item, index) =>
       data.push({
         key: index,
         dateTime:item.data,
@@ -126,12 +147,9 @@ class CacheManage extends Component {
 
   render() {
     const {cacheListData} = this.props.cacheManage;
-    const dataSource = !cacheListData
-      ? []
-      : !cacheListData.data
-        ? []
-        : this.fillDataSource(!cacheListData.data ? {} : cacheListData.data);
-
+    const dataList = !cacheListData ? [] : !cacheListData.data ? []:cacheListData.data
+    const dataSource =this.fillDataSource(!dataList ? {} : dataList);
+    // const unShow =
     const { submit ,cacheUpdate} = this.props;
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -176,13 +194,19 @@ class CacheManage extends Component {
                     确定
                   </Button>
                 </AuthorizedButton>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col span={8}>
+              <FormItem>
                 <AuthorizedButton authority="/complaint/complaintAdd">
                   <Button
                     type="primary"
                     onClick={this.fresh}
                     className={common.createButton}
-                    loading={submit}
-                    style={{marginLeft:'20px'}}
+                    loading={cacheUpdate}
+                    style={{marginTop:'20px'}}
                   >
                     刷新
                   </Button>
