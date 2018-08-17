@@ -520,10 +520,16 @@ export async function addAppealList(params) {
   });
 }
 
-// 刷新缓存
+// 缓存管理
 export async function updateCache(params) {
   return request(`${HOST}/cache/cache`, {
     method: 'POST',
     body: params,
+  });
+}
+// 刷新缓存结果
+export async function cacheResult(params) {
+  return request(`${HOST}/cacheResult/list?${stringify(params)}`, {
+    method: 'GET',
   });
 }
