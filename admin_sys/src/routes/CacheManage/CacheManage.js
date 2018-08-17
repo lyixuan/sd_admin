@@ -32,8 +32,6 @@ class CacheManage extends Component {
     this.getCatchData();
   }
 
-
-
   componentWillUnmount() {
     firstBeginTime = null;
     firstEndTime = null;
@@ -122,16 +120,10 @@ class CacheManage extends Component {
     const data = [];
     const arr =[]
     Object.keys(val).map(key => {
-
       arr.push({ data: key,status:val[key] })
       return 0;
     })
-
-   const aa = arr.sort(this.compare('data'))
-console.log(aa)
-
-
-
+   const aa = arr.sort(this.compare('data'))||[]
     aa.map((item, index) =>
       data.push({
         key: index,
