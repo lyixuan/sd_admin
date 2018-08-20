@@ -120,6 +120,7 @@ class CacheManage extends Component {
   fillDataSource = val => {
     const data = [];
     const arr =[]
+    flag = 1;
     Object.keys(val).map(key => {
       if(val[key]==='0'){
         flag = 0;
