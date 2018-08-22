@@ -10,10 +10,16 @@ export default {
   },
 
   effects: {
-    *updateCache({ payload }, { call }) {
+    *updateCache({ payload }, { call, put }) {
       const cacheData = yield call(updateCache, payload.updateCacheParams);
       if (cacheData.code === 2000) {
-        message.success('缓存刷新成功！');
+        message.success('缓存刷新处理中，查看最新结果请点击刷新！');
+        const cacheListData = yield call(cacheResult, {});
+        if (cacheListData.code === 2000) {
+          yield put({ type: 'appealListSave', payload: { cacheListData } });
+        } else {
+          message.error(cacheListData.msg);
+        }
       } else {
         message.error(cacheData.msg);
       }

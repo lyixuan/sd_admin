@@ -12,6 +12,7 @@ const { RangePicker } = DatePicker;
 let propsVal = '';
 let firstBeginTime = '';
 let firstEndTime = '';
+let flag = 1; // 1是可点击状态，2，是不可点击壮体啊
 const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ cacheManage, loading }) => ({
@@ -117,8 +118,13 @@ class CacheManage extends Component {
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
+
     const arr = [];
+    flag = 1;
     Object.keys(val).map(key => {
+      if (val[key] === '0') {
+        flag = 0;
+      }
       arr.push({ data: key, status: val[key] });
       return 0;
     });
@@ -137,6 +143,7 @@ class CacheManage extends Component {
   };
 
   render() {
+    const disabled = true;
     const { cacheListData } = this.props.cacheManage;
     const dataList = !cacheListData ? [] : !cacheListData.data ? [] : cacheListData.data;
     const dataSource = this.fillDataSource(!dataList ? {} : dataList);
@@ -181,6 +188,7 @@ class CacheManage extends Component {
                     htmlType="submit"
                     className={common.createButton}
                     loading={submit}
+                    disabled={flag === 1 ? false : disabled}
                   >
                     确定
                   </Button>
