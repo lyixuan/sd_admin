@@ -27,7 +27,6 @@ export default {
     *cacheList({ payload }, { call, put }) {
       const cacheListData = yield call(cacheResult, payload.cacheListParams);
       if (cacheListData.code === 2000) {
-        message.success('缓存刷新成功！');
         yield put({ type: 'appealListSave', payload: { cacheListData } });
       } else {
         message.error(cacheListData.msg);
