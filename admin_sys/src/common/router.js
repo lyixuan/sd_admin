@@ -151,6 +151,11 @@ export const getRouterData = app => {
       name: '用户信息',
     },
 
+    '/privilege/staffList': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/StaffList')),
+      name: '员工信息',
+    },
+
     '/permission/editPermission': {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/EditPermission')
