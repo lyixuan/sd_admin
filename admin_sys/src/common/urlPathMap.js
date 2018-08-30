@@ -37,5 +37,11 @@ const urlPathMap = {
   '/family/editeFamilyShortName': {
     name: '编辑家族短名称',
   },
+  '/performance/exportDetail': {
+    name: '导出绩效金额',
+  },
+  '/performance/importAmount': {
+    name: '导出绩效详情',
+  },
 };
 export { urlPathMap };
