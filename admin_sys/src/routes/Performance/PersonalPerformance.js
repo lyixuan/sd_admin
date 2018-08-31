@@ -9,12 +9,13 @@ import common from '../Common/common.css';
 const FormItem = Form.Item;
 const { Option } = Select;
 
+let firstType = '';
 let firstTeaName = '';
 let firstQualityNum = '';
 let firstPage = 0; // 分页的默认起开页面
-@connect(({ quality, loading }) => ({
-  quality,
-  loading: loading.models.quality,
+@connect(({ performance, loading }) => ({
+  performance,
+  loading: loading.models.performance,
 }))
 class PersonalPerformance extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class PersonalPerformance extends Component {
   }
   componentDidMount() {
     const initVal = this.props.getUrlParams();
+    firstType = !initVal.firstType ? '全部' : initVal.firstType;
     firstTeaName = !initVal.firstTeaName ? '' : initVal.firstTeaName;
     firstQualityNum = !initVal.firstQualityNum ? '' : Number(initVal.firstQualityNum);
     firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
@@ -43,9 +45,9 @@ class PersonalPerformance extends Component {
   };
 
   getData = params => {
-    const getListParams = { ...this.props.quality.getListParams, ...params };
+    const getListParams = { ...this.props.performance.getListParams, ...params };
     this.props.dispatch({
-      type: 'quality/getQualityList',
+      type: 'performance/getPersonalList',
       payload: { getListParams },
     });
   };
@@ -69,12 +71,14 @@ class PersonalPerformance extends Component {
     e.preventDefault();
     this.publickObj.propsVal.form.validateFields((err, values) => {
       if (!err) {
+        firstType = !values.type ? '全部' : values.type;
         firstTeaName = !values.teaName ? undefined : values.teaName;
         firstQualityNum = !values.qualityNum ? undefined : values.qualityNum;
         firstPage = 0;
         const qualityListParams = {
           size: 30,
           number: 0,
+          type: firstType,
           teaName: firstTeaName,
           qualityNum: firstQualityNum,
         };
@@ -89,7 +93,7 @@ class PersonalPerformance extends Component {
     firstQualityNum = '';
     firstPage = 0;
     this.publickObj.propsVal.form.resetFields();
-    this.props.setRouteUrlParams('/quality/qualityList');
+    this.props.setRouteUrlParams('/performance/personalPerformance');
     this.getData({ size: 30, number: 0 });
   };
 
@@ -100,14 +104,13 @@ class PersonalPerformance extends Component {
       data.push({
         key: index,
         id: item.id,
-        collegeName: item.collegeName,
-        familyName: item.familyName,
-        groupName: item.groupName,
-        teaName: item.teaName,
-        stuName: item.stuName,
-        countValue: item.countValue,
-        qualityTypeName: item.qualityTypeName,
-        qualityNum: item.qualityNum,
+        idCard: item.user.idCard,
+        name: item.user.name,
+        collegeName: this.renderCollegeName(item),
+        totalKpi: item.totalKpi,
+        actualKpi: item.actualKpi,
+        kpiEffectMonth: item.kpiEffectMonth.effectMonth,
+        kpiPercent: item.kpiPercent,
       })
     );
     return data;
@@ -123,11 +126,11 @@ class PersonalPerformance extends Component {
       },
       {
         title: '身份证号',
-        dataIndex: 'collegeName',
+        dataIndex: 'idCard',
       },
       {
         title: '姓名',
-        dataIndex: 'familyName',
+        dataIndex: 'name',
       },
       {
         title: '岗位',
@@ -135,23 +138,23 @@ class PersonalPerformance extends Component {
       },
       {
         title: '学院｜家族｜小组',
-        dataIndex: 'teaName',
+        dataIndex: 'collegeName',
       },
       {
         title: '月份',
-        dataIndex: 'stuName',
+        dataIndex: 'kpiEffectMonth',
       },
       {
         title: '总包金额',
-        dataIndex: 'qualityTypeName',
+        dataIndex: 'totalKpi',
       },
       {
         title: '实发金额',
-        dataIndex: 'countValue',
+        dataIndex: 'actualKpi',
       },
       {
         title: '调整比例（%）',
-        dataIndex: 'qualityNum',
+        dataIndex: 'kpiPercent',
       },
       {
         title: '操作',
@@ -174,11 +177,22 @@ class PersonalPerformance extends Component {
     ];
     return columns;
   };
+  // 整合学院|家族|小组展示
+  renderCollegeName = item => {
+    if (item.collegeName && item.familyName && item.groupName) {
+      return `${item.collegeName} | ${item.familyName} | ${item.groupName}`;
+    } else if (item.collegeName && item.familyName) {
+      return `${item.collegeName} | ${item.familyName}`;
+    } else {
+      return `${item.collegeName}`;
+    }
+  };
   render() {
-    const val = this.props.quality.qualityList;
-    const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
-    const totalNum = !data.totalElements ? 0 : data.totalElements;
-    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
+    const val = this.props.performance ? this.props.performance.dataList : {};
+    const data = !val ? [] : !val.response ? [] : val.response.data;
+    const totalNum = data.length;
+
+    const dataSource = !data ? [] : this.fillDataSource(data);
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -190,7 +204,7 @@ class PersonalPerformance extends Component {
             <Row gutter={24}>
               <Col span={6}>
                 <FormItem label="姓名">
-                  {getFieldDecorator('teaName', {
+                  {getFieldDecorator('name', {
                     initialValue: firstTeaName,
                     rules: [],
                   })(<Input placeholder="请输入姓名" style={{ height: 32 }} />)}
@@ -198,7 +212,7 @@ class PersonalPerformance extends Component {
               </Col>
               <Col span={6} style={{ textAlign: 'center' }}>
                 <FormItem label="身份证号">
-                  {getFieldDecorator('qualityNum', {
+                  {getFieldDecorator('idCard', {
                     initialValue: firstQualityNum,
                     rules: [],
                   })(<Input placeholder="请输入身份证号" maxLength={20} style={{ height: 32 }} />)}

@@ -540,3 +540,16 @@ export async function cacheResult(params) {
     method: 'GET',
   });
 }
+// ------------ 绩效管理 ----------
+export async function getCollegePerformanceList(params) {
+  // 学院列表
+  return request(`${HOST}/collegeKpi/findAll?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function getPersonalPerformanceList(params) {
+  // 个人列表
+  return request(`${HOST}/collegeKpi/findAllUserKpi?${stringify(params)}`, {
+    method: 'GET',
+  });
+}

@@ -13,7 +13,7 @@ let propsVal = '';
 
 // 添加全局变量 ，记录搜索或是跳转到某一页到编辑页面之后返回到list页面回显所用。
 let firstName = ''; // 搜索框的姓名字段
-let firstPhone = ''; // 搜索框的电话字段
+let firstMail = ''; // 搜索框的邮箱字段
 let firstUpdate = '全部'; // 搜索框的需要更新字段
 let firstPage = 0; // 分页的默认起开页面
 
@@ -31,7 +31,7 @@ class UserList extends Component {
   componentDidMount() {
     const initVal = this.props.getUrlParams();
     firstName = !initVal.firstName ? '' : initVal.firstName;
-    firstPhone = !initVal.firstPhone ? '' : initVal.firstPhone;
+    firstMail = !initVal.firstMail ? '' : initVal.firstMail;
     firstUpdate = !initVal.firstUpdate ? '全部' : initVal.firstUpdate;
     firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
     const userListParams = {
@@ -39,27 +39,29 @@ class UserList extends Component {
       pageNum: !firstPage ? 0 : firstPage,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,
+      mail: !firstMail ? undefined : firstMail,
     };
     this.getData(userListParams);
   }
   // 组件卸载时清除声明的变量
   componentWillUnmount() {
     firstName = null;
-    firstPhone = null;
+    firstMail = null;
     firstUpdate = null;
     firstPage = null;
   }
 
   // 删除用户
   onDelete = val => {
-    const userDeleteParams = { id: val.id };
+    const mail = val.mail || '';
+    const newmail = mail.substring(0, mail.indexOf('@'));
+    const userDeleteParams = { mail: newmail };
     const userListParams = {
       pageSize: 30,
       pageNum: !firstPage ? 0 : firstPage,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,
+      mail: !firstMail ? undefined : firstMail,
     };
     this.props.dispatch({
       type: 'user/userDelete',
@@ -69,13 +71,15 @@ class UserList extends Component {
 
   // 更新用户
   onUpdate = val => {
-    const updateUserOrgParams = { id: val.id };
+    const mail = val.mail || '';
+    const newmail = mail.substring(0, mail.indexOf('@'));
+    const updateUserOrgParams = { mail: newmail };
     const userListParams = {
       pageSize: 30,
       pageNum: !firstPage ? 0 : firstPage,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,
+      mail: !firstMail ? undefined : firstMail,
     };
     this.props.dispatch({
       type: 'user/updateUserOrg',
@@ -118,7 +122,7 @@ class UserList extends Component {
       pageNum: current - 1,
       isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
       name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,
+      mail: !firstMail ? undefined : firstMail,
     };
     this.getData(userListParams);
   };
@@ -130,7 +134,7 @@ class UserList extends Component {
       data.push({
         key: index,
         name: item.name,
-        mobile: item.mobile,
+        privilege: item.privilege === 1 ? '有' : '无',
         mail: `${item.entUserId}@sunlands.com`,
         userType: userTypeData[item.userType],
         showName: !item.showName ? null : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
@@ -156,18 +160,13 @@ class UserList extends Component {
         dataIndex: 'name',
       },
       {
-        title: '手机',
-        dataIndex: 'mobile',
-        width: 120,
-      },
-      {
         title: '邮箱',
         dataIndex: 'mail',
       },
       {
-        title: '级别',
+        title: '岗位',
         dataIndex: 'userType',
-        width: 110,
+        width: 120,
       },
       {
         title: '负责单位',
@@ -180,6 +179,11 @@ class UserList extends Component {
         width: 170,
       },
       {
+        title: '绩效权限',
+        dataIndex: 'privilege',
+        width: 100,
+      },
+      {
         title: '操作',
         dataIndex: 'operation',
         width: 150,
@@ -190,14 +194,16 @@ class UserList extends Component {
               record.changeShowName !== '' &&
               (record.userType !== 'admin' || record.userType !== 'boss') &&
               record.changeShowName !== record.showName ? (
-                <AuthorizedButton authority="/user/updateUser">
-                  <span
-                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onUpdate(record)}
-                  >
-                    更新
-                  </span>
-                </AuthorizedButton>
+                record.privilege === '有' ? null : (
+                  <AuthorizedButton authority="/user/updateUser">
+                    <span
+                      style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                      onClick={() => this.onUpdate(record)}
+                    >
+                      更新
+                    </span>
+                  </AuthorizedButton>
+                )
               ) : null}
               <AuthorizedButton authority="/user/editUser">
                 <span
@@ -207,11 +213,13 @@ class UserList extends Component {
                   编辑
                 </span>
               </AuthorizedButton>
-              <AuthorizedButton authority="/user/deleteUser">
-                <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
-                </Popconfirm>
-              </AuthorizedButton>
+              {record.privilege === '有' ? null : (
+                <AuthorizedButton authority="/user/deleteUser">
+                  <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
+                    <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
+                  </Popconfirm>
+                </AuthorizedButton>
+              )}
             </div>
           );
         },
@@ -224,7 +232,7 @@ class UserList extends Component {
   handleReset = () => {
     propsVal.form.resetFields();
     firstName = '';
-    firstPhone = '';
+    firstMail = '';
     firstUpdate = '全部';
     firstPage = 0;
     this.props.setRouteUrlParams('/config/userList');
@@ -237,19 +245,19 @@ class UserList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         firstName = !values.name ? undefined : values.name.replace(/\s*/g, '');
-        firstPhone = !values.mobile ? undefined : values.mobile;
+        firstMail = !values.mail ? undefined : values.mail;
         firstUpdate = !values.isUpdate ? '全部' : values.isUpdate;
         firstPage = 0;
         this.savaParams({
           firstUpdate,
           firstName,
-          firstPhone,
+          firstMail,
           firstPage: 0,
         });
         const userListParams = {
           isUpdate: isUpdateDataReset[firstUpdate],
           name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
-          mobile: !values.mobile ? undefined : values.mobile,
+          mail: !values.mail ? undefined : values.mail,
           pageSize: 30,
           pageNum: 0,
         };
@@ -299,10 +307,11 @@ class UserList extends Component {
                 </FormItem>
               </Col>
               <Col span={8} style={{ textAlign: 'center' }}>
-                <FormItem label="手机">
-                  {getFieldDecorator('mobile', {
-                    initialValue: firstPhone,
-                  })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
+                <FormItem label="邮箱">
+                  {getFieldDecorator('mail', {
+                    initialValue: firstMail,
+                  })(<Input placeholder="请输入邮箱" style={{ width: 140, height: 32 }} />)}
+                  <span style={{ width: 100, marginLeft: '6px' }}> @sunlands.com</span>
                 </FormItem>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>

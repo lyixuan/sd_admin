@@ -34,7 +34,7 @@ export default {
       const result = yield call(updateUserOrg, payload.updateUserOrgParams);
       if (result.code === 2000) {
         message.success('更新成功！');
-        const response = yield call(userList, { size: 30, number: 0 });
+        const response = yield call(userList, payload.userListParams);
         yield put({ type: 'userListSave', payload: { response } });
       } else {
         message.error(result.msg);
@@ -53,7 +53,7 @@ export default {
       const result = yield call(userDelete, payload.userDeleteParams);
       if (result.code === 2000) {
         message.success('用户删除成功！');
-        const response = yield call(userList, { size: 30, number: 0 });
+        const response = yield call(userList, payload.userListParams);
         yield put({ type: 'userListSave', payload: { response } });
       } else {
         message.error(result.msg);
