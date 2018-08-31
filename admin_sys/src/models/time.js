@@ -1,5 +1,12 @@
 import { message } from 'antd';
-import { getDate, addDate, deleteDate, updateDate, getRangeDate } from '../services/api';
+import {
+  getDate,
+  addDate,
+  deleteDate,
+  updateDate,
+  getRangeDate,
+  getKpiEffectMonth,
+} from '../services/api';
 
 export default {
   namespace: 'time',
@@ -11,6 +18,7 @@ export default {
       endTime: '',
       id: 1,
     },
+    kpiEffectMonthList: [],
   },
 
   effects: {
@@ -69,9 +77,22 @@ export default {
         message.error(response.msg);
       }
     },
+    *getKpiEffectMonth(_, { put, call }) {
+      const response = yield call(getKpiEffectMonth);
+      if (response.code === 2000) {
+        const kpiEffectMonthList = response.data || [];
+        yield put({
+          type: 'saveKpiEffectMonth',
+          payload: { kpiEffectMonthList },
+        });
+      }
+    },
   },
 
   reducers: {
+    saveKpiEffectMonth(state, { payload }) {
+      return { ...state, ...payload };
+    },
     saveDateList(state, { payload }) {
       return { ...state, ...payload };
     },

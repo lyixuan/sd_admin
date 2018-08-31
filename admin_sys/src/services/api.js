@@ -387,7 +387,14 @@ export async function getRangeDate(params) {
     method: 'GET',
   });
 }
-
+/*
+查询实发绩效月份列表
+ */
+export async function getKpiEffectMonth(params) {
+  return request(`${HOST}/kpiEffectMonth/kpiEffectMonth?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
 /*
 以下接口为投诉管理模块相关
 * */

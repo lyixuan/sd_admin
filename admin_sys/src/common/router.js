@@ -268,6 +268,10 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),
       name: '时间管理',
     },
+    '/config/timeList/performance': {
+      component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/Performance')),
+      name: '时间管理',
+    },
     '/config/group': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
       name: '小组短名称',
