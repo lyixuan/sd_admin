@@ -1,3 +1,9 @@
+/*
+* customTip 注意事项
+* callBackParent
+* saveFileList
+* uploadUrl
+* */
 import React, { Component } from 'react';
 import { message, Upload } from 'antd';
 import uploadImg from '../../assets/uploadImg.png';
@@ -34,6 +40,24 @@ class stepUpload extends Component {
       }
     }
   };
+  tipDomRender = () => {
+    const { customTip } = this.props;
+    return (
+      <div className={styles.tip}>
+        <h1 className={styles.title}>注意事项：</h1>
+        {!customTip ? (
+          <div className={styles.txt}>
+            <p>
+              每天13:20前导入的数据，当天13:30后前端可见。13:20之后导入的数据，隔天13:30后前端可见。
+            </p>
+            <p>上传的数据限7天以内的数据</p>
+          </div>
+        ) : (
+          <div className={styles.txt}>{customTip()}</div>
+        )}
+      </div>
+    );
+  };
   render() {
     const { uploadUrl } = this.props;
     const props = {
@@ -68,13 +92,8 @@ class stepUpload extends Component {
           </Upload>
         </div>
 
-        <div className={styles.tip}>
-          <h1 className={styles.title}>注意事项：</h1>
-          <p className={styles.txt}>
-            每天13:20前导入的数据，当天13:30后前端可见。13:20之后导入的数据，隔天13:30后前端可见。
-          </p>
-          <p className={styles.txt}>上传的数据限7天以内的数据</p>
-        </div>
+        {/* 注意事项 */}
+        {this.tipDomRender()}
       </div>
     );
   }

@@ -302,7 +302,36 @@ export const getRouterData = app => {
       },
       name: '添加申诉',
     },
-
+    '/performance/collegePerformance': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Performance/CollegePerformance')
+      ),
+      bread: {
+        name: '绩效管理',
+        path: '/performance/collegePerformance',
+      },
+      name: '学院绩效金额',
+    },
+    '/performance/personalPerformance': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Performance/PersonalPerformance')
+      ),
+      bread: {
+        name: '绩效管理',
+        path: '/performance/personalPerformance',
+      },
+      name: '个人绩效金额',
+    },
+    '/performance/exportPerformance': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Performance/ExportPerformance')
+      ),
+      bread: {
+        name: '绩效管理',
+        path: '/performance/exportPerformance',
+      },
+      name: '导入实发绩效',
+    },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
     },
