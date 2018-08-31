@@ -5,9 +5,9 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 
-@connect(({ quality, loading }) => ({
-  quality,
-  loading: loading.models.quality,
+@connect(({ performance, loading }) => ({
+  performance,
+  loading: loading.models.performance,
 }))
 class CollegePerformance extends Component {
   constructor(props) {
@@ -19,9 +19,9 @@ class CollegePerformance extends Component {
   }
 
   getData = params => {
-    const getListParams = { ...this.props.quality.getListParams, ...params };
+    const getListParams = { ...this.props.performance.getListParams, ...params };
     this.props.dispatch({
-      type: 'quality/getQualityList',
+      type: 'performance/getCollegeList',
       payload: { getListParams },
     });
   };
@@ -39,11 +39,12 @@ class CollegePerformance extends Component {
     val.map((item, index) =>
       data.push({
         key: index,
-        name: item.name,
-        role: item.rname,
-        email: item.mail, //   const newmail = `${values.mail}@sunlans.com`;
-        id: item.id,
-        roleId: item.roleId,
+        collegeName: item.collegeName,
+        effectMonth: item.effectMonth,
+        collegeTotalKpi: `${+item.collegeTotalKpi} | ${+item.collegeActualKpi}`,
+        familyTotalKpi: `${+item.familyTotalKpi} | ${+item.familyActualKpi}`,
+        groupTotalKpi: `${+item.groupTotalKpi} | ${+item.groupActualKpi}`,
+        collegeId: item.collegeId,
       })
     );
     return data;
@@ -54,27 +55,39 @@ class CollegePerformance extends Component {
     const columns = [
       {
         title: 'id',
-        dataIndex: 'id',
+        dataIndex: 'collegeId',
       },
       {
         title: '学院',
-        dataIndex: 'name',
+        dataIndex: 'collegeName',
       },
       {
         title: '月份',
-        dataIndex: 'role',
+        dataIndex: 'effectMonth',
       },
       {
-        title: '学院绩效(总包绩效 | 实发绩效）',
-        dataIndex: 'email',
+        title: (
+          <div style={{ textAlign: 'center' }}>
+            学院绩效<br />(总包绩效 | 实发绩效）
+          </div>
+        ),
+        dataIndex: 'collegeTotalKpi',
       },
       {
-        title: '家族绩效(总包绩效 | 实发绩效）',
-        dataIndex: 'email1',
+        title: (
+          <div style={{ textAlign: 'center' }}>
+            家族绩效<br />(总包绩效 | 实发绩效）
+          </div>
+        ),
+        dataIndex: 'familyTotalKpi',
       },
       {
-        title: '小组绩效(总包绩效 | 实发绩效）',
-        dataIndex: 'email2',
+        title: (
+          <div style={{ textAlign: 'center' }}>
+            小组绩效<br />(总包绩效 | 实发绩效）
+          </div>
+        ),
+        dataIndex: 'groupTotalKpi',
       },
       {
         title: '操作',
@@ -111,9 +124,8 @@ class CollegePerformance extends Component {
     this.props.setRouteUrlParams('/performance/exportPerformance');
   };
   render() {
-    const val = this.props.quality.qualityList;
-    const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
-    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
+    const val = this.props.performance.dataList ? this.props.performance.dataList : {};
+    const dataSource = !val.response ? [] : this.fillDataSource(val.response.data);
     const columns = !this.columnsData() ? [] : this.columnsData();
     return (
       <ContentLayout
