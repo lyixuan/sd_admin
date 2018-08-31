@@ -1,19 +1,21 @@
 const userTypeData = {
-  college: '学院',
-  family: '家族',
-  group: '小组',
-  admin: '系统管理员',
-  boss: '高级管理员',
-  class: '无底表权限',
+  college: '院长或副院长',
+  family: '家族长',
+  group: '运营长',
+  admin: '管理员',
+  boss: '管理层',
+  class: '班主任',
+  others: '无绩效岗位',
 };
 
 const userTypeDataReset = {
-  学院: 'college',
-  家族: 'family',
-  小组: 'group',
-  系统管理员: 'admin',
-  高级管理员: 'boss',
-  无底表权限: 'class',
+  院长或副院长: 'college',
+  家族长: 'family',
+  运营长: 'group',
+  管理员: 'admin',
+  管理层: 'boss',
+  班主任: 'class',
+  无绩效岗位: 'others',
 };
 
 const levelData = {
