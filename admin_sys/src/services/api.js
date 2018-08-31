@@ -7,7 +7,7 @@ const hostObj = {
   pro: 'http://bd.ministudy.com/apis',
   dev: 'http://172.16.117.65:8090',
 };
-const HOST = hostObj[NODE_ENV];
+export const HOST = hostObj[NODE_ENV];
 /*
 * 用户登录接口
 * params：{name，password}

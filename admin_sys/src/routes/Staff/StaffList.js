@@ -1,87 +1,58 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button, Form, Input, Popconfirm, Row, Col, Select } from 'antd';
+import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
+// import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import { userTypeData, isUpdateDataReset } from '../../utils/dataDictionary';
+import { userTypeData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 let propsVal = '';
 
-// 添加全局变量 ，记录搜索或是跳转到某一页到编辑页面之后返回到list页面回显所用。
-let firstName = ''; // 搜索框的姓名字段
-let firstPhone = ''; // 搜索框的电话字段
-let firstUpdate = '全部'; // 搜索框的需要更新字段
-let firstPage = 0; // 分页的默认起开页面
+const groupTypeObj = {
+  college: '院长或副院长',
+  family: '家族长',
+  group: '运营长',
+  class: '班主任',
+};
 
-@connect(({ user, loading }) => ({
-  user,
-  loading: loading.effects['user/userList'],
+@connect(({ staff, loading }) => ({
+  staff,
+  loading: loading.effects['staff/staffList'],
 }))
 class StaffList extends Component {
   constructor(props) {
+    const { urlParams = {} } = props;
     super(props);
-    this.state = {};
+    const initState = {
+      paramsObj: {
+        name: '', // 员工姓名
+        mail: '', // 邮箱
+        number: 0, // 当前页
+        size: 30, // 页条数
+        orderType: 'modifyTime', // 排序字段
+        status: null, // 员工状态
+      },
+    };
+    this.state = assignUrlParams(initState, urlParams);
   }
 
   // 页面render之前需要请求的接口
   componentDidMount() {
-    const initVal = this.props.getUrlParams();
-    firstName = !initVal.firstName ? '' : initVal.firstName;
-    firstPhone = !initVal.firstPhone ? '' : initVal.firstPhone;
-    firstUpdate = !initVal.firstUpdate ? '全部' : initVal.firstUpdate;
-    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
-    const userListParams = {
-      pageSize: 30,
-      pageNum: !firstPage ? 0 : firstPage,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,
-    };
-    this.getData(userListParams);
-  }
-  // 组件卸载时清除声明的变量
-  componentWillUnmount() {
-    firstName = null;
-    firstPhone = null;
-    firstUpdate = null;
-    firstPage = null;
+    this.getData();
   }
 
   // 删除用户
-  onDelete = val => {
-    const userDeleteParams = { id: val.id };
-    const userListParams = {
-      pageSize: 30,
-      pageNum: !firstPage ? 0 : firstPage,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,
-    };
-    this.props.dispatch({
-      type: 'user/userDelete',
-      payload: { userDeleteParams, userListParams },
-    });
-  };
+  // onDelete = val => {
+  // };
 
   // 更新用户
-  onUpdate = val => {
-    const updateUserOrgParams = { id: val.id };
-    const userListParams = {
-      pageSize: 30,
-      pageNum: !firstPage ? 0 : firstPage,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,
-    };
-    this.props.dispatch({
-      type: 'user/updateUserOrg',
-      payload: { updateUserOrgParams, userListParams },
-    });
-  };
+  // onUpdate = val => {
+
+  // };
 
   // 编辑用户
   onEdit = val => {
@@ -96,31 +67,40 @@ class StaffList extends Component {
     this.changePage(current, size);
   };
 
-  getData = userListParams => {
+  getData = (filterParams = {}) => {
+    const { paramsObj } = this.state;
+    const sendParams = {
+      ...paramsObj,
+      ...filterParams,
+    };
     this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
+      type: 'staff/staffList',
+      payload: sendParams,
     });
+    this.savaParams(sendParams);
   };
 
-  savaParams = params => {
-    this.props.setCurrentUrlParams(params);
+  savaParams = paramsObj => {
+    this.props.setCurrentUrlParams(paramsObj);
+    if (JSON.stringify(paramsObj) !== JSON.stringify(this.state.paramsObj)) {
+      this.setState({ paramsObj });
+    }
   };
 
   // 点击某一页函数
   changePage = (current, size) => {
-    firstPage = current - 1;
-    this.savaParams({
-      firstPage: !firstPage ? 0 : firstPage,
-    });
-    const userListParams = {
-      pageSize: size,
-      pageNum: current - 1,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !firstName ? undefined : firstName,
-      mobile: !firstPhone ? undefined : firstPhone,
-    };
-    this.getData(userListParams);
+    // firstPage = current - 1;
+    // this.savaParams({
+    //   firstPage: !firstPage ? 0 : firstPage,
+    // });
+    // const userListParams = {
+    //   pageSize: size,
+    //   pageNum: current - 1,
+    //   isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
+    //   name: !firstName ? undefined : firstName,
+    //   mobile: !firstPhone ? undefined : firstPhone,
+    // };
+    this.getData(size);
   };
 
   // 初始化tabale 列数据
@@ -150,39 +130,42 @@ class StaffList extends Component {
       {
         title: 'id',
         dataIndex: 'id',
+        key: 'id',
       },
       {
         title: '姓名',
         dataIndex: 'name',
+        key: 'name',
       },
       {
-        title: '手机',
-        dataIndex: 'mobile',
+        title: '状态',
+        dataIndex: 'currentStateName',
         width: 120,
+        key: 'currentStateName',
       },
       {
         title: '邮箱',
         dataIndex: 'mail',
+        width: 150,
+        key: 'mail',
       },
       {
-        title: '级别',
+        title: '岗位',
         dataIndex: 'userType',
         width: 110,
+        key: 'userType',
       },
       {
         title: '负责单位',
         dataIndex: 'showName',
         width: 170,
-      },
-      {
-        title: '企业家单位',
-        dataIndex: 'changeShowName',
-        width: 170,
+        key: 'showName',
       },
       {
         title: '操作',
         dataIndex: 'operation',
         width: 150,
+        key: 'operation',
         render: (text, record) => {
           return (
             <div>
@@ -219,16 +202,29 @@ class StaffList extends Component {
     ];
     return columns || [];
   };
+  formaterData = (data = []) => {
+    return data.map(item => {
+      const mail = typeof item.mail === 'string' ? item.mail : '';
+
+      return {
+        ...item,
+        mail: mail.split('@')[0],
+        userType: groupTypeObj[item.userType],
+        key: item.id,
+      };
+    });
+  };
 
   // 表单重置
   handleReset = () => {
-    propsVal.form.resetFields();
-    firstName = '';
-    firstPhone = '';
-    firstUpdate = '全部';
-    firstPage = 0;
-    this.props.setRouteUrlParams('/config/userList');
-    this.getData({ pageSize: 30, pageNum: 0, isUpdate: 0 });
+    const paramsObj = {
+      name: '',
+      mail: '',
+      number: 0,
+      size: 30,
+      status: null, // 员工状态
+    };
+    this.getData(paramsObj);
   };
 
   // 表单搜索
@@ -236,24 +232,13 @@ class StaffList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        firstName = !values.name ? undefined : values.name.replace(/\s*/g, '');
-        firstPhone = !values.mobile ? undefined : values.mobile;
-        firstUpdate = !values.isUpdate ? '全部' : values.isUpdate;
-        firstPage = 0;
-        this.savaParams({
-          firstUpdate,
-          firstName,
-          firstPhone,
-          firstPage: 0,
-        });
-        const userListParams = {
-          isUpdate: isUpdateDataReset[firstUpdate],
-          name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
-          mobile: !values.mobile ? undefined : values.mobile,
-          pageSize: 30,
-          pageNum: 0,
+        const { name, mail, status } = values;
+        const paramsObj = {
+          name,
+          mail,
+          status,
         };
-        this.getData(userListParams);
+        this.getData(paramsObj);
       }
     });
   };
@@ -264,25 +249,25 @@ class StaffList extends Component {
   };
 
   render() {
+    const { paramsObj } = this.state;
     const { loading } = this.props;
-    const data = !this.props.user.userList.response
-      ? []
-      : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
-    const totalNum = !data.totalElements ? 0 : data.totalElements;
-    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const columns = this.columnsData();
-    const formLayout = 'inline';
+    const dataSource = this.formaterData(this.props.staff.staffList);
+
+    //   ? []
+    //   : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
+    // const totalNum = !data.totalElements ? 0 : data.totalElements;
+    // const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
       return (
         <div>
-          <Form layout={formLayout} onSubmit={this.handleSearch}>
+          <Form layout="inline" onSubmit={this.handleSearch}>
             <Row gutter={24}>
               <Col span={8}>
                 <FormItem label="姓名">
                   {getFieldDecorator('name', {
-                    initialValue: firstName,
+                    initialValue: paramsObj.name,
                     rules: [
                       {
                         validator(rule, value, callback) {
@@ -299,21 +284,25 @@ class StaffList extends Component {
                 </FormItem>
               </Col>
               <Col span={8} style={{ textAlign: 'center' }}>
-                <FormItem label="手机">
-                  {getFieldDecorator('mobile', {
-                    initialValue: firstPhone,
-                  })(<Input placeholder="请输入手机号" style={{ width: 230, height: 32 }} />)}
+                <FormItem label="邮箱">
+                  {getFieldDecorator('mail', {
+                    initialValue: paramsObj.mail,
+                  })(<Input placeholder="请输入邮箱" style={{ width: 230, height: 32 }} />)}
                 </FormItem>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
-                <FormItem label="需要更新">
-                  {getFieldDecorator('isUpdate', {
-                    initialValue: !firstUpdate ? '全部' : firstUpdate,
+                <FormItem label="状态">
+                  {getFieldDecorator('status', {
+                    initialValue: paramsObj.status,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                      <Option value="全部">全部</Option>
-                      <Option value="是">是</Option>
-                      <Option value="否">否</Option>
+                      <Option value={null}>全部</Option>
+                      <Option value={0}>在岗</Option>
+                      <Option value={1}>休假中</Option>
+                      <Option value={2}>已离职</Option>
+                      <Option value={3}>待转岗</Option>
+                      <Option value={4}>待休假</Option>
+                      <Option value={5}>待离职</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -345,39 +334,39 @@ class StaffList extends Component {
       <ContentLayout
         routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
-        contentButton={
-          <AuthorizedButton authority="/user/createUser">
-            <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
-              创 建
-            </Button>
-          </AuthorizedButton>
-        }
+        //     contentButton={
+        //       <AuthorizedButton authority="/user/createUser">
+        //         <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
+        //           创 建
+        //         </Button>
+        //       </AuthorizedButton>
+        //     }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：{totalNum}条</p>
+            <p className={common.totalNum}>总数：{dataSource.length}条</p>
             <Table
               bordered
               loading={loading}
               dataSource={dataSource}
-              columns={columns}
+              columns={this.columnsData()}
               pagination={false}
               className={common.tableContentStyle}
             />
           </div>
         }
-        contentPagination={
-          <SelfPagination
-            onChange={(current, pageSize) => {
-              this.changePage(current, pageSize);
-            }}
-            onShowSizeChange={(current, pageSize) => {
-              this.onShowSizeChange(current, pageSize);
-            }}
-            defaultCurrent={firstPage + 1}
-            total={totalNum}
-            defaultPageSize={30}
-          />
-        }
+        //     contentPagination={
+        //       <SelfPagination
+        //         onChange={(current, pageSize) => {
+        //           this.changePage(current, pageSize);
+        //         }}
+        //         onShowSizeChange={(current, pageSize) => {
+        //           this.onShowSizeChange(current, pageSize);
+        //         }}
+        //         defaultCurrent={firstPage + 1}
+        //         total={totalNum}
+        //         defaultPageSize={30}
+        //       />
+        //     }
       />
     );
   }

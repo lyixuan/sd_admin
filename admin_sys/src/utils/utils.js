@@ -190,3 +190,30 @@ const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-
 export function isUrl(path) {
   return reg.test(path);
 }
+
+/**
+ * 此方法用于页面将url上面参数合并到initState中,
+ * @param {object} paramsObj
+ * @param {object} urlParams
+ * return {object}
+ */
+export function assignUrlParams(paramsObj = {}, urlParams = {}) {
+  // 过滤掉不需要的参数
+  const returnParams = {};
+  Object.keys(paramsObj).forEach(key => {
+    const item = paramsObj[key];
+    // 判断是否还有下一级对象
+    if (item !== null && typeof item === 'object' && isNaN(item.length)) {
+      returnParams[key] = assignUrlParams(item, urlParams);
+    } else {
+      const value = urlParams[key] === undefined ? paramsObj[key] : urlParams[key];
+      if (typeof value !== 'object' && !isNaN(Number(value))) {
+        returnParams[key] =
+          typeof paramsObj[key] === 'string' || paramsObj[key] === null ? value : Number(value);
+      } else {
+        returnParams[key] = value;
+      }
+    }
+  });
+  return returnParams;
+}

@@ -1,7 +1,11 @@
 import { createElement } from 'react';
 import dynamic from 'dva/dynamic';
-// import pathToRegexp from 'path-to-regexp';
-// import { getMenuData } from './menu';
+import {
+  getUrlParams,
+  getLastUrlParams,
+  setRouteUrlParams,
+  setCurrentUrlParams,
+} from './routerParams';
 
 let routerDataCache;
 
@@ -43,12 +47,18 @@ const dynamicWrapper = (app, models, component) => {
       if (!routerDataCache) {
         routerDataCache = getRouterData(app);
       }
+      const lastUrlParams = getLastUrlParams(app);
       return component().then(raw => {
         const Component = raw.default || raw;
         return props =>
           createElement(Component, {
             ...props,
             routerData: routerDataCache,
+            lastUrlParams,
+            setRouteUrlParams,
+            setCurrentUrlParams,
+            urlParams: getUrlParams(app),
+            getUrlParams: () => getUrlParams(app),
           });
       });
     },
@@ -153,7 +163,7 @@ export const getRouterData = app => {
 
     '/privilege/staffList': {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/StaffList')),
-      name: '员工信息',
+      name: '员工管理',
     },
 
     '/permission/editPermission': {
