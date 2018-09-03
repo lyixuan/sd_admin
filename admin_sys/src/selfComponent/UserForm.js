@@ -292,7 +292,7 @@ class UserForm extends Component {
               rules: [
                 {
                   validator(rule, value, callback) {
-                    const strExp = /^[A-Za-z0-9]+$/;
+                    const strExp = /^[A-Za-z0-9|-]+$/;
                     if (!strExp.test(value)) {
                       callback({ message: '请输入合法邮箱' });
                     }
