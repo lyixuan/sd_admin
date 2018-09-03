@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
-import UserForm from '../../selfComponent/UserForm.js';
+import CreateUserForm from '../../selfComponent/UserForm/CreateUserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import { userTypeDataReset } from '../../utils/dataDictionary';
 
-const WrappedRegistrationForm = Form.create()(UserForm);
+const WrappedRegistrationForm = Form.create()(CreateUserForm);
 @connect(({ user, loading }) => ({
   user,
   submit: loading.effects['user/userAdd'],
   wechatList: loading.effects['user/wechatList'],
   listOrg: loading.effects['user/listOrg'],
-  userList: false,
 }))
 class CreateUser extends Component {
   constructor(props) {

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
-import UserForm from '../../selfComponent/UserForm.js';
+import EditUserForm from '../../selfComponent/UserForm/EditUserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import { userTypeDataReset } from '../../utils/dataDictionary';
 
-const WrappedRegistrationForm = Form.create()(UserForm);
+const WrappedRegistrationForm = Form.create()(EditUserForm);
 
 @connect(({ user, loading }) => ({
   user,
@@ -20,7 +20,7 @@ class EditUser extends Component {
     super(props);
     const arrValue = this.props.getUrlParams();
     this.state = {
-      id: !arrValue.id ? null : arrValue.id,
+      mail: !arrValue.mail ? null : arrValue.mail,
     };
   }
 
@@ -36,7 +36,7 @@ class EditUser extends Component {
       type: 'user/listOrg',
       payload: { listOrgParams },
     });
-    const userListParams = { id: this.state.id };
+    const userListParams = { mail: this.state.mail };
     this.props.dispatch({
       type: 'user/userList',
       payload: { userListParams },
@@ -61,9 +61,9 @@ class EditUser extends Component {
     });
     const updateUserInfoParams = {
       name: values.name.replace(/\s*/g, ''),
-      mail: values.email,
+      mail: this.state.email,
       mobile: values.phone,
-      id: Number(this.state.id),
+      id: Number(values.id),
       userType: userTypeDataReset[rUserType],
       userTypeId: !typeId ? undefined : typeId,
       wechatDepartmentId: Number(newRoleId),
