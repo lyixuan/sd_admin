@@ -51,9 +51,6 @@ class StaffList extends Component {
 
   // 页面render之前需要请求的接口
   componentDidMount() {
-    const { paramsObj } = this.state;
-    console.log(Object.keys(jobStatus));
-    console.log(Object.keys(jobStatus).find(item => jobStatus[item] == paramsObj.status));
     this.getData();
   }
 
@@ -245,6 +242,7 @@ class StaffList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         const { name, mail, status } = values;
+        console.log(values);
         const paramsObj = {
           name,
           mail,
@@ -306,7 +304,7 @@ class StaffList extends Component {
                 <FormItem label="状态">
                   {getFieldDecorator('status', {
                     initialValue:
-                      Object.keys(jobStatus).find(item => jobStatus[item] === paramsObj.status) ||
+                      Object.keys(jobStatus).find(item => jobStatus[item] == paramsObj.status) ||
                       '全部',
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
@@ -315,12 +313,6 @@ class StaffList extends Component {
                           {item}
                         </Option>
                       ))}
-                      {/* <Option value={0}>在岗</Option>
-                      <Option value={1}>休假中</Option>
-                      <Option value={2}>已离职</Option>
-                      <Option value={3}>待转岗</Option>
-                      <Option value={4}>待休假</Option>
-                      <Option value={5}>待离职</Option> */}
                     </Select>
                   )}
                 </FormItem>
