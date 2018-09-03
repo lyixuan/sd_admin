@@ -7,7 +7,7 @@ export default {
 
   state: {
     // 接口返回数据存储
-    staffList: [],
+    data: {},
   },
 
   effects: {
@@ -16,8 +16,7 @@ export default {
       // console.log(response);
       if (response.code === 2000) {
         const data = response.data || {};
-        const staffList = data.content || [];
-        yield put({ type: 'staffListSave', payload: { staffList } });
+        yield put({ type: 'staffListSave', payload: data });
       } else {
         message.error(response.msg);
       }
@@ -26,10 +25,10 @@ export default {
 
   reducers: {
     staffListSave(state, { payload }) {
-      const { staffList = [] } = payload;
+      const data = payload;
       return {
         ...state,
-        staffList,
+        data,
       };
     },
   },
