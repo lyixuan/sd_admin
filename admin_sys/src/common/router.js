@@ -342,6 +342,16 @@ export const getRouterData = app => {
       },
       name: '导入实发绩效',
     },
+    '/performance/editPerformance': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Performance/EditPerformance')
+      ),
+      bread: {
+        name: '绩效管理',
+        path: '/performance/editPerformance',
+      },
+      name: '编辑绩效',
+    },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
     },
