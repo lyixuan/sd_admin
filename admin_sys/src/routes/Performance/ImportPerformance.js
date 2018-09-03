@@ -7,11 +7,11 @@ import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 
-@connect(({ quality, loading }) => ({
-  quality,
+@connect(({ performance, loading }) => ({
+  performance,
   loading,
 }))
-class ExportPerformance extends Component {
+class ImportPerformance extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,40 +52,40 @@ class ExportPerformance extends Component {
   // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
-      type: 'quality/checkQuality',
+      type: 'performance/checkQuality',
       payload: { params },
     });
   };
   // 保存excel数据
   saveExcelData = params => {
     this.props.dispatch({
-      type: 'quality/saveExcel',
+      type: 'performance/saveExcel',
       payload: { params },
     });
   };
 
   saveFileList = fileList => {
     this.props.dispatch({
-      type: 'quality/saveFileList',
+      type: 'performance/saveFileList',
       payload: { fileList },
     });
   };
   editCurrent = current => {
     this.props.dispatch({
-      type: 'quality/editCurrent',
+      type: 'performance/editCurrent',
       payload: { current },
     });
   };
   editLoading = isLoading => {
     console.log(isLoading);
     this.props.dispatch({
-      type: 'quality/editLoading',
+      type: 'performance/editLoading',
       payload: { isLoading },
     });
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/quality/qualityList',
+      pathname: '/performance/qualityList',
     });
   }
   columnsData = () => {
@@ -119,7 +119,7 @@ class ExportPerformance extends Component {
   };
   render() {
     let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
-    const { current, checkList, fileList, disableDel, isLoading } = this.props.quality;
+    const { current, checkList, fileList, disableDel, isLoading } = this.props.performance;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;
@@ -184,7 +184,7 @@ class ExportPerformance extends Component {
         content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
       },
     ];
-    fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
+    // fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
     return (
       <StepLayout
         routerData={this.props.routerData}
@@ -220,4 +220,4 @@ class ExportPerformance extends Component {
   }
 }
 
-export default ExportPerformance;
+export default ImportPerformance;

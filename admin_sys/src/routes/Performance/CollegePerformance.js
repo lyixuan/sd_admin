@@ -121,7 +121,7 @@ class CollegePerformance extends Component {
   };
   // 导入实发绩效
   importAmount = () => {
-    this.props.setRouteUrlParams('/performance/exportPerformance');
+    this.props.setRouteUrlParams('/performance/importPerformance');
   };
   render() {
     const val = this.props.performance.dataList ? this.props.performance.dataList : {};
@@ -142,7 +142,7 @@ class CollegePerformance extends Component {
                 导出绩效详情
               </Button>
             </AuthorizedButton>
-            <AuthorizedButton authority="/performance/exportPerformance">
+            <AuthorizedButton authority="/performance/importPerformance">
               <Button onClick={this.importAmount} type="primary" className={common.exportBlue}>
                 导入实发绩效
               </Button>

@@ -332,13 +332,13 @@ export const getRouterData = app => {
       },
       name: '个人绩效金额',
     },
-    '/performance/exportPerformance': {
+    '/performance/importPerformance': {
       component: dynamicWrapper(app, ['collegePerformance'], () =>
-        import('../routes/Performance/ExportPerformance')
+        import('../routes/Performance/ImportPerformance')
       ),
       bread: {
         name: '绩效管理',
-        path: '/performance/exportPerformance',
+        path: '/performance/importPerformance',
       },
       name: '导入实发绩效',
     },
