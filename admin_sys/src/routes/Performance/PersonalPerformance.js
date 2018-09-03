@@ -9,9 +9,9 @@ import common from '../Common/common.css';
 const FormItem = Form.Item;
 const { Option } = Select;
 
-let firstType = '';
-let firstTeaName = '';
-let firstQualityNum = '';
+let firstIdCard = '';
+let firstName = '';
+let firstActualKpi = 0;
 let firstPage = 0; // 分页的默认起开页面
 @connect(({ performance, loading }) => ({
   performance,
@@ -24,19 +24,19 @@ class PersonalPerformance extends Component {
   }
   componentDidMount() {
     const initVal = this.props.getUrlParams();
-    firstType = !initVal.firstType ? '全部' : initVal.firstType;
-    firstTeaName = !initVal.firstTeaName ? '' : initVal.firstTeaName;
-    firstQualityNum = !initVal.firstQualityNum ? '' : Number(initVal.firstQualityNum);
-    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
-    const teaName = !firstTeaName ? undefined : firstTeaName;
-    const qualityNum = !firstQualityNum ? undefined : firstQualityNum;
+    firstIdCard = !initVal.firstIdCard ? '' : Number(initVal.firstPage);
+    firstName = !initVal.firstName ? '' : initVal.firstName;
+    firstActualKpi = !initVal.firstActualKpi ? '----' : Number(initVal.firstActualKpi);
+    firstPage = !initVal.firstPage ? '全部' : initVal.firstIdCard;
+    const name = !firstName ? undefined : firstName;
+    const actualKpi = !firstActualKpi ? undefined : firstActualKpi;
     const number = !firstPage ? 0 : firstPage;
-    this.getData({ size: 30, number, teaName, qualityNum });
+    this.getData({ size: 30, number, collegeId: initVal.collegeId, name, actualKpi });
   }
 
   componentWillUnmount() {
-    firstTeaName = null;
-    firstQualityNum = null;
+    firstName = null;
+    firstActualKpi = null;
   }
 
   // 点击显示每页多少条数据函数
@@ -53,6 +53,9 @@ class PersonalPerformance extends Component {
   };
   publickObj = {
     propsVal: '',
+    firstIdCard: '',
+    firstName: '',
+    firstActualKpi: '',
   };
   // 点击某一页函数
   changePage = (current, pageSize) => {
@@ -61,8 +64,8 @@ class PersonalPerformance extends Component {
     this.getData({
       size: pageSize,
       number: firstPage,
-      teaName: !firstTeaName ? undefined : firstTeaName,
-      qualityNum: !firstQualityNum ? undefined : firstQualityNum,
+      name: !firstName ? undefined : firstName,
+      actualKpi: !firstActualKpi ? undefined : firstActualKpi,
     });
   };
 
@@ -71,26 +74,27 @@ class PersonalPerformance extends Component {
     e.preventDefault();
     this.publickObj.propsVal.form.validateFields((err, values) => {
       if (!err) {
-        firstType = !values.type ? '全部' : values.type;
-        firstTeaName = !values.teaName ? undefined : values.teaName;
-        firstQualityNum = !values.qualityNum ? undefined : values.qualityNum;
+        console.log(values);
+        firstIdCard = !values.idCard ? '----' : values.idCard;
+        firstName = !values.name ? undefined : values.name;
+        firstActualKpi = !values.actualKpi ? undefined : values.actualKpi;
         firstPage = 0;
         const qualityListParams = {
           size: 30,
           number: 0,
-          type: firstType,
-          teaName: firstTeaName,
-          qualityNum: firstQualityNum,
+          idCard: firstIdCard,
+          name: firstName,
+          actualKpi: firstActualKpi,
         };
         this.getData(qualityListParams);
-        this.props.setCurrentUrlParams({ firstTeaName, firstQualityNum, firstPage });
+        this.props.setCurrentUrlParams({ firstName, firstActualKpi, firstPage });
       }
     });
   };
   // 表单重置
   handleReset = () => {
-    firstTeaName = '';
-    firstQualityNum = '';
+    firstName = '';
+    firstActualKpi = '';
     firstPage = 0;
     this.publickObj.propsVal.form.resetFields();
     this.props.setRouteUrlParams('/performance/personalPerformance');
@@ -115,7 +119,9 @@ class PersonalPerformance extends Component {
     );
     return data;
   };
-
+  checkDetail = record => {
+    this.props.setRouteUrlParams('/performance/editPerformance', { id: record.id });
+  };
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -188,7 +194,7 @@ class PersonalPerformance extends Component {
     }
   };
   render() {
-    const val = this.props.performance ? this.props.performance.dataList : {};
+    const val = this.props.performance.dataPersonal ? this.props.performance.dataPersonal : {};
     const data = !val ? [] : !val.response ? [] : val.response.data;
     const totalNum = data.length;
 
@@ -205,7 +211,7 @@ class PersonalPerformance extends Component {
               <Col span={6}>
                 <FormItem label="姓名">
                   {getFieldDecorator('name', {
-                    initialValue: firstTeaName,
+                    initialValue: firstName,
                     rules: [],
                   })(<Input placeholder="请输入姓名" style={{ height: 32 }} />)}
                 </FormItem>
@@ -213,20 +219,21 @@ class PersonalPerformance extends Component {
               <Col span={6} style={{ textAlign: 'center' }}>
                 <FormItem label="身份证号">
                   {getFieldDecorator('idCard', {
-                    initialValue: firstQualityNum,
+                    initialValue: firstIdCard,
                     rules: [],
                   })(<Input placeholder="请输入身份证号" maxLength={20} style={{ height: 32 }} />)}
                 </FormItem>
               </Col>
               <Col span={6} style={{ textAlign: 'center' }}>
                 <FormItem label="实发金额">
-                  {getFieldDecorator('qualityNum', {
-                    initialValue: firstQualityNum,
+                  {getFieldDecorator('actualKpi', {
+                    initialValue: firstActualKpi,
                     rules: [],
                   })(
-                    <Select placeholder="----" style={{ width: 150, height: 32 }}>
+                    <Select placeholder="请选择" style={{ width: 150, height: 32 }}>
+                      <Option value="0">----</Option>
                       <Option value="1">有</Option>
-                      <Option value="0">无</Option>
+                      <Option value="2">无</Option>
                     </Select>
                   )}
                 </FormItem>

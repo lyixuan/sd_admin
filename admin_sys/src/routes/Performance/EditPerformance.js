@@ -10,14 +10,9 @@ const WrappedRegistrationForm = Form.create()(PerformanceForm);
   loading,
 }))
 class EditPerformance extends Component {
-  constructor(props) {
-    super(props);
-    // const arrValue = this.props.getUrlParams();
-    this.state = {
-      // id: !arrValue.id ? '' : arrValue.id,
-    };
-  }
   componentDidMount() {
+    const { id } = this.props.getUrlParams();
+    console.log(id);
     // 根据id获取数据datasource
   }
 

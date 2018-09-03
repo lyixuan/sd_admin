@@ -13,7 +13,7 @@ export default {
       const { getListParams } = payload;
       const response = yield call(getCollegePerformanceList, { ...getListParams });
       if (response.code === 2000) {
-        yield put({ type: 'saveVal', payload: { response, getListParams } });
+        yield put({ type: 'saveCollege', payload: { response, getListParams } });
       } else {
         message.error(response.msg);
       }
@@ -23,7 +23,7 @@ export default {
       const response = yield call(getPersonalPerformanceList, { ...getListParams });
 
       if (response.code === 2000) {
-        yield put({ type: 'saveVal', payload: { response, getListParams } });
+        yield put({ type: 'savePersonal', payload: { response, getListParams } });
       } else {
         message.error(response.msg);
       }
@@ -31,10 +31,16 @@ export default {
   },
 
   reducers: {
-    saveVal(state, action) {
+    saveCollege(state, action) {
       return {
         ...state,
-        dataList: action.payload,
+        dataCollege: action.payload,
+      };
+    },
+    savePersonal(state, action) {
+      return {
+        ...state,
+        dataPersonal: action.payload,
       };
     },
   },

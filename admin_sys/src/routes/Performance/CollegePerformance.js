@@ -29,7 +29,7 @@ class CollegePerformance extends Component {
   // 查看详情
   checkDetail = key => {
     this.props.setRouteUrlParams('/performance/personalPerformance', {
-      id: key.id,
+      collegeId: key.collegeId,
     });
   };
 
@@ -124,7 +124,7 @@ class CollegePerformance extends Component {
     this.props.setRouteUrlParams('/performance/importPerformance');
   };
   render() {
-    const val = this.props.performance.dataList ? this.props.performance.dataList : {};
+    const val = this.props.performance.dataCollege ? this.props.performance.dataCollege : {};
     const dataSource = !val.response ? [] : this.fillDataSource(val.response.data);
     const columns = !this.columnsData() ? [] : this.columnsData();
     return (

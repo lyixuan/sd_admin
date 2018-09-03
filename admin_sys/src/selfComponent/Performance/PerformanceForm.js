@@ -26,7 +26,7 @@ class PerformanceForm extends Component {
     const { dataSource } = this.props;
     const { loading } = this.props.jumpFunction;
     return (
-      <div>
+      <div className={styles.m_performance}>
         <Row type="flex" justify="start">
           <Col span={12}>
             <span className={styles.u_lableWidth}>身份证号：</span>
