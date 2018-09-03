@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Input, Popconfirm, Row, Col, Select } from 'antd';
+import { Table, Button, Form, Input, Row, Col, Select } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
+import { renderAuthButtonList } from './_staffAuthMap';
 // import { userTypeData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
@@ -19,7 +20,7 @@ const groupTypeObj = {
   class: '班主任',
 };
 const jobStatus = {
-  全部: null,
+  全部: '',
   在岗: 0,
   休假中: 1,
   已离职: 2,
@@ -43,7 +44,7 @@ class StaffList extends Component {
         number: 0, // 当前页
         size: 30, // 页条数
         orderType: 'modifyTime', // 排序字段
-        status: null, // 员工状态
+        status: '', // 员工状态
       },
     };
     this.state = assignUrlParams(initState, urlParams);
@@ -53,27 +54,13 @@ class StaffList extends Component {
   componentDidMount() {
     this.getData();
   }
-
-  // 删除用户
-  // onDelete = val => {
-  // };
-
-  // 更新用户
-  // onUpdate = val => {
-
-  // };
-
-  // 编辑用户
-  onEdit = val => {
-    this.props.setRouteUrlParams('/user/editUser', {
-      id: val.id,
-      userType: val.userType,
-    });
-  };
-
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, size) => {
-    this.changePage(current, size);
+    const paramsObj = {
+      number: current - 1,
+      size,
+    };
+    this.getData(paramsObj);
   };
 
   getData = (filterParams = {}) => {
@@ -98,20 +85,15 @@ class StaffList extends Component {
 
   // 点击某一页函数
   changePage = (current, size) => {
-    // firstPage = current - 1;
-    // this.savaParams({
-    //   firstPage: !firstPage ? 0 : firstPage,
-    // });
-    // const userListParams = {
-    //   pageSize: size,
-    //   pageNum: current - 1,
-    //   isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-    //   name: !firstName ? undefined : firstName,
-    //   mobile: !firstPhone ? undefined : firstPhone,
-    // };
-    this.getData(size);
+    const paramsObj = {
+      number: current - 1,
+      size,
+    };
+    this.getData(paramsObj);
   };
-
+  clickButton = value => {
+    console.log(value);
+  };
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -155,34 +137,23 @@ class StaffList extends Component {
         width: 150,
         key: 'operation',
         render: (text, record) => {
+          const buttonList = renderAuthButtonList(record.currentStateName || '') || [];
+          const sendObj = {
+            id: record.id,
+            currentStateName: record.currentStateName,
+          };
           return (
             <div>
-              {record.changeShowName &&
-              record.changeShowName !== '' &&
-              (record.userType !== 'admin' || record.userType !== 'boss') &&
-              record.changeShowName !== record.showName ? (
-                <AuthorizedButton authority="/user/updateUser">
+              {buttonList.map(item => (
+                <AuthorizedButton key={item.path} authority="/user/updateUser">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onUpdate(record)}
+                    onClick={() => this.clickButton({ ...sendObj, path: item.path })}
                   >
-                    更新
+                    {item.title}
                   </span>
                 </AuthorizedButton>
-              ) : null}
-              <AuthorizedButton authority="/user/editUser">
-                <span
-                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                  onClick={() => this.onEdit(record)}
-                >
-                  编辑
-                </span>
-              </AuthorizedButton>
-              <AuthorizedButton authority="/user/deleteUser">
-                <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
-                </Popconfirm>
-              </AuthorizedButton>
+              ))}
             </div>
           );
         },
@@ -221,11 +192,10 @@ class StaffList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         const { name, mail, status } = values;
-        console.log(values);
         const paramsObj = {
           name,
           mail,
-          status,
+          status: jobStatus[status] !== undefined ? jobStatus[status] : status,
         };
         this.getData(paramsObj);
       }
@@ -239,13 +209,9 @@ class StaffList extends Component {
 
   render() {
     const { paramsObj } = this.state;
-    const { loading } = this.props;
-    const dataSource = this.formaterData(this.props.staff.staffList);
-
-    //   ? []
-    //   : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
-    // const totalNum = !data.totalElements ? 0 : data.totalElements;
-    // const dataSource = !data.content ? [] : this.fillDataSource(data.content);
+    const { loading, staff } = this.props;
+    const { data = {} } = staff;
+    const dataSource = this.formaterData(data.content || []);
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -283,8 +249,9 @@ class StaffList extends Component {
                 <FormItem label="状态">
                   {getFieldDecorator('status', {
                     initialValue:
-                      Object.keys(jobStatus).find(item => jobStatus[item] == paramsObj.status) ||
-                      '全部',
+                      Object.keys(jobStatus).find(
+                        item => String(jobStatus[item]) === String(paramsObj.status)
+                      ) || '全部',
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
                       {Object.keys(jobStatus).map(item => (
@@ -332,7 +299,7 @@ class StaffList extends Component {
         //     }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：{dataSource.length}条</p>
+            <p className={common.totalNum}>总数：{data.totalElements || 0}条</p>
             <Table
               bordered
               loading={loading}
@@ -352,7 +319,7 @@ class StaffList extends Component {
               this.onShowSizeChange(current, pageSize);
             }}
             defaultCurrent={paramsObj.number + 1}
-            total={10}
+            total={data.totalElements || 0}
             defaultPageSize={30}
           />
         }

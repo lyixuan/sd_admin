@@ -165,6 +165,62 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/StaffList')),
       name: '员工管理',
     },
+    '/privilege/staffList/detail': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/StaffDetail')),
+      bread: {
+        name: '员工管理',
+        path: '/privilege/staffList',
+      },
+      name: '查看详情',
+    },
+    '/privilege/staffList/createTransJob': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/CreateTransJob')),
+      bread: {
+        name: '员工管理',
+        path: '/privilege/staffList',
+      },
+      name: '创建转岗',
+    },
+    '/privilege/staffList/createHoliday': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/CreateHoliday')),
+      bread: {
+        name: '员工管理',
+        path: '/privilege/staffList',
+      },
+      name: '创建休假',
+    },
+    '/privilege/staffList/createDimission': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/CreateDimission')),
+      bread: {
+        name: '员工管理',
+        path: '/privilege/staffList',
+      },
+      name: '创建离职',
+    },
+    '/privilege/staffList/editTransJob': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/EditTransJob')),
+      bread: {
+        name: '员工管理',
+        path: '/privilege/staffList',
+      },
+      name: '编辑转岗',
+    },
+    '/privilege/staffList/editHoliday': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/EditHoliday')),
+      bread: {
+        name: '员工管理',
+        path: '/privilege/staffList',
+      },
+      name: '编辑休假',
+    },
+    '/privilege/staffList/editDimission': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/EditDimission')),
+      bread: {
+        name: '员工管理',
+        path: '/privilege/staffList',
+      },
+      name: '编辑离职',
+    },
 
     '/permission/editPermission': {
       component: dynamicWrapper(app, ['permission'], () =>
