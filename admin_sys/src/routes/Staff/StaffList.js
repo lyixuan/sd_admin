@@ -6,7 +6,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import { userTypeData } from '../../utils/dataDictionary';
+// import { userTypeData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -110,27 +110,6 @@ class StaffList extends Component {
     //   mobile: !firstPhone ? undefined : firstPhone,
     // };
     this.getData(size);
-  };
-
-  // 初始化tabale 列数据
-  fillDataSource = val => {
-    const data = [];
-    val.map((item, index) =>
-      data.push({
-        key: index,
-        name: item.name,
-        mobile: item.mobile,
-        mail: `${item.entUserId}@sunlands.com`,
-        userType: userTypeData[item.userType],
-        showName: !item.showName ? null : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
-        changeShowName: !item.changeShowName ? null : item.changeShowName.replace(/,/g, ' | '),
-        id: item.id,
-        wechatDepartmentId: item.wechatDepartmentId,
-        wechatDepartmentName: item.wechatDepartmentName,
-      })
-    );
-
-    return data;
   };
 
   // 获取table列表头
