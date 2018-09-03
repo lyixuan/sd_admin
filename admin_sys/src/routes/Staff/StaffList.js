@@ -4,7 +4,7 @@ import { Table, Button, Form, Input, Popconfirm, Row, Col, Select } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-// import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
+import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 import { userTypeData } from '../../utils/dataDictionary';
 
@@ -17,6 +17,15 @@ const groupTypeObj = {
   family: '家族长',
   group: '运营长',
   class: '班主任',
+};
+const jobStatus = {
+  全部: null,
+  在岗: 0,
+  休假中: 1,
+  已离职: 2,
+  待转岗: 3,
+  待休假: 4,
+  待离职: 5,
 };
 
 @connect(({ staff, loading }) => ({
@@ -42,6 +51,9 @@ class StaffList extends Component {
 
   // 页面render之前需要请求的接口
   componentDidMount() {
+    const { paramsObj } = this.state;
+    console.log(Object.keys(jobStatus));
+    console.log(Object.keys(jobStatus).find(item => jobStatus[item] == paramsObj.status));
     this.getData();
   }
 
@@ -293,16 +305,22 @@ class StaffList extends Component {
               <Col span={8} style={{ textAlign: 'right' }}>
                 <FormItem label="状态">
                   {getFieldDecorator('status', {
-                    initialValue: paramsObj.status,
+                    initialValue:
+                      Object.keys(jobStatus).find(item => jobStatus[item] === paramsObj.status) ||
+                      '全部',
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                      <Option value={null}>全部</Option>
-                      <Option value={0}>在岗</Option>
+                      {Object.keys(jobStatus).map(item => (
+                        <Option value={jobStatus[item]} key={item}>
+                          {item}
+                        </Option>
+                      ))}
+                      {/* <Option value={0}>在岗</Option>
                       <Option value={1}>休假中</Option>
                       <Option value={2}>已离职</Option>
                       <Option value={3}>待转岗</Option>
                       <Option value={4}>待休假</Option>
-                      <Option value={5}>待离职</Option>
+                      <Option value={5}>待离职</Option> */}
                     </Select>
                   )}
                 </FormItem>
@@ -354,19 +372,19 @@ class StaffList extends Component {
             />
           </div>
         }
-        //     contentPagination={
-        //       <SelfPagination
-        //         onChange={(current, pageSize) => {
-        //           this.changePage(current, pageSize);
-        //         }}
-        //         onShowSizeChange={(current, pageSize) => {
-        //           this.onShowSizeChange(current, pageSize);
-        //         }}
-        //         defaultCurrent={firstPage + 1}
-        //         total={totalNum}
-        //         defaultPageSize={30}
-        //       />
-        //     }
+        contentPagination={
+          <SelfPagination
+            onChange={(current, pageSize) => {
+              this.changePage(current, pageSize);
+            }}
+            onShowSizeChange={(current, pageSize) => {
+              this.onShowSizeChange(current, pageSize);
+            }}
+            defaultCurrent={paramsObj.number + 1}
+            total={10}
+            defaultPageSize={30}
+          />
+        }
       />
     );
   }
