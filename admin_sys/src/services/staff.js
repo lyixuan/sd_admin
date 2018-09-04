@@ -11,3 +11,12 @@ export async function getStaffList(params) {
     method: 'GET',
   });
 }
+/*
+* 插卡
+* params：{name,mail,number,size,orderType,status}
+* */
+export async function getStaffDetail(params) {
+  return request(`${HOST}/detail/detail?${stringify(params)}`, {
+    method: 'GET',
+  });
+}

@@ -92,7 +92,7 @@ class StaffList extends Component {
     this.getData(paramsObj);
   };
   clickButton = value => {
-    console.log(value);
+    this.props.setRouteUrlParams(value.path, { id: value.id });
   };
   // 获取table列表头
   columnsData = () => {

@@ -160,16 +160,19 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/UserList')),
       name: '用户信息',
     },
-
-    '/privilege/staffList': {
+    '/privilege/staff': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/index')),
+      name: '员工管理',
+    },
+    '/privilege/staff/staffList': {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/StaffList')),
       name: '员工管理',
     },
-    '/privilege/staffList/detail': {
+    '/privilege/staff/detail': {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/StaffDetail')),
       bread: {
         name: '员工管理',
-        path: '/privilege/staffList',
+        path: '/privilege/staff',
       },
       name: '查看详情',
     },
@@ -177,7 +180,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/CreateTransJob')),
       bread: {
         name: '员工管理',
-        path: '/privilege/staffList',
+        path: '/privilege/staff',
       },
       name: '创建转岗',
     },
@@ -185,7 +188,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/CreateHoliday')),
       bread: {
         name: '员工管理',
-        path: '/privilege/staffList',
+        path: '/privilege/staff',
       },
       name: '创建休假',
     },
@@ -193,7 +196,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/CreateDimission')),
       bread: {
         name: '员工管理',
-        path: '/privilege/staffList',
+        path: '/privilege/staff',
       },
       name: '创建离职',
     },
@@ -201,7 +204,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/EditTransJob')),
       bread: {
         name: '员工管理',
-        path: '/privilege/staffList',
+        path: '/privilege/staff',
       },
       name: '编辑转岗',
     },
@@ -209,7 +212,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/EditHoliday')),
       bread: {
         name: '员工管理',
-        path: '/privilege/staffList',
+        path: '/privilege/staff',
       },
       name: '编辑休假',
     },
@@ -217,7 +220,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/EditDimission')),
       bread: {
         name: '员工管理',
-        path: '/privilege/staffList',
+        path: '/privilege/staff',
       },
       name: '编辑离职',
     },

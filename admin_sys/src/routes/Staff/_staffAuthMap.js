@@ -12,7 +12,7 @@ const authMap = {
   已离职: [{ title: '查看详情' }],
 };
 const buttonPath = {
-  查看详情: '/privilege/staffList/detail',
+  查看详情: '/privilege/staff/detail',
   转岗: '/privilege/staffList/createTransJob',
   休假: '/privilege/staffList/createHoliday',
   离职: '/privilege/staffList/createDimission',

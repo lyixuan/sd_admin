@@ -1,6 +1,6 @@
 // import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { getStaffList } from '../services/staff';
+import { getStaffList, getStaffDetail } from '../services/staff';
 
 export default {
   namespace: 'staff',
@@ -8,6 +8,7 @@ export default {
   state: {
     // 接口返回数据存储
     data: {},
+    staffDetail: null,
   },
 
   effects: {
@@ -21,9 +22,25 @@ export default {
         message.error(response.msg);
       }
     },
+    *getStaffDetail({ payload }, { call, put }) {
+      const response = yield call(getStaffDetail, payload);
+      if (response.code === 2000) {
+        const data = response.data || {};
+        yield put({ type: 'saveStaffDetail', payload: data });
+      } else {
+        message.error(response.msg);
+      }
+    },
   },
 
   reducers: {
+    saveStaffDetail(state, { payload }) {
+      const staffDetail = payload;
+      return {
+        ...state,
+        staffDetail,
+      };
+    },
     staffListSave(state, { payload }) {
       const data = payload;
       return {
