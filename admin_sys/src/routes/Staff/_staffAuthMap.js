@@ -14,11 +14,11 @@ const authMap = {
 const buttonPath = {
   查看详情: '/privilege/staff/detail',
   转岗: '/privilege/staff/createTransJob',
-  休假: '/privilege/staffList/createHoliday',
-  离职: '/privilege/staffList/createDimission',
-  编辑转岗: '/privilege/staffList/editTransJob',
-  编辑休假: '/privilege/staffList/editHoliday',
-  编辑离职: '/privilege/staffList/editDimission',
+  休假: '/privilege/Staff/createHoliday',
+  离职: '/privilege/Staff/createDimission',
+  编辑转岗: '/privilege/Staff/editTransJob',
+  编辑休假: '/privilege/Staff/editHoliday',
+  编辑离职: '/privilege/Staff/editDimission',
 };
 export function renderAuthButtonList(currentStateName = '') {
   let buttonList = [];
