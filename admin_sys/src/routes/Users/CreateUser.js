@@ -35,9 +35,9 @@ class CreateUser extends Component {
 
     const rname = values.wechatDepartmentName;
     const rUserType = values.userType;
-    const len = values.responseCom.length;
-    let typeId = values.responseCom[len - 1];
-    if (typeof typeId === 'string' || rUserType === 'admin' || rUserType === 'boss') {
+    const len = !values.responseCom?null:values.responseCom.length;
+    let typeId = !len?null:values.responseCom[len - 1];
+    if (typeof typeId === 'string' || rUserType === 'admin' || rUserType === 'boss'|| rUserType === 'others') {
       typeId = undefined;
     }
     let newRoleId = 0;
@@ -48,7 +48,6 @@ class CreateUser extends Component {
       }
       return 0;
     });
-    console.log('提交使用前的参数',values,dateString)
     const userAddParams = {
       name: values.name.replace(/\s*/g, ''),
       mail: values.mail,
@@ -56,21 +55,18 @@ class CreateUser extends Component {
       joinDate:dateString,
       idCard:values.idCard,
       sex:values.sex,
-      positionList:[
-        {
+      positionList:{
           privilege:values.privilege,
           userType: rUserType,
           userTypeId: typeId,
           wechatDepartmentId: Number(newRoleId),
           wechatDepartmentName: !rname ? undefined : rname,
-        },
-      ],
+      },
     };
-    console.log(rUserType,userAddParams)
-    // this.props.dispatch({
-    //   type: 'user/userAdd',
-    //   payload: { userAddParams },
-    // });
+    this.props.dispatch({
+      type: 'user/userAdd',
+      payload: { userAddParams },
+    });
   };
   // 点击取消按钮跳转到list页面
   resetContent = () => {
@@ -79,7 +75,6 @@ class CreateUser extends Component {
   };
 
   render() {
-    // const userListValue = this.props.user;
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -89,8 +84,8 @@ class CreateUser extends Component {
             resetContent={() => {
               this.resetContent();
             }}
-            handleSubmit={values => {
-              this.handleSubmit(values);
+            handleSubmit={(values,dataString) => {
+              this.handleSubmit(values,dataString);
             }}
           />
         }

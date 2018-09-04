@@ -118,22 +118,28 @@ class CreateUserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values,firstJoinDate)
         const rUserType = values.userType;
-        const len = values.responseCom.length;
-        if (rUserType === '小组' || rUserType === '无底表权限') {
-          if (len !== 3) {
+        const len = !values.responseCom?null:values.responseCom.length;
+        if (rUserType === 'group' || rUserType === 'class') {
+          if (!len||len !== 3) {
             message.error('负责单位请选择到对应小组');
           } else {
             this.props.handleSubmit(values,firstJoinDate);
           }
-        } else if (rUserType === '家族') {
-          if (len < 2) {
+        } else if (rUserType === 'family') {
+          if (!len||len < 2) {
             message.error('负责单位请选择到对应家族');
           } else {
             this.props.handleSubmit(values,firstJoinDate);
           }
-        } else {
+        }else if (rUserType === 'college') {
+          if (!len||len < 1) {
+            message.error('负责单位请选择到对应学院');
+          } else {
+            this.props.handleSubmit(values,firstJoinDate);
+          }
+        }
+        else {
           this.props.handleSubmit(values,firstJoinDate);
         }
       }
@@ -268,7 +274,6 @@ class CreateUserForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        console.log(value)
                         if(!value){
                           callback({ message: '入职日期为必填项，请选择!' });
                         }
@@ -294,7 +299,6 @@ class CreateUserForm extends Component {
                     {
 
                       validator(rule, value, callback) {
-                        // console.log('岗位的值',value,!value)
                         if (!value) {
                           callback({ message: '请选择权岗位！' });
                         }
@@ -323,7 +327,6 @@ class CreateUserForm extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        console.log('微信部门的值',value,!value)
                         if (!value) {
                           callback({ message: '请选择权微信部门！' });
                         }
@@ -340,19 +343,16 @@ class CreateUserForm extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem  label="*负责单位">
                 {getFieldDecorator('responseCom', {
-                  initialValue:null,
+                  initialValue:[],
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        console.log('负责单位',value)
-                        if(!value){
-                          callback({ message: '请选择负责单位！' });
-                        }else if(typeof value[0] === 'string' || !value[0]) {
-                          if (flag === 'admin' || flag === 'boss') {
+                        if (typeof value[0] === 'string' || !value[0]) {
+                          if (flag === 'admin' || flag === 'boss' || flag === 'others') {
                             callback();
+                          } else {
+                            callback({ message: '请选择负责单位！' });
                           }
-                        }else {
-                          callback();
                         }
                         callback();
                       },
