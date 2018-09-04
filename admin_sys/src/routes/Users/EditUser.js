@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Form } from 'antd';
+import { Table,Form ,Button,Popconfirm} from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import EditUserForm from '../../selfComponent/UserForm/EditUserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import { userTypeDataReset } from '../../utils/dataDictionary';
+import common from '../Common/common.css';
+import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 
 const WrappedRegistrationForm = Form.create()(EditUserForm);
 
@@ -80,10 +82,75 @@ class EditUser extends Component {
     this.props.dispatch(routerRedux.goBack());
   };
 
+  // 获取table列表头
+  columnsData = () => {
+    const columns = [
+      {
+        title: 'id',
+        dataIndex: 'id',
+      },
+      {
+        title: '岗位',
+        dataIndex: 'userType',
+
+      },
+      {
+        title: '负责单位',
+        dataIndex: 'showName',
+
+      },
+      {
+        title: '类型',
+        dataIndex: 'familyType',
+
+      },
+      {
+        title: '绩效权限',
+        dataIndex: 'privilege',
+
+
+      },
+      {
+        title: '操作',
+        dataIndex: 'operation',
+
+        render: (text, record) => {
+          return (
+            <div>
+              <AuthorizedButton authority="/user/updateUser">
+                <span
+                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                  onClick={() => this.onUpdate(record)}
+                >
+                  更新
+                </span>
+              </AuthorizedButton>
+
+              <AuthorizedButton authority="/user/editUser">
+                <span
+                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                  onClick={() => this.onEdit(record)}
+                >
+                  编辑
+                </span>
+              </AuthorizedButton>
+              <AuthorizedButton authority="/user/deleteUser">
+                <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
+                  <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
+                </Popconfirm>
+              </AuthorizedButton>
+            </div>
+          );
+        },
+      },
+    ];
+    return columns || [];
+  };
+
+
+
   render() {
-    // const userListValue = this.props.user;
-    // const {data = {}} = userListValue.userList.response;
-    // console.log(userListValue.userList)
+    const columns = this.columnsData();
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -96,6 +163,25 @@ class EditUser extends Component {
             handleSubmit={values => {
               this.handleSubmit(values);
             }}
+          />
+        }
+        contentButton={
+          <Button
+            style={{marginTop:'36px'}}
+            type="primary"
+            className={common.submitButton}
+          >
+            添加岗位
+          </Button>
+        }
+        contentTable={
+          <Table
+            style={{marginTop:'24px'}}
+            bordered
+            dataSource={[]}
+            columns={columns}
+            pagination={false}
+            className={common.tableContentStyle}
           />
         }
       />

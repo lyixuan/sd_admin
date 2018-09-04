@@ -225,7 +225,7 @@ class EditUserForm extends Component {
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
           <Row >
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem  label="*姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名">
+              <FormItem  label="*姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 名">
                 {getFieldDecorator('name', {
                   initialValue:!arrValue.name ? '' : arrValue.name,
                   rules: [
@@ -261,7 +261,7 @@ class EditUserForm extends Component {
           </Row>
           <Row  style={{marginTop: '20px'}}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem  label="手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机">
+              <FormItem  label="手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机: ">
                 {getFieldDecorator('phone', {
                   initialValue:!arrValue.mobile ? '' : arrValue.mobile,
                   rules: [
@@ -332,7 +332,7 @@ class EditUserForm extends Component {
                 })(residences)}
               </FormItem>
             </Col>
-            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+            <Col span={6} offset={9} style={{ textAlign: 'right' }}>
               <FormItem>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <Button
@@ -343,6 +343,7 @@ class EditUserForm extends Component {
                     取消
                   </Button>
                   <Button
+                    style={{marginLeft:'20px'}}
                     htmlType="submit"
                     type="primary"
                     className={common.submitButton}
@@ -355,15 +356,6 @@ class EditUserForm extends Component {
             </Col>
           </Row>
         </Form>
-
-        <Button
-          style={{marginTop:'36px'}}
-          type="primary"
-          className={common.submitButton}
-          loading={submit}
-        >
-          添加岗位
-        </Button>
       </Spin>
     );
   }
