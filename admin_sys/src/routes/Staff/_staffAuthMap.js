@@ -13,7 +13,7 @@ const authMap = {
 };
 const buttonPath = {
   查看详情: '/privilege/staff/detail',
-  转岗: '/privilege/staffList/createTransJob',
+  转岗: '/privilege/staff/createTransJob',
   休假: '/privilege/staffList/createHoliday',
   离职: '/privilege/staffList/createDimission',
   编辑转岗: '/privilege/staffList/editTransJob',

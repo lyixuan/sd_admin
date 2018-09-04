@@ -176,8 +176,10 @@ export const getRouterData = app => {
       },
       name: '查看详情',
     },
-    '/privilege/staffList/createTransJob': {
-      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/CreateTransJob')),
+    '/privilege/staff/createTransJob': {
+      component: dynamicWrapper(app, ['staff', 'user'], () =>
+        import('../routes/Staff/CreateTransJob')
+      ),
       bread: {
         name: '员工管理',
         path: '/privilege/staff',
@@ -201,7 +203,9 @@ export const getRouterData = app => {
       name: '创建离职',
     },
     '/privilege/staffList/editTransJob': {
-      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/EditTransJob')),
+      component: dynamicWrapper(app, ['staff', 'user'], () =>
+        import('../routes/Staff/EditTransJob')
+      ),
       bread: {
         name: '员工管理',
         path: '/privilege/staff',

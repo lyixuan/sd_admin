@@ -13,10 +13,19 @@ export async function getStaffList(params) {
 }
 /*
 * 插卡
-* params：{name,mail,number,size,orderType,status}
+* params：{id}
 * */
 export async function getStaffDetail(params) {
   return request(`${HOST}/detail/detail?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+/*
+* 根据员工id和type查询该员工相关信息
+* params：{id,type}
+* */
+export async function getEmployeeInfo(params) {
+  return request(`${HOST}/employee/getEmployeeInfo?${stringify(params)}`, {
     method: 'GET',
   });
 }
