@@ -71,9 +71,7 @@ class UserList extends Component {
 
   // 更新用户
   onUpdate = val => {
-    const mail = val.mail || '';
-    const newmail = mail.substring(0, mail.indexOf('@'));
-    const updateUserOrgParams = { mail: newmail };
+    const updateUserOrgParams = { id: val.id };
     const userListParams = {
       pageSize: 30,
       pageNum: !firstPage ? 0 : firstPage,
@@ -89,8 +87,10 @@ class UserList extends Component {
 
   // 编辑用户
   onEdit = val => {
+    const mail = val.mail || '';
+    const newmail = mail.substring(0, mail.indexOf('@'));
     this.props.setRouteUrlParams('/user/editUser', {
-      id: val.id,
+      mail: newmail,
       userType: val.userType,
     });
   };

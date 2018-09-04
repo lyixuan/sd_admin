@@ -375,10 +375,6 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['collegePerformance'], () =>
         import('../routes/Performance/CollegePerformance')
       ),
-      bread: {
-        name: '绩效管理',
-        path: '/performance/collegePerformance',
-      },
       name: '学院绩效金额',
     },
     '/performance/personalPerformance': {
@@ -387,7 +383,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: '绩效管理',
-        path: '/performance/personalPerformance',
+        path: '/performance/collegePerformance',
       },
       name: '个人绩效金额',
     },
@@ -397,7 +393,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: '绩效管理',
-        path: '/performance/importPerformance',
+        path: '/performance/collegePerformance',
       },
       name: '导入实发绩效',
     },
@@ -407,7 +403,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: '绩效管理',
-        path: '/performance/editPerformance',
+        path: '/performance/collegePerformance',
       },
       name: '编辑绩效',
     },

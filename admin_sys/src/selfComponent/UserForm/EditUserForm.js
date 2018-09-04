@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, message, Row, Col, Select, Spin } from 'antd';
-import { formatEmail } from '../utils/email';
-import common from '../routes/Common/common.css';
-import { userTypeData } from '../utils/dataDictionary';
+import { Form, Input, Button, message, Row, Col, Select, Spin ,DatePicker} from 'antd';
+import { formatEmail } from '../../utils/email';
+import common from '../../routes/Common/common.css';
+// import { userTypeData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 let responseComList = [];
 let responseComListBackup = [];
 let flag = '小组';
+const dateFormat = 'YYYY-MM-DD';
+// const RadioGroup = Radio.Group;
 
-class UserForm extends Component {
+class EditUserForm extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.jumpFunction.getUrlParams();
@@ -181,7 +183,7 @@ class UserForm extends Component {
   roleListFun = (val = []) => {
     const list = !val ? [] : val;
     return (
-      <Select style={{ width: 380 }}>
+      <Select style={{ width: 280 }}>
         {list.map(item => (
           <Option value={item.name} key={item.id}>
             {item.name}
@@ -207,28 +209,6 @@ class UserForm extends Component {
       !responseComList || responseComList.length === 0
         ? this.responseComListFun()
         : responseComList;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
-      },
-    };
     const aaa = this.props.jumpFunction.user.userList;
     const arrValue = !aaa
       ? []
@@ -236,146 +216,123 @@ class UserForm extends Component {
         ? []
         : !aaa.response.data ? [] : !aaa.response.data.content ? [] : aaa.response.data.content[0];
 
-    const str = !arrValue ? '' : !arrValue.showNameIds ? '' : arrValue.showNameIds;
-    const strs = !str ? [] : str.split(',');
-    const arr = !strs
-      ? []
-      : strs.map(el => {
-          return Number(el);
-        });
     // console.log(arr,str,arrValue.showNameIds)
     const { submit, wechatList, listOrg, userList } = this.props.jumpFunction;
+
+    const formLayout = 'inline';
     return (
       <Spin spinning={wechatList || listOrg || userList}>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="*姓 名">
-            {getFieldDecorator('name', {
-              initialValue: !this.state.id ? '' : !arrValue.name ? '' : arrValue.name,
-              rules: [
-                {
-                  validator(rule, value, callback) {
-                    // const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');// 去除字符串前后的空格
-                    const reg = !value ? '' : value.replace(/\s*/g, ''); // 去除字符串中全局空格
-                    if (!reg) {
-                      callback({ message: '姓名为必填项，请填写!' });
-                    } else if (reg.length < 2 || reg.length > 20) {
-                      callback({ message: '姓名在2-20个字符之间，请填写!' });
-                    } else {
-                      callback();
-                    }
-                  },
-                },
-              ],
-            })(<Input style={{ width: 380 }} />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="手 机">
-            {getFieldDecorator('phone', {
-              initialValue: !this.state.id ? '' : !arrValue.mobile ? '' : arrValue.mobile,
-              rules: [
-                {
-                  validator(rule, value, callback) {
-                    const reg = /^0?1\d{10}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
-                    if (!reg.test(value) && value) {
-                      callback({ message: '手机号是以1开头的11位数字组成' });
-                    }
-                    callback();
-                  },
-                },
-              ],
-            })(<Input style={{ width: 380 }} disabled={!this.state.phone ? false : disabled} />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="*邮 箱">
-            {getFieldDecorator('email', {
-              initialValue: !this.state.id
-                ? ''
-                : !arrValue.entUserId ? '' : formatEmail(arrValue.entUserId),
-              rules: [
-                {
-                  validator(rule, value, callback) {
-                    const strExp = /^[A-Za-z0-9]+$/;
-                    if (!strExp.test(value)) {
-                      callback({ message: '请输入合法邮箱' });
-                    }
-                    callback();
-                  },
-                },
-                { required: true, message: '邮箱为必填项，请填写!', whitespace: true },
-                { min: 3, max: 50, required: true, message: '邮箱账号长度需要在3-50字符之间!' },
-              ],
-            })(<Input style={{ width: 264 }} disabled={!this.state.id ? false : disabled} />)}
-            <span style={{ width: 101, marginLeft: '6px' }}> @sunlands.com</span>
-          </FormItem>
-          <FormItem {...formItemLayout} label="*级 别">
-            {getFieldDecorator('userType', {
-              initialValue: !this.state.id
-                ? ''
-                : !arrValue.userType ? '' : userTypeData[arrValue.userType],
-              rules: [
-                {
-                  validator(rule, value, callback) {
-                    if (!value[0]) {
-                      callback({ message: '请选择权级别！' });
-                    }
-                    callback();
-                  },
-                },
-              ],
-            })(
-              <Select style={{ width: 380 }} onChange={this.handleSelectChange}>
-                <Option value="学院">学院</Option>
-                <Option value="家族">家族</Option>
-                <Option value="小组">小组</Option>
-                <Option value="系统管理员">系统管理员</Option>
-                <Option value="高级管理员">高级管理员</Option>
-                <Option value="无底表权限">无底表权限</Option>
-              </Select>
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="*负责单位">
-            {getFieldDecorator('responseCom', {
-              initialValue: !this.state.id ? [] : arr,
-              rules: [
-                {
-                  validator(rule, value, callback) {
-                    if (typeof value[0] === 'string' || !value[0]) {
-                      if (flag === '系统管理员' || flag === '高级管理员') {
+        <Form layout={formLayout} onSubmit={this.handleSubmit}>
+          <Row >
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem  label="*姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名">
+                {getFieldDecorator('name', {
+                  initialValue:!arrValue.name ? '' : arrValue.name,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        // const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');// 去除字符串前后的空格
+                        const reg = !value ? '' : value.replace(/\s*/g, ''); // 去除字符串中全局空格
+                        if (!reg) {
+                          callback({ message: '姓名为必填项，请填写!' });
+                        } else if (reg.length < 2 || reg.length > 20) {
+                          callback({ message: '姓名在2-20个字符之间，请填写!' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(<Input style={{ width: 280 }} />)}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem  label="*性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
+                {getFieldDecorator('sex', {
+                  initialValue:!arrValue.sex ? '' : arrValue.sex,
+                  rules: [{ required: true, message: '性别为必填项，请选择!', whitespace: true }],
+                })(
+                  <Select style={{ width: 280 }}>
+                    <Option value="男">男</Option>
+                    <Option value="女">女</Option>
+                  </Select>)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row  style={{marginTop: '20px'}}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem  label="手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机">
+                {getFieldDecorator('phone', {
+                  initialValue:!arrValue.mobile ? '' : arrValue.mobile,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        const reg = /^0?1\d{10}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
+                        if (!reg.test(value) && value) {
+                          callback({ message: '手机号是以1开头的11位数字组成' });
+                        }
                         callback();
-                      } else {
-                        callback({ message: '请选择负责单位！' });
-                      }
-                    }
-                    callback();
-                  },
-                },
-              ],
-            })(
-              <Cascader
-                options={responseComList}
-                style={{ width: 380 }}
-                disabled={flag === '系统管理员' || flag === '高级管理员' ? disabled : false}
-              />
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="*微信部门">
-            {getFieldDecorator('wechatDepartmentName', {
-              initialValue: !this.state.id
-                ? ''
-                : !arrValue.wechatDepartmentName ? '' : arrValue.wechatDepartmentName,
-              rules: [
-                {
-                  validator(rule, value, callback) {
-                    if (!value[0]) {
-                      callback({ message: '请选择权微信部门！' });
-                    }
-                    callback();
-                  },
-                },
-              ],
-            })(residences)}
-          </FormItem>
-          <FormItem {...tailFormItemLayout} />
-          <Row>
-            <Col span={6} offset={7}>
+                      },
+                    },
+                  ],
+                })(<Input style={{ width: 280 }} disabled={!this.state.phone ? false : disabled} />)}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem  label="*邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱">
+                {getFieldDecorator('email', {
+                  initialValue:!arrValue.mail ? '' : formatEmail(arrValue.mail),
+                  rules: [{ required: true, message: '邮箱为必填项，长度需要在3-50字符之间，请填写!', whitespace: true }],
+                })(
+                  <div>
+                    <Input style={{ width: '175px' }} disabled={!this.state.id ? false : disabled} />
+                    <span style={{ width: '101px' }}> @sunlands.com</span>
+                  </div>
+
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row  style={{marginTop: '20px'}}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }} >
+              <FormItem  label="*身份证号" >
+                {getFieldDecorator('idCard', {
+                  initialValue:!arrValue.idCard ? '' : arrValue.idCard,
+                  rules: [{ required: true, message: '身份证号为必填项，请填写!', whitespace: true }],
+                })(<Input style={{ width: 280 }}  />)}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem  label="*入职日期">
+                {getFieldDecorator('employDate', {
+                  rules: [],
+                })(
+                  <DatePicker
+                    format={dateFormat}
+                    style={{ width: 280, height: 32 }}
+                  /> )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row style={{marginTop: '20px'}}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*微信部门">
+                {getFieldDecorator('wechatDepartmentName', {
+                  initialValue:!arrValue.wechatDepartmentName ? '' : arrValue.wechatDepartmentName,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '请选择权微信部门！' });
+                        }
+                        callback();
+                      },
+                    },
+                  ],
+                })(residences)}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <Button
@@ -398,9 +355,18 @@ class UserForm extends Component {
             </Col>
           </Row>
         </Form>
+
+        <Button
+          style={{marginTop:'36px'}}
+          type="primary"
+          className={common.submitButton}
+          loading={submit}
+        >
+          添加岗位
+        </Button>
       </Spin>
     );
   }
 }
 
-export default UserForm;
+export default EditUserForm;
