@@ -3,7 +3,6 @@ import { Form } from 'antd';
 import { connect } from 'dva';
 import CreateUserForm from '../../selfComponent/UserForm/CreateUserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
-import { userTypeDataReset } from '../../utils/dataDictionary';
 
 const WrappedRegistrationForm = Form.create()(CreateUserForm);
 @connect(({ user, loading }) => ({
@@ -32,12 +31,13 @@ class CreateUser extends Component {
   }
 
   // 点击确定按钮请求接口
-  handleSubmit = values => {
+  handleSubmit = (values,dateString) => {
+
     const rname = values.wechatDepartmentName;
     const rUserType = values.userType;
     const len = values.responseCom.length;
     let typeId = values.responseCom[len - 1];
-    if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
+    if (typeof typeId === 'string' || rUserType === 'admin' || rUserType === 'boss') {
       typeId = undefined;
     }
     let newRoleId = 0;
@@ -48,20 +48,29 @@ class CreateUser extends Component {
       }
       return 0;
     });
+    console.log('提交使用前的参数',values,dateString)
     const userAddParams = {
       name: values.name.replace(/\s*/g, ''),
-      mail: values.email,
-      mobile: values.phone,
-      userType: userTypeDataReset[rUserType],
-      userTypeId: typeId,
-      wechatDepartmentId: Number(newRoleId),
-      wechatDepartmentName: !rname ? undefined : rname,
+      mail: values.mail,
+      mobile: values.mobile,
+      joinDate:dateString,
+      idCard:values.idCard,
+      sex:values.sex,
+      positionList:[
+        {
+          privilege:values.privilege,
+          userType: rUserType,
+          userTypeId: typeId,
+          wechatDepartmentId: Number(newRoleId),
+          wechatDepartmentName: !rname ? undefined : rname,
+        },
+      ],
     };
-    // console.log(rUserType,userAddParams)
-    this.props.dispatch({
-      type: 'user/userAdd',
-      payload: { userAddParams },
-    });
+    console.log(rUserType,userAddParams)
+    // this.props.dispatch({
+    //   type: 'user/userAdd',
+    //   payload: { userAddParams },
+    // });
   };
   // 点击取消按钮跳转到list页面
   resetContent = () => {

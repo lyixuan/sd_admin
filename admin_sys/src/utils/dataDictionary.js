@@ -2,9 +2,9 @@ const userTypeData = {
   college: '院长或副院长',
   family: '家族长',
   group: '运营长',
+  class: '班主任',
   admin: '管理员',
   boss: '管理层',
-  class: '班主任',
   others: '无绩效岗位',
 };
 
@@ -12,9 +12,9 @@ const userTypeDataReset = {
   院长或副院长: 'college',
   家族长: 'family',
   运营长: 'group',
+  班主任: 'class',
   管理员: 'admin',
   管理层: 'boss',
-  班主任: 'class',
   无绩效岗位: 'others',
 };
 
