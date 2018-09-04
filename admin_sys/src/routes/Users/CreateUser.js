@@ -36,7 +36,7 @@ class CreateUser extends Component {
     const rname = values.wechatDepartmentName;
     const rUserType = values.userType;
     const len = !values.responseCom?null:values.responseCom.length;
-    let typeId = !len?null:values.responseCom[len - 1];
+    let typeId = !len?undefined:values.responseCom[len - 1];
     if (typeof typeId === 'string' || rUserType === 'admin' || rUserType === 'boss'|| rUserType === 'others') {
       typeId = undefined;
     }
