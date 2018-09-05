@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form, Button, Select, DatePicker, Cascader, Radio } from 'antd';
+import moment from 'moment';
 import { assignUrlParams } from 'utils/utils';
+import ConfirmModal from 'selfComponents/ConfirmModal';
 import { BaseUtils } from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
@@ -14,7 +16,7 @@ const RadioGroup = Radio.Group;
   staff,
   user,
   loading: loading.effects['staff/getStaffDetail'],
-  creatLoading: loading.effects['staff/addTransferPost'],
+  creatLoading: loading.effects['staff/updateTransferPost'],
 }))
 class EditTransJob extends Component {
   constructor(props) {
@@ -30,7 +32,6 @@ class EditTransJob extends Component {
         kpiUserPositionLogList: [
           {
             userId: Number(urlParams.id),
-            type: 2, // 转岗
             positionType: '',
             collegeId: '',
             familyId: '',
@@ -41,8 +42,11 @@ class EditTransJob extends Component {
       employeeInfo: null,
       responseComList: [],
       orgList: [],
-      positionType: '',
+      positionType: '', // 岗位
+      effectDate: null, // 转岗时间
       canceled: 1, // 是否撤销此次操作,1否,0是
+      groupList: [], // 负责单位
+      isShowModal: false,
     };
     this.state = assignUrlParams(initState, urlParams);
     this.baseUtils = new BaseUtils();
@@ -51,8 +55,17 @@ class EditTransJob extends Component {
   componentDidMount() {
     this.getData();
     this.getGroupList();
+    this.initParams();
   }
   componentWillReceiveProps(nextprops) {
+    if (
+      JSON.stringify(nextprops.staff.employeeInfo) !== JSON.stringify(this.props.staff.employeeInfo)
+    ) {
+      const employeeInfo = nextprops.staff.employeeInfo || {};
+      const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
+      const kpiUserPositionObj = kpiUserPositionLogList[0] || {};
+      this.initParams(kpiUserPositionObj);
+    }
     if (
       JSON.stringify(nextprops.user.listOrg.response) !==
       JSON.stringify(this.props.user.listOrg.response)
@@ -75,11 +88,25 @@ class EditTransJob extends Component {
       payload: {},
     });
   };
+  initParams = obj => {
+    const employeeInfo = this.props.staff.employeeInfo || {};
+    const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
+    const kpiUserPositionObj = kpiUserPositionLogList[0] || {};
+    const { collegeId, familyId, groupId, effectDate, positionType, canceled } =
+      obj || kpiUserPositionObj;
+    const groupList = [collegeId, familyId, groupId].filter(item => item);
+    this.setState({
+      canceled,
+      effectDate,
+      positionType,
+      groupList,
+    });
+  };
   handleSearch = e => {
     e.preventDefault();
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
-      const { effectDate, positionType, cascader } = values;
+      const { effectDate, positionType, cascader, canceled } = values;
       if (!effectDate || !positionType) {
         return;
       }
@@ -89,11 +116,19 @@ class EditTransJob extends Component {
         groupObj[item] = cascader[index] || null;
       });
       const params = {
+        canceled,
         positionType,
         effectDate: effectDate.format(dateFormat),
         ...groupObj,
       };
-      this.commitCreateJob(params);
+      if (canceled === 1) {
+        // 当撤销此次操作的时候讲 数据存储,并弹框,否的话直接交互
+        const isShowModal = canceled === 1;
+        this.setState({ canceled, isShowModal });
+        this.saveCommitParams(params);
+      } else {
+        this.commitCreateJob(params);
+      }
     });
   };
   handleSelectChange = value => {
@@ -144,16 +179,32 @@ class EditTransJob extends Component {
     const orgList = splitOrgList(handleData);
     this.setState({ orgList });
   };
-  ChangeAudio = e => {
-    const canceled = e.target.value;
-    this.setState({ canceled });
+  showModal = bol => {
+    this.setState({ isShowModal: bol });
   };
-  commitCreateJob = (params = {}) => {
+  clickOK = () => {
+    this.commitCreateJob();
+  };
+  saveCommitParams = (params = {}) => {
     const { commitParams } = this.state;
     const newObj = Object.assign({}, commitParams.kpiUserPositionLogList[0], params);
     commitParams.kpiUserPositionLogList = [newObj];
+    this.setState({ commitParams });
+  };
+  commitCreateJob = (params = {}) => {
+    const { commitParams } = this.state;
+    const employeeInfo = this.props.staff.employeeInfo || {};
+    const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
+    const kpiUserPositionObj = kpiUserPositionLogList[0] || {};
+    const newObj = Object.assign(
+      {},
+      kpiUserPositionObj,
+      commitParams.kpiUserPositionLogList[0],
+      params
+    );
+    commitParams.kpiUserPositionLogList = [newObj];
     this.props.dispatch({
-      type: 'staff/addTransferPost',
+      type: 'staff/updateTransferPost',
       payload: commitParams,
     });
   };
@@ -163,12 +214,12 @@ class EditTransJob extends Component {
   render() {
     const { staff = {}, creatLoading } = this.props;
     const employeeInfo = staff.employeeInfo || {};
-    const { orgList, positionType, canceled } = this.state;
+    const { orgList, positionType, canceled, isShowModal, effectDate, groupList } = this.state;
     const { FormItem, groupTypeObj } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
     const datePicker = (
       <DatePicker
-        disabled={canceled === 0}
+        disabled={canceled === 1}
         format={dateFormat}
         style={{ width: 230, height: 32 }}
       />
@@ -203,9 +254,9 @@ class EditTransJob extends Component {
                     {getFieldDecorator('canceled', {
                       initialValue: canceled,
                     })(
-                      <RadioGroup onChange={this.ChangeAudio}>
-                        <Radio value={0}>是</Radio>
-                        <Radio value={1}>否</Radio>
+                      <RadioGroup>
+                        <Radio value={1}>是</Radio>
+                        <Radio value={0}>否</Radio>
                       </RadioGroup>
                     )}
                   </FormItem>
@@ -216,7 +267,7 @@ class EditTransJob extends Component {
                 <span className={styles.labelItem}>
                   <FormItem>
                     {getFieldDecorator('effectDate', {
-                      initialValue: null,
+                      initialValue: moment(effectDate),
                       rules: [{ required: true, message: '请选择生效日期' }],
                     })(datePicker)}
                   </FormItem>
@@ -232,7 +283,7 @@ class EditTransJob extends Component {
                     })(
                       <Select
                         placeholder="---"
-                        disabled={canceled === 0}
+                        disabled={canceled === 1}
                         style={{ width: 230, height: 32 }}
                         onChange={this.handleSelectChange}
                       >
@@ -254,14 +305,14 @@ class EditTransJob extends Component {
                 <span className={styles.labelItem}>
                   <FormItem>
                     {getFieldDecorator('cascader', {
-                      initialValue: [],
+                      initialValue: groupList,
                     })(
                       <Cascader
                         options={orgList}
                         // onChange={this.onChangeCascader}
                         fieldNames={{ label: 'name', value: 'id', children: 'list' }}
                         style={{ width: 230, height: 32 }}
-                        disabled={positionType === 'others' || canceled === 0}
+                        disabled={positionType === 'others' || canceled === 1}
                       />
                     )}
                   </FormItem>
@@ -287,6 +338,9 @@ class EditTransJob extends Component {
               提交
             </Button>
           </div>
+          <ConfirmModal visible={isShowModal} showModal={this.showModal} clickOK={this.clickOK}>
+            <p style={{ marginTop: '20px' }}>您即将撤销{employeeInfo.name}的转岗,请确认.</p>
+          </ConfirmModal>
         </div>
       </ContentLayout>
     );

@@ -10,7 +10,7 @@ export default {
   },
   alias: {
     components: path.resolve(__dirname, 'src/components/'),
-    selfComponents: path.resolve(__dirname, 'src/selfComponents/'),
+    selfComponents: path.resolve(__dirname, 'src/selfComponent/'),
     utils: path.resolve(__dirname, 'src/utils/'),
   },
   ignoreMomentLocale: true,

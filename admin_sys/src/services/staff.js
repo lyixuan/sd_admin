@@ -39,3 +39,13 @@ export async function addTransferPost(params) {
     body: params,
   });
 }
+/*
+* 编辑转岗接口
+* params：{}
+* */
+export async function updateTransferPost(params) {
+  return request(`${HOST}/employee/updateTransferPost`, {
+    method: 'POST',
+    body: params,
+  });
+}
