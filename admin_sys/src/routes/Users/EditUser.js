@@ -4,14 +4,17 @@ import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import EditUserForm from '../../selfComponent/UserForm/EditUserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
-import { userTypeDataReset } from '../../utils/dataDictionary';
 import common from '../Common/common.css';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
+import { userTypeData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
+let flag = 'class';
+let responseComList = [];
+let responseComListBackup = [];
 
 const WrappedRegistrationForm = Form.create()(EditUserForm);
 
@@ -26,9 +29,13 @@ class EditUser extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.getUrlParams();
+    const userVal = this.props.user;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
       mail: !arrValue.mail ? null : arrValue.mail,
-
+      listOrgLiost: listOrgValues || [],
       visible: false,
       collegeName: '',
       multiplePoints: 0,
@@ -39,6 +46,9 @@ class EditUser extends Component {
   }
 
   componentDidMount() {
+    responseComListBackup = !this.state.listOrgLiost
+      ? []
+      : this.fullListFun(this.state.listOrgLiost);
     const wechatListParams = {};
     this.props.dispatch({
       type: 'user/wechatList',
@@ -56,9 +66,11 @@ class EditUser extends Component {
       payload: { getUserlistParams },
     });
   }
+
+
+
   // 编辑账号函数
-  onEdit = key => {
-    console.log(key);
+  onEdit = () => {
     this.setDialogSHow(true);
   };
 
@@ -68,22 +80,85 @@ class EditUser extends Component {
     });
   }
 
-  // // input双向绑定
-  // handelChange(e) {
-  //   const points = e.target.value;
-  //   this.setState({
-  //     multiplePoints: points,
-  //   });
-  // }
+  fullListFun = val => {
+    const value = [];
+    val.map(item => {
+      const firstChldren = [];
+      const chldren1 = item.sub;
+      chldren1.map(obj => {
+        const chldren2 = obj.sub;
+        const secondChldren = [];
+        chldren2.map(list => {
+          secondChldren.push({
+            value: list.id,
+            label: list.name,
+            level: list.level,
+          });
+          return 0;
+        });
+        firstChldren.push({
+          value: obj.id,
+          label: obj.name,
+          level: obj.level,
+          children: secondChldren,
+        });
+        return 0;
+      });
+      value.push({
+        value: item.id,
+        label: item.name,
+        level: item.level,
+        children: firstChldren,
+      });
+      return 0;
+    });
+    return value;
+  };
 
-  handleSubmit = values => {
-    const rname = values.wechatDepartmentName;
-    const rUserType = values.userType;
-    const len = values.responseCom.length;
-    let typeId = rUserType === '家族' ? values.responseCom[1] : values.responseCom[len - 1];
-    if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
-      typeId = undefined;
+  handleSelectChange = value => {
+    const aa = value;
+    flag = aa;
+    const responseValue = [];
+    const userVal = this.props.user;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    const newResponseComList = listOrgValues;
+    if (flag === 'family') {
+      newResponseComList.map(item => {
+        const firstChldren = [];
+        const chldren1 = item.sub;
+        chldren1.map(val => {
+          firstChldren.push({
+            value: val.id,
+            label: val.name,
+            level: val.level,
+          });
+          return 0;
+        });
+        responseValue.push({
+          value: item.id,
+          label: item.name,
+          level: item.level,
+          children: firstChldren,
+        });
+        return 0;
+      });
+    } else if (flag === 'college') {
+      newResponseComList.map(item => {
+        responseValue.push({
+          value: item.id,
+          label: item.name,
+          level: item.level,
+        });
+        return 0;
+      });
     }
+    responseComList = responseValue.length === 0 ? responseComListBackup : responseValue;
+  };
+
+  handleSubmit = (values,data) => {
+    const rname = values.wechatDepartmentName;
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
     roleList.map(item => {
@@ -94,15 +169,16 @@ class EditUser extends Component {
     });
     const updateUserInfoParams = {
       name: values.name.replace(/\s*/g, ''),
-      mail: this.state.email,
+      mail: values.mail,
       mobile: values.phone,
-      id: Number(values.id),
-      userType: userTypeDataReset[rUserType],
-      userTypeId: !typeId ? undefined : typeId,
-      wechatDepartmentId: Number(newRoleId),
-      wechatDepartmentName: !rname ? undefined : rname,
+      sex: Number(values.sex),
+      idCard:values.idCard,
+      joinDate:data,
+      positionList:{
+        wechatDepartmentId: Number(newRoleId),
+        wechatDepartmentName: !rname ? undefined : rname,
+      },
     };
-    // console.log(rUserType,updateUserInfoParams)
     this.props.dispatch({
       type: 'user/updateUserbasicInfo',
       payload: { updateUserInfoParams },
@@ -113,17 +189,20 @@ class EditUser extends Component {
     this.props.dispatch(routerRedux.goBack());
   };
 
+
   // 初始化tabale 列数据
-  fillDataSource = () => {
+  fillDataSource = val => {
     const data = [];
-    data.push({
-      key: 1,
-      id: 1,
-      showName: 'test',
-      familyType: '家族长',
-      collegeId: 1,
-      privilege: '有',
-    });
+    val.map((item, index) =>
+      data.push({
+        key: index,
+        privilege: item.privilege === 1 ? '有' : '无',
+        userType: userTypeData[item.usertype],
+        showName: !item.showname ? null : item.showname.replace(/,/g, ' | '),
+        id: item.positionid,
+      })
+    );
+
     return data;
   };
 
@@ -141,10 +220,6 @@ class EditUser extends Component {
       {
         title: '负责单位',
         dataIndex: 'showName',
-      },
-      {
-        title: '类型',
-        dataIndex: 'familyType',
       },
       {
         title: '绩效权限',
@@ -178,6 +253,14 @@ class EditUser extends Component {
     return columns || [];
   };
 
+  // // input双向绑定
+  // handelChange(e) {
+  //   const points = e.target.value;
+  //   this.setState({
+  //     multiplePoints: points,
+  //   });
+  // }
+
   // 模态框回显
   editName = () => {
     if (!this.state.multiplePoints) {
@@ -202,21 +285,32 @@ class EditUser extends Component {
     }
   };
 
-  handleSelectChange = value => {
-    console.log(value);
-  };
-
   render() {
     const columns = this.columnsData();
-    const dataSource = this.fillDataSource();
+    const userVal = this.props.user;
+
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
+    responseComList =
+      !responseComList || responseComList.length === 0
+        ? responseComListBackup
+        : responseComList;
+
     const { visible } = this.state;
     const formLayout = 'inline';
 
-    const aaa = !this.props.user.getUserlistData ? null : this.props.user.getUserlistData;
+    const aaa = !userVal.getUserlistData?null:userVal.getUserlistData;
     const arrValue = !aaa
       ? null
-      : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
-
+      : !aaa.data ? null : !aaa.data.generalAttribute
+        ? null : aaa.data.generalAttribute;
+    const tableList = !aaa
+      ? null
+      : !aaa.data ? null : !aaa.data.postionAttribute
+        ? null : aaa.data.postionAttribute;
+    const dataSource = !tableList ? [] : this.fillDataSource(tableList);
     const WrappedAdvancedSearchForm = Form.create()(props => {
       const { getFieldDecorator } = props.form;
       return (
@@ -248,7 +342,7 @@ class EditUser extends Component {
                   {getFieldDecorator('responseCom', {
                     initialValue: [],
                     rules: [],
-                  })(<Cascader options={[]} style={{ width: 280 }} />)}
+                  })(<Cascader options={responseComList} style={{ width: 280 }} />)}
                 </FormItem>
               </Col>
             </Row>
@@ -326,8 +420,8 @@ class EditUser extends Component {
               resetContent={() => {
                 this.resetContent();
               }}
-              handleSubmit={values => {
-                this.handleSubmit(values);
+              handleSubmit={(values,data) => {
+                this.handleSubmit(values,data);
               }}
             />
           }

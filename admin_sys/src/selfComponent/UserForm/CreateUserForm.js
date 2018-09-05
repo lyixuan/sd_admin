@@ -14,18 +14,15 @@ const RadioGroup = Radio.Group;
 class CreateUserForm extends Component {
   constructor(props) {
     super(props);
-    const arrValue = this.props.jumpFunction.getUrlParams();
     const userVal = this.props.jumpFunction.user;
     const listOrgValues = !userVal.listOrg.response
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
       listOrgLiost: listOrgValues || [],
-      userType: !arrValue.userType ? '' : arrValue.userType,
     };
   }
   componentDidMount() {
-    flag = this.state.userType;
     responseComListBackup = !this.state.listOrgLiost
       ? []
       : this.fullListFun(this.state.listOrgLiost);
@@ -247,7 +244,7 @@ class CreateUserForm extends Component {
               <FormItem  label="*邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱">
                 {getFieldDecorator('mail', {
                   initialValue:null,
-                  rules: [{ required: true, message: '邮箱为必填项,请填写!', whitespace: true }],
+                  rules: [],
                 })(
                   <div>
                     <Input style={{ width: '175px' }} disabled={!this.state.id ? false : disabled} />

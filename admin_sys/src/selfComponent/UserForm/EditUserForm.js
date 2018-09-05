@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, message, Row, Col, Select, Spin, DatePicker } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, DatePicker } from 'antd';
 import moment from 'moment';
 import { formatEmail } from '../../utils/email';
 import common from '../../routes/Common/common.css';
@@ -8,6 +8,7 @@ import { formatDateNew } from '../../utils/FormatDate';
 const FormItem = Form.Item;
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
+let firstJoinDate = null;
 
 class EditUserForm extends Component {
   constructor(props) {
@@ -19,27 +20,16 @@ class EditUserForm extends Component {
   }
   componentDidMount() {}
 
+  joinDateFun = (dates, dateStrings) => {
+    const aa = dateStrings;
+    firstJoinDate = aa;
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const rUserType = values.userType;
-        const len = values.responseCom.length;
-        if (rUserType === '小组' || rUserType === '无底表权限') {
-          if (len !== 3) {
-            message.error('负责单位请选择到对应小组');
-          } else {
-            this.props.handleSubmit(values);
-          }
-        } else if (rUserType === '家族') {
-          if (len < 2) {
-            message.error('负责单位请选择到对应家族');
-          } else {
-            this.props.handleSubmit(values);
-          }
-        } else {
-          this.props.handleSubmit(values);
-        }
+        this.props.handleSubmit(values,firstJoinDate);
       }
     });
   };
@@ -75,6 +65,7 @@ class EditUserForm extends Component {
       ? null
       : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
     const { submit, wechatList, listOrg, userList } = this.props.jumpFunction;
+    firstJoinDate=  !arrValue?null:!arrValue.joindate ?null:formatDateNew(arrValue.joindate)
     return (
       <Spin spinning={wechatList || listOrg || userList}>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
@@ -104,7 +95,14 @@ class EditUserForm extends Component {
               <FormItem label="*性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
                 {getFieldDecorator('sex', {
                   initialValue: !arrValue ? '' : !arrValue.sex ? '' : arrValue.sex,
-                  rules: [{ required: true, message: '性别为必填项，请选择!', whitespace: true }],
+                  rules: [{
+                    validator(rule, value, callback) {
+                      if(!value){
+                        callback({ message: '性别为必填项，请选择!' });
+                      }
+                      callback();
+                    },
+                  }],
                 })(
                   <Select style={{ width: 280 }}>
                     <Option value={1}>男</Option>
@@ -137,8 +135,8 @@ class EditUserForm extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱">
-                {getFieldDecorator('email', {
-                  initialValue: !this.state.mail ? '' : formatEmail(this.state.mail),
+                {getFieldDecorator('mail', {
+                  initialValue:!this.state.mail?'': formatEmail(this.state.mail),
                 })(
                   <div>
                     <Input style={{ width: '175px' }} disabled value={this.state.mail} />
@@ -178,7 +176,7 @@ class EditUserForm extends Component {
                 {getFieldDecorator('wechatDepartmentName', {
                   initialValue: !arrValue
                     ? ''
-                    : !arrValue.wechatdepartment ? '' : arrValue.wechatdepartment,
+                    : !arrValue.wechatdepartmentname ? '' : arrValue.wechatdepartmentname,
                   rules: [
                     {
                       validator(rule, value, callback) {
