@@ -328,6 +328,43 @@ export async function wechatList(params) {
   });
 }
 
+// 用户编辑-列表页面---删除岗位
+export async function deletePosition(params) {
+  return request(`${HOST}/user/deletePosition?${stringify(params)}`, {
+    method: 'DELETE',
+  });
+}
+
+// 用户编辑-列表页面---编辑用户岗位信息(拿user表id 去更新岗位信息）
+export async function updateUserPositionInfo(params) {
+  return request(`${HOST}/user/updateUserPositionInfo`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+
+// 用户编辑-列表页面---编辑用户基本信息
+export async function updateUserbasicInfo(params) {
+  return request(`${HOST}/user/updateUserbasicInfo`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+
+// 用户编辑-列表页面---添加岗位
+export async function addPosition(params) {
+  return request(`${HOST}/user/addPosition`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 编辑用户时的回显接口
+export async function getUserlist(params) {
+  return request(`${HOST}/user/getUserlist?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
 /*
 以下接口为投诉翻倍模块相关
 * */
