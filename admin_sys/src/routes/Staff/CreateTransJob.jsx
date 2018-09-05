@@ -188,7 +188,7 @@ class CreateTransJob extends Component {
                 <span className={styles.labelText}>现任负责单位:</span>
                 <span className={styles.labelItem}>{employeeInfo.showName}</span>
               </li>
-              <li>
+              <li className={styles.marB_24}>
                 <span className={styles.labelText}>*转岗日期:</span>
                 <span className={styles.labelItem}>
                   <FormItem>
@@ -199,7 +199,7 @@ class CreateTransJob extends Component {
                   </FormItem>
                 </span>
               </li>
-              <li>
+              <li className={styles.marB_24}>
                 <span className={styles.labelText}>*转岗后岗位:</span>
                 <span className={styles.labelItem}>
                   <FormItem>
@@ -225,7 +225,7 @@ class CreateTransJob extends Component {
                   </FormItem>
                 </span>
               </li>
-              <li>
+              <li className={styles.marB_24}>
                 <span className={styles.labelText}>转岗后负责单位:</span>
                 <span className={styles.labelItem}>
                   <FormItem>

@@ -39,3 +39,23 @@ export async function addTransferPost(params) {
     body: params,
   });
 }
+/*
+* 添加离职接口
+* params：{}
+* */
+export async function addDemissionPost(params) {
+  return request(`${HOST}/employee/addDemission`, {
+    method: 'POST',
+    body: params,
+  });
+}
+/*
+* 编辑离职接口
+* params：{}
+* */
+export async function editDemissionPost(params) {
+  return request(`${HOST}/employee/updateDemission`, {
+    method: 'POST',
+    body: params,
+  });
+}
