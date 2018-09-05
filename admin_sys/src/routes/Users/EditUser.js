@@ -11,10 +11,7 @@ import ModalDialog from '../../selfComponent/Modal/Modal';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-let propsVal = '';
 const RadioGroup = Radio.Group;
-
-console.log(propsVal)
 
 const WrappedRegistrationForm = Form.create()(EditUserForm);
 
@@ -169,15 +166,6 @@ class EditUser extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/user/updateUser">
-                <span
-                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                  onClick={() => this.onUpdate(record)}
-                >
-                  更新
-                </span>
-              </AuthorizedButton>
-
               <AuthorizedButton authority="/user/editUser">
                 <span
                   style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
@@ -239,7 +227,6 @@ class EditUser extends Component {
 
 
     const WrappedAdvancedSearchForm = Form.create()(props => {
-      propsVal = props;
       const { getFieldDecorator } = props.form;
       return (
         <div>
