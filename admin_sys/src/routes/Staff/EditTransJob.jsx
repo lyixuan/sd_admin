@@ -182,6 +182,10 @@ class EditTransJob extends Component {
   showModal = bol => {
     this.setState({ isShowModal: bol });
   };
+  changeVideo = e => {
+    const canceled = e.target.value;
+    this.setState({ canceled });
+  };
   clickOK = () => {
     this.commitCreateJob();
   };
@@ -254,7 +258,7 @@ class EditTransJob extends Component {
                     {getFieldDecorator('canceled', {
                       initialValue: canceled,
                     })(
-                      <RadioGroup>
+                      <RadioGroup onChange={this.changeVideo}>
                         <Radio value={1}>是</Radio>
                         <Radio value={0}>否</Radio>
                       </RadioGroup>

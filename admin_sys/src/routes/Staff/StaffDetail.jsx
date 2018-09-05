@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table } from 'antd';
 import { assignUrlParams } from 'utils/utils';
+import { BaseUtils } from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import styles from './styles/index.less';
 import common from '../Common/common.css';
@@ -20,6 +21,7 @@ export default class StaffDetail extends Component {
       },
     };
     this.state = assignUrlParams(initState, urlParams);
+    this.baseUtils = new BaseUtils();
   }
   componentDidMount() {
     this.getData();
@@ -34,45 +36,44 @@ export default class StaffDetail extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: 'id',
-        dataIndex: 'id',
-        key: 'id',
-      },
-      {
-        title: '姓名',
-        dataIndex: 'name',
-        key: 'name',
-      },
-      {
-        title: '状态',
-        dataIndex: 'currentStateName',
+        title: '转岗日期',
+        dataIndex: 'transferDate',
+        key: 'transferDate',
         width: 120,
-        key: 'currentStateName',
       },
       {
-        title: '邮箱',
-        dataIndex: 'mail',
-        width: 150,
-        key: 'mail',
+        title: '转岗前岗位',
+        dataIndex: 'beforePostitonType',
+        key: 'beforePostitonType',
       },
       {
-        title: '岗位',
-        dataIndex: 'userType',
-        width: 110,
-        key: 'userType',
+        title: '转岗前负责单位',
+        dataIndex: 'beforeOrganization',
+        key: 'beforeOrganization',
       },
       {
-        title: '负责单位',
-        dataIndex: 'showName',
-        width: 170,
-        key: 'showName',
+        title: '转岗后岗位',
+        dataIndex: 'afterPostitonType',
+        key: 'afterPostitonType',
+      },
+      {
+        title: '转岗后负责单位',
+        dataIndex: 'afterOrganization',
+        key: 'afterOrganization',
       },
     ];
     return columns || [];
   };
   render() {
-    const { staff = {} } = this.props;
-    // const { staffDetail } = staff;
+    const { staff = {}, loading } = this.props;
+    const staffDetail = staff.staffDetail || {};
+    const transfer = staffDetail.transfer || [];
+    const dataSource = transfer.map((item, index) => ({
+      ...item,
+      key: item.transferDate + index,
+      beforePostitonType: this.baseUtils.returnGroupType(item.beforePostitonType),
+      afterPostitonType: this.baseUtils.returnGroupType(item.afterPostitonType),
+    }));
     console.log(staff);
     return (
       <ContentLayout routerData={this.props.routerData}>
@@ -80,41 +81,39 @@ export default class StaffDetail extends Component {
           <ul className={styles.formContent}>
             <li>
               <span className={styles.labelText}>姓名:</span>
-              <span className={styles.labelItem}>张三</span>
+              <span className={styles.labelItem}>{staffDetail.name}</span>
             </li>
             <li>
               <span className={styles.labelText}>邮箱:</span>
-              <span className={styles.labelItem}>zangsan</span>
+              <span className={styles.labelItem}>{staffDetail.mail}</span>
             </li>
             <li>
               <span className={styles.labelText}>现任岗位:</span>
-              <span className={styles.labelItem}>家族长</span>
+              <span className={styles.labelItem}>{staffDetail.nowPositionType}</span>
             </li>
             <li>
               <span className={styles.labelText}>现任负责单位:</span>
-              <span className={styles.labelItem}>芝士学院 | 北京人力本科</span>
+              <span className={styles.labelItem}>{staffDetail.nowOrgnization}</span>
             </li>
             <li>
               <span className={styles.labelText}>入职日期:</span>
-              <span className={styles.labelItem}>2018-01-01</span>
+              <span className={styles.labelItem}>{staffDetail.joinDate}</span>
             </li>
             <li>
               <span className={styles.labelText}>请假时间:</span>
-              <span className={styles.labelItem}>
-                2018-01-01~2018-03-02 , 2018-07-01~2018-08-31
-              </span>
+              <span className={styles.labelItem}>{staffDetail.lastday}</span>
             </li>
             <li>
               <span className={styles.labelText}>最后工作日:</span>
-              <span className={styles.labelItem}>2018-07-01</span>
+              <span className={styles.labelItem}>{staffDetail.lastday}</span>
             </li>
           </ul>
           <div className={styles.tableConent}>
             <h3 className={styles.tableTitle}>转岗信息:</h3>
             <Table
               bordered
-              // loading={loading}
-              // dataSource={dataSource}
+              loading={loading}
+              dataSource={dataSource}
               columns={this.columnsData()}
               pagination={false}
               className={common.tableContentStyle}

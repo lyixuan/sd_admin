@@ -25,11 +25,13 @@ class EditDimission extends Component {
         id: null,
         type: 4, // 离职
       },
-      kpiUserPositionLogList: {
-        userId: Number(urlParams.id),
-        type: 4, // 离职
-        effectDate: '',
-      },
+      kpiUserPositionLogList: [
+        {
+          userId: Number(urlParams.id),
+          type: 4, // 离职
+          effectDate: '',
+        },
+      ],
       canceled: 1, // 是否撤销此次操作,1否,0是
     };
     this.state = assignUrlParams(initState, urlParams);
@@ -53,7 +55,7 @@ class EditDimission extends Component {
     const { urlParams = {} } = this.props;
     validateFields((err, values) => {
       const { effectDate, canceled } = values;
-      const paramsObj = Object.assign({}, this.state.kpiUserPositionLogList, {
+      const paramsObj = Object.assign({}, this.state.kpiUserPositionLogList[0], {
         effectDate: effectDate.format(dateFormat),
         canceled,
       });

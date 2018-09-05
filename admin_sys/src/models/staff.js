@@ -9,6 +9,8 @@ import {
   updateTransferPost,
   addDemissionPost,
   editDemissionPost,
+  addHoliday,
+  updateHoliday,
 } from '../services/staff';
 
 export default {
@@ -66,7 +68,7 @@ export default {
       const response = yield call(updateTransferPost, payload);
       if (response.code === 2000) {
         message.success('编辑转岗成功');
-        yield put(routerRedux.push('/privilege/staff/staffList'));
+        yield put(routerRedux.goBack());
       } else {
         message.error(response.msg);
       }
@@ -84,7 +86,25 @@ export default {
       const response = yield call(editDemissionPost, payload);
       if (response.code === 2000) {
         message.success('离职创建成功');
+        yield put(routerRedux.goBack());
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *addHoliday({ payload }, { call, put }) {
+      const response = yield call(addHoliday, payload);
+      if (response.code === 2000) {
+        message.success('休假创建成功');
         yield put(routerRedux.push('/privilege/staff/staffList'));
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *updateHoliday({ payload }, { call, put }) {
+      const response = yield call(updateHoliday, payload);
+      if (response.code === 2000) {
+        message.success('休假编辑成功');
+        yield put(routerRedux.goBack());
       } else {
         message.error(response.msg);
       }

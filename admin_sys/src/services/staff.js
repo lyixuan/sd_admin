@@ -70,3 +70,23 @@ export async function editDemissionPost(params) {
     body: params,
   });
 }
+/*
+* 添加休假接口
+* params：{}
+* */
+export async function addHoliday(params) {
+  return request(`${HOST}/employee/addHoliday`, {
+    method: 'POST',
+    body: params,
+  });
+}
+/*
+* 编辑休假接口
+* params：{}
+* */
+export async function updateHoliday(params) {
+  return request(`${HOST}/employee/updateHoliday`, {
+    method: 'POST',
+    body: params,
+  });
+}
