@@ -7,6 +7,8 @@ import {
   getEmployeeInfo,
   addTransferPost,
   updateTransferPost,
+  addDemissionPost,
+  editDemissionPost,
 } from '../services/staff';
 
 export default {
@@ -64,6 +66,24 @@ export default {
       const response = yield call(updateTransferPost, payload);
       if (response.code === 2000) {
         message.success('编辑转岗成功');
+        yield put(routerRedux.push('/privilege/staff/staffList'));
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *addDemissionPost({ payload }, { call, put }) {
+      const response = yield call(addDemissionPost, payload);
+      if (response.code === 2000) {
+        message.success('离职创建成功');
+        yield put(routerRedux.push('/privilege/staff/staffList'));
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *editDemissionPost({ payload }, { call, put }) {
+      const response = yield call(editDemissionPost, payload);
+      if (response.code === 2000) {
+        message.success('离职创建成功');
         yield put(routerRedux.push('/privilege/staff/staffList'));
       } else {
         message.error(response.msg);

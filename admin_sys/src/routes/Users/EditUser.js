@@ -20,7 +20,7 @@ const WrappedRegistrationForm = Form.create()(EditUserForm);
   submit: loading.effects['user/updateUserInfo'],
   wechatList: loading.effects['user/wechatList'],
   listOrg: loading.effects['user/listOrg'],
-  userList: loading.effects['user/userList'],
+  userList: loading.effects['user/getUserlist'],
 }))
 class EditUser extends Component {
   constructor(props) {
@@ -36,7 +36,6 @@ class EditUser extends Component {
       effectiveDate: '',
       collegeId: 0,
     };
-    console.log(this.state.mail);
   }
 
   componentDidMount() {
@@ -51,10 +50,10 @@ class EditUser extends Component {
       type: 'user/listOrg',
       payload: { listOrgParams },
     });
-    const userListParams = { mail: this.state.mail };
+    const getUserlistParams = { mail: this.state.mail };
     this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
+      type: 'user/getUserlist',
+      payload: { getUserlistParams },
     });
   }
   // 编辑账号函数
@@ -105,7 +104,7 @@ class EditUser extends Component {
     };
     // console.log(rUserType,updateUserInfoParams)
     this.props.dispatch({
-      type: 'user/updateUserInfo',
+      type: 'user/updateUserbasicInfo',
       payload: { updateUserInfoParams },
     });
   };
@@ -213,6 +212,11 @@ class EditUser extends Component {
     const { visible } = this.state;
     const formLayout = 'inline';
 
+    const aaa = !this.props.user.getUserlistData ? null : this.props.user.getUserlistData;
+    const arrValue = !aaa
+      ? null
+      : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
+
     const WrappedAdvancedSearchForm = Form.create()(props => {
       const { getFieldDecorator } = props.form;
       return (
@@ -281,7 +285,7 @@ class EditUser extends Component {
             姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:
           </Col>
           <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={0}>
-            张三
+            {!arrValue ? '' : !arrValue.name ? '' : arrValue.name}
           </Col>
         </Row>
         <Row style={{ marginBottom: '14px' }}>
@@ -289,7 +293,7 @@ class EditUser extends Component {
             性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:
           </Col>
           <Col offset={1} style={{ textAlign: 'left', fontSize: '14px' }}>
-            男
+            {!arrValue ? '' : !arrValue.sex ? '' : arrValue.sex === 1 ? '男' : '女'}
           </Col>
         </Row>
         <Row style={{ marginBottom: '14px' }}>
@@ -297,7 +301,7 @@ class EditUser extends Component {
             手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
           </Col>
           <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>
-            18500469077
+            {!arrValue ? '' : !arrValue.mobile ? '' : arrValue.mobile}
           </Col>
         </Row>
         <Row>
@@ -305,7 +309,7 @@ class EditUser extends Component {
             邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:
           </Col>
           <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>
-            wangjingjing06@sunland.com
+            {!this.state.mail ? '' : this.state.mail}
           </Col>
         </Row>
         <WrappedAdvancedSearchForm />

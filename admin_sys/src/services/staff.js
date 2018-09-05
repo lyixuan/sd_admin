@@ -40,11 +40,32 @@ export async function addTransferPost(params) {
   });
 }
 /*
+
 * 编辑转岗接口
 * params：{}
 * */
 export async function updateTransferPost(params) {
   return request(`${HOST}/employee/updateTransferPost`, {
+    method: 'POST',
+    body: params,
+  });
+}
+/*
+* 添加离职接口
+* params：{}
+* */
+export async function addDemissionPost(params) {
+  return request(`${HOST}/employee/addDemission`, {
+    method: 'POST',
+    body: params,
+  });
+}
+/*
+* 编辑离职接口
+* params：{}
+* */
+export async function editDemissionPost(params) {
+  return request(`${HOST}/employee/updateDemission`, {
     method: 'POST',
     body: params,
   });
