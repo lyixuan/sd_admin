@@ -29,6 +29,15 @@ class EditUserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+
+        const aaa = !this.props.jumpFunction.user.getUserlistData
+          ? null
+          : this.props.jumpFunction.user.getUserlistData;
+
+        const arrValue = !aaa
+          ? null
+          : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
+        firstJoinDate=!firstJoinDate?  !arrValue?null:!arrValue.joindate ?null:formatDateNew(arrValue.joindate):firstJoinDate;
         this.props.handleSubmit(values,firstJoinDate);
       }
     });
@@ -65,7 +74,6 @@ class EditUserForm extends Component {
       ? null
       : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
     const { submit, wechatList, listOrg, userList } = this.props.jumpFunction;
-    firstJoinDate=  !arrValue?null:!arrValue.joindate ?null:formatDateNew(arrValue.joindate)
     return (
       <Spin spinning={wechatList || listOrg || userList}>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
@@ -166,7 +174,7 @@ class EditUserForm extends Component {
                       ? moment('2018-09-05', dateFormat)
                       : moment(formatDateNew(arrValue.joindate), dateFormat),
                   rules: [],
-                })(<DatePicker format={dateFormat} style={{ width: 280, height: 32 }} />)}
+                })(<DatePicker format={dateFormat}  onChange={this.joinDateFun} style={{ width: 280, height: 32 }} />)}
               </FormItem>
             </Col>
           </Row>

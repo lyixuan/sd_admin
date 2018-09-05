@@ -158,6 +158,7 @@ class EditUser extends Component {
   };
 
   handleSubmit = (values,data) => {
+    console.log(values,data)
     const rname = values.wechatDepartmentName;
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
