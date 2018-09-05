@@ -27,6 +27,7 @@ class CreateTransJob extends Component {
       commitParams: null,
       employeeInfo: null,
       responseComList: [],
+      orgList: [],
     };
     this.state = assignUrlParams(initState, urlParams);
     this.baseUtils = new BaseUtils();
@@ -49,6 +50,7 @@ class CreateTransJob extends Component {
       JSON.stringify(this.props.user.listOrg.response)
     ) {
       const responseComList = nextprops.user.listOrg.response.data || [];
+      this.handleOrgList(3, responseComList);
       this.setState({ responseComList });
     }
   }
@@ -84,46 +86,67 @@ class CreateTransJob extends Component {
     e.preventDefault();
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
-      //   const { effectDate, positionType } = values;
+      // const { effectDate, positionType } = values;
       console.log(values);
     });
   };
   handleSelectChange = value => {
     const { commitParams } = this.state;
     commitParams.kpiUserPositionLogList.positionType = value;
-    this.handleOrgList(value);
+    // this.handleOrgList(value);
+    this.handleGroupLevel(value);
     this.setState({ commitParams });
   };
-  handleOrgList = groupType => {
-    console.log(groupType);
-    const { responseComList } = this.state;
+  handleGroupLevel = groupType => {
+    switch (groupType) {
+      case 'college':
+        this.handleOrgList(1);
+        break;
+      case 'family':
+        this.handleOrgList(2);
+        break;
+      case 'class':
+        this.handleOrgList(3);
+        break;
+      case 'group':
+        this.handleOrgList(3);
+        break;
+      case 'others':
+        break;
+      default:
+        this.handleOrgList(3);
+        break;
+    }
+  };
+  handleOrgList = (leveNum = 3, dataScore = null) => {
+    const { responseComList = [] } = this.state;
+    const handleData = dataScore || responseComList.slice(0);
     const splitOrgList = data => {
       if (!data) {
         return;
       }
+      const newData = [];
       for (let i = 0; i < data.length; i += 1) {
         const children = data[i];
         if (children.sub && children.sub.length > 0) {
-          if (children.level <= 1) {
-            splitOrgList(children.sub);
-          } else {
-            children.sub = [];
-          }
+          children.list = children.level < leveNum ? splitOrgList(children.sub) : [];
+          newData.push(children);
         }
-
-        return data;
       }
+
+      return newData;
     };
-    console.log(splitOrgList(responseComList));
+    const orgList = splitOrgList(handleData);
+    this.setState({ orgList });
   };
 
   backToList = () => {
     this.props.history.goBack();
   };
   render() {
-    console.log(this.props.user);
     const employeeInfo = this.state.employeeInfo || {};
-    const { commitParams, responseComList } = this.state;
+    const { commitParams, orgList } = this.state;
+    const kpiUserPositionLogList = commitParams ? commitParams.kpiUserPositionLogList : {};
     const { FormItem, groupTypeObj } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
     const datePicker = <DatePicker format={dateFormat} style={{ width: 230, height: 32 }} />;
@@ -192,14 +215,13 @@ class CreateTransJob extends Component {
                 <span className={styles.labelItem}>
                   <FormItem>
                     {getFieldDecorator('responseCom', {
-                      initialValue: null,
-                      rules: [],
+                      initialValue: [101, 502],
                     })(
                       <Cascader
-                        options={responseComList}
-                        fieldNames={{ label: 'name', value: 'id', children: 'sub' }}
-                        style={{ width: 280 }}
-                        // disabled={flag === 'others' ? disabled : false}
+                        options={orgList}
+                        fieldNames={{ label: 'name', value: 'id', children: 'list' }}
+                        style={{ width: 230, height: 32 }}
+                        disabled={kpiUserPositionLogList.positionType === 'others'}
                       />
                     )}
                   </FormItem>
@@ -208,14 +230,18 @@ class CreateTransJob extends Component {
             </ul>
           </Form>
 
-          <div className={styles.tableConent}>
-            <Button onClick={this.backToList} type="primary" className={common.cancleButton}>
+          <div className={styles.buttonConent}>
+            <Button
+              onClick={this.backToList}
+              type="primary"
+              className={`${common.cancleButton} ${styles.buttonConnel}`}
+            >
               取消
             </Button>
             <Button
               onClick={this.handleSearch}
               type="primary"
-              className={common.submitButton}
+              className={`${common.submitButton} ${styles.buttonSure}`}
               // loading={submit}
             >
               提交
