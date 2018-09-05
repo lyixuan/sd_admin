@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Form, Button, Select, DatePicker, Cascader } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 // import { moment } from 'moment';
-import { BaseUtils } from './BaseUtils';
+import { BaseUtils } from './BaseUtils.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
 import styles from './styles/index.less';
