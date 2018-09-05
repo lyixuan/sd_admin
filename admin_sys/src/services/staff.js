@@ -29,3 +29,13 @@ export async function getEmployeeInfo(params) {
     method: 'GET',
   });
 }
+/*
+* 添加转岗接口
+* params：{}
+* */
+export async function addTransferPost(params) {
+  return request(`${HOST}/employee/addTransferPost`, {
+    method: 'POST',
+    body: params,
+  });
+}

@@ -1,11 +1,6 @@
 const authMap = {
-  在岗: [
-    { title: '查看详情', path: '' },
-    { title: '编辑转岗' },
-    { title: '休假' },
-    { title: '离职' },
-  ],
-  待转岗: [{ title: '查看详情' }, { title: '转岗' }, { title: '休假' }, { title: '离职' }],
+  在岗: [{ title: '查看详情', path: '' }, { title: '转岗' }, { title: '休假' }, { title: '离职' }],
+  待转岗: [{ title: '查看详情' }, { title: '编辑转岗' }, { title: '休假' }, { title: '离职' }],
   待休假: [{ title: '查看详情' }, { title: '编辑休假' }, { title: '转岗' }, { title: '离职' }],
   休假中: [{ title: '查看详情' }, { title: '编辑休假' }, { title: '转岗' }, { title: '离职' }],
   待离职: [{ title: '查看详情' }, { title: '编辑离职' }, { title: '转岗' }, { title: '休假' }],

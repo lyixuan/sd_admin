@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form, Button, Select, DatePicker, Cascader } from 'antd';
 import { assignUrlParams } from 'utils/utils';
-// import { moment } from 'moment';
 import { BaseUtils } from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
@@ -14,6 +13,7 @@ const { Option } = Select;
   staff,
   user,
   loading: loading.effects['staff/getStaffDetail'],
+  creatLoading: loading.effects['staff/addTransferPost'],
 }))
 class CreateTransJob extends Component {
   constructor(props) {
@@ -24,10 +24,23 @@ class CreateTransJob extends Component {
         id: null,
         type: 2,
       },
-      commitParams: null,
+      commitParams: {
+        id: Number(urlParams.id),
+        kpiUserPositionLogList: [
+          {
+            userId: Number(urlParams.id),
+            type: 2, // 转岗
+            positionType: '',
+            collegeId: '',
+            familyId: '',
+            groupId: '',
+          },
+        ],
+      },
       employeeInfo: null,
       responseComList: [],
       orgList: [],
+      positionType: '',
     };
     this.state = assignUrlParams(initState, urlParams);
     this.baseUtils = new BaseUtils();
@@ -39,13 +52,6 @@ class CreateTransJob extends Component {
   }
   componentWillReceiveProps(nextprops) {
     if (
-      JSON.stringify(nextprops.staff.employeeInfo) !== JSON.stringify(this.props.staff.employeeInfo)
-    ) {
-      const { employeeInfo } = nextprops.staff;
-      const commitParams = this.initCommitParams(employeeInfo);
-      this.setState({ employeeInfo, commitParams });
-    }
-    if (
       JSON.stringify(nextprops.user.listOrg.response) !==
       JSON.stringify(this.props.user.listOrg.response)
     ) {
@@ -54,7 +60,9 @@ class CreateTransJob extends Component {
       this.setState({ responseComList });
     }
   }
-
+  onChangeCascader = () => {
+    // this.setState({ cascader });
+  };
   getData = () => {
     const { paramsObj } = this.state;
     this.props.dispatch({
@@ -68,34 +76,32 @@ class CreateTransJob extends Component {
       payload: {},
     });
   };
-  selectedOrgData = () => {};
-  initCommitParams = employeeInfo => {
-    const { id } = employeeInfo;
-    return {
-      id,
-      kpiUserPositionLogList: [
-        {
-          userId: id,
-          type: 2, // 转岗
-          positionType: '',
-        },
-      ],
-    };
-  };
   handleSearch = e => {
     e.preventDefault();
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
-      // const { effectDate, positionType } = values;
-      console.log(values);
+      const { effectDate, positionType, cascader } = values;
+      if (!effectDate || !positionType) {
+        return;
+      }
+      const groupObj = {};
+      const groupArr = ['collegeId', 'familyId', 'groupId'];
+      groupArr.forEach((item, index) => {
+        groupObj[item] = cascader[index] || null;
+      });
+      const params = {
+        positionType,
+        effectDate: effectDate.format(dateFormat),
+        ...groupObj,
+      };
+      this.commitCreateJob(params);
     });
   };
   handleSelectChange = value => {
-    const { commitParams } = this.state;
-    commitParams.kpiUserPositionLogList.positionType = value;
+    const positionType = value;
     // this.handleOrgList(value);
     this.handleGroupLevel(value);
-    this.setState({ commitParams });
+    this.setState({ positionType });
   };
   handleGroupLevel = groupType => {
     switch (groupType) {
@@ -129,24 +135,33 @@ class CreateTransJob extends Component {
       for (let i = 0; i < data.length; i += 1) {
         const children = data[i];
         if (children.sub && children.sub.length > 0) {
-          children.list = children.level < leveNum ? splitOrgList(children.sub) : [];
-          newData.push(children);
+          children.list = splitOrgList(children.sub);
         }
+        children.list = children.level < leveNum ? children.list : null;
+        newData.push(children);
       }
-
       return newData;
     };
     const orgList = splitOrgList(handleData);
     this.setState({ orgList });
   };
 
+  commitCreateJob = (params = {}) => {
+    const { commitParams } = this.state;
+    const newObj = Object.assign({}, commitParams.kpiUserPositionLogList[0], params);
+    commitParams.kpiUserPositionLogList = [newObj];
+    this.props.dispatch({
+      type: 'staff/addTransferPost',
+      payload: commitParams,
+    });
+  };
   backToList = () => {
     this.props.history.goBack();
   };
   render() {
-    const employeeInfo = this.state.employeeInfo || {};
-    const { commitParams, orgList } = this.state;
-    const kpiUserPositionLogList = commitParams ? commitParams.kpiUserPositionLogList : {};
+    const { staff = {}, creatLoading } = this.props;
+    const employeeInfo = staff.employeeInfo || {};
+    const { orgList, positionType } = this.state;
     const { FormItem, groupTypeObj } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
     const datePicker = <DatePicker format={dateFormat} style={{ width: 230, height: 32 }} />;
@@ -179,7 +194,7 @@ class CreateTransJob extends Component {
                   <FormItem>
                     {getFieldDecorator('effectDate', {
                       initialValue: null,
-                      rules: [{ required: true, message: '请选择生效开始日期' }],
+                      rules: [{ required: true, message: '请选择生效日期' }],
                     })(datePicker)}
                   </FormItem>
                 </span>
@@ -189,8 +204,8 @@ class CreateTransJob extends Component {
                 <span className={styles.labelItem}>
                   <FormItem>
                     {getFieldDecorator('positionType', {
-                      initialValue: commitParams ? commitParams.positionType : '',
-                      rules: [{ required: true, message: '请选择生效开始日期' }],
+                      initialValue: positionType,
+                      rules: [{ required: true, message: '请选择有效岗位' }],
                     })(
                       <Select
                         placeholder="---"
@@ -214,14 +229,15 @@ class CreateTransJob extends Component {
                 <span className={styles.labelText}>转岗后负责单位:</span>
                 <span className={styles.labelItem}>
                   <FormItem>
-                    {getFieldDecorator('responseCom', {
-                      initialValue: [101, 502],
+                    {getFieldDecorator('cascader', {
+                      initialValue: [],
                     })(
                       <Cascader
                         options={orgList}
+                        // onChange={this.onChangeCascader}
                         fieldNames={{ label: 'name', value: 'id', children: 'list' }}
                         style={{ width: 230, height: 32 }}
-                        disabled={kpiUserPositionLogList.positionType === 'others'}
+                        disabled={positionType === 'others'}
                       />
                     )}
                   </FormItem>
@@ -242,7 +258,7 @@ class CreateTransJob extends Component {
               onClick={this.handleSearch}
               type="primary"
               className={`${common.submitButton} ${styles.buttonSure}`}
-              // loading={submit}
+              loading={creatLoading}
             >
               提交
             </Button>

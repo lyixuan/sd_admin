@@ -1,6 +1,7 @@
 // import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { getStaffList, getStaffDetail, getEmployeeInfo } from '../services/staff';
+import { routerRedux } from 'dva/router';
+import { getStaffList, getStaffDetail, getEmployeeInfo, addTransferPost } from '../services/staff';
 
 export default {
   namespace: 'staff',
@@ -40,6 +41,15 @@ export default {
       if (response.code === 2000) {
         const data = response.data || {};
         yield put({ type: 'saveEmployeeInfo', payload: data });
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *addTransferPost({ payload }, { call, put }) {
+      const response = yield call(addTransferPost, payload);
+      if (response.code === 2000) {
+        message.success('转岗创建成功');
+        yield put(routerRedux.push('/privilege/staff/staffList'));
       } else {
         message.error(response.msg);
       }
