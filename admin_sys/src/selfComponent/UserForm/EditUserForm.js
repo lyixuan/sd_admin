@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, message, Row, Col, Select, Spin, DatePicker } from 'antd';
+import moment from 'moment';
 import { formatEmail } from '../../utils/email';
 import common from '../../routes/Common/common.css';
+import { formatDateNew } from '../../utils/FormatDate';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -65,14 +67,13 @@ class EditUserForm extends Component {
       : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
     const residences = !wechatValues ? [] : this.roleListFun(wechatValues);
 
-    const aaa = this.props.jumpFunction.user.userList;
+    const aaa = !this.props.jumpFunction.user.getUserlistData?null:this.props.jumpFunction.user.getUserlistData;
+
     const arrValue = !aaa
-      ? []
-      : !aaa.response
-        ? []
-        : !aaa.response.data ? [] : !aaa.response.data.content ? [] : aaa.response.data.content[0];
+      ? null
+      : !aaa.data ? null : !aaa.data.generalAttribute
+          ? null : aaa.data.generalAttribute;
     const { submit, wechatList, listOrg, userList } = this.props.jumpFunction;
-    console.log('render时候的值', arrValue, !arrValue, arrValue === '[]');
     return (
       <Spin spinning={wechatList || listOrg || userList}>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
@@ -80,11 +81,10 @@ class EditUserForm extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 名">
                 {getFieldDecorator('name', {
-                  initialValue: !arrValue ? '' : !arrValue.name ? '' : arrValue.name,
+                  initialValue: !arrValue ? '': !arrValue.name ? '' :arrValue.name,
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        // const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');// 去除字符串前后的空格
                         const reg = !value ? '' : value.replace(/\s*/g, ''); // 去除字符串中全局空格
                         if (!reg) {
                           callback({ message: '姓名为必填项，请填写!' });
@@ -106,8 +106,8 @@ class EditUserForm extends Component {
                   rules: [{ required: true, message: '性别为必填项，请选择!', whitespace: true }],
                 })(
                   <Select style={{ width: 280 }}>
-                    <Option value="男">男</Option>
-                    <Option value="女">女</Option>
+                    <Option value={1}>男</Option>
+                    <Option value={2}>女</Option>
                   </Select>
                 )}
               </FormItem>
@@ -137,7 +137,7 @@ class EditUserForm extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱">
                 {getFieldDecorator('email', {
-                  initialValue: formatEmail(this.state.mail) || '',
+                  initialValue:!this.state.mail?'': formatEmail(this.state.mail),
                 })(
                   <div>
                     <Input style={{ width: '175px' }} disabled value={this.state.mail} />
@@ -151,7 +151,7 @@ class EditUserForm extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*身份证号">
                 {getFieldDecorator('idCard', {
-                  initialValue: !arrValue ? '' : !arrValue.idCard ? '' : arrValue.idCard,
+                  initialValue: !arrValue ? '' : !arrValue.idcard ? '' : arrValue.idcard,
                   rules: [
                     { required: true, message: '身份证号为必填项，请填写!', whitespace: true },
                   ],
@@ -160,9 +160,10 @@ class EditUserForm extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*入职日期">
-                {getFieldDecorator('employDate', {
+                {getFieldDecorator('joindate', {
+                  initialValue: !arrValue?moment('2018-09-05', dateFormat):!arrValue.joindate ? moment('2018-09-05', dateFormat) : moment(formatDateNew(arrValue.joindate), dateFormat),
                   rules: [],
-                })(<DatePicker format={dateFormat} style={{ width: 280, height: 32 }} />)}
+                })(<DatePicker format={dateFormat}  style={{ width: 280, height: 32 }} />)}
               </FormItem>
             </Col>
           </Row>
@@ -172,7 +173,7 @@ class EditUserForm extends Component {
                 {getFieldDecorator('wechatDepartmentName', {
                   initialValue: !arrValue
                     ? ''
-                    : !arrValue.wechatDepartmentName ? '' : arrValue.wechatDepartmentName,
+                    : !arrValue.wechatdepartment ? '' : arrValue.wechatdepartment,
                   rules: [
                     {
                       validator(rule, value, callback) {

@@ -3,11 +3,15 @@ import { message } from 'antd';
 import {
   userList,
   updateUserOrg,
-  updateUserInfo,
+  updateUserbasicInfo,
   userDelete,
   wechatList,
   userAdd,
   listOrg,
+  deletePosition,
+  updateUserPositionInfo,
+  addPosition,
+  getUserlist,
 } from '../services/api';
 
 export default {
@@ -18,6 +22,7 @@ export default {
     userList: [],
     wechatList: [],
     listOrg: [],
+    getUserlistData:null,
   },
 
   effects: {
@@ -35,13 +40,17 @@ export default {
       if (result.code === 2000) {
         message.success('更新成功！');
         const response = yield call(userList, payload.userListParams);
-        yield put({ type: 'userListSave', payload: { response } });
+        if (response.code === 2000) {
+          yield put({ type: 'userListSave', payload: { response } });
+        } else {
+          message.error(response.msg);
+        }
       } else {
         message.error(result.msg);
       }
     },
-    *updateUserInfo({ payload }, { call, put }) {
-      const result = yield call(updateUserInfo, payload.updateUserInfoParams);
+    *updateUserbasicInfo({ payload }, { call, put }) {
+      const result = yield call(updateUserbasicInfo, payload.updateUserInfoParams);
       if (result.code === 2000) {
         message.success('用户编辑成功！');
         yield put(routerRedux.goBack());
@@ -54,7 +63,11 @@ export default {
       if (result.code === 2000) {
         message.success('用户删除成功！');
         const response = yield call(userList, payload.userListParams);
-        yield put({ type: 'userListSave', payload: { response } });
+        if (response.code === 2000) {
+          yield put({ type: 'userListSave', payload: { response } });
+        } else {
+          message.error(response.msg);
+        }
       } else {
         message.error(result.msg);
       }
@@ -84,9 +97,70 @@ export default {
         message.error(response.msg);
       }
     },
+    *getUserlist({ payload }, { call, put }) {
+      const getUserlistData = yield call(getUserlist, payload.getUserlistParams);
+      if (getUserlistData.code === 2000) {
+        yield put({ type: 'getUserlistSave', payload: { getUserlistData } });
+      } else {
+        message.error(getUserlistData.msg);
+      }
+    },
+    *addPosition({ payload }, { call, put }) {
+      const addPositionData = yield call(addPosition, payload.addPositionParams);
+      if (addPositionData.code === 2000) {
+        message.success('岗位添加成功！');
+        const getUserlistData = yield call(getUserlist, payload.getUserlistParams);
+        if (getUserlistData.code === 2000) {
+          yield put({ type: 'getUserlistSave', payload: { getUserlistData } });
+        } else {
+          message.error(getUserlistData.msg);
+        }
+      } else {
+        message.error(addPositionData.msg);
+      }
+    },
+    *deletePosition({ payload }, { call, put }) {
+      const deletePositionData = yield call(deletePosition, payload.deletePositionParams);
+      if (deletePositionData.code === 2000) {
+        message.success('岗位删除成功！');
+        const getUserlistData = yield call(getUserlist, payload.getUserlistParams);
+        if (getUserlistData.code === 2000) {
+          yield put({ type: 'getUserlistSave', payload: { getUserlistData } });
+        } else {
+          message.error(getUserlistData.msg);
+        }
+      } else {
+        message.error(deletePositionData.msg);
+      }
+    },
+    *updateUserPositionInfo({ payload }, { call, put }) {
+      const updateUserPositionInfoData = yield call(updateUserPositionInfo, payload.updateUserPositionInfoParams);
+      if (updateUserPositionInfoData.code === 2000) {
+        message.success('岗位删除成功！');
+        const getUserlistData = yield call(getUserlist, payload.getUserlistParams);
+        if (getUserlistData.code === 2000) {
+          yield put({ type: 'getUserlistSave', payload: { getUserlistData } });
+        } else {
+          message.error(getUserlistData.msg);
+        }
+      } else {
+        message.error(updateUserPositionInfoData.msg);
+      }
+    },
+
+
+
+
   },
 
   reducers: {
+
+
+    getUserlistSave(state, action) {
+      return { ...state, ...action.payload };
+    },
+
+
     userListSave(state, action) {
       return {
         ...state,
