@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Form, Button, Popconfirm, Row, Col, Select, Cascader, Radio } from 'antd';
+import { Table, Form, Button, Popconfirm, Row,message, Col, Select, Cascader, Radio } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import EditUserForm from '../../selfComponent/UserForm/EditUserForm.js';
@@ -7,7 +7,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
-import { userTypeData ,userTypeDataReset} from '../../utils/dataDictionary';
+import {userTypeData, userTypeDataReset } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -23,10 +23,11 @@ const WrappedRegistrationForm = Form.create()(EditUserForm);
 
 @connect(({ user, loading }) => ({
   user,
-  submit: loading.effects['user/updateUserInfo'],
+  submit: loading.effects['user/updateUserbasicInfo'],
   wechatList: loading.effects['user/wechatList'],
   listOrg: loading.effects['user/listOrg'],
   userList: loading.effects['user/getUserlist'],
+  addPosi: loading.effects['user/addPosition'],
 }))
 class EditUser extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class EditUser extends Component {
       userType:null,
       shownameid:null,
       privilege:null,
+      positionId:null,
 
     };
   }
@@ -82,13 +84,13 @@ class EditUser extends Component {
       : strs.map(el => {
         return Number(el);
       });
-    console.log(bb,arr)
     this.setState({
       clickFlag:2,
       userType:userTypeDataReset[aa],
       shownameid:arr,
       visible: true,
       privilege:key.privilege==="无"?1:0,
+      positionId:key.id,
     });
   };
   // 创建岗位函数
@@ -96,6 +98,18 @@ class EditUser extends Component {
     this.setState({
       clickFlag:1,
       visible: true,
+    });
+  };
+
+  // 删除用户
+  onDelete = val => {
+    const updateUserPositionInfoParams = {
+      id:!val.id?undefined:val.id,
+    };
+    const getUserlistParams={ mail: this.state.mail };
+    this.props.dispatch({
+      type: 'user/updateUserPositionInfo',
+      payload: { updateUserPositionInfoParams, getUserlistParams },
     });
   };
 
@@ -143,11 +157,11 @@ class EditUser extends Component {
   handleSelectChange = value => {
     const aa = value;
     if(this.state.clickFlag===1){
-        flag1=aa;
+      flag1=aa;
     }else{
       flag2=aa;
     }
-     flag = aa;
+    flag = aa;
     const responseValue = [];
     const userVal = this.props.user;
     const listOrgValues = !userVal.listOrg.response
@@ -188,7 +202,6 @@ class EditUser extends Component {
   };
 
   handleSubmit = (values,data) => {
-    console.log(values,data)
     const rname = values.wechatDepartmentName;
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
@@ -271,11 +284,13 @@ class EditUser extends Component {
                   编辑
                 </span>
               </AuthorizedButton>
-              <AuthorizedButton authority="/user/deleteUser">
-                <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                  <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
-                </Popconfirm>
-              </AuthorizedButton>
+              {record.privilege === '有' ? null :(
+                <AuthorizedButton authority="/user/deleteUser">
+                  <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
+                    <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
+                  </Popconfirm>
+                </AuthorizedButton>
+              )}
             </div>
           );
         },
@@ -287,33 +302,78 @@ class EditUser extends Component {
 
   // 模态框回显
   editName = (e) => {
-
-    this.handleSearch(e)
-    // const Params = {
-    //
-    // };
-    // if (this.state.clickFlag===1) {
-    //   const addPositionParams = Params
-    //   this.props.dispatch({
-    //     type: 'user/addPosition',
-    //     payload: { addPositionParams },
-    //   });
-    // } else {
-    //   const updateUserPositionInfoParams = Params;
-    //   this.props.dispatch({
-    //     type: 'user/updateUserPositionInfo',
-    //     payload: { updateUserPositionInfoParams },
-    //   });
-    // }
-    // this.setDialogSHow(false);
+    const userVal = this.props.user;
+    const aaa = !userVal.getUserlistData?null:userVal.getUserlistData;
+    const arrValue = !aaa
+      ? null
+      : !aaa.data ? null : !aaa.data.generalAttribute
+        ? null : aaa.data.generalAttribute;
+    this.handleSearch(e,arrValue)
   };
 
 
-  handleSearch = e => {
+  handleSearch = (e,arrValue) => {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values)
+        console.log('提交时候获得的值',values,arrValue)
+        const rUserType = values.userType;
+        const len = !values.responseCom?null:values.responseCom.length;
+        if (rUserType === 'group' || rUserType === 'class') {
+          if (!len||len !== 3) {
+            message.error('负责单位请选择到对应小组');
+          }
+        } else if (rUserType === 'family') {
+          if (!len||len < 2) {
+            message.error('负责单位请选择到对应家族');
+          }
+        }else if (rUserType === 'college') {
+          if (!len||len < 1) {
+            message.error('负责单位请选择到对应学院');
+          }
+        }
+        let typeId = !len?undefined:values.responseCom[len - 1];
+        if (typeof typeId === 'string' || rUserType === 'admin' || rUserType === 'boss'|| rUserType === 'others') {
+          typeId = undefined;
+        }
+        const getUserlistParams={mail:this.state.mail}
+        if (this.state.clickFlag===1) {
+          const addPositionParams = {
+            name: !arrValue.name ? undefined : arrValue.name,
+            mail: !arrValue.mail ? undefined : arrValue.mail,
+            mobile: !arrValue.mobile ? undefined : arrValue.mobile,
+            joinDate:!arrValue.joindate ? undefined : arrValue.joindate,
+            idCard:!arrValue.idcard ? undefined : arrValue.idcard,
+            sex:!arrValue.sex ? undefined : arrValue.sex,
+            positionList:{
+              id:!this.state.positionId?undefined:this.state.positionId,
+              privilege:values.privilege,
+              userType: rUserType,
+              userTypeId: typeId,
+              wechatDepartmentId: Number(arrValue.wechatdepartmentid),
+              wechatDepartmentName: !arrValue.wechatdepartmentname ? undefined : arrValue.wechatdepartmentname,
+            },
+          }
+          console.log('添加岗位上送字段',addPositionParams,getUserlistParams)
+          this.props.dispatch({
+            type: 'user/addPosition',
+            payload: { addPositionParams,getUserlistParams  },
+          });
+        } else {
+          const updateUserPositionInfoParams = {
+            id:1,
+            privilege:values.privilege,
+            userType: rUserType,
+            userTypeId: typeId,
+            wechatDepartmentId: Number(arrValue.wechatDepartmentId),
+            wechatDepartmentName: !arrValue.wechatDepartmentName ? undefined : arrValue.wechatDepartmentName,
+          }
+          console.log('编辑岗位上送字段',updateUserPositionInfoParams,getUserlistParams)
+          this.props.dispatch({
+            type: 'user/updateUserPositionInfo',
+            payload: { updateUserPositionInfoParams,getUserlistParams },
+          });
+        }
         this.setDialogSHow(false);
       }
     });
@@ -321,6 +381,7 @@ class EditUser extends Component {
 
   render() {
     const columns = this.columnsData();
+    const {addPosi} =this.props
     const userVal = this.props.user;
     const disabled = true;
     const listOrgValues = !userVal.listOrg.response
@@ -360,9 +421,8 @@ class EditUser extends Component {
                     rules: [
                       {
                         validator(rule, value, callback) {
-                          console.log(value,!value)
                           if (!value) {
-                            callback({ message: '请选择权岗位！' });
+                            callback({ message: '请选择级别！' });
                           }
                           callback();
                         },
@@ -494,6 +554,7 @@ class EditUser extends Component {
               type="primary"
               className={common.submitButton}
               onClick={() => this.onCreate()}
+              loading={addPosi}
             >
               添加岗位
             </Button>
@@ -511,7 +572,7 @@ class EditUser extends Component {
         />
 
         <ModalDialog
-          title="添加岗位"
+          title={this.state.clickFlag===1?"添加岗位":'编辑岗位'}
           visible={visible}
           modalContent={modalContent}
           clickOK={(e) => this.editName(e)}

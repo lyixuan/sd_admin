@@ -73,9 +73,9 @@ class EditUserForm extends Component {
     const arrValue = !aaa
       ? null
       : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
-    const { submit, wechatList, listOrg, userList } = this.props.jumpFunction;
+    const { submit, wechatList, userList } = this.props.jumpFunction;
     return (
-      <Spin spinning={wechatList || listOrg || userList}>
+      <Spin spinning={wechatList || userList}>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
           <Row>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
