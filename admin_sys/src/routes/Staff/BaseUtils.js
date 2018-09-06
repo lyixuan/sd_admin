@@ -3,6 +3,8 @@ import { Form } from 'antd';
 export class BaseUtils {
   constructor() {
     this.groupTypeObj = {
+      boss: '管理层',
+      admin: '管理员',
       college: '院长或副院长',
       family: '家族长',
       group: '运营长',

@@ -37,6 +37,7 @@ class CreateTransJob extends Component {
           },
         ],
       },
+      familyType: null, // 选择负责单位最小单位的familyType值
       employeeInfo: null,
       responseComList: [],
       orgList: [],
@@ -60,8 +61,11 @@ class CreateTransJob extends Component {
       this.setState({ responseComList });
     }
   }
-  onChangeCascader = () => {
-    // this.setState({ cascader });
+  onChangeCascader = (val, ops) => {
+    if (ops && ops.length > 0) {
+      const { familyType } = ops.slice(-1)[0];
+      this.setState({ familyType });
+    }
   };
   getData = () => {
     const { paramsObj } = this.state;
@@ -86,14 +90,18 @@ class CreateTransJob extends Component {
       }
       const groupObj = {};
       const groupArr = ['collegeId', 'familyId', 'groupId'];
+      const isNoPassGroup = ['boss', 'admin', 'others'].find(item => item === positionType);
       groupArr.forEach((item, index) => {
-        groupObj[item] = cascader[index] || null;
+        groupObj[item] = !isNoPassGroup ? cascader[index] || null : null;
       });
       const params = {
         positionType,
         effectDate: effectDate.format(dateFormat),
         ...groupObj,
       };
+      if (isNoPassGroup) {
+        params.familyType = null; // 当时admin,boss,others,时familyType为空
+      }
       this.commitCreateJob(params);
     });
   };
@@ -147,8 +155,13 @@ class CreateTransJob extends Component {
   };
 
   commitCreateJob = (params = {}) => {
-    const { commitParams } = this.state;
-    const newObj = Object.assign({}, commitParams.kpiUserPositionLogList[0], params);
+    const { commitParams, familyType } = this.state;
+    const newObj = Object.assign(
+      {},
+      commitParams.kpiUserPositionLogList[0],
+      { familyType },
+      params
+    );
     commitParams.kpiUserPositionLogList = [newObj];
     this.props.dispatch({
       type: 'staff/addTransferPost',
@@ -234,10 +247,14 @@ class CreateTransJob extends Component {
                     })(
                       <Cascader
                         options={orgList}
-                        // onChange={this.onChangeCascader}
+                        onChange={this.onChangeCascader}
                         fieldNames={{ label: 'name', value: 'id', children: 'list' }}
                         style={{ width: 230, height: 32 }}
-                        disabled={positionType === 'others'}
+                        disabled={
+                          positionType === 'others' ||
+                          positionType === 'boss' ||
+                          positionType === 'admin'
+                        }
                       />
                     )}
                   </FormItem>

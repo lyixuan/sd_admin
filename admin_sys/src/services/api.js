@@ -433,6 +433,15 @@ export async function getKpiEffectMonth(params) {
   });
 }
 /*
+更新前端是否显示实发绩效月份
+ */
+export async function updateKpiEffectMonth(params) {
+  return request(`${HOST}/kpiEffectMonth/updateStatus`, {
+    method: 'POST',
+    body: params,
+  });
+}
+/*
 以下接口为投诉管理模块相关
 * */
 // 投诉列表

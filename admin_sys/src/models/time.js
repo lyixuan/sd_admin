@@ -6,6 +6,7 @@ import {
   updateDate,
   getRangeDate,
   getKpiEffectMonth,
+  updateKpiEffectMonth,
 } from '../services/api';
 
 export default {
@@ -85,6 +86,22 @@ export default {
           type: 'saveKpiEffectMonth',
           payload: { kpiEffectMonthList },
         });
+      }
+    },
+    *updateKpiEffectMonth({ payload }, { put, call }) {
+      const response = yield call(updateKpiEffectMonth, payload);
+      if (response.code === 2000) {
+        message.success('设置成功');
+        const list = yield call(getKpiEffectMonth);
+        if (list.code === 2000) {
+          const kpiEffectMonthList = list.data || [];
+          yield put({
+            type: 'saveKpiEffectMonth',
+            payload: { kpiEffectMonthList },
+          });
+        }
+      } else {
+        message.error(response.msg);
       }
     },
   },

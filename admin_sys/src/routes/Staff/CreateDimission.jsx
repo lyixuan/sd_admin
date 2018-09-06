@@ -52,6 +52,9 @@ class CreateDimission extends Component {
     const { urlParams = {} } = this.props;
     validateFields((err, values) => {
       const { effectDate } = values;
+      if (!effectDate) {
+        return;
+      }
       const paramsObj = Object.assign({}, this.state.kpiUserPositionLogList[0], {
         effectDate: effectDate.format(dateFormat),
       });

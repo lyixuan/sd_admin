@@ -74,7 +74,6 @@ export default class StaffDetail extends Component {
       beforePostitonType: this.baseUtils.returnGroupType(item.beforePostitonType),
       afterPostitonType: this.baseUtils.returnGroupType(item.afterPostitonType),
     }));
-    console.log(staff);
     return (
       <ContentLayout routerData={this.props.routerData}>
         <div className={styles.detailContailer}>
@@ -89,7 +88,9 @@ export default class StaffDetail extends Component {
             </li>
             <li>
               <span className={styles.labelText}>现任岗位:</span>
-              <span className={styles.labelItem}>{staffDetail.nowPositionType}</span>
+              <span className={styles.labelItem}>
+                {this.baseUtils.returnGroupType(staffDetail.nowPositionType)}
+              </span>
             </li>
             <li>
               <span className={styles.labelText}>现任负责单位:</span>

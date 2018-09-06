@@ -46,6 +46,7 @@ class EditTransJob extends Component {
       effectDate: null, // 转岗时间
       canceled: 1, // 是否撤销此次操作,1否,0是
       groupList: [], // 负责单位
+      familyType: null, // 选择负责单位最小单位的familyType值
       isShowModal: false,
     };
     this.state = assignUrlParams(initState, urlParams);
@@ -70,11 +71,18 @@ class EditTransJob extends Component {
       JSON.stringify(nextprops.user.listOrg.response) !==
       JSON.stringify(this.props.user.listOrg.response)
     ) {
+      const { positionType } = this.state;
       const responseComList = nextprops.user.listOrg.response.data || [];
-      this.handleOrgList(3, responseComList);
+      this.handleOrgList(this.handleGroupLevel(positionType) || 3, responseComList);
       this.setState({ responseComList });
     }
   }
+  onChangeCascader = (val, ops) => {
+    if (ops && ops.length > 0) {
+      const { familyType } = ops.slice(-1)[0];
+      this.setState({ familyType });
+    }
+  };
   getData = () => {
     const { paramsObj } = this.state;
     this.props.dispatch({
@@ -82,6 +90,7 @@ class EditTransJob extends Component {
       payload: paramsObj,
     });
   };
+
   getGroupList = () => {
     this.props.dispatch({
       type: 'user/listOrg',
@@ -112,8 +121,9 @@ class EditTransJob extends Component {
       }
       const groupObj = {};
       const groupArr = ['collegeId', 'familyId', 'groupId'];
+      const isNoPassGroup = ['boss', 'admin', 'others'].find(item => item === positionType);
       groupArr.forEach((item, index) => {
-        groupObj[item] = cascader[index] || null;
+        groupObj[item] = !isNoPassGroup ? cascader[index] || null : null;
       });
       const params = {
         canceled,
@@ -121,6 +131,9 @@ class EditTransJob extends Component {
         effectDate: effectDate.format(dateFormat),
         ...groupObj,
       };
+      if (isNoPassGroup) {
+        params.familyType = null; // 当时admin,boss,others,时familyType为空
+      }
       if (canceled === 1) {
         // 当撤销此次操作的时候讲 数据存储,并弹框,否的话直接交互
         const isShowModal = canceled === 1;
@@ -131,32 +144,40 @@ class EditTransJob extends Component {
       }
     });
   };
+
   handleSelectChange = value => {
     const positionType = value;
     // this.handleOrgList(value);
-    this.handleGroupLevel(value);
+    this.handleOrgList(this.handleGroupLevel(value));
     this.setState({ positionType });
   };
   handleGroupLevel = groupType => {
+    let num = 3;
     switch (groupType) {
       case 'college':
-        this.handleOrgList(1);
+        num = 1;
+        // this.handleOrgList(1);
         break;
       case 'family':
-        this.handleOrgList(2);
+        num = 2;
+        // this.handleOrgList(2);
         break;
       case 'class':
-        this.handleOrgList(3);
+        num = 3;
+        // this.handleOrgList(3);
         break;
       case 'group':
-        this.handleOrgList(3);
+        num = 3;
+        // this.handleOrgList(3);
         break;
       case 'others':
         break;
       default:
-        this.handleOrgList(3);
+        num = 3;
+        // this.handleOrgList(3);
         break;
     }
+    return num;
   };
   handleOrgList = (leveNum = 3, dataScore = null) => {
     const { responseComList = [] } = this.state;
@@ -179,6 +200,7 @@ class EditTransJob extends Component {
     const orgList = splitOrgList(handleData);
     this.setState({ orgList });
   };
+
   showModal = bol => {
     this.setState({ isShowModal: bol });
   };
@@ -190,13 +212,19 @@ class EditTransJob extends Component {
     this.commitCreateJob();
   };
   saveCommitParams = (params = {}) => {
-    const { commitParams } = this.state;
-    const newObj = Object.assign({}, commitParams.kpiUserPositionLogList[0], params);
+    const { commitParams, familyType } = this.state;
+    const newObj = Object.assign(
+      {},
+      commitParams.kpiUserPositionLogList[0],
+      { familyType },
+      params
+    );
     commitParams.kpiUserPositionLogList = [newObj];
     this.setState({ commitParams });
   };
   commitCreateJob = (params = {}) => {
-    const { commitParams } = this.state;
+    const { commitParams, familyType } = this.state;
+    const familyTypeObj = familyType === null ? {} : { familyType };
     const employeeInfo = this.props.staff.employeeInfo || {};
     const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
     const kpiUserPositionObj = kpiUserPositionLogList[0] || {};
@@ -204,6 +232,7 @@ class EditTransJob extends Component {
       {},
       kpiUserPositionObj,
       commitParams.kpiUserPositionLogList[0],
+      familyTypeObj,
       params
     );
     commitParams.kpiUserPositionLogList = [newObj];
@@ -313,10 +342,15 @@ class EditTransJob extends Component {
                     })(
                       <Cascader
                         options={orgList}
-                        // onChange={this.onChangeCascader}
+                        onChange={this.onChangeCascader}
                         fieldNames={{ label: 'name', value: 'id', children: 'list' }}
                         style={{ width: 230, height: 32 }}
-                        disabled={positionType === 'others' || canceled === 1}
+                        disabled={
+                          positionType === 'others' ||
+                          positionType === 'boss' ||
+                          positionType === 'admin' ||
+                          canceled === 1
+                        }
                       />
                     )}
                   </FormItem>

@@ -20,7 +20,15 @@ export default class Performance extends Time {
     });
   };
   onEdit = record => {
-    console.log(record);
+    const { isShowState, key } = record;
+    const params = {
+      id: key,
+      isShow: (Number(isShowState) + 1) % 2,
+    };
+    this.props.dispatch({
+      type: 'time/updateKpiEffectMonth',
+      payload: params,
+    });
   };
 
   columnsData = () => {
