@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, DatePicker } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, DatePicker ,message} from 'antd';
 import moment from 'moment';
 import { formatEmail } from '../../utils/email';
 import common from '../../routes/Common/common.css';
@@ -29,16 +29,12 @@ class EditUserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        if(!firstJoinDate){
+          message.error("请选择入职日期")
+        }else{
+          this.props.handleSubmit(values,firstJoinDate);
+        }
 
-        const aaa = !this.props.jumpFunction.user.getUserlistData
-          ? null
-          : this.props.jumpFunction.user.getUserlistData;
-
-        const arrValue = !aaa
-          ? null
-          : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
-        firstJoinDate=!firstJoinDate?  !arrValue?null:!arrValue.joindate ?null:formatDateNew(arrValue.joindate):firstJoinDate;
-        this.props.handleSubmit(values,firstJoinDate);
       }
     });
   };

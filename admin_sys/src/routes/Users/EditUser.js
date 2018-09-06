@@ -46,20 +46,15 @@ class EditUser extends Component {
       shownameid:null,
       privilege:null,
       positionId:null,
-
     };
   }
 
   componentDidMount() {
-    responseComListBackup = !this.state.listOrgLiost
-      ? []
-      : this.fullListFun(this.state.listOrgLiost);
     const wechatListParams = {};
     this.props.dispatch({
       type: 'user/wechatList',
       payload: { wechatListParams },
     });
-
     const listOrgParams = {};
     this.props.dispatch({
       type: 'user/listOrg',
@@ -70,15 +65,17 @@ class EditUser extends Component {
       type: 'user/getUserlist',
       payload: { getUserlistParams },
     });
+    responseComListBackup = !this.state.listOrgLiost
+      ? []
+      : this.fullListFun(this.state.listOrgLiost);
   }
-
-
 
   // 编辑岗位函数
   onEdit = (key) => {
     const aa= key.userType
     const bb= key.shownameid
     const strs = !bb ? [] : bb.split(',');
+    responseComList = this.responseComListFun(aa);
     const arr = !strs
       ? []
       : strs.map(el => {
@@ -120,6 +117,94 @@ class EditUser extends Component {
       visible: bol,
     });
   }
+
+  getData = (values,arrValue)=>{
+    const rUserType = values.userType;
+    const len = !values.responseCom?null:values.responseCom.length;
+    let typeId = !len?undefined:values.responseCom[len - 1];
+    if (typeof typeId === 'string' || rUserType === 'admin' || rUserType === 'boss'|| rUserType === 'others') {
+      typeId = undefined;
+    }
+    const getUserlistParams={mail:this.state.mail}
+    if (this.state.clickFlag===1) {
+      const addPositionParams = {
+        name: !arrValue.name ? undefined : arrValue.name,
+        mail: !arrValue.mail ? undefined : arrValue.mail,
+        mobile: !arrValue.mobile ? undefined : arrValue.mobile,
+        joinDate:!arrValue.joindate ? undefined : arrValue.joindate,
+        idCard:!arrValue.idcard ? undefined : arrValue.idcard,
+        sex:!arrValue.sex ? undefined : arrValue.sex,
+        positionList:{
+          privilege:rUserType==='admin'?1:values.privilege,
+          userType: rUserType,
+          userTypeId: typeId,
+          wechatDepartmentId: Number(arrValue.wechatdepartmentid),
+          wechatDepartmentName: !arrValue.wechatdepartmentname ? undefined : arrValue.wechatdepartmentname,
+        },
+      }
+      this.props.dispatch({
+        type: 'user/addPosition',
+        payload: { addPositionParams,getUserlistParams  },
+      });
+    } else {
+      const updateUserPositionInfoParams = {
+        id:!this.state.positionId?undefined:this.state.positionId,
+        privilege:rUserType==='admin'?1:values.privilege,
+        userType: rUserType,
+        userTypeId: typeId,
+        wechatDepartmentId: Number(arrValue.wechatdepartmentid),
+        wechatDepartmentName: !arrValue.wechatdepartmentname ? undefined : arrValue.wechatdepartmentname,
+      }
+      this.props.dispatch({
+        type: 'user/updateUserPositionInfo',
+        payload: { updateUserPositionInfoParams,getUserlistParams },
+      });
+    }
+    this.setDialogSHow(false);
+  }
+
+  responseComListFun = (aa) => {
+    const responseValue = [];
+    const userVal = this.props.user;
+    const listOrgValues = !userVal.listOrg.response
+      ? []
+      : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+    const newResponseComList = listOrgValues;
+    const levelValue = !aa ? 'class' : userTypeDataReset[aa];
+    const userType = levelValue;
+    if (userType === 'family') {
+      newResponseComList.map(item => {
+        const firstChldren = [];
+        const chldren1 = item.sub;
+        chldren1.map(value => {
+          firstChldren.push({
+            value: value.id,
+            label: value.name,
+            level: value.level,
+          });
+          return 0;
+        });
+        responseValue.push({
+          value: item.id,
+          label: item.name,
+          level: item.level,
+          children: firstChldren,
+        });
+        return 0;
+      });
+    }
+    if (userType === 'college') {
+      newResponseComList.map(item => {
+        responseValue.push({
+          value: item.id,
+          label: item.name,
+          level: item.level,
+        });
+        return 0;
+      });
+    }
+    return responseValue.length === 0 ? responseComListBackup : responseValue;
+  };
 
   fullListFun = val => {
     const value = [];
@@ -208,9 +293,7 @@ class EditUser extends Component {
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
     roleList.map(item => {
-      if (item.name === rname) {
-        newRoleId = item.id;
-      }
+      if (item.name === rname) {newRoleId = item.id}
       return 0;
     });
     const updateUserInfoParams = {
@@ -235,7 +318,6 @@ class EditUser extends Component {
     this.props.dispatch(routerRedux.goBack());
   };
 
-
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
@@ -247,8 +329,7 @@ class EditUser extends Component {
         showName: !item.showname ? null : item.showname.replace(/,/g, ' | '),
         shownameid:!item.shownameid?null:item.shownameid,
         id: item.positionid,
-      })
-    );
+      }));
     return data;
   };
 
@@ -274,33 +355,21 @@ class EditUser extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
-
         render: (text, record) => {
           return (record.privilege === '有' ? null :(
             <div>
               <AuthorizedButton authority="/user/editUser">
-                <span
-                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                  onClick={() => this.onEdit(record)}
-                >
-                  编辑
-                </span>
+                <span style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }} onClick={() => this.onEdit(record)}>编辑</span>
               </AuthorizedButton>
               <AuthorizedButton authority="/user/deleteUser">
                 <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
                   <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
                 </Popconfirm>
               </AuthorizedButton>
-            </div>
-          )
-          );
-        },
-      },
+            </div>));}},
     ];
     return columns || [];
   };
-
-
   // 模态框回显
   editName = (e) => {
     const userVal = this.props.user;
@@ -312,70 +381,22 @@ class EditUser extends Component {
     this.handleSearch(e,arrValue)
   };
 
-
   handleSearch = (e,arrValue) => {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('提交时候获得的值',values.userType,values,arrValue)
         const rUserType = values.userType;
         const len = !values.responseCom?null:values.responseCom.length;
         if (rUserType === 'group' || rUserType === 'class') {
-          if (!len||len !== 3) {
-            message.error('负责单位请选择到对应小组');
-          }
+          if (!len||len !== 3) {message.error('负责单位请选择到对应小组')}
+          else{this.getData(values,arrValue)}
         } else if (rUserType === 'family') {
-          if (!len||len < 2) {
-            message.error('负责单位请选择到对应家族');
-          }
+          if (!len||len < 2) {message.error('负责单位请选择到对应家族')}
+          else{this.getData(values,arrValue)}
         }else if (rUserType === 'college') {
-          if (!len||len < 1) {
-            message.error('负责单位请选择到对应学院');
-          }
-        }
-        let typeId = !len?undefined:values.responseCom[len - 1];
-        if (typeof typeId === 'string' || rUserType === 'admin' || rUserType === 'boss'|| rUserType === 'others') {
-          typeId = undefined;
-        }
-        const getUserlistParams={mail:this.state.mail}
-        if (this.state.clickFlag===1) {
-          const addPositionParams = {
-            name: !arrValue.name ? undefined : arrValue.name,
-            mail: !arrValue.mail ? undefined : arrValue.mail,
-            mobile: !arrValue.mobile ? undefined : arrValue.mobile,
-            joinDate:!arrValue.joindate ? undefined : arrValue.joindate,
-            idCard:!arrValue.idcard ? undefined : arrValue.idcard,
-            sex:!arrValue.sex ? undefined : arrValue.sex,
-            positionList:{
-
-              privilege:rUserType==='admin'?1:values.privilege,
-              userType: rUserType,
-              userTypeId: typeId,
-              wechatDepartmentId: Number(arrValue.wechatdepartmentid),
-              wechatDepartmentName: !arrValue.wechatdepartmentname ? undefined : arrValue.wechatdepartmentname,
-            },
-          }
-          console.log('添加岗位上送字段',addPositionParams,getUserlistParams)
-          this.props.dispatch({
-            type: 'user/addPosition',
-            payload: { addPositionParams,getUserlistParams  },
-          });
-        } else {
-          const updateUserPositionInfoParams = {
-            id:!this.state.positionId?undefined:this.state.positionId,
-            privilege:rUserType==='admin'?1:values.privilege,
-            userType: rUserType,
-            userTypeId: typeId,
-            wechatDepartmentId: Number(arrValue.wechatdepartmentid),
-            wechatDepartmentName: !arrValue.wechatdepartmentname ? undefined : arrValue.wechatdepartmentname,
-          }
-          console.log('编辑岗位上送字段',updateUserPositionInfoParams,getUserlistParams)
-          this.props.dispatch({
-            type: 'user/updateUserPositionInfo',
-            payload: { updateUserPositionInfoParams,getUserlistParams },
-          });
-        }
-        this.setDialogSHow(false);
+          if (!len||len < 1) {message.error('负责单位请选择到对应学院')}
+          else{this.getData(values,arrValue)}
+        }else {this.getData(values,arrValue)}
       }
     });
   };
@@ -393,10 +414,8 @@ class EditUser extends Component {
       !responseComList || responseComList.length === 0
         ? responseComListBackup
         : responseComList;
-
     const { visible } = this.state;
     const formLayout = 'inline';
-
     const aaa = !userVal.getUserlistData?null:userVal.getUserlistData;
     const arrValue = !aaa
       ? null
@@ -406,7 +425,6 @@ class EditUser extends Component {
       ? null
       : !aaa.data ? null : !aaa.data.postionAttribute
         ? null : aaa.data.postionAttribute;
-
     const dataSource = !tableList ? [] : this.fillDataSource(tableList);
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -420,14 +438,10 @@ class EditUser extends Component {
                   {getFieldDecorator('userType', {
                     initialValue: this.state.clickFlag===1?null:this.state.userType,
                     rules: [
-                      {
-                        validator(rule, value, callback) {
-                          if (!value) {
-                            callback({ message: '请选择级别！' });
-                          }
+                      { validator(rule, value, callback) {
+                          if (!value) {callback({ message: '请选择级别！' })}
                           callback();
-                        },
-                      },
+                        }},
                     ],
                   })(
                     <Select style={{ width: 280 }} onChange={this.handleSelectChange}>
@@ -465,7 +479,7 @@ class EditUser extends Component {
                   })(<Cascader
                     options={responseComList}
                     style={{ width: 280 }}
-                    disabled={this.state.clickFlag===1?(flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others' ? disabled : false):(flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others' ? disabled : false)}
+                    disabled={this.state.clickFlag===1?(flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others' ? disabled : false):(this.state.userType==='admin'||this.state.userType==='boss'||this.state.userType==='others'||flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others' ? disabled : false)}
                   />)}
                 </FormItem>
               </Col>
@@ -499,36 +513,20 @@ class EditUser extends Component {
     const modalContent = (
       <div>
         <Row style={{ marginBottom: '14px' }}>
-          <Col span={4} offset={1}>
-            姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:
-          </Col>
-          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={0}>
-            {!arrValue ? '' : !arrValue.name ? '' : arrValue.name}
-          </Col>
+          <Col span={4} offset={1}>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</Col>
+          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={0}>{!arrValue ? '' : !arrValue.name ? '' : arrValue.name}</Col>
         </Row>
         <Row style={{ marginBottom: '14px' }}>
-          <Col span={4} offset={1}>
-            性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:
-          </Col>
-          <Col offset={1} style={{ textAlign: 'left', fontSize: '14px' }}>
-            {!arrValue ? '' : !arrValue.sex ? '' : arrValue.sex === 1 ? '男' : '女'}
-          </Col>
+          <Col span={4} offset={1}>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:</Col>
+          <Col offset={1} style={{ textAlign: 'left', fontSize: '14px' }}>{!arrValue ? '' : !arrValue.sex ? '' : arrValue.sex === 1 ? '男' : '女'}</Col>
         </Row>
         <Row style={{ marginBottom: '14px' }}>
-          <Col span={4} offset={1}>
-            手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
-          </Col>
-          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>
-            {!arrValue ? '' : !arrValue.mobile ? '' : arrValue.mobile}
-          </Col>
+          <Col span={4} offset={1}>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</Col>
+          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>{!arrValue ? '' : !arrValue.mobile ? '' : arrValue.mobile}</Col>
         </Row>
         <Row>
-          <Col span={4} offset={1} style={{ padding: '3px' }}>
-            邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:
-          </Col>
-          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>
-            {!this.state.mail ? '' : this.state.mail}
-          </Col>
+          <Col span={4} offset={1} style={{ padding: '3px' }}>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</Col>
+          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>{!this.state.mail ? '' : this.state.mail}</Col>
         </Row>
         <WrappedAdvancedSearchForm />
       </div>
@@ -571,7 +569,6 @@ class EditUser extends Component {
             />
           }
         />
-
         <ModalDialog
           title={this.state.clickFlag===1?"添加岗位":'编辑岗位'}
           visible={visible}
@@ -583,8 +580,7 @@ class EditUser extends Component {
           }}
         />
       </div>
-    );
-  }
+    );}
 }
 
 export default EditUser;
