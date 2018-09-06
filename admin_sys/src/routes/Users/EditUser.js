@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Form, Button, Popconfirm, Row, Col, message, Select, Cascader, Radio } from 'antd';
+import { Table, Form, Button, Popconfirm, Row, Col, Select, Cascader, Radio } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import EditUserForm from '../../selfComponent/UserForm/EditUserForm.js';
@@ -7,14 +7,16 @@ import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
-import { userTypeData } from '../../utils/dataDictionary';
+import { userTypeData ,userTypeDataReset} from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
-let flag = 'class';
+let flag1 = 'class';
+let flag2 = 'class';
 let responseComList = [];
 let responseComListBackup = [];
+let propsVal = '';
 
 const WrappedRegistrationForm = Form.create()(EditUserForm);
 
@@ -37,11 +39,10 @@ class EditUser extends Component {
       mail: !arrValue.mail ? null : arrValue.mail,
       listOrgLiost: listOrgValues || [],
       visible: false,
-      collegeName: '',
-      multiplePoints: 0,
-      id: 0,
-      effectiveDate: '',
-      collegeId: 0,
+      clickFlag:1,
+      userType:null,
+      privilege:null,
+
     };
   }
 
@@ -69,9 +70,22 @@ class EditUser extends Component {
 
 
 
-  // 编辑账号函数
-  onEdit = () => {
-    this.setDialogSHow(true);
+  // 编辑岗位函数
+  onEdit = (key) => {
+    const aa= key.userType
+    this.setState({
+      clickFlag:2,
+      userType:userTypeDataReset[aa],
+      visible: true,
+      privilege:key.privilege==="无"?1:0,
+    });
+  };
+  // 创建岗位函数
+  onCreate = () => {
+    this.setState({
+      clickFlag:1,
+      visible: true,
+    });
   };
 
   setDialogSHow(bol) {
@@ -117,7 +131,12 @@ class EditUser extends Component {
 
   handleSelectChange = value => {
     const aa = value;
-    flag = aa;
+    if(this.state.clickFlag===1){
+        flag1=aa;
+    }else{
+      flag2=aa;
+    }
+    const flag = aa;
     const responseValue = [];
     const userVal = this.props.user;
     const listOrgValues = !userVal.listOrg.response
@@ -197,13 +216,12 @@ class EditUser extends Component {
     val.map((item, index) =>
       data.push({
         key: index,
-        privilege: item.privilege === 1 ? '有' : '无',
+        privilege: item.privilege === 0 ? '有' : '无',
         userType: userTypeData[item.usertype],
         showName: !item.showname ? null : item.showname.replace(/,/g, ' | '),
         id: item.positionid,
       })
     );
-
     return data;
   };
 
@@ -254,42 +272,45 @@ class EditUser extends Component {
     return columns || [];
   };
 
-  // // input双向绑定
-  // handelChange(e) {
-  //   const points = e.target.value;
-  //   this.setState({
-  //     multiplePoints: points,
-  //   });
-  // }
 
   // 模态框回显
-  editName = () => {
-    if (!this.state.multiplePoints) {
-      message.error('投诉扣分倍数不可为空');
-      this.setDialogSHow(true);
-    } else if (!/(^[1-9]\d*$)/.test(this.state.multiplePoints)) {
-      message.error('投诉扣分倍数需要为正整数');
-      this.setDialogSHow(true);
-    } else {
-      const upateComplaintDoublesParams = {
-        collegeName: this.state.collegeName,
-        multiplePoints: Number(this.state.multiplePoints),
-        id: this.state.id,
-        effectiveDate: this.state.effectiveDate,
-        collegeId: this.state.collegeId,
-      };
-      this.props.dispatch({
-        type: 'complaintDoubles/upateComplaintDoubles',
-        payload: { upateComplaintDoublesParams },
-      });
-      this.setDialogSHow(false);
-    }
+  editName = (e) => {
+
+    this.handleSearch(e)
+    // const Params = {
+    //
+    // };
+    // if (this.state.clickFlag===1) {
+    //   const addPositionParams = Params
+    //   this.props.dispatch({
+    //     type: 'user/addPosition',
+    //     payload: { addPositionParams },
+    //   });
+    // } else {
+    //   const updateUserPositionInfoParams = Params;
+    //   this.props.dispatch({
+    //     type: 'user/updateUserPositionInfo',
+    //     payload: { updateUserPositionInfoParams },
+    //   });
+    // }
+    // this.setDialogSHow(false);
+  };
+
+
+  handleSearch = e => {
+    e.preventDefault();
+    propsVal.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log(values)
+        this.setDialogSHow(false);
+      }
+    });
   };
 
   render() {
     const columns = this.columnsData();
     const userVal = this.props.user;
-
+    const disabled = true;
     const listOrgValues = !userVal.listOrg.response
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
@@ -313,6 +334,7 @@ class EditUser extends Component {
         ? null : aaa.data.postionAttribute;
     const dataSource = !tableList ? [] : this.fillDataSource(tableList);
     const WrappedAdvancedSearchForm = Form.create()(props => {
+      propsVal = props;
       const { getFieldDecorator } = props.form;
       return (
         <div>
@@ -321,7 +343,7 @@ class EditUser extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*岗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位:">
                   {getFieldDecorator('userType', {
-                    initialValue: [],
+                    initialValue: this.state.clickFlag===1?[]:this.state.userType,
                     rules: '',
                   })(
                     <Select style={{ width: 280 }} onChange={this.handleSelectChange}>
@@ -342,8 +364,25 @@ class EditUser extends Component {
                 <FormItem label="负责单位">
                   {getFieldDecorator('responseCom', {
                     initialValue: [],
-                    rules: [],
-                  })(<Cascader options={responseComList} style={{ width: 280 }} />)}
+                    rules: [
+                      {
+                        validator(rule, value, callback) {
+                          if (typeof value[0] === 'string' || !value[0]) {
+                            if (this.state.clickFlag===1?(flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others'):(flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others')) {
+                              callback();
+                            } else {
+                              callback({ message: '请选择负责单位！' });
+                            }
+                          }
+                          callback();
+                        },
+                      },
+                    ],
+                  })(<Cascader
+                    options={responseComList}
+                    style={{ width: 280 }}
+                    disabled={this.state.clickFlag===1?(flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others' ? disabled : false):(flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others' ? disabled : false)}
+                  />)}
                 </FormItem>
               </Col>
             </Row>
@@ -351,13 +390,13 @@ class EditUser extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*绩效权限">
                   {getFieldDecorator('privilege', {
-                    initialValue: 1,
+                    initialValue: this.state.clickFlag===1?1:this.state.privilege,
                     rules: [],
                   })(
                     <RadioGroup
                       style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     >
-                      <Radio name="privilege" value={0}>
+                      <Radio name="privilege" value={0} disabled={this.state.clickFlag===1?(flag1 === 'admin'? disabled : false):(flag2 === 'admin'? disabled : false)} >
                         是
                       </Radio>
                       <Radio name="privilege" value={1}>
@@ -431,7 +470,7 @@ class EditUser extends Component {
               style={{ marginTop: '36px' }}
               type="primary"
               className={common.submitButton}
-              onClick={() => this.onEdit()}
+              onClick={() => this.onCreate()}
             >
               添加岗位
             </Button>
@@ -452,7 +491,7 @@ class EditUser extends Component {
           title="添加岗位"
           visible={visible}
           modalContent={modalContent}
-          clickOK={() => this.editName()}
+          clickOK={(e) => this.editName(e)}
           footButton={['取消', '提交']}
           showModal={bol => {
             this.setDialogSHow(bol);
