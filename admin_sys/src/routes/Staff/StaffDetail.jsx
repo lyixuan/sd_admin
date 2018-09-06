@@ -101,7 +101,7 @@ export default class StaffDetail extends Component {
             </li>
             <li>
               <span className={styles.labelText}>请假时间:</span>
-              <span className={styles.labelItem}>{staffDetail.lastday}</span>
+              <span className={styles.labelItem}>{staffDetail.vacationDuration}</span>
             </li>
             <li>
               <span className={styles.labelText}>最后工作日:</span>
