@@ -1,5 +1,9 @@
 import { message } from 'antd';
-import { getCollegePerformanceList, getPersonalPerformanceList } from '../services/api';
+import {
+  getCollegePerformanceList,
+  getPersonalPerformanceList,
+  exportCollegeKpi,
+} from '../services/api';
 
 export default {
   namespace: 'performance',
@@ -21,6 +25,16 @@ export default {
     *getPersonalList({ payload }, { call, put }) {
       const { getListParams } = payload;
       const response = yield call(getPersonalPerformanceList, { ...getListParams });
+
+      if (response.code === 2000) {
+        yield put({ type: 'savePersonal', payload: { response, getListParams } });
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *exportCollegeKpi({ payload }, { call, put }) {
+      const { getListParams } = payload;
+      const response = yield call(exportCollegeKpi, { ...getListParams });
 
       if (response.code === 2000) {
         yield put({ type: 'savePersonal', payload: { response, getListParams } });

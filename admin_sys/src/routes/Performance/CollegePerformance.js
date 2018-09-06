@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
+import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import ModalDialog from './_dialog';
 import common from '../Common/common.css';
 
 @connect(({ performance, loading }) => ({
@@ -12,7 +14,18 @@ import common from '../Common/common.css';
 class CollegePerformance extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const { urlParams = {} } = props;
+    const initState = {
+      isShowModal: false,
+      collegeGroup: {
+        0: '全部学院',
+        1: '学院1',
+        2: '学院2',
+      },
+      title: '导出绩效金额',
+      fetchUrl: '',
+    };
+    this.state = assignUrlParams(initState, urlParams);
   }
   componentDidMount() {
     this.getData();
@@ -33,6 +46,15 @@ class CollegePerformance extends Component {
     });
   };
 
+  showModal = bol => {
+    this.setState({ isShowModal: bol });
+  };
+  fetchData = param => {
+    this.props.dispatch({
+      type: this.state.fetchUrl,
+      payload: { param },
+    });
+  };
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
@@ -113,10 +135,35 @@ class CollegePerformance extends Component {
 
   // 导出绩效金额
   exportAmount = () => {
+    this.setState({
+      isShowModal: true,
+      fetchUrl: 'performance/exportCollegeKpi',
+      collegeGroup: {
+        0: '全部学院',
+        1: '皓博',
+        2: '狐逻',
+        3: '派学院',
+        4: '睿博',
+        5: '泰罗',
+        6: '芝士',
+        7: '自变量',
+      },
+      title: '导出绩效金额',
+    });
     console.log('导出绩效金额');
   };
+
   // 导出绩效详情
   exportDetail = () => {
+    this.setState({
+      isShowModal: true,
+      fetchUrl: 'performance/exportCollegeKpi',
+      collegeGroup: {
+        0: '家族',
+        1: '小组',
+      },
+      title: '导出绩效详情',
+    });
     console.log('导出绩效详情');
   };
   // 导入实发绩效
@@ -124,45 +171,55 @@ class CollegePerformance extends Component {
     this.props.setRouteUrlParams('/performance/importPerformance');
   };
   render() {
+    const { isShowModal, title, collegeGroup } = this.state;
     const val = this.props.performance.dataCollege ? this.props.performance.dataCollege : {};
     const dataSource = !val.response ? [] : this.fillDataSource(val.response.data);
     const columns = !this.columnsData() ? [] : this.columnsData();
     return (
-      <ContentLayout
-        routerData={this.props.routerData}
-        contentButton={
-          <div>
-            <AuthorizedButton authority="/performance/exportAmount">
-              <Button onClick={this.exportAmount} type="primary" className={common.exportYellow}>
-                导出绩效金额
-              </Button>
-            </AuthorizedButton>
-            <AuthorizedButton authority="/performance/exportDetail">
-              <Button onClick={this.exportDetail} type="primary" className={common.exportYellow}>
-                导出绩效详情
-              </Button>
-            </AuthorizedButton>
-            <AuthorizedButton authority="/performance/importPerformance">
-              <Button onClick={this.importAmount} type="primary" className={common.exportBlue}>
-                导入实发绩效
-              </Button>
-            </AuthorizedButton>
-          </div>
-        }
-        contentTable={
-          <div>
-            <p className={common.totalNum} />
-            <Table
-              loading={this.props.loading}
-              bordered
-              dataSource={dataSource}
-              columns={columns}
-              pagination={false}
-              className={common.tableContentStyle}
-            />
-          </div>
-        }
-      />
+      <div>
+        <ContentLayout
+          routerData={this.props.routerData}
+          contentButton={
+            <div>
+              <AuthorizedButton authority="/performance/exportAmount">
+                <Button onClick={this.exportAmount} type="primary" className={common.exportYellow}>
+                  导出绩效金额
+                </Button>
+              </AuthorizedButton>
+              <AuthorizedButton authority="/performance/exportDetail">
+                <Button onClick={this.exportDetail} type="primary" className={common.exportYellow}>
+                  导出绩效详情
+                </Button>
+              </AuthorizedButton>
+              <AuthorizedButton authority="/performance/importPerformance">
+                <Button onClick={this.importAmount} type="primary" className={common.exportBlue}>
+                  导入实发绩效
+                </Button>
+              </AuthorizedButton>
+            </div>
+          }
+          contentTable={
+            <div>
+              <p className={common.totalNum} />
+              <Table
+                loading={this.props.loading}
+                bordered
+                dataSource={dataSource}
+                columns={columns}
+                pagination={false}
+                className={common.tableContentStyle}
+              />
+            </div>
+          }
+        />
+        <ModalDialog
+          showModal={bol => this.showModal(bol)}
+          title={title}
+          collegeGroup={collegeGroup}
+          visible={isShowModal}
+          fetchData={param => this.fetchData(param)}
+        />
+      </div>
     );
   }
 }

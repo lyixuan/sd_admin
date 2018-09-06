@@ -590,3 +590,9 @@ export async function getPersonalPerformanceList(params) {
     method: 'GET',
   });
 }
+export async function exportCollegeKpi(params) {
+  // 导出绩效金额
+  return request(`${HOST}/collegeKpi/exportCollegeKpi?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
