@@ -177,6 +177,7 @@
 .searchButton:focus{
   background-color: #52C9C2;
   border: 1px solid #52C9C2;
+  color: #fff;
 }
 
 .resetButton{

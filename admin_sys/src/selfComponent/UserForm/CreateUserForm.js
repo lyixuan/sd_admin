@@ -28,6 +28,11 @@ class CreateUserForm extends Component {
       : this.fullListFun(this.state.listOrgLiost);
   }
 
+  // 组件卸载时清除声明的变量
+  componentWillUnmount() {
+    flag = null;
+  }
+
   fullListFun = val => {
     const value = [];
     val.map(item => {
@@ -370,9 +375,9 @@ class CreateUserForm extends Component {
                   initialValue:1,
                   rules: [],
                 })(
-                  <RadioGroup  style={{color: 'rgba(0, 0, 0, 0.85)',width:'280px',textAlign: 'left'}}>
-                    <Radio name="privilege"  disabled={flag === 'admin'? disabled : false} value={0}>是</Radio>
-                    <Radio  name="privilege" value={1}>否</Radio>
+                  <RadioGroup value={1} style={{color: 'rgba(0, 0, 0, 0.85)',width:'280px',textAlign: 'left'}}>
+                    <Radio name="privilege"  disabled={flag==="admin"?disabled:false}  value={0}>是</Radio>
+                    <Radio  name="privilege"  value={1}>否</Radio>
                   </RadioGroup>
                 )}
               </FormItem>

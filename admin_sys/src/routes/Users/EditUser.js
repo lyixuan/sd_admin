@@ -103,13 +103,13 @@ class EditUser extends Component {
 
   // 删除用户
   onDelete = val => {
-    const updateUserPositionInfoParams = {
+    const deletePositionParams = {
       id:!val.id?undefined:val.id,
     };
     const getUserlistParams={ mail: this.state.mail };
     this.props.dispatch({
-      type: 'user/updateUserPositionInfo',
-      payload: { updateUserPositionInfoParams, getUserlistParams },
+      type: 'user/deletePosition',
+      payload: { deletePositionParams, getUserlistParams },
     });
   };
 
@@ -274,7 +274,7 @@ class EditUser extends Component {
         dataIndex: 'operation',
 
         render: (text, record) => {
-          return (
+          return (record.privilege === '有' ? null :(
             <div>
               <AuthorizedButton authority="/user/editUser">
                 <span
@@ -284,14 +284,13 @@ class EditUser extends Component {
                   编辑
                 </span>
               </AuthorizedButton>
-              {record.privilege === '有' ? null :(
-                <AuthorizedButton authority="/user/deleteUser">
-                  <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                    <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
-                  </Popconfirm>
-                </AuthorizedButton>
-              )}
+              <AuthorizedButton authority="/user/deleteUser">
+                <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
+                  <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
+                </Popconfirm>
+              </AuthorizedButton>
             </div>
+          )
           );
         },
       },
@@ -316,7 +315,7 @@ class EditUser extends Component {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('提交时候获得的值',values,arrValue)
+        console.log('提交时候获得的值',values.userType,values,arrValue)
         const rUserType = values.userType;
         const len = !values.responseCom?null:values.responseCom.length;
         if (rUserType === 'group' || rUserType === 'class') {
@@ -346,8 +345,8 @@ class EditUser extends Component {
             idCard:!arrValue.idcard ? undefined : arrValue.idcard,
             sex:!arrValue.sex ? undefined : arrValue.sex,
             positionList:{
-              id:!this.state.positionId?undefined:this.state.positionId,
-              privilege:values.privilege,
+
+              privilege:rUserType==='admin'?1:values.privilege,
               userType: rUserType,
               userTypeId: typeId,
               wechatDepartmentId: Number(arrValue.wechatdepartmentid),
@@ -361,12 +360,12 @@ class EditUser extends Component {
           });
         } else {
           const updateUserPositionInfoParams = {
-            id:1,
-            privilege:values.privilege,
+            id:!this.state.positionId?undefined:this.state.positionId,
+            privilege:rUserType==='admin'?1:values.privilege,
             userType: rUserType,
             userTypeId: typeId,
-            wechatDepartmentId: Number(arrValue.wechatDepartmentId),
-            wechatDepartmentName: !arrValue.wechatDepartmentName ? undefined : arrValue.wechatDepartmentName,
+            wechatDepartmentId: Number(arrValue.wechatdepartmentid),
+            wechatDepartmentName: !arrValue.wechatdepartmentname ? undefined : arrValue.wechatdepartmentname,
           }
           console.log('编辑岗位上送字段',updateUserPositionInfoParams,getUserlistParams)
           this.props.dispatch({
@@ -417,7 +416,7 @@ class EditUser extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:">
                   {getFieldDecorator('userType', {
-                    initialValue: this.state.clickFlag===1?[]:this.state.userType,
+                    initialValue: this.state.clickFlag===1?null:this.state.userType,
                     rules: [
                       {
                         validator(rule, value, callback) {
@@ -442,7 +441,7 @@ class EditUser extends Component {
                 </FormItem>
               </Col>
             </Row>
-            <Row>
+            <Row style={{marginTop:'10px'}}>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*负责单位">
                   {getFieldDecorator('responseCom', {
@@ -550,7 +549,7 @@ class EditUser extends Component {
           }
           contentButton={
             <Button
-              style={{ marginTop: '36px' }}
+              style={{ marginTop: '36px', width:'110px'}}
               type="primary"
               className={common.submitButton}
               onClick={() => this.onCreate()}

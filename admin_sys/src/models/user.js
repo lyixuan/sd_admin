@@ -139,7 +139,7 @@ export default {
         payload.updateUserPositionInfoParams
       );
       if (updateUserPositionInfoData.code === 2000) {
-        message.success('岗位删除成功！');
+        message.success('岗位编辑成功！');
         const getUserlistData = yield call(getUserlist, payload.getUserlistParams);
         if (getUserlistData.code === 2000) {
           yield put({ type: 'getUserlistSave', payload: { getUserlistData } });
