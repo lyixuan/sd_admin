@@ -85,7 +85,7 @@ export default {
     *editDemissionPost({ payload }, { call, put }) {
       const response = yield call(editDemissionPost, payload);
       if (response.code === 2000) {
-        message.success('离职创建成功');
+        message.success('离职编辑成功');
         yield put(routerRedux.goBack());
       } else {
         message.error(response.msg);

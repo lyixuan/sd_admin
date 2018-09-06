@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form, Button, DatePicker, Radio } from 'antd';
 import { assignUrlParams } from 'utils/utils';
+import moment from 'moment';
+import ConfirmModal from 'selfComponents/ConfirmModal';
 import { BaseUtils } from './BaseUtils.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
@@ -25,14 +27,17 @@ class EditDimission extends Component {
         id: null,
         type: 4, // 离职
       },
-      kpiUserPositionLogList: [
-        {
-          userId: Number(urlParams.id),
-          type: 4, // 离职
-          effectDate: '',
-        },
-      ],
+      commitParams: {
+        id: Number(urlParams.id),
+        kpiUserPositionLogList: [
+          {
+            userId: Number(urlParams.id),
+          },
+        ],
+      },
+      isShowModal: false,
       canceled: 1, // 是否撤销此次操作,1否,0是
+      effectDate: null, // 离职时间
     };
     this.state = assignUrlParams(initState, urlParams);
     this.baseUtils = new BaseUtils();
@@ -40,6 +45,17 @@ class EditDimission extends Component {
 
   componentDidMount() {
     this.getData();
+    this.initParams();
+  }
+  componentWillReceiveProps(nextprops) {
+    if (
+      JSON.stringify(nextprops.staff.employeeInfo) !== JSON.stringify(this.props.staff.employeeInfo)
+    ) {
+      const employeeInfo = nextprops.staff.employeeInfo || {};
+      const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
+      const kpiUserPositionObj = kpiUserPositionLogList[0] || {};
+      this.initParams(kpiUserPositionObj);
+    }
   }
 
   getData = () => {
@@ -49,41 +65,88 @@ class EditDimission extends Component {
       payload: paramsObj,
     });
   };
+  initParams = obj => {
+    const employeeInfo = this.props.staff.employeeInfo || {};
+    const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
+    const kpiUserPositionObj = kpiUserPositionLogList[0] || {};
+    const { canceled, effectDate } = obj || kpiUserPositionObj;
+    this.setState({
+      canceled,
+      effectDate,
+    });
+  };
   handleSearch = e => {
     e.preventDefault();
     const { validateFields } = this.props.form;
-    const { urlParams = {} } = this.props;
     validateFields((err, values) => {
       const { effectDate, canceled } = values;
-      const paramsObj = Object.assign({}, this.state.kpiUserPositionLogList[0], {
-        effectDate: effectDate.format(dateFormat),
+      if (!effectDate) {
+        return;
+      }
+      const params = {
         canceled,
-      });
-      const newObj = {
-        id: Number(urlParams.id),
-        kpiUserPositionLogList: [paramsObj],
+        effectDate: effectDate.format(dateFormat),
       };
-      console.log(newObj);
-      this.props.dispatch({
-        type: 'staff/editDemissionPost',
-        payload: newObj,
-      });
+
+      if (canceled === 1) {
+        // 当撤销此次操作的时候讲 数据存储,并弹框,否的话直接交互
+        const isShowModal = canceled === 1;
+        this.setState({ isShowModal });
+        this.saveCommitParams(params);
+      } else {
+        this.commitCreateJob(params);
+      }
+    });
+  };
+  saveCommitParams = (params = {}) => {
+    const { commitParams } = this.state;
+    const newObj = Object.assign({}, commitParams.kpiUserPositionLogList[0], params);
+    commitParams.kpiUserPositionLogList = [newObj];
+    this.setState({ commitParams });
+  };
+  commitCreateJob = (params = {}) => {
+    const { commitParams } = this.state;
+    const employeeInfo = this.props.staff.employeeInfo || {};
+    const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
+    const kpiUserPositionObj = kpiUserPositionLogList[0] || {};
+    const newObj = Object.assign(
+      {},
+      kpiUserPositionObj,
+      commitParams.kpiUserPositionLogList[0],
+      params
+    );
+    commitParams.kpiUserPositionLogList = [newObj];
+    this.props.dispatch({
+      type: 'staff/editDemissionPost',
+      payload: commitParams,
     });
   };
   ChangeAudio = e => {
     const canceled = e.target.value;
     this.setState({ canceled });
   };
+  showModal = bol => {
+    this.setState({ isShowModal: bol });
+  };
+  clickOK = () => {
+    this.commitCreateJob();
+  };
   backToList = () => {
     this.props.history.goBack();
   };
   render() {
     const { staff = {}, creatLoading } = this.props;
-    const { canceled } = this.state;
+    const { canceled, effectDate, isShowModal } = this.state;
     const employeeInfo = staff.employeeInfo || {};
     const { FormItem } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
-    const datePicker = <DatePicker format={dateFormat} style={{ width: 230, height: 32 }} />;
+    const datePicker = (
+      <DatePicker
+        disabled={canceled === 1}
+        format={dateFormat}
+        style={{ width: 230, height: 32 }}
+      />
+    );
     return (
       <ContentLayout routerData={this.props.routerData}>
         <div className={styles.detailContailer}>
@@ -115,8 +178,8 @@ class EditDimission extends Component {
                       initialValue: canceled,
                     })(
                       <RadioGroup onChange={this.ChangeAudio}>
-                        <Radio value={0}>是</Radio>
-                        <Radio value={1}>否</Radio>
+                        <Radio value={1}>是</Radio>
+                        <Radio value={0}>否</Radio>
                       </RadioGroup>
                     )}
                   </FormItem>
@@ -127,7 +190,7 @@ class EditDimission extends Component {
                 <span className={styles.labelItem}>
                   <FormItem>
                     {getFieldDecorator('effectDate', {
-                      initialValue: null,
+                      initialValue: effectDate ? moment(effectDate) : null,
                       rules: [{ required: true, message: '请选择生效开始日期' }],
                     })(datePicker)}
                   </FormItem>
@@ -153,6 +216,9 @@ class EditDimission extends Component {
               提交
             </Button>
           </div>
+          <ConfirmModal visible={isShowModal} showModal={this.showModal} clickOK={this.clickOK}>
+            <p style={{ marginTop: '20px' }}>您即将撤销{employeeInfo.name}的离职,请确认.</p>
+          </ConfirmModal>
         </div>
       </ContentLayout>
     );

@@ -83,7 +83,7 @@ class EditHoliday extends Component {
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
       const { effectDate, endDate, canceled } = values;
-      if (!effectDate || !endDate) {
+      if (!effectDate) {
         return;
       }
       const params = {
@@ -205,7 +205,6 @@ class EditHoliday extends Component {
                   <FormItem>
                     {getFieldDecorator('endDate', {
                       initialValue: endDate ? moment(endDate) : null,
-                      rules: [{ required: true, message: '请选择生效结束日期' }],
                     })(datePicker)}
                   </FormItem>
                 </span>
