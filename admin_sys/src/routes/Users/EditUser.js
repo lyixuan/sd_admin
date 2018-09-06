@@ -14,6 +14,7 @@ const { Option } = Select;
 const RadioGroup = Radio.Group;
 let flag1 = 'class';
 let flag2 = 'class';
+let flag = 'class';
 let responseComList = [];
 let responseComListBackup = [];
 let propsVal = '';
@@ -41,6 +42,7 @@ class EditUser extends Component {
       visible: false,
       clickFlag:1,
       userType:null,
+      shownameid:null,
       privilege:null,
 
     };
@@ -73,9 +75,18 @@ class EditUser extends Component {
   // 编辑岗位函数
   onEdit = (key) => {
     const aa= key.userType
+    const bb= key.shownameid
+    const strs = !bb ? [] : bb.split(',');
+    const arr = !strs
+      ? []
+      : strs.map(el => {
+        return Number(el);
+      });
+    console.log(bb,arr)
     this.setState({
       clickFlag:2,
       userType:userTypeDataReset[aa],
+      shownameid:arr,
       visible: true,
       privilege:key.privilege==="无"?1:0,
     });
@@ -136,7 +147,7 @@ class EditUser extends Component {
     }else{
       flag2=aa;
     }
-    const flag = aa;
+     flag = aa;
     const responseValue = [];
     const userVal = this.props.user;
     const listOrgValues = !userVal.listOrg.response
@@ -219,6 +230,7 @@ class EditUser extends Component {
         privilege: item.privilege === 0 ? '有' : '无',
         userType: userTypeData[item.usertype],
         showName: !item.showname ? null : item.showname.replace(/,/g, ' | '),
+        shownameid:!item.shownameid?null:item.shownameid,
         id: item.positionid,
       })
     );
@@ -233,7 +245,7 @@ class EditUser extends Component {
         dataIndex: 'id',
       },
       {
-        title: '岗位',
+        title: '级别',
         dataIndex: 'userType',
       },
       {
@@ -332,6 +344,7 @@ class EditUser extends Component {
       ? null
       : !aaa.data ? null : !aaa.data.postionAttribute
         ? null : aaa.data.postionAttribute;
+
     const dataSource = !tableList ? [] : this.fillDataSource(tableList);
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -341,10 +354,20 @@ class EditUser extends Component {
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="*岗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位:">
+                <FormItem label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:">
                   {getFieldDecorator('userType', {
                     initialValue: this.state.clickFlag===1?[]:this.state.userType,
-                    rules: '',
+                    rules: [
+                      {
+                        validator(rule, value, callback) {
+                          console.log(value,!value)
+                          if (!value) {
+                            callback({ message: '请选择权岗位！' });
+                          }
+                          callback();
+                        },
+                      },
+                    ],
                   })(
                     <Select style={{ width: 280 }} onChange={this.handleSelectChange}>
                       <Option value="college">院长或副院长</Option>
@@ -361,16 +384,16 @@ class EditUser extends Component {
             </Row>
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="负责单位">
+                <FormItem label="*负责单位">
                   {getFieldDecorator('responseCom', {
-                    initialValue: [],
+                    initialValue: this.state.clickFlag===1?[]:this.state.shownameid,
                     rules: [
                       {
                         validator(rule, value, callback) {
                           if (typeof value[0] === 'string' || !value[0]) {
-                            if (this.state.clickFlag===1?(flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others'):(flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others')) {
+                            if(flag === 'admin' || flag === 'boss' || flag === 'others'){
                               callback();
-                            } else {
+                            }else{
                               callback({ message: '请选择负责单位！' });
                             }
                           }

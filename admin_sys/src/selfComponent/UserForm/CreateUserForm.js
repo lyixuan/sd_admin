@@ -289,7 +289,7 @@ class CreateUserForm extends Component {
           </Row>
           <Row  style={{marginTop: '20px'}}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem  label="*岗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位" >
+              <FormItem  label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别" >
                 {getFieldDecorator('userType', {
                   initialValue:null,
                   rules: [

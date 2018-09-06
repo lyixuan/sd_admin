@@ -164,7 +164,7 @@ class UserList extends Component {
         dataIndex: 'mail',
       },
       {
-        title: '岗位',
+        title: '级别',
         dataIndex: 'userType',
         width: 120,
       },
