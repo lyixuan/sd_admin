@@ -114,6 +114,8 @@ class EditUser extends Component {
   };
 
   setDialogSHow(bol) {
+    flag1='class';
+    flag2='class';
     this.setState({
       visible: bol,
     });
