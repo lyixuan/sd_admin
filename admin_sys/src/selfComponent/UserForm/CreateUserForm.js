@@ -1,17 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Form,
-  Input,
-  Cascader,
-  Button,
-  message,
-  Row,
-  Col,
-  Select,
-  Spin,
-  DatePicker,
-  Radio,
-} from 'antd';
+import { Form, Input, Cascader, Button, message, Row, Col, Select, Spin ,DatePicker,Radio} from 'antd';
 import common from '../../routes/Common/common.css';
 
 const FormItem = Form.Item;
@@ -90,12 +78,13 @@ class CreateUserForm extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
 
-    if (flag === 'admin') {
-      this.props.form.setFieldsValue({
-        privilege: 1,
-        responseCom: [],
-      });
-    }
+    this.props.form.setFieldsValue({
+      privilege: 1,
+    });
+    if(flag === 'admin' ||flag === 'others'||flag === 'boss'){
+    this.props.form.setFieldsValue({
+      responseCom:[],
+    });}
 
     if (flag === 'family') {
       newResponseComList.map(item => {
@@ -130,6 +119,7 @@ class CreateUserForm extends Component {
     responseComList = responseValue.length === 0 ? responseComListBackup : responseValue;
   };
 
+
   joinDateFun = (dates, dateStrings) => {
     const aa = dateStrings;
     firstJoinDate = aa;
@@ -140,27 +130,28 @@ class CreateUserForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const rUserType = values.userType;
-        const len = !values.responseCom ? null : values.responseCom.length;
+        const len = !values.responseCom?null:values.responseCom.length;
         if (rUserType === 'group' || rUserType === 'class') {
-          if (!len || len !== 3) {
+          if (!len||len !== 3) {
             message.error('负责单位请选择到对应小组');
           } else {
-            this.props.handleSubmit(values, firstJoinDate);
+            this.props.handleSubmit(values,firstJoinDate);
           }
         } else if (rUserType === 'family') {
-          if (!len || len < 2) {
+          if (!len||len < 2) {
             message.error('负责单位请选择到对应家族');
           } else {
-            this.props.handleSubmit(values, firstJoinDate);
+            this.props.handleSubmit(values,firstJoinDate);
           }
-        } else if (rUserType === 'college') {
-          if (!len || len < 1) {
+        }else if (rUserType === 'college') {
+          if (!len||len < 1) {
             message.error('负责单位请选择到对应学院');
           } else {
-            this.props.handleSubmit(values, firstJoinDate);
+            this.props.handleSubmit(values,firstJoinDate);
           }
-        } else {
-          this.props.handleSubmit(values, firstJoinDate);
+        }
+        else {
+          this.props.handleSubmit(values,firstJoinDate);
         }
       }
     });
@@ -192,17 +183,19 @@ class CreateUserForm extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
     responseComList =
-      !responseComList || responseComList.length === 0 ? responseComListBackup : responseComList;
+      !responseComList || responseComList.length === 0
+        ? responseComListBackup
+        : responseComList;
     const { submit, wechatList, listOrg } = this.props.jumpFunction;
     const formLayout = 'inline';
     return (
       <Spin spinning={wechatList || listOrg}>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
-          <Row>
+          <Row >
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名">
+              <FormItem  label="*姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名">
                 {getFieldDecorator('name', {
-                  initialValue: null,
+                  initialValue:null,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -222,33 +215,31 @@ class CreateUserForm extends Component {
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
-              <FormItem label="*性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
+              <FormItem  label="*性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
                 {getFieldDecorator('sex', {
-                  initialValue: null,
+                  initialValue:null,
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value) {
+                        if(!value){
                           callback({ message: '性别为必填项，请选择!' });
                         }
                         callback();
                       },
-                    },
-                  ],
+                    }],
                 })(
                   <Select style={{ width: 280 }}>
                     <Option value={1}>男</Option>
                     <Option value={2}>女</Option>
-                  </Select>
-                )}
+                  </Select>)}
               </FormItem>
             </Col>
           </Row>
-          <Row style={{ marginTop: '20px' }}>
+          <Row  style={{marginTop: '20px'}}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机">
+              <FormItem  label="手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机">
                 {getFieldDecorator('mobile', {
-                  initialValue: null,
+                  initialValue:null,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -260,70 +251,64 @@ class CreateUserForm extends Component {
                       },
                     },
                   ],
-                })(
-                  <Input style={{ width: 280 }} disabled={!this.state.phone ? false : disabled} />
-                )}
+                })(<Input style={{ width: 280 }} disabled={!this.state.phone ? false : disabled} />)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
-              <FormItem label="*邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱">
+              <FormItem  label="*邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱">
                 {getFieldDecorator('mail', {
-                  initialValue: null,
+                  initialValue:null,
                   rules: [],
                 })(
                   <div>
-                    <Input
-                      style={{ width: '175px' }}
-                      disabled={!this.state.id ? false : disabled}
-                    />
+                    <Input style={{ width: '175px' }} disabled={!this.state.id ? false : disabled} />
                     <span style={{ width: '101px' }}> @sunlands.com</span>
                   </div>
+
                 )}
               </FormItem>
             </Col>
           </Row>
-          <Row style={{ marginTop: '20px' }}>
-            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*身份证号">
+          <Row  style={{marginTop: '20px'}}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }} >
+              <FormItem  label="*身份证号" >
                 {getFieldDecorator('idCard', {
-                  initialValue: null,
-                  rules: [
-                    { required: true, message: '身份证号为必填项，请填写!', whitespace: true },
-                  ],
-                })(<Input style={{ width: 280 }} />)}
+                  initialValue:null,
+                  rules: [{ required: true, message: '身份证号为必填项，请填写!', whitespace: true }],
+                })(<Input style={{ width: 280 }}  />)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
-              <FormItem label="*入职日期">
+              <FormItem  label="*入职日期">
                 {getFieldDecorator('joinDate', {
-                  initialValue: null,
+                  initialValue:null,
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value) {
+                        if(!value){
                           callback({ message: '入职日期为必填项，请选择!' });
                         }
                         callback();
                       },
-                    },
-                  ],
+                    }],
                 })(
                   <DatePicker
                     format={dateFormat}
                     style={{ width: 280, height: 32 }}
                     onChange={this.joinDateFun}
-                  />
-                )}
+                  /> )}
               </FormItem>
             </Col>
+
           </Row>
-          <Row style={{ marginTop: '20px' }}>
+          <Row  style={{marginTop: '20px'}}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
+              <FormItem  label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别" >
                 {getFieldDecorator('userType', {
-                  initialValue: null,
+                  initialValue:null,
                   rules: [
                     {
+
                       validator(rule, value, callback) {
                         if (!value) {
                           callback({ message: '请选择权岗位！' });
@@ -344,11 +329,12 @@ class CreateUserForm extends Component {
                   </Select>
                 )}
               </FormItem>
+
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*微信部门">
                 {getFieldDecorator('wechatDepartmentName', {
-                  initialValue: null,
+                  initialValue:null,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -364,11 +350,11 @@ class CreateUserForm extends Component {
             </Col>
           </Row>
 
-          <Row style={{ marginTop: '20px' }}>
+          <Row  style={{marginTop: '20px'}}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*负责单位">
+              <FormItem  label="*负责单位">
                 {getFieldDecorator('responseCom', {
-                  initialValue: [],
+                  initialValue:[],
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -387,9 +373,7 @@ class CreateUserForm extends Component {
                   <Cascader
                     options={responseComList}
                     style={{ width: 280 }}
-                    disabled={
-                      flag === 'admin' || flag === 'boss' || flag === 'others' ? disabled : false
-                    }
+                    disabled={flag === 'admin' || flag === 'boss' || flag === 'others' ? disabled : false}
                   />
                 )}
               </FormItem>
@@ -397,29 +381,18 @@ class CreateUserForm extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*绩效权限">
                 {getFieldDecorator('privilege', {
-                  initialValue: 1,
+                  initialValue:1,
                   rules: [],
                 })(
-                  <RadioGroup
-                    value={1}
-                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
-                  >
-                    <Radio
-                      name="privilege"
-                      disabled={flag === 'admin' ? disabled : false}
-                      value={0}
-                    >
-                      是
-                    </Radio>
-                    <Radio name="privilege" value={1}>
-                      否
-                    </Radio>
+                  <RadioGroup value={1} style={{color: 'rgba(0, 0, 0, 0.85)',width:'280px',textAlign: 'left'}}>
+                    <Radio name="privilege"  disabled={flag==="admin"?disabled:false}  value={0}>是</Radio>
+                    <Radio  name="privilege"  value={1}>否</Radio>
                   </RadioGroup>
                 )}
               </FormItem>
             </Col>
           </Row>
-          <Row style={{ marginTop: '20px' }}>
+          <Row style={{marginTop: '20px'}}>
             <Col span={6} offset={17} style={{ textAlign: 'right' }}>
               <FormItem>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
