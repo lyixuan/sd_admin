@@ -269,7 +269,9 @@ class EditTransJob extends Component {
               </li>
               <li>
                 <span className={styles.labelText}>邮箱:</span>
-                <span className={styles.labelItem}>{employeeInfo.mail}</span>
+                <span className={styles.labelItem}>
+                  {this.baseUtils.removeMailSymbal(employeeInfo.mail)}
+                </span>
               </li>
               <li>
                 <span className={styles.labelText}>现任岗位:</span>
@@ -279,7 +281,10 @@ class EditTransJob extends Component {
               </li>
               <li>
                 <span className={styles.labelText}>现任负责单位:</span>
-                <span className={styles.labelItem}>{employeeInfo.showName}</span>
+                <span className={styles.labelItem}>
+                  {employeeInfo.showName ||
+                    this.baseUtils.returnOrganization(employeeInfo.userType)}
+                </span>
               </li>
               <li>
                 <span className={styles.labelText}>撤销此次操作:</span>

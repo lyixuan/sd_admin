@@ -71,8 +71,13 @@ export default class StaffDetail extends Component {
     const dataSource = transfer.map((item, index) => ({
       ...item,
       key: item.transferDate + index,
+      beforeOrganization: item.beforeOrganization
+        ? item.beforeOrganization
+        : this.baseUtils.returnOrganization(item.beforePostitonType),
       beforePostitonType: this.baseUtils.returnGroupType(item.beforePostitonType),
       afterPostitonType: this.baseUtils.returnGroupType(item.afterPostitonType),
+      afterOrganization:
+        item.afterOrganization || this.baseUtils.returnOrganization(item.afterPostitonType),
     }));
     return (
       <ContentLayout routerData={this.props.routerData}>
@@ -94,7 +99,10 @@ export default class StaffDetail extends Component {
             </li>
             <li>
               <span className={styles.labelText}>现任负责单位:</span>
-              <span className={styles.labelItem}>{staffDetail.nowOrgnization}</span>
+              <span className={styles.labelItem}>
+                {staffDetail.nowOrgnization ||
+                  this.baseUtils.returnOrganization(staffDetail.nowPositionType)}
+              </span>
             </li>
             <li>
               <span className={styles.labelText}>入职日期:</span>

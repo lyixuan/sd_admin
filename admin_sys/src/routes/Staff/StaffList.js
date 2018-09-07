@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button, Form, Input, Row, Col, Select } from 'antd';
 import { assignUrlParams } from 'utils/utils';
+import { BaseUtils } from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
@@ -12,13 +13,6 @@ import { renderAuthButtonList } from './_staffAuthMap';
 const FormItem = Form.Item;
 const { Option } = Select;
 let propsVal = '';
-
-const groupTypeObj = {
-  college: '院长或副院长',
-  family: '家族长',
-  group: '运营长',
-  class: '班主任',
-};
 const jobStatus = {
   全部: '',
   在岗: 0,
@@ -48,6 +42,7 @@ class StaffList extends Component {
       },
     };
     this.state = assignUrlParams(initState, urlParams);
+    this.baseUtils = new BaseUtils();
   }
 
   // 页面render之前需要请求的接口
@@ -163,12 +158,11 @@ class StaffList extends Component {
   };
   formaterData = (data = []) => {
     return data.map(item => {
-      const mail = typeof item.mail === 'string' ? item.mail : '';
-
       return {
         ...item,
-        mail: mail.split('@')[0],
-        userType: groupTypeObj[item.userType],
+        mail: this.baseUtils.removeMailSymbal(item.mail),
+        userType: this.baseUtils.returnGroupType(item.userType),
+        showName: item.showName || this.baseUtils.returnOrganization(item.userType),
         key: item.id,
       };
     });

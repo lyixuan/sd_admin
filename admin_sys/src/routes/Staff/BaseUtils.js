@@ -16,4 +16,25 @@ export class BaseUtils {
   returnGroupType = (groupType = '') => {
     return this.groupTypeObj[groupType];
   };
+  returnOrganization = (groupType = '') => {
+    let returnType = null;
+    switch (groupType) {
+      case 'boss':
+        returnType = '管理层';
+        break;
+      case 'admin':
+        returnType = '管理员';
+        break;
+      case 'others':
+        returnType = '无绩效岗位';
+        break;
+      default:
+        returnType = null;
+    }
+    return returnType;
+  };
+  removeMailSymbal = (mail = '') => {
+    const newMail = mail || '';
+    return newMail.split('@')[0];
+  };
 }
