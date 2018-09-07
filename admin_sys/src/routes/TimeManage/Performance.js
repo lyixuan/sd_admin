@@ -86,7 +86,7 @@ export default class Performance extends Time {
             dataSource={dataSorce}
             columns={this.columnsData()}
             useFixedHeader
-            scroll={{ y: 600 }}
+            scroll={{ y: 300 }}
             pagination={false}
           />
         </div>
