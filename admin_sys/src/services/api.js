@@ -605,3 +605,19 @@ export async function exportCollegeKpi(params) {
     method: 'GET',
   });
 }
+
+export async function importKpiData(params) {
+  // 校验excel文件
+  return request(`${HOST}/collegeKpi/verifyKpiDataFromExcel`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function saveKpiData(params) {
+  // 保存excel数据
+  return request(`${HOST}/collegeKpi/saveKpiDatas`, {
+    method: 'POST',
+    body: params,
+  });
+}
