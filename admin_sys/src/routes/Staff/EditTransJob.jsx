@@ -148,6 +148,7 @@ class EditTransJob extends Component {
   handleSelectChange = value => {
     const positionType = value;
     // this.handleOrgList(value);
+    this.props.form.setFieldsValue({ cascader: [] });
     this.handleOrgList(this.handleGroupLevel(value));
     this.setState({ positionType });
   };
@@ -339,6 +340,15 @@ class EditTransJob extends Component {
                   <FormItem>
                     {getFieldDecorator('cascader', {
                       initialValue: groupList,
+                      rules: [
+                        {
+                          required:
+                            positionType !== 'others' &&
+                            positionType !== 'boss' &&
+                            positionType !== 'admin',
+                          message: '请选择有效负责单位',
+                        },
+                      ],
                     })(
                       <Cascader
                         options={orgList}

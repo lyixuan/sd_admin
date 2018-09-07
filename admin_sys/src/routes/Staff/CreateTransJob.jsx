@@ -106,6 +106,7 @@ class CreateTransJob extends Component {
     });
   };
   handleSelectChange = value => {
+    this.props.form.setFieldsValue({ cascader: [] });
     const positionType = value;
     // this.handleOrgList(value);
     this.handleGroupLevel(value);
@@ -244,6 +245,15 @@ class CreateTransJob extends Component {
                   <FormItem>
                     {getFieldDecorator('cascader', {
                       initialValue: [],
+                      rules: [
+                        {
+                          required:
+                            positionType !== 'others' &&
+                            positionType !== 'boss' &&
+                            positionType !== 'admin',
+                          message: '请选择有效负责单位',
+                        },
+                      ],
                     })(
                       <Cascader
                         options={orgList}
