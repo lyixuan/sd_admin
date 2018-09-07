@@ -274,7 +274,20 @@ class CreateUserForm extends Component {
               <FormItem  label="*身份证号" >
                 {getFieldDecorator('idCard', {
                   initialValue:null,
-                  rules: [{ required: true, message: '身份证号为必填项，请填写!', whitespace: true }],
+                  rules: [
+                    // /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+                    {
+                      validator(rule, value, callback) {
+                        const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; // 身份证校验规则
+                        if (!value) {
+                          callback({ message: '身份证号为必填项，请填写!' });
+                        } else if (reg.test(value) === false) {
+                          callback({ message: '身份证号输入不合法!' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    }],
                 })(<Input style={{ width: 280 }}  />)}
               </FormItem>
             </Col>
