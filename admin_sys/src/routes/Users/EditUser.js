@@ -18,6 +18,7 @@ let flag = 'class';
 let responseComList = [];
 let responseComListBackup = [];
 let propsVal = '';
+let userTypeFlag =  'class';
 
 const WrappedRegistrationForm = Form.create()(EditUserForm);
 
@@ -81,6 +82,7 @@ class EditUser extends Component {
       : strs.map(el => {
         return Number(el);
       });
+    userTypeFlag = userTypeDataReset[aa]
     this.setState({
       clickFlag:2,
       userType:userTypeDataReset[aa],
@@ -247,6 +249,7 @@ class EditUser extends Component {
       flag1=aa;
     }else{
       flag2=aa;
+      userTypeFlag=aa;
     }
     flag = aa;
     const responseValue = [];
@@ -429,6 +432,7 @@ class EditUser extends Component {
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
+      console.log(this.state.userType,userTypeFlag)
       return (
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
@@ -479,7 +483,8 @@ class EditUser extends Component {
                   })(<Cascader
                     options={responseComList}
                     style={{ width: 280 }}
-                    disabled={this.state.clickFlag===1?(flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others' ? disabled : false):(this.state.userType==='admin'||this.state.userType==='boss'||this.state.userType==='others'||flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others' ? disabled : false)}
+                    disabled={this.state.clickFlag===1?(flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others' ? disabled : false):
+                      (userTypeFlag==='admin'||userTypeFlag==='boss'||userTypeFlag==='others'||flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others' ? disabled : false)}
                   />)}
                 </FormItem>
               </Col>
