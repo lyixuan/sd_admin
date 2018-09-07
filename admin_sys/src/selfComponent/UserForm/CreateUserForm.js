@@ -77,6 +77,13 @@ class CreateUserForm extends Component {
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
+
+    if(flag === 'admin'){
+    this.props.form.setFieldsValue({
+      privilege: 1,
+      responseCom:[],
+    });}
+
     if (flag === 'family') {
       newResponseComList.map(item => {
         const firstChldren = [];

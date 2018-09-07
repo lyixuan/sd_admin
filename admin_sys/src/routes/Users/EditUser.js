@@ -258,6 +258,11 @@ class EditUser extends Component {
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
+    if(flag === 'admin'){
+      propsVal.form.setFieldsValue({
+        privilege: 1,
+        responseCom:[],
+      });}
     if (flag === 'family') {
       newResponseComList.map(item => {
         const firstChldren = [];
@@ -575,6 +580,7 @@ class EditUser extends Component {
           }
         />
         <ModalDialog
+          style={{width:'620px'}}
           title={this.state.clickFlag===1?"添加岗位":'编辑岗位'}
           visible={visible}
           modalContent={modalContent}
