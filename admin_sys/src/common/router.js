@@ -135,7 +135,7 @@ export const getRouterData = app => {
     '/user/editUser': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/EditUser')),
       bread: {
-        name: '用户管理',
+        name: '学分用户管理',
         path: '/config/userList',
       },
       name: '编辑用户',
@@ -143,7 +143,7 @@ export const getRouterData = app => {
     '/user/createUser': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/CreateUser')),
       bread: {
-        name: '用户管理',
+        name: '学分用户管理',
         path: '/config/userList',
       },
       name: '创建用户',
@@ -151,7 +151,7 @@ export const getRouterData = app => {
     '/user/checkUser': {
       component: dynamicWrapper(app, [], () => import('../routes/Users/CheckUser')),
       bread: {
-        name: '用户管理',
+        name: '学分用户管理',
         path: '/config/userList',
       },
       name: '查看用户',
