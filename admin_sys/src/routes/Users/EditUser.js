@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Form, Button, Popconfirm, Row,message, Col, Select, Cascader, Radio } from 'antd';
+import { Table, Form, Button, Popconfirm, Row, message, Col, Select, Cascader, Radio } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import EditUserForm from '../../selfComponent/UserForm/EditUserForm.js';
@@ -7,7 +7,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
-import {userTypeData, userTypeDataReset } from '../../utils/dataDictionary';
+import { userTypeData, userTypeDataReset } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -18,7 +18,7 @@ let flag = 'class';
 let responseComList = [];
 let responseComListBackup = [];
 let propsVal = '';
-let userTypeFlag =  'class';
+let userTypeFlag = 'class';
 
 const WrappedRegistrationForm = Form.create()(EditUserForm);
 
@@ -42,11 +42,11 @@ class EditUser extends Component {
       mail: !arrValue.mail ? null : arrValue.mail,
       listOrgLiost: listOrgValues || [],
       visible: false,
-      clickFlag:1,
-      userType:null,
-      shownameid:null,
-      privilege:null,
-      positionId:null,
+      clickFlag: 1,
+      userType: null,
+      shownameid: null,
+      privilege: null,
+      positionId: null,
     };
   }
 
@@ -72,30 +72,30 @@ class EditUser extends Component {
   }
 
   // 编辑岗位函数
-  onEdit = (key) => {
-    const aa= key.userType
-    const bb= key.shownameid
+  onEdit = key => {
+    const aa = key.userType;
+    const bb = key.shownameid;
     const strs = !bb ? [] : bb.split(',');
     responseComList = this.responseComListFun(aa);
     const arr = !strs
       ? []
       : strs.map(el => {
-        return Number(el);
-      });
-    userTypeFlag = userTypeDataReset[aa]
+          return Number(el);
+        });
+    userTypeFlag = userTypeDataReset[aa];
     this.setState({
-      clickFlag:2,
-      userType:userTypeDataReset[aa],
-      shownameid:arr,
+      clickFlag: 2,
+      userType: userTypeDataReset[aa],
+      shownameid: arr,
       visible: true,
-      privilege:key.privilege==="无"?1:0,
-      positionId:key.id,
+      privilege: key.privilege === '无' ? 1 : 0,
+      positionId: key.id,
     });
   };
   // 创建岗位函数
   onCreate = () => {
     this.setState({
-      clickFlag:1,
+      clickFlag: 1,
       visible: true,
     });
   };
@@ -103,9 +103,9 @@ class EditUser extends Component {
   // 删除用户
   onDelete = val => {
     const deletePositionParams = {
-      id:!val.id?undefined:val.id,
+      id: !val.id ? undefined : val.id,
     };
-    const getUserlistParams={ mail: this.state.mail };
+    const getUserlistParams = { mail: this.state.mail };
     this.props.dispatch({
       type: 'user/deletePosition',
       payload: { deletePositionParams, getUserlistParams },
@@ -113,59 +113,68 @@ class EditUser extends Component {
   };
 
   setDialogSHow(bol) {
-    flag1='class';
-    flag2='class';
+    flag1 = 'class';
+    flag2 = 'class';
     this.setState({
       visible: bol,
     });
   }
 
-  getData = (values,arrValue)=>{
+  getData = (values, arrValue) => {
     const rUserType = values.userType;
-    const len = !values.responseCom?null:values.responseCom.length;
-    let typeId = !len?undefined:values.responseCom[len - 1];
-    if (typeof typeId === 'string' || rUserType === 'admin' || rUserType === 'boss'|| rUserType === 'others') {
+    const len = !values.responseCom ? null : values.responseCom.length;
+    let typeId = !len ? undefined : values.responseCom[len - 1];
+    if (
+      typeof typeId === 'string' ||
+      rUserType === 'admin' ||
+      rUserType === 'boss' ||
+      rUserType === 'others'
+    ) {
       typeId = undefined;
     }
-    const getUserlistParams={mail:this.state.mail}
-    if (this.state.clickFlag===1) {
+    const getUserlistParams = { mail: this.state.mail };
+    if (this.state.clickFlag === 1) {
       const addPositionParams = {
         name: !arrValue.name ? undefined : arrValue.name,
         mail: !arrValue.mail ? undefined : arrValue.mail,
         mobile: !arrValue.mobile ? undefined : arrValue.mobile,
-        joinDate:!arrValue.joindate ? undefined : arrValue.joindate,
-        idCard:!arrValue.idcard ? undefined : arrValue.idcard,
-        sex:!arrValue.sex ? undefined : arrValue.sex,
-        positionList:{
-          privilege:rUserType==='admin'?1:values.privilege,
+        joinDate: !arrValue.joindate ? undefined : arrValue.joindate,
+        idCard: !arrValue.idcard ? undefined : arrValue.idcard,
+        sex: !arrValue.sex ? undefined : arrValue.sex,
+        positionList: {
+          privilege: rUserType === 'admin' ? 1 : values.privilege,
           userType: rUserType,
           userTypeId: typeId,
           wechatDepartmentId: Number(arrValue.wechatdepartmentid),
-          wechatDepartmentName: !arrValue.wechatdepartmentname ? undefined : arrValue.wechatdepartmentname,
+          wechatDepartmentName: !arrValue.wechatdepartmentname
+            ? undefined
+            : arrValue.wechatdepartmentname,
         },
-      }
+      };
       this.props.dispatch({
         type: 'user/addPosition',
-        payload: { addPositionParams,getUserlistParams  },
+        payload: { addPositionParams, getUserlistParams },
       });
     } else {
       const updateUserPositionInfoParams = {
-        id:!this.state.positionId?undefined:this.state.positionId,
-        privilege:rUserType==='admin'?1:values.privilege,
+        id: !this.state.positionId ? undefined : this.state.positionId,
+        privilege: rUserType === 'admin' ? 1 : values.privilege,
         userType: rUserType,
         userTypeId: typeId,
         wechatDepartmentId: Number(arrValue.wechatdepartmentid),
-        wechatDepartmentName: !arrValue.wechatdepartmentname ? undefined : arrValue.wechatdepartmentname,
-      }
+        wechatDepartmentName: !arrValue.wechatdepartmentname
+          ? undefined
+          : arrValue.wechatdepartmentname,
+      };
       this.props.dispatch({
         type: 'user/updateUserPositionInfo',
-        payload: { updateUserPositionInfoParams,getUserlistParams },
+        payload: { updateUserPositionInfoParams, getUserlistParams },
       });
     }
     this.setDialogSHow(false);
-  }
+  };
 
-  responseComListFun = (aa) => {
+  responseComListFun = aa => {
     const responseValue = [];
     const userVal = this.props.user;
     const listOrgValues = !userVal.listOrg.response
@@ -245,11 +254,11 @@ class EditUser extends Component {
 
   handleSelectChange = value => {
     const aa = value;
-    if(this.state.clickFlag===1){
-      flag1=aa;
-    }else{
-      flag2=aa;
-      userTypeFlag=aa;
+    if (this.state.clickFlag === 1) {
+      flag1 = aa;
+    } else {
+      flag2 = aa;
+      userTypeFlag = aa;
     }
     flag = aa;
     const responseValue = [];
@@ -258,6 +267,12 @@ class EditUser extends Component {
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
+    if (flag === 'admin') {
+      propsVal.form.setFieldsValue({
+        privilege: 1,
+        responseCom: [],
+      });
+    }
     if (flag === 'family') {
       newResponseComList.map(item => {
         const firstChldren = [];
@@ -291,12 +306,14 @@ class EditUser extends Component {
     responseComList = responseValue.length === 0 ? responseComListBackup : responseValue;
   };
 
-  handleSubmit = (values,data) => {
+  handleSubmit = (values, data) => {
     const rname = values.wechatDepartmentName;
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
     roleList.map(item => {
-      if (item.name === rname) {newRoleId = item.id}
+      if (item.name === rname) {
+        newRoleId = item.id;
+      }
       return 0;
     });
     const updateUserInfoParams = {
@@ -304,9 +321,9 @@ class EditUser extends Component {
       mail: values.mail,
       mobile: values.phone,
       sex: Number(values.sex),
-      idCard:values.idCard,
-      joinDate:data,
-      positionList:{
+      idCard: values.idCard,
+      joinDate: data,
+      positionList: {
         wechatDepartmentId: Number(newRoleId),
         wechatDepartmentName: !rname ? undefined : rname,
       },
@@ -330,9 +347,10 @@ class EditUser extends Component {
         privilege: item.privilege === 0 ? '有' : '无',
         userType: userTypeData[item.usertype],
         showName: !item.showname ? null : item.showname.replace(/,/g, ' | '),
-        shownameid:!item.shownameid?null:item.shownameid,
+        shownameid: !item.shownameid ? null : item.shownameid,
         id: item.positionid,
-      }));
+      })
+    );
     return data;
   };
 
@@ -359,54 +377,72 @@ class EditUser extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
-          return (record.privilege === '有' ? null :(
+          return record.privilege === '有' ? null : (
             <div>
               <AuthorizedButton authority="/user/editUser">
-                <span style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }} onClick={() => this.onEdit(record)}>编辑</span>
+                <span
+                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                  onClick={() => this.onEdit(record)}
+                >
+                  编辑
+                </span>
               </AuthorizedButton>
               <AuthorizedButton authority="/user/deleteUser">
                 <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
                   <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
                 </Popconfirm>
               </AuthorizedButton>
-            </div>));}},
+            </div>
+          );
+        },
+      },
     ];
     return columns || [];
   };
   // 模态框回显
-  editName = (e) => {
+  editName = e => {
     const userVal = this.props.user;
-    const aaa = !userVal.getUserlistData?null:userVal.getUserlistData;
+    const aaa = !userVal.getUserlistData ? null : userVal.getUserlistData;
     const arrValue = !aaa
       ? null
-      : !aaa.data ? null : !aaa.data.generalAttribute
-        ? null : aaa.data.generalAttribute;
-    this.handleSearch(e,arrValue)
+      : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
+    this.handleSearch(e, arrValue);
   };
 
-  handleSearch = (e,arrValue) => {
+  handleSearch = (e, arrValue) => {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const rUserType = values.userType;
-        const len = !values.responseCom?null:values.responseCom.length;
+        const len = !values.responseCom ? null : values.responseCom.length;
         if (rUserType === 'group' || rUserType === 'class') {
-          if (!len||len !== 3) {message.error('负责单位请选择到对应小组')}
-          else{this.getData(values,arrValue)}
+          if (!len || len !== 3) {
+            message.error('负责单位请选择到对应小组');
+          } else {
+            this.getData(values, arrValue);
+          }
         } else if (rUserType === 'family') {
-          if (!len||len < 2) {message.error('负责单位请选择到对应家族')}
-          else{this.getData(values,arrValue)}
-        }else if (rUserType === 'college') {
-          if (!len||len < 1) {message.error('负责单位请选择到对应学院')}
-          else{this.getData(values,arrValue)}
-        }else {this.getData(values,arrValue)}
+          if (!len || len < 2) {
+            message.error('负责单位请选择到对应家族');
+          } else {
+            this.getData(values, arrValue);
+          }
+        } else if (rUserType === 'college') {
+          if (!len || len < 1) {
+            message.error('负责单位请选择到对应学院');
+          } else {
+            this.getData(values, arrValue);
+          }
+        } else {
+          this.getData(values, arrValue);
+        }
       }
     });
   };
 
   render() {
     const columns = this.columnsData();
-    const {addPosi} =this.props
+    const { addPosi } = this.props;
     const userVal = this.props.user;
     const disabled = true;
     const listOrgValues = !userVal.listOrg.response
@@ -414,25 +450,21 @@ class EditUser extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
     responseComList =
-      !responseComList || responseComList.length === 0
-        ? responseComListBackup
-        : responseComList;
+      !responseComList || responseComList.length === 0 ? responseComListBackup : responseComList;
     const { visible } = this.state;
     const formLayout = 'inline';
-    const aaa = !userVal.getUserlistData?null:userVal.getUserlistData;
+    const aaa = !userVal.getUserlistData ? null : userVal.getUserlistData;
     const arrValue = !aaa
       ? null
-      : !aaa.data ? null : !aaa.data.generalAttribute
-        ? null : aaa.data.generalAttribute;
+      : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
     const tableList = !aaa
       ? null
-      : !aaa.data ? null : !aaa.data.postionAttribute
-        ? null : aaa.data.postionAttribute;
+      : !aaa.data ? null : !aaa.data.postionAttribute ? null : aaa.data.postionAttribute;
     const dataSource = !tableList ? [] : this.fillDataSource(tableList);
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
-      console.log(this.state.userType,userTypeFlag)
+      console.log(this.state.userType, userTypeFlag);
       return (
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
@@ -440,12 +472,16 @@ class EditUser extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:">
                   {getFieldDecorator('userType', {
-                    initialValue: this.state.clickFlag===1?null:this.state.userType,
+                    initialValue: this.state.clickFlag === 1 ? null : this.state.userType,
                     rules: [
-                      { validator(rule, value, callback) {
-                          if (!value) {callback({ message: '请选择级别！' })}
+                      {
+                        validator(rule, value, callback) {
+                          if (!value) {
+                            callback({ message: '请选择级别！' });
+                          }
                           callback();
-                        }},
+                        },
+                      },
                     ],
                   })(
                     <Select style={{ width: 280 }} onChange={this.handleSelectChange}>
@@ -461,18 +497,18 @@ class EditUser extends Component {
                 </FormItem>
               </Col>
             </Row>
-            <Row style={{marginTop:'10px'}}>
+            <Row style={{ marginTop: '10px' }}>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*负责单位">
                   {getFieldDecorator('responseCom', {
-                    initialValue: this.state.clickFlag===1?[]:this.state.shownameid,
+                    initialValue: this.state.clickFlag === 1 ? [] : this.state.shownameid,
                     rules: [
                       {
                         validator(rule, value, callback) {
                           if (typeof value[0] === 'string' || !value[0]) {
-                            if(flag === 'admin' || flag === 'boss' || flag === 'others'){
+                            if (flag === 'admin' || flag === 'boss' || flag === 'others') {
                               callback();
-                            }else{
+                            } else {
                               callback({ message: '请选择负责单位！' });
                             }
                           }
@@ -480,12 +516,26 @@ class EditUser extends Component {
                         },
                       },
                     ],
-                  })(<Cascader
-                    options={responseComList}
-                    style={{ width: 280 }}
-                    disabled={this.state.clickFlag===1?(flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others' ? disabled : false):
-                      (userTypeFlag==='admin'||userTypeFlag==='boss'||userTypeFlag==='others'||flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others' ? disabled : false)}
-                  />)}
+                  })(
+                    <Cascader
+                      options={responseComList}
+                      style={{ width: 280 }}
+                      disabled={
+                        this.state.clickFlag === 1
+                          ? flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others'
+                            ? disabled
+                            : false
+                          : userTypeFlag === 'admin' ||
+                            userTypeFlag === 'boss' ||
+                            userTypeFlag === 'others' ||
+                            flag2 === 'admin' ||
+                            flag2 === 'boss' ||
+                            flag2 === 'others'
+                            ? disabled
+                            : false
+                      }
+                    />
+                  )}
                 </FormItem>
               </Col>
             </Row>
@@ -493,13 +543,21 @@ class EditUser extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*绩效权限">
                   {getFieldDecorator('privilege', {
-                    initialValue: this.state.clickFlag===1?1:this.state.privilege,
+                    initialValue: this.state.clickFlag === 1 ? 1 : this.state.privilege,
                     rules: [],
                   })(
                     <RadioGroup
                       style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     >
-                      <Radio name="privilege" value={0} disabled={this.state.clickFlag===1?(flag1 === 'admin'? disabled : false):(flag2 === 'admin'? disabled : false)} >
+                      <Radio
+                        name="privilege"
+                        value={0}
+                        disabled={
+                          this.state.clickFlag === 1
+                            ? flag1 === 'admin' ? disabled : false
+                            : flag2 === 'admin' ? disabled : false
+                        }
+                      >
                         是
                       </Radio>
                       <Radio name="privilege" value={1}>
@@ -518,20 +576,36 @@ class EditUser extends Component {
     const modalContent = (
       <div>
         <Row style={{ marginBottom: '14px' }}>
-          <Col span={4} offset={1}>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</Col>
-          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={0}>{!arrValue ? '' : !arrValue.name ? '' : arrValue.name}</Col>
+          <Col span={4} offset={1}>
+            姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:
+          </Col>
+          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={0}>
+            {!arrValue ? '' : !arrValue.name ? '' : arrValue.name}
+          </Col>
         </Row>
         <Row style={{ marginBottom: '14px' }}>
-          <Col span={4} offset={1}>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:</Col>
-          <Col offset={1} style={{ textAlign: 'left', fontSize: '14px' }}>{!arrValue ? '' : !arrValue.sex ? '' : arrValue.sex === 1 ? '男' : '女'}</Col>
+          <Col span={4} offset={1}>
+            性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:
+          </Col>
+          <Col offset={1} style={{ textAlign: 'left', fontSize: '14px' }}>
+            {!arrValue ? '' : !arrValue.sex ? '' : arrValue.sex === 1 ? '男' : '女'}
+          </Col>
         </Row>
         <Row style={{ marginBottom: '14px' }}>
-          <Col span={4} offset={1}>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</Col>
-          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>{!arrValue ? '' : !arrValue.mobile ? '' : arrValue.mobile}</Col>
+          <Col span={4} offset={1}>
+            手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
+          </Col>
+          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>
+            {!arrValue ? '' : !arrValue.mobile ? '' : arrValue.mobile}
+          </Col>
         </Row>
         <Row>
-          <Col span={4} offset={1} style={{ padding: '3px' }}>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</Col>
-          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>{!this.state.mail ? '' : this.state.mail}</Col>
+          <Col span={4} offset={1} style={{ padding: '3px' }}>
+            邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:
+          </Col>
+          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>
+            {!this.state.mail ? '' : this.state.mail}
+          </Col>
         </Row>
         <WrappedAdvancedSearchForm />
       </div>
@@ -547,14 +621,14 @@ class EditUser extends Component {
               resetContent={() => {
                 this.resetContent();
               }}
-              handleSubmit={(values,data) => {
-                this.handleSubmit(values,data);
+              handleSubmit={(values, data) => {
+                this.handleSubmit(values, data);
               }}
             />
           }
           contentButton={
             <Button
-              style={{ marginTop: '36px', width:'110px'}}
+              style={{ marginTop: '36px', width: '110px' }}
               type="primary"
               className={common.submitButton}
               onClick={() => this.onCreate()}
@@ -575,17 +649,19 @@ class EditUser extends Component {
           }
         />
         <ModalDialog
-          title={this.state.clickFlag===1?"添加岗位":'编辑岗位'}
+          style={{ width: '620px' }}
+          title={this.state.clickFlag === 1 ? '添加岗位' : '编辑岗位'}
           visible={visible}
           modalContent={modalContent}
-          clickOK={(e) => this.editName(e)}
+          clickOK={e => this.editName(e)}
           footButton={['取消', '提交']}
           showModal={bol => {
             this.setDialogSHow(bol);
           }}
         />
       </div>
-    );}
+    );
+  }
 }
 
 export default EditUser;
