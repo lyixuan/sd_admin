@@ -27,6 +27,7 @@ class EditHoliday extends Component {
         type: 3, // 休假
       },
       canceled: 0, // 是否撤销此次操作,1否,0是
+      currentState: 1, // 判断用户是否是休假中,1休假中,0待休假
       commitParams: {
         id: Number(urlParams.id),
         kpiUserPositionLogList: [
@@ -69,9 +70,10 @@ class EditHoliday extends Component {
     const employeeInfo = this.props.staff.employeeInfo || {};
     const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
     const kpiUserPositionObj = kpiUserPositionLogList[0] || {};
-    const { canceled } = obj || kpiUserPositionObj;
+    const { canceled, currentState } = obj || kpiUserPositionObj;
     this.setState({
       canceled,
+      currentState,
     });
   };
   changeVideo = e => {
@@ -140,10 +142,17 @@ class EditHoliday extends Component {
     const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
     const kpiUserPositionLog = kpiUserPositionLogList[0] || {};
     const { effectDate = '', endDate = '' } = kpiUserPositionLog;
-    const { isShowModal, canceled } = this.state;
+    const { isShowModal, canceled, currentState } = this.state;
     const { FormItem } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
     const datePicker = (
+      <DatePicker
+        disabled={canceled === 1 || currentState === 1}
+        format={dateFormat}
+        style={{ width: 230, height: 32 }}
+      />
+    );
+    const endDatePicker = (
       <DatePicker
         disabled={canceled === 1}
         format={dateFormat}
@@ -180,7 +189,7 @@ class EditHoliday extends Component {
                     {getFieldDecorator('canceled', {
                       initialValue: canceled,
                     })(
-                      <RadioGroup onChange={this.changeVideo}>
+                      <RadioGroup disabled={currentState === 1} onChange={this.changeVideo}>
                         <Radio value={1}>是</Radio>
                         <Radio value={0}>否</Radio>
                       </RadioGroup>
@@ -205,7 +214,7 @@ class EditHoliday extends Component {
                   <FormItem>
                     {getFieldDecorator('endDate', {
                       initialValue: endDate ? moment(endDate) : null,
-                    })(datePicker)}
+                    })(endDatePicker)}
                   </FormItem>
                 </span>
               </li>
