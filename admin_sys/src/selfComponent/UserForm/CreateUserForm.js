@@ -275,7 +275,6 @@ class CreateUserForm extends Component {
                 {getFieldDecorator('idCard', {
                   initialValue:null,
                   rules: [
-                    // /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
                     {
                       validator(rule, value, callback) {
                         const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; // 身份证校验规则
