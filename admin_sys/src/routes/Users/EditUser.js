@@ -260,6 +260,7 @@ class EditUser extends Component {
     const newResponseComList = listOrgValues;
     propsVal.form.setFieldsValue({
       privilege: 1,
+      responseCom:[],
     });
     if(flag === 'admin'||flag === 'others'||flag === 'boss'){
       propsVal.form.setFieldsValue({
@@ -395,18 +396,7 @@ class EditUser extends Component {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const rUserType = values.userType;
-        const len = !values.responseCom?null:values.responseCom.length;
-        if (rUserType === 'group' || rUserType === 'class') {
-          if (!len||len !== 3) {message.error('负责单位请选择到对应小组')}
-          else{this.getData(values,arrValue)}
-        } else if (rUserType === 'family') {
-          if (!len||len < 2) {message.error('负责单位请选择到对应家族')}
-          else{this.getData(values,arrValue)}
-        }else if (rUserType === 'college') {
-          if (!len||len < 1) {message.error('负责单位请选择到对应学院')}
-          else{this.getData(values,arrValue)}
-        }else {this.getData(values,arrValue)}
+        this.getData(values, arrValue)
       }
     });
   };

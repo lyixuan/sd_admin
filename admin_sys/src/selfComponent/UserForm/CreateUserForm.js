@@ -80,11 +80,12 @@ class CreateUserForm extends Component {
 
     this.props.form.setFieldsValue({
       privilege: 1,
-    });
-    if(flag === 'admin' ||flag === 'others'||flag === 'boss'){
-    this.props.form.setFieldsValue({
       responseCom:[],
-    });}
+    });
+    // if(flag === 'admin' ||flag === 'others'||flag === 'boss'){
+    // this.props.form.setFieldsValue({
+    //   responseCom:[],
+    // });}
 
     if (flag === 'family') {
       newResponseComList.map(item => {
@@ -129,30 +130,7 @@ class CreateUserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const rUserType = values.userType;
-        const len = !values.responseCom?null:values.responseCom.length;
-        if (rUserType === 'group' || rUserType === 'class') {
-          if (!len||len !== 3) {
-            message.error('负责单位请选择到对应小组');
-          } else {
-            this.props.handleSubmit(values,firstJoinDate);
-          }
-        } else if (rUserType === 'family') {
-          if (!len||len < 2) {
-            message.error('负责单位请选择到对应家族');
-          } else {
-            this.props.handleSubmit(values,firstJoinDate);
-          }
-        }else if (rUserType === 'college') {
-          if (!len||len < 1) {
-            message.error('负责单位请选择到对应学院');
-          } else {
-            this.props.handleSubmit(values,firstJoinDate);
-          }
-        }
-        else {
-          this.props.handleSubmit(values,firstJoinDate);
-        }
+        this.props.handleSubmit(values,firstJoinDate);
       }
     });
   };
