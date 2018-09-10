@@ -175,11 +175,18 @@ class EditUserForm extends Component {
               <FormItem label="*入职日期">
                 {getFieldDecorator('joindate', {
                   initialValue: !arrValue
-                    ? moment('2018-09-05', dateFormat)
+                    ? null
                     : !arrValue.joindate
-                      ? moment('2018-09-05', dateFormat)
+                      ? null
                       : moment(formatDateNew(arrValue.joindate), dateFormat),
-                  rules: [],
+                  rules: [{
+                    validator(rule, value, callback) {
+                      if (!value) {
+                        callback({ message: '入职日期为必填项，请选择！' });
+                      }
+                      callback();
+                    },
+                  },],
                 })(<DatePicker format={dateFormat}  onChange={this.joinDateFun} style={{ width: 280, height: 32 }} />)}
               </FormItem>
             </Col>
