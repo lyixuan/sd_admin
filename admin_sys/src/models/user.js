@@ -59,9 +59,10 @@ export default {
       }
     },
     *userDelete({ payload }, { call, put }) {
-      const result = yield call(userDelete, payload.userDeleteParams);
+      // const result = yield call(userDelete, payload.userDeleteParams);
+      const result = yield call(deletePosition, payload.userDeleteParams);
       if (result.code === 2000) {
-        message.success('用户删除成功！');
+        message.success('用户岗位删除成功！');
         const response = yield call(userList, payload.userListParams);
         if (response.code === 2000) {
           yield put({ type: 'userListSave', payload: { response } });

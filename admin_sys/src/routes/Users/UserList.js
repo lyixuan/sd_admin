@@ -53,9 +53,7 @@ class UserList extends Component {
 
   // 删除用户
   onDelete = val => {
-    const mail = val.mail || '';
-    const newmail = mail.substring(0, mail.indexOf('@'));
-    const userDeleteParams = { mail: newmail };
+    const userDeleteParams = { id: val.id };
     const userListParams = {
       pageSize: 30,
       pageNum: !firstPage ? 0 : firstPage,
