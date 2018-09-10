@@ -116,9 +116,13 @@ class EditTransJob extends Component {
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
       const { effectDate, positionType, cascader, canceled } = values;
-      if (!effectDate || !positionType) {
-        return;
+      console.log(canceled);
+      if (canceled !== 1) {
+        if (!effectDate || !positionType) {
+          return;
+        }
       }
+
       const groupObj = {};
       const groupArr = ['collegeId', 'familyId', 'groupId'];
       const isNoPassGroup = ['boss', 'admin', 'others'].find(item => item === positionType);
@@ -128,7 +132,7 @@ class EditTransJob extends Component {
       const params = {
         canceled,
         positionType,
-        effectDate: effectDate.format(dateFormat),
+        effectDate: effectDate ? effectDate.format(dateFormat) : null,
         ...groupObj,
       };
       if (isNoPassGroup) {
@@ -207,6 +211,10 @@ class EditTransJob extends Component {
   };
   changeVideo = e => {
     const canceled = e.target.value;
+    let { effectDate } = this.state;
+    const { positionType, groupList } = this.state;
+    effectDate = effectDate ? moment(effectDate) : null;
+    this.props.form.setFieldsValue({ effectDate, positionType, cascader: groupList });
     this.setState({ canceled });
   };
   clickOK = () => {
@@ -307,7 +315,7 @@ class EditTransJob extends Component {
                   <FormItem>
                     {getFieldDecorator('effectDate', {
                       initialValue: moment(effectDate),
-                      rules: [{ required: true, message: '请选择生效日期' }],
+                      rules: [{ required: canceled !== 1, message: '请选择生效日期' }],
                     })(datePicker)}
                   </FormItem>
                 </span>
@@ -318,7 +326,7 @@ class EditTransJob extends Component {
                   <FormItem>
                     {getFieldDecorator('positionType', {
                       initialValue: positionType,
-                      rules: [{ required: true, message: '请选择有效岗位' }],
+                      rules: [{ required: canceled !== 1, message: '请选择有效岗位' }],
                     })(
                       <Select
                         placeholder="---"
@@ -348,6 +356,7 @@ class EditTransJob extends Component {
                       rules: [
                         {
                           required:
+                            canceled !== 1 &&
                             positionType !== 'others' &&
                             positionType !== 'boss' &&
                             positionType !== 'admin',

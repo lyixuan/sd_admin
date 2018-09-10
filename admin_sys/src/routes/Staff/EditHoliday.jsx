@@ -27,7 +27,6 @@ class EditHoliday extends Component {
         type: 3, // 休假
       },
       canceled: 0, // 是否撤销此次操作,1否,0是
-      currentState: 1, // 判断用户是否是休假中,1休假中,0待休假
       commitParams: {
         id: Number(urlParams.id),
         kpiUserPositionLogList: [
@@ -70,14 +69,22 @@ class EditHoliday extends Component {
     const employeeInfo = this.props.staff.employeeInfo || {};
     const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
     const kpiUserPositionObj = kpiUserPositionLogList[0] || {};
-    const { canceled, currentState } = obj || kpiUserPositionObj;
+    const { canceled } = obj || kpiUserPositionObj;
     this.setState({
       canceled,
-      currentState,
     });
   };
   changeVideo = e => {
+    const { staff = {} } = this.props;
+    const employeeInfo = staff.employeeInfo || {};
+    const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
+    const kpiUserPositionLog = kpiUserPositionLogList[0] || {};
+    let { effectDate = '', endDate = '' } = kpiUserPositionLog;
+    effectDate = effectDate ? moment(effectDate) : null;
+    endDate = endDate ? moment(endDate) : null;
+    this.props.form.setFieldsValue({ effectDate, endDate });
     const canceled = e.target.value;
+    // const {}
     this.setState({ canceled });
   };
   handleSearch = e => {
@@ -90,8 +97,8 @@ class EditHoliday extends Component {
       }
       const params = {
         canceled,
-        effectDate: effectDate.format(dateFormat),
-        endDate: endDate.format(dateFormat),
+        effectDate: effectDate ? effectDate.format(dateFormat) : null,
+        endDate: endDate ? endDate.format(dateFormat) : null,
       };
       if (canceled === 1) {
         // 当撤销此次操作的时候讲 数据存储,并弹框,否的话直接交互
@@ -139,10 +146,11 @@ class EditHoliday extends Component {
   render() {
     const { staff = {}, creatLoading } = this.props;
     const employeeInfo = staff.employeeInfo || {};
+    const { currentState } = employeeInfo;
     const kpiUserPositionLogList = employeeInfo.kpiUserPositionLogList || [];
     const kpiUserPositionLog = kpiUserPositionLogList[0] || {};
     const { effectDate = '', endDate = '' } = kpiUserPositionLog;
-    const { isShowModal, canceled, currentState } = this.state;
+    const { isShowModal, canceled } = this.state;
     const { FormItem } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
     const datePicker = (
@@ -214,7 +222,7 @@ class EditHoliday extends Component {
                 </span>
               </li>
               <li className={styles.marB_24}>
-                <span className={styles.labelText}>*休假结束日期:</span>
+                <span className={styles.labelText}>休假结束日期:</span>
                 <span className={styles.labelItem}>
                   <FormItem>
                     {getFieldDecorator('endDate', {

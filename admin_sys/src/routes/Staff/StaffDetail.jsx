@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import { BaseUtils } from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -32,6 +32,9 @@ export default class StaffDetail extends Component {
       type: 'staff/getStaffDetail',
       payload: paramsObj,
     });
+  };
+  backToListPage = () => {
+    this.props.history.goBack();
   };
   columnsData = () => {
     const columns = [
@@ -125,8 +128,14 @@ export default class StaffDetail extends Component {
               dataSource={dataSource}
               columns={this.columnsData()}
               pagination={false}
+              scroll={{ y: 500 }}
               className={common.tableContentStyle}
             />
+            <div className={styles.backButton}>
+              <Button type="primary" className={common.searchButton} onClick={this.backToListPage}>
+                返回
+              </Button>
+            </div>
           </div>
         </div>
       </ContentLayout>

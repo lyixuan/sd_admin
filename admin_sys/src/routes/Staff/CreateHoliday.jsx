@@ -57,7 +57,7 @@ class CreateHoliday extends Component {
         return;
       }
       const paramsObj = Object.assign({}, this.state.kpiUserPositionLogList[0], {
-        effectDate: effectDate.format(dateFormat),
+        effectDate: effectDate ? effectDate.format(dateFormat) : null,
         endDate: endDate ? endDate.format(dateFormat) : null,
       });
       const newObj = {

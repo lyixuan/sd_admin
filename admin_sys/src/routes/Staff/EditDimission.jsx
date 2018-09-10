@@ -123,6 +123,9 @@ class EditDimission extends Component {
   };
   ChangeAudio = e => {
     const canceled = e.target.value;
+    let { effectDate } = this.state;
+    effectDate = effectDate ? moment(effectDate) : null;
+    this.props.form.setFieldsValue({ effectDate });
     this.setState({ canceled });
   };
   showModal = bol => {
