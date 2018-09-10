@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Form, Button, Popconfirm, Row,message, Col, Select, Cascader, Radio } from 'antd';
+import { Table, Form, Button, Popconfirm, Row, Col, Select, Cascader, Radio } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import EditUserForm from '../../selfComponent/UserForm/EditUserForm.js';
