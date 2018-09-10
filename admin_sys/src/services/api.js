@@ -304,7 +304,7 @@ export async function updateUserInfo(params) {
 }
 // 删除用户
 export async function userDelete(params) {
-  return request(`${HOST}/user/delete?${stringify(params)}`, {
+  return request(`${HOST}/user/deleteUser?${stringify(params)}`, {
     method: 'DELETE',
   });
 }

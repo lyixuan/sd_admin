@@ -135,7 +135,7 @@ class UserList extends Component {
         key: index,
         name: item.name,
         privilege: item.privilege === 0 ? '有' : '无',
-        mail: `${item.entUserId}@sunlands.com`,
+        mail: item.entUserId,
         userType: userTypeData[item.userType],
         showName: !item.showName ? null : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
         changeShowName: !item.changeShowName ? null : item.changeShowName.replace(/,/g, ' | '),
