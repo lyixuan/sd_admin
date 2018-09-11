@@ -29,12 +29,25 @@ class EditUserForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        const aaa = !this.props.jumpFunction.user.getUserlistData
+          ? null
+          : this.props.jumpFunction.user.getUserlistData;
+
+        const arrValue = !aaa
+          ? null
+          : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
+        const aa =!arrValue
+          ? null
+          : !arrValue.joindate
+            ? null
+            : formatDateNew(arrValue.joindate)
+
+        firstJoinDate=!firstJoinDate?aa:firstJoinDate
         if(!firstJoinDate){
           message.error("请选择入职日期")
         }else{
           this.props.handleSubmit(values,firstJoinDate);
         }
-
       }
     });
   };

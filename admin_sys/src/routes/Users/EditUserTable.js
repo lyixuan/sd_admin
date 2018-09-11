@@ -452,7 +452,7 @@ class EditUserTable extends Component {
         </Row>
         <Row>
           <Col span={4} offset={1} style={{ padding: '3px' }}>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</Col>
-          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>{!this.state.mail ? '' : this.state.mail}</Col>
+          <Col style={{ textAlign: 'left', fontSize: '14px' }} offset={1}>{!this.state.mail ? '' : this.state.mail}@sunland.com</Col>
         </Row>
         <WrappedAdvancedSearchForm />
       </div>
