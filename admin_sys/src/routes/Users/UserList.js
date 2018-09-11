@@ -86,9 +86,8 @@ class UserList extends Component {
   // 编辑用户
   onEdit = val => {
     const mail = val.mail || '';
-    const newmail = mail.substring(0, mail.indexOf('@'));
     this.props.setRouteUrlParams('/user/editUser', {
-      mail: newmail,
+      mail,
       userType: val.userType,
     });
   };
