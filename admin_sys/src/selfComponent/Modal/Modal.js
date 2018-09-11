@@ -54,7 +54,7 @@ class ModalDemo extends React.Component {
   };
 
   render() {
-    const { title, name, modalContent, footButton, visible } = this.props;
+    const { title, name, modalContent, footButton, visible,maskClosable } = this.props;
     const defaultModal = (
       <div>
         <p className={styles.name}> {name} </p>
@@ -65,6 +65,7 @@ class ModalDemo extends React.Component {
       <div>
         <Modal
           title={title}
+          maskClosable={maskClosable||false}
           visible={visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel.bind(this, false)}
