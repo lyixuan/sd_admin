@@ -42,10 +42,10 @@ class DialogPerformance extends Component {
             style={{ width: 230, height: 32 }}
             onChange={this.handleSelectChange2}
           >
-            <Option value="2018-09" key={0}>
+            <Option value="0" key={0}>
               上个月
             </Option>
-            <Option value="2018-10" key={1}>
+            <Option value="1" key={1}>
               本月
             </Option>
           </Select>
