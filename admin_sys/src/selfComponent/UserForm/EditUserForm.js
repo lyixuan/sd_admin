@@ -199,7 +199,7 @@ class EditUserForm extends Component {
                       }
                       callback();
                     },
-                  },],
+                  }],
                 })(<DatePicker format={dateFormat}  onChange={this.joinDateFun} style={{ width: 280, height: 32 }} />)}
               </FormItem>
             </Col>
