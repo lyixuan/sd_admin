@@ -39,40 +39,35 @@ export default class StaffDetail extends Component {
     this.props.history.goBack();
   };
   columnsData = () => {
-    const columns = [
+    return [
       {
         title: '转岗日期',
         dataIndex: 'transferDate',
-        key: 'transferDate',
-        width: 120,
+        // width: 120,
       },
       {
         title: '转岗前岗位',
         dataIndex: 'beforePostitonType',
-        key: 'beforePostitonType',
       },
       {
         title: '转岗前负责单位',
         dataIndex: 'beforeOrganization',
-        key: 'beforeOrganization',
       },
       {
         title: '转岗后岗位',
         dataIndex: 'afterPostitonType',
-        key: 'afterPostitonType',
       },
       {
         title: '转岗后负责单位',
         dataIndex: 'afterOrganization',
-        key: 'afterOrganization',
       },
     ];
-    return columns || [];
   };
   render() {
     const { staff = {}, loading } = this.props;
     const staffDetail = staff.staffDetail || {};
     const transfer = staffDetail.transfer || [];
+    const columns = this.columnsData();
     const dataSource = transfer.map((item, index) => ({
       ...item,
       key: item.transferDate + index,
@@ -130,9 +125,8 @@ export default class StaffDetail extends Component {
               bordered
               loading={loading}
               dataSource={dataSource}
-              columns={this.columnsData()}
+              columns={columns}
               pagination={false}
-              scroll={{ y: 500 }}
               className={common.tableContentStyle}
             />
             <div className={styles.backButton}>
