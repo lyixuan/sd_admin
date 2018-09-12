@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
 import { assignUrlParams } from 'utils/utils';
+import moment from 'moment';
 import { BaseUtils } from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import styles from './styles/index.less';
 import common from '../Common/common.css';
 
+const dateFormat = 'YYYY-MM-DD';
 @connect(({ staff, loading }) => ({
   staff,
   loading: loading.effects['staff/getStaffDetail'],
@@ -117,7 +119,9 @@ export default class StaffDetail extends Component {
             </li>
             <li>
               <span className={styles.labelText}>最后工作日:</span>
-              <span className={styles.labelItem}>{staffDetail.lastday}</span>
+              <span className={styles.labelItem}>
+                {staffDetail.lastday ? moment(staffDetail.lastday).format(dateFormat) : null}
+              </span>
             </li>
           </ul>
           <div className={styles.tableConent}>
