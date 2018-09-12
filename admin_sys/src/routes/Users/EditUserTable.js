@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Form, Button, Popconfirm, Row, Col, Select, Cascader, Radio } from 'antd';
+import { Table, Form, Button, Row, Col, Select, Cascader, Radio } from 'antd';
 import { connect } from 'dva';
 
 import common from '../Common/common.css';
