@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, DatePicker ,message} from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, DatePicker ,message,Radio} from 'antd';
 import moment from 'moment';
 import { formatEmail } from '../../utils/email';
 import common from '../../routes/Common/common.css';
@@ -9,6 +9,7 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 let firstJoinDate = null;
+const RadioGroup = Radio.Group;
 
 class EditUserForm extends Component {
   constructor(props) {
@@ -224,7 +225,30 @@ class EditUserForm extends Component {
                 })(residences)}
               </FormItem>
             </Col>
-            <Col span={6} offset={9} style={{ textAlign: 'right' }}>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*绩效权限">
+                {getFieldDecorator('privilegeView', {
+                  initialValue: !arrValue
+                    ? 1
+                    : !arrValue.privilegeView ? 1 : arrValue.privilegeView,
+                  rules: [],
+                })(
+                  <RadioGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                  >
+                    <Radio name="privilege" value={0}>
+                      是
+                    </Radio>
+                    <Radio name="privilege" value={1}>
+                      否
+                    </Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: '20px' }}>
+            <Col span={23} style={{ textAlign: 'right' }}>
               <FormItem>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <Button
