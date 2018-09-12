@@ -65,16 +65,6 @@ class EditUserTable extends Component {
     });
   };
 
-  // 删除用户
-  onDelete = val => {
-    const deletePositionParams = {id:!val.id?undefined:val.id};
-    const getUserlistParams={ mail: this.state.mail };
-    this.props.dispatch({
-      type: 'user/deletePosition',
-      payload: { deletePositionParams, getUserlistParams },
-    });
-  };
-
   setDialogSHow(bol) {
     flag1='class';
     flag2='class';
@@ -299,13 +289,6 @@ class EditUserTable extends Component {
               <AuthorizedButton authority="/user/editUser">
                 <span style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }} onClick={() => this.onEdit(record)}>编辑</span>
               </AuthorizedButton>
-              {record.privilege === '有' ? null :(
-                <AuthorizedButton authority="/user/deleteUser">
-                  <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                    <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
-                  </Popconfirm>
-                </AuthorizedButton>
-              )}
             </div>)}},
     ];
     return columns || [];
