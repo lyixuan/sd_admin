@@ -262,7 +262,7 @@ class EditUserTable extends Component {
     val.map((item, index) =>
       data.push({
         key: index,
-        privilege: item.privilege === 0 ? '有' : '无',
+        privilege: item.privilege === 1 ? '有' : '无',
         userType: userTypeData[item.usertype],
         showName: !item.showname ? null : item.showname.replace(/,/g, ' | '),
         shownameid:!item.shownameid?null:item.shownameid,
