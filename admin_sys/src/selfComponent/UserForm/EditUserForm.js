@@ -226,7 +226,7 @@ class EditUserForm extends Component {
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
-              <FormItem label="*绩效权限">
+              <FormItem label="*绩效查看权限">
                 {getFieldDecorator('privilegeView', {
                   initialValue: !arrValue
                     ? 1
