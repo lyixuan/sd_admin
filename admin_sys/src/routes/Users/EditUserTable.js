@@ -53,7 +53,7 @@ class EditUserTable extends Component {
       userType:userTypeDataReset[aa],
       shownameid:arr,
       visible: true,
-      privilege:key.privilege==="无"?1:0,
+      privilege:key.privilege==="无"?0:1,
       positionId:key.id,
     });
   };
@@ -411,7 +411,7 @@ class EditUserTable extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*绩效权限">
                   {getFieldDecorator('privilege', {
-                    initialValue: this.state.clickFlag===1?1:this.state.privilege,
+                    initialValue: this.state.clickFlag===1?0:this.state.privilege,
                     rules: [],
                   })(
                     <RadioGroup
