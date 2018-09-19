@@ -417,10 +417,10 @@ class EditUserTable extends Component {
                     <RadioGroup
                       style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     >
-                      <Radio name="privilege" value={0} disabled={this.state.clickFlag===1?(flag1 === 'admin'? disabled : false):(userTypeFlag==='admin'||flag2 === 'admin'? disabled : false)} >
+                      <Radio name="privilege" value={1} disabled={this.state.clickFlag===1?(flag1 === 'admin'? disabled : false):(userTypeFlag==='admin'||flag2 === 'admin'? disabled : false)} >
                         是
                       </Radio>
-                      <Radio name="privilege" value={1}>
+                      <Radio name="privilege" value={0}>
                         否
                       </Radio>
                     </RadioGroup>

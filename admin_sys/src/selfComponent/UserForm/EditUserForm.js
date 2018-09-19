@@ -229,17 +229,17 @@ class EditUserForm extends Component {
               <FormItem label="*绩效查看权限">
                 {getFieldDecorator('privilegeView', {
                   initialValue: !arrValue
-                    ? 1
-                    : !arrValue.privilegeView ? 1 : arrValue.privilegeView,
+                    ? 0
+                    : !arrValue.privilegeView ? 0 : arrValue.privilegeView,
                   rules: [],
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={0}>
+                    <Radio name="privilege" value={1}>
                       是
                     </Radio>
-                    <Radio name="privilege" value={1}>
+                    <Radio name="privilege" value={0}>
                       否
                     </Radio>
                   </RadioGroup>

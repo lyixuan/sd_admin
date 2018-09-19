@@ -371,12 +371,12 @@ class CreateUserForm extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*绩效权限">
                 {getFieldDecorator('privilege', {
-                  initialValue:1,
+                  initialValue:0,
                   rules: [],
                 })(
-                  <RadioGroup value={1} style={{color: 'rgba(0, 0, 0, 0.85)',width:'280px',textAlign: 'left'}}>
-                    <Radio name="privilege"  disabled={flag==="admin"?disabled:false}  value={0}>是</Radio>
-                    <Radio  name="privilege"  value={1}>否</Radio>
+                  <RadioGroup value={0} style={{color: 'rgba(0, 0, 0, 0.85)',width:'280px',textAlign: 'left'}}>
+                    <Radio name="privilege"  disabled={flag==="admin"?disabled:false}  value={1}>是</Radio>
+                    <Radio  name="privilege"  value={0}>否</Radio>
                   </RadioGroup>
                 )}
               </FormItem>
