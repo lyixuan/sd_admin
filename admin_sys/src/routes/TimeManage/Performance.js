@@ -50,7 +50,7 @@ export default class Performance extends Time {
         dataIndex: 'operation',
         render: (text, record) => {
           const { isShowState } = record;
-          const titleObj = { 0: '是否设置为前端不可查看?', 1: '是否设置为前端可查看?' };
+          const titleObj = { 1: '是否设置为前端不可查看?', 0: '是否设置为前端可查看?' };
           return (
             <div className={styles.PopconfirmContainer}>
               <AuthorizedButton authority="/timeManage/deleteDate">
@@ -72,7 +72,7 @@ export default class Performance extends Time {
       key: item.id,
       effectMonth: item.effectMonth,
       isShowState: item.isShow,
-      isShow: { 0: '是', 1: '否' }[item.isShow],
+      isShow: { 1: '是', 0: '否' }[item.isShow],
     }));
     return (
       <div className={styles.performanceContainer}>
