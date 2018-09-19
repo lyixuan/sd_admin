@@ -56,7 +56,7 @@ class CreateUser extends Component {
       idCard:values.idCard,
       sex:values.sex,
       positionList:{
-          privilege:rUserType==='admin'?1:values.privilege,
+          privilege:rUserType==='admin'?0:values.privilege,
           userType: rUserType,
           userTypeId: typeId,
           wechatDepartmentId: Number(newRoleId),

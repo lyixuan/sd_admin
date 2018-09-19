@@ -216,7 +216,7 @@ class EditUserTable extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
     propsVal.form.setFieldsValue({
-      privilege: 1,
+      privilege: 0,
       responseCom:[],
     });
     if(flag === 'admin'||flag === 'others'||flag === 'boss'){

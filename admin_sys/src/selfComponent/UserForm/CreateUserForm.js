@@ -79,7 +79,7 @@ class CreateUserForm extends Component {
     const newResponseComList = listOrgValues;
 
     this.props.form.setFieldsValue({
-      privilege: 1,
+      privilege: 0,
       responseCom:[],
     });
     // if(flag === 'admin' ||flag === 'others'||flag === 'boss'){
