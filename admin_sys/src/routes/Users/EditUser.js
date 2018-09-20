@@ -48,7 +48,6 @@ class EditUser extends Component {
 
 
   handleSubmit = (values,data) => {
-    console.log(values)
     const rname = values.wechatDepartmentName;
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
@@ -63,7 +62,7 @@ class EditUser extends Component {
       sex: Number(values.sex),
       idCard:values.idCard,
       joinDate:data,
-      privilegeView:values.privilegeView,
+      privilegeView:values.privilegeView===1,
       positionList:{
         wechatDepartmentId: Number(newRoleId),
         wechatDepartmentName: !rname ? undefined : rname,

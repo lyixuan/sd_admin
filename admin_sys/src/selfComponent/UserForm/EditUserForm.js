@@ -230,7 +230,7 @@ class EditUserForm extends Component {
                 {getFieldDecorator('privilegeView', {
                   initialValue: !arrValue
                     ? 0
-                    : !arrValue.privilegeView ? 0 : arrValue.privilegeView,
+                    : !arrValue.privilegeView ? 0 : arrValue.privilegeView?1:0,
                   rules: [],
                 })(
                   <RadioGroup

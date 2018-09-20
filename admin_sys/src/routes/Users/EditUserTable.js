@@ -98,7 +98,7 @@ class EditUserTable extends Component {
         idCard:!arrValue.idcard ? undefined : arrValue.idcard,
         sex:!arrValue.sex ? undefined : arrValue.sex,
         positionList:{
-          privilege:rUserType==='admin'?1:values.privilege,
+          privilege:rUserType==='admin'?1:values.privilege===1,
           userType: rUserType,
           userTypeId: typeId,
           wechatDepartmentId: Number(arrValue.wechatdepartmentid),
@@ -112,7 +112,7 @@ class EditUserTable extends Component {
     } else {
       const updateUserPositionInfoParams = {
         id:!this.state.positionId?undefined:this.state.positionId,
-        privilege:rUserType==='admin'?1:values.privilege,
+        privilege:rUserType==='admin'?1:values.privilege===1,
         userType: rUserType,
         userTypeId: typeId,
         wechatDepartmentId: Number(arrValue.wechatdepartmentid),
@@ -262,7 +262,7 @@ class EditUserTable extends Component {
     val.map((item, index) =>
       data.push({
         key: index,
-        privilege: item.privilege === 1 ? '有' : '无',
+        privilege: item.privilege ? '有' : '无',
         userType: userTypeData[item.usertype],
         showName: !item.showname ? null : item.showname.replace(/,/g, ' | '),
         shownameid:!item.shownameid?null:item.shownameid,

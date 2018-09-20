@@ -131,7 +131,7 @@ class UserList extends Component {
       data.push({
         key: index,
         name: item.name,
-        privilege: item.privilege === 1 ? '有' : '无',
+        privilege: item.privilege? '有' : '无',
         mail: item.entUserId,
         userType: userTypeData[item.userType],
         showName: !item.showName ? null : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
