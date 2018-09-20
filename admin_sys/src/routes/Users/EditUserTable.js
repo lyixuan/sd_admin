@@ -28,16 +28,18 @@ class EditUserTable extends Component {
     this.state = {
       mail: this.props.mail||'',
       visible: false,
-      clickFlag:1,
+      clickFlag:1,// 1为创建进入，2为编辑进入
       userType:null,
       shownameid:null,
       privilege:null,
       positionId:null,
+      currentstate:null,
     };
   }
 
   // 编辑岗位函数
   onEdit = (key) => {
+    console.log(key)
     const aa= key.userType
     const bb= key.shownameid
     const strs = !bb ? [] : bb.split(',');
@@ -55,6 +57,7 @@ class EditUserTable extends Component {
       visible: true,
       privilege:key.privilege==="无"?0:1,
       positionId:key.id,
+      currentstate:key.currentstate,
     });
   };
   // 创建岗位函数
@@ -267,6 +270,7 @@ class EditUserTable extends Component {
         showName: !item.showname ? null : item.showname.replace(/,/g, ' | '),
         shownameid:!item.shownameid?null:item.shownameid,
         id: item.positionid,
+        currentstate:item.currentstate,
       }));
     return data;
   };
@@ -296,11 +300,9 @@ class EditUserTable extends Component {
         render: (text, record) => {
           return (
             <div>
-              {record.privilege === '有' ? null :(
-                <AuthorizedButton authority="/user/editUser">
-                  <span style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }} onClick={() => this.onEdit(record)}>编辑</span>
-                </AuthorizedButton>
-              )}
+              <AuthorizedButton authority="/user/editUser">
+                <span style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }} onClick={() => this.onEdit(record)}>编辑</span>
+              </AuthorizedButton>
             </div>)}},
     ];
     return columns || [];
@@ -368,7 +370,7 @@ class EditUserTable extends Component {
                         }},
                     ],
                   })(
-                    <Select style={{ width: 280 }} onChange={this.handleSelectChange}>
+                    <Select style={{ width: 280 }} onChange={this.handleSelectChange} disabled={this.state.privilege===1?disabled : false} >
                       <Option value="college">院长或副院长</Option>
                       <Option value="family">家族长</Option>
                       <Option value="group">运营长</Option>
@@ -402,7 +404,7 @@ class EditUserTable extends Component {
                     options={responseComList}
                     style={{ width: 280 }}
                     disabled={this.state.clickFlag===1?(flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others' ? disabled : false):
-                      (userTypeFlag==='admin'||userTypeFlag==='boss'||userTypeFlag==='others'||flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others' ? disabled : false)}
+                      (userTypeFlag==='admin'||userTypeFlag==='boss'||userTypeFlag==='others'||flag2 === 'admin' || flag2 === 'boss' || flag2 === 'others'||this.state.privilege===1? disabled : false)}
                   />)}
                 </FormItem>
               </Col>
@@ -417,10 +419,10 @@ class EditUserTable extends Component {
                     <RadioGroup
                       style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     >
-                      <Radio name="privilege" value={1} disabled={this.state.clickFlag===1?(flag1 === 'admin'? disabled : false):(userTypeFlag==='admin'||flag2 === 'admin'? disabled : false)} >
+                      <Radio name="privilege" value={1} disabled={this.state.clickFlag===1?(flag1 === 'admin' ? disabled : false): (userTypeFlag==='admin'||flag2 === 'admin'||(this.state.privilege===1&&(this.state.userType!=='others'||this.state.currentstate!==2))? disabled : false)} >
                         是
                       </Radio>
-                      <Radio name="privilege" value={0}>
+                      <Radio name="privilege" value={0} disabled={this.state.privilege===1&&(this.state.userType!=='others'||this.state.currentstate!==2)? disabled : false}>
                         否
                       </Radio>
                     </RadioGroup>
