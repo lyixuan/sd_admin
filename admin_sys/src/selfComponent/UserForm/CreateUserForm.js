@@ -374,7 +374,7 @@ class CreateUserForm extends Component {
                   initialValue:0,
                   rules: [],
                 })(
-                  <RadioGroup value={0} style={{color: 'rgba(0, 0, 0, 0.85)',width:'280px',textAlign: 'left'}}>
+                  <RadioGroup  style={{color: 'rgba(0, 0, 0, 0.85)',width:'280px',textAlign: 'left'}}>
                     <Radio name="privilege"  disabled={flag==="admin"?disabled:false}  value={1}>是</Radio>
                     <Radio  name="privilege"  value={0}>否</Radio>
                   </RadioGroup>
