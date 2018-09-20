@@ -39,7 +39,6 @@ class EditUserTable extends Component {
 
   // 编辑岗位函数
   onEdit = (key) => {
-    console.log(key)
     const aa= key.userType
     const bb= key.shownameid
     const strs = !bb ? [] : bb.split(',');
