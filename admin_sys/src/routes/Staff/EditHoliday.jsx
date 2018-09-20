@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Form, Button, DatePicker, Radio } from 'antd';
+import { Form, Button, DatePicker, Radio, message } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import ConfirmModal from 'selfComponents/ConfirmModal';
 import moment from 'moment';
@@ -93,6 +93,10 @@ class EditHoliday extends Component {
     validateFields((err, values) => {
       const { effectDate, endDate, canceled } = values;
       if (!effectDate) {
+        return;
+      }
+      if (effectDate && endDate && effectDate.isAfter(endDate)) {
+        message.error('开始时间不能大于结束时间');
         return;
       }
       const params = {

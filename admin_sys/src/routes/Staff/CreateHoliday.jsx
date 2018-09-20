@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Form, Button, DatePicker } from 'antd';
+import { Form, Button, DatePicker, message } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import { BaseUtils } from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -54,6 +54,10 @@ class CreateHoliday extends Component {
     validateFields((err, values) => {
       const { effectDate, endDate } = values;
       if (!effectDate) {
+        return;
+      }
+      if (effectDate && endDate && !effectDate.isBefore(endDate)) {
+        message.error('开始时间不能大于结束时间');
         return;
       }
       const paramsObj = Object.assign({}, this.state.kpiUserPositionLogList[0], {
