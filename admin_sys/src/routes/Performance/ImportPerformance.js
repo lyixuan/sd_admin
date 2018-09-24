@@ -45,7 +45,7 @@ class ImportPerformance extends Component {
   // 初始化一些值
   initParamsFn = disableDel => {
     this.props.dispatch({
-      type: 'quality/initParams',
+      type: 'performance/initParams',
       payload: { disableDel },
     });
   };
