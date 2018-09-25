@@ -49,6 +49,7 @@ class EditUserTable extends Component {
         return Number(el);
       });
     userTypeFlag = userTypeDataReset[aa]
+    flag = userTypeDataReset[aa]
     this.setState({
       clickFlag:2,
       userType:userTypeDataReset[aa],
@@ -394,8 +395,9 @@ class EditUserTable extends Component {
                             if(flag === 'admin' || flag === 'boss' || flag === 'others'){
                               callback();
                             }else{callback({ message: '请选择负责单位！' });}
+                          }else{
+                            callback();
                           }
-                          callback();
                         },
                       },
                     ],
@@ -421,7 +423,7 @@ class EditUserTable extends Component {
                       <Radio name="privilege" value={1} disabled={this.state.clickFlag===1?(flag1 === 'admin' ? disabled : false): (userTypeFlag==='admin'||flag2 === 'admin'||(this.state.privilege===1&&(this.state.userType!=='others'||this.state.currentstate!==2))? disabled : false)} >
                         是
                       </Radio>
-                      <Radio name="privilege" value={0} disabled={this.state.privilege===1&&(this.state.userType!=='others'||this.state.currentstate!==2)? disabled : false}>
+                      <Radio name="privilege" value={0} disabled={this.state.privilege===1&&(this.state.userType==='others'||this.state.currentstate===2)? false : disabled}>
                         否
                       </Radio>
                     </RadioGroup>
