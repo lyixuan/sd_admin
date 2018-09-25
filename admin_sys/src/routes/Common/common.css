@@ -45,6 +45,16 @@
   border-color: #52C9C2 !important;
   color: #52C9C2 !important;
 }
+
+
+:global(.ant-radio-checked .ant-radio-inner){
+  border-color: #52C9C2 !important;
+}
+
+:global(.ant-radio-inner:after){
+  background-color: #52C9C2 !important;
+}
+
 :global(.ant-pagination-next:focus .ant-pagination-item-link) {
   border-color: #52C9C2 !important;
   color: #52C9C2 !important;
