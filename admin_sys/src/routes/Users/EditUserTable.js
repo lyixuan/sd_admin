@@ -370,7 +370,7 @@ class EditUserTable extends Component {
                         }},
                     ],
                   })(
-                    <Select style={{ width: 280 }} onChange={this.handleSelectChange} disabled={this.state.privilege===1?disabled : false} >
+                    <Select style={{ width: 280 }} onChange={this.handleSelectChange} disabled={this.state.clickFlag===1?false:(this.state.privilege===1?disabled : false)} >
                       <Option value="college">院长或副院长</Option>
                       <Option value="family">家族长</Option>
                       <Option value="group">运营长</Option>
@@ -423,7 +423,7 @@ class EditUserTable extends Component {
                       <Radio name="privilege" value={1} disabled={this.state.clickFlag===1?(flag1 === 'admin' ? disabled : false): (userTypeFlag==='admin'||flag2 === 'admin'||(this.state.privilege===1&&(this.state.userType!=='others'||this.state.currentstate!==2))? disabled : false)} >
                         是
                       </Radio>
-                      <Radio name="privilege" value={0} disabled={this.state.privilege===1&&(this.state.userType==='others'||this.state.currentstate===2)? false : disabled}>
+                      <Radio name="privilege" value={0} disabled={this.state.clickFlag===1?false:(this.state.privilege===1&&(this.state.userType==='others'||this.state.currentstate===2)? false : disabled)} >
                         否
                       </Radio>
                     </RadioGroup>
