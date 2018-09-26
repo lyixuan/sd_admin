@@ -49,7 +49,7 @@ class EditUserTable extends Component {
         return Number(el);
       });
     userTypeFlag = userTypeDataReset[aa]
-    flag2 = userTypeDataReset[aa]
+    flag = userTypeDataReset[aa]
     this.setState({
       clickFlag:2,
       userType:userTypeDataReset[aa],
