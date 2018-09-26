@@ -423,7 +423,7 @@ class EditUserTable extends Component {
                       <Radio name="privilege" value={1} disabled={this.state.clickFlag===1?(flag1 === 'admin' ? disabled : false): (userTypeFlag==='admin'||flag2 === 'admin'||(this.state.privilege===1&&(this.state.userType!=='others'||this.state.currentstate!==2))? disabled : false)} >
                         是
                       </Radio>
-                      <Radio name="privilege" value={0} disabled={this.state.clickFlag===1?false:(this.state.privilege===1&&(this.state.userType==='others'||this.state.currentstate===2)? false : disabled)} >
+                      <Radio name="privilege" value={0} disabled={this.state.clickFlag===1?false:(this.state.privilege===1&&(this.state.userType!=='others'||this.state.currentstate!==2)? disabled : false)} >
                         否
                       </Radio>
                     </RadioGroup>
