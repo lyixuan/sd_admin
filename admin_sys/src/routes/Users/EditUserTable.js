@@ -10,8 +10,8 @@ import {userTypeData, userTypeDataReset } from '../../utils/dataDictionary';
 const FormItem = Form.Item;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
-let flag1 = 'class';
-let flag2 = 'class';
+let flag1 = 'class'; // 创建时候的级别标示
+let flag2 = 'class';// 编辑时候的级别标示
 let flag = 'class';
 let responseComList = [];
 let responseComListBackup = [];
@@ -49,7 +49,7 @@ class EditUserTable extends Component {
         return Number(el);
       });
     userTypeFlag = userTypeDataReset[aa]
-    flag = userTypeDataReset[aa]
+    flag2 = userTypeDataReset[aa]
     this.setState({
       clickFlag:2,
       userType:userTypeDataReset[aa],
@@ -101,7 +101,7 @@ class EditUserTable extends Component {
         idCard:!arrValue.idcard ? undefined : arrValue.idcard,
         sex:!arrValue.sex ? undefined : arrValue.sex,
         positionList:{
-          privilege:rUserType==='admin'?1:values.privilege===1,
+          privilege:rUserType==='admin'?false:values.privilege===1,
           userType: rUserType,
           userTypeId: typeId,
           wechatDepartmentId: Number(arrValue.wechatdepartmentid),
@@ -115,7 +115,7 @@ class EditUserTable extends Component {
     } else {
       const updateUserPositionInfoParams = {
         id:!this.state.positionId?undefined:this.state.positionId,
-        privilege:rUserType==='admin'?1:values.privilege===1,
+        privilege:rUserType==='admin'?false:values.privilege===1,
         userType: rUserType,
         userTypeId: typeId,
         wechatDepartmentId: Number(arrValue.wechatdepartmentid),
@@ -267,7 +267,7 @@ class EditUserTable extends Component {
         key: index,
         privilege: item.privilege ? '有' : '无',
         userType: userTypeData[item.usertype],
-        showName: !item.showname ? null : item.showname.replace(/,/g, ' | '),
+        showName: !item.showname ? (item.usertype==='others'?'无绩效岗位':null ): item.showname.replace(/,/g, ' | '),
         shownameid:!item.shownameid?null:item.shownameid,
         id: item.positionid,
         currentstate:item.currentstate,
@@ -420,10 +420,10 @@ class EditUserTable extends Component {
                     <RadioGroup
                       style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     >
-                      <Radio name="privilege" value={1} disabled={this.state.clickFlag===1?(flag1 === 'admin' ? disabled : false): (userTypeFlag==='admin'||flag2 === 'admin'||(this.state.privilege===1&&(this.state.userType!=='others'||this.state.currentstate!==2))? disabled : false)} >
+                      <Radio name="privilege" value={1} disabled={this.state.clickFlag===1?(flag1 === 'admin' ? disabled : false): (userTypeFlag==='admin'||flag2 === 'admin'?disabled :(this.state.privilege===1?((this.state.userType==='others'||this.state.currentstate===2)? false: disabled ):false) )} >
                         是
                       </Radio>
-                      <Radio name="privilege" value={0} disabled={this.state.clickFlag===1?false:(this.state.privilege===1&&(this.state.userType!=='others'||this.state.currentstate!==2)? disabled : false)} >
+                      <Radio name="privilege" value={0} disabled={this.state.clickFlag===1?false:(this.state.privilege===1?((this.state.userType==='others'||this.state.currentstate===2)? false: disabled ):false)} >
                         否
                       </Radio>
                     </RadioGroup>
