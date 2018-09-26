@@ -158,7 +158,7 @@ export const getRouterData = app => {
     },
     '/config/userList': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/UserList')),
-      name: '用户信息',
+      name: '学分用户管理',
     },
     '/privilege/staff': {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/index')),
