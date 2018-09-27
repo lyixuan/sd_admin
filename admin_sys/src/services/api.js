@@ -7,7 +7,7 @@ const hostObj = {
   pro: 'http://bd.ministudy.com/apis',
   dev: 'http://172.16.117.65:8090',
 };
-const HOST = hostObj[NODE_ENV];
+export const HOST = hostObj[NODE_ENV];
 /*
 * 用户登录接口
 * params：{name，password}
@@ -304,7 +304,7 @@ export async function updateUserInfo(params) {
 }
 // 删除用户
 export async function userDelete(params) {
-  return request(`${HOST}/user/delete?${stringify(params)}`, {
+  return request(`${HOST}/user/deleteUser?${stringify(params)}`, {
     method: 'DELETE',
   });
 }
@@ -324,6 +324,43 @@ export async function listOrg(params) {
 // 查看微信部门
 export async function wechatList(params) {
   return request(`${HOST}/user/wechatList?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 用户编辑-列表页面---删除岗位
+export async function deletePosition(params) {
+  return request(`${HOST}/user/deletePosition?${stringify(params)}`, {
+    method: 'DELETE',
+  });
+}
+
+// 用户编辑-列表页面---编辑用户岗位信息(拿user表id 去更新岗位信息）
+export async function updateUserPositionInfo(params) {
+  return request(`${HOST}/user/updateUserPositionInfo`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+
+// 用户编辑-列表页面---编辑用户基本信息
+export async function updateUserbasicInfo(params) {
+  return request(`${HOST}/user/updateUserbasicInfo`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+
+// 用户编辑-列表页面---添加岗位
+export async function addPosition(params) {
+  return request(`${HOST}/user/addPosition`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 编辑用户时的回显接口
+export async function getUserlist(params) {
+  return request(`${HOST}/user/getUserlist?${stringify(params)}`, {
     method: 'GET',
   });
 }
@@ -387,7 +424,23 @@ export async function getRangeDate(params) {
     method: 'GET',
   });
 }
-
+/*
+查询实发绩效月份列表
+ */
+export async function getKpiEffectMonth(params) {
+  return request(`${HOST}/kpiEffectMonth/kpiEffectMonth?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+/*
+更新前端是否显示实发绩效月份
+ */
+export async function updateKpiEffectMonth(params) {
+  return request(`${HOST}/kpiEffectMonth/updateStatus`, {
+    method: 'POST',
+    body: params,
+  });
+}
 /*
 以下接口为投诉管理模块相关
 * */
@@ -531,5 +584,40 @@ export async function updateCache(params) {
 export async function cacheResult(params) {
   return request(`${HOST}/cacheResult/list?${stringify(params)}`, {
     method: 'GET',
+  });
+}
+// ------------ 绩效管理 ----------
+export async function getCollegePerformanceList(params) {
+  // 学院列表
+  return request(`${HOST}/collegeKpi/findAll?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function getPersonalPerformanceList(params) {
+  // 个人列表
+  return request(`${HOST}/collegeKpi/findAllUserKpi?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function exportCollegeKpi(params) {
+  // 导出绩效金额
+  return request(`${HOST}/collegeKpi/exportCollegeKpi?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+export async function importKpiData(params) {
+  // 校验excel文件
+  return request(`${HOST}/collegeKpi/verifyKpiDataFromExcel`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function saveKpiData(params) {
+  // 保存excel数据
+  return request(`${HOST}/collegeKpi/saveKpiDatas`, {
+    method: 'POST',
+    body: params,
   });
 }

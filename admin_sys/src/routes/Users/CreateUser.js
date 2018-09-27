@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
-import UserForm from '../../selfComponent/UserForm.js';
+import CreateUserForm from '../../selfComponent/UserForm/CreateUserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
-import { userTypeDataReset } from '../../utils/dataDictionary';
 
-const WrappedRegistrationForm = Form.create()(UserForm);
+const WrappedRegistrationForm = Form.create()(CreateUserForm);
 @connect(({ user, loading }) => ({
   user,
   submit: loading.effects['user/userAdd'],
   wechatList: loading.effects['user/wechatList'],
   listOrg: loading.effects['user/listOrg'],
-  userList: false,
 }))
 class CreateUser extends Component {
   constructor(props) {
@@ -33,12 +31,17 @@ class CreateUser extends Component {
   }
 
   // 点击确定按钮请求接口
-  handleSubmit = values => {
+  handleSubmit = (values, dateString) => {
     const rname = values.wechatDepartmentName;
     const rUserType = values.userType;
-    const len = values.responseCom.length;
-    let typeId = values.responseCom[len - 1];
-    if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
+    const len = !values.responseCom ? null : values.responseCom.length;
+    let typeId = !len ? undefined : values.responseCom[len - 1];
+    if (
+      typeof typeId === 'string' ||
+      rUserType === 'admin' ||
+      rUserType === 'boss' ||
+      rUserType === 'others'
+    ) {
       typeId = undefined;
     }
     let newRoleId = 0;
@@ -51,14 +54,19 @@ class CreateUser extends Component {
     });
     const userAddParams = {
       name: values.name.replace(/\s*/g, ''),
-      mail: values.email,
-      mobile: values.phone,
-      userType: userTypeDataReset[rUserType],
-      userTypeId: typeId,
-      wechatDepartmentId: Number(newRoleId),
-      wechatDepartmentName: !rname ? undefined : rname,
+      mail: values.mail,
+      mobile: values.mobile,
+      joinDate: dateString,
+      idCard: values.idCard,
+      sex: values.sex,
+      positionList: {
+        privilege: rUserType === 'admin' ? false : values.privilege === 1,
+        userType: rUserType,
+        userTypeId: typeId,
+        wechatDepartmentId: Number(newRoleId),
+        wechatDepartmentName: !rname ? undefined : rname,
+      },
     };
-    // console.log(rUserType,userAddParams)
     this.props.dispatch({
       type: 'user/userAdd',
       payload: { userAddParams },
@@ -71,7 +79,6 @@ class CreateUser extends Component {
   };
 
   render() {
-    // const userListValue = this.props.user;
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -81,8 +88,8 @@ class CreateUser extends Component {
             resetContent={() => {
               this.resetContent();
             }}
-            handleSubmit={values => {
-              this.handleSubmit(values);
+            handleSubmit={(values, dataString) => {
+              this.handleSubmit(values, dataString);
             }}
           />
         }

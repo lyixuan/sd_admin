@@ -1,7 +1,11 @@
 import { createElement } from 'react';
 import dynamic from 'dva/dynamic';
-// import pathToRegexp from 'path-to-regexp';
-// import { getMenuData } from './menu';
+import {
+  getUrlParams,
+  getLastUrlParams,
+  setRouteUrlParams,
+  setCurrentUrlParams,
+} from './routerParams';
 
 let routerDataCache;
 
@@ -43,12 +47,18 @@ const dynamicWrapper = (app, models, component) => {
       if (!routerDataCache) {
         routerDataCache = getRouterData(app);
       }
+      const lastUrlParams = getLastUrlParams(app);
       return component().then(raw => {
         const Component = raw.default || raw;
         return props =>
           createElement(Component, {
             ...props,
             routerData: routerDataCache,
+            lastUrlParams,
+            setRouteUrlParams,
+            setCurrentUrlParams,
+            urlParams: getUrlParams(app),
+            getUrlParams: () => getUrlParams(app),
           });
       });
     },
@@ -125,7 +135,7 @@ export const getRouterData = app => {
     '/user/editUser': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/EditUser')),
       bread: {
-        name: '用户管理',
+        name: '学分用户管理',
         path: '/config/userList',
       },
       name: '编辑用户',
@@ -133,7 +143,7 @@ export const getRouterData = app => {
     '/user/createUser': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/CreateUser')),
       bread: {
-        name: '用户管理',
+        name: '学分用户管理',
         path: '/config/userList',
       },
       name: '创建用户',
@@ -141,14 +151,82 @@ export const getRouterData = app => {
     '/user/checkUser': {
       component: dynamicWrapper(app, [], () => import('../routes/Users/CheckUser')),
       bread: {
-        name: '用户管理',
+        name: '学分用户管理',
         path: '/config/userList',
       },
       name: '查看用户',
     },
     '/config/userList': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Users/UserList')),
-      name: '用户信息',
+      name: '学分用户管理',
+    },
+    '/privilege/staff': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/index')),
+      name: '绩效用户管理',
+    },
+    '/privilege/staff/staffList': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/StaffList')),
+      name: '绩效用户管理',
+    },
+    '/privilege/staff/detail': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/StaffDetail')),
+      bread: {
+        name: '绩效用户管理',
+        path: '/privilege/staff',
+      },
+      name: '查看详情',
+    },
+    '/privilege/staff/createTransJob': {
+      component: dynamicWrapper(app, ['staff', 'user'], () =>
+        import('../routes/Staff/CreateTransJob')
+      ),
+      bread: {
+        name: '绩效用户管理',
+        path: '/privilege/staff',
+      },
+      name: '创建转岗',
+    },
+    '/privilege/staff/createHoliday': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/CreateHoliday')),
+      bread: {
+        name: '绩效用户管理',
+        path: '/privilege/staff',
+      },
+      name: '创建休假',
+    },
+    '/privilege/staff/createDimission': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/CreateDimission')),
+      bread: {
+        name: '绩效用户管理',
+        path: '/privilege/staff',
+      },
+      name: '创建离职',
+    },
+    '/privilege/staff/editTransJob': {
+      component: dynamicWrapper(app, ['staff', 'user'], () =>
+        import('../routes/Staff/EditTransJob')
+      ),
+      bread: {
+        name: '绩效用户管理',
+        path: '/privilege/staff',
+      },
+      name: '编辑转岗',
+    },
+    '/privilege/staff/editHoliday': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/EditHoliday')),
+      bread: {
+        name: '绩效用户管理',
+        path: '/privilege/staff',
+      },
+      name: '编辑休假',
+    },
+    '/privilege/staff/editDimission': {
+      component: dynamicWrapper(app, ['staff'], () => import('../routes/Staff/EditDimission')),
+      bread: {
+        name: '绩效用户管理',
+        path: '/privilege/staff',
+      },
+      name: '编辑离职',
     },
 
     '/permission/editPermission': {
@@ -263,6 +341,10 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),
       name: '时间管理',
     },
+    '/config/timeList/performance': {
+      component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/Performance')),
+      name: '时间管理',
+    },
     '/config/group': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
       name: '小组短名称',
@@ -293,7 +375,42 @@ export const getRouterData = app => {
       },
       name: '添加申诉',
     },
-
+    '/performance/collegePerformance': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Performance/CollegePerformance')
+      ),
+      name: '学院绩效金额',
+    },
+    '/performance/personalPerformance': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Performance/PersonalPerformance')
+      ),
+      bread: {
+        name: '绩效管理',
+        path: '/performance/collegePerformance',
+      },
+      name: '个人绩效金额',
+    },
+    '/performance/importPerformance': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Performance/ImportPerformance')
+      ),
+      bread: {
+        name: '绩效管理',
+        path: '/performance/collegePerformance',
+      },
+      name: '导入实发绩效',
+    },
+    '/performance/editPerformance': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Performance/EditPerformance')
+      ),
+      bread: {
+        name: '绩效管理',
+        path: '/performance/collegePerformance',
+      },
+      name: '编辑绩效',
+    },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
     },

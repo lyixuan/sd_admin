@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import { Route, Switch, Redirect } from 'dva/router';
 import { Table, Button, Form, Popconfirm, DatePicker, message } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -200,6 +201,10 @@ class TimeList extends Component {
     ];
     return columns;
   };
+  performanceComponent = () => {
+    const { routerData } = this.props;
+    return routerData['/config/timeList/performance'].component;
+  };
 
   render() {
     const { visible, hintVisible, changeVisible, dateArea } = this.state;
@@ -211,6 +216,7 @@ class TimeList extends Component {
       key: item.id,
       dateTime: moment.unix(item.dateTime / 1000).format(dateFormat),
     }));
+    const PerformanceComponent = this.performanceComponent();
     const datePicker = (
       <DatePicker
         initialValue={[moment('2015-01-01', dateFormat)]}
@@ -225,6 +231,7 @@ class TimeList extends Component {
       const { getFieldDecorator } = props.form;
       return (
         <Form onSubmit={this.handleSearch} layout="inline">
+          <h2 className={styles.modelTitle}>学分模块</h2>
           <p className={styles.formTitle}>“自定义时间”可选范围设置</p>
           <div className={styles.formCls}>
             <FormItem label="开始日期">
@@ -307,7 +314,13 @@ class TimeList extends Component {
               pageSizeOptions={['30']}
             />
           }
-        />
+        >
+          {/* 此区域为分发路由 */}
+          <Switch>
+            <Route path="/config/timeList/performance" component={PerformanceComponent} />
+            <Redirect exact from="/config/timeList" to="/config/timeList/performance" />
+          </Switch>
+        </ContentLayout>
         <ModalDialog
           title="添加不可用时间"
           visible={visible}

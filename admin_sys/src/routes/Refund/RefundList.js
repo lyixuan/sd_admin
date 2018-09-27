@@ -71,17 +71,7 @@ class RefundList extends Component {
   };
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    firstPage = current - 1;
-    this.savaParams({
-      firstPage: !firstPage ? 0 : firstPage,
-    });
-    this.getData({
-      size: pageSize,
-      number: current - 1,
-      beginTime: !firstBeginTime ? undefined : firstBeginTime,
-      endTime: !firstEndTime ? undefined : firstEndTime,
-      ordId: !firstOrdId ? undefined : firstOrdId,
-    });
+    console.log(current, pageSize);
   };
 
   // 表单搜索

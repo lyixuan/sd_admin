@@ -2,9 +2,7 @@ const path = require('path');
 
 export default {
   entry: 'src/index.js',
-  extraBabelPlugins: [
-    ['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }],
-  ],
+  extraBabelPlugins: [['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }]],
   env: {
     development: {
       extraBabelPlugins: ['dva-hmr'],
@@ -12,7 +10,8 @@ export default {
   },
   alias: {
     components: path.resolve(__dirname, 'src/components/'),
-    selfComponents: path.resolve(__dirname, 'src/selfComponents/'),
+    selfComponents: path.resolve(__dirname, 'src/selfComponent/'),
+    utils: path.resolve(__dirname, 'src/utils/'),
   },
   ignoreMomentLocale: true,
   theme: './src/theme.js',

@@ -2,25 +2,28 @@ import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
-import UserForm from '../../selfComponent/UserForm.js';
+import EditUserForm from '../../selfComponent/UserForm/EditUserForm.js';
 import ContentLayout from '../../layouts/ContentLayout';
-import { userTypeDataReset } from '../../utils/dataDictionary';
+import EditUserTable from './EditUserTable';
 
-const WrappedRegistrationForm = Form.create()(UserForm);
+const propsVal = '';
+
+const WrappedRegistrationForm = Form.create()(EditUserForm);
 
 @connect(({ user, loading }) => ({
   user,
-  submit: loading.effects['user/updateUserInfo'],
+  submit: loading.effects['user/updateUserbasicInfo'],
   wechatList: loading.effects['user/wechatList'],
   listOrg: loading.effects['user/listOrg'],
-  userList: loading.effects['user/userList'],
+  userList: loading.effects['user/getUserlist'],
+  addPosi: loading.effects['user/addPosition'],
 }))
 class EditUser extends Component {
   constructor(props) {
     super(props);
     const arrValue = this.props.getUrlParams();
     this.state = {
-      id: !arrValue.id ? null : arrValue.id,
+      mail: !arrValue.mail ? null : arrValue.mail,
     };
   }
 
@@ -30,27 +33,20 @@ class EditUser extends Component {
       type: 'user/wechatList',
       payload: { wechatListParams },
     });
-
     const listOrgParams = {};
     this.props.dispatch({
       type: 'user/listOrg',
       payload: { listOrgParams },
     });
-    const userListParams = { id: this.state.id };
+    const getUserlistParams = { mail: this.state.mail };
     this.props.dispatch({
-      type: 'user/userList',
-      payload: { userListParams },
+      type: 'user/getUserlist',
+      payload: { getUserlistParams },
     });
   }
 
-  handleSubmit = values => {
+  handleSubmit = (values, data) => {
     const rname = values.wechatDepartmentName;
-    const rUserType = values.userType;
-    const len = values.responseCom.length;
-    let typeId = rUserType === '家族' ? values.responseCom[1] : values.responseCom[len - 1];
-    if (typeof typeId === 'string' || rUserType === '系统管理员' || rUserType === '高级管理员') {
-      typeId = undefined;
-    }
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
     roleList.map(item => {
@@ -61,17 +57,19 @@ class EditUser extends Component {
     });
     const updateUserInfoParams = {
       name: values.name.replace(/\s*/g, ''),
-      mail: values.email,
+      mail: values.mail,
       mobile: values.phone,
-      id: Number(this.state.id),
-      userType: userTypeDataReset[rUserType],
-      userTypeId: !typeId ? undefined : typeId,
-      wechatDepartmentId: Number(newRoleId),
-      wechatDepartmentName: !rname ? undefined : rname,
+      sex: Number(values.sex),
+      idCard: values.idCard,
+      joinDate: data,
+      privilegeView: values.privilegeView === 1,
+      positionList: {
+        wechatDepartmentId: Number(newRoleId),
+        wechatDepartmentName: !rname ? undefined : rname,
+      },
     };
-    // console.log(rUserType,updateUserInfoParams)
     this.props.dispatch({
-      type: 'user/updateUserInfo',
+      type: 'user/updateUserbasicInfo',
       payload: { updateUserInfoParams },
     });
   };
@@ -80,25 +78,34 @@ class EditUser extends Component {
     this.props.dispatch(routerRedux.goBack());
   };
 
+  handleSearch = (e, arrValue) => {
+    e.preventDefault();
+    propsVal.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.getData(values, arrValue);
+      }
+    });
+  };
+
   render() {
-    // const userListValue = this.props.user;
-    // const {data = {}} = userListValue.userList.response;
-    // console.log(userListValue.userList)
     return (
-      <ContentLayout
-        routerData={this.props.routerData}
-        contentForm={
-          <WrappedRegistrationForm
-            jumpFunction={this.props || {}}
-            resetContent={() => {
-              this.resetContent();
-            }}
-            handleSubmit={values => {
-              this.handleSubmit(values);
-            }}
-          />
-        }
-      />
+      <div>
+        <ContentLayout
+          routerData={this.props.routerData}
+          contentForm={
+            <WrappedRegistrationForm
+              jumpFunction={this.props || {}}
+              resetContent={() => {
+                this.resetContent();
+              }}
+              handleSubmit={(values, data) => {
+                this.handleSubmit(values, data);
+              }}
+            />
+          }
+        />
+        <EditUserTable mail={this.state.mail} />
+      </div>
     );
   }
 }

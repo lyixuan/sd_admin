@@ -1,5 +1,13 @@
 import { message } from 'antd';
-import { getDate, addDate, deleteDate, updateDate, getRangeDate } from '../services/api';
+import {
+  getDate,
+  addDate,
+  deleteDate,
+  updateDate,
+  getRangeDate,
+  getKpiEffectMonth,
+  updateKpiEffectMonth,
+} from '../services/api';
 
 export default {
   namespace: 'time',
@@ -11,6 +19,7 @@ export default {
       endTime: '',
       id: 1,
     },
+    kpiEffectMonthList: [],
   },
 
   effects: {
@@ -69,9 +78,38 @@ export default {
         message.error(response.msg);
       }
     },
+    *getKpiEffectMonth(_, { put, call }) {
+      const response = yield call(getKpiEffectMonth);
+      if (response.code === 2000) {
+        const kpiEffectMonthList = response.data || [];
+        yield put({
+          type: 'saveKpiEffectMonth',
+          payload: { kpiEffectMonthList },
+        });
+      }
+    },
+    *updateKpiEffectMonth({ payload }, { put, call }) {
+      const response = yield call(updateKpiEffectMonth, payload);
+      if (response.code === 2000) {
+        message.success('设置成功');
+        const list = yield call(getKpiEffectMonth);
+        if (list.code === 2000) {
+          const kpiEffectMonthList = list.data || [];
+          yield put({
+            type: 'saveKpiEffectMonth',
+            payload: { kpiEffectMonthList },
+          });
+        }
+      } else {
+        message.error(response.msg);
+      }
+    },
   },
 
   reducers: {
+    saveKpiEffectMonth(state, { payload }) {
+      return { ...state, ...payload };
+    },
     saveDateList(state, { payload }) {
       return { ...state, ...payload };
     },
