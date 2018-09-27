@@ -131,10 +131,12 @@ class UserList extends Component {
       data.push({
         key: index,
         name: item.name,
-        privilege: item.privilege? '有' : '无',
+        privilege: item.privilege ? '有' : '无',
         mail: item.entUserId,
         userType: userTypeData[item.userType],
-        showName: !item.showName ? null : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
+        showName: !item.showName
+          ? item.userType === 'others' ? '无绩效岗位' : null
+          : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
         changeShowName: !item.changeShowName ? null : item.changeShowName.replace(/,/g, ' | '),
         id: item.id,
         wechatDepartmentId: item.wechatDepartmentId,
