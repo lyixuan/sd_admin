@@ -45,14 +45,14 @@ class EditUser extends Component {
     });
   }
 
-
-
-  handleSubmit = (values,data) => {
+  handleSubmit = (values, data) => {
     const rname = values.wechatDepartmentName;
     let newRoleId = 0;
     const roleList = this.props.user.wechatList.response.data.department;
     roleList.map(item => {
-      if (item.name === rname) {newRoleId = item.id}
+      if (item.name === rname) {
+        newRoleId = item.id;
+      }
       return 0;
     });
     const updateUserInfoParams = {
@@ -60,10 +60,10 @@ class EditUser extends Component {
       mail: values.mail,
       mobile: values.phone,
       sex: Number(values.sex),
-      idCard:values.idCard,
-      joinDate:data,
-      privilegeView:values.privilegeView===1,
-      positionList:{
+      idCard: values.idCard,
+      joinDate: data,
+      privilegeView: values.privilegeView === 1,
+      positionList: {
         wechatDepartmentId: Number(newRoleId),
         wechatDepartmentName: !rname ? undefined : rname,
       },
@@ -78,13 +78,11 @@ class EditUser extends Component {
     this.props.dispatch(routerRedux.goBack());
   };
 
-
-
-  handleSearch = (e,arrValue) => {
+  handleSearch = (e, arrValue) => {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.getData(values, arrValue)
+        this.getData(values, arrValue);
       }
     });
   };
@@ -100,17 +98,16 @@ class EditUser extends Component {
               resetContent={() => {
                 this.resetContent();
               }}
-              handleSubmit={(values,data) => {
-                this.handleSubmit(values,data);
+              handleSubmit={(values, data) => {
+                this.handleSubmit(values, data);
               }}
             />
           }
         />
-        <EditUserTable
-          mail={this.state.mail}
-        />
+        <EditUserTable mail={this.state.mail} />
       </div>
-    );}
+    );
+  }
 }
 
 export default EditUser;
