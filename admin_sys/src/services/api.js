@@ -337,7 +337,7 @@ export async function deletePosition(params) {
 
 // 用户编辑-列表页面---编辑用户岗位信息(拿user表id 去更新岗位信息）
 export async function updateUserPositionInfo(params) {
-  return request(`${HOST}/user/updateUserPositionInfo`, {
+  return request(`${HOST}/user/updateUserPositionInfo2`, {
     method: 'PUT',
     body: params,
   });
