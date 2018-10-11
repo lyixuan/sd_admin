@@ -10,7 +10,7 @@ export default {
   },
 
   effects: {
-    *updateCache({ payload }, { call ,put}) {
+    *updateCache({ payload }, { call, put }) {
       const cacheData = yield call(updateCache, payload.updateCacheParams);
       if (cacheData.code === 2000) {
         message.success('缓存刷新处理中，查看最新结果请点击刷新！');

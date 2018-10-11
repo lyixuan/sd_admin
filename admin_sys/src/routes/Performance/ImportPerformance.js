@@ -16,7 +16,7 @@ class ImportPerformance extends Component {
     super(props);
     this.state = {
       isDisabled: true,
-      checkParams: '',
+      // checkParams: '',
     };
   }
   componentDidMount() {
@@ -34,7 +34,7 @@ class ImportPerformance extends Component {
     if (checkParams) {
       this.setState({
         isDisabled: bol,
-        checkParams,
+        // checkParams,
       });
     } else {
       this.setState({
@@ -102,9 +102,9 @@ class ImportPerformance extends Component {
     return columns;
   };
   render() {
-    let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
+    const fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
     const { current, checkList, fileList, disableDel, isLoading } = this.props.performance;
-    const { isDisabled, checkParams } = this.state;
+    const { isDisabled } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;
 

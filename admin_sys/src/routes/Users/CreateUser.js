@@ -31,13 +31,17 @@ class CreateUser extends Component {
   }
 
   // 点击确定按钮请求接口
-  handleSubmit = (values,dateString) => {
-
+  handleSubmit = (values, dateString) => {
     const rname = values.wechatDepartmentName;
     const rUserType = values.userType;
-    const len = !values.responseCom?null:values.responseCom.length;
-    let typeId = !len?undefined:values.responseCom[len - 1];
-    if (typeof typeId === 'string' || rUserType === 'admin' || rUserType === 'boss'|| rUserType === 'others') {
+    const len = !values.responseCom ? null : values.responseCom.length;
+    let typeId = !len ? undefined : values.responseCom[len - 1];
+    if (
+      typeof typeId === 'string' ||
+      rUserType === 'admin' ||
+      rUserType === 'boss' ||
+      rUserType === 'others'
+    ) {
       typeId = undefined;
     }
     let newRoleId = 0;
@@ -52,15 +56,15 @@ class CreateUser extends Component {
       name: values.name.replace(/\s*/g, ''),
       mail: values.mail,
       mobile: values.mobile,
-      joinDate:dateString,
-      idCard:values.idCard,
-      sex:values.sex,
-      positionList:{
-          privilege:rUserType==='admin'?false:values.privilege===1,
-          userType: rUserType,
-          userTypeId: typeId,
-          wechatDepartmentId: Number(newRoleId),
-          wechatDepartmentName: !rname ? undefined : rname,
+      joinDate: dateString,
+      idCard: values.idCard,
+      sex: values.sex,
+      positionList: {
+        privilege: rUserType === 'admin' ? false : values.privilege === 1,
+        userType: rUserType,
+        userTypeId: typeId,
+        wechatDepartmentId: Number(newRoleId),
+        wechatDepartmentName: !rname ? undefined : rname,
       },
     };
     this.props.dispatch({
@@ -84,8 +88,8 @@ class CreateUser extends Component {
             resetContent={() => {
               this.resetContent();
             }}
-            handleSubmit={(values,dataString) => {
-              this.handleSubmit(values,dataString);
+            handleSubmit={(values, dataString) => {
+              this.handleSubmit(values, dataString);
             }}
           />
         }

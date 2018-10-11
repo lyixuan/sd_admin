@@ -4,7 +4,7 @@ import {
   userList,
   updateUserOrg,
   updateUserbasicInfo,
-  userDelete,
+  // userDelete,
   wechatList,
   userAdd,
   listOrg,

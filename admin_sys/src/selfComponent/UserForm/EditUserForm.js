@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, DatePicker ,message,Radio} from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, DatePicker, message, Radio } from 'antd';
 import moment from 'moment';
 import { formatEmail } from '../../utils/email';
 import common from '../../routes/Common/common.css';
@@ -37,17 +37,13 @@ class EditUserForm extends Component {
         const arrValue = !aaa
           ? null
           : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
-        const aa =!arrValue
-          ? null
-          : !arrValue.joindate
-            ? null
-            : formatDateNew(arrValue.joindate)
+        const aa = !arrValue ? null : !arrValue.joindate ? null : formatDateNew(arrValue.joindate);
 
-        firstJoinDate=!firstJoinDate?aa:firstJoinDate
-        if(!firstJoinDate){
-          message.error("请选择入职日期")
-        }else{
-          this.props.handleSubmit(values,firstJoinDate);
+        firstJoinDate = !firstJoinDate ? aa : firstJoinDate;
+        if (!firstJoinDate) {
+          message.error('请选择入职日期');
+        } else {
+          this.props.handleSubmit(values, firstJoinDate);
         }
       }
     });
@@ -113,14 +109,16 @@ class EditUserForm extends Component {
               <FormItem label="*性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
                 {getFieldDecorator('sex', {
                   initialValue: !arrValue ? '' : !arrValue.sex ? '' : arrValue.sex,
-                  rules: [{
-                    validator(rule, value, callback) {
-                      if(!value){
-                        callback({ message: '性别为必填项，请选择!' });
-                      }
-                      callback();
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '性别为必填项，请选择!' });
+                        }
+                        callback();
+                      },
                     },
-                  }],
+                  ],
                 })(
                   <Select style={{ width: 280 }}>
                     <Option value={1}>男</Option>
@@ -154,7 +152,7 @@ class EditUserForm extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱">
                 {getFieldDecorator('mail', {
-                  initialValue:!this.state.mail?'': formatEmail(this.state.mail),
+                  initialValue: !this.state.mail ? '' : formatEmail(this.state.mail),
                 })(
                   <div>
                     <Input style={{ width: '175px' }} disabled value={this.state.mail} />
@@ -181,7 +179,8 @@ class EditUserForm extends Component {
                           callback();
                         }
                       },
-                    }],
+                    },
+                  ],
                 })(<Input style={{ width: 280 }} />)}
               </FormItem>
             </Col>
@@ -193,15 +192,23 @@ class EditUserForm extends Component {
                     : !arrValue.joindate
                       ? null
                       : moment(formatDateNew(arrValue.joindate), dateFormat),
-                  rules: [{
-                    validator(rule, value, callback) {
-                      if (!value) {
-                        callback({ message: '入职日期为必填项，请选择！' });
-                      }
-                      callback();
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '入职日期为必填项，请选择！' });
+                        }
+                        callback();
+                      },
                     },
-                  }],
-                })(<DatePicker format={dateFormat}  onChange={this.joinDateFun} style={{ width: 280, height: 32 }} />)}
+                  ],
+                })(
+                  <DatePicker
+                    format={dateFormat}
+                    onChange={this.joinDateFun}
+                    style={{ width: 280, height: 32 }}
+                  />
+                )}
               </FormItem>
             </Col>
           </Row>
@@ -230,7 +237,7 @@ class EditUserForm extends Component {
                 {getFieldDecorator('privilegeView', {
                   initialValue: !arrValue
                     ? 0
-                    : !arrValue.privilegeView ? 0 : arrValue.privilegeView?1:0,
+                    : !arrValue.privilegeView ? 0 : arrValue.privilegeView ? 1 : 0,
                   rules: [],
                 })(
                   <RadioGroup
