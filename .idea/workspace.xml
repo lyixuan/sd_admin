@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76ad4800-572f-4557-a78e-58f9a5a62d90" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/ShotName/College.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/ShotName/College.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/ShotName/Family.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/ShotName/Family.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/ShotName/Group.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/ShotName/Group.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/common/urlPathMap.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/common/urlPathMap.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/models/collegePerformance.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/models/collegePerformance.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/Performance/CollegePerformance.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/Performance/CollegePerformance.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/Performance/ImportPerformance.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/Performance/ImportPerformance.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/Performance/_dialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/Performance/_dialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/services/api.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,29 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="RoleForm.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.js">
+      <file leaf-file-name="PerformanceForm.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/Performance/PerformanceForm.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="434">
-              <caret line="126" column="6" lean-forward="true" selection-start-line="126" selection-start-column="6" selection-end-line="126" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RoleForm.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="810">
-              <caret line="54" selection-start-line="54" selection-end-line="58" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EditRole.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Role/EditRole.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="900">
-              <caret line="64" selection-start-line="64" selection-end-line="64" />
+            <state relative-caret-position="250">
+              <caret line="81" column="34" selection-start-line="81" selection-start-column="34" selection-end-line="81" selection-end-column="34" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -48,68 +34,80 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="College.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/ShotName/College.js">
+      <file leaf-file-name="_dialog.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Performance/_dialog.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="32" column="25" lean-forward="true" selection-start-line="32" selection-start-column="25" selection-end-line="35" selection-end-column="24" />
+            <state relative-caret-position="270">
+              <caret line="20" column="35" lean-forward="true" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="step.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/step.css">
+      <file leaf-file-name="blComplain.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/models/blComplain.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1140">
-              <caret line="76" column="29" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Group.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/ShotName/Group.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="42" column="7" lean-forward="true" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Family.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/ShotName/Family.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="31" column="36" lean-forward="true" selection-start-line="31" selection-start-column="36" selection-end-line="35" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ComplaintList.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintList.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3810">
-              <caret line="261" column="18" selection-start-line="261" selection-start-column="13" selection-end-line="261" selection-end-column="18" />
+            <state relative-caret-position="466">
+              <caret line="132" column="45" lean-forward="true" selection-start-line="123" selection-start-column="5" selection-end-line="132" selection-end-column="45" />
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#0#31#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AccountList.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Account/AccountList.js">
+      <file leaf-file-name="collegePerformance.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/models/collegePerformance.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1560">
-              <caret line="110" column="53" selection-start-line="110" selection-start-column="53" selection-end-line="110" selection-end-column="53" />
+            <state relative-caret-position="485">
+              <caret line="156" column="7" selection-start-line="156" selection-start-column="7" selection-end-line="156" selection-end-column="7" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Table.d.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/node_modules/antd/lib/table/Table.d.ts">
+      <file leaf-file-name="CollegePerformance.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Performance/CollegePerformance.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
-              <caret line="75" column="60" selection-start-line="75" selection-start-column="60" selection-end-line="75" selection-end-column="60" />
+            <state relative-caret-position="229">
+              <caret line="51" column="24" lean-forward="true" selection-start-line="51" selection-start-column="24" selection-end-line="52" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComplaintAdd.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintAdd.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="205">
+              <caret line="125" column="37" selection-start-line="125" selection-start-column="26" selection-end-line="125" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QualityAdd.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityAdd.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="239">
+              <caret line="94" column="26" selection-start-line="94" selection-start-column="23" selection-end-line="94" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ImportPerformance.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Performance/ImportPerformance.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="283">
+              <caret line="97" column="21" selection-start-line="97" selection-start-column="21" selection-end-line="97" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="api.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/services/api.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="598" column="18" lean-forward="true" selection-start-line="598" selection-start-column="18" selection-end-line="598" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -121,80 +119,82 @@
       <list>
         <option value="CSS File" />
         <option value="TypeScript File" />
-        <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="Less File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>onCheckAllChange</find>
-      <find>savePrivileges</find>
-      <find>inputin</find>
-      <find>120px</find>
-      <find>inputInfo</find>
-      <find>mode</find>
-      <find>.ant-upload-list-item</find>
-      <find>avatar</find>
-      <find>getIcon</find>
-      <find>icon</find>
-      <find>SiderMenu</find>
-      <find>img</find>
-      <find>account</find>
-      <find>padding-left:48px</find>
-      <find>padding</find>
-      <find>getNavMenuItems</find>
-      <find>anticon-paper-clip</find>
-      <find>plainOptions</find>
-      <find>secLevel</find>
-      <find>checkAllObj</find>
-      <find>idsObj</find>
-      <find>checkdIds</find>
-      <find>isCheckedAll</find>
-      <find>len</find>
-      <find>getRoleIds</find>
-      <find>getCollegeData</find>
+      <find>fillDataSource</find>
+      <find>exportDetail</find>
+      <find>exportCollegeAchievement</find>
       <find>clickModalOK</find>
-      <find>shortId</find>
-      <find>label</find>
-      <find>splice</find>
+      <find>paramObj</find>
+      <find>导出</find>
+      <find>checkParams</find>
+      <find>checkList</find>
+      <find>GET</find>
+      <find>userList</find>
+      <find>disableDel</find>
+      <find>fileList</find>
+      <find>console</find>
+      <find>type</find>
+      <find>fetchData</find>
+      <find>exportCollegeDetailKpi</find>
+      <find>isLoading</find>
+      <find>fetchUrl</find>
+      <find>saveCollege</find>
+      <find>collegeGroup</find>
+      <find>listCollege</find>
+      <find>importKpiData</find>
+      <find>current</find>
+      <find>num</find>
+      <find>user/list</find>
+      <find>deb</find>
+      <find>columnsData</find>
+      <find>getNums</find>
+      <find>editCurrent</find>
+      <find>上个</find>
     </findStrings>
     <replaceStrings>
-      <replace>familyName</replace>
-      <replace>groupName</replace>
+      <replace>item2</replace>
+      <replace>Row</replace>
+      <replace>checkDetail</replace>
+      <replace>userNAme</replace>
+      <replace>UserName</replace>
+      <replace>publickObj</replace>
+      <replace>firstID</replace>
+      <replace>saveVal</replace>
       <replace>dataList</replace>
-      <replace>clickOK</replace>
-      <replace>clickModalOK</replace>
-      <replace>collegeList</replace>
-      <replace>groupList</replace>
-      <replace>familyList</replace>
-      <replace>10</replace>
-      <replace>id</replace>
-      <replace>getRoleData</replace>
-      <replace>fileList</replace>
-      <replace>refund</replace>
-      <replace>preDelData</replace>
-      <replace>blRefund</replace>
-      <replace>Refund</replace>
-      <replace>checkList</replace>
-      <replace>Complain</replace>
-      <replace>excelData</replace>
-      <replace>successNums</replace>
-      <replace>blComplain</replace>
-      <replace>disableDel</replace>
-      <replace>hasChildren</replace>
-      <replace>|</replace>
-      <replace>getRoleIds</replace>
-      <replace>getInitAllVal</replace>
-      <replace>setInitAll</replace>
-      <replace>bottomLineNum</replace>
-      <replace>+'D'</replace>
-      <replace>checkedValue</replace>
+      <replace>PerformanceForm</replace>
+      <replace>EditPerformance</replace>
+      <replace>actualKpi</replace>
+      <replace>ActualKpi</replace>
+      <replace>name</replace>
+      <replace>Name</replace>
+      <replace>firstIdCard</replace>
+      <replace>cancel</replace>
+      <replace>EditDimssion</replace>
+      <replace>effectDate</replace>
+      <replace>collegeId</replace>
+      <replace>keyYM</replace>
+      <replace>editDemissionPost</replace>
+      <replace>importPerformance</replace>
+      <replace>performance</replace>
+      <replace>nodes</replace>
+      <replace>checkAll</replace>
+      <replace>grandId</replace>
+      <replace>parentId</replace>
+      <replace>getVal</replace>
+      <replace>exportCollegeAchievement</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/admin_sys</dir>
       <dir>$PROJECT_DIR$/admin_sys/src/routes</dir>
       <dir>$PROJECT_DIR$/admin_sys/src</dir>
+      <dir>$PROJECT_DIR$/admin_sys/src/models</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -203,42 +203,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/admin_sys/src/index.less" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/TimeManage/TimeList.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/models/shortName.ts" />
-        <option value="$PROJECT_DIR$/admin_sys/src/common/menu.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/Modal/Modal.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RouteConfirmation/RouteConfirmation.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/checkResult.js" />
-        <option value="$PROJECT_DIR$/admin_sys/package.json" />
-        <option value="$PROJECT_DIR$/admin_sys/src/common/router.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/utils/reloadConfirm.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/models/shortName.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityList.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Refund/RefundList.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintList.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/models/quality.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/models/refund.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/models/blComplain.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepSucess.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/layouts/ContentLayout.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/layouts/stepLayout.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Role/RoleList.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Common/common.css" />
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepTable.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintDel.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityDel.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Refund/RefundDel.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/Refund/RefundAdd.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityAdd.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintAdd.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/selfPagination/SelfPagination.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepUpload.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Role/CreateRole.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Role/CheckRole.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/services/api.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/utils/utils.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/newRoleForm.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/layouts/stepLayout.css" />
         <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepInput.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/step.css" />
@@ -248,12 +216,44 @@
         <option value="$PROJECT_DIR$/admin_sys/src/components/SiderMenu/SiderMenu.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/test.html" />
         <option value="$PROJECT_DIR$/admin_sys/src/models/role.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/Role/EditRole.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.css" />
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/ShotName/College.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/ShotName/Family.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/ShotName/Group.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/ShotName/College.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Role/CheckRole.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.css" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Role/CreateRole.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityList.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Common/common.css" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Appeal/AppealList.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Performance/ExportPerformance.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepUpload.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/utils/utils.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Performance/EditPerformance.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/Performance/PerformanceForm.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/Performance/PerformanceForm.less" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Performance/PersonalPerformance.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/layouts/ContentLayout.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/common/router.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Staff/styles/index.less" />
+        <option value="$PROJECT_DIR$/admin_sys/src/services/staff.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/models/staff.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Staff/CreateDimission.jsx" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Staff/CreateTransJob.jsx" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Staff/EditTransJob.jsx" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Staff/EditDimission.jsx" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/ShotName/Family.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Role/EditRole.js" />
+        <option value="$USER_HOME$/Desktop/xieyi.txt" />
+        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleFormComponent.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/newRoleForm.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/CheckBoxForm.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/index.ejs" />
+        <option value="$PROJECT_DIR$/admin_sys/src/common/urlPathMap.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/services/api.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Performance/CollegePerformance.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Performance/_dialog.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/Performance/ImportPerformance.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/models/collegePerformance.js" />
       </list>
     </option>
   </component>
@@ -272,9 +272,9 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+    <option name="y" value="85" />
     <option name="width" value="1440" />
-    <option name="height" value="797" />
+    <option name="height" value="786" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -306,7 +306,14 @@
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
@@ -314,37 +321,29 @@
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="routes" type="462c0819:PsiDirectoryNode" />
-              <item name="ShotName" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="selfComponent" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="Complaint" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="selfComponent" type="462c0819:PsiDirectoryNode" />
-              <item name="RoleFrom" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="Quality" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="selfComponent" type="462c0819:PsiDirectoryNode" />
-              <item name="setpForm" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
-              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="services" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -355,6 +354,7 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="list.type.of.created.stylesheet" value="Less" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -367,6 +367,14 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="collegePerformance.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" nameIsGenerated="true" path-to-js-file="collegePerformance.js" working-dir="$PROJECT_DIR$/admin_sys/src/models" />
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.collegePerformance.js" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -391,26 +399,35 @@
       <workItem from="1532688615604" duration="682000" />
       <workItem from="1532941228974" duration="134000" />
       <workItem from="1532941470694" duration="1680000" />
-      <workItem from="1533266395094" duration="2349000" />
+      <workItem from="1533266395094" duration="3308000" />
+      <workItem from="1533520998942" duration="39337000" />
+      <workItem from="1534323363199" duration="1034000" />
+      <workItem from="1535360987516" duration="34972000" />
+      <workItem from="1535938817894" duration="46831000" />
+      <workItem from="1536218706080" duration="19038000" />
+      <workItem from="1536737593236" duration="28408000" />
+      <workItem from="1537238340774" duration="61051000" />
+      <workItem from="1538014686660" duration="2935000" />
+      <workItem from="1539246578793" duration="10692000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="600272000" />
+    <option name="totallyTimeSpent" value="845529000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="797" extended-state="0" />
+    <frame x="0" y="85" width="1440" height="786" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24947146" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24947146" />
       <window_info anchor="bottom" id="TODO" order="8" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5010571" side_tool="true" weight="0.41454545" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50317127" side_tool="true" weight="0.44847605" />
       <window_info anchor="bottom" id="Find" order="3" weight="0.32969698" />
-      <window_info anchor="bottom" id="Run" order="4" />
+      <window_info anchor="bottom" id="Run" order="4" weight="0.32946298" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49964765" weight="0.32848486" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4989429" visible="true" weight="0.26285714" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49682876" weight="0.44702467" />
       <window_info anchor="bottom" id="Debug" order="5" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="TypeScript" order="0" />
@@ -442,367 +459,369 @@
           <line>34</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/admin_sys/src/models/collegePerformance.js</url>
+          <line>42</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/admin_sys/src/routes/Performance/PersonalPerformance.js</url>
+          <line>57</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/admin_sys/src/routes/Staff/EditDimission.jsx</url>
+          <line>79</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/admin_sys/src/routes/Role/EditRole.js</url>
+          <line>62</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="11" />
+      <option name="time" value="15" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Account/CreateAccount.js">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="8" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="8" />
+        <state relative-caret-position="108">
+          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/AccountForm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="33">
-          <caret line="59" column="46" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Account/EditAccount.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="66" column="24" selection-start-line="66" selection-start-column="12" selection-end-line="66" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepTable.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/Modal/Modal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="69" column="22" selection-start-line="69" selection-start-column="22" selection-end-line="69" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Refund/RefundDel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="591">
-          <caret line="122" column="21" selection-start-line="122" selection-start-column="21" selection-end-line="122" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Refund/RefundAdd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="90" column="28" selection-start-line="90" selection-start-column="28" selection-end-line="90" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityAdd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="94" column="28" selection-start-line="94" selection-start-column="28" selection-end-line="94" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityDel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="592">
-          <caret line="114" column="22" lean-forward="true" selection-start-line="114" selection-start-column="22" selection-end-line="114" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/layouts/stepLayout.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="118" column="20" selection-start-line="118" selection-start-column="7" selection-end-line="118" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/layouts/ContentLayout.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="78" selection-start-line="35" selection-start-column="61" selection-end-line="35" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Permission/PermissionList.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="77" selection-start-line="5" selection-start-column="63" selection-end-line="5" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/selfPagination/SelfPagination.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="23" lean-forward="true" selection-start-line="28" selection-start-column="23" selection-end-line="28" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Role/RoleList.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="477">
-          <caret line="79" column="12" lean-forward="true" selection-start-line="79" selection-start-column="12" selection-end-line="79" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepUpload.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="20" lean-forward="true" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Common/common.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="290" column="28" lean-forward="true" selection-start-line="290" selection-start-column="28" selection-end-line="290" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintAdd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="4" column="48" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Permission/CreatePermission.js">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/CreateHoliday.jsx">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Permission/EditPermission.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="41" lean-forward="true" selection-start-line="3" selection-start-column="41" selection-end-line="4" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/services/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="23" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/newRoleForm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/layouts/stepLayout.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="82" column="27" lean-forward="true" selection-start-line="82" selection-start-column="27" selection-end-line="82" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintDel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="183" column="20" selection-start-line="183" selection-start-column="11" selection-end-line="183" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepInput.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="46" column="14" lean-forward="true" selection-start-line="46" selection-start-column="14" selection-end-line="46" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/components/SiderMenu/index.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="42" column="7" lean-forward="true" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/components/SiderMenu/index.js">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/_staffAuthMap.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="9" column="18" lean-forward="true" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+          <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/node_modules/rc-drawer-menu/lib/index.js">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/styles/index.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="36" lean-forward="true" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
+        <state relative-caret-position="300">
+          <caret line="20" column="11" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/node_modules/rc-drawer-menu/assets/index.css">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/EditHoliday.jsx">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/services/staff.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="84" column="42" lean-forward="true" selection-start-line="84" selection-start-column="42" selection-end-line="84" selection-end-column="42" />
+        <state relative-caret-position="549">
+          <caret line="66" column="39" selection-start-line="66" selection-start-column="22" selection-end-line="66" selection-end-column="39" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/layouts/BasicLayout.js">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/models/staff.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="45" lean-forward="true" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+        <state relative-caret-position="86">
+          <caret line="84" column="22" selection-start-line="84" selection-start-column="22" selection-end-line="84" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/components/GlobalHeader/index.less">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/test.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="695">
-          <caret line="79" column="25" selection-start-line="79" selection-start-column="25" selection-end-line="79" selection-end-column="25" />
+        <state relative-caret-position="299">
+          <caret line="60" column="29" selection-start-line="60" selection-start-column="7" selection-end-line="60" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/index.less">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/CreateDimission.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="8" lean-forward="true" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+        <state relative-caret-position="60">
+          <caret line="4" column="38" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/index.ejs">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/CreateTransJob.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="23" lean-forward="true" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
+        <state relative-caret-position="15">
+          <caret line="4" column="38" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/components/SiderMenu/SiderMenu.js">
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/EditDimission.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="106" column="23" lean-forward="true" selection-start-line="106" selection-start-column="23" selection-end-line="106" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Role/CreateRole.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="56" selection-start-line="3" selection-start-column="56" selection-end-line="3" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Role/CheckRole.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="3" lean-forward="true" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/test.html" />
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/utils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="19" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/models/role.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1275">
-          <caret line="85" column="6" selection-start-line="85" selection-start-column="6" selection-end-line="85" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/node_modules/antd/lib/table/Table.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="75" column="60" selection-start-line="75" selection-start-column="60" selection-end-line="75" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintList.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3810">
-          <caret line="261" column="18" selection-start-line="261" selection-start-column="13" selection-end-line="261" selection-end-column="18" />
+        <state relative-caret-position="432">
+          <caret line="84" column="27" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Account/AccountList.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1560">
-          <caret line="110" column="53" selection-start-line="110" selection-start-column="53" selection-end-line="110" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Role/EditRole.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="64" selection-start-line="64" selection-end-line="64" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/models/shortName.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="20" column="36" lean-forward="true" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/step.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1140">
-          <caret line="76" column="29" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="54" selection-start-line="54" selection-end-line="58" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="126" column="6" lean-forward="true" selection-start-line="126" selection-start-column="6" selection-end-line="126" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/ShotName/Group.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="42" column="7" lean-forward="true" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/ShotName/College.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="32" column="25" lean-forward="true" selection-start-line="32" selection-start-column="25" selection-end-line="35" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/ShotName/Family.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="31" column="36" lean-forward="true" selection-start-line="31" selection-start-column="36" selection-end-line="35" selection-end-column="23" />
+        <state relative-caret-position="2100">
+          <caret line="145" column="10" selection-start-line="137" selection-start-column="7" selection-end-line="145" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/BaseUtils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Staff/EditTransJob.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2070">
+          <caret line="147" column="1" selection-start-line="147" selection-start-column="1" selection-end-line="147" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/models/quality.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-535">
+          <caret line="45" column="27" selection-start-line="45" selection-start-column="27" selection-end-line="45" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/绩效接口/接口格式.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="30" column="1" lean-forward="true" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/绩效接口/8个接口分析.md" />
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Role/CreateRole.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Role/RoleList.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="59" column="76" selection-start-line="59" selection-start-column="74" selection-end-line="59" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Role/CheckRole.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="12" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/xieyi.txt" />
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Role/EditRole.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="49" column="30" selection-start-line="49" selection-start-column="30" selection-end-line="49" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Refund/RefundDel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="18" column="6" lean-forward="true" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityDel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-26">
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintDel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-26" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/layouts/stepLayout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="825">
+          <caret line="119" column="30" selection-start-line="119" selection-start-column="20" selection-end-line="119" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Refund/RefundAdd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="189" column="17" selection-start-line="189" selection-start-column="7" selection-end-line="189" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepTable.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepUpload.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="34" column="27" lean-forward="true" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepSucess.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/stepInput.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-207" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="33" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/newRoleForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="8" selection-start-line="8" selection-end-line="13" selection-end-column="3" />
+          <folding>
+            <element signature="e#37#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/public/favicon.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/CheckBoxForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="50" column="28" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/Performance/PerformanceForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="81" column="34" selection-start-line="81" selection-start-column="34" selection-end-line="81" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/common/urlPathMap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="28" lean-forward="true" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/common/router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-501">
+          <caret line="365" column="25" selection-start-line="365" selection-start-column="25" selection-end-line="365" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/models/cacheManage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/models/complaintDoubles.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="25" column="80" lean-forward="true" selection-start-line="25" selection-start-column="80" selection-end-line="25" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityAdd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="94" column="26" selection-start-line="94" selection-start-column="23" selection-end-line="94" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/services/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="598" column="18" lean-forward="true" selection-start-line="598" selection-start-column="18" selection-end-line="598" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Performance/_dialog.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="20" column="35" lean-forward="true" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Complaint/ComplaintAdd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="125" column="37" selection-start-line="125" selection-start-column="26" selection-end-line="125" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Performance/ImportPerformance.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="97" column="21" selection-start-line="97" selection-start-column="21" selection-end-line="97" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/models/blComplain.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="132" column="45" lean-forward="true" selection-start-line="123" selection-start-column="5" selection-end-line="132" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Performance/CollegePerformance.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="51" column="24" lean-forward="true" selection-start-line="51" selection-start-column="24" selection-end-line="52" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/models/collegePerformance.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="485">
+          <caret line="156" column="7" selection-start-line="156" selection-start-column="7" selection-end-line="156" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -52,14 +52,14 @@ class ImportPerformance extends Component {
   // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
-      type: 'performance/checkQuality',
+      type: 'performance/importKpiData',
       payload: { params },
     });
   };
   // 保存excel数据
   saveExcelData = params => {
     this.props.dispatch({
-      type: 'performance/saveExcel',
+      type: 'performance/saveKpiData',
       payload: { params },
     });
   };
@@ -91,28 +91,12 @@ class ImportPerformance extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '行数',
-        dataIndex: 'rowNum',
+        title: '规则',
+        dataIndex: 'actualKpi',
       },
       {
-        title: '质检单号',
-        dataIndex: 'qualityNum',
-      },
-      {
-        title: '监控日期',
-        dataIndex: 'qualityDate',
-      },
-      {
-        title: '班主任id',
-        dataIndex: 'teaId',
-      },
-      {
-        title: '违规等级',
-        dataIndex: 'qualityType',
-      },
-      {
-        title: '扣除学分',
-        dataIndex: 'countValue',
+        title: '报错提示语',
+        dataIndex: 'idCard',
       },
     ];
     return columns;
@@ -184,7 +168,7 @@ class ImportPerformance extends Component {
         content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
       },
     ];
-    // fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
+    fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
     return (
       <StepLayout
         routerData={this.props.routerData}

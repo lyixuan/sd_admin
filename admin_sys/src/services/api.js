@@ -599,13 +599,24 @@ export async function getPersonalPerformanceList(params) {
     method: 'GET',
   });
 }
-export async function exportCollegeKpi(params) {
-  // 导出绩效金额
-  return request(`${HOST}/collegeKpi/exportCollegeKpi?${stringify(params)}`, {
+export async function listCollege(params) {
+  // 导出绩效金额的导出范围
+  return request(`${HOST}/sn/listCollege?${stringify(params)}`, {
     method: 'GET',
   });
 }
-
+export async function exportCollegeAchievement(params) {
+  // 导出绩效金额
+  return request(`${HOST}/collegeKpi/exportCollegeAchievement?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function exportCollegeDetailKpi(params) {
+  // 导出绩效详情
+  return request(`${HOST}/collegeKpi/exportCollegeDetailKpi?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
 export async function importKpiData(params) {
   // 校验excel文件
   return request(`${HOST}/collegeKpi/verifyKpiDataFromExcel`, {
