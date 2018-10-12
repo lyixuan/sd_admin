@@ -21,7 +21,8 @@ export default {
   },
 
   effects: {
-    *getExportCollegeList({ call, put }) {
+    *getExportCollegeList({ payload }, { call, put }) {
+      console.log(payload);
       const response = yield call(listCollege);
       if (response.code === 2000) {
         yield put({ type: 'saveListCollege', payload: { listCollege: response.data } });
