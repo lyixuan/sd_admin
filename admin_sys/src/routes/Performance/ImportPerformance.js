@@ -77,7 +77,6 @@ class ImportPerformance extends Component {
     });
   };
   editLoading = isLoading => {
-    console.log(isLoading);
     this.props.dispatch({
       type: 'performance/editLoading',
       payload: { isLoading },
@@ -126,7 +125,7 @@ class ImportPerformance extends Component {
             margin: '116px auto 0',
           }}
         >
-          本次添加质检数量
+          本次添加数据
           <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
           条！确定上传？
         </div>

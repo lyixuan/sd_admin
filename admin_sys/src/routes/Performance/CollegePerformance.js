@@ -139,13 +139,13 @@ class CollegePerformance extends Component {
 
   // 导出绩效金额
   exportAmount = () => {
+    const collegeGroup = { ...this.props.performance.listCollege, 0: '全部学院' };
     this.setState({
       isShowModal: true,
       fetchUrl: 'performance/exportCollegeAchievement',
-      collegeGroup: this.props.performance.listCollege,
+      collegeGroup,
       title: '导出绩效金额',
     });
-    console.log('导出绩效金额');
   };
 
   // 导出绩效详情
@@ -159,7 +159,6 @@ class CollegePerformance extends Component {
       },
       title: '导出绩效详情',
     });
-    console.log('导出绩效详情');
   };
   // 导入实发绩效
   importPerformance = () => {

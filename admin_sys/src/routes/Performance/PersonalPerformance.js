@@ -46,6 +46,7 @@ class PersonalPerformance extends Component {
 
   getData = params => {
     const getListParams = { ...this.props.performance.getListParams, ...params };
+    console.log(getListParams);
     this.props.dispatch({
       type: 'performance/getPersonalList',
       payload: { getListParams },

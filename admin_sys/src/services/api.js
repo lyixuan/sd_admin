@@ -605,16 +605,19 @@ export async function listCollege(params) {
     method: 'GET',
   });
 }
-export async function exportCollegeAchievement(params) {
+export function exportCollegeAchievement(params) {
   // 导出绩效金额
+  // window.location.href=`${HOST}/collegeKpi/exportCollegeAchievement?${stringify(params)}`;
   return request(`${HOST}/collegeKpi/exportCollegeAchievement?${stringify(params)}`, {
     method: 'GET',
+    stream: 'bolb',
   });
 }
-export async function exportCollegeDetailKpi(params) {
+export function exportCollegeDetailKpi(params) {
   // 导出绩效详情
   return request(`${HOST}/collegeKpi/exportCollegeDetailKpi?${stringify(params)}`, {
     method: 'GET',
+    stream: 'bolb',
   });
 }
 export async function importKpiData(params) {

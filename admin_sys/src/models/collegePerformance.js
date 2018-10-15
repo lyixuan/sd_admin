@@ -9,6 +9,13 @@ import {
   saveKpiData,
 } from '../services/api';
 
+function tagLoad(blob, name) {
+  const a = document.createElement('a');
+  const url = window.URL.createObjectURL(blob);
+  a.href = url;
+  a.download = name;
+  a.click();
+}
 export default {
   namespace: 'performance',
 
@@ -21,8 +28,7 @@ export default {
   },
 
   effects: {
-    *getExportCollegeList({ payload }, { call, put }) {
-      console.log(payload);
+    *getExportCollegeList(_, { call, put }) {
       const response = yield call(listCollege);
       if (response.code === 2000) {
         yield put({ type: 'saveListCollege', payload: { listCollege: response.data } });
@@ -49,23 +55,28 @@ export default {
         message.error(response.msg);
       }
     },
-    *exportCollegeAchievement({ payload }, { call, put }) {
-      const response = yield call(exportCollegeAchievement, { ...payload });
+    *exportCollegeAchievement({ payload }, { call }) {
+      const { type, keyYM, collegeName, dateTime } = payload;
+      const response = yield call(exportCollegeAchievement, { type, keyYM });
+      const excelName = `绩效金额-${collegeName}-${dateTime}`;
+      yield call(tagLoad, response, excelName);
 
-      if (response.code === 2000) {
-        yield put({ type: 'save', payload: { response, payload } });
-      } else {
-        message.error(response.msg);
-      }
+      // if (response.code === 2000) {
+      //   yield put({ type: 'save', payload: { response, payload } });
+      // } else {
+      //   message.error(response.msg);
+      // }
     },
-    *exportCollegeDetailKpi({ payload }, { call, put }) {
-      const response = yield call(exportCollegeDetailKpi, { ...payload });
-
-      if (response.code === 2000) {
-        yield put({ type: 'save', payload: { response, payload } });
-      } else {
-        message.error(response.msg);
-      }
+    *exportCollegeDetailKpi({ payload }, { call }) {
+      const { type, keyYM, collegeName, dateTime } = payload;
+      const response = yield call(exportCollegeDetailKpi, { type, keyYM });
+      const excelName = `绩效详情-${collegeName}-${dateTime}`;
+      yield call(tagLoad, response, excelName);
+      // if (response.code === 2000) {
+      //   yield put({ type: 'save', payload: { response, payload } });
+      // } else {
+      //   message.error(response.msg);
+      // }
     },
 
     *importKpiData({ payload }, { call, put }) {
