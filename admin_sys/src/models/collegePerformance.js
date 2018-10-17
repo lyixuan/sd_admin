@@ -46,11 +46,11 @@ export default {
       }
     },
     *getPersonalList({ payload }, { call, put }) {
-      const { getListParams } = payload;
-      const response = yield call(getPersonalPerformanceList, { ...getListParams });
+      const response = yield call(getPersonalPerformanceList, payload);
 
       if (response.code === 2000) {
-        yield put({ type: 'savePersonal', payload: { response, getListParams } });
+        const data = Array.isArray(response.data) ? response.data : [];
+        yield put({ type: 'savePersonal', payload: data });
       } else {
         message.error(response.msg);
       }
@@ -140,10 +140,11 @@ export default {
         dataCollege: action.payload,
       };
     },
-    savePersonal(state, action) {
+    savePersonal(state, { payload }) {
+      const dataPersonal = payload;
       return {
         ...state,
-        dataPersonal: action.payload,
+        dataPersonal,
       };
     },
     saveListCollege(state, action) {
