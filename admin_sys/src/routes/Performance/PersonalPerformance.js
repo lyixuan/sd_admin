@@ -9,7 +9,6 @@ import common from '../Common/common.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-
 // let firstIdCard = '';
 // let firstName = '';
 // let firstActualKpi = 0;
