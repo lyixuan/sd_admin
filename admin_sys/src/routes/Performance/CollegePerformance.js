@@ -98,6 +98,7 @@ class CollegePerformance extends Component {
           </div>
         ),
         dataIndex: 'collegeTotalKpi',
+        align: 'center',
       },
       {
         title: (
@@ -106,6 +107,7 @@ class CollegePerformance extends Component {
           </div>
         ),
         dataIndex: 'familyTotalKpi',
+        align: 'center',
       },
       {
         title: (
@@ -114,6 +116,7 @@ class CollegePerformance extends Component {
           </div>
         ),
         dataIndex: 'groupTotalKpi',
+        align: 'center',
       },
       {
         title: '操作',
