@@ -24,7 +24,7 @@ class PerformanceForm extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { dataSource } = this.props;
-    const { loading } = this.props.jumpFunction;
+    const { submitLoading } = this.props.jumpFunction;
     return (
       <div className={styles.m_performance}>
         <Row type="flex" justify="start">
@@ -113,7 +113,7 @@ class PerformanceForm extends Component {
                 htmlType="submit"
                 type="primary"
                 className={common.submitButton}
-                loading={loading}
+                loading={submitLoading}
               >
                 提交
               </Button>

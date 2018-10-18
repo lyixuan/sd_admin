@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Form, Input, Row, Col, Select } from 'antd';
 import { connect } from 'dva';
 import { assignUrlParams } from 'utils/utils';
+import Dict from 'utils/dictionaries';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
@@ -141,17 +142,19 @@ class PersonalPerformance extends Component {
         id: item.id,
         idCard: item.user.idCard,
         name: item.user.name,
+        groupType: Dict.groupTypeDict[item.groupType],
         collegeName: this.renderCollegeName(item),
         totalKpi: item.totalKpi,
         actualKpi: item.actualKpi,
         kpiEffectMonth: item.kpiEffectMonth.effectMonth,
-        kpiPercent: item.kpiPercent,
+        kpiPercent: Number(item.kpiPercent) * 100,
       })
     );
     return data;
   };
   checkDetail = record => {
-    this.props.setRouteUrlParams('/performance/editPerformance', { id: record.id });
+    const { collegeId } = this.state.params;
+    this.props.setRouteUrlParams('/performance/editPerformance', { id: record.id, collegeId });
   };
   // 获取table列表头
   columnsData = () => {
@@ -171,7 +174,7 @@ class PersonalPerformance extends Component {
       },
       {
         title: '岗位',
-        dataIndex: 'groupName',
+        dataIndex: 'groupType',
       },
       {
         title: '学院｜家族｜小组',

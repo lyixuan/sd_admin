@@ -7,6 +7,7 @@ import {
   listCollege, // 导出绩效金额的导出范围
   importKpiData,
   saveKpiData,
+  updateActualKpi,
 } from '../services/api';
 
 function tagLoad(blob, name) {
@@ -130,6 +131,13 @@ export default {
     *initParams({ payload }, { put }) {
       const { disableDel, nums } = payload;
       yield put({ type: 'save', payload: { disableDel, nums } });
+    },
+
+    *updateActualKpi({ payload }, { call }) {
+      const response = yield call(updateActualKpi, payload);
+      if (response !== 2000) {
+        message.error(response.msg);
+      }
     },
   },
 

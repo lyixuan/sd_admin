@@ -635,3 +635,10 @@ export async function saveKpiData(params) {
     body: params,
   });
 }
+export async function updateActualKpi(params) {
+  // 编辑某一员工的绩效信息
+  return request(`${HOST}/updateActualKpi`, {
+    method: 'POST',
+    body: params,
+  });
+}

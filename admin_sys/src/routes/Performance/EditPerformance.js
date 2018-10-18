@@ -8,13 +8,15 @@ const WrappedRegistrationForm = Form.create()(PerformanceForm);
 @connect(({ performance, loading }) => ({
   performance,
   loading,
+  submitLoading: loading.effects['performance/updateActualKpi'],
 }))
 class EditPerformance extends Component {
   componentDidMount() {
-    const { id } = this.props.getUrlParams();
-    console.log(id);
+    const { id, collegeId } = this.props.getUrlParams();
+    console.log(id, collegeId);
     // 根据id获取数据datasource
   }
+  // getUserData = params => {};
 
   handleSubmit = values => {
     console.log(values);
