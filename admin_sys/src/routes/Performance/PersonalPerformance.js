@@ -154,7 +154,7 @@ class PersonalPerformance extends Component {
   };
   checkDetail = record => {
     const { collegeId } = this.state.params;
-    this.props.setRouteUrlParams('/performance/editPerformance', { id: record.id, collegeId });
+    this.props.setRouteUrlParams('/performance/editPerformance', { userId: record.id, collegeId });
   };
   // 获取table列表头
   columnsData = () => {

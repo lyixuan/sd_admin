@@ -637,8 +637,14 @@ export async function saveKpiData(params) {
 }
 export async function updateActualKpi(params) {
   // 编辑某一员工的绩效信息
-  return request(`${HOST}/updateActualKpi`, {
+  return request(`${HOST}/collegeKpi/updateActualKpi`, {
     method: 'POST',
     body: params,
+  });
+}
+export async function findActualKpiInfo(params) {
+  // 查看某一员工的绩效信息
+  return request(`${HOST}/collegeKpi/findActualKpiInfo?${stringify(params)}`, {
+    method: 'GET',
   });
 }

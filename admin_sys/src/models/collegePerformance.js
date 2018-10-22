@@ -1,4 +1,5 @@
 import { message } from 'antd';
+import { routerRedux } from 'dva/router';
 import {
   getCollegePerformanceList,
   getPersonalPerformanceList,
@@ -7,6 +8,7 @@ import {
   listCollege, // 导出绩效金额的导出范围
   importKpiData,
   saveKpiData,
+  findActualKpiInfo,
   updateActualKpi,
 } from '../services/api';
 
@@ -26,6 +28,7 @@ export default {
     disableDel: null,
     isLoading: null,
     listCollege: null,
+    actualKpiInfo: null, //  某员工绩效详情
   },
 
   effects: {
@@ -132,10 +135,25 @@ export default {
       const { disableDel, nums } = payload;
       yield put({ type: 'save', payload: { disableDel, nums } });
     },
+    *findActualKpiInfo({ payload }, { call, put }) {
+      const response = yield call(findActualKpiInfo, payload);
+      if (response.code === 2000) {
+        yield put({
+          type: 'saveActualKpiInfo',
+          payload: response.data,
+        });
+      } else {
+        message.error(response.msg);
+      }
+    },
 
-    *updateActualKpi({ payload }, { call }) {
+    *updateActualKpi({ payload }, { call, put }) {
+      console.log(payload);
       const response = yield call(updateActualKpi, payload);
-      if (response !== 2000) {
+      if (response.code === 2000) {
+        message.success('编辑绩效成功');
+        yield put(routerRedux.goBack());
+      } else {
         message.error(response.msg);
       }
     },
@@ -176,6 +194,10 @@ export default {
         }
       }
       return { ...state, ...action.payload };
+    },
+    saveActualKpiInfo(state, { payload }) {
+      const actualKpiInfo = payload || {};
+      return { ...state, actualKpiInfo };
     },
   },
 };
