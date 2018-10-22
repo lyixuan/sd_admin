@@ -28,7 +28,6 @@ export default {
   effects: {
     *userList({ payload }, { call, put }) {
       const response = yield call(userList, payload.userListParams);
-      // console.log(response);
       if (response.code === 2000) {
         yield put({ type: 'userListSave', payload: { response } });
       } else {

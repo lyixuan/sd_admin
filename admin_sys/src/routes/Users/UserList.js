@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import { assignUrlParams } from 'utils/utils';
 import { Table, Button, Form, Input, Popconfirm, Row, Col, Select } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import { userTypeData, isUpdateDataReset } from '../../utils/dataDictionary';
+import { userTypeData } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 let propsVal = '';
-
-// 添加全局变量 ，记录搜索或是跳转到某一页到编辑页面之后返回到list页面回显所用。
-let firstName = ''; // 搜索框的姓名字段
-let firstMail = ''; // 搜索框的邮箱字段
-let firstUpdate = '全部'; // 搜索框的需要更新字段
-let firstPage = 0; // 分页的默认起开页面
 
 @connect(({ user, loading }) => ({
   user,
@@ -24,43 +19,33 @@ let firstPage = 0; // 分页的默认起开页面
 class UserList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const params = this.props.getUrlParams();
+    const initParams = {
+      params: {
+        name: '',
+        mail: '',
+        isUpdate: 1,
+        pageNum: 0, // 翻页---当前页码
+        pageSize: 30, // 每页显示数据
+      },
+    };
+    this.state = assignUrlParams(initParams, params);
+    this.selectOptions = [
+      { value: 0, label: '全部' },
+      { value: 1, label: '是' },
+      { value: 2, label: '否' },
+    ];
   }
 
   // 页面render之前需要请求的接口
   componentDidMount() {
-    const initVal = this.props.getUrlParams();
-    firstName = !initVal.firstName ? '' : initVal.firstName;
-    firstMail = !initVal.firstMail ? '' : initVal.firstMail;
-    firstUpdate = !initVal.firstUpdate ? '全部' : initVal.firstUpdate;
-    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
-    const userListParams = {
-      pageSize: 30,
-      pageNum: !firstPage ? 0 : firstPage,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !firstName ? undefined : firstName,
-      mail: !firstMail ? undefined : firstMail,
-    };
-    this.getData(userListParams);
-  }
-  // 组件卸载时清除声明的变量
-  componentWillUnmount() {
-    firstName = null;
-    firstMail = null;
-    firstUpdate = null;
-    firstPage = null;
+    this.getData();
   }
 
   // 删除用户
   onDelete = val => {
     const userDeleteParams = { id: val.id };
-    const userListParams = {
-      pageSize: 30,
-      pageNum: !firstPage ? 0 : firstPage,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !firstName ? undefined : firstName,
-      mail: !firstMail ? undefined : firstMail,
-    };
+    const userListParams = this.state.params
     this.props.dispatch({
       type: 'user/userDelete',
       payload: { userDeleteParams, userListParams },
@@ -70,13 +55,7 @@ class UserList extends Component {
   // 更新用户
   onUpdate = val => {
     const updateUserOrgParams = { id: val.id };
-    const userListParams = {
-      pageSize: 30,
-      pageNum: !firstPage ? 0 : firstPage,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !firstName ? undefined : firstName,
-      mail: !firstMail ? undefined : firstMail,
-    };
+    const userListParams = this.state.params
     this.props.dispatch({
       type: 'user/updateUserOrg',
       payload: { updateUserOrgParams, userListParams },
@@ -86,10 +65,7 @@ class UserList extends Component {
   // 编辑用户
   onEdit = val => {
     const mail = val.mail || '';
-    this.props.setRouteUrlParams('/user/editUser', {
-      mail,
-      userType: val.userType,
-    });
+    this.props.setRouteUrlParams('/user/editUser', {mail, userType: val.userType});
   };
 
   // 点击显示每页多少条数据函数
@@ -97,31 +73,28 @@ class UserList extends Component {
     this.changePage(current, size);
   };
 
-  getData = userListParams => {
+  getData = params => {
+    const stateParams = this.state.params;
+    const userListParams = { ...stateParams, ...params };
     this.props.dispatch({
       type: 'user/userList',
-      payload: { userListParams },
+      payload:{userListParams},
     });
+    this.saveParams(userListParams);
   };
 
-  savaParams = params => {
+  saveParams = params => {
+    this.setState({ params });
     this.props.setCurrentUrlParams(params);
   };
 
   // 点击某一页函数
   changePage = (current, size) => {
-    firstPage = current - 1;
-    this.savaParams({
-      firstPage: !firstPage ? 0 : firstPage,
-    });
-    const userListParams = {
+    const params = {
+      pageNum: current > 1 ? current - 1 : 0,
       pageSize: size,
-      pageNum: current - 1,
-      isUpdate: !firstUpdate ? 0 : isUpdateDataReset[firstUpdate],
-      name: !firstName ? undefined : firstName,
-      mail: !firstMail ? undefined : firstMail,
     };
-    this.getData(userListParams);
+    this.getData(params);
   };
 
   // 初始化tabale 列数据
@@ -230,12 +203,14 @@ class UserList extends Component {
   // 表单重置
   handleReset = () => {
     propsVal.form.resetFields();
-    firstName = '';
-    firstMail = '';
-    firstUpdate = '全部';
-    firstPage = 0;
-    this.props.setRouteUrlParams('/config/userList');
-    this.getData({ pageSize: 30, pageNum: 0, isUpdate: 0 });
+    const params = {
+      pageSize: 30,
+      pageNum: 0,
+      isUpdate: 0,
+      name:'',
+      mail:'',
+    };
+    this.getData(params);
   };
 
   // 表单搜索
@@ -243,20 +218,12 @@ class UserList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        firstName = !values.name ? undefined : values.name.replace(/\s*/g, '');
-        firstMail = !values.mail ? undefined : values.mail;
-        firstUpdate = !values.isUpdate ? '全部' : values.isUpdate;
-        firstPage = 0;
-        this.savaParams({
-          firstUpdate,
-          firstName,
-          firstMail,
-          firstPage: 0,
-        });
+       const isUpdate = this.selectOptions.find(item => item.label === values.isUpdate).value;
+        const {mail=undefined} = values ;
         const userListParams = {
-          isUpdate: isUpdateDataReset[firstUpdate],
+          isUpdate,
           name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
-          mail: !values.mail ? undefined : values.mail,
+          mail,
           pageSize: 30,
           pageNum: 0,
         };
@@ -272,6 +239,7 @@ class UserList extends Component {
 
   render() {
     const { loading } = this.props;
+    const { name,mail,isUpdate ,pageNum} = this.state.params;
     const data = !this.props.user.userList.response
       ? []
       : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
@@ -289,7 +257,7 @@ class UserList extends Component {
               <Col span={8}>
                 <FormItem label="姓名">
                   {getFieldDecorator('name', {
-                    initialValue: firstName,
+                    initialValue: name,
                     rules: [
                       {
                         validator(rule, value, callback) {
@@ -308,7 +276,7 @@ class UserList extends Component {
               <Col span={8} style={{ textAlign: 'center' }}>
                 <FormItem label="邮箱">
                   {getFieldDecorator('mail', {
-                    initialValue: firstMail,
+                    initialValue: mail,
                   })(<Input placeholder="请输入邮箱" style={{ width: 140, height: 32 }} />)}
                   <span style={{ width: 100, marginLeft: '6px' }}> @sunlands.com</span>
                 </FormItem>
@@ -316,12 +284,15 @@ class UserList extends Component {
               <Col span={8} style={{ textAlign: 'right' }}>
                 <FormItem label="需要更新">
                   {getFieldDecorator('isUpdate', {
-                    initialValue: !firstUpdate ? '全部' : firstUpdate,
+                    initialValue: this.selectOptions.find(item => item.value === isUpdate).label,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                      <Option value="全部">全部</Option>
-                      <Option value="是">是</Option>
-                      <Option value="否">否</Option>
+                      {this.selectOptions.map(item => (
+                        <Option value={item.label} key={item.label}>
+                          {item.label}
+                        </Option>
+                      ))}
+
                     </Select>
                   )}
                 </FormItem>
@@ -381,7 +352,7 @@ class UserList extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={firstPage + 1}
+            defaultCurrent={pageNum + 1}
             total={totalNum}
             defaultPageSize={30}
           />
