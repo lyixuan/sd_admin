@@ -14,7 +14,7 @@ function tagLoad(blob, name) {
   const a = document.createElement('a');
   const url = window.URL.createObjectURL(blob);
   a.href = url;
-  a.download = name;
+  a.download = `${name}.xlsx`;
   a.click();
 }
 export default {
