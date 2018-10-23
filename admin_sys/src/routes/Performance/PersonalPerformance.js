@@ -192,10 +192,10 @@ class PersonalPerformance extends Component {
         title: '实发金额',
         dataIndex: 'actualKpi',
       },
-      {
-        title: '调整比例（%）',
-        dataIndex: 'kpiPercent',
-      },
+      // {
+      //   title: '调整比例（%）',
+      //   dataIndex: 'kpiPercent',
+      // },
       {
         title: '操作',
         dataIndex: 'operation',
