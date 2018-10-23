@@ -148,7 +148,6 @@ export default {
     },
 
     *updateActualKpi({ payload }, { call, put }) {
-      console.log(payload);
       const response = yield call(updateActualKpi, payload);
       if (response.code === 2000) {
         message.success('编辑绩效成功');

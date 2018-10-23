@@ -84,7 +84,7 @@ class ImportPerformance extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/performance/qualityList',
+      pathname: '/performance/collegePerformance',
     });
   }
   columnsData = () => {
