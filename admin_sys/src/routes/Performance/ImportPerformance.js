@@ -151,7 +151,7 @@ class ImportPerformance extends Component {
             saveFileList={param => {
               this.saveFileList(param);
             }}
-            customTip={() => <p>多次导入的话，会覆盖之前的数据</p>}
+            customTip={() => <p>单月绩效仅允许导入一次，请确保数据准确后再上传</p>}
           />
         ),
       },
