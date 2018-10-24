@@ -10,10 +10,6 @@ import common from '../Common/common.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-// let firstIdCard = '';
-// let firstName = '';
-// let firstActualKpi = 0;
-// let firstPage = 0; // 分页的默认起开页面
 @connect(({ performance, loading }) => ({
   performance,
   loading: loading.models.performance,
@@ -44,23 +40,8 @@ class PersonalPerformance extends Component {
   }
 
   componentDidMount() {
-    // const initVal = this.props.getUrlParams();
-    // firstIdCard = !initVal.firstIdCard ? '' : Number(initVal.firstPage);
-    // firstName = !initVal.firstName ? '' : initVal.firstName;
-    // firstActualKpi = !initVal.firstActualKpi ? '----' : Number(initVal.firstActualKpi);
-    // firstPage = !initVal.firstPage ? '全部' : initVal.firstIdCard;
-    // const name = !firstName ? undefined : firstName;
-    // const actualKpi = !firstActualKpi ? undefined : firstActualKpi;
-    // const number = !firstPage ? 0 : firstPage;
-    // console.log({ size: 30, number, collegeId: initVal.collegeId, name, actualKpi })
-
     this.getData();
   }
-
-  // componentWillUnmount() {
-  //   firstName = null;
-  //   firstActualKpi = null;
-  // }
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
@@ -68,7 +49,6 @@ class PersonalPerformance extends Component {
   };
 
   getData = (params = {}) => {
-    // const getListParams = { ...this.props.performance.getListParams, ...params };
     const stateParams = this.state.params;
     const newParams = { ...stateParams, ...params };
     this.props.dispatch({
@@ -89,12 +69,6 @@ class PersonalPerformance extends Component {
       size,
     };
     this.getData(params);
-    // this.getData({
-    //   size: pageSize,
-    //   number: firstPage,
-    //   name: !firstName ? undefined : firstName,
-    //   actualKpi: !firstActualKpi ? undefined : firstActualKpi,
-    // });
   };
 
   // 表单搜索函数
@@ -104,20 +78,7 @@ class PersonalPerformance extends Component {
       if (!err) {
         const { name, idCard } = values;
         const actualKpi = this.selectOptions.find(item => item.label === values.actualKpi).value;
-
-        // firstIdCard = !values.idCard ? '----' : values.idCard;
-        // firstName = !values.name ? undefined : values.name;
-        // firstActualKpi = !values.actualKpi ? undefined : values.actualKpi;
-        // firstPage = 0;
-        // const qualityListParams = {
-        //   size: 30,
-        //   number: 0,
-        //   idCard: firstIdCard,
-        //   name: firstName,
-        //   actualKpi: firstActualKpi,
-        // };
         this.getData({ name, idCard, actualKpi });
-        // this.props.setCurrentUrlParams({ firstName, firstActualKpi, firstPage });
       }
     });
   };
