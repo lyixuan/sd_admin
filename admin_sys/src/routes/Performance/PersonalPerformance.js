@@ -148,13 +148,17 @@ class PersonalPerformance extends Component {
         actualKpi: item.actualKpi,
         kpiEffectMonth: item.kpiEffectMonth.effectMonth,
         kpiPercent: Number(item.kpiPercent) * 100,
+        userId: item.userId,
       })
     );
     return data;
   };
   checkDetail = record => {
     const { collegeId } = this.state.params;
-    this.props.setRouteUrlParams('/performance/editPerformance', { userId: record.id, collegeId });
+    this.props.setRouteUrlParams('/performance/editPerformance', {
+      userId: record.userId,
+      collegeId,
+    });
   };
   // 获取table列表头
   columnsData = () => {
