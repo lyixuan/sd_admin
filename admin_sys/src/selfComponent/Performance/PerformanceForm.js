@@ -15,8 +15,8 @@ class PerformanceForm extends Component {
   }
   getUserInfo = () => {
     const actualKpiInfo = this.props.actualKpiInfo || {};
-    const { totalKpi, userId } = actualKpiInfo;
-    return { totalKpi, id: userId };
+    const { totalKpi, id } = actualKpiInfo;
+    return { totalKpi, id };
   };
   handleSubmit = e => {
     e.preventDefault();
