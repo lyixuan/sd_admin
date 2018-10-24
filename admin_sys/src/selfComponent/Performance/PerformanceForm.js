@@ -108,7 +108,7 @@ class PerformanceForm extends Component {
                       pattern:  /(^[1-9]([0-9]{1,9})?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/g,
                       message: '输入金额不合法',
                     },
-                    { required: true, message: '实发金额为必填项，请填写！', whitespace: true },
+                    { required: true, message: '实发金额为必填项，请填写！' },
                   ],
                 })(<Input style={{ width: 280, height: 32 }} />)}
                 <span className={styles.inputTip}>更新实发金额后，打分绩效=实发金额-基本绩效</span>
