@@ -55,12 +55,15 @@ class College extends Component {
       message.error('学院简称不可为空');
       this.showModal(true);
     } else {
+      const {collegeName=null}= this.state
+
       const paramsObj = {
         id,
         collegeShortName,
         objId,
         objName,
         objType,
+        orgName:collegeName,
       };
       this.props.dispatch({
         type: 'shortName/editCollege',

@@ -57,12 +57,14 @@ class Group extends Component {
       message.error('小组简称不可为空');
       this.showModal(true);
     } else {
+      const {groupName=null}= this.state
       const paramsObj = {
         id,
         groupShortName,
         objId,
         objName,
         objType,
+        orgName:groupName,
       };
       this.props.dispatch({
         type: 'shortName/editGroup',

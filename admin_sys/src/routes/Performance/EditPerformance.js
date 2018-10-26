@@ -8,17 +8,26 @@ const WrappedRegistrationForm = Form.create()(PerformanceForm);
 @connect(({ performance, loading }) => ({
   performance,
   loading,
+  submitLoading: loading.effects['performance/updateActualKpi'],
+  actualKpiInfo: performance.actualKpiInfo,
 }))
 class EditPerformance extends Component {
   componentDidMount() {
-    const { id } = this.props.getUrlParams();
-    console.log(id);
-    // 根据id获取数据datasource
+    const { userId, collegeId } = this.props.getUrlParams();
+    this.getUserData({ userId, collegeId });
   }
+  getUserData = (payload = {}) => {
+    this.props.dispatch({
+      type: 'performance/findActualKpiInfo',
+      payload,
+    });
+  };
 
-  handleSubmit = values => {
-    console.log(values);
-    // 提交时请求接口
+  handleSubmit = payload => {
+    this.props.dispatch({
+      type: 'performance/updateActualKpi',
+      payload,
+    });
   };
 
   resetContent = () => {
@@ -26,6 +35,7 @@ class EditPerformance extends Component {
   };
 
   render() {
+    const actualKpiInfo = this.props.actualKpiInfo || {};
     const dataSource = [];
     return (
       <ContentLayout
@@ -36,6 +46,7 @@ class EditPerformance extends Component {
             resetContent={() => {
               this.resetContent();
             }}
+            actualKpiInfo={actualKpiInfo}
             dataSource={dataSource}
             handleSubmit={values => {
               this.handleSubmit(values);

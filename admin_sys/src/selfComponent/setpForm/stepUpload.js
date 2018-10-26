@@ -12,6 +12,7 @@ import { checkoutToken } from '../../utils/request';
 
 let isExcel = false;
 let isLt10M = false;
+let isDel = false;
 class stepUpload extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,7 @@ class stepUpload extends Component {
     };
   }
   handleChange = info => {
-    // todo 目前支持上传一个文件
+    // tip 目前支持上传一个文件
     let { fileList } = info;
     if (isLt10M) {
       fileList = fileList.slice(-1);
@@ -29,6 +30,9 @@ class stepUpload extends Component {
       }
     }
     const { callBackParent, saveFileList } = this.props;
+    if (isDel) {
+      return callBackParent(true, '');
+    }
     if (info.file.response) {
       if (info.file.response.code === 2000) {
         callBackParent(false, info.file.response.data);
@@ -66,6 +70,7 @@ class stepUpload extends Component {
       },
       action: uploadUrl,
       beforeUpload(file) {
+        isDel = false;
         isExcel = file.name.split('.')[1] === 'xlsx' || file.name.split('.')[1] === 'xls';
         if (!isExcel) {
           message.error('请上传 Excel 文件！');
@@ -79,6 +84,7 @@ class stepUpload extends Component {
       },
       onChange: this.handleChange,
       onRemove(e) {
+        isDel = true;
         console.log(e);
       },
     };

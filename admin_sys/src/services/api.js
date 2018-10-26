@@ -337,7 +337,7 @@ export async function deletePosition(params) {
 
 // 用户编辑-列表页面---编辑用户岗位信息(拿user表id 去更新岗位信息）
 export async function updateUserPositionInfo(params) {
-  return request(`${HOST}/user/updateUserPositionInfo`, {
+  return request(`${HOST}/user/updateUserPositionInfo2`, {
     method: 'PUT',
     body: params,
   });
@@ -599,13 +599,27 @@ export async function getPersonalPerformanceList(params) {
     method: 'GET',
   });
 }
-export async function exportCollegeKpi(params) {
-  // 导出绩效金额
-  return request(`${HOST}/collegeKpi/exportCollegeKpi?${stringify(params)}`, {
+export async function listCollege(params) {
+  // 导出绩效金额的导出范围
+  return request(`${HOST}/sn/listCollege?${stringify(params)}`, {
     method: 'GET',
   });
 }
-
+export function exportCollegeAchievement(params) {
+  // 导出绩效金额
+  // window.location.href=`${HOST}/collegeKpi/exportCollegeAchievement?${stringify(params)}`;
+  return request(`${HOST}/collegeKpi/exportCollegeAchievement?${stringify(params)}`, {
+    method: 'GET',
+    stream: 'bolb',
+  });
+}
+export function exportCollegeDetailKpi(params) {
+  // 导出绩效详情
+  return request(`${HOST}/collegeKpi/exportCollegeDetailKpi?${stringify(params)}`, {
+    method: 'GET',
+    stream: 'bolb',
+  });
+}
 export async function importKpiData(params) {
   // 校验excel文件
   return request(`${HOST}/collegeKpi/verifyKpiDataFromExcel`, {
@@ -619,5 +633,18 @@ export async function saveKpiData(params) {
   return request(`${HOST}/collegeKpi/saveKpiDatas`, {
     method: 'POST',
     body: params,
+  });
+}
+export async function updateActualKpi(params) {
+  // 编辑某一员工的绩效信息
+  return request(`${HOST}/collegeKpi/updateActualKpi`, {
+    method: 'POST',
+    body: params,
+  });
+}
+export async function findActualKpiInfo(params) {
+  // 查看某一员工的绩效信息
+  return request(`${HOST}/collegeKpi/findActualKpiInfo?${stringify(params)}`, {
+    method: 'GET',
   });
 }

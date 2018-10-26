@@ -16,7 +16,7 @@ class ImportPerformance extends Component {
     super(props);
     this.state = {
       isDisabled: true,
-      // checkParams: '',
+      checkParams: '',
     };
   }
   componentDidMount() {
@@ -34,7 +34,7 @@ class ImportPerformance extends Component {
     if (checkParams) {
       this.setState({
         isDisabled: bol,
-        // checkParams,
+        checkParams,
       });
     } else {
       this.setState({
@@ -45,21 +45,21 @@ class ImportPerformance extends Component {
   // 初始化一些值
   initParamsFn = disableDel => {
     this.props.dispatch({
-      type: 'quality/initParams',
+      type: 'performance/initParams',
       payload: { disableDel },
     });
   };
   // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
-      type: 'performance/checkQuality',
+      type: 'performance/importKpiData',
       payload: { params },
     });
   };
   // 保存excel数据
   saveExcelData = params => {
     this.props.dispatch({
-      type: 'performance/saveExcel',
+      type: 'performance/saveKpiData',
       payload: { params },
     });
   };
@@ -77,7 +77,6 @@ class ImportPerformance extends Component {
     });
   };
   editLoading = isLoading => {
-    console.log(isLoading);
     this.props.dispatch({
       type: 'performance/editLoading',
       payload: { isLoading },
@@ -85,7 +84,7 @@ class ImportPerformance extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/performance/qualityList',
+      pathname: '/performance/collegePerformance',
     });
   }
   columnsData = () => {
@@ -95,32 +94,20 @@ class ImportPerformance extends Component {
         dataIndex: 'rowNum',
       },
       {
-        title: '质检单号',
-        dataIndex: 'qualityNum',
+        title: '身份证号',
+        dataIndex: 'idCard',
       },
       {
-        title: '监控日期',
-        dataIndex: 'qualityDate',
-      },
-      {
-        title: '班主任id',
-        dataIndex: 'teaId',
-      },
-      {
-        title: '违规等级',
-        dataIndex: 'qualityType',
-      },
-      {
-        title: '扣除学分',
-        dataIndex: 'countValue',
+        title: '实发金额',
+        dataIndex: 'actualKpi',
       },
     ];
     return columns;
   };
   render() {
-    const fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
+    let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
     const { current, checkList, fileList, disableDel, isLoading } = this.props.performance;
-    const { isDisabled } = this.state;
+    const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;
 
@@ -138,7 +125,7 @@ class ImportPerformance extends Component {
             margin: '116px auto 0',
           }}
         >
-          本次添加质检数量
+          本次添加数据
           <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
           条！确定上传？
         </div>
@@ -164,7 +151,7 @@ class ImportPerformance extends Component {
             saveFileList={param => {
               this.saveFileList(param);
             }}
-            customTip={() => <p>多次导入的话，回覆盖之前的数据</p>}
+            customTip={() => <p>单月绩效仅允许导入一次，请确保数据准确后再上传</p>}
           />
         ),
       },
@@ -184,7 +171,7 @@ class ImportPerformance extends Component {
         content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
       },
     ];
-    // fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
+    fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
     return (
       <StepLayout
         routerData={this.props.routerData}

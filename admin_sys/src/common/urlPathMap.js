@@ -38,10 +38,10 @@ const urlPathMap = {
     name: '编辑家族短名称',
   },
   '/performance/exportDetail': {
-    name: '导出绩效金额',
-  },
-  '/performance/importAmount': {
     name: '导出绩效详情',
+  },
+  '/performance/exportAmount': {
+    name: '导出绩效金额',
   },
 };
 export { urlPathMap };

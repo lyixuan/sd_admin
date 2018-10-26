@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
 import { Select } from 'antd';
+import moment from 'moment';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 
 const { Option } = Select;
 
 class DialogPerformance extends Component {
   paramObj = {
-    collegeId: '',
+    type: '',
     keyYM: '',
+    collegeName: '',
+    dateTime: '',
   };
   clickModalOK = () => {
     this.props.fetchData(this.paramObj);
   };
-  handleSelectChange1 = val => {
-    this.paramObj.collegeId = val;
+  handleSelectChange1 = (val, options) => {
+    const opsObj = options.props || {};
+    this.paramObj.collegeName = opsObj.children || '';
+    this.paramObj.type = val;
   };
   handleSelectChange2 = val => {
+    const formatStr = 'YYYY-MM';
+    this.paramObj.dateTime =
+      val === '1'
+        ? moment().format(formatStr)
+        : moment()
+            .subtract(1, 'month')
+            .format(formatStr);
     this.paramObj.keyYM = val;
   };
   renderContent = collegeGroup => {

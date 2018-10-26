@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Button, Form, Input, Row, Col, Select } from 'antd';
 import { connect } from 'dva';
+import { assignUrlParams } from 'utils/utils';
+import Dict from 'utils/dictionaries';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
@@ -8,11 +10,6 @@ import common from '../Common/common.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-
-let firstIdCard = '';
-let firstName = '';
-let firstActualKpi = 0;
-let firstPage = 0; // 分页的默认起开页面
 @connect(({ performance, loading }) => ({
   performance,
   loading: loading.models.performance,
@@ -20,23 +17,30 @@ let firstPage = 0; // 分页的默认起开页面
 class PersonalPerformance extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-  }
-  componentDidMount() {
-    const initVal = this.props.getUrlParams();
-    firstIdCard = !initVal.firstIdCard ? '' : Number(initVal.firstPage);
-    firstName = !initVal.firstName ? '' : initVal.firstName;
-    firstActualKpi = !initVal.firstActualKpi ? '----' : Number(initVal.firstActualKpi);
-    firstPage = !initVal.firstPage ? '全部' : initVal.firstIdCard;
-    const name = !firstName ? undefined : firstName;
-    const actualKpi = !firstActualKpi ? undefined : firstActualKpi;
-    const number = !firstPage ? 0 : firstPage;
-    this.getData({ size: 30, number, collegeId: initVal.collegeId, name, actualKpi });
+    const params = this.props.getUrlParams();
+    const initParams = {
+      params: {
+        name: '',
+        idCard: '',
+        collegeId: '',
+        actualKpi: '',
+        number: 0, // 翻页---当前页码
+        size: 30, // 每页显示数据
+      },
+    };
+    this.state = assignUrlParams(initParams, params);
+    this.selectOptions = [
+      { value: '', label: '----' },
+      { value: '1', label: '有' },
+      { value: '2', label: '无' },
+    ];
+    this.publickObj = {
+      propsVal: '',
+    };
   }
 
-  componentWillUnmount() {
-    firstName = null;
-    firstActualKpi = null;
+  componentDidMount() {
+    this.getData();
   }
 
   // 点击显示每页多少条数据函数
@@ -44,29 +48,27 @@ class PersonalPerformance extends Component {
     this.changePage(current, pageSize);
   };
 
-  getData = params => {
-    const getListParams = { ...this.props.performance.getListParams, ...params };
+  getData = (params = {}) => {
+    const stateParams = this.state.params;
+    const newParams = { ...stateParams, ...params };
     this.props.dispatch({
       type: 'performance/getPersonalList',
-      payload: { getListParams },
+      payload: newParams,
     });
+    this.saveParams(newParams);
   };
-  publickObj = {
-    propsVal: '',
-    firstIdCard: '',
-    firstName: '',
-    firstActualKpi: '',
+
+  saveParams = params => {
+    this.setState({ params });
+    this.props.setCurrentUrlParams(params);
   };
   // 点击某一页函数
-  changePage = (current, pageSize) => {
-    firstPage = current - 1;
-    this.props.setCurrentUrlParams({ firstPage });
-    this.getData({
-      size: pageSize,
-      number: firstPage,
-      name: !firstName ? undefined : firstName,
-      actualKpi: !firstActualKpi ? undefined : firstActualKpi,
-    });
+  changePage = (current, size) => {
+    const params = {
+      number: current > 1 ? current - 1 : 0,
+      size,
+    };
+    this.getData(params);
   };
 
   // 表单搜索函数
@@ -74,31 +76,22 @@ class PersonalPerformance extends Component {
     e.preventDefault();
     this.publickObj.propsVal.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
-        firstIdCard = !values.idCard ? '----' : values.idCard;
-        firstName = !values.name ? undefined : values.name;
-        firstActualKpi = !values.actualKpi ? undefined : values.actualKpi;
-        firstPage = 0;
-        const qualityListParams = {
-          size: 30,
-          number: 0,
-          idCard: firstIdCard,
-          name: firstName,
-          actualKpi: firstActualKpi,
-        };
-        this.getData(qualityListParams);
-        this.props.setCurrentUrlParams({ firstName, firstActualKpi, firstPage });
+        const { name, idCard } = values;
+        const actualKpi = this.selectOptions.find(item => item.label === values.actualKpi).value;
+        this.getData({ name, idCard, actualKpi });
       }
     });
   };
   // 表单重置
   handleReset = () => {
-    firstName = '';
-    firstActualKpi = '';
-    firstPage = 0;
     this.publickObj.propsVal.form.resetFields();
-    this.props.setRouteUrlParams('/performance/personalPerformance');
-    this.getData({ size: 30, number: 0 });
+    const params = {
+      number: 0,
+      name: '',
+      idCard: '',
+      actualKpi: '',
+    };
+    this.getData(params);
   };
 
   // 初始化tabale 列数据
@@ -110,17 +103,23 @@ class PersonalPerformance extends Component {
         id: item.id,
         idCard: item.user.idCard,
         name: item.user.name,
+        groupType: Dict.groupTypeDict[item.groupType],
         collegeName: this.renderCollegeName(item),
         totalKpi: item.totalKpi,
         actualKpi: item.actualKpi,
         kpiEffectMonth: item.kpiEffectMonth.effectMonth,
-        kpiPercent: item.kpiPercent,
+        kpiPercent: Number(item.kpiPercent) * 100,
+        userId: item.userId,
       })
     );
     return data;
   };
   checkDetail = record => {
-    this.props.setRouteUrlParams('/performance/editPerformance', { id: record.id });
+    const { collegeId } = this.state.params;
+    this.props.setRouteUrlParams('/performance/editPerformance', {
+      userId: record.userId,
+      collegeId,
+    });
   };
   // 获取table列表头
   columnsData = () => {
@@ -140,7 +139,7 @@ class PersonalPerformance extends Component {
       },
       {
         title: '岗位',
-        dataIndex: 'groupName',
+        dataIndex: 'groupType',
       },
       {
         title: '学院｜家族｜小组',
@@ -158,10 +157,10 @@ class PersonalPerformance extends Component {
         title: '实发金额',
         dataIndex: 'actualKpi',
       },
-      {
-        title: '调整比例（%）',
-        dataIndex: 'kpiPercent',
-      },
+      // {
+      //   title: '调整比例（%）',
+      //   dataIndex: 'kpiPercent',
+      // },
       {
         title: '操作',
         dataIndex: 'operation',
@@ -194,11 +193,11 @@ class PersonalPerformance extends Component {
     }
   };
   render() {
-    const val = this.props.performance.dataPersonal ? this.props.performance.dataPersonal : {};
-    const data = !val ? [] : !val.response ? [] : val.response.data;
-    const totalNum = data.length;
-
-    const dataSource = !data ? [] : this.fillDataSource(data);
+    const { number, size, name, idCard, actualKpi } = this.state.params;
+    const { performance = {}, loading } = this.props;
+    const dataPersonal = performance.dataPersonal || [];
+    const dataSource = this.fillDataSource(dataPersonal);
+    const totalNum = dataSource.length;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -211,7 +210,7 @@ class PersonalPerformance extends Component {
               <Col span={6}>
                 <FormItem label="姓名">
                   {getFieldDecorator('name', {
-                    initialValue: firstName,
+                    initialValue: name,
                     rules: [],
                   })(<Input placeholder="请输入姓名" style={{ height: 32 }} />)}
                 </FormItem>
@@ -219,7 +218,7 @@ class PersonalPerformance extends Component {
               <Col span={6} style={{ textAlign: 'center' }}>
                 <FormItem label="身份证号">
                   {getFieldDecorator('idCard', {
-                    initialValue: firstIdCard,
+                    initialValue: idCard,
                     rules: [],
                   })(<Input placeholder="请输入身份证号" maxLength={20} style={{ height: 32 }} />)}
                 </FormItem>
@@ -227,13 +226,18 @@ class PersonalPerformance extends Component {
               <Col span={6} style={{ textAlign: 'center' }}>
                 <FormItem label="实发金额">
                   {getFieldDecorator('actualKpi', {
-                    initialValue: firstActualKpi,
+                    initialValue: this.selectOptions.find(item => item.value === actualKpi).label,
                     rules: [],
                   })(
                     <Select placeholder="请选择" style={{ width: 150, height: 32 }}>
-                      <Option value="0">----</Option>
+                      {this.selectOptions.map(item => (
+                        <Option value={item.label} key={item.label}>
+                          {item.label}
+                        </Option>
+                      ))}
+                      {/* <Option value="">----</Option>
                       <Option value="1">有</Option>
-                      <Option value="2">无</Option>
+                      <Option value="2">无</Option> */}
                     </Select>
                   )}
                 </FormItem>
@@ -265,7 +269,7 @@ class PersonalPerformance extends Component {
           <div>
             <p className={common.totalNum}>总数：{totalNum}条</p>
             <Table
-              loading={this.props.loading}
+              loading={loading}
               bordered
               dataSource={dataSource}
               columns={columns}
@@ -282,9 +286,9 @@ class PersonalPerformance extends Component {
             onShowSizeChange={(current, pageSize) => {
               this.onShowSizeChange(current, pageSize);
             }}
-            defaultCurrent={firstPage + 1}
+            defaultCurrent={number + 1}
             total={totalNum}
-            defaultPageSize={30}
+            defaultPageSize={size}
           />
         }
       />

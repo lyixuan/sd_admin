@@ -17,11 +17,7 @@ class CollegePerformance extends Component {
     const { urlParams = {} } = props;
     const initState = {
       isShowModal: false,
-      collegeGroup: {
-        0: '全部学院',
-        1: '学院1',
-        2: '学院2',
-      },
+      collegeGroup: {},
       title: '导出绩效金额',
       fetchUrl: '',
     };
@@ -29,6 +25,10 @@ class CollegePerformance extends Component {
   }
   componentDidMount() {
     this.getData();
+    this.props.dispatch({
+      type: 'performance/getExportCollegeList',
+      payload: {},
+    });
   }
 
   getData = params => {
@@ -52,23 +52,27 @@ class CollegePerformance extends Component {
   fetchData = param => {
     this.props.dispatch({
       type: this.state.fetchUrl,
-      payload: { param },
+      payload: param,
     });
+
+    this.showModal(false);
   };
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
-    val.map((item, index) =>
-      data.push({
-        key: index,
-        collegeName: item.collegeName,
-        effectMonth: item.effectMonth,
-        collegeTotalKpi: `${+item.collegeTotalKpi} | ${+item.collegeActualKpi}`,
-        familyTotalKpi: `${+item.familyTotalKpi} | ${+item.familyActualKpi}`,
-        groupTotalKpi: `${+item.groupTotalKpi} | ${+item.groupActualKpi}`,
-        collegeId: item.collegeId,
-      })
-    );
+    if (val) {
+      val.map((item, index) =>
+        data.push({
+          key: index,
+          collegeName: item.collegeName,
+          effectMonth: item.effectMonth,
+          collegeTotalKpi: `${+item.collegeTotalKpi} | ${+item.collegeActualKpi}`,
+          familyTotalKpi: `${+item.familyTotalKpi} | ${+item.familyActualKpi}`,
+          groupTotalKpi: `${+item.groupTotalKpi} | ${+item.groupActualKpi}`,
+          collegeId: item.collegeId,
+        })
+      );
+    }
     return data;
   };
 
@@ -94,6 +98,7 @@ class CollegePerformance extends Component {
           </div>
         ),
         dataIndex: 'collegeTotalKpi',
+        align: 'center',
       },
       {
         title: (
@@ -102,6 +107,7 @@ class CollegePerformance extends Component {
           </div>
         ),
         dataIndex: 'familyTotalKpi',
+        align: 'center',
       },
       {
         title: (
@@ -110,6 +116,7 @@ class CollegePerformance extends Component {
           </div>
         ),
         dataIndex: 'groupTotalKpi',
+        align: 'center',
       },
       {
         title: '操作',
@@ -135,36 +142,26 @@ class CollegePerformance extends Component {
 
   // 导出绩效金额
   exportAmount = () => {
+    const collegeGroup = { ...this.props.performance.listCollege, 0: '全部学院' };
     this.setState({
       isShowModal: true,
-      fetchUrl: 'performance/exportCollegeKpi',
-      collegeGroup: {
-        0: '全部学院',
-        1: '皓博',
-        2: '狐逻',
-        3: '派学院',
-        4: '睿博',
-        5: '泰罗',
-        6: '芝士',
-        7: '自变量',
-      },
+      fetchUrl: 'performance/exportCollegeAchievement',
+      collegeGroup,
       title: '导出绩效金额',
     });
-    console.log('导出绩效金额');
   };
 
   // 导出绩效详情
   exportDetail = () => {
     this.setState({
       isShowModal: true,
-      fetchUrl: 'performance/exportCollegeKpi',
+      fetchUrl: 'performance/exportCollegeDetailKpi',
       collegeGroup: {
         0: '家族',
         1: '小组',
       },
       title: '导出绩效详情',
     });
-    console.log('导出绩效详情');
   };
   // 导入实发绩效
   importPerformance = () => {

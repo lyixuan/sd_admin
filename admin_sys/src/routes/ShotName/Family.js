@@ -53,12 +53,14 @@ class Family extends Component {
       message.error('家族简称不可为空');
       this.showModal(true);
     } else {
+      const {familyName=null}= this.state
       const paramsObj = {
         id,
         familyShortName,
         objId,
         objName,
         objType,
+        orgName:familyName,
       };
       this.props.dispatch({
         type: 'shortName/editFamily',

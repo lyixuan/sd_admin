@@ -107,7 +107,7 @@ class CreateDimission extends Component {
                 </span>
               </li>
               <li className={styles.marB_24}>
-                <span className={styles.labelText}>*最后工作日期:</span>
+                <span className={styles.labelText}>离职日期:</span>
                 <span className={styles.labelItem}>
                   <FormItem>
                     {getFieldDecorator('effectDate', {
@@ -115,6 +115,12 @@ class CreateDimission extends Component {
                       rules: [{ required: true, message: '请选择生效开始日期' }],
                     })(datePicker)}
                   </FormItem>
+                </span>
+              </li>
+              <li style={{marginTop:'-1.5rem',color:'#9c9b9b'}}>
+                <span className={styles.labelText} />
+                <span className={styles.labelItem}>
+                  (*非最后工作日期)
                 </span>
               </li>
             </ul>
