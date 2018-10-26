@@ -113,11 +113,12 @@ export default class StaffDetail extends Component {
               <span className={styles.labelItem}>{staffDetail.vacationDuration}</span>
             </li>
             <li>
-              <span className={styles.labelText}>最后工作日:</span>
+              <span className={styles.labelText}>离职日期  (非最后工作日期):</span>
               <span className={styles.labelItem}>
                 {staffDetail.lastday ? moment(staffDetail.lastday).format(dateFormat) : null}
               </span>
             </li>
+
           </ul>
           <div className={styles.tableConent}>
             <h3 className={styles.tableTitle}>转岗信息:</h3>
