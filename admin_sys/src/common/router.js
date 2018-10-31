@@ -375,6 +375,49 @@ export const getRouterData = app => {
       },
       name: '添加申诉',
     },
+    '/performance/familyCoefficient': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Family/index')
+      ),
+      name: '家族系数管理',
+    },
+    '/performance/familyCoefficient/list': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Family/List')
+      ),
+      name: '家族系数管理',
+    },
+    '/performance/familyCoefficient/check': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Family/Check')
+      ),
+      bread: {
+        name: '家族系数管理',
+        path: '/performance/familyCoefficient/list',
+      },
+      name: '查看绩效包',
+    },
+    '/performance/familyCoefficient/create': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Family/Create')
+      ),
+      bread: {
+        name: '家族系数管理',
+        path: '/performance/familyCoefficient/list',
+      },
+      name: '创建绩效包',
+    },
+    '/performance/familyCoefficient/editor': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Family/Editor')
+      ),
+      bread: {
+        name: '家族系数管理',
+        path: '/performance/familyCoefficient/list',
+      },
+      name: '创建绩效包',
+    },
+
     '/performance/collegePerformance': {
       component: dynamicWrapper(app, ['collegePerformance'], () =>
         import('../routes/Performance/CollegePerformance')
