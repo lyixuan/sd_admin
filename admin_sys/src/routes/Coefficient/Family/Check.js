@@ -51,23 +51,31 @@ class Check extends Component {
             <span className={common.titleWord}>生效周期 ：2018.10 ～ 至今</span>
             <div className={common.rangeContent}>
               <div >
-                <div className={common.rangeItemContent}>占位1</div>
+                <div className={common.rangeItemContent}>
+                  <span className={common.titleWord}>人均在服学员排名比 (自考)</span>
+                </div>
                 <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>占位2:
+                <div className={common.rangeItemContent}>
+                  <span className={common.titleWord}>人均在服学员排名比 (壁垒)</span>
                   <Checkbox disabled checked className={common.checkBox}>
                     闭区间
                   </Checkbox>
                 </div>
                 <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>占位3:
+                <div className={common.rangeItemContent}>
+                  <span className={common.titleWord}>日均学分排名比 (自考)</span>
                   <Checkbox  disabled className={common.checkBox}>
                     闭区间
                   </Checkbox>
                 </div>
                 <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>占位4</div>
+                <div className={common.rangeItemContent}>
+                  <span className={common.titleWord}>日均学分排名比 (壁垒)</span>
+                </div>
                 <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>占位5</div>
+                <div className={common.rangeItemContent}>
+                  <span className={common.titleWord}>管理规模</span>
+                </div>
               </div>
             </div>
             <div style={{textAlign:'right'}}>
