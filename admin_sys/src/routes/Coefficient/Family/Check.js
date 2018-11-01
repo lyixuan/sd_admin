@@ -17,7 +17,7 @@ class Check extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-
+        id:1,
       },
     };
     this.state = assignUrlParams(initParams, params);
@@ -47,11 +47,29 @@ class Check extends Component {
       <ContentLayout
         routerData={this.props.routerData}
         contentButton={
-          <AuthorizedButton authority="/account/createAccount">
-            <Button onClick={this.cancel} type="primary" className={common.createButton}>
-              返回
-            </Button>
-          </AuthorizedButton>
+          <div>
+            <span className={common.titleWord}>生效周期 ：2018.10 ～ 至今</span>
+            <div className={common.rangeContent}>
+              <div >
+                <div className={common.rangeItemContent}>占位1</div>
+                <div className={common.xSpin} />
+                <div className={common.rangeItemContent}>占位2</div>
+                <div className={common.xSpin} />
+                <div className={common.rangeItemContent}>占位3</div>
+                <div className={common.xSpin} />
+                <div className={common.rangeItemContent}>占位4</div>
+                <div className={common.xSpin} />
+                <div className={common.rangeItemContent}>占位5</div>
+              </div>
+            </div>
+            <div style={{textAlign:'right'}}>
+              <AuthorizedButton authority="/account/createAccount">
+                <Button onClick={this.cancel} type="primary" className={common.createButton}>
+                  返回
+                </Button>
+              </AuthorizedButton>
+            </div>
+          </div>
         }
       />
     );

@@ -400,5 +400,27 @@
 }
 
 
-
+.titleWord{
+  font-size: 14px;
+  display: block;
+  margin: 20px 0;
+  color: #000;
+  letter-spacing: 0;
+}
+.rangeContent{
+  width: 100%;
+  border: 1px solid #DCDDE0;
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+.rangeItemContent{
+  height:50px;
+  margin:30px 0 0 17px;
+}
+.xSpin{
+  width: 96%;
+  margin: 20px auto 0;
+  height: 2px;
+  background-color:#EFF0F4 ;
+}
 
