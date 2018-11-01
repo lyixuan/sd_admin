@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import {  Button } from 'antd';
+import {  Button,Checkbox } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../../layouts/ContentLayout';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
@@ -53,9 +53,17 @@ class Check extends Component {
               <div >
                 <div className={common.rangeItemContent}>占位1</div>
                 <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>占位2</div>
+                <div className={common.rangeItemContent}>占位2:
+                  <Checkbox disabled checked className={common.checkBox}>
+                    闭区间
+                  </Checkbox>
+                </div>
                 <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>占位3</div>
+                <div className={common.rangeItemContent}>占位3:
+                  <Checkbox  disabled className={common.checkBox}>
+                    闭区间
+                  </Checkbox>
+                </div>
                 <div className={common.xSpin} />
                 <div className={common.rangeItemContent}>占位4</div>
                 <div className={common.xSpin} />
