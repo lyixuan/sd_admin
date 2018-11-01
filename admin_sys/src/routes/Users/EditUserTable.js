@@ -424,7 +424,7 @@ class EditUserTable extends Component {
                       {
                         validator(rule, value, callback) {
                           if (typeof value[0] === 'string' || !value[0]) {
-                            if (flag === 'admin' || flag === 'boss' || flag === 'others') {
+                            if (flag === 'admin' || flag === 'boss' || flag === 'others' || this.state.currentstate === 2) {
                               callback();
                             } else {
                               callback({ message: '请选择负责单位！' });
