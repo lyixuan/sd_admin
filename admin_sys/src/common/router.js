@@ -415,9 +415,50 @@ export const getRouterData = app => {
         name: '家族系数管理',
         path: '/performance/familyCoefficient/list',
       },
+      name: '编辑绩效包',
+    },
+    '/performance/groupCoefficient': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Group/index')
+      ),
+      name: '小组系数管理',
+    },
+    '/performance/groupCoefficient/list': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Group/List')
+      ),
+      name: '小组系数管理',
+    },
+    '/performance/groupCoefficient/check': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Group/Check')
+      ),
+      bread: {
+        name: '小组系数管理',
+        path: '/performance/groupCoefficient/list',
+      },
+      name: '查看绩效包',
+    },
+    '/performance/groupCoefficient/create': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Group/Create')
+      ),
+      bread: {
+        name: '小组系数管理',
+        path: '/performance/groupCoefficient/list',
+      },
       name: '创建绩效包',
     },
-
+    '/performance/groupCoefficient/editor': {
+      component: dynamicWrapper(app, ['collegePerformance'], () =>
+        import('../routes/Coefficient/Group/Editor')
+      ),
+      bread: {
+        name: '小组系数管理',
+        path: '/performance/groupCoefficient/list',
+      },
+      name: '编辑绩效包',
+    },
     '/performance/collegePerformance': {
       component: dynamicWrapper(app, ['collegePerformance'], () =>
         import('../routes/Performance/CollegePerformance')
