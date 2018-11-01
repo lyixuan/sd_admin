@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import {  Button } from 'antd';
+import { Button, Checkbox } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../../layouts/ContentLayout';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import common from '../../Common/common.css';
-
 
 @connect(({ account, loading }) => ({
   account,
@@ -17,11 +16,10 @@ class Check extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        id:1,
+        id: 1,
       },
     };
     this.state = assignUrlParams(initParams, params);
-
   }
 
   componentDidMount() {
@@ -50,19 +48,29 @@ class Check extends Component {
           <div>
             <span className={common.titleWord}>生效周期 ：2018.10 ～ 至今</span>
             <div className={common.rangeContent}>
-              <div >
+              <div>
                 <div className={common.rangeItemContent}>占位1</div>
                 <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>占位2</div>
+                <div className={common.rangeItemContent}>
+                  占位2:
+                  <Checkbox disabled checked className={common.checkBox}>
+                    闭区间
+                  </Checkbox>
+                </div>
                 <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>占位3</div>
+                <div className={common.rangeItemContent}>
+                  占位3:
+                  <Checkbox disabled className={common.checkBox}>
+                    闭区间
+                  </Checkbox>
+                </div>
                 <div className={common.xSpin} />
                 <div className={common.rangeItemContent}>占位4</div>
                 <div className={common.xSpin} />
                 <div className={common.rangeItemContent}>占位5</div>
               </div>
             </div>
-            <div style={{textAlign:'right'}}>
+            <div style={{ textAlign: 'right' }}>
               <AuthorizedButton authority="/account/createAccount">
                 <Button onClick={this.cancel} type="primary" className={common.createButton}>
                   返回
@@ -76,4 +84,3 @@ class Check extends Component {
   }
 }
 export default Check;
-
