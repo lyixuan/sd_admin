@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import {  Button,Checkbox } from 'antd';
+import { Button, Checkbox } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../../layouts/ContentLayout';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import common from '../../Common/common.css';
-
 
 @connect(({ account, loading }) => ({
   account,
@@ -17,11 +16,10 @@ class Check extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        id:1,
+        id: 1,
       },
     };
     this.state = assignUrlParams(initParams, params);
-
   }
 
   componentDidMount() {
@@ -57,6 +55,7 @@ class Check extends Component {
                 <div className={common.xSpin} />
                 <div className={common.rangeItemContent}>
                   <span className={common.titleWord}>人均在服学员排名比 (壁垒)</span>
+
                   <Checkbox disabled checked className={common.checkBox}>
                     闭区间
                   </Checkbox>
@@ -65,6 +64,7 @@ class Check extends Component {
                 <div className={common.rangeItemContent}>
                   <span className={common.titleWord}>日均学分排名比 (自考)</span>
                   <Checkbox  disabled className={common.checkBox}>
+
                     闭区间
                   </Checkbox>
                 </div>
@@ -78,7 +78,7 @@ class Check extends Component {
                 </div>
               </div>
             </div>
-            <div style={{textAlign:'right'}}>
+            <div style={{ textAlign: 'right' }}>
               <AuthorizedButton authority="/account/createAccount">
                 <Button onClick={this.cancel} type="primary" className={common.createButton}>
                   返回
@@ -92,4 +92,3 @@ class Check extends Component {
   }
 }
 export default Check;
-

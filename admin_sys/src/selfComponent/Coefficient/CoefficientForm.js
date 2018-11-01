@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, DatePicker, Button, Spin } from 'antd';
 import common from '../../routes/Common/common.css';
+import InputItem from '../../routes/Coefficient/component';
 import styles from './CoefficientForm.less';
 
 const FormItem = Form.Item;
@@ -73,7 +74,7 @@ export default class CoefficientForm extends Component {
                   {list.map(item => {
                     return (
                       <div key={item.id} className={styles.itemCls}>
-                        {item.name}
+                        <InputItem />
                       </div>
                     );
                   })}
