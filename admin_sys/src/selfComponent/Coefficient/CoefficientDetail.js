@@ -23,9 +23,9 @@ class CoefficientDetail extends Component {
     const val = data.map(item => {
       return (
         <div key={item.id} >
-          <span>组内老师人数：{item.v1}</span>;
-          <span>运营长绩效：{item.v2*100}%</span>;
-          <span>班主任绩效：{item.v3*100}%</span>;
+          <span className={styles.groupSpan}>组内老师人数：<span>{item.v1}</span></span>
+          <span className={styles.groupSpan1}>运营长绩效：<span>{item.v2*100}%</span></span>
+          <span className={styles.groupSpan2}>班主任绩效：<span>{item.v3*100}%</span></span>
         </div>
       );
     })

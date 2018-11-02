@@ -26,9 +26,9 @@ class IntervalItem extends Component {
     return (
       <span>
         <span className={styles.firstCoeSpan}>{val1}{percent===1?' %':null}</span>
-        <Checkbox  disabled checked={v2?bol:false}>
-         闭区间
-        </Checkbox>
+        <Checkbox  disabled checked={v2?bol:false} className={styles.word} />
+
+        <span className={styles.word}>闭区间</span>
       </span>);
   };
 
