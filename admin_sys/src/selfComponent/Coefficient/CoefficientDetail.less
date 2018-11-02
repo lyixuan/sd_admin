@@ -35,7 +35,6 @@
   margin: 10px 30px;
   display: inline-block;
   height: 20px;
-
 }
 .groupSpan1{
   font-size: 14px;
@@ -44,7 +43,6 @@
   margin: 10px 0 10px 120px;
   display: inline-block;
   height: 20px;
-
 }
 .groupSpan2{
   font-size: 14px;
@@ -53,5 +51,19 @@
   margin: 10px 0 10px 210px;
   display: inline-block;
   height: 20px;
-
 }
+
+.checkBoxCls{
+  width: 12px;
+  height: 12px;
+  :global(.ant-checkbox-inner) {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  :global(.ant-checkbox-inner:after) {
+    left: 2.6px!important;
+    top: .7px!important;
+  }
+}
+
