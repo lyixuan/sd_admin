@@ -9,7 +9,7 @@
 
 import React, { Component } from 'react';
 import { Checkbox } from 'antd';
-// import styles from './CoefficientDetail.less';
+import styles from './CoefficientDetail.less';
 
 class IntervalItem extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class IntervalItem extends Component {
     const bol = true
     return (
       <span>
-        <span>{val1}{percent===1?'%':null}</span>
+        <span className={styles.firstCoeSpan}>{val1}{percent===1?' %':null}</span>
         <Checkbox  disabled checked={v2?bol:false}>
          闭区间
         </Checkbox>

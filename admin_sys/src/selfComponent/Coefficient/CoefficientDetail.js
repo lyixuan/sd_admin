@@ -10,8 +10,7 @@
 
 import React, { Component } from 'react';
 import IntervalItem from './IntervalItem';
-
-// import styles from './CoefficientDetail.less';
+import styles from './CoefficientDetail.less';
 
 class CoefficientDetail extends Component {
   constructor(props) {
@@ -36,19 +35,19 @@ class CoefficientDetail extends Component {
   coefficient = (data, percent,basic) => {
    const val = data.map(item => {
       return (
-        <div key={item.id} >
+        <div key={item.id} className={styles.coeffiDiv} >
           <IntervalItem
             v1={item.v1}
             v2={item.v2}
             percent={percent}
           />
-          <span>～</span>
+          <span className={styles.xSpin} >～</span>
           <IntervalItem
             v1={item.v3}
             v2={item.v4}
             percent={percent}
           />
-          {basic===1?(<span>基数：{item.v5} 元</span>):(<span>系数：{item.v5}</span>)}
+          {basic===1?(<span className={styles.basicSpan}> 基数：{item.v5} 元</span>):(<span className={styles.basicSpan}>系数：{item.v5}</span>)}
         </div>
       );
     })
