@@ -2,13 +2,12 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
-// import moment from 'moment';
 import { assignUrlParams } from 'utils/utils';
+import { formatYeatMonth } from 'utils/FormatDate';
 import ContentLayout from '../../../layouts/ContentLayout';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../../selfComponent/selfPagination/SelfPagination';
 import common from '../../Common/common.css';
-
 
 @connect(({ coefficient, loading }) => ({
   coefficient,
@@ -78,26 +77,25 @@ class List extends Component {
     this.getData(params);
   };
 
+  // 时间戳格式处理
+  timeFormate = (val) => {
+    const {effectiveDate=null,expiryDate=null} = val;
+    const startTime = formatYeatMonth(effectiveDate)
+    const endTime1 = formatYeatMonth(expiryDate)
+    const endTime= endTime1==='2099.12'?'至今':endTime1;
+    return `${startTime} ～ ${endTime} `;
+  };
+
   // 初始化tabale 列数据
   fillDataSource = (val) => {
-    console.log(val);
-    const data = [{
-      key: 1,
-      effectiveTime: 'test',
-      id: 2}];
-    // 时间处理
-    // const formate = 'YYYY-MM';
-    // const formateDate = dateTime.replace(/\./g, '-');
-    // const nowDate = moment().format(formate);
-    // console.log(formateDate,nowDate)
-
-    // val.map((item,index) =>
-    //   data.push({
-    //     key: index,
-    //     effectiveTime: item.name,
-    //     id: item.id,
-    //   })
-    // );
+    const data = [];
+    val.map((item, index) =>
+      data.push({
+        key: index,
+        effectiveTime: this.timeFormate(item),
+        id: item.id,
+      })
+    );
     return data;
   };
 
