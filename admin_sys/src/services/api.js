@@ -662,3 +662,17 @@ export async function packageInfo(params) {
     method: 'GET',
   });
 }
+// 创建绩效包
+export async function addPackage(params) {
+  return request(`${HOST}/kpiLevel/addPackage`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 更新绩效包
+export async function updatePackage(params) {
+  return request(`${HOST}/kpiLevel/updatePackage`, {
+    method: 'PUT',
+    body: params,
+  });
+}
