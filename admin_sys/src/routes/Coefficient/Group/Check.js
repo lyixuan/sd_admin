@@ -42,12 +42,30 @@ class Check extends Component {
 
   render() {
     // const { loading } = this.props;
-    const data1={data:[{v1:0,v2:false,v3:0.2,v4:true,v5:8000},{v1:0.2,v2:false,v3:0.4,v4:false,v5:8000},{v1:0.4,v2:true,v3:1,v4:false,v5:8000}],
-      key:1,percent:1,basic:1}
-    const data2={data:[{v1:0,v2:false,v3:0.2,v4:true,v5:8000},{v1:0.2,v2:false,v3:0.4,v4:false,v5:8000},{v1:0.4,v2:true,v3:1,v4:false,v5:8000}],
-      key:1,percent:1,basic:2}
-    const data3={data:[{v1:2,v2:0.2,v3:0.2},{v1:2,v2:0.4,v3:0.4}],
-      key:2}
+    const data1 = {
+      data: [
+        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000 },
+        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000 },
+        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000 },
+      ],
+      key: 1,
+      percent: 1,
+      basic: 1,
+    };
+    const data2 = {
+      data: [
+        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000 },
+        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000 },
+        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000 },
+      ],
+      key: 1,
+      percent: 1,
+      basic: 2,
+    };
+    const data3 = {
+      data: [{ v1: 2, v2: 0.2, v3: 0.2 }, { v1: 2, v2: 0.4, v3: 0.4 }],
+      key: 2,
+    };
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -55,10 +73,10 @@ class Check extends Component {
           <div>
             <span className={common.titleWord}>生效周期 ：2018.10 ～ 至今</span>
             <div className={common.rangeContent}>
-              <div >
+              <div>
                 <div className={common.rangeItemContent}>
                   <span className={common.titleWord}>人均在服学员排名比</span>
-                  <CoefficientDetail dataSource={data1}  />
+                  <CoefficientDetail dataSource={data1} />
                 </div>
                 <div className={common.xSpin} />
                 <div className={common.rangeItemContent}>
@@ -70,7 +88,7 @@ class Check extends Component {
                   <span className={common.titleWord}>绩效分配比例</span>
                   <CoefficientDetail dataSource={data3} />
                 </div>
-                <div style={{height:'30px'}} />
+                <div style={{ height: '30px' }} />
               </div>
             </div>
             <div style={{ textAlign: 'right' }}>

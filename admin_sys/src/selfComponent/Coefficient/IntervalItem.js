@@ -14,29 +14,28 @@ import styles from './CoefficientDetail.less';
 class IntervalItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
-
-  coefficient = (v1, v2,percent) => {
-    console.log(v1, v2,percent)
-    const val1 =percent === 1?v1*100:v1
-    const bol = true
+  coefficient = (v1, v2, percent) => {
+    console.log(v1, v2, percent);
+    const val1 = percent === 1 ? v1 * 100 : v1;
+    const bol = true;
     return (
       <span>
-        <span className={styles.firstCoeSpan}>{val1}{percent===1?' %':null}</span>
-        <Checkbox  disabled checked={v2?bol:false} className={styles.checkBoxCls} />
+        <span className={styles.firstCoeSpan}>
+          {val1}
+          {percent === 1 ? ' %' : null}
+        </span>
+        <Checkbox disabled checked={v2 ? bol : false} className={styles.checkBoxCls} />
         <span className={styles.word}>闭区间</span>
-      </span>);
+      </span>
+    );
   };
 
   render() {
-    const {v1=0,v2=true,percent=1}=this.props;
-    return (
-      <span>
-        {this.coefficient(v1,v2,percent)}
-      </span>);
+    const { v1 = 0, v2 = true, percent = 1 } = this.props;
+    return <span>{this.coefficient(v1, v2, percent)}</span>;
   }
 }
 

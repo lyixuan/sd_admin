@@ -15,56 +15,58 @@ import styles from './CoefficientDetail.less';
 class CoefficientDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
-  spanFun = (data) => {
+  spanFun = data => {
     const val = data.map(item => {
       return (
-        <div key={item.id} >
-          <span className={styles.groupSpan}>组内老师人数：<span>{item.v1}</span></span>
-          <span className={styles.groupSpan1}>运营长绩效：<span>{item.v2*100}%</span></span>
-          <span className={styles.groupSpan2}>班主任绩效：<span>{item.v3*100}%</span></span>
+        <div key={item.id}>
+          <span className={styles.groupSpan}>
+            组内老师人数：<span>{item.v1}</span>
+          </span>
+          <span className={styles.groupSpan1}>
+            运营长绩效：<span>{item.v2 * 100}%</span>
+          </span>
+          <span className={styles.groupSpan2}>
+            班主任绩效：<span>{item.v3 * 100}%</span>
+          </span>
         </div>
       );
-    })
+    });
     return val;
   };
 
-  coefficient = (data, percent,basic) => {
-   const val = data.map(item => {
+  coefficient = (data, percent, basic) => {
+    const val = data.map(item => {
       return (
-        <div key={item.id} className={styles.coeffiDiv} >
-          <IntervalItem
-            v1={item.v1}
-            v2={item.v2}
-            percent={percent}
-          />
-          <span className={styles.xSpin} >～</span>
-          <IntervalItem
-            v1={item.v3}
-            v2={item.v4}
-            percent={percent}
-          />
-          {basic===1?(<span className={styles.basicSpan}> 基数：{item.v5} 元</span>):(<span className={styles.basicSpan}>系数：{item.v5}</span>)}
+        <div key={item.id} className={styles.coeffiDiv}>
+          <IntervalItem v1={item.v1} v2={item.v2} percent={percent} />
+          <span className={styles.xSpin}>～</span>
+          <IntervalItem v1={item.v3} v2={item.v4} percent={percent} />
+          {basic === 1 ? (
+            <span className={styles.basicSpan}> 基数：{item.v5} 元</span>
+          ) : (
+            <span className={styles.basicSpan}>系数：{item.v5}</span>
+          )}
         </div>
       );
-    })
+    });
     return val;
   };
 
   render() {
     const { dataSource = {} } = this.props;
-    const {data=[],key=1,percent=1,basic=1}=dataSource;
+    const { data = [], key = 1, percent = 1, basic = 1 } = dataSource;
     return (
       <div>
-        {key===2?(<div>{this.spanFun(data)}</div>):(
-          <div>
-            {this.coefficient(data,percent,basic)}
-          </div>)
-        }
-      </div>);
+        {key === 2 ? (
+          <div>{this.spanFun(data)}</div>
+        ) : (
+          <div>{this.coefficient(data, percent, basic)}</div>
+        )}
+      </div>
+    );
   }
 }
 

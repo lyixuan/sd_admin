@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
@@ -8,7 +7,6 @@ import ContentLayout from '../../../layouts/ContentLayout';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../../selfComponent/selfPagination/SelfPagination';
 import common from '../../Common/common.css';
-
 
 @connect(({ coefficient, loading }) => ({
   coefficient,
@@ -20,7 +18,7 @@ class List extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        packageType:3,
+        packageType: 3,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
@@ -49,7 +47,7 @@ class List extends Component {
     const userListParams = { ...stateParams, ...params };
     this.props.dispatch({
       type: 'coefficient/packageList',
-      payload:{userListParams},
+      payload: { userListParams },
     });
     this.saveParams(userListParams);
   };
@@ -145,11 +143,11 @@ class List extends Component {
   };
 
   render() {
-    const { loading ,coefficient={}} = this.props;
-    const { pageNum} = this.state.params;
-    const {data={}} = coefficient
-    const {totalElements=0,content=[]} = data;
-    const dataSource =  this.fillDataSource(content);
+    const { loading, coefficient = {} } = this.props;
+    const { pageNum } = this.state.params;
+    const { data = {} } = coefficient;
+    const { totalElements = 0, content = [] } = data;
+    const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     return (
       <ContentLayout
@@ -193,4 +191,3 @@ class List extends Component {
   }
 }
 export default List;
-

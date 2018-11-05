@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
@@ -19,7 +18,7 @@ class List extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        packageType:2,
+        packageType: 2,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
@@ -31,15 +30,12 @@ class List extends Component {
     this.getData();
   }
 
-
   // 编辑
   onEdit = key => {
     this.props.setRouteUrlParams('/performance/familyCoefficient/editor', {
       id: key.id,
     });
   };
-
-
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
@@ -51,7 +47,7 @@ class List extends Component {
     const userListParams = { ...stateParams, ...params };
     this.props.dispatch({
       type: 'coefficient/packageList',
-      payload:{userListParams},
+      payload: { userListParams },
     });
     this.saveParams(userListParams);
   };
@@ -146,11 +142,11 @@ class List extends Component {
   };
 
   render() {
-    const { loading ,coefficient={}} = this.props;
-    const { pageNum} = this.state.params;
-    const {data={}} = coefficient
-    const {totalElements=0,content=[]} = data;
-    const dataSource =  this.fillDataSource(content);
+    const { loading, coefficient = {} } = this.props;
+    const { pageNum } = this.state.params;
+    const { data = {} } = coefficient;
+    const { totalElements = 0, content = [] } = data;
+    const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     return (
       <ContentLayout
@@ -194,4 +190,3 @@ class List extends Component {
   }
 }
 export default List;
-

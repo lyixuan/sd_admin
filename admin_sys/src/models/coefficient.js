@@ -1,4 +1,3 @@
-
 import { message } from 'antd';
 import {
   packageList,
@@ -20,13 +19,12 @@ export default {
     *packageList({ payload }, { call, put }) {
       const response = yield call(packageList, payload.userListParams);
       if (response.code === 2000) {
-        const {data={}} = response
+        const { data = {} } = response;
         yield put({ type: 'packageListSave', payload: { data } });
       } else {
         message.error(response.msg);
       }
     },
-
   },
 
   reducers: {
