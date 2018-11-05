@@ -18,7 +18,6 @@ class IntervalItem extends Component {
   }
 
   coefficient = (v1, v2, percent) => {
-    console.log(v1, v2, percent);
     const val1 = percent === 1 ? v1 * 100 : v1;
     const bol = true;
     return (

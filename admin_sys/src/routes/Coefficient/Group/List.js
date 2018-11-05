@@ -54,6 +54,7 @@ class List extends Component {
 
   // 查看详情
   detail = key => {
+    console.log(key)
     this.props.setRouteUrlParams('/performance/groupCoefficient/check', {
       id: key.id,
     });
@@ -78,7 +79,6 @@ class List extends Component {
     const {effectiveDate=null,expiryDate=null} = val;
     const startTime = formatYeatMonth(effectiveDate)
     const endTime1 = formatYeatMonth(expiryDate)
-    console.log(effectiveDate,expiryDate,startTime,endTime1)
     const endTime= endTime1==='2099.12'?'至今':endTime1;
     return `${startTime} ～ ${endTime} `;
   };

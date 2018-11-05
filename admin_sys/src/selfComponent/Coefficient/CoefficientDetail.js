@@ -2,7 +2,7 @@
 *
 * dataSource{必传 Obj}:数据源，对象结构:{data:[{v1:xx,v2:xx,v3:xx,v4:xx,v5:xx}.....],key:1/2,percent:1/2,basic:1/2}
 * 里面有要map遍历的data数据源，data为数组格式，里面为对象itme;
-* key:1代表闭区间的组件，2为title:value格式的组件
+* compo:1代表闭区间的组件，2为title:value格式的组件
 * percent:1代表有%，2无%分号
 * basic:1基数，后面带有'元'的单位，2为系数，后面不带有单位
 *
@@ -21,7 +21,7 @@ class CoefficientDetail extends Component {
   spanFun = data => {
     const val = data.map(item => {
       return (
-        <div key={item.id}>
+        <div key={item.key}>
           <span className={styles.groupSpan}>
             组内老师人数：<span>{item.v1}</span>
           </span>
@@ -40,7 +40,7 @@ class CoefficientDetail extends Component {
   coefficient = (data, percent, basic) => {
     const val = data.map(item => {
       return (
-        <div key={item.id} className={styles.coeffiDiv}>
+        <div key={item.key} className={styles.coeffiDiv}>
           <IntervalItem v1={item.v1} v2={item.v2} percent={percent} />
           <span className={styles.xSpin}>～</span>
           <IntervalItem v1={item.v3} v2={item.v4} percent={percent} />
@@ -57,10 +57,10 @@ class CoefficientDetail extends Component {
 
   render() {
     const { dataSource = {} } = this.props;
-    const { data = [], key = 1, percent = 1, basic = 1 } = dataSource;
+    const { data = [], compo = 1, percent = 1, basic = 1 } = dataSource;
     return (
       <div>
-        {key === 2 ? (
+        {compo === 2 ? (
           <div>{this.spanFun(data)}</div>
         ) : (
           <div>{this.coefficient(data, percent, basic)}</div>

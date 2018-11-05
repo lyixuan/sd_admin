@@ -54,6 +54,7 @@ class List extends Component {
 
   // 查看详情
   detail = key => {
+    console.log(key)
     this.props.setRouteUrlParams('/performance/familyCoefficient/check', {
       id: key.id,
     });

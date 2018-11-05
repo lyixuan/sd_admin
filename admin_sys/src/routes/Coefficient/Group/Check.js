@@ -44,27 +44,27 @@ class Check extends Component {
     // const { loading } = this.props;
     const data1 = {
       data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000 },
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000 },
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000 },
+        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000,key:1 },
+        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000,key:2 },
+        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000,key:3 },
       ],
-      key: 1,
+      compo: 1,
       percent: 1,
       basic: 1,
     };
     const data2 = {
       data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000 },
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000 },
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000 },
+        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000 ,key:1},
+        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000 ,key:2},
+        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000 ,key:3},
       ],
-      key: 1,
+      compo: 1,
       percent: 1,
       basic: 2,
     };
     const data3 = {
-      data: [{ v1: 2, v2: 0.2, v3: 0.2 }, { v1: 2, v2: 0.4, v3: 0.4 }],
-      key: 2,
+      data: [{ v1: 2, v2: 0.2, v3: 0.2,key:1 }, { v1: 2, v2: 0.4, v3: 0.4 ,key:2}],
+      compo: 2,
     };
     return (
       <ContentLayout
