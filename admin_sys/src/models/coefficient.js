@@ -20,7 +20,7 @@ export default {
     *packageList({ payload }, { call, put }) {
       const response = yield call(packageList, payload.userListParams);
       if (response.code === 2000) {
-        yield put({ type: 'packageListSave', payload: { response } });
+        yield put({ type: 'packageListSave', payload: { dataList:response.data } });
       } else {
         message.error(response.msg);
       }

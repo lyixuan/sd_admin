@@ -9,9 +9,9 @@ import SelfPagination from '../../../selfComponent/selfPagination/SelfPagination
 import common from '../../Common/common.css';
 
 
-@connect(({ account, loading }) => ({
-  account,
-  loading: loading.effects['account/accountList'],
+@connect(({ coefficient, loading }) => ({
+  coefficient,
+  loading: loading.effects['coefficient/packageList'],
 }))
 class List extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class List extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        name: '',
+        packageType:2,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
@@ -50,10 +50,10 @@ class List extends Component {
   getData = params => {
     const stateParams = this.state.params;
     const userListParams = { ...stateParams, ...params };
-    // this.props.dispatch({
-    //   type: 'user/userList',
-    //   payload:{userListParams},
-    // });
+    this.props.dispatch({
+      type: 'coefficient/packageList',
+      payload:{userListParams},
+    });
     this.saveParams(userListParams);
   };
 
@@ -148,6 +148,7 @@ class List extends Component {
     const { pageNum} = this.state.params;
     const data = []
     const totalNum = !data.totalElements ? 0 : data.totalElements;
+    console.log(this.props)
     // const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const dataSource =  this.fillDataSource(data.content);
     const columns = this.columnsData();
