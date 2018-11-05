@@ -20,6 +20,7 @@ module.exports = {
     'react/jsx-no-bind': [0],
     'react/prop-types': [0],
     'react/prefer-stateless-function': [0],
+    'react/react-in-jsx-scope': [0], // 使用JSX时防止丢失React
     'react/jsx-wrap-multilines': [
       'error',
       {

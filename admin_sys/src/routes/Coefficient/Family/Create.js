@@ -13,13 +13,25 @@ class Create extends React.Component {
         {
           name: '人均在服学员排名比(自考)',
           list: [
-            { beginVal: null, isEqBeginVal: false, endVal: null, isEqEndVal: false, baseVal: null },
+            {
+              levelUpperLimit: null,
+              upperClose: false,
+              levelLowerLimit: null,
+              lowerClose: false,
+              levelValue: null,
+            },
           ],
         },
         {
           name: '人均在服学员排名比(壁垒)',
           list: [
-            { beginVal: 1, isEqBeginVal: false, endVal: null, isEqEndVal: false, baseVal: null },
+            {
+              levelUpperLimit: null,
+              upperClose: false,
+              levelLowerLimit: null,
+              lowerClose: false,
+              levelValue: null,
+            },
           ],
         },
       ],

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 //  import PropTypes from 'prop-types';
-import { Input, Button, Checkbox } from 'antd';
+import { Button } from 'antd';
+import ItemDom from './item';
 import style from './index.less';
 import common from '../../Common/common.css';
 
@@ -94,46 +95,9 @@ class InputItem extends PureComponent {
     itemList.splice(itemList.findIndex(list => list.index === item.index), 1);
     this.handleChange(itemList);
   };
-
-  renderInputItem = item => {
-    return (
-      <span>
-        <Input
-          className={style.input}
-          placeholder="0"
-          onChange={e => this.changeInputValue('beginVal', item, e)}
-          value={item.beginVal}
-        />
-        <span className={style.percent}>%</span>
-        <span className={style.checkBox}>
-          <Checkbox
-            className={style.radio}
-            dataname="isEqBeginVal"
-            onChange={e => this.changeCheckboxValue(item, e)}
-          />
-          <span>闭区间</span>
-        </span>
-      </span>
-    );
-  };
-  renderBaserNumber = (item = {}) => {
-    return (
-      <span className={style.baseNumCotainer}>
-        <span>基数:</span>
-        <Input
-          className={style.input}
-          placeholder="0"
-          dataname="baseVal"
-          value={item.baseVal}
-          onChange={e => this.changeInputValue('baseVal', item, e)}
-        />
-        <span>元</span>
-      </span>
-    );
-  };
-
   render() {
     const { name, itemList } = this.state;
+    // const Dom=ItemDom({type:1});
     return (
       <div className={style.itemCotainer}>
         <div className={style.itemHead}>
@@ -151,40 +115,11 @@ class InputItem extends PureComponent {
           {itemList.map(item => (
             <li key={item.index}>
               {/* 开始区间 */}
-              {this.renderInputItem(item)}
-              {/* <Input
-      className={style.input}
-      placeholder="0"
-      onChange={(e)=>(this.changeInputValue('beginVal',item,e))}
-      value={item.beginVal}
-     
-    />
-    <span className={style.percent}>%</span>
-    <span className={style.checkBox}>
-      <Checkbox className={style.radio} 
-      dataname="isEqBeginVal" 
-      onChange={(e)=>(this.changeCheckboxValue(item,e))} />
-      <span>闭区间</span>
-    </span> */}
-              <span className={style.breakLine}>~</span>
-              {/* 结束区间 */}
-              <Input
-                className={style.input}
-                placeholder="0"
-                value={item.endVal}
-                onChange={e => this.changeInputValue('endVal', item, e)}
+              <ItemDom
+                data={item}
+                changeInputValue={this.changeInputValue}
+                changeCheckboxValue={this.changeCheckboxValue}
               />
-              <span className={style.percent}>%</span>
-              <span className={style.checkBox}>
-                <Checkbox
-                  className={style.radio}
-                  dataname="isEqEndVal"
-                  onChange={e => this.changeCheckboxValue(item, e)}
-                />
-                <span>闭区间</span>
-              </span>
-              {/* 基数 */}
-              {this.renderBaserNumber(item)}
               <Button
                 type="default"
                 className={common.cancleButton}
