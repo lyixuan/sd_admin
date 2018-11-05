@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button } from 'antd';
+import { Form, Button, message } from 'antd';
 import AuthorizedButton from 'selfComponents/AuthorizedButton';
 import common from '../../Common/common.css';
 import InputItem from '../component';
@@ -19,7 +19,7 @@ class Create extends React.Component {
         {
           name: '人均在服学员排名比(壁垒)',
           list: [
-            { beginVal: null, isEqBeginVal: false, endVal: null, isEqEndVal: false, baseVal: null },
+            { beginVal: 1, isEqBeginVal: false, endVal: null, isEqEndVal: false, baseVal: null },
           ],
         },
       ],
@@ -33,22 +33,29 @@ class Create extends React.Component {
       }
     });
   };
+  checkPrice = (rule, value = {}) => {
+    const list = Array.isArray(value.list) ? value.list : [];
+    list.forEach(item => {
+      if (!item.beginVal) {
+        console.log('填写不完整');
+        // return;
+      }
+    });
+  };
+  renderError = () => {
+    message.faild('填写信息不完整');
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { formItemList } = this.state;
     return (
       <div>
-        <Form onSubmit={this.handleSubmit} layout="block">
+        <Form onSubmit={this.handleSubmit} layout="vertical">
           <FormItem>
             {getFieldDecorator('peopleSelf', {
               initialValue: formItemList[0],
-              rules: [{ required: true }],
-            })(<InputItem />)}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('peopleBarrier', {
-              initialValue: formItemList[1],
-              rules: [{ required: true }],
+              // rules: [{ validator: this.checkPrice }],
             })(<InputItem />)}
           </FormItem>
 

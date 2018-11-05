@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
@@ -7,7 +6,6 @@ import ContentLayout from '../../../layouts/ContentLayout';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../../selfComponent/selfPagination/SelfPagination';
 import common from '../../Common/common.css';
-
 
 @connect(({ account, loading }) => ({
   account,
@@ -76,10 +74,13 @@ class List extends Component {
 
   // 初始化tabale 列数据
   fillDataSource = () => {
-    const data = [{
-      key: 1,
-      name: 'test',
-      id: 2}];
+    const data = [
+      {
+        key: 1,
+        name: 'test',
+        id: 2,
+      },
+    ];
     // val.map((item,index) =>
     //   data.push({
     //     key: index,
@@ -141,11 +142,11 @@ class List extends Component {
 
   render() {
     const { loading } = this.props;
-    const { pageNum} = this.state.params;
-    const data = []
+    const { pageNum } = this.state.params;
+    const data = [];
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     // const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const dataSource =  this.fillDataSource(data.content);
+    const dataSource = this.fillDataSource(data.content);
     const columns = this.columnsData();
     return (
       <ContentLayout
@@ -189,4 +190,3 @@ class List extends Component {
   }
 }
 export default List;
-

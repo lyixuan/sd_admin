@@ -48,7 +48,7 @@ class Check extends Component {
           <div>
             <span className={common.titleWord}>生效周期 ：2018.10 ～ 至今</span>
             <div className={common.rangeContent}>
-              <div >
+              <div>
                 <div className={common.rangeItemContent}>
                   <span className={common.titleWord}>人均在服学员排名比 (自考)</span>
                 </div>
@@ -63,8 +63,7 @@ class Check extends Component {
                 <div className={common.xSpin} />
                 <div className={common.rangeItemContent}>
                   <span className={common.titleWord}>日均学分排名比 (自考)</span>
-                  <Checkbox  disabled className={common.checkBox}>
-
+                  <Checkbox disabled className={common.checkBox}>
                     闭区间
                   </Checkbox>
                 </div>
