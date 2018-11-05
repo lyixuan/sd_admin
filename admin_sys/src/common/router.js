@@ -376,19 +376,19 @@ export const getRouterData = app => {
       name: '添加申诉',
     },
     '/performance/familyCoefficient': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Family/index')
       ),
       name: '家族系数管理',
     },
     '/performance/familyCoefficient/list': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Family/List')
       ),
       name: '家族系数管理',
     },
     '/performance/familyCoefficient/check': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Family/Check')
       ),
       bread: {
@@ -398,7 +398,7 @@ export const getRouterData = app => {
       name: '查看绩效包',
     },
     '/performance/familyCoefficient/create': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Family/Create')
       ),
       bread: {
@@ -408,7 +408,7 @@ export const getRouterData = app => {
       name: '创建绩效包',
     },
     '/performance/familyCoefficient/editor': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Family/Editor')
       ),
       bread: {
@@ -418,19 +418,19 @@ export const getRouterData = app => {
       name: '编辑绩效包',
     },
     '/performance/groupCoefficient': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Group/index')
       ),
       name: '小组系数管理',
     },
     '/performance/groupCoefficient/list': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Group/List')
       ),
       name: '小组系数管理',
     },
     '/performance/groupCoefficient/check': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Group/Check')
       ),
       bread: {
@@ -440,7 +440,7 @@ export const getRouterData = app => {
       name: '查看绩效包',
     },
     '/performance/groupCoefficient/create': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Group/Create')
       ),
       bread: {
@@ -450,7 +450,7 @@ export const getRouterData = app => {
       name: '创建绩效包',
     },
     '/performance/groupCoefficient/editor': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
+      component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Group/Editor')
       ),
       bread: {

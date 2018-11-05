@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
+// import moment from 'moment';
 import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../../layouts/ContentLayout';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
@@ -34,14 +35,35 @@ class Check extends Component {
     //   payload:{userListParams},
     // });
   };
+ // 格式化数据
+  dataFormt = data => {
+    const list = [];
+    data.map((item, index) => {
+      const bb = {
+        key: index,
+        id: item.groupId,
+        name: item.category,
+      };
+      list.push(bb);
+      return 0;
+    });
+    return list;
+  };
 
-  // 编辑
+  // 返回
   cancel = () => {
     this.props.setRouteUrlParams('/performance/familyCoefficient/list', {});
   };
 
   render() {
     // const { loading } = this.props;
+
+    // 时间处理
+    // const formate = 'YYYY-MM';
+    // const formateDate = dateTime.replace(/\./g, '-');
+    // const nowDate = moment().format(formate);
+    // console.log(formateDate,nowDate)
+
     const data1={data:[{v1:0,v2:false,v3:0.2,v4:true,v5:8000},{v1:0.2,v2:false,v3:0.4,v4:false,v5:8000},{v1:0.4,v2:true,v3:1,v4:false,v5:8000}],
       key:1,percent:1,basic:1}
     const data2={data:[{v1:0,v2:false,v3:0.2,v4:true,v5:8000},{v1:0.2,v2:false,v3:0.4,v4:false,v5:8000},{v1:0.4,v2:true,v3:1,v4:false,v5:8000}],

@@ -648,3 +648,17 @@ export async function findActualKpiInfo(params) {
     method: 'GET',
   });
 }
+
+// ------------ 绩效系数 ----------
+export async function packageList(params) {
+  // 学院列表
+  return request(`${HOST}/kpiLevel/packageList?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function packageInfo(params) {
+  // 个人列表
+  return request(`${HOST}/kpiLevel/packageInfo?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
