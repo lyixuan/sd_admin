@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
+// import moment from 'moment';
 import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../../layouts/ContentLayout';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../../selfComponent/selfPagination/SelfPagination';
 import common from '../../Common/common.css';
 
-@connect(({ account, loading }) => ({
-  account,
-  loading: loading.effects['account/accountList'],
+@connect(({ coefficient, loading }) => ({
+  coefficient,
+  loading: loading.effects['coefficient/packageList'],
 }))
 class List extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class List extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        name: '',
+        packageType: 3,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
@@ -44,10 +45,10 @@ class List extends Component {
   getData = params => {
     const stateParams = this.state.params;
     const userListParams = { ...stateParams, ...params };
-    // this.props.dispatch({
-    //   type: 'user/userList',
-    //   payload:{userListParams},
-    // });
+    this.props.dispatch({
+      type: 'coefficient/packageList',
+      payload: { userListParams },
+    });
     this.saveParams(userListParams);
   };
 
@@ -73,22 +74,27 @@ class List extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
+
+  fillDataSource = val => {
+    console.log(val);
     const data = [
       {
         key: 1,
-        name: 'test',
+        effectiveTime: 'test',
         id: 2,
       },
     ];
+    // 时间处理
+    // const formate = 'YYYY-MM';
+    // const formateDate = dateTime.replace(/\./g, '-');
+    // const nowDate = moment().format(formate);
+    // console.log(formateDate,nowDate)
+
     // val.map((item,index) =>
     //   data.push({
     //     key: index,
-    //     name: item.name,
-    //     role: item.rname,
-    //     email: item.mail, //   const newmail = `${values.mail}@sunlans.com`;
+    //     effectiveTime: item.name,
     //     id: item.id,
-    //     roleId: item.roleId,
     //   })
     // );
     return data;
@@ -102,8 +108,8 @@ class List extends Component {
         dataIndex: 'id',
       },
       {
-        title: '生肖周期',
-        dataIndex: 'name',
+        title: '生效周期',
+        dataIndex: 'effectiveTime',
       },
       {
         title: '操作',
@@ -141,12 +147,11 @@ class List extends Component {
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading, coefficient = {} } = this.props;
     const { pageNum } = this.state.params;
-    const data = [];
-    const totalNum = !data.totalElements ? 0 : data.totalElements;
-    // const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const dataSource = this.fillDataSource(data.content);
+    const { data = {} } = coefficient;
+    const { totalElements = 0, content = [] } = data;
+    const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     return (
       <ContentLayout
@@ -160,7 +165,7 @@ class List extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：{totalNum}条</p>
+            <p className={common.totalNum}>总数：{totalElements}条</p>
             <Table
               bordered
               loading={loading}
@@ -180,7 +185,7 @@ class List extends Component {
               this.onShowSizeChange(current, pageSize);
             }}
             defaultCurrent={pageNum}
-            total={totalNum}
+            total={totalElements}
             defaultPageSize={30}
             pageSizeOptions={['30']}
           />

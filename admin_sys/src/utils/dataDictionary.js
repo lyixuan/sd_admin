@@ -58,6 +58,17 @@ const appealTypeRest = {
   8: '工单三次减分',
 };
 
+// 绩效包家族小组类型
+const performanceType = {
+  additionalProp1: '人均在服学院排名比（基数）- 自考',
+  additionalProp2: '人均在服学院排名比（基数）- 壁垒',
+  additionalProp3: '管理规模（系数）',
+  additionalProp4: '日均学分排名比（系数）- 自考',
+  additionalProp5: '日均学分排名比（系数）- 壁垒',
+  additionalProp6: '人均在服学院排名比（基数）',
+  additionalProp7: '日均学分排名比（系数）',
+  additionalProp8: '绩效比例',
+};
 export {
   appealTypeRest,
   appealType,
@@ -66,4 +77,5 @@ export {
   levelData,
   levelDataReset,
   isUpdateDataReset,
+  performanceType,
 };
