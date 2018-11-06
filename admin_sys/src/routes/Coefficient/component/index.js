@@ -25,7 +25,7 @@ class InputItem extends PureComponent {
       levelValue: null,
       lowerClose: false,
       teacherCount: null,
-      type: 0,
+      type: props.id,
       upperClose: false,
       index: 0,
     };

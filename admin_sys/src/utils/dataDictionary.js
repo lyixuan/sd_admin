@@ -60,14 +60,14 @@ const appealTypeRest = {
 
 // 绩效包家族小组类型
 const performanceType = {
-  additionalProp1: '人均在服学院排名比（基数）- 自考',
-  additionalProp2: '人均在服学院排名比（基数）- 壁垒',
-  additionalProp3: '管理规模（系数）',
-  additionalProp4: '日均学分排名比（系数）- 自考',
-  additionalProp5: '日均学分排名比（系数）- 壁垒',
-  additionalProp6: '人均在服学院排名比（基数）',
-  additionalProp7: '日均学分排名比（系数）',
-  additionalProp8: '绩效比例',
+  1: '人均在服学院排名比（基数）- 自考',
+  2: '人均在服学院排名比（基数）- 壁垒',
+  3: '管理规模（系数）',
+  4: '日均学分排名比（系数）- 自考',
+  5: '日均学分排名比（系数）- 壁垒',
+  6: '人均在服学院排名比（基数）',
+  7: '日均学分排名比（系数）',
+  8: '绩效比例',
 };
 export {
   appealTypeRest,

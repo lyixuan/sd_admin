@@ -10,8 +10,8 @@ class Create extends React.Component {
     super(props);
     this.state = {
       typeObj: {
-        additionalProp1: [],
-        additionalProp2: [],
+        1: [],
+        2: [],
       },
     };
   }
@@ -43,8 +43,8 @@ class Create extends React.Component {
       <div>
         <Form onSubmit={this.handleSubmit} layout="vertical">
           <FormItem>
-            {getFieldDecorator('additionalProp1', {
-              initialValue: typeObj.additionalProp1,
+            {getFieldDecorator('1', {
+              initialValue: typeObj,
               // rules: [{ validator: this.checkPrice }],
             })(<InputItem />)}
           </FormItem>

@@ -21,21 +21,21 @@ export default class Item extends React.Component {
   };
   switchDom = type => {
     switch (type) {
-      case 'additionalProp1': // 人均在服学院排名比（基数）- 自考
+      case '1': // 人均在服学院排名比（基数）- 自考
         return this.renderType1('基数');
-      case 'additionalProp2': // 人均在服学院排名比（基数）- 壁垒
+      case '2': // 人均在服学院排名比（基数）- 壁垒
         return this.renderType1('基数');
-      case 'additionalProp3': // 管理规模（系数）
+      case '3': // 管理规模（系数）
         return this.renderType2('系数');
-      case 'additionalProp4': // 日均学分排名比（系数）- 自考
+      case '4': // 日均学分排名比（系数）- 自考
         return this.renderType1('系数');
-      case 'additionalProp5': // 日均学分排名比（系数）- 壁垒
+      case '5': // 日均学分排名比（系数）- 壁垒
         return this.renderType1('系数');
-      case 'additionalProp6': // 人均在服学院排名比（基数）
+      case '6': // 人均在服学院排名比（基数）
         return this.renderType1('基数');
-      case 'additionalProp7': // 日均学分排名比（系数）
+      case '7': // 日均学分排名比（系数）
         return this.renderType1('系数');
-      case 'additionalProp8': // 绩效比例
+      case '8': // 绩效比例
         return this.renderType3();
       default:
         break;
