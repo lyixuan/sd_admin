@@ -29,7 +29,6 @@ class Check extends Component {
   }
   getData = () => {
     const userListParams = this.state.params;
-    console.log(userListParams)
     this.props.dispatch({
       type: 'coefficient/packageInfo',
       payload:{userListParams},
