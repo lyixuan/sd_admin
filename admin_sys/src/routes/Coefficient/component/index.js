@@ -133,6 +133,7 @@ class InputItem extends PureComponent {
               />
               <Button
                 type="default"
+                disabled={itemList.length <= 1}
                 className={common.cancleButton}
                 onClick={() => this.deleteItem(item)}
                 style={{ float: 'right', margin: '0 55px 0 0' }}

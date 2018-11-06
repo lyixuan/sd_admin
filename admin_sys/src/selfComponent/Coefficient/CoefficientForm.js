@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Form, DatePicker, Button, Spin } from 'antd';
+import moment from 'moment/moment';
+import { formatDate } from '../../utils/FormatDate';
 import common from '../../routes/Common/common.css';
 import InputItem from '../../routes/Coefficient/component';
 import styles from './CoefficientForm.less';
@@ -50,7 +52,9 @@ export default class CoefficientForm extends Component {
     });
   };
   render() {
-    const { loading, subMap } = this.props;
+    const { loading, infoLoading = false, paramObj = {} } = this.props;
+
+    const { subMap = {}, expiryDate = '', effectiveDate = '' } = paramObj;
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -59,11 +63,17 @@ export default class CoefficientForm extends Component {
     };
 
     return (
-      <Spin spinning={false}>
+      <Spin spinning={infoLoading}>
         <div className={styles.formWrap}>
           <Form layout="inline" onSubmit={this.handleSubmit}>
             <FormItem label="生效周期">
               {getFieldDecorator('effectiveDate', {
+                initialValue: !effectiveDate
+                  ? null
+                  : [
+                      moment(formatDate(effectiveDate), dateFormat),
+                      moment(formatDate(expiryDate), dateFormat),
+                    ],
                 rules: [
                   {
                     required: true,
@@ -79,17 +89,18 @@ export default class CoefficientForm extends Component {
               )}
             </FormItem>
             <div className={styles.itemContent}>
-              <div className={styles.itemCls}>
-                {Object.keys(subMap).map(item => {
+              {subMap &&
+                Object.keys(subMap).map(item => {
                   return (
-                    <FormItem {...formItemLayout} key={item}>
-                      {getFieldDecorator(item, {
-                        initialValue: subMap[item],
-                      })(<InputItem onChange={val => console.log(val)} />)}
-                    </FormItem>
+                    <div className={styles.itemCls} key={item}>
+                      <FormItem {...formItemLayout}>
+                        {getFieldDecorator(item, {
+                          initialValue: subMap[item],
+                        })(<InputItem onChange={val => console.log(val)} />)}
+                      </FormItem>
+                    </div>
                   );
                 })}
-              </div>
             </div>
 
             <div className={styles.selfButton}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button,Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import { formatYeatMonth } from 'utils/FormatDate';
 import ContentLayout from '../../../layouts/ContentLayout';
@@ -57,8 +57,8 @@ class Check extends Component {
 
   // 时间戳格式处理
   timeFormate = (effectiveDate = null, expiryDate = null) => {
-    const startTime = !effectiveDate?'2018.11':formatYeatMonth(effectiveDate);
-    const endTime1 = !expiryDate?'2018.11':formatYeatMonth(expiryDate);
+    const startTime = !effectiveDate ? '2018.11' : formatYeatMonth(effectiveDate);
+    const endTime1 = !expiryDate ? '2018.11' : formatYeatMonth(expiryDate);
     const endTime = endTime1 === '2099.12' ? '至今' : endTime1;
     return `${startTime} ～ ${endTime} `;
   };
@@ -69,15 +69,15 @@ class Check extends Component {
   };
 
   render() {
-    const { coefficient = {} ,loading} = this.props;
+    const { coefficient = {}, loading } = this.props;
     const { data = {} } = coefficient;
     const { effectiveDate = null, expiryDate = null } = data;
     const timeArea = this.timeFormate(effectiveDate, expiryDate);
-    const personRankSelf=this.dataFormt(data, 1)||[]
-    const personRank=this.dataFormt(data, 2)||[]
-    const dailyRankSelf=this.dataFormt(data, 4)||[]
-    const dailyRank=this.dataFormt(data, 5)||[]
-    const manage = this.dataFormt(data, 3)||[]
+    const personRankSelf = this.dataFormt(data, 1) || [];
+    const personRank = this.dataFormt(data, 2) || [];
+    const dailyRankSelf = this.dataFormt(data, 4) || [];
+    const dailyRank = this.dataFormt(data, 5) || [];
+    const manage = this.dataFormt(data, 3) || [];
     const data1 = { compo: 1, percent: 1, basic: 1, data: personRankSelf };
     const data2 = { compo: 1, percent: 1, basic: 1, data: personRank };
     const data3 = { compo: 1, percent: 1, basic: 2, data: dailyRankSelf };
@@ -130,7 +130,6 @@ class Check extends Component {
           }
         />
       </Spin>
-
     );
   }
 }

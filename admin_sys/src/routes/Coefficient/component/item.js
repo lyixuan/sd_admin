@@ -117,12 +117,18 @@ export default class Item extends React.Component {
     const item = this.props.data || {};
     return (
       <div className={style.valueItem}>
-        <span>组内老师人数</span>
-        {this.renderInput(item, 'teacherCount')}
-        <span>运营长绩效</span>
-        {this.renderInput(item, 'groupKpi')}
-        <span>班主任绩效</span>
-        {this.renderInput(item, 'classKpi')}
+        <div className={style.inlineCls}>
+          <span>组内老师人数</span>
+          {this.renderInput(item, 'teacherCount')}
+        </div>
+        <div className={style.inlineCls}>
+          <span>运营长绩效</span>
+          {this.renderInput(item, 'groupKpi')}
+        </div>
+        <div className={style.inlineCls}>
+          <span>班主任绩效</span>
+          {this.renderInput(item, 'classKpi')}
+        </div>
       </div>
     );
   };

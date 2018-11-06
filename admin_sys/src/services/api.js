@@ -672,7 +672,7 @@ export async function addPackage(params) {
 // 更新绩效包
 export async function updatePackage(params) {
   return request(`${HOST}/kpiLevel/updatePackage`, {
-    method: 'PUT',
+    method: 'POST',
     body: params,
   });
 }
