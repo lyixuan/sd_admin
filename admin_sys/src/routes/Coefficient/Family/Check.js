@@ -66,9 +66,9 @@ class Check extends Component {
 
     const data1 = {
       data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000,key:1 },
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000 ,key:2},
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000 ,key:3},
+        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000, key: 1 },
+        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000, key: 2 },
+        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000, key: 3 },
       ],
       compo: 1,
       percent: 1,
@@ -76,9 +76,9 @@ class Check extends Component {
     };
     const data2 = {
       data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000 ,key:1},
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000,key:2 },
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000,key:3 },
+        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000, key: 1 },
+        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000, key: 2 },
+        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000, key: 3 },
       ],
       compo: 1,
       percent: 1,
@@ -86,9 +86,9 @@ class Check extends Component {
     };
     const data3 = {
       data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8 ,key:1},
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8 ,key:2},
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8 ,key:3},
+        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8, key: 1 },
+        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8, key: 2 },
+        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8, key: 3 },
       ],
       compo: 1,
       percent: 1,
@@ -96,9 +96,9 @@ class Check extends Component {
     };
     const data4 = {
       data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8 ,key:1},
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8 ,key:2},
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8,key:3 },
+        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8, key: 1 },
+        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8, key: 2 },
+        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8, key: 3 },
       ],
       compo: 1,
       percent: 1,
@@ -106,9 +106,9 @@ class Check extends Component {
     };
     const data5 = {
       data: [
-        { v1: 1, v2: false, v3: 20, v4: true, v5: 2,key:1 },
-        { v1: 20, v2: false, v3: 40, v4: false, v5: 1.5 ,key:2},
-        { v1: 40, v2: true, v3: 100, v4: false, v5: 2 ,key:3},
+        { v1: 1, v2: false, v3: 20, v4: true, v5: 2, key: 1 },
+        { v1: 20, v2: false, v3: 40, v4: false, v5: 1.5, key: 2 },
+        { v1: 40, v2: true, v3: 100, v4: false, v5: 2, key: 3 },
       ],
       compo: 1,
       percent: 2,

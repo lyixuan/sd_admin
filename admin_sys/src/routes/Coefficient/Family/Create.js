@@ -12,15 +12,7 @@ class Create extends React.Component {
       formItemList: [
         {
           name: '人均在服学员排名比(自考)',
-          list: [
-            {
-              levelUpperLimit: null,
-              upperClose: false,
-              levelLowerLimit: null,
-              lowerClose: false,
-              levelValue: null,
-            },
-          ],
+          list: null,
         },
         {
           name: '人均在服学员排名比(壁垒)',
@@ -65,7 +57,7 @@ class Create extends React.Component {
       <div>
         <Form onSubmit={this.handleSubmit} layout="vertical">
           <FormItem>
-            {getFieldDecorator('peopleSelf', {
+            {getFieldDecorator('additionalProp1', {
               initialValue: formItemList[0],
               // rules: [{ validator: this.checkPrice }],
             })(<InputItem />)}
