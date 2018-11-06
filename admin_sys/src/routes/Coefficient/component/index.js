@@ -9,8 +9,8 @@ import common from '../../Common/common.css';
 class InputItem extends PureComponent {
   constructor(props) {
     super(props);
-    const value = props.value || {};
-    const itemList = this.mapOriginData(Array.isArray(value.list) ? value.list : []);
+    const value = props.value || [];
+    const itemList = this.mapOriginData(Array.isArray(value) ? value : []);
     this.state = {
       type: props.id,
       name: performanceType[props.id] || '',
@@ -35,7 +35,7 @@ class InputItem extends PureComponent {
     // Should be a controlled component.
     if ('value' in nextProps) {
       return {
-        ...(nextProps.value || {}),
+        ...(nextProps.value || []),
       };
     }
     return null;
@@ -46,9 +46,8 @@ class InputItem extends PureComponent {
       this.addItem();
     }
   }
-  mapOriginData = () => {
-    const { value = {} } = this.props;
-    const list = Array.isArray(value.list) ? value.list : [];
+  mapOriginData = arr => {
+    const list = Array.isArray(arr) ? arr : [];
     return list.map((item, index) => ({
       ...item,
       index,
@@ -66,8 +65,8 @@ class InputItem extends PureComponent {
     this.handleChange(itemList);
   };
   handleChange = list => {
-    const { value, onChange } = this.props;
-    value.list = list;
+    const { onChange } = this.props;
+    const value = list;
     this.setState({ itemList: list });
     onChange(value);
   };

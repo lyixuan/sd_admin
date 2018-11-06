@@ -9,24 +9,10 @@ class Create extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formItemList: [
-        {
-          name: '人均在服学员排名比(自考)',
-          list: null,
-        },
-        {
-          name: '人均在服学员排名比(壁垒)',
-          list: [
-            {
-              levelUpperLimit: null,
-              upperClose: false,
-              levelLowerLimit: null,
-              lowerClose: false,
-              levelValue: null,
-            },
-          ],
-        },
-      ],
+      typeObj: {
+        additionalProp1: [],
+        additionalProp2: [],
+      },
     };
   }
   handleSubmit = e => {
@@ -52,13 +38,13 @@ class Create extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { formItemList } = this.state;
+    const { typeObj } = this.state;
     return (
       <div>
         <Form onSubmit={this.handleSubmit} layout="vertical">
           <FormItem>
             {getFieldDecorator('additionalProp1', {
-              initialValue: formItemList[0],
+              initialValue: typeObj.additionalProp1,
               // rules: [{ validator: this.checkPrice }],
             })(<InputItem />)}
           </FormItem>
