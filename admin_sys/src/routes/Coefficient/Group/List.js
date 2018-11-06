@@ -33,7 +33,7 @@ class List extends Component {
   // 编辑
   onEdit = key => {
     this.props.setRouteUrlParams('/performance/groupCoefficient/editor', {
-      id: key.id,
+      packageId: key.id,
     });
   };
 
@@ -56,7 +56,7 @@ class List extends Component {
   detail = key => {
     console.log(key);
     this.props.setRouteUrlParams('/performance/groupCoefficient/check', {
-      id: key.id,
+      packageId: key.id,
     });
   };
 

@@ -18,7 +18,7 @@ class Check extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        id: null,
+        packageId: null,
       },
     };
     this.state = assignUrlParams(initParams, params);
@@ -28,8 +28,7 @@ class Check extends Component {
     this.getData();
   }
   getData = () => {
-    const stateParams = this.state.params;
-    const userListParams = { stateParams };
+    const userListParams = this.state.params;
     console.log(userListParams)
     this.props.dispatch({
       type: 'coefficient/packageInfo',
