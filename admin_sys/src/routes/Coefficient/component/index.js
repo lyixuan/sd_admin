@@ -74,10 +74,12 @@ class InputItem extends PureComponent {
   changeInputValue = (key = '', item = {}, e) => {
     const target = e.currentTarget;
     const newObj = { ...item };
-    if (!/\d+/.test(target.value) && target.value.length) {
+    let inputValue = target.value || '';
+    inputValue = inputValue.replace(/。|\./g, '.');
+    if (!/^(\d{0,10})(\.\d{0,2})?$/g.test(inputValue)) {
       return;
     }
-    newObj[key] = Number(target.value);
+    newObj[key] = inputValue;
     this.changeItemValue(newObj);
   };
   changeCheckboxValue = (item = {}, e) => {
