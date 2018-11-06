@@ -30,10 +30,10 @@ class Check extends Component {
 
   getData = () => {
     const userListParams = this.state.params;
-    console.log(userListParams)
+    console.log(userListParams);
     this.props.dispatch({
       type: 'coefficient/packageInfo',
-      payload:{userListParams},
+      payload: { userListParams },
     });
   };
   // 格式化数据
@@ -52,11 +52,11 @@ class Check extends Component {
   };
 
   // 时间戳格式处理
-  timeFormate = (val) => {
-    const {effectiveDate=null,expiryDate=null} = val;
-    const startTime = formatYeatMonth(effectiveDate)
-    const endTime1 = formatYeatMonth(expiryDate)
-    const endTime= endTime1==='2099.12'?'至今':endTime1;
+  timeFormate = val => {
+    const { effectiveDate = null, expiryDate = null } = val;
+    const startTime = formatYeatMonth(effectiveDate);
+    const endTime1 = formatYeatMonth(expiryDate);
+    const endTime = endTime1 === '2099.12' ? '至今' : endTime1;
     return `${startTime} ～ ${endTime} `;
   };
 
@@ -66,8 +66,8 @@ class Check extends Component {
   };
 
   render() {
-    const {coefficient = {} } = this.props;
-    console.log(coefficient)
+    const { coefficient = {} } = this.props;
+    console.log(coefficient);
 
     const data1 = {
       data: [
