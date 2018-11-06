@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Form, DatePicker, Button, Spin } from 'antd';
+import moment from 'moment/moment';
+import { formatDate } from '../../utils/FormatDate';
 import common from '../../routes/Common/common.css';
 import InputItem from '../../routes/Coefficient/component';
 import styles from './CoefficientForm.less';
@@ -52,7 +54,7 @@ export default class CoefficientForm extends Component {
   render() {
     const { loading, paramObj = {} } = this.props;
     console.log(paramObj);
-    const { subMap = {} } = paramObj;
+    const { subMap = {}, expiryDate = '', effectiveDate = '' } = paramObj;
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -66,6 +68,12 @@ export default class CoefficientForm extends Component {
           <Form layout="inline" onSubmit={this.handleSubmit}>
             <FormItem label="生效周期">
               {getFieldDecorator('effectiveDate', {
+                initialValue: !effectiveDate
+                  ? null
+                  : [
+                      moment(formatDate(effectiveDate), dateFormat),
+                      moment(formatDate(expiryDate), dateFormat),
+                    ],
                 rules: [
                   {
                     required: true,
