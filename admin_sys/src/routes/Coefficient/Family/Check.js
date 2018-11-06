@@ -75,9 +75,9 @@ class Check extends Component {
     const timeArea = this.timeFormate(effectiveDate, expiryDate);
     const personRankSelf=this.dataFormt(data, 1)||[]
     const personRank=this.dataFormt(data, 2)||[]
-    const dailyRankSelf=this.dataFormt(data, 3)||[]
-    const dailyRank=this.dataFormt(data, 4)||[]
-    const manage = this.dataFormt(data, 5)||[]
+    const dailyRankSelf=this.dataFormt(data, 4)||[]
+    const dailyRank=this.dataFormt(data, 5)||[]
+    const manage = this.dataFormt(data, 3)||[]
     const data1 = { compo: 1, percent: 1, basic: 1, data: personRankSelf };
     const data2 = { compo: 1, percent: 1, basic: 1, data: personRank };
     const data3 = { compo: 1, percent: 1, basic: 2, data: dailyRankSelf };
