@@ -1,26 +1,38 @@
 import React from 'react';
-import { Form, Button, message } from 'antd';
-import AuthorizedButton from 'selfComponents/AuthorizedButton';
-import common from '../../Common/common.css';
-import InputItem from '../component';
+import { connect } from 'dva/index';
+import { Form } from 'antd';
+import ContentLayout from '../../../layouts/ContentLayout';
+import CoefficientForm from '../../../selfComponent/Coefficient/CoefficientForm';
 
-const FormItem = Form.Item;
-class Create extends React.Component {
+const WrappedRoleForm = Form.create()(CoefficientForm);
+
+@connect(({ coefficient, loading }) => ({
+  coefficient,
+  loading: loading.effects['coefficient/addPackage'],
+}))
+export default class Create extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      typeObj: {
+      effectiveDate: '',
+      expiryDate: '',
+      id: null,
+      packageType: 2,
+      subMap: {
         1: [],
         2: [],
+        3: [],
+        4: [],
+        5: [],
       },
     };
   }
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
+  submitFn = val => {
+    const paramsObj = Object.assign(this.state, val);
+    if (paramsObj.subMap.effectiveDate) delete paramsObj.subMap.effectiveDate; // 移除无用属性
+    this.props.dispatch({
+      type: 'coefficient/addPackage',
+      payload: paramsObj,
     });
   };
   checkPrice = (rule, value = {}) => {
@@ -32,38 +44,10 @@ class Create extends React.Component {
       }
     });
   };
-  renderError = () => {
-    message.faild('填写信息不完整');
-  };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { typeObj } = this.state;
-    return (
-      <div>
-        <Form onSubmit={this.handleSubmit} layout="vertical">
-          <FormItem>
-            {getFieldDecorator('1', {
-              initialValue: typeObj,
-              // rules: [{ validator: this.checkPrice }],
-            })(<InputItem />)}
-          </FormItem>
-
-          <AuthorizedButton authority="/performance/familyCoefficient/create">
-            <Button
-              type="primary"
-              htmlType="submit"
-              //   loading={changeDateArea}
-              className={common.searchButton}
-              style={{ margin: '0' }}
-            >
-              提交
-            </Button>
-          </AuthorizedButton>
-        </Form>
-      </div>
-    );
+    const { subMap } = this.state;
+    const baseLayout = <WrappedRoleForm submitFn={val => this.submitFn(val)} subMap={subMap} />;
+    return <ContentLayout routerData={this.props.routerData} contentForm={baseLayout} />;
   }
 }
-const WrappedHorizontalLoginForm = Form.create()(Create);
-export default WrappedHorizontalLoginForm;
