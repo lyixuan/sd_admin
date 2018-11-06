@@ -58,8 +58,8 @@ class Check extends Component {
 
   // 时间戳格式处理
   timeFormate = (effectiveDate = null, expiryDate = null) => {
-    const startTime = formatYeatMonth(effectiveDate);
-    const endTime1 = formatYeatMonth(expiryDate);
+    const startTime = !effectiveDate?'2018.11':formatYeatMonth(effectiveDate);
+    const endTime1 = !expiryDate?'2018.11':formatYeatMonth(expiryDate);
     const endTime = endTime1 === '2099.12' ? '至今' : endTime1;
     return `${startTime} ～ ${endTime} `;
   };
