@@ -17,7 +17,6 @@ export default {
     },
     *packageInfo({ payload }, { call, put }) {
       const response = yield call(packageInfo, payload.userListParams);
-      console.log('model中的数据', response);
       if (response.code === 2000) {
         const { data = {} } = response;
         yield put({ type: 'packageInfoSave', payload: { data } });

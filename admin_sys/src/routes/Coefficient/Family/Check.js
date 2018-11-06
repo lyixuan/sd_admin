@@ -29,34 +29,38 @@ class Check extends Component {
   }
 
   getData = () => {
-    const userListParams = this.state.params;
-    console.log(userListParams)
+    const { packageId } = this.state.params;
+    const userListParams = { packageId: Number(packageId) };
     this.props.dispatch({
       type: 'coefficient/packageInfo',
-      payload:{userListParams},
+      payload: { userListParams },
     });
   };
   // 格式化数据
-  dataFormt = data => {
-    const list = [];
-    data.map((item, index) => {
-      const bb = {
+  dataFormt = (data, key) => {
+    const aa = [];
+    const { subMap = {} } = data;
+    const cc = !subMap ? [] : !subMap[key] ? [] : subMap[key];
+    cc.map((item, index) => {
+      const test = {
         key: index,
-        id: item.groupId,
-        name: item.category,
+        v1: item.levelLowerLimit,
+        v2: item.lowerClose,
+        v3: item.levelUpperLimit,
+        v4: item.upperClose,
+        v5: item.levelValue,
       };
-      list.push(bb);
-      return 0;
+      return aa.push(test);
     });
-    return list;
+    // console.log(data,aa)
+    return aa;
   };
 
   // 时间戳格式处理
-  timeFormate = (val) => {
-    const {effectiveDate=null,expiryDate=null} = val;
-    const startTime = formatYeatMonth(effectiveDate)
-    const endTime1 = formatYeatMonth(expiryDate)
-    const endTime= endTime1==='2099.12'?'至今':endTime1;
+  timeFormate = (effectiveDate = null, expiryDate = null) => {
+    const startTime = formatYeatMonth(effectiveDate);
+    const endTime1 = formatYeatMonth(expiryDate);
+    const endTime = endTime1 === '2099.12' ? '至今' : endTime1;
     return `${startTime} ～ ${endTime} `;
   };
 
@@ -66,65 +70,21 @@ class Check extends Component {
   };
 
   render() {
-    const {coefficient = {} } = this.props;
-    console.log(coefficient)
-
-    const data1 = {
-      data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000, key: 1 },
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000, key: 2 },
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000, key: 3 },
-      ],
-      compo: 1,
-      percent: 1,
-      basic: 1,
-    };
-    const data2 = {
-      data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000, key: 1 },
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8000, key: 2 },
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8000, key: 3 },
-      ],
-      compo: 1,
-      percent: 1,
-      basic: 1,
-    };
-    const data3 = {
-      data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8, key: 1 },
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8, key: 2 },
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8, key: 3 },
-      ],
-      compo: 1,
-      percent: 1,
-      basic: 2,
-    };
-    const data4 = {
-      data: [
-        { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8, key: 1 },
-        { v1: 0.2, v2: false, v3: 0.4, v4: false, v5: 8, key: 2 },
-        { v1: 0.4, v2: true, v3: 1, v4: false, v5: 8, key: 3 },
-      ],
-      compo: 1,
-      percent: 1,
-      basic: 3,
-    };
-    const data5 = {
-      data: [
-        { v1: 1, v2: false, v3: 20, v4: true, v5: 2, key: 1 },
-        { v1: 20, v2: false, v3: 40, v4: false, v5: 1.5, key: 2 },
-        { v1: 40, v2: true, v3: 100, v4: false, v5: 2, key: 3 },
-      ],
-      compo: 1,
-      percent: 2,
-      basic: 3,
-    };
+    const { coefficient = {} } = this.props;
+    const { data = {} } = coefficient;
+    const { effectiveDate = null, expiryDate = null } = data;
+    const timeArea = this.timeFormate(effectiveDate, expiryDate);
+    const data1 = { compo: 1, percent: 1, basic: 1, data: this.dataFormt(data, 1) };
+    const data2 = { compo: 1, percent: 1, basic: 1, data: this.dataFormt(data, 2) };
+    const data3 = { compo: 1, percent: 1, basic: 2, data: this.dataFormt(data, 3) };
+    const data4 = { compo: 1, percent: 1, basic: 3, data: this.dataFormt(data, 4) };
+    const data5 = { compo: 1, percent: 2, basic: 3, data: this.dataFormt(data, 5) };
     return (
       <ContentLayout
         routerData={this.props.routerData}
         contentButton={
           <div>
-            <span className={common.titleWord}>生效周期 ：2018.10 ～ 至今</span>
+            <span className={common.titleWord}>生效周期 ：{timeArea}</span>
             <div className={common.rangeContent}>
               <div>
                 <div className={common.rangeItemContent}>
