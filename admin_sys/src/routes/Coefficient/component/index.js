@@ -115,7 +115,7 @@ class InputItem extends PureComponent {
           <Button
             type="primary"
             className={common.searchButton}
-            style={{ float: 'right', margin: '25px 55px 0 0' }}
+            style={{ float: 'right', margin: '25px 39px 0 0' }}
             onClick={this.addItem}
           >
             添加区间
@@ -136,7 +136,7 @@ class InputItem extends PureComponent {
                 disabled={itemList.length <= 1}
                 className={common.cancleButton}
                 onClick={() => this.deleteItem(item)}
-                style={{ float: 'right', margin: '0 55px 0 0' }}
+                style={{ float: 'right' }}
               >
                 删除
               </Button>
