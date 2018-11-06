@@ -50,7 +50,9 @@ export default class CoefficientForm extends Component {
     });
   };
   render() {
-    const { loading, subMap } = this.props;
+    const { loading, paramObj = {} } = this.props;
+    console.log(paramObj);
+    const { subMap = {} } = paramObj;
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -79,17 +81,18 @@ export default class CoefficientForm extends Component {
               )}
             </FormItem>
             <div className={styles.itemContent}>
-              <div className={styles.itemCls}>
-                {Object.keys(subMap).map(item => {
+              {subMap &&
+                Object.keys(subMap).map(item => {
                   return (
-                    <FormItem {...formItemLayout} key={item}>
-                      {getFieldDecorator(item, {
-                        initialValue: subMap[item],
-                      })(<InputItem onChange={val => console.log(val)} />)}
-                    </FormItem>
+                    <div className={styles.itemCls} key={item}>
+                      <FormItem {...formItemLayout}>
+                        {getFieldDecorator(item, {
+                          initialValue: subMap[item],
+                        })(<InputItem onChange={val => console.log(val)} />)}
+                      </FormItem>
+                    </div>
                   );
                 })}
-              </div>
             </div>
 
             <div className={styles.selfButton}>
