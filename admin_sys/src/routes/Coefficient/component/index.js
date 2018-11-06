@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 //  import PropTypes from 'prop-types';
 import { Button } from 'antd';
+import { performanceType } from 'utils/dataDictionary';
 import ItemDom from './item';
 import style from './index.less';
 import common from '../../Common/common.css';
@@ -10,12 +11,26 @@ class InputItem extends PureComponent {
     super(props);
     const value = props.value || {};
     const itemList = this.mapOriginData(Array.isArray(value.list) ? value.list : []);
-
     this.state = {
-      name: value.name || '',
+      type: props.id,
+      name: performanceType[props.id] || '',
       itemList,
     };
+    this.initModel = {
+      classKpi: null,
+      groupKpi: null,
+      id: null,
+      levelLowerLimit: null,
+      levelUpperLimit: null,
+      levelValue: null,
+      lowerClose: false,
+      teacherCount: null,
+      type: 0,
+      upperClose: false,
+      index: 0,
+    };
   }
+
   static getDerivedStateFromProps(nextProps) {
     // Should be a controlled component.
     if ('value' in nextProps) {
@@ -24,6 +39,12 @@ class InputItem extends PureComponent {
       };
     }
     return null;
+  }
+  componentDidMount() {
+    const { itemList } = this.state; // 数据默认一条,当数据小于一条时给予补足一条;
+    if (itemList.length < 1) {
+      this.addItem();
+    }
   }
   mapOriginData = () => {
     const { value = {} } = this.props;
@@ -57,7 +78,7 @@ class InputItem extends PureComponent {
     if (!/\d+/.test(target.value) && target.value.length) {
       return;
     }
-    newObj[key] = target.value;
+    newObj[key] = Number(target.value);
     this.changeItemValue(newObj);
   };
   changeCheckboxValue = (item = {}, e) => {
@@ -70,19 +91,9 @@ class InputItem extends PureComponent {
   addItem = () => {
     // 添加在原有的数据结构下进行添加,原有数据默认会有一条数据
     const { itemList = [] } = this.state;
-    if (itemList.length < 1) {
-      console.warn('数据异常');
-      return;
-    }
-    const firstItem = itemList.slice(0, 1)[0] || {};
-    const newAddObject = { ...firstItem };
-    for (const item in newAddObject) {
-      if (item === 'index') {
-        newAddObject[item] = Math.max.apply(null, itemList.map(list => list.index)) + 1;
-      } else {
-        newAddObject[item] = null;
-      }
-    }
+    const newAddObject = { ...this.initModel };
+    const indexArr = itemList.map(list => list.index);
+    newAddObject.index = indexArr.length > 0 ? Math.max.apply(null, indexArr) + 1 : 1;
     itemList.push(newAddObject);
     this.handleChange(itemList);
   };
@@ -96,7 +107,7 @@ class InputItem extends PureComponent {
     this.handleChange(itemList);
   };
   render() {
-    const { name, itemList } = this.state;
+    const { name, itemList, type } = this.state;
     // const Dom=ItemDom({type:1});
     return (
       <div className={style.itemCotainer}>
@@ -116,6 +127,7 @@ class InputItem extends PureComponent {
             <li key={item.index}>
               {/* 开始区间 */}
               <ItemDom
+                type={type}
                 data={item}
                 changeInputValue={this.changeInputValue}
                 changeCheckboxValue={this.changeCheckboxValue}

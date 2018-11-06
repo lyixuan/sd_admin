@@ -54,7 +54,7 @@ class List extends Component {
 
   // 查看详情
   detail = key => {
-    console.log(key)
+    console.log(key);
     this.props.setRouteUrlParams('/performance/familyCoefficient/check', {
       id: key.id,
     });
@@ -75,16 +75,16 @@ class List extends Component {
   };
 
   // 时间戳格式处理
-  timeFormate = (val) => {
-    const {effectiveDate=null,expiryDate=null} = val;
-    const startTime = formatYeatMonth(effectiveDate)
-    const endTime1 = formatYeatMonth(expiryDate)
-    const endTime= endTime1==='2099.12'?'至今':endTime1;
+  timeFormate = val => {
+    const { effectiveDate = null, expiryDate = null } = val;
+    const startTime = formatYeatMonth(effectiveDate);
+    const endTime1 = formatYeatMonth(expiryDate);
+    const endTime = endTime1 === '2099.12' ? '至今' : endTime1;
     return `${startTime} ～ ${endTime} `;
   };
 
   // 初始化tabale 列数据
-  fillDataSource = (val) => {
+  fillDataSource = val => {
     const data = [];
     val.map((item, index) =>
       data.push({
