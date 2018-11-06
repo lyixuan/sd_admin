@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button } from 'antd';
+import { Button,Spin } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import { formatYeatMonth } from 'utils/FormatDate';
 import ContentLayout from '../../../layouts/ContentLayout';
@@ -38,11 +38,11 @@ class Check extends Component {
   };
   // 格式化数据
   dataFormt = (data, key) => {
-    const aa = [];
+    const dataList = [];
     const { subMap = {} } = data;
-    const cc = !subMap ? [] : !subMap[key] ? [] : subMap[key];
-    cc.map((item, index) => {
-      const test = {
+    const dataValue = !subMap ? [] : !subMap[key] ? [] : subMap[key];
+    dataValue.map((item, index) => {
+      const val = {
         key: index,
         v1: item.levelLowerLimit,
         v2: item.lowerClose,
@@ -50,9 +50,9 @@ class Check extends Component {
         v4: item.upperClose,
         v5: item.levelValue,
       };
-      return aa.push(test);
+      return dataList.push(val);
     });
-    return aa;
+    return dataList;
   };
 
   // 时间戳格式处理
@@ -69,7 +69,7 @@ class Check extends Component {
   };
 
   render() {
-    const { coefficient = {} } = this.props;
+    const { coefficient = {} ,loading} = this.props;
     const { data = {} } = coefficient;
     const { effectiveDate = null, expiryDate = null } = data;
     const timeArea = this.timeFormate(effectiveDate, expiryDate);
@@ -79,53 +79,56 @@ class Check extends Component {
     const data4 = { compo: 1, percent: 1, basic: 2, data: this.dataFormt(data, 4) };
     const data5 = { compo: 1, percent: 2, basic: 3, data: this.dataFormt(data, 5) };
     return (
-      <ContentLayout
-        routerData={this.props.routerData}
-        contentButton={
-          <div>
-            <span className={common.titleWord}>生效周期 ：{timeArea}</span>
-            <div className={common.rangeContent}>
-              <div>
-                <div className={common.rangeItemContent}>
-                  <span className={common.titleWord}>人均在服学员排名比 (自考)</span>
-                  <CoefficientDetail dataSource={data1} />
-                </div>
-                <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>
-                  <span className={common.titleWord}>人均在服学员排名比 (壁垒)</span>
-                  <CoefficientDetail dataSource={data2} />
-                </div>
-                <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>
-                  <span className={common.titleWord}>日均学分排名比 (自考)</span>
-                  {/* <Checkbox disabled className={common.checkBox}>
+      <Spin spinning={loading}>
+        <ContentLayout
+          routerData={this.props.routerData}
+          contentButton={
+            <div>
+              <span className={common.titleWord}>生效周期 ：{timeArea}</span>
+              <div className={common.rangeContent}>
+                <div>
+                  <div className={common.rangeItemContent}>
+                    <span className={common.titleWord}>人均在服学员排名比 (自考)</span>
+                    <CoefficientDetail dataSource={data1} />
+                  </div>
+                  <div className={common.xSpin} />
+                  <div className={common.rangeItemContent}>
+                    <span className={common.titleWord}>人均在服学员排名比 (壁垒)</span>
+                    <CoefficientDetail dataSource={data2} />
+                  </div>
+                  <div className={common.xSpin} />
+                  <div className={common.rangeItemContent}>
+                    <span className={common.titleWord}>日均学分排名比 (自考)</span>
+                    {/* <Checkbox disabled className={common.checkBox}>
                     闭区间
                   </Checkbox> */}
-                  <CoefficientDetail dataSource={data3} />
+                    <CoefficientDetail dataSource={data3} />
+                  </div>
+                  <div className={common.xSpin} />
+                  <div className={common.rangeItemContent}>
+                    <span className={common.titleWord}>日均学分排名比 (壁垒)</span>
+                    <CoefficientDetail dataSource={data4} />
+                  </div>
+                  <div className={common.xSpin} />
+                  <div className={common.rangeItemContent}>
+                    <span className={common.titleWord}>管理规模</span>
+                    <CoefficientDetail dataSource={data5} />
+                  </div>
+                  <div style={{ height: '30px' }} />
                 </div>
-                <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>
-                  <span className={common.titleWord}>日均学分排名比 (壁垒)</span>
-                  <CoefficientDetail dataSource={data4} />
-                </div>
-                <div className={common.xSpin} />
-                <div className={common.rangeItemContent}>
-                  <span className={common.titleWord}>管理规模</span>
-                  <CoefficientDetail dataSource={data5} />
-                </div>
-                <div style={{ height: '30px' }} />
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <AuthorizedButton authority="/account/createAccount">
+                  <Button onClick={this.cancel} type="primary" className={common.createButton}>
+                    返回
+                  </Button>
+                </AuthorizedButton>
               </div>
             </div>
-            <div style={{ textAlign: 'right' }}>
-              <AuthorizedButton authority="/account/createAccount">
-                <Button onClick={this.cancel} type="primary" className={common.createButton}>
-                  返回
-                </Button>
-              </AuthorizedButton>
-            </div>
-          </div>
-        }
-      />
+          }
+        />
+      </Spin>
+
     );
   }
 }
