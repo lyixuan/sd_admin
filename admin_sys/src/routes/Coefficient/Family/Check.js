@@ -52,7 +52,6 @@ class Check extends Component {
       };
       return aa.push(test);
     });
-    // console.log(data,aa)
     return aa;
   };
 
@@ -77,7 +76,7 @@ class Check extends Component {
     const data1 = { compo: 1, percent: 1, basic: 1, data: this.dataFormt(data, 1) };
     const data2 = { compo: 1, percent: 1, basic: 1, data: this.dataFormt(data, 2) };
     const data3 = { compo: 1, percent: 1, basic: 2, data: this.dataFormt(data, 3) };
-    const data4 = { compo: 1, percent: 1, basic: 3, data: this.dataFormt(data, 4) };
+    const data4 = { compo: 1, percent: 1, basic: 2, data: this.dataFormt(data, 4) };
     const data5 = { compo: 1, percent: 2, basic: 3, data: this.dataFormt(data, 5) };
     return (
       <ContentLayout
