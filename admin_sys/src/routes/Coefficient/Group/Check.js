@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import { assignUrlParams } from 'utils/utils';
+import { formatYeatMonth } from 'utils/FormatDate';
 import ContentLayout from '../../../layouts/ContentLayout';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import CoefficientDetail from '../../../selfComponent/Coefficient/CoefficientDetail';
 import common from '../../Common/common.css';
 
-@connect(({ account, loading }) => ({
-  account,
-  loading: loading.effects['account/accountList'],
+@connect(({ coefficient, loading }) => ({
+  coefficient,
+  loading: loading.effects['coefficient/packageInfo'],
 }))
 class Check extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Check extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        id: 1,
+        id: null,
       },
     };
     this.state = assignUrlParams(initParams, params);
@@ -27,21 +28,46 @@ class Check extends Component {
     this.getData();
   }
   getData = () => {
-    // const stateParams = this.state.params;
-    // const userListParams = { ...stateParams, ...params };
-    // this.props.dispatch({
-    //   type: 'user/userList',
-    //   payload:{userListParams},
-    // });
+    const stateParams = this.state.params;
+    const userListParams = { stateParams };
+    console.log(userListParams)
+    this.props.dispatch({
+      type: 'coefficient/packageInfo',
+      payload:{userListParams},
+    });
+  };
+  // 格式化数据
+  dataFormt = data => {
+    const list = [];
+    data.map((item, index) => {
+      const bb = {
+        key: index,
+        id: item.groupId,
+        name: item.category,
+      };
+      list.push(bb);
+      return 0;
+    });
+    return list;
   };
 
-  // 编辑
+  // 时间戳格式处理
+  timeFormate = (val) => {
+    const {effectiveDate=null,expiryDate=null} = val;
+    const startTime = formatYeatMonth(effectiveDate)
+    const endTime1 = formatYeatMonth(expiryDate)
+    const endTime= endTime1==='2099.12'?'至今':endTime1;
+    return `${startTime} ～ ${endTime} `;
+  };
+
+  // 返回
   cancel = () => {
     this.props.setRouteUrlParams('/performance/familyCoefficient/list', {});
   };
 
   render() {
-    // const { loading } = this.props;
+    const {coefficient = {} } = this.props;
+    console.log(coefficient)
     const data1 = {
       data: [
         { v1: 0, v2: false, v3: 0.2, v4: true, v5: 8000,key:1 },
