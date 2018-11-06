@@ -73,11 +73,16 @@ class Check extends Component {
     const { data = {} } = coefficient;
     const { effectiveDate = null, expiryDate = null } = data;
     const timeArea = this.timeFormate(effectiveDate, expiryDate);
-    const data1 = { compo: 1, percent: 1, basic: 1, data: this.dataFormt(data, 1) };
-    const data2 = { compo: 1, percent: 1, basic: 1, data: this.dataFormt(data, 2) };
-    const data3 = { compo: 1, percent: 1, basic: 2, data: this.dataFormt(data, 3) };
-    const data4 = { compo: 1, percent: 1, basic: 2, data: this.dataFormt(data, 4) };
-    const data5 = { compo: 1, percent: 2, basic: 3, data: this.dataFormt(data, 5) };
+    const personRankSelf=this.dataFormt(data, 1)||[]
+    const personRank=this.dataFormt(data, 2)||[]
+    const dailyRankSelf=this.dataFormt(data, 3)||[]
+    const dailyRank=this.dataFormt(data, 4)||[]
+    const manage = this.dataFormt(data, 5)||[]
+    const data1 = { compo: 1, percent: 1, basic: 1, data: personRankSelf };
+    const data2 = { compo: 1, percent: 1, basic: 1, data: personRank };
+    const data3 = { compo: 1, percent: 1, basic: 2, data: dailyRankSelf };
+    const data4 = { compo: 1, percent: 1, basic: 2, data: dailyRank };
+    const data5 = { compo: 1, percent: 2, basic: 3, data: manage };
     return (
       <Spin spinning={loading}>
         <ContentLayout
@@ -99,9 +104,6 @@ class Check extends Component {
                   <div className={common.xSpin} />
                   <div className={common.rangeItemContent}>
                     <span className={common.titleWord}>日均学分排名比 (自考)</span>
-                    {/* <Checkbox disabled className={common.checkBox}>
-                    闭区间
-                  </Checkbox> */}
                     <CoefficientDetail dataSource={data3} />
                   </div>
                   <div className={common.xSpin} />

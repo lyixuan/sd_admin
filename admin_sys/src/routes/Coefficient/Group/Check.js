@@ -55,19 +55,19 @@ class Check extends Component {
   };
 
   classFormt = (data, key) => {
-    const aa = [];
+    const dataList = [];
     const { subMap = {} } = data;
-    const cc = !subMap ? [] : !subMap[key] ? [] : subMap[key];
-    cc.map((item, index) => {
-      const test = {
+    const dataValue = !subMap ? [] : !subMap[key] ? [] : subMap[key];
+    dataValue.map((item, index) => {
+      const val = {
         key: index,
         v1: item.teacherCount,
         v2: item.groupKpi,
         v3: item.classKpi,
       };
-      return aa.push(test);
+      return dataList.push(val);
     });
-    return aa;
+    return dataList;
   };
 
   // 时间戳格式处理
@@ -77,7 +77,6 @@ class Check extends Component {
     const endTime = endTime1 === '2099.12' ? '至今' : endTime1;
     return `${startTime} ～ ${endTime} `;
   };
-
 
   // 返回
   cancel = () => {
@@ -89,12 +88,14 @@ class Check extends Component {
     const { data = {} } = coefficient;
     const { effectiveDate = null, expiryDate = null } = data;
     const timeArea = this.timeFormate(effectiveDate, expiryDate);
-    const data1 = { compo: 1, percent: 1, basic: 1, data: this.dataFormt(data, 6) };
-    const data2 = { compo: 1, percent: 1, basic: 2, data: this.dataFormt(data, 7) };
-    const data3 = { compo: 2, data: this.classFormt(data, 8) };
+    const personRank=this.dataFormt(data, 6)||[]
+    const dailyRank=this.dataFormt(data, 7)||[]
+    const devicePer=this.classFormt(data, 8)||[]
+    const data1 = { compo: 1, percent: 1, basic: 1, data:personRank };
+    const data2 = { compo: 1, percent: 1, basic: 2, data: dailyRank };
+    const data3 = { compo: 2, data: devicePer };
     return (
       <Spin spinning={loading}>
-
         <ContentLayout
           routerData={this.props.routerData}
           contentButton={
