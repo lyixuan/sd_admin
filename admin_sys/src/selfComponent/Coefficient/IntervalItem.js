@@ -17,13 +17,13 @@ class IntervalItem extends Component {
     this.state = {};
   }
 
-  coefficient = (v1, v2, percent) => {
-    const val1 = percent === 1 ? (v1 * 100>100?100:v1 * 100) : v1;
+  coefficient = (v1=0, v2=false, percent) => {
+    // const val1 = percent === 1 ? (v1 * 100>100?100:v1 * 100) : v1;
     const bol = true;
     return (
       <span>
         <span className={styles.firstCoeSpan}>
-          {val1}
+          {v1}
           {percent === 1 ? ' %' : null}
         </span>
         <Checkbox disabled checked={v2 ? bol : false} className={styles.checkBoxCls} />
@@ -33,7 +33,7 @@ class IntervalItem extends Component {
   };
 
   render() {
-    const { v1 = 0, v2 = true, percent = 1 } = this.props;
+    const { v1 = 0, v2 = false, percent = 1 } = this.props;
     return <span>{this.coefficient(v1, v2, percent)}</span>;
   }
 }
