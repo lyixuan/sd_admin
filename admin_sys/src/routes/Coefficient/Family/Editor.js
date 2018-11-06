@@ -58,6 +58,7 @@ export default class Editor extends React.Component {
         submitFn={val => this.submitFn(val)}
         paramObj={data}
         loading={this.props.submitLoading}
+        infoLoading={this.props.loading}
       />
     );
     return <ContentLayout routerData={this.props.routerData} contentForm={baseLayout} />;

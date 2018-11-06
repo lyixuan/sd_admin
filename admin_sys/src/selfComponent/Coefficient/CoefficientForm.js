@@ -52,8 +52,8 @@ export default class CoefficientForm extends Component {
     });
   };
   render() {
-    const { loading, paramObj = {} } = this.props;
-    console.log(paramObj);
+    const { loading, infoLoading = false, paramObj = {} } = this.props;
+
     const { subMap = {}, expiryDate = '', effectiveDate = '' } = paramObj;
     const { getFieldDecorator } = this.props.form;
 
@@ -63,7 +63,7 @@ export default class CoefficientForm extends Component {
     };
 
     return (
-      <Spin spinning={false}>
+      <Spin spinning={infoLoading}>
         <div className={styles.formWrap}>
           <Form layout="inline" onSubmit={this.handleSubmit}>
             <FormItem label="生效周期">
