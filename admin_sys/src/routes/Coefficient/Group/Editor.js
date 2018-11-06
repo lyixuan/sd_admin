@@ -43,7 +43,18 @@ export default class Editor extends React.Component {
   };
   submitFn = val => {
     const { data = {} } = this.props.coefficient;
-    const paramsObj = Object.assign(this.state.paramObj, val, { id: data.id });
+    let paramsObj = {};
+
+    if (!val.effectiveDate) {
+      paramsObj = Object.assign(this.state.paramObj, val, {
+        id: data.id,
+        effectiveDate: data.effectiveDate,
+        expiryDate: data.expiryDate,
+      });
+    } else {
+      paramsObj = Object.assign(this.state.paramObj, val, { id: data.id });
+    }
+
     if (paramsObj.subMap.effectiveDate) delete paramsObj.subMap.effectiveDate; // 移除无用属性
     this.props.dispatch({
       type: 'coefficient/updatePackage',
