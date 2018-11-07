@@ -80,7 +80,7 @@ class Check extends Component {
 
   // 返回
   cancel = () => {
-    this.props.setRouteUrlParams('/performance/familyCoefficient/list', {});
+    this.props.setRouteUrlParams('/performance/groupCoefficient/list', {});
   };
 
   render() {
