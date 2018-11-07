@@ -18,11 +18,12 @@ class IntervalItem extends Component {
   }
 
   coefficient = (v1=0, v2=false, percent) => {
+    const val1 = percent === 1 ? (v1 * 100>100?100:v1 * 100) : v1;
     const bol = true;
     return (
       <span>
         <span className={styles.firstCoeSpan}>
-          {v1}
+          {val1}
           {percent === 1 ? ' %' : null}
         </span>
         <Checkbox disabled checked={v2 ? bol : false} className={styles.checkBoxCls} />
