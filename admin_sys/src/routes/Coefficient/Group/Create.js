@@ -30,6 +30,19 @@ export default class Create extends React.Component {
   submitFn = val => {
     const paramsObj = Object.assign(this.state.paramObj, val);
     if (paramsObj.subMap.effectiveDate) delete paramsObj.subMap.effectiveDate; // 移除无用属性
+
+    // 上传的百分比参数需要小数
+    Object.keys(paramsObj.subMap).map(item => {
+      const res = paramsObj.subMap[item];
+      res.forEach((value, i) => {
+        res[i].levelLowerLimit = value.levelLowerLimit / 100;
+        res[i].levelUpperLimit = value.levelUpperLimit / 100;
+        res[i].classKpi = value.classKpi / 100;
+        res[i].groupKpi = value.groupKpi / 100;
+      });
+      return res;
+    });
+
     this.props.dispatch({
       type: 'coefficient/addPackage',
       payload: paramsObj,

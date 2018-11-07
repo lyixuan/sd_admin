@@ -43,7 +43,6 @@ export default class Editor extends React.Component {
   };
   submitFn = val => {
     const { data = {} } = this.props.coefficient;
-
     let paramsObj = {};
     if (!val.effectiveDate) {
       paramsObj = Object.assign(this.state.paramObj, val, {
@@ -56,13 +55,37 @@ export default class Editor extends React.Component {
     }
 
     if (paramsObj.subMap.effectiveDate) delete paramsObj.subMap.effectiveDate; // 移除无用属性
+
+    // 上传的百分比参数需要小数
+    Object.keys(paramsObj.subMap).map(item => {
+      const res = paramsObj.subMap[item];
+      res.forEach((value, i) => {
+        res[i].levelLowerLimit = value.levelLowerLimit / 100;
+        res[i].levelUpperLimit = value.levelUpperLimit / 100;
+      });
+      return res;
+    });
+
     this.props.dispatch({
       type: 'coefficient/updatePackage',
       payload: paramsObj,
     });
   };
   render() {
-    const { data } = this.props.coefficient;
+    const { data = {} } = this.props.coefficient;
+    const { subMap = {} } = data;
+
+    // 回显时百分比展示整数
+    if (Object.keys(subMap).length !== 0) {
+      Object.keys(subMap).map(item => {
+        const res = subMap[item];
+        res.forEach((val, i) => {
+          res[i].levelLowerLimit = val.levelLowerLimit * 100;
+          res[i].levelUpperLimit = val.levelUpperLimit * 100;
+        });
+        return res;
+      });
+    }
 
     const baseLayout = (
       <WrappedRoleForm
