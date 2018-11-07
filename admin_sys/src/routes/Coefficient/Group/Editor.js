@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva/index';
 import { Form } from 'antd';
+import { formatDateNew } from '../../../utils/FormatDate';
 import { showPercentFn } from '../component/showPercentFn';
 import ContentLayout from '../../../layouts/ContentLayout';
 import CoefficientForm from '../../../selfComponent/Coefficient/CoefficientForm';
@@ -49,8 +50,8 @@ export default class Editor extends React.Component {
     if (!val.effectiveDate) {
       paramsObj = Object.assign(this.state.paramObj, val, {
         id: data.id,
-        effectiveDate: data.effectiveDate,
-        expiryDate: data.expiryDate,
+        effectiveDate: formatDateNew(data.effectiveDate),
+        expiryDate: formatDateNew(data.expiryDate),
       });
     } else {
       paramsObj = Object.assign(this.state.paramObj, val, { id: data.id });
