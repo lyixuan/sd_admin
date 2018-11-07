@@ -8,19 +8,22 @@ export function showPercentFn(data, type, flag) {
   Object.keys(data).map(item => {
     const res = data[item];
     res.forEach((value, i) => {
-      if (flag === '/') {
-        res[i].levelLowerLimit = value.levelLowerLimit / 100;
-        res[i].levelUpperLimit = value.levelUpperLimit / 100;
-        if (type === 3) {
-          res[i].classKpi = value.classKpi / 100;
-          res[i].groupKpi = value.groupKpi / 100;
-        }
-      } else {
-        res[i].levelLowerLimit = value.levelLowerLimit * 100;
-        res[i].levelUpperLimit = value.levelUpperLimit * 100;
-        if (type === 3) {
-          res[i].classKpi = value.classKpi * 100;
-          res[i].groupKpi = value.groupKpi * 100;
+      if (value.type !== 3) {
+        // 排除管理系数
+        if (flag === '/') {
+          res[i].levelLowerLimit = value.levelLowerLimit / 100;
+          res[i].levelUpperLimit = value.levelUpperLimit / 100;
+          if (type === 3) {
+            res[i].classKpi = value.classKpi / 100;
+            res[i].groupKpi = value.groupKpi / 100;
+          }
+        } else {
+          res[i].levelLowerLimit = value.levelLowerLimit * 100;
+          res[i].levelUpperLimit = value.levelUpperLimit * 100;
+          if (type === 3) {
+            res[i].classKpi = value.classKpi * 100;
+            res[i].groupKpi = value.groupKpi * 100;
+          }
         }
       }
     });
