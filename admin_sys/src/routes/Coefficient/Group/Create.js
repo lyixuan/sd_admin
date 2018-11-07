@@ -3,6 +3,7 @@ import { connect } from 'dva/index';
 import { Form } from 'antd';
 import ContentLayout from '../../../layouts/ContentLayout';
 import CoefficientForm from '../../../selfComponent/Coefficient/CoefficientForm';
+import { showPercentFn } from '../component/showPercentFn';
 
 const WrappedRoleForm = Form.create()(CoefficientForm);
 
@@ -32,16 +33,7 @@ export default class Create extends React.Component {
     if (paramsObj.subMap.effectiveDate) delete paramsObj.subMap.effectiveDate; // 移除无用属性
 
     // 上传的百分比参数需要小数
-    Object.keys(paramsObj.subMap).map(item => {
-      const res = paramsObj.subMap[item];
-      res.forEach((value, i) => {
-        res[i].levelLowerLimit = value.levelLowerLimit / 100;
-        res[i].levelUpperLimit = value.levelUpperLimit / 100;
-        res[i].classKpi = value.classKpi / 100;
-        res[i].groupKpi = value.groupKpi / 100;
-      });
-      return res;
-    });
+    showPercentFn(paramsObj.subMap, 3, '/');
 
     this.props.dispatch({
       type: 'coefficient/addPackage',

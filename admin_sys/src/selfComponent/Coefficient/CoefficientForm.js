@@ -21,8 +21,8 @@ export default class CoefficientForm extends Component {
   // 生效周期
   onChangeDate = (dates, dateStrings) => {
     this.setState({
-      effectiveDate: dateStrings[0],
-      expiryDate: dateStrings[1],
+      effectiveDate: `${dateStrings[0]}-01`,
+      expiryDate: `${dateStrings[1]}-30`,
     });
   };
   /*
