@@ -74,10 +74,12 @@ class InputItem extends PureComponent {
   changeInputValue = (key = '', item = {}, e) => {
     const target = e.currentTarget;
     const newObj = { ...item };
-    if (!/\d+/.test(target.value) && target.value.length) {
+    let inputValue = target.value || '';
+    inputValue = inputValue.replace(/。|\./g, '.');
+    if (!/^(\d{0,10})(\.\d{0,2})?$/g.test(inputValue)) {
       return;
     }
-    newObj[key] = Number(target.value);
+    newObj[key] = inputValue;
     this.changeItemValue(newObj);
   };
   changeCheckboxValue = (item = {}, e) => {
@@ -115,7 +117,7 @@ class InputItem extends PureComponent {
           <Button
             type="primary"
             className={common.searchButton}
-            style={{ float: 'right', margin: '25px 55px 0 0' }}
+            style={{ float: 'right', margin: '25px 39px 0 0' }}
             onClick={this.addItem}
           >
             添加区间
@@ -136,7 +138,7 @@ class InputItem extends PureComponent {
                 disabled={itemList.length <= 1}
                 className={common.cancleButton}
                 onClick={() => this.deleteItem(item)}
-                style={{ float: 'right', margin: '0 55px 0 0' }}
+                style={{ float: 'right' }}
               >
                 删除
               </Button>

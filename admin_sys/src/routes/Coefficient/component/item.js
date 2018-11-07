@@ -66,9 +66,9 @@ export default class Item extends React.Component {
   renderBaserNumber = (item = {}, baseName = '') => {
     return (
       <span className={style.baseNumCotainer}>
-        <span>{baseName}:</span>
+        <span className={style.textCls}>{baseName}</span>
         {this.renderInput(item, 'levelValue')}
-        <span>{`${baseName === '基数' ? '元' : ''}`}</span>
+        <span>{`${baseName === '基数' ? ' 元' : ''}`}</span>
       </span>
     );
   };
@@ -76,17 +76,17 @@ export default class Item extends React.Component {
     const item = this.props.data || {};
     return (
       <div className={style.valueItem}>
-        {this.renderInput(item, 'levelUpperLimit')}
-        <span className={style.percent}>%</span>
-        <span className={style.checkBox}>
-          {this.renderCheckBox(item, 'upperClose')}
-          <span>闭区间</span>
-        </span>
-        <span className={style.breakLine}>~</span>
         {this.renderInput(item, 'levelLowerLimit')}
         <span className={style.percent}>%</span>
         <span className={style.checkBox}>
           {this.renderCheckBox(item, 'lowerClose')}
+          <span>闭区间</span>
+        </span>
+        <span className={style.breakLine}>~</span>
+        {this.renderInput(item, 'levelUpperLimit')}
+        <span className={style.percent}>%</span>
+        <span className={style.checkBox}>
+          {this.renderCheckBox(item, 'upperClose')}
           <span>闭区间</span>
         </span>
         {this.renderBaserNumber(item, baseName)}
@@ -97,16 +97,16 @@ export default class Item extends React.Component {
     const item = this.props.data || {};
     return (
       <div className={style.valueItem}>
-        {this.renderInput(item, 'levelUpperLimit')}
+        {this.renderInput(item, 'levelLowerLimit')}
         <span className={style.checkBox}>
-          {this.renderCheckBox(item, 'upperClose')}
+          {this.renderCheckBox(item, 'lowerClose')}
           <span>闭区间</span>
         </span>
         <span className={style.breakLine}>~</span>
-        {this.renderInput(item, 'levelLowerLimit')}
+        {this.renderInput(item, 'levelUpperLimit')}
 
         <span className={style.checkBox}>
-          {this.renderCheckBox(item, 'lowerClose')}
+          {this.renderCheckBox(item, 'upperClose')}
           <span>闭区间</span>
         </span>
         {this.renderBaserNumber(item, baseName)}
@@ -118,16 +118,16 @@ export default class Item extends React.Component {
     return (
       <div className={style.valueItem}>
         <div className={style.inlineCls}>
-          <span>组内老师人数</span>
+          <span className={style.textCls}>组内老师人数</span>
           {this.renderInput(item, 'teacherCount')}
         </div>
         <div className={style.inlineCls}>
-          <span>运营长绩效</span>
-          {this.renderInput(item, 'groupKpi')}
+          <span className={style.textCls}>运营长绩效</span>
+          {this.renderInput(item, 'groupKpi')} %
         </div>
         <div className={style.inlineCls}>
-          <span>班主任绩效</span>
-          {this.renderInput(item, 'classKpi')}
+          <span className={style.textCls}>班主任绩效</span>
+          {this.renderInput(item, 'classKpi')} %
         </div>
       </div>
     );
