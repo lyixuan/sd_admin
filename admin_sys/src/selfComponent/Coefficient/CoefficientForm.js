@@ -8,7 +8,7 @@ import styles from './CoefficientForm.less';
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
-const dateFormat = 'YYYY-MM-DD';
+const dateFormat = 'YYYY-MM';
 
 export default class CoefficientForm extends Component {
   constructor(props) {
