@@ -76,7 +76,7 @@ class InputItem extends PureComponent {
     const newObj = { ...item };
     let inputValue = target.value || '';
     inputValue = inputValue.replace(/。|\./g, '.');
-    if (!/^(\d{0,10})(\.\d{0,2})?$/g.test(inputValue)) {
+    if (!/^(\d{0,9})(\.\d{0,2})?$/g.test(inputValue)) {
       return;
     }
     newObj[key] = inputValue;
