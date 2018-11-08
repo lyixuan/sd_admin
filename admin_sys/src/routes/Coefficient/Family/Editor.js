@@ -46,28 +46,26 @@ export default class Editor extends React.Component {
   submitFn = val => {
     const { data = {} } = this.props.coefficient;
     let paramsObj = {};
+
+    const newVal = JSON.parse(JSON.stringify(val));
     if (!val.effectiveDate) {
-      paramsObj = Object.assign(this.state.paramObj, val, {
-        id: data.id,
-        effectiveDate: formatDateNew(data.effectiveDate),
-        expiryDate: formatDateNew(data.expiryDate),
-      });
+      paramsObj = {
+        ...this.state.paramObj,
+        ...newVal,
+        ...{
+          id: data.id,
+          effectiveDate: formatDateNew(data.effectiveDate),
+          expiryDate: formatDateNew(data.expiryDate),
+        },
+      };
     } else {
-      paramsObj = Object.assign(this.state.paramObj, val, { id: data.id });
+      paramsObj = { ...this.state.paramObj, ...newVal, ...{ id: data.id } };
     }
 
     if (paramsObj.subMap.effectiveDate) delete paramsObj.subMap.effectiveDate; // 移除无用属性
 
     // 上传的百分比参数需要小数
     showPercentFn(paramsObj.subMap, 2, '/');
-    // Object.keys(paramsObj.subMap).map(item => {
-    //   const res = paramsObj.subMap[item];
-    //   res.forEach((value, i) => {
-    //     res[i].levelLowerLimit = value.levelLowerLimit / 100;
-    //     res[i].levelUpperLimit = value.levelUpperLimit / 100;
-    //   });
-    //   return res;
-    // });
 
     this.props.dispatch({
       type: 'coefficient/updatePackage',

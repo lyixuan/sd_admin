@@ -29,7 +29,9 @@ export default class Create extends React.Component {
     };
   }
   submitFn = val => {
-    const paramsObj = Object.assign(this.state.paramObj, val);
+    const newVal = JSON.parse(JSON.stringify(val));
+
+    const paramsObj = Object.assign(this.state.paramObj, newVal);
     if (paramsObj.subMap.effectiveDate) delete paramsObj.subMap.effectiveDate; // 移除无用属性
 
     // 上传的百分比参数需要小数
