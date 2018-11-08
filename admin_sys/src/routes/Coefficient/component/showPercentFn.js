@@ -8,7 +8,7 @@ export function showPercentFn(data, type, flag) {
   Object.keys(data).map(item => {
     const res = data[item];
     res.forEach((value, i) => {
-      if (value.type !== 3) {
+      if (Number(value.type) !== 3) {
         // 排除管理系数
         if (flag === '/') {
           res[i].levelLowerLimit = value.levelLowerLimit / 100;

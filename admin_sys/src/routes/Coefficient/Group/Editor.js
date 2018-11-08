@@ -74,27 +74,18 @@ export default class Editor extends React.Component {
   };
   render() {
     const { data = {} } = this.props.coefficient;
-    const { subMap = {} } = data;
+    const newData = JSON.parse(JSON.stringify(data));
+    const { subMap = {} } = newData;
 
     // 回显时百分比展示整数
     if (Object.keys(subMap).length !== 0) {
       showPercentFn(subMap, 3, '*');
-      // Object.keys(subMap).map(item => {
-      //   const res = subMap[item];
-      //   res.forEach((val, i) => {
-      //     res[i].levelLowerLimit = val.levelLowerLimit * 100;
-      //     res[i].levelUpperLimit = val.levelUpperLimit * 100;
-      //     res[i].classKpi = val.classKpi * 100;
-      //     res[i].groupKpi = val.groupKpi * 100;
-      //   });
-      //   return res;
-      // });
     }
 
     const baseLayout = (
       <WrappedRoleForm
         submitFn={val => this.submitFn(val)}
-        paramObj={data}
+        paramObj={newData}
         loading={this.props.submitLoading}
         infoLoading={this.props.loading}
       />
