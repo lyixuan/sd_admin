@@ -31,7 +31,16 @@ export default class CoefficientForm extends Component {
   cancel = () => {
     window.history.go(-1);
   };
-
+  checkPrice = (rule, value = {}) => {
+    console.log(value);
+    const list = Array.isArray(value.list) ? value.list : [];
+    list.forEach(item => {
+      if (!item.beginVal) {
+        console.log('填写不完整');
+        // return;
+      }
+    });
+  };
   /*
   * 提交事件
   * */
@@ -96,6 +105,11 @@ export default class CoefficientForm extends Component {
                       <FormItem {...formItemLayout}>
                         {getFieldDecorator(item, {
                           initialValue: subMap[item],
+                          rules: [
+                            {
+                              validator: this.checkPrice,
+                            },
+                          ],
                         })(<InputItem onChange={val => console.log(val)} />)}
                       </FormItem>
                     </div>
