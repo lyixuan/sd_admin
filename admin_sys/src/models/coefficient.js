@@ -37,7 +37,7 @@ export default {
         } else {
           console.error('非家族小组绩效包类型');
         }
-      } else if (response.code === 3000) {
+      } else if (response.msg === '档位值必须在区间[0, 999999]') {
         message.error('请完善所有信息');
       } else {
         message.error(response.msg);
@@ -55,7 +55,7 @@ export default {
         } else {
           console.error('非家族小组绩效包类型');
         }
-      } else if (response.code === 3000) {
+      } else if (response.msg === '档位值必须在区间[0, 999999]') {
         message.error('请完善所有信息');
       } else {
         message.error(response.msg);
