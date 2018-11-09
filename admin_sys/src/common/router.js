@@ -375,6 +375,90 @@ export const getRouterData = app => {
       },
       name: '添加申诉',
     },
+    '/performance/familyCoefficient': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Family/index')
+      ),
+      name: '家族系数管理',
+    },
+    '/performance/familyCoefficient/list': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Family/List')
+      ),
+      name: '家族系数管理',
+    },
+    '/performance/familyCoefficient/check': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Family/Check')
+      ),
+      bread: {
+        name: '家族系数管理',
+        path: '/performance/familyCoefficient/list',
+      },
+      name: '查看绩效包',
+    },
+    '/performance/familyCoefficient/create': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Family/Create')
+      ),
+      bread: {
+        name: '家族系数管理',
+        path: '/performance/familyCoefficient/list',
+      },
+      name: '创建绩效包',
+    },
+    '/performance/familyCoefficient/editor': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Family/Editor')
+      ),
+      bread: {
+        name: '家族系数管理',
+        path: '/performance/familyCoefficient/list',
+      },
+      name: '编辑绩效包',
+    },
+    '/performance/groupCoefficient': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Group/index')
+      ),
+      name: '小组系数管理',
+    },
+    '/performance/groupCoefficient/list': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Group/List')
+      ),
+      name: '小组系数管理',
+    },
+    '/performance/groupCoefficient/check': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Group/Check')
+      ),
+      bread: {
+        name: '小组系数管理',
+        path: '/performance/groupCoefficient/list',
+      },
+      name: '查看绩效包',
+    },
+    '/performance/groupCoefficient/create': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Group/Create')
+      ),
+      bread: {
+        name: '小组系数管理',
+        path: '/performance/groupCoefficient/list',
+      },
+      name: '创建绩效包',
+    },
+    '/performance/groupCoefficient/editor': {
+      component: dynamicWrapper(app, ['coefficient'], () =>
+        import('../routes/Coefficient/Group/Editor')
+      ),
+      bread: {
+        name: '小组系数管理',
+        path: '/performance/groupCoefficient/list',
+      },
+      name: '编辑绩效包',
+    },
     '/performance/collegePerformance': {
       component: dynamicWrapper(app, ['collegePerformance'], () =>
         import('../routes/Performance/CollegePerformance')

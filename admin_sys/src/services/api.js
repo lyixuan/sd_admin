@@ -648,3 +648,31 @@ export async function findActualKpiInfo(params) {
     method: 'GET',
   });
 }
+
+// ------------ 绩效系数 ----------
+export async function packageList(params) {
+  // 学院列表
+  return request(`${HOST}/kpiLevel/packageList?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function packageInfo(params) {
+  // 个人列表
+  return request(`${HOST}/kpiLevel/packageInfo?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+// 创建绩效包
+export async function addPackage(params) {
+  return request(`${HOST}/kpiLevel/addPackage`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 更新绩效包
+export async function updatePackage(params) {
+  return request(`${HOST}/kpiLevel/updatePackage`, {
+    method: 'POST',
+    body: params,
+  });
+}
