@@ -105,11 +105,6 @@ export default class CoefficientForm extends Component {
                       <FormItem {...formItemLayout}>
                         {getFieldDecorator(item, {
                           initialValue: subMap[item],
-                          rules: [
-                            {
-                              validator: this.checkPrice,
-                            },
-                          ],
                         })(<InputItem onChange={val => console.log(val)} />)}
                       </FormItem>
                     </div>

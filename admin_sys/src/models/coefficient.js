@@ -37,6 +37,8 @@ export default {
         } else {
           console.error('非家族小组绩效包类型');
         }
+      } else if (response.code === 3000) {
+        message.error('请完善所有信息');
       } else {
         message.error(response.msg);
       }
@@ -53,6 +55,8 @@ export default {
         } else {
           console.error('非家族小组绩效包类型');
         }
+      } else if (response.code === 3000) {
+        message.error('请完善所有信息');
       } else {
         message.error(response.msg);
       }
