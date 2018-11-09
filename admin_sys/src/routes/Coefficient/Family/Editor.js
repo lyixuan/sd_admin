@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva/index';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import { formatDateNew } from '../../../utils/FormatDate';
 import { showPercentFn } from '../component/showPercentFn';
 import ContentLayout from '../../../layouts/ContentLayout';
@@ -16,7 +16,7 @@ const WrappedRoleForm = Form.create()(CoefficientForm);
 export default class Editor extends React.Component {
   constructor(props) {
     super(props);
-
+    this.isRequest = true;
     const params = this.props.getUrlParams();
     this.state = {
       paramObj: {
@@ -43,8 +43,13 @@ export default class Editor extends React.Component {
       payload: { userListParams },
     });
   };
+  alertErr = () => {
+    this.isRequest = false;
+    message.error('请完善所有信息');
+  };
   submitFn = val => {
     const { data = {} } = this.props.coefficient;
+    this.isRequest = true;
     let paramsObj = {};
 
     const newVal = JSON.parse(JSON.stringify(val));
@@ -65,12 +70,13 @@ export default class Editor extends React.Component {
     if (paramsObj.subMap.effectiveDate) delete paramsObj.subMap.effectiveDate; // 移除无用属性
 
     // 上传的百分比参数需要小数
-    showPercentFn(paramsObj.subMap, 2, '/');
-
-    this.props.dispatch({
-      type: 'coefficient/updatePackage',
-      payload: paramsObj,
-    });
+    showPercentFn(paramsObj.subMap, '/', this.alertErr);
+    if (this.isRequest) {
+      this.props.dispatch({
+        type: 'coefficient/updatePackage',
+        payload: paramsObj,
+      });
+    }
   };
   render() {
     const { data = {} } = this.props.coefficient;
@@ -79,7 +85,7 @@ export default class Editor extends React.Component {
 
     // 回显时百分比展示整数
     if (Object.keys(subMap).length !== 0) {
-      showPercentFn(subMap, 2, '*');
+      showPercentFn(subMap, '*');
     }
 
     const baseLayout = (
