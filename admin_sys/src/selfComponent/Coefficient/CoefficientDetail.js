@@ -9,7 +9,7 @@
 * */
 
 import React, { Component } from 'react';
-import IntervalItem from './IntervalItem';
+import { Checkbox } from 'antd';
 import styles from './CoefficientDetail.less';
 
 class CoefficientDetail extends Component {
@@ -37,13 +37,29 @@ class CoefficientDetail extends Component {
     return val;
   };
 
+
+  IntervalItem = (v1=0, v2=false, percent) => {
+    const val1 = percent === 1 ? (v1 * 100>100?100:parseFloat((v1*100).toPrecision(12))) : v1;
+    const bol = true;
+    return (
+      <span>
+        <span className={styles.firstCoeSpan}>
+          {val1}
+          {percent === 1 ? ' %' : null}
+        </span>
+        <Checkbox disabled checked={v2 ? bol : false} className={styles.checkBoxCls} />
+        <span className={styles.word}>闭区间</span>
+      </span>
+    );
+  };
+
   coefficient = (data, percent, basic) => {
     const val = data.map(item => {
       return (
         <div key={item.key} className={styles.coeffiDiv}>
-          <IntervalItem v1={item.v1} v2={item.v2} percent={percent} />
+          {this.IntervalItem(item.v1,item.v2,percent)}
           <span className={styles.xSpin}>～</span>
-          <IntervalItem v1={item.v3} v2={item.v4} percent={percent} />
+          {this.IntervalItem(item.v3,item.v4,percent)}
           {basic === 1 ? (
             <span className={styles.basicSpan}> 基数：{item.v5} 元</span>
           ) : (
