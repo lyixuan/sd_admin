@@ -96,7 +96,7 @@ export default class CoefficientForm extends Component {
                       <FormItem {...formItemLayout}>
                         {getFieldDecorator(item, {
                           initialValue: subMap[item],
-                        })(<InputItem onChange={val => console.log(val)} />)}
+                        })(<InputItem />)}
                       </FormItem>
                     </div>
                   );
