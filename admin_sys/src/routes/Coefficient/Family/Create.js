@@ -46,7 +46,7 @@ export default class Create extends React.Component {
     showPercentFn(paramsObj.subMap, '/', this.alertErr);
     if (this.isRequest) {
       this.props.dispatch({
-        type: 'coefficient/updatePackage',
+        type: 'coefficient/addPackage',
         payload: paramsObj,
       });
     }
