@@ -26,10 +26,10 @@ class CoefficientDetail extends Component {
             组内老师人数：<span>{item.v1}</span>
           </span>
           <span className={styles.groupSpan1}>
-            运营长绩效：<span>{item.v2 * 100}%</span>
+            运营长绩效：<span>{parseFloat((item.v2*100).toPrecision(12))}%</span>
           </span>
           <span className={styles.groupSpan2}>
-            班主任绩效：<span>{item.v3 * 100}%</span>
+            班主任绩效：<span>{parseFloat((item.v3*100).toPrecision(12))}%</span>
           </span>
         </div>
       );
