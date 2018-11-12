@@ -96,40 +96,41 @@ class StaffList extends Component {
         title: 'id',
         dataIndex: 'id',
         key: 'id',
+        width: 100,
       },
       {
         title: '姓名',
         dataIndex: 'name',
         key: 'name',
+        width: 120,
       },
       {
         title: '状态',
         dataIndex: 'currentStateName',
-        width: 120,
+        width: 100,
         key: 'currentStateName',
       },
       {
         title: '邮箱',
         dataIndex: 'mail',
-        width: 150,
+        width: 100,
         key: 'mail',
       },
       {
         title: '岗位',
         dataIndex: 'userType',
-        width: 110,
+        width: 150,
         key: 'userType',
       },
       {
         title: '负责单位',
         dataIndex: 'showName',
-        width: 170,
+        width: 340,
         key: 'showName',
       },
       {
         title: '操作',
         dataIndex: 'operation',
-        width: 150,
         key: 'operation',
         render: (text, record) => {
           const buttonList = renderAuthButtonList(record.currentStateName || '') || [];
