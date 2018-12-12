@@ -489,6 +489,12 @@ export const getRouterData = app => {
       },
       name: '编辑绩效',
     },
+    '/bottomTable/bottomList': {
+      component: dynamicWrapper(app, ['bottomTable'], () =>
+        import('../routes/BottomTable/BottomList')
+      ),
+      name: '底表下载',
+    },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
     },
