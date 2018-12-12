@@ -9,6 +9,7 @@ import createLoading from 'dva-loading';
 import 'moment/locale/zh-cn';
 import './rollbar';
 import './index.less';
+import './utils/global';
 
 const history = createHistory();
 // 1. Initialize
