@@ -23,7 +23,7 @@ window.Filter = (constName, item) => {
         break;
       }
       if (result[i].name === item) {
-        result = result[i].name;
+        result = result[i].id;
         break;
       }
     }
