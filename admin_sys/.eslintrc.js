@@ -10,9 +10,9 @@ module.exports = {
     jasmine: true,
   },
   rules: {
-    'generator-star-spacing': [0],
     eqeqeq: [1],
     camelcase: [0],
+    'generator-star-spacing': [0],
     'consistent-return': [0],
     'react/forbid-prop-types': [0],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
