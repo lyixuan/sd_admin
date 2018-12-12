@@ -10,8 +10,8 @@ import { userTypeData, userTypeDataReset } from '../../utils/dataDictionary';
 const FormItem = Form.Item;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
-let flag1 = 'class'; // 创建时候的级别标示
-let flag2 = 'class'; // 编辑时候的级别标示
+let flag1 = 'class'; // 创建时候的前端角色标示
+let flag2 = 'class'; // 编辑时候的前端角色标示
 let flag = 'class';
 let responseComList = [];
 let responseComListBackup = [];
@@ -300,11 +300,11 @@ class EditUserTable extends Component {
         dataIndex: 'id',
       },
       {
-        title: '级别',
+        title: '前端角色',
         dataIndex: 'userType',
       },
       {
-        title: '负责单位',
+        title: '组织',
         dataIndex: 'showName',
       },
       {
@@ -387,7 +387,7 @@ class EditUserTable extends Component {
                       {
                         validator(rule, value, callback) {
                           if (!value) {
-                            callback({ message: '请选择级别！' });
+                            callback({ message: '请选择前端角色！' });
                           }
                           callback();
                         },
@@ -417,17 +417,22 @@ class EditUserTable extends Component {
             </Row>
             <Row style={{ marginTop: '10px' }}>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="*负责单位">
+                <FormItem label="*组织">
                   {getFieldDecorator('responseCom', {
                     initialValue: this.state.clickFlag === 1 ? [] : this.state.shownameid,
                     rules: [
                       {
                         validator(rule, value, callback) {
                           if (typeof value[0] === 'string' || !value[0]) {
-                            if (flag === 'admin' || flag === 'boss' || flag === 'others' || this.state.currentstate === 2) {
+                            if (
+                              flag === 'admin' ||
+                              flag === 'boss' ||
+                              flag === 'others' ||
+                              this.state.currentstate === 2
+                            ) {
                               callback();
                             } else {
-                              callback({ message: '请选择负责单位！' });
+                              callback({ message: '请选择组织！' });
                             }
                           } else {
                             callback();

@@ -298,7 +298,7 @@ class CreateUserForm extends Component {
           </Row>
           <Row style={{ marginTop: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
+              <FormItem label="*前端角色">
                 {getFieldDecorator('userType', {
                   initialValue: null,
                   rules: [
@@ -345,7 +345,7 @@ class CreateUserForm extends Component {
 
           <Row style={{ marginTop: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*负责单位">
+              <FormItem label="*组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织">
                 {getFieldDecorator('responseCom', {
                   initialValue: [],
                   rules: [
@@ -355,7 +355,7 @@ class CreateUserForm extends Component {
                           if (flag === 'admin' || flag === 'boss' || flag === 'others') {
                             callback();
                           } else {
-                            callback({ message: '请选择负责单位！' });
+                            callback({ message: '请选择组织！' });
                           }
                         }
                         callback();

@@ -45,7 +45,7 @@ class UserList extends Component {
   // 删除用户
   onDelete = val => {
     const userDeleteParams = { id: val.id };
-    const userListParams = this.state.params
+    const userListParams = this.state.params;
     this.props.dispatch({
       type: 'user/userDelete',
       payload: { userDeleteParams, userListParams },
@@ -55,7 +55,7 @@ class UserList extends Component {
   // 更新用户
   onUpdate = val => {
     const updateUserOrgParams = { id: val.id };
-    const userListParams = this.state.params
+    const userListParams = this.state.params;
     this.props.dispatch({
       type: 'user/updateUserOrg',
       payload: { updateUserOrgParams, userListParams },
@@ -65,7 +65,7 @@ class UserList extends Component {
   // 编辑用户
   onEdit = val => {
     const mail = val.mail || '';
-    this.props.setRouteUrlParams('/user/editUser', {mail, userType: val.userType});
+    this.props.setRouteUrlParams('/user/editUser', { mail, userType: val.userType });
   };
 
   // 点击显示每页多少条数据函数
@@ -78,7 +78,7 @@ class UserList extends Component {
     const userListParams = { ...stateParams, ...params };
     this.props.dispatch({
       type: 'user/userList',
-      payload:{userListParams},
+      payload: { userListParams },
     });
     this.saveParams(userListParams);
   };
@@ -136,12 +136,12 @@ class UserList extends Component {
         dataIndex: 'mail',
       },
       {
-        title: '级别',
+        title: '前端角色',
         dataIndex: 'userType',
         width: 120,
       },
       {
-        title: '负责单位',
+        title: '组织',
         dataIndex: 'showName',
         width: 170,
       },
@@ -207,8 +207,8 @@ class UserList extends Component {
       pageSize: 30,
       pageNum: 0,
       isUpdate: 0,
-      name:'',
-      mail:'',
+      name: '',
+      mail: '',
     };
     this.getData(params);
   };
@@ -218,8 +218,8 @@ class UserList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-       const isUpdate = this.selectOptions.find(item => item.label === values.isUpdate).value;
-        const {mail=undefined} = values ;
+        const isUpdate = this.selectOptions.find(item => item.label === values.isUpdate).value;
+        const { mail = undefined } = values;
         const userListParams = {
           isUpdate,
           name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
@@ -239,7 +239,7 @@ class UserList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { name,mail,isUpdate ,pageNum} = this.state.params;
+    const { name, mail, isUpdate, pageNum } = this.state.params;
     const data = !this.props.user.userList.response
       ? []
       : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
@@ -292,7 +292,6 @@ class UserList extends Component {
                           {item.label}
                         </Option>
                       ))}
-
                     </Select>
                   )}
                 </FormItem>
