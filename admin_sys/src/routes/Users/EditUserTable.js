@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Form, Button, Row, Col, Select, Cascader, Radio } from 'antd';
+import { Table, Form, Button, Row, Col, Select, Cascader, Radio, Checkbox } from 'antd';
 import { connect } from 'dva';
 
 import common from '../Common/common.css';
@@ -7,6 +7,7 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import { userTypeData, userTypeDataReset } from '../../utils/dataDictionary';
 
+const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
@@ -34,6 +35,8 @@ class EditUserTable extends Component {
       privilege: null,
       positionId: null,
       currentstate: null,
+      plainOptions: ['学分', '绩效', '后台'],
+      defaultCheckedList: ['绩效'],
     };
   }
 
@@ -308,6 +311,18 @@ class EditUserTable extends Component {
         dataIndex: 'showName',
       },
       {
+        title: '后端角色',
+        dataIndex: 'Role',
+      },
+      {
+        title: '绩效访问',
+        dataIndex: 'priviligeView',
+      },
+      {
+        title: '后台访问',
+        dataIndex: 'endView',
+      },
+      {
         title: '绩效权限',
         dataIndex: 'privilege',
       },
@@ -417,7 +432,7 @@ class EditUserTable extends Component {
             </Row>
             <Row style={{ marginTop: '10px' }}>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="*组织">
+                <FormItem label="*组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织">
                   {getFieldDecorator('responseCom', {
                     initialValue: this.state.clickFlag === 1 ? [] : this.state.shownameid,
                     rules: [
@@ -507,6 +522,61 @@ class EditUserTable extends Component {
                         否
                       </Radio>
                     </RadioGroup>
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
+                <FormItem label="*后端角色:">
+                  {getFieldDecorator('roleId', {
+                    initialValue: this.state.clickFlag === 1 ? null : this.state.userType,
+                    rules: [
+                      {
+                        validator(rule, value, callback) {
+                          if (!value) {
+                            callback({ message: '请选择后端角色！' });
+                          }
+                          callback();
+                        },
+                      },
+                    ],
+                  })(
+                    <Select
+                      style={{ width: 280 }}
+                      onChange={this.handleSelectChange}
+                      disabled={
+                        this.state.clickFlag === 1
+                          ? false
+                          : this.state.privilege === 1 ? disabled : false
+                      }
+                    >
+                      <Option value="college">院长或副院长</Option>
+                      <Option value="family">家族长</Option>
+                      <Option value="group">运营长</Option>
+                      <Option value="class">班主任</Option>
+                      <Option value="admin">管理员</Option>
+                      <Option value="boss">管理层</Option>
+                      <Option value="others">无绩效岗位</Option>
+                    </Select>
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
+                <FormItem label="&nbsp;&nbsp;访问权限">
+                  {getFieldDecorator('view', {
+                    initialValue: 0,
+                    rules: [],
+                  })(
+                    <CheckboxGroup
+                      style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                      options={this.state.plainOptions}
+                      defaultValue={this.state.defaultCheckedList}
+                      onChange={this.onChange}
+                    />
                   )}
                 </FormItem>
               </Col>

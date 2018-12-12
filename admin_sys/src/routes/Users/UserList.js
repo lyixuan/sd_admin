@@ -151,6 +151,11 @@ class UserList extends Component {
         width: 170,
       },
       {
+        title: '后端角色',
+        dataIndex: 'Role',
+        width: 120,
+      },
+      {
         title: '绩效权限',
         dataIndex: 'privilege',
         width: 100,

@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, Row, Col, Select, Spin, DatePicker, Radio } from 'antd';
+import {
+  Form,
+  Input,
+  Cascader,
+  Checkbox,
+  Button,
+  Row,
+  Col,
+  Select,
+  Spin,
+  DatePicker,
+  Radio,
+} from 'antd';
 import common from '../../routes/Common/common.css';
 
 const FormItem = Form.Item;
+const CheckboxGroup = Checkbox.Group;
 const { Option } = Select;
 let responseComList = [];
 let responseComListBackup = [];
@@ -20,6 +33,8 @@ class CreateUserForm extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
       listOrgLiost: listOrgValues || [],
+      plainOptions: ['学分', '绩效', '后台'],
+      defaultCheckedList: ['绩效'],
     };
   }
   componentDidMount() {
@@ -397,6 +412,33 @@ class CreateUserForm extends Component {
               </FormItem>
             </Col>
           </Row>
+
+          <Row style={{ marginTop: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*后端角色">
+                {getFieldDecorator('roleId', {
+                  initialValue: null,
+                  rules: [],
+                })(residences)}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="访问权限">
+                {getFieldDecorator('view', {
+                  initialValue: 0,
+                  rules: [],
+                })(
+                  <CheckboxGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                    options={this.state.plainOptions}
+                    defaultValue={this.state.defaultCheckedList}
+                    onChange={this.onChange}
+                  />
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
           <Row style={{ marginTop: '20px' }}>
             <Col span={6} offset={17} style={{ textAlign: 'right' }}>
               <FormItem>
