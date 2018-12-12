@@ -48,7 +48,7 @@ class EditHoliday extends Component {
     this.getData();
     this.initParams();
   }
-  componentWillReceiveProps(nextprops) {
+  UNSAFE_componentWillReceiveProps(nextprops) {
     if (
       JSON.stringify(nextprops.staff.employeeInfo) !== JSON.stringify(this.props.staff.employeeInfo)
     ) {

@@ -168,6 +168,7 @@ class BasicLayout extends React.PureComponent {
   };
 
   render() {
+    console.log(process.env.API_TYPE);
     const { collapsed, fetchingNotices, notices, match, location } = this.props;
     let { routerData } = this.props;
     const menuData = getMenuData();

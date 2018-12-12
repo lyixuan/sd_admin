@@ -58,7 +58,7 @@ class EditTransJob extends Component {
     this.getGroupList();
     this.initParams();
   }
-  componentWillReceiveProps(nextprops) {
+  UNSAFE_componentWillReceiveProps(nextprops) {
     if (
       JSON.stringify(nextprops.staff.employeeInfo) !== JSON.stringify(this.props.staff.employeeInfo)
     ) {

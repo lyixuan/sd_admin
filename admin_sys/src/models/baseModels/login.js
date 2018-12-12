@@ -45,9 +45,11 @@ export default {
         message.error(response.msg);
       }
     },
-    *changeRole({ payload }, { call, put }){
-      console.log(payload,call, put)
-
+    *changeRole({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoginStatus',
+      });
+      console.log(payload, call, put);
     },
     *logout(_, { call }) {
       try {

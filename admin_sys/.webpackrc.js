@@ -22,4 +22,8 @@ export default {
   disableDynamicImport: false,
   publicPath: '/',
   hash: true,
+  define: {
+    'process.env.API_TYPE': process.env.API_TYPE,
+    USE_COMMA: 2,
+  },
 };

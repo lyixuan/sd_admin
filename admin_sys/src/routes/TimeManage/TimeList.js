@@ -49,7 +49,7 @@ class TimeList extends Component {
     this.getRange();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (JSON.stringify(nextProps.time.dateArea) !== JSON.stringify(this.props.time.dateArea)) {
       const beginTime = this.changeFormat(nextProps.time.dateArea.beginTime);
       const endTime = this.changeFormat(nextProps.time.dateArea.endTime);

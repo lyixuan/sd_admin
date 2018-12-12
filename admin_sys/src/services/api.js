@@ -1,13 +1,11 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
-import config from '../config';
 
-const { NODE_ENV = 'pro' } = config;
 const hostObj = {
-  pro: 'http://bd.ministudy.com/apis',
-  dev: 'http://172.16.117.65:8090',
+  production: 'http://bd.ministudy.com/apis',
+  development: 'http://172.16.117.65:8090',
 };
-export const HOST = hostObj[NODE_ENV];
+export const HOST = hostObj[process.env.API_TYPE];
 /*
 * 用户登录接口
 * params：{name，password}
