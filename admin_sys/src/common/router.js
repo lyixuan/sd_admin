@@ -81,7 +81,7 @@ const dynamicWrapper = (app, models, component) => {
 export const getRouterData = app => {
   const routerConfig = {
     '/': {
-      component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
+      component: dynamicWrapper(app, [], () => import('../layouts/BasicLayout')),
     },
     '/indexPage': {
       component: dynamicWrapper(app, [], () => import('../routes/IndexPage/IndexPage')),
@@ -107,15 +107,11 @@ export const getRouterData = app => {
       name: '删除质检',
     },
     '/config/accountList': {
-      component: dynamicWrapper(app, ['account/accountList'], () =>
-        import('../routes/Account/AccountList')
-      ),
+      component: dynamicWrapper(app, ['account'], () => import('../routes/Account/AccountList')),
       name: '账号信息',
     },
     '/account/createAccount': {
-      component: dynamicWrapper(app, ['account/accountList'], () =>
-        import('../routes/Account/CreateAccount')
-      ),
+      component: dynamicWrapper(app, ['account'], () => import('../routes/Account/CreateAccount')),
       bread: {
         name: '账号管理',
         path: '/config/accountList',
@@ -123,9 +119,7 @@ export const getRouterData = app => {
       name: '创建账号',
     },
     '/account/editAccount': {
-      component: dynamicWrapper(app, ['account/accountList'], () =>
-        import('../routes/Account/EditAccount')
-      ),
+      component: dynamicWrapper(app, ['account'], () => import('../routes/Account/EditAccount')),
       bread: {
         name: '账号管理',
         path: '/config/accountList',
@@ -530,7 +524,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },
     '/userLayout/login': {
-      component: dynamicWrapper(app, ['login'], () => import('../routes/Login/Login')),
+      component: dynamicWrapper(app, ['baseModels/login'], () => import('../routes/Login/Login')),
     },
   };
   // Get name from ./menu.js or just set it in the router data.

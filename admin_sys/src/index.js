@@ -7,7 +7,6 @@ import dva from 'dva';
 import createHistory from 'history/createBrowserHistory';
 import createLoading from 'dva-loading';
 import 'moment/locale/zh-cn';
-import './rollbar';
 import './index.less';
 
 const history = createHistory();
@@ -18,7 +17,8 @@ const app = dva({ history });
 app.use(createLoading());
 
 // 3. Register global model
-app.model(require('./models/global').default);
+app.model(require('./models/baseModels/global').default);
+app.model(require('./models/baseModels/login').default);
 
 // 4. Router
 app.router(require('./router').default);
