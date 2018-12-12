@@ -9,6 +9,10 @@ import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
 import { appealType, appealTypeRest } from '../../utils/dataDictionary';
+import packSucess from '../../assets/packSucess.svg';
+import packError from '../../assets/packError.svg';
+// import packing from '../../assets/packing.svg';
+import compress from '../../assets/compress.svg';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -172,6 +176,14 @@ class BottomList extends Component {
       {
         title: '底表名称',
         dataIndex: 'id',
+        render: text => {
+          return (
+            <>
+              <img src={compress} alt="compress" style={{ marginRight: '8px' }} />
+              {text}
+            </>
+          );
+        },
       },
       {
         title: '底表类型',
@@ -188,22 +200,36 @@ class BottomList extends Component {
       {
         title: '任务状态',
         dataIndex: 'ordId',
+        render: text => {
+          return (
+            <>
+              <img
+                src={text !== 3241729 ? packError : packSucess}
+                alt="packError"
+                style={{ marginRight: '8px' }}
+              />
+              {text}
+            </>
+          );
+        },
       },
       {
         title: '操作',
         dataIndex: 'operate',
         render: (text, record) => {
           return (
-            <div>
-              <AuthorizedButton authority="/bottomTable/downloadBottomTable">
-                <span
-                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                  onClick={() => this.downloadTable(record)}
-                >
-                  下载
-                </span>
-              </AuthorizedButton>
-            </div>
+            <>
+              {Number(record.ordId) !== 3241729 ? null : (
+                <AuthorizedButton authority="/bottomTable/downloadBottomTable">
+                  <span
+                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                    onClick={() => this.downloadTable(record)}
+                  >
+                    下载
+                  </span>
+                </AuthorizedButton>
+              )}
+            </>
           );
         },
       },
