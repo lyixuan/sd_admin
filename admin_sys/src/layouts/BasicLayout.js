@@ -3,21 +3,21 @@ import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
-import { Route, Redirect, Switch, routerRedux } from 'dva/router';
+import { Route, Redirect, Switch } from 'dva/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
 import { enquireScreen, unenquireScreen } from 'enquire-js';
-import GlobalHeader from '../components/GlobalHeader';
 import SiderMenu from '../components/SiderMenu';
 import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
+import biIcon from '../assets/biIcon.png';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.png';
-import biIcon from '../assets/biIcon.png';
 import { getAuthority } from '../utils/authority';
 import { checkPathname, addRouteData } from '../common/isCheckAuth';
+import HeaderLayout from './Header';
 
 const { Content, Header } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -159,18 +159,6 @@ class BasicLayout extends React.PureComponent {
       payload: collapsed,
     });
   };
-
-  handleMenuClick = ({ key }) => {
-    if (key === 'changePwd') {
-      this.props.dispatch(routerRedux.push('/changePwd/changePassword'));
-      return;
-    }
-    if (key === 'logout') {
-      this.props.dispatch({
-        type: 'login/logout',
-      });
-    }
-  };
   handleNoticeVisibleChange = visible => {
     if (visible) {
       this.props.dispatch({
@@ -203,7 +191,8 @@ class BasicLayout extends React.PureComponent {
         />
         <Layout>
           <Header style={{ padding: 0 }}>
-            <GlobalHeader
+            <HeaderLayout
+              {...this.props}
               logo={biIcon}
               currentUser={currentUser}
               fetchingNotices={fetchingNotices}
@@ -211,7 +200,6 @@ class BasicLayout extends React.PureComponent {
               collapsed={collapsed}
               isMobile={this.state.isMobile}
               onCollapse={this.handleMenuCollapse}
-              onMenuClick={this.handleMenuClick}
               onNoticeVisibleChange={this.handleNoticeVisibleChange}
             />
           </Header>

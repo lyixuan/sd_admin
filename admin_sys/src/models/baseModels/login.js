@@ -1,8 +1,8 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { userLogin, userLogout } from '../services/api';
-import { setAuthority, setAuthoritySeccion, removeStorge } from '../utils/authority';
-import { handleSuccess } from '../utils/Handle';
+import { userLogin, userLogout } from '@/services/api';
+import { setAuthority, setAuthoritySeccion, removeStorge } from 'utils/authority';
+import { handleSuccess } from 'utils/Handle';
 
 message.config({
   maxCount: 1,
@@ -44,6 +44,10 @@ export default {
       } else {
         message.error(response.msg);
       }
+    },
+    *changeRole({ payload }, { call, put }){
+      console.log(payload,call, put)
+
     },
     *logout(_, { call }) {
       try {

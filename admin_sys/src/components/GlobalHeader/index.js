@@ -34,6 +34,12 @@ export default class GlobalHeader extends PureComponent {
     } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
+        <Menu.Item key="changeRole">
+          <span style={{ display: 'inline-block', width: '20px', marginLeft: '-3px' }}>
+            <Icon type="user" style={{ fontSize: 15, position: 'relative', top: 2 }} />
+          </span>
+          切换角色
+        </Menu.Item>
         <Menu.Item key="changePwd">
           <span style={{ display: 'inline-block', width: '20px', marginLeft: '-3px' }}>
             <Icon type="lock" style={{ fontSize: 15, position: 'relative', top: 2 }} />
