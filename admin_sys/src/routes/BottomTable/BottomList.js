@@ -9,6 +9,8 @@ import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
 import { appealType, appealTypeRest } from '../../utils/dataDictionary';
+import { BOTTOM_TABLE_LIST } from '../../utils/constants';
+import backTop from '../../assets/backTop.svg';
 import packSucess from '../../assets/packSucess.svg';
 import packError from '../../assets/packError.svg';
 // import packing from '../../assets/packing.svg';
@@ -262,6 +264,7 @@ class BottomList extends Component {
     this.props.setRouteUrlParams('/appeal/appealList');
     this.getData({ pageSize: 30, pageNum: 0 });
   };
+  // 弹框
   modalContent = () => (
     <>
       <>
@@ -295,6 +298,9 @@ class BottomList extends Component {
       </>
     </>
   );
+  backTop = () => {
+    window.scrollTo(0, 0);
+  };
   render() {
     const appealList = this.props.appeal.appealListData;
     const { loading } = this.props;
@@ -321,7 +327,11 @@ class BottomList extends Component {
                     initialValue: !firstType ? null : firstType,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                      <Option value="全部">全部</Option>
+                      {BOTTOM_TABLE_LIST.map(item => (
+                        <Option key={item.id} value={item.id}>
+                          {item.name}
+                        </Option>
+                      ))}
                     </Select>
                   )}
                 </FormItem>
@@ -400,6 +410,10 @@ class BottomList extends Component {
             />
           }
         />
+        {/*  */}
+        <div className="fixBox">
+          <img src={backTop} alt="backTop" onClick={this.backTop} />
+        </div>
         {/* 添加底表下载任务 */}
         <ModalDialog
           title="添加底表下载任务"
