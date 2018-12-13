@@ -1,39 +1,55 @@
-import { routerRedux } from 'dva/router';
+// import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { appealList, addAppealList } from '../services/api';
+import { getRangeDate, getDate } from '../services/api';
 
 export default {
-  namespace: 'appeal',
+  namespace: 'bottomTable',
 
   state: {
     // 接口返回数据存储
-    appealListData: null,
-    addAppealData: null,
+    dataList: [{ ordId: 2 }],
+    disDateList: [],
+    addbottomTableData: null,
+    dateArea: {
+      beginTime: '',
+      endTime: '',
+      id: 1,
+    },
   },
 
   effects: {
-    *appealList({ payload }, { call, put }) {
-      const appealListData = yield call(appealList, payload.appealListParams);
-      if (appealListData.code === 2000) {
-        yield put({ type: 'appealListSave', payload: { appealListData } });
-      } else {
-        message.error(appealListData.msg);
+    // 不可选时间列表
+    *getDates({ payload }, { call, put }) {
+      const reponse = yield call(getDate, { ...payload });
+      const disDateList = reponse.data || {};
+      yield put({
+        type: 'saveTime',
+        payload: { disDateList },
+      });
+      if (reponse.code !== 2000) {
+        message.error(reponse.msg);
       }
     },
-    *addAppeal({ payload }, { call, put }) {
-      const addAppealData = yield call(addAppealList, payload.addAppealParams);
-      if (addAppealData.code === 2000) {
-        message.success('成功添加申诉！');
-        yield put(routerRedux.push('/appeal/appealList'));
-      } else {
-        message.error(addAppealData.msg);
+    // 时间区间
+    *getRange(_, { call, put }) {
+      const response = yield call(getRangeDate);
+      if (response.code === 2000) {
+        const [dateArea] = response.data || [];
+        console.log(dateArea);
+        yield put({
+          type: 'saveTime',
+          payload: { dateArea },
+        });
       }
     },
   },
 
   reducers: {
-    appealListSave(state, action) {
+    bottomTableListSave(state, action) {
       return { ...state, ...action.payload };
+    },
+    saveTime(state, { payload }) {
+      return { ...state, ...payload };
     },
   },
 };
