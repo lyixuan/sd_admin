@@ -49,5 +49,8 @@ const urlPathMap = {
   '/bottomTable/downloadBottomTable': {
     name: '底表下载',
   },
+  '/bottomTable/downloadAllBottomTable': {
+    name: '下载全部底表',
+  },
 };
 export { urlPathMap };
