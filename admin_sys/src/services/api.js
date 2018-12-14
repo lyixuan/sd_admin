@@ -676,16 +676,15 @@ export async function updatePackage(params) {
 }
 // 底表列表
 export async function bottomTableList(params) {
-  return request(`${HOST}/consoleBottomDown/findAll`, {
-    method: 'POST',
-    body: params,
+  return request(`${HOST}/consoleBottomDown/findAll${stringify(params)}`, {
+    method: 'GET',
   });
 }
 // 底表下载
-export async function downLoadBT(params) {
-  return request(`${HOST}/consoleBottomDown/downLoad`, {
-    method: 'POST',
-    body: params,
+export function downLoadBT(params) {
+  return request(`${HOST}/consoleBottomDown/downLoad?${stringify(params)}`, {
+    method: 'GET',
+    stream: 'bolb',
   });
 }
 // 底表添加任务
