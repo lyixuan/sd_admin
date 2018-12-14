@@ -83,6 +83,10 @@ class CreateUserForm extends Component {
     return value;
   };
 
+  viewChange = value => {
+    console.log('view修改内容', value);
+  };
+
   handleSelectChange = value => {
     const aa = value;
     flag = aa;
@@ -425,14 +429,14 @@ class CreateUserForm extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="访问权限">
                 {getFieldDecorator('view', {
-                  initialValue: 0,
+                  initialValue: this.state.defaultCheckedList,
                   rules: [],
                 })(
                   <CheckboxGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     options={this.state.plainOptions}
-                    defaultValue={this.state.defaultCheckedList}
-                    onChange={this.onChange}
+                    value={this.state.defaultCheckedList}
+                    onChange={this.viewChange}
                   />
                 )}
               </FormItem>
