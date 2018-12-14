@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Layout } from 'antd';
+import { Layout, Radio } from 'antd';
 import { routerRedux } from 'dva/router';
 import GlobalHeader from 'components/GlobalHeader';
 import Modal from '@/selfComponent/Modal/Modal';
+import styles from './header.less';
 
 const { Header } = Layout;
+const RadioGroup = Radio.Group;
 
 export default class SelfHeader extends PureComponent {
   constructor(props) {
@@ -34,6 +36,17 @@ export default class SelfHeader extends PureComponent {
       this.setState({ visible: bol });
     }
   };
+  renderContent = () => {
+    const plainOptions = ['Apple', 'Pear', 'Orange'];
+    const value = 'Apple';
+    return (
+      <ul className={styles.modalContent}>
+        <li className={styles.item}>
+          <RadioGroup options={plainOptions} value={value} />
+        </li>
+      </ul>
+    );
+  };
   renderChosePoleDialog = () => {};
   render() {
     const { visible } = this.state;
@@ -43,7 +56,8 @@ export default class SelfHeader extends PureComponent {
         <Modal
           visible={visible}
           title="切换角色"
-          footButton={['确定']}
+          modalContent={this.renderContent()}
+          footButton={['取消', '确定']}
           showModal={this.showModal}
         />
       </Header>

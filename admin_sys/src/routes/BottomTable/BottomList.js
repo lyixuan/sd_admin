@@ -116,7 +116,6 @@ class BottomList extends Component {
     });
     this.showModal(false);
   };
-
   // 模态框显隐回调
   showModal = bol => {
     this.setState({

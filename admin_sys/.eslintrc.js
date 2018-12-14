@@ -12,6 +12,7 @@ module.exports = {
   rules: {
     eqeqeq: [1],
     camelcase: [0],
+    'no-useless-return': [0],
     'generator-star-spacing': [0],
     'consistent-return': [0],
     'react/forbid-prop-types': [0],

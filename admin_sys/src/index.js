@@ -10,7 +10,7 @@ import 'moment/locale/zh-cn';
 import './index.less';
 import './utils/global';
 
-const history = createHistory();
+export const history = createHistory();
 // 1. Initialize
 const app = dva({ history });
 
@@ -25,4 +25,5 @@ app.model(require('./models/baseModels/login').default);
 app.router(require('./router').default);
 // 5. Start
 app.start('#root');
+
 export default app._store; // eslint-disable-line
