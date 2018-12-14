@@ -674,3 +674,24 @@ export async function updatePackage(params) {
     body: params,
   });
 }
+// 底表列表
+export async function bottomTableList(params) {
+  return request(`${HOST}/consoleBottomDown/findAll`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 底表下载
+export async function downLoadBT(params) {
+  return request(`${HOST}/consoleBottomDown/downLoad`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 底表添加任务
+export async function addTask(params) {
+  return request(`${HOST}/consoleBottomDown/addTask`, {
+    method: 'POST',
+    body: params,
+  });
+}

@@ -1,6 +1,6 @@
 // import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { getRangeDate, getDate } from '../services/api';
+import { getRangeDate, getDate, bottomTableList, downLoadBT, addTask } from '../services/api';
 
 export default {
   namespace: 'bottomTable',
@@ -18,6 +18,36 @@ export default {
   },
 
   effects: {
+    // 底表列表
+    *bottomTableList({ payload }, { call, put }) {
+      const reponse = yield call(bottomTableList, { ...payload });
+      const dataList = reponse.data || {};
+      yield put({
+        type: 'bottomTableSave',
+        payload: { dataList },
+      });
+      if (reponse.code !== 2000) {
+        message.error(reponse.msg);
+      }
+    },
+    // 添加底表
+    *addTask({ payload }, { call }) {
+      const reponse = yield call(addTask, { ...payload });
+      if (reponse.code !== 2000) {
+        message.error(reponse.msg);
+      } else {
+        console.log(reponse.data);
+      }
+    },
+    // 下载底表
+    *downLoadBT({ payload }, { call }) {
+      const reponse = yield call(downLoadBT, { ...payload });
+      if (reponse.code !== 2000) {
+        message.error(reponse.msg);
+      } else {
+        console.log(reponse.data);
+      }
+    },
     // 不可选时间列表
     *getDates({ payload }, { call, put }) {
       const reponse = yield call(getDate, { ...payload });
@@ -45,8 +75,8 @@ export default {
   },
 
   reducers: {
-    bottomTableListSave(state, action) {
-      return { ...state, ...action.payload };
+    bottomTableSave(state, { payload }) {
+      return { ...state, ...payload };
     },
     saveTime(state, { payload }) {
       return { ...state, ...payload };
