@@ -7,7 +7,7 @@ export default {
 
   state: {
     // 接口返回数据存储
-    dataList: [{ ordId: 2 }],
+    dataList: [],
     disDateList: [],
     addbottomTableData: null,
     dateArea: {
@@ -27,7 +27,7 @@ export default {
       } else {
         yield put({
           type: 'bottomTableSave',
-          payload: { dataList },
+          payload: { dataList: dataList.content },
         });
       }
     },
@@ -66,7 +66,6 @@ export default {
       const response = yield call(getRangeDate);
       if (response.code === 2000) {
         const [dateArea] = response.data || [];
-        console.log(dateArea);
         yield put({
           type: 'saveTime',
           payload: { dateArea },
@@ -77,6 +76,12 @@ export default {
 
   reducers: {
     bottomTableSave(state, { payload }) {
+      const { dataList } = payload;
+      if (dataList) {
+        dataList.forEach((item, i) => {
+          dataList[i].key = i;
+        });
+      }
       return { ...state, ...payload };
     },
     saveTime(state, { payload }) {

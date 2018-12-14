@@ -20,7 +20,7 @@ const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ bottomTable, loading }) => ({
   bottomTable,
-  loading: loading.effects['bottomTable/getRange'],
+  loading: loading.effects['bottomTable/bottomTableList'],
 }))
 class BottomList extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class BottomList extends Component {
         userId,
       },
       type: 0,
-      bottomTime: '2018-08-09',
+      bottomTime: '',
       pageNum: 0,
       pageSize: 30,
       visible: false,
