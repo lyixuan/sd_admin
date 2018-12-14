@@ -62,7 +62,7 @@ class EditUser extends Component {
       sex: Number(values.sex),
       idCard: values.idCard,
       joinDate: data,
-      privilegeView: values.privilegeView === 1,
+      // privilegeView: values.privilegeView === 1,
       positionList: {
         wechatDepartmentId: Number(newRoleId),
         wechatDepartmentName: !rname ? undefined : rname,

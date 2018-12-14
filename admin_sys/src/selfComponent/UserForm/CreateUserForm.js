@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, Row, Col, Select, Spin, DatePicker, Radio } from 'antd';
+import {
+  Form,
+  Input,
+  Cascader,
+  Checkbox,
+  Button,
+  Row,
+  Col,
+  Select,
+  Spin,
+  DatePicker,
+  Radio,
+} from 'antd';
 import common from '../../routes/Common/common.css';
 
 const FormItem = Form.Item;
+const CheckboxGroup = Checkbox.Group;
 const { Option } = Select;
 let responseComList = [];
 let responseComListBackup = [];
@@ -20,6 +33,8 @@ class CreateUserForm extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
       listOrgLiost: listOrgValues || [],
+      plainOptions: ['学分', '绩效', '后台'],
+      defaultCheckedList: ['绩效'],
     };
   }
   componentDidMount() {
@@ -66,6 +81,10 @@ class CreateUserForm extends Component {
       return 0;
     });
     return value;
+  };
+
+  viewChange = value => {
+    console.log('view修改内容', value);
   };
 
   handleSelectChange = value => {
@@ -298,7 +317,7 @@ class CreateUserForm extends Component {
           </Row>
           <Row style={{ marginTop: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
+              <FormItem label="*前端角色">
                 {getFieldDecorator('userType', {
                   initialValue: null,
                   rules: [
@@ -345,7 +364,7 @@ class CreateUserForm extends Component {
 
           <Row style={{ marginTop: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*负责单位">
+              <FormItem label="*组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织">
                 {getFieldDecorator('responseCom', {
                   initialValue: [],
                   rules: [
@@ -355,7 +374,7 @@ class CreateUserForm extends Component {
                           if (flag === 'admin' || flag === 'boss' || flag === 'others') {
                             callback();
                           } else {
-                            callback({ message: '请选择负责单位！' });
+                            callback({ message: '请选择组织！' });
                           }
                         }
                         callback();
@@ -397,6 +416,33 @@ class CreateUserForm extends Component {
               </FormItem>
             </Col>
           </Row>
+
+          <Row style={{ marginTop: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*后端角色">
+                {getFieldDecorator('roleId', {
+                  initialValue: null,
+                  rules: [],
+                })(residences)}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="访问权限">
+                {getFieldDecorator('view', {
+                  initialValue: this.state.defaultCheckedList,
+                  rules: [],
+                })(
+                  <CheckboxGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                    options={this.state.plainOptions}
+                    value={this.state.defaultCheckedList}
+                    onChange={this.viewChange}
+                  />
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
           <Row style={{ marginTop: '20px' }}>
             <Col span={6} offset={17} style={{ textAlign: 'right' }}>
               <FormItem>

@@ -32,6 +32,7 @@ body {
 :global(.ant-menu-item-selected) {
   background: #52c9c2 !important;
 }
+
 // 全局设置radio 样式
 :global(.ant-radio-checked .ant-radio-inner) {
   border-color: #52c9c2 !important;
@@ -39,4 +40,13 @@ body {
 
 :global(.ant-radio-inner:after) {
   background-color: #52c9c2 !important;
+}
+/* -----------页面全局样式-----------  */
+/* 固定浮框按钮 */
+:global(.fixBox) {
+  background: transparent;
+  position: fixed;
+  right: 20px;
+  bottom: 90px;
+  z-index: 500;
 }

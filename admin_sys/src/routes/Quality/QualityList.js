@@ -115,7 +115,7 @@ class QualityList extends Component {
       {
         title: 'id',
         dataIndex: 'id',
-        width: '65px',
+        width: '80px',
       },
       {
         title: '学院',
