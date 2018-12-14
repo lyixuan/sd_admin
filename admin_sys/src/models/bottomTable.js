@@ -22,12 +22,13 @@ export default {
     *bottomTableList({ payload }, { call, put }) {
       const reponse = yield call(bottomTableList, { ...payload });
       const dataList = reponse.data || {};
-      yield put({
-        type: 'bottomTableSave',
-        payload: { dataList },
-      });
       if (reponse.code !== 2000) {
         message.error(reponse.msg);
+      } else {
+        yield put({
+          type: 'bottomTableSave',
+          payload: { dataList },
+        });
       }
     },
     // 添加底表
