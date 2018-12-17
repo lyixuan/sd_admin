@@ -26,6 +26,16 @@ export async function queryCurrentUser(params) {
   });
 }
 /*
+* 获取用户对应的角色信息信息
+* params：{userId}
+* */
+export async function CurrentUserListRole(params) {
+  return request(`${HOST}/account/listRole?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
 * 用户退出登录接口
 * params：{name，password}
 * */

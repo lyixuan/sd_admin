@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Radio, Row, Col, Select, DatePicker } from 'antd';
+import { Table, Button, Form, Row, Col, Select, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -8,207 +8,97 @@ import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
-import { appealType, appealTypeRest } from '../../utils/dataDictionary';
+import { BOTTOM_TABLE_LIST } from '../../utils/constants';
+import { columnsFn } from './_selfColumn';
+import ModalContent from './_modalContent';
+import backTop from '../../assets/backTop.svg';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-let propsVal = '';
 const dateFormat = 'YYYY-MM-DD';
 
-// 添加全局变量 ，记录搜索或是跳转到某一页到编辑页面之后返回到list页面回显所用。
-let firstType = '全部'; // 搜索框的申诉类型
-let firstStuId = null; // 搜索框的学员id
-let firstCountStart = null;
-let firstCountEnd = null; //
-let firstPage = 0; // 分页的默认起开页面
-
-@connect(({ appeal, loading }) => ({
-  appeal,
-  loading: loading.effects['appeal/appealList'],
+@connect(({ bottomTable, loading }) => ({
+  bottomTable,
+  loading: loading.effects['bottomTable/getRange'],
 }))
 class BottomList extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      params: {
+        orderDirection: 'desc',
+        orderType: 'dateTime',
+        pageNum: 0,
+        pageSize: 30,
+      },
+      modalParam: {
+        radioVal: 1,
+        dateTime: 1,
+        college: 1,
+      },
       visible: false,
-      radioVal: 1,
     };
   }
 
-  // 页面render之前需要请求的接口
   componentDidMount() {
-    const initVal = this.props.getUrlParams();
-    firstType = !initVal.firstType ? '全部' : initVal.firstType;
-    firstStuId = !initVal.firstStuId ? null : Number(initVal.firstStuId);
-    firstCountStart = !initVal.firstCountStart ? null : initVal.firstCountStart;
-    firstCountEnd = !initVal.firstCountEnd ? null : initVal.firstCountEnd;
-    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
-    const appealListParams = {
-      pageSize: 30,
-      pageNum: !firstPage ? 0 : firstPage,
-      type: !firstType
-        ? undefined
-        : appealType[firstType] === 0 ? undefined : appealType[firstType],
-      stuId: !firstStuId ? undefined : firstStuId,
-      countStart: !firstCountStart ? undefined : `${firstCountStart} 00:00:00`,
-      countEnd: !firstCountEnd ? undefined : `${firstCountEnd} 00:00:00`,
-    };
-    this.getData(appealListParams);
+    this.getRange();
+    this.disDateList();
   }
-  // 组件卸载时清除声明的变量
-  componentWillUnmount() {
-    firstType = null;
-    firstStuId = null;
-    firstCountStart = null;
-    firstCountEnd = null;
-    firstPage = null;
-  }
-
-  onChange = (dates, dateStrings) => {
-    const aa = dateStrings[0];
-    const bb = dateStrings[1];
-    firstCountStart = aa;
-    firstCountEnd = bb;
-  };
-
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, size) => {
     this.changePage(current, size);
   };
 
-  onRadioChange = e => {
-    this.setState({
-      radioVal: e.target.value,
-    });
+  // 点击选择添加不可选时间
+  onDateChange = (date, dateString) => {
+    console.log(dateString);
+    // this.setState({ dateTime: dateString });
   };
-  getData = params => {
-    const appealListParams = params;
+
+  // 初始化回显时间日期
+  getRange = () => {
     this.props.dispatch({
-      type: 'appeal/appealList',
-      payload: { appealListParams },
+      type: 'bottomTable/getRange',
     });
   };
 
-  // 模态框确定
-  clickModalOK = () => {
-    this.showModal(false);
+  // 获取最新时间和最小时间
+  getDateRange = () => {
+    const { bottomTable = {} } = this.props;
+    const { dateArea = {}, disDateList = [] } = bottomTable;
+    const { content = [] } = disDateList;
+    const disabledDate = content.map(item => moment.unix(item.dateTime / 1000).format(dateFormat));
+
+    const objTime = {
+      disabledDate,
+      newTime: dateArea.endTime, // 最新可用时间
+      minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
+    };
+    return objTime;
+  };
+  // 不可选时间
+  disDateList = () => {
+    const { params } = this.state;
+    this.props.dispatch({
+      type: 'bottomTable/getDates',
+      payload: { ...params },
+    });
   };
   // 表单搜索
   handleSearch = e => {
     e.preventDefault();
-    propsVal.form.validateFields((err, values) => {
-      if (!err) {
-        firstType = !values.type ? '全部' : values.type;
-        firstStuId = !values.stuId ? undefined : Number(values.stuId);
-        firstPage = 0;
-        this.savaParams({
-          firstType,
-          firstStuId,
-          firstCountStart,
-          firstCountEnd,
-          firstPage,
-        });
-        const appealListParams = {
-          pageSize: 30,
-          pageNum: 0,
-          type: !firstType
-            ? undefined
-            : appealType[firstType] === 0 ? undefined : appealType[firstType],
-          stuId: !firstStuId ? undefined : Number(firstStuId),
-          countStart: !values.countBeginTime ? undefined : `${firstCountStart} 00:00:00`,
-          countEnd: !values.countBeginTime ? undefined : `${firstCountEnd} 00:00:00`,
-        };
-        this.getData(appealListParams);
-      }
-    });
   };
 
-  savaParams = params => {
-    this.props.setCurrentUrlParams(params);
+  // 表单重置
+  handleReset = () => {
+    console.log('reset');
   };
 
-  // 点击某一页函数
-  changePage = (current, size) => {
-    firstPage = current - 1;
-    this.savaParams({
-      firstPage: !firstPage ? 0 : firstPage,
-    });
-    const appealListParams = {
-      pageSize: size,
-      pageNum: current - 1,
-      type: !firstType
-        ? undefined
-        : appealType[firstType] === 0 ? undefined : appealType[firstType],
-      stuId: !firstStuId ? undefined : Number(firstStuId),
-      countStart: !firstCountStart ? undefined : `${firstCountStart} 00:00:00`,
-      countEnd: !firstCountEnd ? undefined : `${firstCountEnd} 00:00:00`,
-    };
-    this.getData(appealListParams);
-  };
-
-  // 初始化tabale 列数据
-  fillDataSource = val => {
-    const data = [];
-    val.map((item, index) =>
-      data.push({
-        key: index,
-        id: item.id,
-        type: !appealTypeRest[item.type] ? null : appealTypeRest[item.type],
-        stuId: item.stuId,
-        countBeginTime: formatDate(item.countBeginTime),
-        ordId: item.ordId,
-        workorderId: item.workorderId,
-        consultId: item.consultId,
-        countValue: item.countValue,
-        modifyTime: formatDate(item.modifyTime),
-      })
-    );
-    return data;
-  };
-
-  // 获取table列表头
-  columnsData = () => {
-    const columns = [
-      {
-        title: '底表名称',
-        dataIndex: 'id',
-      },
-      {
-        title: '底表类型',
-        dataIndex: 'type',
-      },
-      {
-        title: '底表时间',
-        dataIndex: 'stuId',
-      },
-      {
-        title: '添加时间',
-        dataIndex: 'countBeginTime',
-      },
-      {
-        title: '任务状态',
-        dataIndex: 'ordId',
-      },
-      {
-        title: '操作',
-        dataIndex: 'operate',
-        render: (text, record) => {
-          return (
-            <div>
-              <AuthorizedButton authority="/bottomTable/downloadBottomTable">
-                <span
-                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                  onClick={() => this.downloadTable(record)}
-                >
-                  下载
-                </span>
-              </AuthorizedButton>
-            </div>
-          );
-        },
-      },
-    ];
-    return columns || [];
+  // 模态框确定
+  clickModalOK = () => {
+    console.log(this.state.modalParam);
+    this.showModal(false);
   };
   // 模态框显隐回调
   showModal = bol => {
@@ -222,118 +112,76 @@ class BottomList extends Component {
       visible: true,
     });
   };
-  downloadTable = record => {
+  downLoadBTable = record => {
     console.log(record);
   };
-  // 表单重置
-  handleReset = () => {
-    firstType = '全部';
-    firstStuId = null;
-    firstCountStart = null;
-    firstCountEnd = null;
-    firstPage = 0;
-    propsVal.form.resetFields();
-    this.props.setRouteUrlParams('/appeal/appealList');
-    this.getData({ pageSize: 30, pageNum: 0 });
+
+  backTop = () => {
+    window.scrollTo(0, 0);
   };
-  modalContent = () => (
-    <>
-      <>
-        <span>底表类型：</span>
-        <Radio.Group
-          onChange={this.onRadioChange}
-          value={this.state.radioVal}
-          style={{ width: '230px' }}
-        >
-          <Radio value={1} style={{ marginRight: '40px' }}>
-            学分底表
-          </Radio>
-          <Radio value={2} style={{ marginRight: '0' }}>
-            预估分底表
-          </Radio>
-        </Radio.Group>
-      </>
-      <div style={{ margin: '17px auto' }}>
-        <span>底表时间：</span>
-        <DatePicker
-          format={dateFormat}
-          style={{ width: 230, height: 32 }}
-          onChange={this.onChange}
-        />
-      </div>
-      <>
-        <span>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：</span>
-        <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-          <Option value="全部">全部</Option>
-        </Select>
-      </>
-    </>
-  );
+
+  updateModalData = modalParam => {
+    this.setState({ modalParam });
+  };
+  // 时间控件可展示的时间范围
+  disabledDate = current => {
+    const time = this.getDateRange();
+    return current > moment(formatDate(time.newTime)) || current < moment(formatDate(time.minTime));
+  };
   render() {
-    const appealList = this.props.appeal.appealListData;
-    const { loading } = this.props;
-    const totalNum = !appealList
-      ? 0
-      : !appealList.data ? 0 : !appealList.data.totalElements ? 0 : appealList.data.totalElements;
-    const dataSource = !appealList
-      ? []
-      : !appealList.data
-        ? []
-        : this.fillDataSource(!appealList.data.content ? [] : appealList.data.content);
-    const columns = this.columnsData();
-    const formLayout = 'inline';
+    const { bottomTable = {}, loading } = this.props;
+    const { dataList = [] } = bottomTable;
+    const time = this.getDateRange();
+
+    const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = Form.create()(props => {
-      propsVal = props;
       const { getFieldDecorator } = props.form;
       return (
-        <div>
-          <Form layout={formLayout} onSubmit={this.handleSearch}>
-            <Row gutter={24}>
-              <Col span={8}>
-                <FormItem label="底表类型">
-                  {getFieldDecorator('type', {
-                    initialValue: !firstType ? null : firstType,
-                  })(
-                    <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                      <Option value="全部">全部</Option>
-                    </Select>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={8}>
-                <FormItem label="底表时间">
-                  {getFieldDecorator('countBeginTime', {
-                    initialValue: !firstCountStart
-                      ? null
-                      : [moment(firstCountStart, dateFormat), moment(firstCountEnd, dateFormat)],
-                  })(
-                    <DatePicker
-                      format={dateFormat}
-                      style={{ width: 230, height: 32 }}
-                      onChange={this.onChange}
-                    />
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={8}>
-                <FormItem>
-                  <div>
-                    <Button htmlType="submit" type="primary" className={common.searchButton}>
-                      搜 索
-                    </Button>
-                    <Button
-                      onClick={this.handleReset}
-                      type="primary"
-                      className={common.resetButton}
-                    >
-                      重 置
-                    </Button>
-                  </div>
-                </FormItem>
-              </Col>
-            </Row>
-          </Form>
-        </div>
+        <Form layout="inline" onSubmit={this.handleSearch}>
+          <Row gutter={24}>
+            <Col span={8}>
+              <FormItem label="底表类型">
+                {getFieldDecorator('type', {
+                  initialValue: '',
+                })(
+                  <Select placeholder="全部" style={{ width: 230, height: 32 }}>
+                    {BOTTOM_TABLE_LIST.map(item => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="底表时间">
+                {getFieldDecorator('countBeginTime', {
+                  initialValue: time.minTime ? moment(formatDate(time.minTime)) : null,
+                })(
+                  <DatePicker
+                    format={dateFormat}
+                    disabledDate={this.disabledDate}
+                    style={{ width: 230, height: 32 }}
+                    onChange={this.onDateChange}
+                  />
+                )}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem>
+                <>
+                  <Button htmlType="submit" type="primary" className={common.searchButton}>
+                    搜 索
+                  </Button>
+                  <Button onClick={this.handleReset} type="primary" className={common.resetButton}>
+                    重 置
+                  </Button>
+                </>
+              </FormItem>
+            </Col>
+          </Row>
+        </Form>
       );
     });
     return (
@@ -350,11 +198,11 @@ class BottomList extends Component {
           }
           contentTable={
             <div>
-              <p className={common.totalNum}>总数：{totalNum}条</p>
+              <p className={common.totalNum}>总数：0条</p>
               <Table
                 bordered
                 loading={loading}
-                dataSource={dataSource}
+                dataSource={dataList}
                 columns={columns}
                 pagination={false}
                 className={common.tableContentStyle}
@@ -369,16 +217,21 @@ class BottomList extends Component {
               onShowSizeChange={(current, pageSize) => {
                 this.onShowSizeChange(current, pageSize);
               }}
-              defaultCurrent={firstPage + 1}
-              total={totalNum}
+              total={30}
             />
           }
         />
+        {/* 回到顶部 */}
+        <div className="fixBox">
+          <img src={backTop} alt="backTop" onClick={this.backTop} />
+        </div>
         {/* 添加底表下载任务 */}
         <ModalDialog
           title="添加底表下载任务"
           visible={this.state.visible}
-          modalContent={this.modalContent()}
+          modalContent={
+            <ModalContent disabledDate={this.disabledDate} updateModalData={this.updateModalData} />
+          }
           showModal={bol => this.showModal(bol)}
           clickOK={() => this.clickModalOK()}
         />
