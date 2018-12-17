@@ -9,19 +9,19 @@ export default class ModalContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      radioVal: 1,
-      dateTime: 1,
-      college: 1,
+      bottomDate: '2018-12-14',
+      collegeId: 0,
+      type: 0,
     };
   }
   onRadioChange = e => {
-    this.setState({ radioVal: e.target.value });
-    this.props.updateModalData({ ...this.state, radioVal: e.target.value });
+    this.setState({ type: e.target.value });
+    this.props.updateModalData({ ...this.state, type: e.target.value });
   };
   // 点击选择添加不可选时间
   onDateChange = (date, dateString) => {
-    this.setState({ dateTime: dateString });
-    this.props.updateModalData({ ...this.state, dateTime: dateString });
+    this.setState({ bottomDate: dateString });
+    this.props.updateModalData({ ...this.state, bottomDate: dateString });
   };
   render() {
     const { disabledDate } = this.props;
@@ -31,7 +31,7 @@ export default class ModalContent extends React.Component {
           <span>底表类型：</span>
           <Radio.Group
             onChange={this.onRadioChange}
-            value={this.state.radioVal}
+            value={this.state.type}
             style={{ width: '230px' }}
           >
             <Radio value={1} style={{ marginRight: '40px' }}>

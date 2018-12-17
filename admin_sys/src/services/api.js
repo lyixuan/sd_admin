@@ -686,7 +686,7 @@ export async function updatePackage(params) {
 }
 // 底表列表
 export async function bottomTableList(params) {
-  return request(`${HOST}/consoleBottomDown/findAll${stringify(params)}`, {
+  return request(`${HOST}/consoleBottomDown/findAll?${stringify(params)}`, {
     method: 'GET',
   });
 }

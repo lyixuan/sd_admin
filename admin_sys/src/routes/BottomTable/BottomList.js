@@ -8,6 +8,7 @@ import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
+import { getAuthority } from '../../utils/authority';
 import { BOTTOM_TABLE_LIST } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
 import ModalContent from './_modalContent';
@@ -20,44 +21,57 @@ const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ bottomTable, loading }) => ({
   bottomTable,
-  loading: loading.effects['bottomTable/getRange'],
+  loading: loading.effects['bottomTable/bottomTableList'],
 }))
 class BottomList extends Component {
   constructor(props) {
     super(props);
-
+    const localStorage = getAuthority('admin_user');
+    const userId = !localStorage ? null : localStorage.userId;
     this.state = {
-      params: {
+      timeParams: {
         orderDirection: 'desc',
         orderType: 'dateTime',
-        pageNum: 0,
-        pageSize: 30,
       },
       modalParam: {
-        radioVal: 1,
-        dateTime: 1,
-        college: 1,
+        bottomDate: '2018-12-14',
+        collegeId: 0,
+        type: 0,
+        userId,
       },
+      type: 0,
+      bottomTime: '',
+      pageNum: 0,
+      pageSize: 30,
       visible: false,
     };
   }
 
   componentDidMount() {
-    this.getRange();
-    this.disDateList();
+    this.getDataList(); // 列表数据
+    this.getRange(); // 时间范围
+    this.disDateList(); // 不可选时间
   }
+
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, size) => {
     this.changePage(current, size);
   };
 
-  // 点击选择添加不可选时间
-  onDateChange = (date, dateString) => {
-    console.log(dateString);
-    // this.setState({ dateTime: dateString });
+  // 选择时间
+  onDateChange = (date, bottomTime) => {
+    this.setState({ bottomTime });
   };
   onSubmit = data => {
     console.log(data);
+  };
+  // 列表数据
+  getDataList = () => {
+    const { type, bottomTime, pageNum, pageSize } = this.state;
+    this.props.dispatch({
+      type: 'bottomTable/bottomTableList',
+      payload: { type, bottomTime, pageNum, pageSize },
+    });
   };
 
   // 初始化回显时间日期
@@ -74,19 +88,18 @@ class BottomList extends Component {
     const { content = [] } = disDateList;
     const disabledDate = content.map(item => (item.dateTime / 1000).format(dateFormat));
 
-    const objTime = {
+    return {
       disabledDate,
       newTime: dateArea.endTime, // 最新可用时间
       minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
     };
-    return objTime;
   };
   // 不可选时间
   disDateList = () => {
-    const { params } = this.state;
+    const { timeParams, pageNum, pageSize } = this.state;
     this.props.dispatch({
       type: 'bottomTable/getDates',
-      payload: { ...params },
+      payload: { ...timeParams, pageNum, pageSize },
     });
   };
   // 表单搜索
@@ -101,7 +114,11 @@ class BottomList extends Component {
 
   // 模态框确定
   clickModalOK = () => {
-    console.log(this.state.modalParam);
+    const { modalParam } = this.state;
+    this.props.dispatch({
+      type: 'bottomTable/addTask',
+      payload: { ...modalParam },
+    });
     this.showModal(false);
   };
   // 模态框显隐回调

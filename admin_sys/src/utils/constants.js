@@ -19,8 +19,13 @@ export const ROLE_TYPE_LIST = [
 ];
 export const BOTTOM_TABLE_LIST = [
   { id: '', name: '全部' },
-  { id: '0', name: '学分底表' },
-  { id: '1', name: '预估分底表' },
+  { id: 0, name: '学分底表' },
+  { id: 1, name: '预估分底表' },
+];
+export const BOTTOM_TABLE_STATUS = [
+  { id: 0, name: '打包中' },
+  { id: 1, name: '打包完成' },
+  { id: 2, name: '打包错误' },
 ];
 // 需要用于global filter 进行数据筛选的，必须加到default里
 export default {
@@ -29,4 +34,5 @@ export default {
   ADMIN_USER,
   ROLE_TYPE_LIST,
   BOTTOM_TABLE_LIST,
+  BOTTOM_TABLE_STATUS,
 };

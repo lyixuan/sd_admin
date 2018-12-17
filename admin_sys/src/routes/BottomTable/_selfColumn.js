@@ -1,15 +1,18 @@
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import { formatDate } from '../../utils/FormatDate';
+import { BOTTOM_TABLE_STATUS, BOTTOM_TABLE_LIST } from '../../utils/constants';
 import packSucess from '../../assets/packSucess.svg';
 import packError from '../../assets/packError.svg';
 import compress from '../../assets/compress.svg';
-// import packing from '../../assets/packing.svg';
+import packing from '../../assets/packing.svg';
 
 // 获取table列表头
 export function columnsFn(callback) {
+  const imgArr = [packing, packSucess, packError];
   const columns = [
     {
       title: '底表名称',
-      dataIndex: 'id',
+      dataIndex: 'taskName',
       render: text => {
         return (
           <>
@@ -22,27 +25,37 @@ export function columnsFn(callback) {
     {
       title: '底表类型',
       dataIndex: 'type',
+      render: text =>
+        BOTTOM_TABLE_LIST.map(item => {
+          if (item.id === text) {
+            return item.name;
+          }
+          return null;
+        }),
     },
     {
       title: '底表时间',
-      dataIndex: 'stuId',
+      dataIndex: 'bottomTime',
+      render: text => formatDate(text),
     },
     {
       title: '添加时间',
-      dataIndex: 'countBeginTime',
+      dataIndex: 'modifyTime',
+      render: text => formatDate(text),
     },
     {
       title: '任务状态',
-      dataIndex: 'ordId',
+      dataIndex: 'status',
       render: text => {
         return (
           <>
-            <img
-              src={text !== 2 ? packError : packSucess}
-              alt="packError"
-              style={{ marginRight: '8px' }}
-            />
-            {text}
+            <img src={imgArr[text]} alt="packError" style={{ marginRight: '8px' }} />
+            {BOTTOM_TABLE_STATUS.map(item => {
+              if (item.id === text) {
+                return item.name;
+              }
+              return null;
+            })}
           </>
         );
       },
@@ -53,7 +66,7 @@ export function columnsFn(callback) {
       render: (text, record) => {
         return (
           <>
-            {Number(record.ordId) !== 2 ? null : (
+            {Number(record.ordId) !== 1 ? null : (
               <AuthorizedButton authority="/bottomTable/downloadBottomTable">
                 <span
                   style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
