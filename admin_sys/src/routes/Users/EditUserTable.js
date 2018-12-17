@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { Table, Form, Button, Row, Col, Select, Cascader, Radio, Checkbox } from 'antd';
 import { connect } from 'dva';
@@ -36,11 +37,7 @@ class EditUserTable extends Component {
       positionId: null,
       currentstate: null,
       roleId: null,
-      plainOptions: [
-        { label: '学分', value: 'scoreView', id: 1 },
-        { label: '绩效', value: 'privilegeView', id: 2 },
-        { label: '后台', value: 'endView', id: 3 },
-      ],
+      plainOptions: Filter('VISIT_RIGHT_LIST|id->value,name->label'),
       defaultCheckedList: [],
     };
   }
@@ -458,7 +455,7 @@ class EditUserTable extends Component {
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:">
+                <FormItem label="*前端角色:">
                   {getFieldDecorator('userType', {
                     initialValue: this.state.clickFlag === 1 ? null : this.state.userType,
                     rules: [
@@ -481,13 +478,9 @@ class EditUserTable extends Component {
                           : this.state.privilege === 1 ? disabled : false
                       }
                     >
-                      <Option value="college">院长或副院长</Option>
-                      <Option value="family">家族长</Option>
-                      <Option value="group">运营长</Option>
-                      <Option value="class">班主任</Option>
-                      <Option value="admin">管理员</Option>
-                      <Option value="boss">管理层</Option>
-                      <Option value="others">无绩效岗位</Option>
+                      {Filter('FRONT_ROLE_TYPE_LIST').map(v => (
+                        <Option value={v.id}>{v.name}</Option>
+                      ))}
                     </Select>
                   )}
                 </FormItem>
