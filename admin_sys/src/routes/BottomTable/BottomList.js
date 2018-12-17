@@ -38,7 +38,7 @@ class BottomList extends Component {
         type: 0,
       },
       userId,
-      type: 0,
+      type: null,
       bottomTime: '',
       pageNum: 0,
       pageSize: 30,

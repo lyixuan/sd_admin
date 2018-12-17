@@ -10,9 +10,9 @@ export default class ModalContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bottomDate: '2018-12-14',
-      collegeId: 108,
-      type: 0,
+      bottomDate: '',
+      collegeId: null,
+      type: null,
     };
   }
   onRadioChange = e => {
