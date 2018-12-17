@@ -25,6 +25,7 @@ export default {
     dataList: [],
     disDateList: [],
     findAllOrg: [], // 所有学院列表
+    totalNum: 0, // 总条数
     addbottomTableData: null,
     dateArea: {
       beginTime: '',
@@ -43,7 +44,7 @@ export default {
       } else {
         yield put({
           type: 'bottomTableSave',
-          payload: { dataList: dataList.content },
+          payload: { dataList: dataList.content, totalNum: dataList.totalElements },
         });
       }
     },

@@ -19,7 +19,7 @@ export default {
 
   state: {
     // 接口返回数据存储
-    userList: [],
+    userList: {},
     wechatList: [],
     getUserRoleList: [],
     listOrg: [],
@@ -30,7 +30,8 @@ export default {
     *userList({ payload }, { call, put }) {
       const response = yield call(userList, payload.userListParams);
       if (response.code === 2000) {
-        yield put({ type: 'userListSave', payload: { response } });
+        const userListData = response.data || [];
+        yield put({ type: 'userListSave', payload: { userListData } });
       } else {
         message.error(response.msg);
       }
