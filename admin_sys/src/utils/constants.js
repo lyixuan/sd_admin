@@ -24,7 +24,7 @@ export const BOTTOM_TABLE_LIST = [
 ];
 export const BOTTOM_TABLE_STATUS = [
   { id: 0, name: '打包中' },
-  { id: 1, name: '打包完成' },
+  { id: 1, name: '已完成' },
   { id: 2, name: '打包错误' },
 ];
 // 需要用于global filter 进行数据筛选的，必须加到default里

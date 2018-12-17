@@ -66,7 +66,7 @@ export function columnsFn(callback) {
       render: (text, record) => {
         return (
           <>
-            {Number(record.ordId) !== 1 ? null : (
+            {Number(record.status) !== 1 ? null : (
               <AuthorizedButton authority="/bottomTable/downloadBottomTable">
                 <span
                   style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}

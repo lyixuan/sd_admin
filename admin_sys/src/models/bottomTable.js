@@ -2,6 +2,14 @@
 import { message } from 'antd';
 import { getRangeDate, getDate, bottomTableList, downLoadBT, addTask } from '../services/api';
 
+function tagLoad(blob, name) {
+  const a = document.createElement('a');
+  const url = window.URL.createObjectURL(blob);
+  a.href = url;
+  a.download = name;
+  a.click();
+}
+
 export default {
   namespace: 'bottomTable',
 
@@ -20,10 +28,10 @@ export default {
   effects: {
     // 底表列表
     *bottomTableList({ payload }, { call, put }) {
-      const reponse = yield call(bottomTableList, { ...payload });
-      const dataList = reponse.data || {};
-      if (reponse.code !== 2000) {
-        message.error(reponse.msg);
+      const response = yield call(bottomTableList, { ...payload });
+      const dataList = response.data || {};
+      if (response.code !== 2000) {
+        message.error(response.msg);
       } else {
         yield put({
           type: 'bottomTableSave',
@@ -33,32 +41,29 @@ export default {
     },
     // 添加底表
     *addTask({ payload }, { call }) {
-      const reponse = yield call(addTask, { ...payload });
-      if (reponse.code !== 2000) {
-        message.error(reponse.msg);
+      const response = yield call(addTask, { ...payload });
+      if (response.code !== 2000) {
+        message.error(response.msg);
       } else {
-        console.log(reponse.data);
+        console.log(response.data);
       }
     },
     // 下载底表
     *downLoadBT({ payload }, { call }) {
-      const reponse = yield call(downLoadBT, { ...payload });
-      if (reponse.code !== 2000) {
-        message.error(reponse.msg);
-      } else {
-        console.log(reponse.data);
-      }
+      const { id, taskName } = payload;
+      const response = yield call(downLoadBT, { id });
+      yield call(tagLoad, response, taskName);
     },
     // 不可选时间列表
     *getDates({ payload }, { call, put }) {
-      const reponse = yield call(getDate, { ...payload });
-      const disDateList = reponse.data || {};
+      const response = yield call(getDate, { ...payload });
+      const disDateList = response.data || {};
       yield put({
         type: 'saveTime',
         payload: { disDateList },
       });
-      if (reponse.code !== 2000) {
-        message.error(reponse.msg);
+      if (response.code !== 2000) {
+        message.error(response.msg);
       }
     },
     // 时间区间

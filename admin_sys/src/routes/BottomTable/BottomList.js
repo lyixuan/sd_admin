@@ -130,6 +130,13 @@ class BottomList extends Component {
   };
   downLoadBTable = record => {
     console.log(record);
+    this.props.dispatch({
+      type: 'bottomTable/downLoadBT',
+      payload: {
+        id: record.id,
+        taskName: record.taskName,
+      },
+    });
   };
 
   backTop = () => {
