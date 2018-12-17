@@ -1,21 +1,36 @@
 import React, { PureComponent } from 'react';
-import { Layout, Radio } from 'antd';
+import { Layout, Radio, Spin } from 'antd';
+import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import GlobalHeader from 'components/GlobalHeader';
 import Modal from '@/selfComponent/Modal/Modal';
+import { getAuthority } from '@/utils/authority';
+import { ADMIN_USER } from '@/utils/constants';
 import styles from './styles/header.less';
 
 const { Header } = Layout;
 const RadioGroup = Radio.Group;
 
+@connect(({ login, loading }) => ({
+  login,
+  loading,
+  getRoleListLoading: loading.effects['login/CurrentUserListRole'],
+  roleList: login.roleList,
+}))
 export default class SelfHeader extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
-      roleSelected: 'Apple',
+      roleSelected: getAuthority(ADMIN_USER).userId,
     };
   }
+  getRoleList = () => {
+    this.props.dispatch({
+      type: 'login/CurrentUserListRole',
+      payload: { userId: getAuthority(ADMIN_USER).userId },
+    });
+  };
   handleMenuClick = ({ key }) => {
     switch (key) {
       case 'changePwd':
@@ -35,6 +50,9 @@ export default class SelfHeader extends PureComponent {
     const { visible } = this.state;
     if (visible !== bol) {
       this.setState({ visible: bol });
+      if (bol) {
+        this.getRoleList();
+      }
     }
   };
   choseRole = e => {
@@ -42,29 +60,51 @@ export default class SelfHeader extends PureComponent {
     this.setState({ roleSelected });
   };
   sureChoseRole = () => {
-    console.log('qingqiu');
+    const { roleSelected } = this.state;
+    const { roleList = [] } = this.props;
+    if (getAuthority(ADMIN_USER).userId === roleSelected) {
+      return;
+    }
+    this.props.dispatch({
+      type: 'login/changeRole',
+      payload: roleList.find(item => item.userId === roleSelected) || {},
+    });
+    this.setState({ visible: false });
+  };
+  handleMenuList = () => {
+    const selectedGroup = window.Filter('GLOBAL_HEADER_SELECT');
+    const adminUser = getAuthority(ADMIN_USER) || {};
+    const positionCount = adminUser.positionCount || 0;
+    //  positionCount<=1  hide  changeRole selectItem
+    return selectedGroup.filter(item => item.id !== 'changeRole' || positionCount > 1);
   };
   renderContent = () => {
-    const plainOptions = ['Apple', 'Pear', 'Orange'];
     const { roleSelected } = this.state;
+    const { roleList = [], getRoleListLoading } = this.props;
     return (
       <div className={styles.modalContent}>
-        <RadioGroup value={roleSelected} onChange={this.choseRole}>
-          {plainOptions.map(item => (
-            <Radio style={radioStyle} value={item} key={item}>
-              {item}
-            </Radio>
-          ))}
-        </RadioGroup>
+        <Spin spinning={getRoleListLoading}>
+          <RadioGroup value={roleSelected} onChange={this.choseRole}>
+            {roleList.map(item => (
+              <Radio style={radioStyle} value={item.userId} key={item.userId}>
+                {item.roleName}
+              </Radio>
+            ))}
+          </RadioGroup>
+        </Spin>
       </div>
     );
   };
-  renderChosePoleDialog = () => {};
   render() {
     const { visible } = this.state;
+    const selectedGroup = this.handleMenuList();
     return (
       <Header style={{ padding: 0 }}>
-        <GlobalHeader {...this.props} onMenuClick={this.handleMenuClick} />
+        <GlobalHeader
+          {...this.props}
+          onMenuClick={this.handleMenuClick}
+          selectedGroup={selectedGroup}
+        />
         <Modal
           visible={visible}
           title="切换角色"
