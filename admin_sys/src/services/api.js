@@ -698,6 +698,12 @@ export async function bottomTableList(params) {
     method: 'GET',
   });
 }
+// 获取所有学院列表
+export async function findAllOrg(params) {
+  return request(`${HOST}/consoleBottomDown/findAllOrg?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
 // 底表下载
 export function downLoadBT(params) {
   return request(`${HOST}/consoleBottomDown/downLoad?${stringify(params)}`, {

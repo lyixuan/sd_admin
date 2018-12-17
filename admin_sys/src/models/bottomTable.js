@@ -1,6 +1,13 @@
 // import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { getRangeDate, getDate, bottomTableList, downLoadBT, addTask } from '../services/api';
+import {
+  getRangeDate,
+  getDate,
+  bottomTableList,
+  downLoadBT,
+  addTask,
+  findAllOrg,
+} from '../services/api';
 
 function tagLoad(blob, name) {
   const a = document.createElement('a');
@@ -17,6 +24,7 @@ export default {
     // 接口返回数据存储
     dataList: [],
     disDateList: [],
+    findAllOrg: [], // 所有学院列表
     addbottomTableData: null,
     dateArea: {
       beginTime: '',
@@ -36,6 +44,18 @@ export default {
         yield put({
           type: 'bottomTableSave',
           payload: { dataList: dataList.content },
+        });
+      }
+    },
+    // 所有学院列表
+    *findAllOrg(_, { call, put }) {
+      const response = yield call(findAllOrg);
+      if (response.code !== 2000) {
+        message.error(response.msg);
+      } else {
+        yield put({
+          type: 'bottomTableSave',
+          payload: { findAllOrg: response.data },
         });
       }
     },
