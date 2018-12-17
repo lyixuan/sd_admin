@@ -17,11 +17,11 @@ export const ROLE_TYPE_LIST = [
   { id: 'boss', name: '管理层' },
   { id: 'others', name: '无绩效岗位' },
 ];
-export const BOTTOM_TABLE_LIST = [{ id: 0, name: '学分底表' }, { id: 1, name: '预估分底表' }];
+export const BOTTOM_TABLE_LIST = [{ id: '0', name: '学分底表' }, { id: '1', name: '预估分底表' }];
 export const BOTTOM_TABLE_STATUS = [
-  { id: 0, name: '打包中' },
-  { id: 1, name: '已完成' },
-  { id: 2, name: '打包错误' },
+  { id: '0', name: '打包中' },
+  { id: '1', name: '已完成' },
+  { id: '2', name: '打包错误' },
 ];
 // 需要用于global filter 进行数据筛选的，必须加到default里
 export default {

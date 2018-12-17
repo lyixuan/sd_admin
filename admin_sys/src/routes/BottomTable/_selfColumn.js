@@ -27,7 +27,7 @@ export function columnsFn(callback) {
       dataIndex: 'type',
       render: text =>
         BOTTOM_TABLE_LIST.map(item => {
-          if (item.id === text) {
+          if (Number(item.id) === text) {
             return item.name;
           }
           return null;
@@ -51,7 +51,7 @@ export function columnsFn(callback) {
           <>
             <img src={imgArr[text]} alt="packError" style={{ marginRight: '8px' }} />
             {BOTTOM_TABLE_STATUS.map(item => {
-              if (item.id === text) {
+              if (Number(item.id) === text) {
                 return item.name;
               }
               return null;
