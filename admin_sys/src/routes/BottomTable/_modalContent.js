@@ -10,7 +10,7 @@ export default class ModalContent extends React.Component {
     super(props);
     this.state = {
       bottomDate: '2018-12-14',
-      collegeId: 0,
+      collegeId: 108,
       type: 0,
     };
   }
@@ -23,8 +23,17 @@ export default class ModalContent extends React.Component {
     this.setState({ bottomDate: dateString });
     this.props.updateModalData({ ...this.state, bottomDate: dateString });
   };
+
   render() {
-    const { disabledDate } = this.props;
+    const { disabledDate, selectOption } = this.props;
+    const hash = {};
+    const options = selectOption.reduce((preVal, curVal) => {
+      if (!hash[curVal.collegeId]) {
+        hash[curVal.collegeId] = true;
+        preVal.push(curVal);
+      }
+      return preVal;
+    }, []);
     return (
       <>
         <>
@@ -34,10 +43,10 @@ export default class ModalContent extends React.Component {
             value={this.state.type}
             style={{ width: '230px' }}
           >
-            <Radio value={1} style={{ marginRight: '40px' }}>
+            <Radio value={0} style={{ marginRight: '40px' }}>
               学分底表
             </Radio>
-            <Radio value={2} style={{ marginRight: '0' }}>
+            <Radio value={1} style={{ marginRight: '0' }}>
               预估分底表
             </Radio>
           </Radio.Group>
@@ -53,8 +62,12 @@ export default class ModalContent extends React.Component {
         </div>
         <>
           <span>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：</span>
-          <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-            <Option value="全部">全部</Option>
+          <Select placeholder="请选择学院" style={{ width: 230, height: 32 }}>
+            {options.map(item => (
+              <Option key={item.collegeId} value={item.collegeId}>
+                {item.collegeName}
+              </Option>
+            ))}
           </Select>
         </>
       </>
