@@ -3,7 +3,7 @@ import { Layout, Radio } from 'antd';
 import { routerRedux } from 'dva/router';
 import GlobalHeader from 'components/GlobalHeader';
 import Modal from '@/selfComponent/Modal/Modal';
-import styles from './header.less';
+import styles from './styles/header.less';
 
 const { Header } = Layout;
 const RadioGroup = Radio.Group;
@@ -13,6 +13,7 @@ export default class SelfHeader extends PureComponent {
     super(props);
     this.state = {
       visible: false,
+      roleSelected: 'Apple',
     };
   }
   handleMenuClick = ({ key }) => {
@@ -36,15 +37,26 @@ export default class SelfHeader extends PureComponent {
       this.setState({ visible: bol });
     }
   };
+  choseRole = e => {
+    const roleSelected = e.target.value;
+    this.setState({ roleSelected });
+  };
+  sureChoseRole = () => {
+    console.log('qingqiu');
+  };
   renderContent = () => {
     const plainOptions = ['Apple', 'Pear', 'Orange'];
-    const value = 'Apple';
+    const { roleSelected } = this.state;
     return (
-      <ul className={styles.modalContent}>
-        <li className={styles.item}>
-          <RadioGroup options={plainOptions} value={value} />
-        </li>
-      </ul>
+      <div className={styles.modalContent}>
+        <RadioGroup value={roleSelected} onChange={this.choseRole}>
+          {plainOptions.map(item => (
+            <Radio style={radioStyle} value={item} key={item}>
+              {item}
+            </Radio>
+          ))}
+        </RadioGroup>
+      </div>
     );
   };
   renderChosePoleDialog = () => {};
@@ -57,6 +69,7 @@ export default class SelfHeader extends PureComponent {
           visible={visible}
           title="切换角色"
           modalContent={this.renderContent()}
+          clickOK={this.sureChoseRole}
           footButton={['取消', '确定']}
           showModal={this.showModal}
         />
@@ -64,3 +77,8 @@ export default class SelfHeader extends PureComponent {
     );
   }
 }
+const radioStyle = {
+  display: 'block',
+  height: '30px',
+  lineHeight: '30px',
+};
