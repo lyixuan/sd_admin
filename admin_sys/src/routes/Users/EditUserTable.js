@@ -35,8 +35,13 @@ class EditUserTable extends Component {
       privilege: null,
       positionId: null,
       currentstate: null,
-      plainOptions: ['学分', '绩效', '后台'],
-      defaultCheckedList: ['绩效'],
+      roleId: null,
+      plainOptions: [
+        { label: '学分', value: 'scoreView', id: 1 },
+        { label: '绩效', value: 'privilegeView', id: 2 },
+        { label: '后台', value: 'endView', id: 3 },
+      ],
+      defaultCheckedList: [],
     };
   }
 
@@ -61,6 +66,12 @@ class EditUserTable extends Component {
       privilege: key.privilege === '无' ? 0 : 1,
       positionId: key.id,
       currentstate: key.currentstate,
+      roleId: key.roleId,
+      defaultCheckedList: [
+        key.endView ? 'endView' : null,
+        key.privilegeView ? 'privilegeView' : null,
+        key.scoreView ? 'scoreView' : null,
+      ],
     });
   };
   // 创建岗位函数
@@ -283,6 +294,9 @@ class EditUserTable extends Component {
       data.push({
         key: index,
         privilege: item.privilege ? '有' : '无',
+        scoreView: item.scoreView ? '有' : '无',
+        privilegeView: item.privilegeView ? '有' : '无',
+        endView: item.endView ? '有' : '无',
         userType: userTypeData[item.usertype],
         showName: !item.showname
           ? item.usertype === 'others' ? '无绩效岗位' : null
@@ -290,6 +304,7 @@ class EditUserTable extends Component {
         shownameid: !item.shownameid ? null : item.shownameid,
         id: item.positionid,
         currentstate: item.currentstate,
+        roleId: item.roleName,
       })
     );
     return data;
@@ -312,11 +327,15 @@ class EditUserTable extends Component {
       },
       {
         title: '后端角色',
-        dataIndex: 'Role',
+        dataIndex: 'roleId',
+      },
+      {
+        title: '学分访问',
+        dataIndex: 'scoreView',
       },
       {
         title: '绩效访问',
-        dataIndex: 'priviligeView',
+        dataIndex: 'privilegeView',
       },
       {
         title: '后台访问',
@@ -365,15 +384,31 @@ class EditUserTable extends Component {
       }
     });
   };
+  roleNameList = (val = []) => {
+    const list = !val ? [] : val;
+    return (
+      <Select style={{ width: 280 }}>
+        {list.map(item => (
+          <Option value={item.id} key={item.id}>
+            {item.name}
+          </Option>
+        ))}
+      </Select>
+    );
+  };
 
   render() {
     const columns = this.columnsData();
     const userVal = this.props.user;
-    const { addPosi } = this.props;
+    const { addPosi, roleOrg } = this.props;
     const disabled = true;
     const listOrgValues = !userVal.listOrg.response
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+
+    const { dateArea = [] } = userVal.getUserRoleList;
+    const roleNameList = this.roleNameList(dateArea);
+
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
     responseComList =
       !responseComList || responseComList.length === 0 ? responseComListBackup : responseComList;
@@ -529,9 +564,9 @@ class EditUserTable extends Component {
 
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="*后端角色:">
+                <FormItem label="*后端角色">
                   {getFieldDecorator('roleId', {
-                    initialValue: this.state.clickFlag === 1 ? null : this.state.userType,
+                    initialValue: this.state.clickFlag === 1 ? null : this.state.roleId,
                     rules: [
                       {
                         validator(rule, value, callback) {
@@ -542,25 +577,7 @@ class EditUserTable extends Component {
                         },
                       },
                     ],
-                  })(
-                    <Select
-                      style={{ width: 280 }}
-                      onChange={this.handleSelectChange}
-                      disabled={
-                        this.state.clickFlag === 1
-                          ? false
-                          : this.state.privilege === 1 ? disabled : false
-                      }
-                    >
-                      <Option value="college">院长或副院长</Option>
-                      <Option value="family">家族长</Option>
-                      <Option value="group">运营长</Option>
-                      <Option value="class">班主任</Option>
-                      <Option value="admin">管理员</Option>
-                      <Option value="boss">管理层</Option>
-                      <Option value="others">无绩效岗位</Option>
-                    </Select>
-                  )}
+                  })(roleNameList)}
                 </FormItem>
               </Col>
             </Row>
@@ -568,14 +585,12 @@ class EditUserTable extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="&nbsp;&nbsp;访问权限">
                   {getFieldDecorator('view', {
-                    initialValue: 0,
+                    initialValue: this.state.clickFlag === 1 ? 0 : this.state.defaultCheckedList,
                     rules: [],
                   })(
                     <CheckboxGroup
                       style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                       options={this.state.plainOptions}
-                      defaultValue={this.state.defaultCheckedList}
-                      onChange={this.onChange}
                     />
                   )}
                 </FormItem>
@@ -631,7 +646,7 @@ class EditUserTable extends Component {
           type="primary"
           className={common.submitButton}
           onClick={() => this.onCreate()}
-          loading={addPosi}
+          loading={addPosi || roleOrg}
         >
           添加岗位
         </Button>
