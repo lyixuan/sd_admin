@@ -124,8 +124,8 @@ class BottomList extends Component {
   // 模态框确定
   clickModalOK = () => {
     const { modalParam, userId } = this.state;
-    const { bottomDate, collegeId, type } = modalParam;
-    if (bottomDate === '' || collegeId === null || type === null) {
+    const { bottomDate, type } = modalParam;
+    if (bottomDate === '' || type === null) {
       message.error('请完善所有信息');
       return;
     }
@@ -134,7 +134,6 @@ class BottomList extends Component {
       type: 'bottomTable/addTask',
       payload: { ...modalParam, userId },
     });
-    this.getDataList({}); // 列表数据
     this.showModal(false);
   };
   // 模态框显隐回调

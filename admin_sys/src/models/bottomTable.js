@@ -60,12 +60,22 @@ export default {
       }
     },
     // 添加底表
-    *addTask({ payload }, { call }) {
+    *addTask({ payload }, { call, put }) {
       const response = yield call(addTask, { ...payload });
       if (response.code !== 2000) {
         message.error(response.msg);
       } else {
-        console.log(response.data);
+        message.success('添加任务成功！');
+        const dataList = yield call(bottomTableList, {
+          type: null,
+          bottomTime: '',
+          pageNum: 0,
+          pageSize: 30,
+        });
+        yield put({
+          type: 'bottomTableSave',
+          payload: { dataList: dataList.content, totalNum: dataList.totalElements },
+        });
       }
     },
     // 下载底表
