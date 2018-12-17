@@ -20,7 +20,7 @@ const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ bottomTable, loading }) => ({
   bottomTable,
-  loading: loading.effects['bottomTable/bottomTableList'],
+  loading: loading.models.bottomTable,
 }))
 class BottomList extends Component {
   constructor(props) {

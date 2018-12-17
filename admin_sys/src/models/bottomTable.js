@@ -66,16 +66,21 @@ export default {
         message.error(response.msg);
       } else {
         message.success('添加任务成功！');
-        const dataList = yield call(bottomTableList, {
+        const responseList = yield call(bottomTableList, {
           type: null,
           bottomTime: '',
           pageNum: 0,
           pageSize: 30,
         });
-        yield put({
-          type: 'bottomTableSave',
-          payload: { dataList: dataList.content, totalNum: dataList.totalElements },
-        });
+        const dataList1 = responseList.data || {};
+        if (responseList.code !== 2000) {
+          message.error(responseList.msg);
+        } else {
+          yield put({
+            type: 'bottomTableSave',
+            payload: { dataList: dataList1.content, totalNum: dataList1.totalElements },
+          });
+        }
       }
     },
     // 下载底表
