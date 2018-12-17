@@ -189,12 +189,12 @@ class FormPrams extends Component {
   render() {
     const children = this.cloneChildren(this.props.children);
     return (
-      <React.Fragment>
+      <div className={styles.formCls}>
         {[...children]}
         <div className={styles.buttonContainer}>
           <ButtonBox {...this.props} onSubmit={this.onSubmit} onReset={this.onReset} />
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

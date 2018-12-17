@@ -15,7 +15,6 @@ import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
-// const FormItem = Form.Item;
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
@@ -34,7 +33,7 @@ class BottomList extends Component {
         orderType: 'dateTime',
       },
       modalParam: {
-        bottomDate: '2018-12-14',
+        bottomDate: '',
         collegeId: 0,
         type: 0,
       },
@@ -78,7 +77,7 @@ class BottomList extends Component {
   getAllOrg = () => {
     this.props.dispatch({
       type: 'bottomTable/findAllOrg',
-      payload: { id: 1 },
+      payload: {},
     });
   };
 
@@ -164,19 +163,25 @@ class BottomList extends Component {
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
       <FormFilter onSubmit={this.onSubmit}>
-        <Select placeholder="底表类型" style={{ width: 230, height: 32 }} flag="type">
-          {BOTTOM_TABLE_LIST.map(item => (
-            <Option key={item.id} value={item.id}>
-              {item.name}
-            </Option>
-          ))}
-        </Select>
-        <DatePicker
-          format={dateFormat}
-          disabledDate={this.disabledDate}
-          style={{ width: 230, height: 32 }}
-          flag="bottomTime"
-        />
+        <div>
+          <span style={{ lineHeight: '32px' }}>底表类型：</span>
+          <Select placeholder="底表类型" style={{ width: 230, height: 32 }} flag="type">
+            {BOTTOM_TABLE_LIST.map(item => (
+              <Option key={item.id} value={item.id}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <span style={{ lineHeight: '32px' }}>底表时间：</span>
+          <DatePicker
+            format={dateFormat}
+            disabledDate={this.disabledDate}
+            style={{ width: 230, height: 32 }}
+            flag="bottomTime"
+          />
+        </div>
       </FormFilter>
     );
     return (
