@@ -350,7 +350,9 @@ class CreateUserForm extends Component {
                 })(
                   <Select style={{ width: 280 }} onChange={this.handleSelectChange}>
                     {Filter('FRONT_ROLE_TYPE_LIST').map(v => (
-                      <Option value={v.id}>{v.name}</Option>
+                      <Option value={v.id} key={v.id}>
+                        {v.name}
+                      </Option>
                     ))}
                   </Select>
                 )}
