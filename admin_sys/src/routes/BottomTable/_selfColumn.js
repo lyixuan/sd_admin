@@ -27,7 +27,7 @@ export function columnsFn(callback) {
       dataIndex: 'type',
       render: text =>
         BOTTOM_TABLE_LIST.map(item => {
-          if (item.id === text) {
+          if (Number(item.id) === text) {
             return item.name;
           }
           return null;
@@ -36,7 +36,7 @@ export function columnsFn(callback) {
     {
       title: '底表时间',
       dataIndex: 'bottomTime',
-      render: text => formatDate(text),
+      render: text => formatDate(text).substr(0, 10),
     },
     {
       title: '添加时间',
@@ -51,7 +51,7 @@ export function columnsFn(callback) {
           <>
             <img src={imgArr[text]} alt="packError" style={{ marginRight: '8px' }} />
             {BOTTOM_TABLE_STATUS.map(item => {
-              if (item.id === text) {
+              if (Number(item.id) === text) {
                 return item.name;
               }
               return null;
@@ -66,7 +66,7 @@ export function columnsFn(callback) {
       render: (text, record) => {
         return (
           <>
-            {Number(record.ordId) !== 1 ? null : (
+            {Number(record.status) !== 1 ? null : (
               <AuthorizedButton authority="/bottomTable/downloadBottomTable">
                 <span
                   style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}

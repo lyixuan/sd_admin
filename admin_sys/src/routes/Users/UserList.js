@@ -246,11 +246,9 @@ class UserList extends Component {
   render() {
     const { loading } = this.props;
     const { name, mail, isUpdate, pageNum } = this.state.params;
-    const data = !this.props.user.userList.response
-      ? []
-      : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
-    const totalNum = !data.totalElements ? 0 : data.totalElements;
-    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
+    const { userListData = {} } = this.props.user.userList;
+    const { totalElements = 0, content = [] } = userListData;
+    const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -338,7 +336,7 @@ class UserList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：{totalNum}条</p>
+            <p className={common.totalNum}>总数：{totalElements}条</p>
             <Table
               bordered
               loading={loading}
@@ -358,7 +356,7 @@ class UserList extends Component {
               this.onShowSizeChange(current, pageSize);
             }}
             defaultCurrent={pageNum + 1}
-            total={totalNum}
+            total={totalElements}
             defaultPageSize={30}
           />
         }

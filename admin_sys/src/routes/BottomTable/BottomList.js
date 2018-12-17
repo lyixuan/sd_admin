@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Row, Col, Select, DatePicker } from 'antd';
+import { message, Table, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -9,13 +9,12 @@ import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
 import { getAuthority } from '../../utils/authority';
-import { BOTTOM_TABLE_LIST } from '../../utils/constants';
+import { BOTTOM_TABLE_LIST, ADMIN_AUTH_LIST, ADMIN_USER } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
 import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
-// const FormItem = Form.Item;
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
@@ -26,7 +25,7 @@ const dateFormat = 'YYYY-MM-DD';
 class BottomList extends Component {
   constructor(props) {
     super(props);
-    const localStorage = getAuthority('admin_user');
+    const localStorage = getAuthority(ADMIN_USER);
     const userId = !localStorage ? null : localStorage.userId;
     this.state = {
       timeParams: {
@@ -34,12 +33,12 @@ class BottomList extends Component {
         orderType: 'dateTime',
       },
       modalParam: {
-        bottomDate: '2018-12-14',
-        collegeId: 0,
-        type: 0,
-        userId,
+        bottomDate: '',
+        collegeId: null,
+        type: null,
       },
-      type: 0,
+      userId,
+      type: null,
       bottomTime: '',
       pageNum: 0,
       pageSize: 30,
@@ -48,29 +47,40 @@ class BottomList extends Component {
   }
 
   componentDidMount() {
-    this.getDataList(); // 列表数据
+    const initVal = this.props.getUrlParams();
+    const initParams = {};
+    if (JSON.stringify(initVal) !== '{}') {
+      initParams.bottomTime = initVal.bottomTime ? Date.parse(new Date(initVal.bottomTime)) : null;
+      initParams.type = initVal.type ? Number(initVal.type) : null;
+    }
+    this.getDataList(initParams); // 列表数据
     this.getRange(); // 时间范围
     this.disDateList(); // 不可选时间
+    this.getAllOrg(); // 所有学院列表
   }
 
-  // 点击显示每页多少条数据函数
-  onShowSizeChange = (current, size) => {
-    this.changePage(current, size);
-  };
-
-  // 选择时间
-  onDateChange = (date, bottomTime) => {
-    this.setState({ bottomTime });
-  };
   onSubmit = data => {
+    const bottomTime = data.bottomTime ? Date.parse(new Date(data.bottomTime)) : null;
+    this.getDataList({
+      bottomTime,
+      type: data.type ? Number(data.type) : null,
+    }); // 列表数据
     console.log(data);
   };
+
   // 列表数据
-  getDataList = () => {
+  getDataList = paramObj => {
     const { type, bottomTime, pageNum, pageSize } = this.state;
     this.props.dispatch({
       type: 'bottomTable/bottomTableList',
-      payload: { type, bottomTime, pageNum, pageSize },
+      payload: { type, bottomTime, pageNum, pageSize, ...paramObj },
+    });
+  };
+  // 所有学院列表
+  getAllOrg = () => {
+    this.props.dispatch({
+      type: 'bottomTable/findAllOrg',
+      payload: {},
     });
   };
 
@@ -94,6 +104,14 @@ class BottomList extends Component {
       minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
     };
   };
+
+  // 点击某一页函数
+  changePage = (current, size) => {
+    this.getDataList({
+      pageSize: size,
+      pageNum: current - 1,
+    });
+  };
   // 不可选时间
   disDateList = () => {
     const { timeParams, pageNum, pageSize } = this.state;
@@ -102,23 +120,21 @@ class BottomList extends Component {
       payload: { ...timeParams, pageNum, pageSize },
     });
   };
-  // 表单搜索
-  handleSearch = e => {
-    e.preventDefault();
-  };
-
-  // 表单重置
-  handleReset = () => {
-    console.log('reset');
-  };
 
   // 模态框确定
   clickModalOK = () => {
-    const { modalParam } = this.state;
+    const { modalParam, userId } = this.state;
+    const { bottomDate, collegeId, type } = modalParam;
+    if (bottomDate === '' || collegeId === null || type === null) {
+      message.error('请完善所有信息');
+      return;
+    }
+
     this.props.dispatch({
       type: 'bottomTable/addTask',
-      payload: { ...modalParam },
+      payload: { ...modalParam, userId },
     });
+    this.getDataList({}); // 列表数据
     this.showModal(false);
   };
   // 模态框显隐回调
@@ -135,6 +151,13 @@ class BottomList extends Component {
   };
   downLoadBTable = record => {
     console.log(record);
+    this.props.dispatch({
+      type: 'bottomTable/downLoadBT',
+      payload: {
+        id: record.id,
+        taskName: record.taskName,
+      },
+    });
   };
 
   backTop = () => {
@@ -151,32 +174,31 @@ class BottomList extends Component {
   };
   render() {
     const { bottomTable = {}, loading } = this.props;
-    const { dataList = [] } = bottomTable;
+    const { dataList = [], findAllOrg = [], totalNum = 0 } = bottomTable;
     // const time = this.getDateRange();
 
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
       <FormFilter onSubmit={this.onSubmit}>
-        <Row gutter={24}>
-          <Col span={8}>
-            <Select placeholder="全部" style={{ width: 230, height: 32 }} flag="type">
-              {BOTTOM_TABLE_LIST.map(item => (
-                <Option key={item.id} value={item.id}>
-                  {item.name}
-                </Option>
-              ))}
-            </Select>
-          </Col>
-          <Col span={8}>
-            <DatePicker
-              format={dateFormat}
-              disabledDate={this.disabledDate}
-              style={{ width: 230, height: 32 }}
-              //  onChange={this.onDateChange}
-              flag="bottomTime"
-            />
-          </Col>
-        </Row>
+        <div>
+          <span style={{ lineHeight: '32px' }}>底表类型：</span>
+          <Select placeholder="底表类型" style={{ width: 230, height: 32 }} flag="type">
+            {BOTTOM_TABLE_LIST.map(item => (
+              <Option key={item.id} value={item.id}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <span style={{ lineHeight: '32px' }}>底表时间：</span>
+          <DatePicker
+            format={dateFormat}
+            disabledDate={this.disabledDate}
+            style={{ width: 230, height: 32 }}
+            flag="bottomTime"
+          />
+        </div>
       </FormFilter>
     );
     return (
@@ -193,7 +215,7 @@ class BottomList extends Component {
           }
           contentTable={
             <div>
-              <p className={common.totalNum}>总数：0条</p>
+              <p className={common.totalNum}>总数：{totalNum}条</p>
               <Table
                 bordered
                 loading={loading}
@@ -209,10 +231,7 @@ class BottomList extends Component {
               onChange={(current, pageSize) => {
                 this.changePage(current, pageSize);
               }}
-              onShowSizeChange={(current, pageSize) => {
-                this.onShowSizeChange(current, pageSize);
-              }}
-              total={30}
+              total={totalNum}
             />
           }
         />
@@ -225,7 +244,12 @@ class BottomList extends Component {
           title="添加底表下载任务"
           visible={this.state.visible}
           modalContent={
-            <ModalContent disabledDate={this.disabledDate} updateModalData={this.updateModalData} />
+            <ModalContent
+              disabledDate={this.disabledDate}
+              updateModalData={this.updateModalData}
+              selectOption={findAllOrg}
+              authList={getAuthority(ADMIN_AUTH_LIST)}
+            />
           }
           showModal={bol => this.showModal(bol)}
           clickOK={() => this.clickModalOK()}
