@@ -8,6 +8,9 @@ export const TIME_LOCAL = 'zh-cn';
 export const ADMIN_AUTH_LIST = 'admin_auth';
 export const ADMIN_USER = 'admin_user';
 
+// 数据分析师id
+export const DATA_ANALYST_ID = '122';
+
 export const ROLE_TYPE_LIST = [
   { id: 'college', name: '院长或副院长' },
   { id: 'family', name: '家族长' },
@@ -28,6 +31,7 @@ export default {
   TIME_LOCAL,
   ADMIN_AUTH_LIST,
   ADMIN_USER,
+  DATA_ANALYST_ID,
   ROLE_TYPE_LIST,
   BOTTOM_TABLE_LIST,
   BOTTOM_TABLE_STATUS,
