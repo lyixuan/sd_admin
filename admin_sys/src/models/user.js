@@ -93,7 +93,8 @@ export default {
     *getUserRoleList({ payload }, { call, put }) {
       const response = yield call(getUserRoleList, payload.params);
       if (response.code === 2000) {
-        yield put({ type: 'getUserRoleListSave', payload: { response } });
+        const dateArea = response.data || [];
+        yield put({ type: 'getUserRoleListSave', payload: { dateArea } });
       } else {
         message.error(response.msg);
       }
