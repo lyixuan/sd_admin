@@ -47,30 +47,33 @@ class BottomList extends Component {
   }
 
   componentDidMount() {
-    this.getDataList(); // 列表数据
+    const initVal = this.props.getUrlParams();
+    const initParams = {};
+    if (JSON.stringify(initVal) !== '{}') {
+      initParams.bottomTime = initVal.bottomTime ? Date.parse(new Date(initVal.bottomTime)) : null;
+      initParams.type = initVal.type ? Number(initVal.type) : null;
+    }
+    this.getDataList(initParams); // 列表数据
     this.getRange(); // 时间范围
     this.disDateList(); // 不可选时间
     this.getAllOrg(); // 所有学院列表
   }
 
-  // 点击显示每页多少条数据函数
-  onShowSizeChange = (current, size) => {
-    this.changePage(current, size);
-  };
-
   onSubmit = data => {
-    this.setState({
-      bottomTime: data.bottomTime,
-    });
-    this.getDataList(); // 列表数据
+    const bottomTime = data.bottomTime ? Date.parse(new Date(data.bottomTime)) : null;
+    this.getDataList({
+      bottomTime,
+      type: data.type ? Number(data.type) : null,
+    }); // 列表数据
     console.log(data);
   };
+
   // 列表数据
-  getDataList = () => {
+  getDataList = paramObj => {
     const { type, bottomTime, pageNum, pageSize } = this.state;
     this.props.dispatch({
       type: 'bottomTable/bottomTableList',
-      payload: { type, bottomTime, pageNum, pageSize },
+      payload: { type, bottomTime, pageNum, pageSize, ...paramObj },
     });
   };
   // 所有学院列表
@@ -101,6 +104,14 @@ class BottomList extends Component {
       minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
     };
   };
+
+  // 点击某一页函数
+  changePage = (current, size) => {
+    this.getDataList({
+      pageSize: size,
+      pageNum: current - 1,
+    });
+  };
   // 不可选时间
   disDateList = () => {
     const { timeParams, pageNum, pageSize } = this.state;
@@ -117,7 +128,7 @@ class BottomList extends Component {
       type: 'bottomTable/addTask',
       payload: { ...modalParam, userId },
     });
-    this.getDataList(); // 列表数据
+    this.getDataList({}); // 列表数据
     this.showModal(false);
   };
   // 模态框显隐回调
@@ -157,7 +168,7 @@ class BottomList extends Component {
   };
   render() {
     const { bottomTable = {}, loading } = this.props;
-    const { dataList = [], findAllOrg = [] } = bottomTable;
+    const { dataList = [], findAllOrg = [], totalNum = 0 } = bottomTable;
     // const time = this.getDateRange();
 
     const columns = columnsFn(this.downLoadBTable);
@@ -198,7 +209,7 @@ class BottomList extends Component {
           }
           contentTable={
             <div>
-              <p className={common.totalNum}>总数：{dataList.length}条</p>
+              <p className={common.totalNum}>总数：{totalNum}条</p>
               <Table
                 bordered
                 loading={loading}
@@ -214,10 +225,7 @@ class BottomList extends Component {
               onChange={(current, pageSize) => {
                 this.changePage(current, pageSize);
               }}
-              onShowSizeChange={(current, pageSize) => {
-                this.onShowSizeChange(current, pageSize);
-              }}
-              total={30}
+              total={totalNum}
             />
           }
         />
