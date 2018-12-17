@@ -9,7 +9,7 @@ import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
 import { getAuthority } from '../../utils/authority';
-import { BOTTOM_TABLE_LIST } from '../../utils/constants';
+import { BOTTOM_TABLE_LIST, ADMIN_AUTH_LIST, ADMIN_USER } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
 import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
@@ -25,7 +25,7 @@ const dateFormat = 'YYYY-MM-DD';
 class BottomList extends Component {
   constructor(props) {
     super(props);
-    const localStorage = getAuthority('admin_user');
+    const localStorage = getAuthority(ADMIN_USER);
     const userId = !localStorage ? null : localStorage.userId;
     this.state = {
       timeParams: {
@@ -38,7 +38,7 @@ class BottomList extends Component {
         type: 0,
       },
       userId,
-      type: 0,
+      type: null,
       bottomTime: '',
       pageNum: 0,
       pageSize: 30,
@@ -242,6 +242,7 @@ class BottomList extends Component {
               disabledDate={this.disabledDate}
               updateModalData={this.updateModalData}
               selectOption={findAllOrg}
+              authList={getAuthority(ADMIN_AUTH_LIST)}
             />
           }
           showModal={bol => this.showModal(bol)}

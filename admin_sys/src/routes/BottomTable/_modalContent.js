@@ -1,6 +1,7 @@
 // 自定义弹框
 import React from 'react';
 import { Radio, Select, DatePicker } from 'antd';
+import { DATA_ANALYST_ID } from '../../utils/constants';
 
 const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
@@ -9,9 +10,9 @@ export default class ModalContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bottomDate: '2018-12-14',
-      collegeId: 108,
-      type: 0,
+      bottomDate: '',
+      collegeId: null,
+      type: null,
     };
   }
   onRadioChange = e => {
@@ -24,16 +25,37 @@ export default class ModalContent extends React.Component {
     this.props.updateModalData({ ...this.state, bottomDate: dateString });
   };
 
-  render() {
-    const { disabledDate, selectOption } = this.props;
+  isDataAnalyst = false;
+  // 判断是否是数据分析师
+  isDataAnalystFn = () => {
+    const { authList } = this.props;
+    authList.map(item => {
+      if (Number(item.id) === Number(DATA_ANALYST_ID)) {
+        this.isDataAnalyst = true;
+        return this.isDataAnalyst;
+      }
+      return this.isDataAnalyst;
+    });
+    return this.isDataAnalyst;
+  };
+  // 过滤数据
+  selectOptions = () => {
+    const { selectOption } = this.props;
     const hash = {};
-    const options = selectOption.reduce((preVal, curVal) => {
+    return selectOption.reduce((preVal, curVal) => {
       if (!hash[curVal.collegeId]) {
         hash[curVal.collegeId] = true;
         preVal.push(curVal);
       }
       return preVal;
     }, []);
+  };
+  render() {
+    const { disabledDate } = this.props;
+
+    const options = this.selectOptions();
+    const isDataAnalyst = this.isDataAnalystFn();
+
     return (
       <>
         <>
@@ -60,16 +82,18 @@ export default class ModalContent extends React.Component {
             onChange={this.onDateChange}
           />
         </div>
-        <>
-          <span>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：</span>
-          <Select placeholder="请选择学院" style={{ width: 230, height: 32 }}>
-            {options.map(item => (
-              <Option key={item.collegeId} value={item.collegeId}>
-                {item.collegeName}
-              </Option>
-            ))}
-          </Select>
-        </>
+        {!isDataAnalyst ? null : (
+          <>
+            <span>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：</span>
+            <Select placeholder="请选择学院" style={{ width: 230, height: 32 }}>
+              {options.map(item => (
+                <Option key={item.collegeId} value={item.collegeId}>
+                  {item.collegeName}
+                </Option>
+              ))}
+            </Select>
+          </>
+        )}
       </>
     );
   }

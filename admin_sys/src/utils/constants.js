@@ -24,7 +24,8 @@ export const VISIT_RIGHT_LIST = [
   { id: 'privilegeView', name: '绩效' },
   { id: 'endView', name: '后台' },
 ];
-
+// 数据分析师id
+export const DATA_ANALYST_ID = '122';
 export const BOTTOM_TABLE_LIST = [{ id: '0', name: '学分底表' }, { id: '1', name: '预估分底表' }];
 export const BOTTOM_TABLE_STATUS = [
   { id: '0', name: '打包中' },
@@ -38,6 +39,7 @@ export default {
   ADMIN_USER,
   FRONT_ROLE_TYPE_LIST,
   VISIT_RIGHT_LIST,
+  DATA_ANALYST_ID,
   BOTTOM_TABLE_LIST,
   BOTTOM_TABLE_STATUS,
 };
