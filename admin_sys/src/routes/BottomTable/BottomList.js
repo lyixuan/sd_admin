@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Row, Col, Select, DatePicker } from 'antd';
+import { Table, Button, Row, Col, Select, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -13,14 +13,15 @@ import { BOTTOM_TABLE_LIST } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
 import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
+import FormFilter from '../../selfComponent/FormFilter';
 
-const FormItem = Form.Item;
+// const FormItem = Form.Item;
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ bottomTable, loading }) => ({
   bottomTable,
-  loading: loading.effects['bottomTable/getRange'],
+  loading: loading.effects['bottomTable/bottomTableList'],
 }))
 class BottomList extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class BottomList extends Component {
         userId,
       },
       type: 0,
-      bottomTime: '2018-08-09',
+      bottomTime: '',
       pageNum: 0,
       pageSize: 30,
       visible: false,
@@ -61,6 +62,9 @@ class BottomList extends Component {
   onDateChange = (date, bottomTime) => {
     this.setState({ bottomTime });
   };
+  onSubmit = data => {
+    console.log(data);
+  };
   // 列表数据
   getDataList = () => {
     const { type, bottomTime, pageNum, pageSize } = this.state;
@@ -69,6 +73,7 @@ class BottomList extends Component {
       payload: { type, bottomTime, pageNum, pageSize },
     });
   };
+
   // 初始化回显时间日期
   getRange = () => {
     this.props.dispatch({
@@ -81,7 +86,7 @@ class BottomList extends Component {
     const { bottomTable = {} } = this.props;
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
-    const disabledDate = content.map(item => moment.unix(item.dateTime / 1000).format(dateFormat));
+    const disabledDate = content.map(item => (item.dateTime / 1000).format(dateFormat));
 
     return {
       disabledDate,
@@ -130,6 +135,13 @@ class BottomList extends Component {
   };
   downLoadBTable = record => {
     console.log(record);
+    this.props.dispatch({
+      type: 'bottomTable/downLoadBT',
+      payload: {
+        id: record.id,
+        taskName: record.taskName,
+      },
+    });
   };
 
   backTop = () => {
@@ -147,64 +159,38 @@ class BottomList extends Component {
   render() {
     const { bottomTable = {}, loading } = this.props;
     const { dataList = [] } = bottomTable;
-    const time = this.getDateRange();
+    // const time = this.getDateRange();
 
     const columns = columnsFn(this.downLoadBTable);
-    const WrappedAdvancedSearchForm = Form.create()(props => {
-      const { getFieldDecorator } = props.form;
-      return (
-        <Form layout="inline" onSubmit={this.handleSearch}>
-          <Row gutter={24}>
-            <Col span={8}>
-              <FormItem label="底表类型">
-                {getFieldDecorator('type', {
-                  initialValue: '',
-                })(
-                  <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                    {BOTTOM_TABLE_LIST.map(item => (
-                      <Option key={item.id} value={item.id}>
-                        {item.name}
-                      </Option>
-                    ))}
-                  </Select>
-                )}
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem label="底表时间">
-                {getFieldDecorator('countBeginTime', {
-                  initialValue: time.minTime ? moment(formatDate(time.minTime)) : null,
-                })(
-                  <DatePicker
-                    format={dateFormat}
-                    disabledDate={this.disabledDate}
-                    style={{ width: 230, height: 32 }}
-                    onChange={this.onDateChange}
-                  />
-                )}
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem>
-                <>
-                  <Button htmlType="submit" type="primary" className={common.searchButton}>
-                    搜 索
-                  </Button>
-                  <Button onClick={this.handleReset} type="primary" className={common.resetButton}>
-                    重 置
-                  </Button>
-                </>
-              </FormItem>
-            </Col>
-          </Row>
-        </Form>
-      );
-    });
+    const WrappedAdvancedSearchForm = () => (
+      <FormFilter onSubmit={this.onSubmit}>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Select placeholder="全部" style={{ width: 230, height: 32 }} flag="type">
+              {BOTTOM_TABLE_LIST.map(item => (
+                <Option key={item.id} value={item.id}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
+          </Col>
+          <Col span={8}>
+            <DatePicker
+              format={dateFormat}
+              disabledDate={this.disabledDate}
+              style={{ width: 230, height: 32 }}
+              //  onChange={this.onDateChange}
+              flag="bottomTime"
+            />
+          </Col>
+        </Row>
+      </FormFilter>
+    );
     return (
       <>
         <ContentLayout
           routerData={this.props.routerData}
-          contentForm={<WrappedAdvancedSearchForm />}
+          contentForm={WrappedAdvancedSearchForm()}
           contentButton={
             <AuthorizedButton authority="/bottomTable/addBottomTable">
               <Button onClick={this.addTasks} type="primary" className={common.createButton}>

@@ -1,8 +1,9 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { userLogin, userLogout } from '@/services/api';
+import { userLogin, userLogout, CurrentUserListRole } from '@/services/api';
 import { setAuthority, setAuthoritySeccion, removeStorge } from 'utils/authority';
 import { handleSuccess } from 'utils/Handle';
+import { ADMIN_USER, ADMIN_AUTH_LIST } from '@/utils/constants';
 
 message.config({
   maxCount: 1,
@@ -19,6 +20,7 @@ export default {
     },
     currentUser: {},
     authList: [],
+    roleList: [],
   },
 
   effects: {
@@ -33,17 +35,21 @@ export default {
       if (response.code === 2000) {
         const { userId, token, userName, privilegeList = [] } = response.data;
         if (payload.autoLogin === true) {
-          setAuthority('admin_user', { mail, password, userId, userName, token }); // 存储用户信息
+          setAuthority(ADMIN_USER, { mail, password, userId, userName, token }); // 存储用户信息
         } else {
-          setAuthoritySeccion('admin_user', { mail, password, userId, userName, token });
+          setAuthoritySeccion(ADMIN_USER, { mail, password, userId, userName, token });
         }
-        setAuthority('admin_auth', privilegeList);
+        setAuthority(ADMIN_AUTH_LIST, privilegeList);
         // setAuthority('admin_token', { userId, token }); // 存储api token
         // reloadAuthorized();
         yield put(routerRedux.push('/'));
       } else {
         message.error(response.msg);
       }
+    },
+    *CurrentUserListRole(_, { call, put }) {
+      const response = yield call(CurrentUserListRole, { userId: 1 });
+      console.log(put, response);
     },
     *changeRole({ payload }, { call, put }) {
       yield put({
@@ -55,7 +61,7 @@ export default {
       try {
         yield call(userLogout);
       } finally {
-        removeStorge('admin_user');
+        removeStorge(ADMIN_USER);
         yield call(handleSuccess, {
           content: '退出登录',
           pathname: '/userLayout/login',

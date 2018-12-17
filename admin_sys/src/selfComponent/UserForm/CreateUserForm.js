@@ -33,8 +33,12 @@ class CreateUserForm extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
       listOrgLiost: listOrgValues || [],
-      plainOptions: ['学分', '绩效', '后台'],
-      defaultCheckedList: ['绩效'],
+      plainOptions: [
+        { label: '学分', value: 'scoreView', id: 1 },
+        { label: '绩效', value: 'privilegeView', id: 2 },
+        { label: '后台', value: 'endView', id: 3 },
+      ],
+      defaultCheckedList: [],
     };
   }
   componentDidMount() {
@@ -83,9 +87,9 @@ class CreateUserForm extends Component {
     return value;
   };
 
-  viewChange = value => {
-    console.log('view修改内容', value);
-  };
+  // viewChange = value => {
+  //   console.log('view修改内容', value);
+  // };
 
   handleSelectChange = value => {
     const aa = value;
@@ -165,6 +169,18 @@ class CreateUserForm extends Component {
       </Select>
     );
   };
+  roleNameList = (val = []) => {
+    const list = !val ? [] : val;
+    return (
+      <Select style={{ width: 280 }}>
+        {list.map(item => (
+          <Option value={item.id} key={item.id}>
+            {item.name}
+          </Option>
+        ))}
+      </Select>
+    );
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -174,16 +190,20 @@ class CreateUserForm extends Component {
       ? []
       : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
     const residences = !wechatValues ? [] : this.roleListFun(wechatValues);
+
+    const { dateArea = [] } = userVal.getUserRoleList;
+    const roleNameList = this.roleNameList(dateArea);
+
     const listOrgValues = !userVal.listOrg.response
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
     responseComList =
       !responseComList || responseComList.length === 0 ? responseComListBackup : responseComList;
-    const { submit, wechatList, listOrg } = this.props.jumpFunction;
+    const { submit, wechatList, listOrg, roleOrg } = this.props.jumpFunction;
     const formLayout = 'inline';
     return (
-      <Spin spinning={wechatList || listOrg}>
+      <Spin spinning={wechatList || listOrg || roleOrg}>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
           <Row>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
@@ -422,8 +442,17 @@ class CreateUserForm extends Component {
               <FormItem label="*后端角色">
                 {getFieldDecorator('roleId', {
                   initialValue: null,
-                  rules: [],
-                })(residences)}
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '请选择后端角色！' });
+                        }
+                        callback();
+                      },
+                    },
+                  ],
+                })(roleNameList)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
@@ -435,8 +464,6 @@ class CreateUserForm extends Component {
                   <CheckboxGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     options={this.state.plainOptions}
-                    value={this.state.defaultCheckedList}
-                    onChange={this.viewChange}
                   />
                 )}
               </FormItem>

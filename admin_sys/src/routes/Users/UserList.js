@@ -114,6 +114,7 @@ class UserList extends Component {
         id: item.id,
         wechatDepartmentId: item.wechatDepartmentId,
         wechatDepartmentName: item.wechatDepartmentName,
+        roleName: item.roleName,
       })
     );
 
@@ -152,7 +153,7 @@ class UserList extends Component {
       },
       {
         title: '后端角色',
-        dataIndex: 'Role',
+        dataIndex: 'roleName',
         width: 120,
       },
       {

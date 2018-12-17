@@ -10,6 +10,7 @@ const WrappedRegistrationForm = Form.create()(CreateUserForm);
   submit: loading.effects['user/userAdd'],
   wechatList: loading.effects['user/wechatList'],
   listOrg: loading.effects['user/listOrg'],
+  roleOrg: loading.effects['user/getUserRoleList'],
 }))
 class CreateUser extends Component {
   constructor(props) {
@@ -17,16 +18,20 @@ class CreateUser extends Component {
     this.state = {};
   }
   componentDidMount() {
-    const wechatListParams = {};
+    const params = {};
     this.props.dispatch({
       type: 'user/wechatList',
-      payload: { wechatListParams },
+      payload: { params },
     });
 
-    const listOrgParams = {};
     this.props.dispatch({
       type: 'user/listOrg',
-      payload: { listOrgParams },
+      payload: { params },
+    });
+
+    this.props.dispatch({
+      type: 'user/getUserRoleList',
+      payload: { params },
     });
   }
 
@@ -52,6 +57,21 @@ class CreateUser extends Component {
       }
       return 0;
     });
+    const { view = [] } = values;
+    const bol = true;
+    let scoreView = false;
+    let privilegeView = false;
+    let endView = false;
+    view.map(item => {
+      if (item === 'scoreView') {
+        scoreView = bol;
+      } else if (item === 'privilegeView') {
+        privilegeView = bol;
+      } else if (item === 'endView') {
+        endView = bol;
+      }
+      return 0;
+    });
     const userAddParams = {
       name: values.name.replace(/\s*/g, ''),
       mail: values.mail,
@@ -59,6 +79,10 @@ class CreateUser extends Component {
       joinDate: dateString,
       idCard: values.idCard,
       sex: values.sex,
+      roleId: Number(values.roleId),
+      scoreView,
+      privilegeView,
+      endView,
       positionList: {
         privilege: rUserType === 'admin' ? false : values.privilege === 1,
         userType: rUserType,
@@ -75,7 +99,6 @@ class CreateUser extends Component {
   // 点击取消按钮跳转到list页面
   resetContent = () => {
     window.history.go(-1);
-    // this.props.setRouteUrlParams('/config/userList', {});
   };
 
   render() {
