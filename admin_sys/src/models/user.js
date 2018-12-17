@@ -4,7 +4,7 @@ import {
   userList,
   updateUserOrg,
   updateUserbasicInfo,
-  // userDelete,
+  getUserRoleList,
   wechatList,
   userAdd,
   listOrg,
@@ -21,6 +21,7 @@ export default {
     // 接口返回数据存储
     userList: [],
     wechatList: [],
+    getUserRoleList: [],
     listOrg: [],
     getUserlistData: null,
   },
@@ -82,15 +83,23 @@ export default {
       }
     },
     *wechatList({ payload }, { call, put }) {
-      const response = yield call(wechatList, payload.wechatListParams);
+      const response = yield call(wechatList, payload.params);
       if (response.code === 2000) {
         yield put({ type: 'wechatListSave', payload: { response } });
       } else {
         message.error(response.msg);
       }
     },
+    *getUserRoleList({ payload }, { call, put }) {
+      const response = yield call(getUserRoleList, payload.params);
+      if (response.code === 2000) {
+        yield put({ type: 'getUserRoleListSave', payload: { response } });
+      } else {
+        message.error(response.msg);
+      }
+    },
     *listOrg({ payload }, { call, put }) {
-      const response = yield call(listOrg, payload.listOrgParams);
+      const response = yield call(listOrg, payload.params);
       if (response.code === 2000) {
         yield put({ type: 'listOrgSave', payload: { response } });
       } else {
@@ -167,6 +176,12 @@ export default {
       return {
         ...state,
         wechatList: action.payload,
+      };
+    },
+    getUserRoleListSave(state, action) {
+      return {
+        ...state,
+        getUserRoleList: action.payload,
       };
     },
     listOrgSave(state, action) {
