@@ -15,14 +15,20 @@ export default class ModalContent extends React.Component {
       type: null,
     };
   }
+  // 底表类型选择
   onRadioChange = e => {
     this.setState({ type: e.target.value });
     this.props.updateModalData({ ...this.state, type: e.target.value });
   };
-  // 点击选择添加不可选时间
+  // 底表时间选择
   onDateChange = (date, dateString) => {
     this.setState({ bottomDate: dateString });
     this.props.updateModalData({ ...this.state, bottomDate: dateString });
+  };
+  // 学院选择
+  onSelectChange = val => {
+    this.setState({ collegeId: val });
+    this.props.updateModalData({ ...this.state, collegeId: val });
   };
 
   isDataAnalyst = false;
@@ -85,7 +91,11 @@ export default class ModalContent extends React.Component {
         {!isDataAnalyst ? null : (
           <>
             <span>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：</span>
-            <Select placeholder="请选择学院" style={{ width: 230, height: 32 }}>
+            <Select
+              placeholder="请选择学院"
+              onChange={this.onSelectChange}
+              style={{ width: 230, height: 32 }}
+            >
               {options.map(item => (
                 <Option key={item.collegeId} value={item.collegeId}>
                   {item.collegeName}

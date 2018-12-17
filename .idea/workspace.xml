@@ -3,8 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="76ad4800-572f-4557-a78e-58f9a5a62d90" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_sys/src/selfComponent/UserForm/CreateUserForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/selfComponent/UserForm/CreateUserForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_sys/src/utils/global.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/utils/global.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/models/bottomTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/models/bottomTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_selfColumn.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_selfColumn.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,29 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ContentLayout.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/layouts/ContentLayout.js">
+      <file leaf-file-name="BottomList.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="29" column="14" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="global.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/global.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="42" column="18" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateUser.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Users/CreateUser.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="899">
-              <caret line="105" column="14" selection-start-line="105" selection-start-column="14" selection-end-line="105" selection-end-column="14" />
+            <state relative-caret-position="616">
+              <caret line="55" column="20" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="20" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -48,23 +32,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserList.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Users/UserList.js">
+      <file leaf-file-name="_modalContent.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1166">
-              <caret line="328" column="16" selection-start-line="328" selection-start-column="16" selection-end-line="328" selection-end-column="16" />
+            <state relative-caret-position="312">
+              <caret line="28" column="26" lean-forward="true" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#9#35#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CreateUserForm.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/UserForm/CreateUserForm.js">
+      <file leaf-file-name="FormatDate.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/FormatDate.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="AppealList.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/Appeal/AppealList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-829">
-              <caret line="360" column="57" lean-forward="true" selection-start-line="360" selection-start-column="57" selection-end-line="360" selection-end-column="57" />
+            <state relative-caret-position="270">
+              <caret line="35" column="23" lean-forward="true" selection-start-line="35" selection-start-column="23" selection-end-line="36" selection-end-column="46" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -72,8 +64,40 @@
       <file leaf-file-name="constants.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/constants.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="27" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="27" />
+            <state relative-caret-position="495">
+              <caret line="33" column="17" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.less" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/FormFilter/index.less">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_selfColumn.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_selfColumn.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="402">
+              <caret line="38" column="52" lean-forward="true" selection-start-line="38" selection-start-column="52" selection-end-line="38" selection-end-column="52" />
+              <folding>
+                <element signature="e#0#68#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bottomTable.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/models/bottomTable.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-630">
+              <folding>
+                <element signature="e#45#76#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -93,15 +117,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>fetchData</find>
-      <find>exportCollegeDetailKpi</find>
-      <find>isLoading</find>
-      <find>fetchUrl</find>
-      <find>saveCollege</find>
-      <find>collegeGroup</find>
-      <find>listCollege</find>
-      <find>importKpiData</find>
-      <find>current</find>
       <find>num</find>
       <find>user/list</find>
       <find>deb</find>
@@ -123,9 +138,17 @@
       <find>getRouterPathname</find>
       <find>plainOptions</find>
       <find>result</find>
+      <find>BOTTOM_TABLE_LIST</find>
+      <find>isDataAnalyst</find>
+      <find>type</find>
+      <find>BOTTOM_TABLE_STATUS</find>
+      <find>isDataAnalystFn</find>
+      <find>findAllOrg</find>
+      <find>modalParam</find>
+      <find>collegeId</find>
+      <find>getDataList</find>
     </findStrings>
     <replaceStrings>
-      <replace>item2</replace>
       <replace>Row</replace>
       <replace>checkDetail</replace>
       <replace>userNAme</replace>
@@ -155,6 +178,7 @@
       <replace>parentId</replace>
       <replace>getVal</replace>
       <replace>exportCollegeAchievement</replace>
+      <replace>response</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/admin_sys</dir>
@@ -169,10 +193,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/setpForm/step.css" />
-        <option value="$PROJECT_DIR$/admin_sys/src/components/SiderMenu/index.less" />
-        <option value="$PROJECT_DIR$/admin_sys/src/components/GlobalHeader/index.less" />
-        <option value="$PROJECT_DIR$/admin_sys/src/components/SiderMenu/SiderMenu.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/test.html" />
         <option value="$PROJECT_DIR$/admin_sys/src/models/role.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/ShotName/Group.js" />
@@ -215,11 +235,15 @@
         <option value="$PROJECT_DIR$/admin_sys/src/models/collegePerformance.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/index.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/utils/staticData.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/utils/constants.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/AccountForm.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/config.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/UserForm/CreateUserForm.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/utils/global.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/utils/constants.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_selfColumn.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/models/bottomTable.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js" />
       </list>
     </option>
   </component>
@@ -272,6 +296,59 @@
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="Appeal" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="BottomTable" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="Performance" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="TimeManage" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="selfComponent" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -280,7 +357,21 @@
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="selfComponent" type="462c0819:PsiDirectoryNode" />
-              <item name="UserForm" type="462c0819:PsiDirectoryNode" />
+              <item name="FormFilter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="services" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_sys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -408,31 +499,43 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="888279000" />
+    <option name="totallyTimeSpent" value="890766000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="800" extended-state="0" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17477097" />
       <window_info anchor="bottom" id="TODO" order="8" />
+      <window_info anchor="bottom" id="Messages" order="1" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.503876" side_tool="true" weight="0.29090908" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49964765" weight="0.32848486" />
+      <window_info anchor="bottom" id="Run" order="4" weight="0.32946298" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49612403" visible="true" weight="0.2569697" />
+      <window_info anchor="bottom" id="TypeScript" order="0" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24947146" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50317127" side_tool="true" weight="0.44847605" />
-      <window_info anchor="bottom" id="Run" order="4" weight="0.32857144" />
-      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49964765" weight="0.021428572" />
+      <window_info anchor="bottom" id="Find" order="3" weight="0.32948717" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49682876" visible="true" weight="0.15078236" />
-      <window_info anchor="bottom" id="Debug" order="5" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TypeScript" order="0" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17477097" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49964765" weight="0.021428572" />
+      <window_info anchor="bottom" id="Run" order="4" weight="0.32857144" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49682876" visible="true" weight="0.15078236" />
+      <window_info anchor="bottom" id="Debug" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="2" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50317127" side_tool="true" weight="0.44847605" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="3" weight="0.32969698" />
-      <window_info anchor="bottom" id="Messages" order="1" />
+      <window_info id="Favorites" order="2" side_tool="true" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -484,26 +587,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/components/Charts/Field/index.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/components/SiderMenu/SiderMenu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2120">
-          <caret line="176" column="21" selection-start-line="176" selection-start-column="2" selection-end-line="176" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/components/Charts/TimelineChart/index.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/components/Charts/autoHeight.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="6" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/components/Charts/g2.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -619,9 +702,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1320">
           <caret line="88" column="5" selection-start-line="88" selection-start-column="5" selection-end-line="88" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -629,9 +709,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1560">
           <caret line="104" column="11" selection-start-line="104" selection-start-column="11" selection-end-line="104" selection-end-column="11" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -643,22 +720,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/FormFilter/buttonBox.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/FormFilter/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/FormFilter/slot.js">
       <provider selected="true" editor-type-id="text-editor" />
@@ -673,18 +738,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/README.zh-CN.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="270">
-            <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-          </first_editor>
-          <second_editor>
-            <markdownNavigatorState />
-          </second_editor>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/README.zh-CN.md" />
     <entry file="file://$PROJECT_DIR$/admin_sys/src/models/user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="166">
@@ -734,9 +788,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="899">
           <caret line="105" column="14" selection-start-line="105" selection-start-column="14" selection-end-line="105" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -747,17 +798,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/constants.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="27" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/global.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="298">
           <caret line="42" column="18" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="17" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_selfColumn.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="38" column="52" lean-forward="true" selection-start-line="38" selection-start-column="52" selection-end-line="38" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#68#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/models/bottomTable.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-630">
+          <folding>
+            <element signature="e#45#76#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="28" column="26" lean-forward="true" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
+          <folding>
+            <element signature="e#9#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="55" column="20" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

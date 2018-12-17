@@ -36,7 +36,7 @@ export function columnsFn(callback) {
     {
       title: '底表时间',
       dataIndex: 'bottomTime',
-      render: text => formatDate(text),
+      render: text => formatDate(text).substr(0, 10),
     },
     {
       title: '添加时间',

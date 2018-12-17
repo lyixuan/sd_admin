@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Select, DatePicker } from 'antd';
+import { message, Table, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -34,8 +34,8 @@ class BottomList extends Component {
       },
       modalParam: {
         bottomDate: '',
-        collegeId: 0,
-        type: 0,
+        collegeId: null,
+        type: null,
       },
       userId,
       type: null,
@@ -124,6 +124,12 @@ class BottomList extends Component {
   // 模态框确定
   clickModalOK = () => {
     const { modalParam, userId } = this.state;
+    const { bottomDate, collegeId, type } = modalParam;
+    if (bottomDate === '' || collegeId === null || type === null) {
+      message.error('请完善所有信息');
+      return;
+    }
+
     this.props.dispatch({
       type: 'bottomTable/addTask',
       payload: { ...modalParam, userId },
