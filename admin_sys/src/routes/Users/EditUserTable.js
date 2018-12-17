@@ -58,6 +58,17 @@ class EditUserTable extends Component {
         });
     userTypeFlag = userTypeDataReset[aa];
     flag = userTypeDataReset[aa];
+    const defaultCheckedList = [];
+    if (key.scoreView === '有') {
+      defaultCheckedList.push('scoreView');
+    }
+    if (key.privilegeView === '有') {
+      defaultCheckedList.push('privilegeView');
+    }
+    if (key.endView === '有') {
+      defaultCheckedList.push('endView');
+    }
+    console.log(key, defaultCheckedList);
     this.setState({
       clickFlag: 2,
       userType: userTypeDataReset[aa],
@@ -67,11 +78,7 @@ class EditUserTable extends Component {
       positionId: key.id,
       currentstate: key.currentstate,
       roleId: key.roleId,
-      defaultCheckedList: [
-        key.endView ? 'endView' : null,
-        key.privilegeView ? 'privilegeView' : null,
-        key.scoreView ? 'scoreView' : null,
-      ],
+      defaultCheckedList,
     });
   };
   // 创建岗位函数
@@ -110,6 +117,22 @@ class EditUserTable extends Component {
     ) {
       typeId = undefined;
     }
+
+    const { view = [] } = values;
+    const bol = true;
+    let scoreView = false;
+    let privilegeView = false;
+    let endView = false;
+    view.map(item => {
+      if (item === 'scoreView') {
+        scoreView = bol;
+      } else if (item === 'privilegeView') {
+        privilegeView = bol;
+      } else if (item === 'endView') {
+        endView = bol;
+      }
+      return 0;
+    });
     const getUserlistParams = { mail: this.state.mail };
     if (this.state.clickFlag === 1) {
       const addPositionParams = {
@@ -137,6 +160,10 @@ class EditUserTable extends Component {
       const updateUserPositionInfoParams = {
         id: !this.state.positionId ? undefined : this.state.positionId,
         privilege: rUserType === 'admin' ? false : values.privilege === 1,
+        roleId: Number(values.roleId),
+        scoreView,
+        privilegeView,
+        endView,
         userType: rUserType,
         userTypeId: typeId,
         wechatDepartmentId: Number(arrValue.wechatdepartmentid),
@@ -304,7 +331,8 @@ class EditUserTable extends Component {
         shownameid: !item.shownameid ? null : item.shownameid,
         id: item.positionid,
         currentstate: item.currentstate,
-        roleId: item.roleName,
+        roleName: item.roleName,
+        roleId: item.roleId,
       })
     );
     return data;
@@ -327,7 +355,7 @@ class EditUserTable extends Component {
       },
       {
         title: '后端角色',
-        dataIndex: 'roleId',
+        dataIndex: 'roleName',
       },
       {
         title: '学分访问',
@@ -473,7 +501,9 @@ class EditUserTable extends Component {
                     rules: [
                       {
                         validator(rule, value, callback) {
-                          if (typeof value[0] === 'string' || !value[0]) {
+                          if (value.length <= 0) {
+                            callback();
+                          } else if (typeof value[0] === 'string' || !value[0]) {
                             if (
                               flag === 'admin' ||
                               flag === 'boss' ||
