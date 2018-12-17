@@ -366,6 +366,14 @@ export async function addPosition(params) {
     body: params,
   });
 }
+
+// 用户---后端岗位列表接口
+export async function getUserRoleList(params) {
+  return request(`${HOST}/user/getRoleList${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
 // 编辑用户时的回显接口
 export async function getUserlist(params) {
   return request(`${HOST}/user/getUserlist?${stringify(params)}`, {

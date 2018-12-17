@@ -17,16 +17,20 @@ class CreateUser extends Component {
     this.state = {};
   }
   componentDidMount() {
-    const wechatListParams = {};
+    const params = {};
     this.props.dispatch({
       type: 'user/wechatList',
-      payload: { wechatListParams },
+      payload: { params },
     });
 
-    const listOrgParams = {};
     this.props.dispatch({
       type: 'user/listOrg',
-      payload: { listOrgParams },
+      payload: { params },
+    });
+
+    this.props.dispatch({
+      type: 'user/getUserRoleList',
+      payload: { params },
     });
   }
 
