@@ -139,6 +139,10 @@ class EditUserTable extends Component {
         joinDate: !arrValue.joindate ? undefined : arrValue.joindate,
         idCard: !arrValue.idcard ? undefined : arrValue.idcard,
         sex: !arrValue.sex ? undefined : arrValue.sex,
+        roleId: Number(values.roleId),
+        scoreView,
+        privilegeView,
+        endView,
         positionList: {
           privilege: rUserType === 'admin' ? false : values.privilege === 1,
           userType: rUserType,
@@ -610,7 +614,7 @@ class EditUserTable extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="&nbsp;&nbsp;访问权限">
                   {getFieldDecorator('view', {
-                    initialValue: this.state.clickFlag === 1 ? 0 : this.state.defaultCheckedList,
+                    initialValue: this.state.clickFlag === 1 ? [] : this.state.defaultCheckedList,
                     rules: [],
                   })(
                     <CheckboxGroup
