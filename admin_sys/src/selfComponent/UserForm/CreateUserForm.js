@@ -459,6 +459,7 @@ class CreateUserForm extends Component {
                   <CheckboxGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     options={this.state.plainOptions}
+                    className={common.checkboxGroup}
                   />
                 )}
               </FormItem>

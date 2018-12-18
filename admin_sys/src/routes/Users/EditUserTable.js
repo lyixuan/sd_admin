@@ -620,6 +620,7 @@ class EditUserTable extends Component {
                     <CheckboxGroup
                       style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                       options={this.state.plainOptions}
+                      className={common.checkboxGroup}
                     />
                   )}
                 </FormItem>
@@ -669,7 +670,7 @@ class EditUserTable extends Component {
     );
 
     return (
-      <div>
+      <div className={common.wrapContent}>
         <Button
           style={{ marginTop: '36px', width: '110px' }}
           type="primary"

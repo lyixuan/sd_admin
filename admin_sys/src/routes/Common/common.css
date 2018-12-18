@@ -422,7 +422,9 @@
 .checkBox, .checkboxGroup{
   font-size: 14px;
   color: #000;
+  margin-right: 8px;
 }
+
 
 :global(.ant-checkbox-checked .ant-checkbox-inner),:global(.ant-checkbox-indeterminate .ant-checkbox-inner){
   background-color: #52c9c2!important;
