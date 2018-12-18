@@ -71,7 +71,11 @@ class RefundList extends Component {
   };
   // 点击某一页函数
   changePage = (current, pageSize) => {
-    console.log(current, pageSize);
+    firstPage = current - 1;
+    this.getData({
+      size: pageSize,
+      number: firstPage,
+    });
   };
 
   // 表单搜索
