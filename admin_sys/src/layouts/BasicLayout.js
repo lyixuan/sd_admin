@@ -8,12 +8,12 @@ import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
 import { enquireScreen, unenquireScreen } from 'enquire-js';
+import { ADMIN_USER, ADMIN_AUTH_LIST } from '@/utils/constants';
 import SiderMenu from '../components/SiderMenu';
 import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import biIcon from '../assets/biIcon.png';
-import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.png';
 import { getAuthority } from '../utils/authority';
 import { checkPathname, addRouteData } from '../common/isCheckAuth';
@@ -38,7 +38,6 @@ const getRedirect = item => {
     }
   }
 };
-getMenuData().forEach(getRedirect);
 
 /**
  * 获取面包屑映射
@@ -95,10 +94,10 @@ class BasicLayout extends React.PureComponent {
   };
 
   getChildContext() {
-    const { location, routerData } = this.props;
+    const { location, routerData, menuData } = this.props;
     return {
       location,
-      breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
+      breadcrumbNameMap: getBreadcrumbNameMap(menuData, routerData),
     };
   }
   componentDidMount() {
@@ -107,12 +106,21 @@ class BasicLayout extends React.PureComponent {
         isMobile: mobile,
       });
     });
-    // this.handleUserInfo();
+    this.MenuData();
+    this.setRedirectData(this.props.menuData);
+  }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(nextProps.menuData) !== JSON.stringify(this.props.menuData)) {
+      this.setRedirectData(nextProps.menuData);
+    }
   }
 
   componentWillUnmount() {
     unenquireScreen(this.enquireHandler);
   }
+  setRedirectData = menuData => {
+    menuData.forEach(getRedirect);
+  };
 
   getPageTitle() {
     const { routerData, location } = this.props;
@@ -150,7 +158,7 @@ class BasicLayout extends React.PureComponent {
     return redirect;
   };
   handleUserInfo = () => {
-    const { userName = '小德' } = getAuthority('admin_user');
+    const { userName = '小德' } = getAuthority(ADMIN_USER);
     return { name: userName };
   };
   handleMenuCollapse = collapsed => {
@@ -166,11 +174,18 @@ class BasicLayout extends React.PureComponent {
       });
     }
   };
+  MenuData = () => {
+    const routeData = getAuthority(ADMIN_AUTH_LIST) || [];
+    this.props.dispatch({
+      type: 'menu/getMenu',
+      payload: { routeData },
+    });
+  };
 
   render() {
     const { collapsed, fetchingNotices, notices, match, location } = this.props;
     let { routerData } = this.props;
-    const menuData = getMenuData();
+    const { menuData } = this.props;
     const currentUser = this.handleUserInfo();
     currentUser.avatar = biIcon;
     const bashRedirect = this.getBaseRedirect();
@@ -239,7 +254,8 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-export default connect(({ global }) => ({
+export default connect(({ global, menu }) => ({
   // currentUser: login.currentUser,
+  menuData: menu.menuData,
   collapsed: global.collapsed,
 }))(BasicLayout);

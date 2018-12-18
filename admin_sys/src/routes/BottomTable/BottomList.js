@@ -65,17 +65,38 @@ class BottomList extends Component {
       bottomTime,
       type: data.type && data.type !== '' ? Number(data.type) : '',
     }); // 列表数据
-    console.log(data);
+  };
+
+  // 点击显示每页多少条数据函数
+  onShowSizeChange = (current, size) => {
+    this.changePage(current, size);
+  };
+
+  // 获取最新时间和最小时间
+  getDateRange = () => {
+    const { bottomTable = {} } = this.props;
+    const { dateArea = {}, disDateList = [] } = bottomTable;
+    const { content = [] } = disDateList;
+    const disabledDate = content.map(item => (item.dateTime / 1000).format(dateFormat));
+
+    return {
+      disabledDate,
+      newTime: dateArea.endTime, // 最新可用时间
+      minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
+    };
   };
 
   // 列表数据
   getDataList = paramObj => {
     const { type, bottomTime, pageNum, pageSize } = this.state;
+    const params = { type, bottomTime, pageNum, pageSize, ...paramObj };
+    this.saveParams(params);
     this.props.dispatch({
       type: 'bottomTable/bottomTableList',
-      payload: { type, bottomTime, pageNum, pageSize, ...paramObj },
+      payload: params,
     });
   };
+
   // 所有学院列表
   getAllOrg = () => {
     this.props.dispatch({
@@ -91,18 +112,9 @@ class BottomList extends Component {
     });
   };
 
-  // 获取最新时间和最小时间
-  getDateRange = () => {
-    const { bottomTable = {} } = this.props;
-    const { dateArea = {}, disDateList = [] } = bottomTable;
-    const { content = [] } = disDateList;
-    const disabledDate = content.map(item => (item.dateTime / 1000).format(dateFormat));
-
-    return {
-      disabledDate,
-      newTime: dateArea.endTime, // 最新可用时间
-      minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
-    };
+  saveParams = params => {
+    this.setState(params);
+    this.props.setCurrentUrlParams(params);
   };
 
   // 点击某一页函数
@@ -142,6 +154,7 @@ class BottomList extends Component {
       visible: bol,
     });
   };
+
   // 添加任务
   addTasks = () => {
     this.setState({
@@ -175,7 +188,7 @@ class BottomList extends Component {
     const { bottomTable = {}, loading } = this.props;
     const { dataList = [], findAllOrg = [], totalNum = 0 } = bottomTable;
     // const time = this.getDateRange();
-
+    const { pageNum } = this.state;
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
       <FormFilter onSubmit={this.onSubmit} modal={{ type: '', bottomTime: '2018-11-29' }}>
@@ -230,7 +243,11 @@ class BottomList extends Component {
               onChange={(current, pageSize) => {
                 this.changePage(current, pageSize);
               }}
+              onShowSizeChange={(current, pageSize) => {
+                this.onShowSizeChange(current, pageSize);
+              }}
               total={totalNum}
+              defaultCurrent={pageNum + 1}
             />
           }
         />

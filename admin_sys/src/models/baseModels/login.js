@@ -69,6 +69,10 @@ export default {
       const { mail, password } = getAuthority(ADMIN_USER);
       const saveObj = handleLogin({ mail, password, autoLogin: true }, response);
       if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
+        yield put({
+          type: 'menu/getMenu',
+          payload: { routeData: saveObj.privilegeList },
+        });
         yield put(routerRedux.push('/'));
       } else {
         message.error(saveObj.msg);

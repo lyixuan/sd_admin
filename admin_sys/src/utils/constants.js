@@ -10,9 +10,9 @@ export const ADMIN_USER = 'admin_user';
 
 // Global Header Select
 export const GLOBAL_HEADER_SELECT = [
+  { id: 'changeRole', name: '切换角色', icon: 'user' },
   { id: 'changePwd', name: '修改密码', icon: 'lock' },
   { id: 'logout', name: '退出登录', icon: 'logout' },
-  { id: 'changeRole', name: '切换角色', icon: 'user' },
 ];
 
 // 前端角色类型
