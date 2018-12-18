@@ -77,8 +77,8 @@ class BottomList extends Component {
     const { bottomTable = {} } = this.props;
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
-    const disabledDate = content.map(item => (item.dateTime / 1000).format(dateFormat));
 
+    const disabledDate = content.map(item => moment(item.dateTime).format(dateFormat));
     return {
       disabledDate,
       newTime: dateArea.endTime, // 最新可用时间
@@ -114,7 +114,7 @@ class BottomList extends Component {
 
   saveParams = params => {
     this.setState(params);
-    this.props.setCurrentUrlParams(params);
+    // this.props.setCurrentUrlParams(params);
   };
 
   // 点击某一页函数
@@ -182,7 +182,14 @@ class BottomList extends Component {
   // 时间控件可展示的时间范围
   disabledDate = current => {
     const time = this.getDateRange();
-    return current > moment(formatDate(time.newTime)) || current < moment(formatDate(time.minTime));
+    const disableData = time.disabledDate.find(item =>
+      moment(current.format(dateFormat)).isSame(item)
+    );
+    return (
+      disableData ||
+      current > moment(formatDate(time.newTime)) ||
+      current < moment(formatDate(time.minTime))
+    );
   };
   render() {
     const { bottomTable = {}, loading } = this.props;

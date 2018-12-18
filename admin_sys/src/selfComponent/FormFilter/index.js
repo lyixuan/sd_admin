@@ -81,6 +81,7 @@ class FormPrams extends Component {
   };
   selectChange = (value, flag, originEvent) => {
     this.modal[flag] = value;
+    console.log(this.modal[flag], value);
     if (originEvent) {
       originEvent.call(null, value);
     }
@@ -89,7 +90,6 @@ class FormPrams extends Component {
     });
   };
   pickerWrapperChange = (value, strData, flag, originEvent) => {
-    console.log(value, strData);
     this.modal[flag] = strData || '';
     if (originEvent) {
       originEvent.call(null, value, strData);
@@ -119,7 +119,7 @@ class FormPrams extends Component {
   filterEmptyUrlParams = params => {
     const newParams = params || {};
     for (const i in newParams) {
-      if (!newParams[i]) {
+      if (newParams[i] === undefined) {
         delete newParams[i];
       }
     }
@@ -132,7 +132,7 @@ class FormPrams extends Component {
       //  form  表单输入值都有flag
       const { flag } = child.props;
       this.flagKeyArr = [...this.flagKeyArr, flag];
-      addParams.value = modal[flag] || child.props.value;
+      addParams.value = modal[flag] === undefined ? child.props.value : modal[flag];
       addParams = Object.assign({}, addParams, this.resetOnChange(child));
     }
     if (child.props.clicktype) {
