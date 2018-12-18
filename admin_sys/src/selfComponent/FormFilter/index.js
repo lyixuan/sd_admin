@@ -20,28 +20,33 @@ class FormPrams extends Component {
   static propTypes = {
     className: PropTypes.string,
     onSubmit: PropTypes.func,
-    initFlagModal: PropTypes.object,
+    modal: PropTypes.object,
   };
   static defaultProps = {
     className: '',
     onSubmit: () => {},
-    initFlagModal: {},
+    modal: {},
   };
   constructor(props) {
     super(props);
     this.state = {
       isUpdate: false, // 用于强制更新组件
     };
-    this.initFlagModal = this.props.modal || {};
+    this.modal = this.props.modal || {};
     this.flagKeyArr = []; // 用于储存flag值
   }
 
   componentDidMount() {
     this.initData();
   }
+  componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(nextProps.modal) !== JSON.stringify(this.props.modal)) {
+      this.modal = this.props.modal;
+    }
+  }
   onReset = () => {
     this.flagKeyArr.forEach(item => {
-      this.initFlagModal[item] = null;
+      this.modal[item] = null;
     });
     this.saveData();
   };
@@ -58,9 +63,9 @@ class FormPrams extends Component {
       params = this.assignUrlParams(params);
     }
     this.flagKeyArr.forEach(item => {
-      this.initFlagModal[item] = params[item];
+      this.modal[item] = params[item];
     });
-    this.initFlagModal = this.filterEmptyUrlParams(this.initFlagModal);
+    this.modal = this.filterEmptyUrlParams(this.modal);
     this.onSubmit();
   };
   assignUrlParams = (obj = {}) => {
@@ -69,13 +74,13 @@ class FormPrams extends Component {
 
   handleChange = (e, originEvent) => {
     const flag = e.target.getAttribute('flag');
-    this.initFlagModal[flag] = e.target.value;
+    this.modal[flag] = e.target.value;
     if (originEvent) {
       originEvent.call(null, e);
     }
   };
   selectChange = (value, flag, originEvent) => {
-    this.initFlagModal[flag] = value;
+    this.modal[flag] = value;
     if (originEvent) {
       originEvent.call(null, value);
     }
@@ -85,7 +90,7 @@ class FormPrams extends Component {
   };
   pickerWrapperChange = (value, strData, flag, originEvent) => {
     console.log(value, strData);
-    this.initFlagModal[flag] = strData || '';
+    this.modal[flag] = strData || '';
     if (originEvent) {
       originEvent.call(null, value, strData);
     }
@@ -94,8 +99,8 @@ class FormPrams extends Component {
     });
   };
 
-  saveData = initFlagModal => {
-    const params = initFlagModal || this.initFlagModal;
+  saveData = modal => {
+    const params = modal || this.modal;
     if (this.props.onSubmit) {
       this.props.onSubmit(params);
     }
@@ -122,12 +127,12 @@ class FormPrams extends Component {
   };
   checkoutComponentProps = child => {
     let addParams = {};
-    const { initFlagModal } = this;
+    const { modal } = this;
     if (child.props.flag) {
       //  form  表单输入值都有flag
       const { flag } = child.props;
       this.flagKeyArr = [...this.flagKeyArr, flag];
-      addParams.value = initFlagModal[flag] || child.props.value;
+      addParams.value = modal[flag] || child.props.value;
       addParams = Object.assign({}, addParams, this.resetOnChange(child));
     }
     if (child.props.clicktype) {
@@ -155,7 +160,7 @@ class FormPrams extends Component {
           this.selectChange(value, child.props.flag, child.props.onChange);
         break;
       case 'pickerwrapper':
-        dateValue = this.initFlagModal[child.props.flag] || child.props.value;
+        dateValue = this.modal[child.props.flag] || child.props.value;
         returnObj.value = dateValue ? moment(dateValue) : dateValue;
         returnObj.onChange = (value, strData) =>
           this.pickerWrapperChange(value, strData, child.props.flag, child.props.onChange);

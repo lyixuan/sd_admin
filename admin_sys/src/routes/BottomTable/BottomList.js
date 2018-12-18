@@ -51,7 +51,7 @@ class BottomList extends Component {
     const initParams = {};
     if (JSON.stringify(initVal) !== '{}') {
       initParams.bottomTime = initVal.bottomTime ? Date.parse(new Date(initVal.bottomTime)) : null;
-      initParams.type = initVal.type ? Number(initVal.type) : null;
+      initParams.type = initVal.type && initVal.type !== '' ? Number(initVal.type) : '';
     }
     this.getDataList(initParams); // 列表数据
     this.getRange(); // 时间范围
@@ -63,7 +63,7 @@ class BottomList extends Component {
     const bottomTime = data.bottomTime ? Date.parse(new Date(data.bottomTime)) : null;
     this.getDataList({
       bottomTime,
-      type: data.type ? Number(data.type) : null,
+      type: data.type && data.type !== '' ? Number(data.type) : '',
     }); // 列表数据
     console.log(data);
   };
@@ -178,7 +178,7 @@ class BottomList extends Component {
 
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
-      <FormFilter onSubmit={this.onSubmit}>
+      <FormFilter onSubmit={this.onSubmit} modal={{ type: '', bottomTime: '2018-11-29' }}>
         <div>
           <span style={{ lineHeight: '32px' }}>底表类型：</span>
           <Select placeholder="底表类型" style={{ width: 230, height: 32 }} flag="type">
