@@ -65,7 +65,6 @@ class EditUserTable extends Component {
     if (key.endView === '有') {
       defaultCheckedList.push('endView');
     }
-    console.log(key, defaultCheckedList);
     this.setState({
       clickFlag: 2,
       userType: userTypeDataReset[aa],
