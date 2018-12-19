@@ -8,6 +8,8 @@ export const TIME_LOCAL = 'zh-cn';
 export const ADMIN_AUTH_LIST = 'admin_auth';
 export const ADMIN_USER = 'admin_user';
 
+// Component setting
+export const TABLE_PAGES_NUM = 30;
 // Global Header Select
 export const GLOBAL_HEADER_SELECT = [
   { id: 'changeRole', name: '切换角色', icon: 'user' },
@@ -51,6 +53,7 @@ export default {
   FRONT_ROLE_TYPE_LIST,
   VISIT_RIGHT_LIST,
   DATA_ANALYST_ID,
+  TABLE_PAGES_NUM,
   BOTTOM_TABLE_LIST,
   BOTTOM_TABLE_STATUS,
   GLOBAL_HEADER_SELECT,

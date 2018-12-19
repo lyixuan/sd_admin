@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { message, Table, Button, Select, DatePicker } from 'antd';
+import { message, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
@@ -62,16 +61,15 @@ class BottomList extends Component {
 
   onSubmit = data => {
     const bottomTime = data.bottomTime ? Date.parse(new Date(data.bottomTime)) : null;
-    this.getDataList({
-      bottomTime,
-      type: data.type && data.type !== '' ? Number(data.type) : '',
-    }); // 列表数据
+    const type = data.type && data.type !== '' ? Number(data.type) : '';
+    const pageNum = data.pageNum ? Number(data.pageNum) : 0;
+    this.getDataList({ bottomTime, type, pageNum }); // 列表数据
   };
 
-  // 点击显示每页多少条数据函数
-  onShowSizeChange = (current, size) => {
-    this.changePage(current, size);
-  };
+  // // 点击显示每页多少条数据函数
+  // onShowSizeChange = (current, size) => {
+  //   this.changePage(current, size);
+  // };
 
   // 获取最新时间和最小时间
   getDateRange = () => {
@@ -91,7 +89,7 @@ class BottomList extends Component {
   getDataList = paramObj => {
     const { type, bottomTime, pageNum, pageSize } = this.state;
     const params = { type, bottomTime, pageNum, pageSize, ...paramObj };
-    this.saveParams(params);
+    // this.saveParams(params);
     this.props.dispatch({
       type: 'bottomTable/bottomTableList',
       payload: params,
@@ -113,16 +111,11 @@ class BottomList extends Component {
     });
   };
 
-  saveParams = params => {
-    this.setState(params);
-    // this.props.setCurrentUrlParams(params);
-  };
-
   // 点击某一页函数
-  changePage = (current, size) => {
+  changePage = (pageNum, size) => {
     this.getDataList({
       pageSize: size,
-      pageNum: current - 1,
+      pageNum,
     });
   };
   // 不可选时间
@@ -163,7 +156,6 @@ class BottomList extends Component {
     });
   };
   downLoadBTable = record => {
-    console.log(record);
     this.props.dispatch({
       type: 'bottomTable/downLoadBT',
       payload: {
@@ -195,8 +187,9 @@ class BottomList extends Component {
   render() {
     const { bottomTable = {}, loading, isLoading } = this.props;
     const { dataList = [], findAllOrg = [], totalNum = 0 } = bottomTable;
-    const time = formatDate(this.getDateRange().newTime).substr(0, 10);
-    const { pageNum } = this.state;
+    const time = this.getDateRange().newTime
+      ? formatDate(this.getDateRange().newTime).substr(0, 10)
+      : '';
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
       <FormFilter
@@ -238,28 +231,13 @@ class BottomList extends Component {
             </AuthorizedButton>
           }
           contentTable={
-            <div>
-              <p className={common.totalNum}>总数：{totalNum}条</p>
-              <Table
-                bordered
-                loading={loading}
-                dataSource={dataList}
-                columns={columns}
-                pagination={false}
-                className={common.tableContentStyle}
-              />
-            </div>
-          }
-          contentPagination={
-            <SelfPagination
-              onChange={(current, pageSize) => {
-                this.changePage(current, pageSize);
-              }}
-              onShowSizeChange={(current, pageSize) => {
-                this.onShowSizeChange(current, pageSize);
-              }}
-              total={totalNum}
-              defaultCurrent={pageNum + 1}
+            <FormFilter.Table
+              bordered
+              totalNum={totalNum}
+              loading={loading}
+              dataSource={dataList}
+              columns={columns}
+              onChangePage={this.changePage}
             />
           }
         />

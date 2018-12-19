@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { stringify } from 'qs';
-import { parse } from 'url';
 import moment from 'moment';
-import { assignUrlParams } from '@/utils/utils';
-import { history } from '@/index';
+import Table from './table';
 import ButtonBox from './buttonBox';
 import styles from './index.less';
+import { saveParamsInUrl, filterEmptyUrlParams, getUrlParams, pageObj } from './saveUrlParams';
 
 /*
 *@params modal         object  初始化参数非必填;   base string
@@ -14,6 +12,7 @@ import styles from './index.less';
 *@params clicktype     string   作用于button上面用于处理提交,撤销等事件(onSubmit,onReset)
 *@params url           string   点击提交时的跳转以及将参数绑定到该url上面
 *renderDom             element   默认传入onSubmit,当有此方法的时候再会显示onSubit按钮,同理onReset
+@params  isLoading     boolean   用于回显数据异步加载,加载完成时回调onSubmit
 */
 
 class FormPrams extends Component {
@@ -33,15 +32,25 @@ class FormPrams extends Component {
       isUpdate: false, // 用于强制更新组件
     };
     this.modal = this.props.modal || {};
-    this.flagKeyArr = []; // 用于储存flag值
+    this.flagKeyArr = [pageObj.key]; // 用于储存flag值,默认获取分页
+    this.isLoading = this.props.isLoading || false;
   }
 
   componentDidMount() {
-    this.initData();
+    if (!this.isLoading) {
+      this.initData();
+    }
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (JSON.stringify(nextProps.modal) !== JSON.stringify(this.props.modal)) {
       this.modal = this.props.modal;
+    }
+    if (JSON.stringify(nextProps.isLoading) !== JSON.stringify(this.props.isLoading)) {
+      if (!nextProps.isLoading) {
+        this.modal = this.props.modal;
+        this.isLoading = this.props.isLoading;
+        this.initData();
+      }
     }
   }
   onReset = () => {
@@ -53,23 +62,21 @@ class FormPrams extends Component {
   onSubmit = () => {
     this.saveData();
   };
-  getUrlParams = () => {
-    const { location = {} } = history;
-    return parse(location.search, true).query || {};
-  };
   initData = () => {
-    let params = this.getUrlParams();
+    let params = getUrlParams();
     if (this.props.modal) {
       params = this.assignUrlParams(params);
     }
     this.flagKeyArr.forEach(item => {
       this.modal[item] = params[item];
     });
-    this.modal = this.filterEmptyUrlParams(this.modal);
+    this.modal[pageObj.key] = this.modal[pageObj.key] || pageObj.value;
+    this.modal = filterEmptyUrlParams(this.modal);
     this.onSubmit();
   };
+
   assignUrlParams = (obj = {}) => {
-    return assignUrlParams(this.props.modal || {}, obj);
+    return Object.assign({}, this.props.modal || {}, obj);
   };
 
   handleChange = (e, originEvent) => {
@@ -81,7 +88,6 @@ class FormPrams extends Component {
   };
   selectChange = (value, flag, originEvent) => {
     this.modal[flag] = value;
-    console.log(this.modal[flag], value);
     if (originEvent) {
       originEvent.call(null, value);
     }
@@ -104,26 +110,7 @@ class FormPrams extends Component {
     if (this.props.onSubmit) {
       this.props.onSubmit(params);
     }
-    this.saveParamsInUrl(params);
-  };
-  saveParamsInUrl = query => {
-    const pathname = this.props.url || history.location.pathname;
-    const originSearch = parse(history.location.search, true).query || null;
-    let paramsObj = pathname === history.location.pathname ? { ...originSearch, ...query } : query;
-    paramsObj = this.filterEmptyUrlParams(paramsObj);
-    history.replace({
-      pathname,
-      search: stringify(paramsObj),
-    });
-  };
-  filterEmptyUrlParams = params => {
-    const newParams = params || {};
-    for (const i in newParams) {
-      if (newParams[i] === undefined) {
-        delete newParams[i];
-      }
-    }
-    return newParams;
+    saveParamsInUrl(params);
   };
   checkoutComponentProps = child => {
     let addParams = {};
@@ -205,9 +192,10 @@ class FormPrams extends Component {
         <div className={styles.buttonContainer}>
           <ButtonBox {...this.props} onSubmit={this.onSubmit} onReset={this.onReset} />
         </div>
+        <div>{this.props.table ? this.props.table : null}</div>
       </div>
     );
   }
 }
-
+FormPrams.Table = Table;
 export default FormPrams;
