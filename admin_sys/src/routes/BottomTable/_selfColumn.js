@@ -40,7 +40,7 @@ export function columnsFn(callback) {
     },
     {
       title: '添加时间',
-      dataIndex: 'modifyTime',
+      dataIndex: 'createTime',
       render: text => formatDate(text),
     },
     {
