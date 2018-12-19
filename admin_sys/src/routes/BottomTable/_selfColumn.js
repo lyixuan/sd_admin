@@ -27,7 +27,7 @@ export function columnsFn(callback) {
       dataIndex: 'type',
       render: text =>
         BOTTOM_TABLE_LIST.map(item => {
-          if (Number(item.id) === text) {
+          if (item.id !== '' && Number(item.id) === text) {
             return item.name;
           }
           return null;
