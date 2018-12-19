@@ -187,16 +187,9 @@ class BottomList extends Component {
   render() {
     const { bottomTable = {}, loading, isLoading } = this.props;
     const { dataList = [], findAllOrg = [], totalNum = 0 } = bottomTable;
-    const time = this.getDateRange().newTime
-      ? formatDate(this.getDateRange().newTime).substr(0, 10)
-      : '';
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
-      <FormFilter
-        onSubmit={this.onSubmit}
-        modal={{ type: '', bottomTime: time }}
-        isLoading={isLoading}
-      >
+      <FormFilter onSubmit={this.onSubmit} isLoading={isLoading}>
         <div>
           <span style={{ lineHeight: '32px' }}>底表类型：</span>
           <Select placeholder="底表类型" style={{ width: 230, height: 32 }} flag="type">
