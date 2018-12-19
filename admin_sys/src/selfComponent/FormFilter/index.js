@@ -39,7 +39,7 @@ class FormPrams extends Component {
   componentDidMount() {
     this.initData();
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (JSON.stringify(nextProps.modal) !== JSON.stringify(this.props.modal)) {
       this.modal = this.props.modal;
     }
@@ -127,13 +127,11 @@ class FormPrams extends Component {
   };
   checkoutComponentProps = child => {
     let addParams = {};
-    const { modal } = this;
     if (child.props.flag) {
       //  form  表单输入值都有flag
       const { flag } = child.props;
       this.flagKeyArr = [...this.flagKeyArr, flag];
-      addParams.value = modal[flag] === undefined ? child.props.value : modal[flag];
-      addParams = Object.assign({}, addParams, this.resetOnChange(child));
+      addParams = Object.assign({}, addParams, this.resetAttribute(child));
     }
     if (child.props.clicktype) {
       addParams = Object.assign({}, addParams, this.bindButtonClick(child));
@@ -141,7 +139,7 @@ class FormPrams extends Component {
     return addParams;
   };
 
-  resetOnChange = child => {
+  resetAttribute = child => {
     // rewrite onChange event
     return this.checkoutElementType(child);
   };
@@ -153,9 +151,17 @@ class FormPrams extends Component {
     let dateValue = null;
     switch (type.toLowerCase()) {
       case 'input':
+        returnObj.value =
+          this.modal[child.props.flag] === undefined
+            ? child.props.value
+            : this.modal[child.props.flag];
         returnObj.onChange = e => this.handleChange(e, child.props.onChange);
         break;
       case 'select':
+        returnObj.value =
+          this.modal[child.props.flag] === undefined
+            ? child.props.value
+            : this.modal[child.props.flag];
         returnObj.onChange = value =>
           this.selectChange(value, child.props.flag, child.props.onChange);
         break;
