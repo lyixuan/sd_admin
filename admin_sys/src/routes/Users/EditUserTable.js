@@ -440,7 +440,7 @@ class EditUserTable extends Component {
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
     responseComList =
       !responseComList || responseComList.length === 0 ? responseComListBackup : responseComList;
-    const { visible } = this.state;
+    const { visible, currentstate } = this.state;
     const formLayout = 'inline';
     const aaa = !userVal.getUserlistData ? null : userVal.getUserlistData;
     const arrValue = !aaa
@@ -499,14 +499,12 @@ class EditUserTable extends Component {
                     rules: [
                       {
                         validator(rule, value, callback) {
-                          if (value.length <= 0) {
-                            callback();
-                          } else if (typeof value[0] === 'string' || !value[0]) {
+                          if (typeof value[0] === 'string' || !value[0]) {
                             if (
                               flag === 'admin' ||
                               flag === 'boss' ||
                               flag === 'others' ||
-                              this.state.currentstate === 2
+                              currentstate === 2
                             ) {
                               callback();
                             } else {
