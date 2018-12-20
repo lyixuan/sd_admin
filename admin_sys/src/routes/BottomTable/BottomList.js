@@ -72,8 +72,7 @@ class BottomList extends Component {
     const { bottomTable = {} } = this.props;
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
-    const disabledDate = content.map(item => moment.unix(item.dateTime / 1000).format(dateFormat));
-    console.log(disabledDate);
+    const disabledDate = content.map(item => item.dateTime);
     return {
       disabledDate,
       newTime: dateArea.endTime, // 最新可用时间
@@ -83,8 +82,8 @@ class BottomList extends Component {
 
   // 列表数据
   getDataList = paramObj => {
-    const { type, bottomTime, pageNum, pageSize } = this.state;
-    const params = { userId: 1187, type, bottomTime, pageNum, pageSize, ...paramObj };
+    const { userId, type, bottomTime, pageNum, pageSize } = this.state;
+    const params = { userId, type, bottomTime, pageNum, pageSize, ...paramObj };
     this.props.dispatch({
       type: 'bottomTable/bottomTableList',
       payload: params,
@@ -124,16 +123,18 @@ class BottomList extends Component {
 
   // 模态框确定
   clickModalOK = () => {
-    const { modalParam, userId } = this.state;
-    const { bottomDate, type } = modalParam;
-    if (bottomDate === '' || type === null) {
+    const { modalParam, type, userId, bottomTime, pageNum, pageSize } = this.state;
+    if (modalParam.bottomDate === '' || modalParam.type === null) {
       message.error('请完善所有信息');
       return;
     }
-
+    const sendParam = {
+      addParams: { ...modalParam, userId },
+      listParams: { userId, type, bottomTime, pageNum, pageSize },
+    };
     this.props.dispatch({
       type: 'bottomTable/addTask',
-      payload: { ...modalParam, userId },
+      payload: sendParam,
     });
     this.showModal(false);
   };
@@ -170,8 +171,8 @@ class BottomList extends Component {
   // 时间控件可展示的时间范围
   disabledDate = current => {
     const time = this.getDateRange();
-    const disableData = time.disabledDate.find(item =>
-      moment(current.format(dateFormat)).isSame(item)
+    const disableData = time.disabledDate.find(
+      item => formatDate(moment(current).valueOf()).substr(0, 10) === formatDate(item).substr(0, 10)
     );
     return (
       disableData ||
