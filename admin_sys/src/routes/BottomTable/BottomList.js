@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { message, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
+import 'moment/locale/zh-cn';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -14,6 +15,7 @@ import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
+moment.locale('zh-cn');
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
@@ -65,18 +67,13 @@ class BottomList extends Component {
     const pageNum = data.pageNum ? Number(data.pageNum) : 0;
     this.getDataList({ bottomTime, type, pageNum }); // 列表数据
   };
-
-  // // 点击显示每页多少条数据函数
-  // onShowSizeChange = (current, size) => {
-  //   this.changePage(current, size);
-  // };
-
   // 获取最新时间和最小时间
   getDateRange = () => {
     const { bottomTable = {} } = this.props;
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
-    const disabledDate = content.map(item => moment(item.dateTime).format(dateFormat));
+    const disabledDate = content.map(item => moment.unix(item.dateTime / 1000).format(dateFormat));
+    console.log(disabledDate);
     return {
       disabledDate,
       newTime: dateArea.endTime, // 最新可用时间
@@ -87,8 +84,7 @@ class BottomList extends Component {
   // 列表数据
   getDataList = paramObj => {
     const { type, bottomTime, pageNum, pageSize } = this.state;
-    const params = { type, bottomTime, pageNum, pageSize, ...paramObj };
-    // this.saveParams(params);
+    const params = { userId: 1187, type, bottomTime, pageNum, pageSize, ...paramObj };
     this.props.dispatch({
       type: 'bottomTable/bottomTableList',
       payload: params,
