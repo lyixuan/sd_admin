@@ -7,7 +7,6 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
-import { formatDate } from '../../utils/FormatDate';
 import { getAuthority } from '../../utils/authority';
 import { BOTTOM_TABLE_LIST, ADMIN_AUTH_LIST, ADMIN_USER } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
@@ -73,10 +72,11 @@ class BottomList extends Component {
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
     const disabledDate = content.map(item => moment.unix(item.dateTime / 1000).format(dateFormat));
+    const newTime = Math.min(dateArea.endTime, moment().valueOf());
     return {
       disabledDate,
-      newTime: dateArea.endTime, // 最新可用时间
-      minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
+      newTime, // 最新可用时间
+      minTime: Math.max(dateArea.beginTime, newTime - 9 * 24 * 3600000), // 最小时间
     };
   };
 
@@ -168,14 +168,14 @@ class BottomList extends Component {
   };
   // 时间控件可展示的时间范围
   disabledDate = current => {
+    const currentDate = current || moment();
+    const currentFormat = moment(currentDate.format(dateFormat));
     const time = this.getDateRange();
-    const disableData = time.disabledDate.find(item =>
-      moment(current.format(dateFormat)).isSame(item)
-    );
+    const disableData = time.disabledDate.find(item => currentFormat.isSame(item));
     return (
       disableData ||
-      current > moment(formatDate(time.newTime)) ||
-      current < moment(formatDate(time.minTime))
+      currentFormat.isAfter(moment(time.newTime).format(dateFormat)) ||
+      currentFormat.isBefore(moment(time.minTime).format(dateFormat))
     );
   };
   render() {
