@@ -123,16 +123,18 @@ class BottomList extends Component {
 
   // 模态框确定
   clickModalOK = () => {
-    const { modalParam, userId } = this.state;
-    const { bottomDate, type } = modalParam;
-    if (bottomDate === '' || type === null) {
+    const { modalParam, type, userId, bottomTime, pageNum, pageSize } = this.state;
+    if (modalParam.bottomDate === '' || modalParam.type === null) {
       message.error('请完善所有信息');
       return;
     }
-
+    const sendParam = {
+      addParams: { ...modalParam, userId },
+      listParams: { userId, type, bottomTime, pageNum, pageSize },
+    };
     this.props.dispatch({
       type: 'bottomTable/addTask',
-      payload: { ...modalParam, userId },
+      payload: sendParam,
     });
     this.showModal(false);
   };

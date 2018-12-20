@@ -61,18 +61,13 @@ export default {
     },
     // 添加底表
     *addTask({ payload }, { call, put }) {
-      const response = yield call(addTask, { ...payload });
+      const { addParams, listParams } = payload;
+      const response = yield call(addTask, addParams);
       if (response.code !== 2000) {
         message.error(response.msg);
       } else {
         message.success('添加任务成功！');
-        const responseList = yield call(bottomTableList, {
-          userId: payload.userId,
-          type: null,
-          bottomTime: '',
-          pageNum: 0,
-          pageSize: 30,
-        });
+        const responseList = yield call(bottomTableList, listParams);
         const dataList1 = responseList.data || {};
         if (responseList.code !== 2000) {
           message.error(responseList.msg);
