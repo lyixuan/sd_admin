@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { message, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
-import 'moment/locale/zh-cn';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -15,7 +14,6 @@ import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
-moment.locale('zh-cn');
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
@@ -72,8 +70,7 @@ class BottomList extends Component {
     const { bottomTable = {} } = this.props;
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
-    const disabledDate = content.map(item => moment.unix(item.dateTime / 1000).format(dateFormat));
-    console.log(disabledDate);
+    const disabledDate = content.map(item => item.dateTime);
     return {
       disabledDate,
       newTime: dateArea.endTime, // 最新可用时间
@@ -83,8 +80,8 @@ class BottomList extends Component {
 
   // 列表数据
   getDataList = paramObj => {
-    const { type, bottomTime, pageNum, pageSize } = this.state;
-    const params = { userId: 1187, type, bottomTime, pageNum, pageSize, ...paramObj };
+    const { userId, type, bottomTime, pageNum, pageSize } = this.state;
+    const params = { userId, type, bottomTime, pageNum, pageSize, ...paramObj };
     this.props.dispatch({
       type: 'bottomTable/bottomTableList',
       payload: params,
@@ -170,14 +167,11 @@ class BottomList extends Component {
   // 时间控件可展示的时间范围
   disabledDate = current => {
     const time = this.getDateRange();
-    const disableData = time.disabledDate.find(item =>
-      moment(current.format(dateFormat)).isSame(item)
-    );
-    return (
-      disableData ||
-      current > moment(formatDate(time.newTime)) ||
-      current < moment(formatDate(time.minTime))
-    );
+    // const disableData = time.disabledDate.find(item =>
+    //   moment(current, dateFormat).valueOf()===item
+    // );
+    // console.log(disableData);
+    return current > moment(formatDate(time.newTime)) || current < moment(formatDate(time.minTime));
   };
   render() {
     const { bottomTable = {}, loading, isLoading } = this.props;
