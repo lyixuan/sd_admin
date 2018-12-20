@@ -1,13 +1,30 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { userLogin, userLogout, CurrentUserListRole } from '@/services/api';
-import { setAuthority, setAuthoritySeccion, removeStorge } from 'utils/authority';
+import { userLogin, userLogout, CurrentUserListRole, userChangeRole } from '@/services/api';
+import { setAuthority, setAuthoritySeccion, removeStorge, getAuthority } from 'utils/authority';
 import { handleSuccess } from 'utils/Handle';
 import { ADMIN_USER, ADMIN_AUTH_LIST } from '@/utils/constants';
 
 message.config({
   maxCount: 1,
 });
+
+const handleLogin = (payload, response) => {
+  let saveObj = response || {};
+  const { privilegeList = [], ...others } = response.data || {};
+  const AuthList = Array.isArray(privilegeList) ? privilegeList : [];
+  saveObj.privilegeList = AuthList;
+  if (response.code === 2000 && AuthList.length === 0) {
+    // 登录成功但无权限信息
+    saveObj = Object.assign({}, saveObj, { code: 4001, msg: '登陆信息有误' });
+  }
+  if (response.code === 2000 && AuthList.length > 0) {
+    const eventName = payload.autoLogin ? setAuthority : setAuthoritySeccion;
+    eventName(ADMIN_USER, { ...payload, ...others });
+    setAuthority(ADMIN_AUTH_LIST, privilegeList);
+  }
+  return saveObj;
+};
 export default {
   namespace: 'login',
 
@@ -25,37 +42,45 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const { mail, password } = payload;
+      const { mail, password, autoLogin } = payload;
       const response = yield call(userLogin, { mail, password });
+      const saveObj = handleLogin({ mail, password, autoLogin }, response);
+      if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
+        yield put(routerRedux.push('/'));
+      }
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: saveObj,
       });
-      // Login successfully
+    },
+    *CurrentUserListRole({ payload }, { call, put }) {
+      const response = yield call(CurrentUserListRole, { ...payload });
       if (response.code === 2000) {
-        const { userId, token, userName, privilegeList = [] } = response.data;
-        if (payload.autoLogin === true) {
-          setAuthority(ADMIN_USER, { mail, password, userId, userName, token }); // 存储用户信息
-        } else {
-          setAuthoritySeccion(ADMIN_USER, { mail, password, userId, userName, token });
-        }
-        setAuthority(ADMIN_AUTH_LIST, privilegeList);
-        // setAuthority('admin_token', { userId, token }); // 存储api token
-        // reloadAuthorized();
-        yield put(routerRedux.push('/'));
+        yield put({
+          type: 'saveRoleList',
+          payload: { roleList: Array.isArray(response.data) ? response.data : [] },
+        });
       } else {
         message.error(response.msg);
       }
     },
-    *CurrentUserListRole(_, { call, put }) {
-      const response = yield call(CurrentUserListRole, { userId: 1 });
-      console.log(put, response);
-    },
     *changeRole({ payload }, { call, put }) {
+      const response = yield call(userChangeRole, { ...payload });
+      const { mail, password } = getAuthority(ADMIN_USER);
+      const saveObj = handleLogin({ mail, password, autoLogin: true }, response);
+      if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
+        yield put({
+          type: 'menu/getMenu',
+          payload: { routeData: saveObj.privilegeList },
+        });
+        yield put(routerRedux.push('/'));
+      } else {
+        message.error(saveObj.msg);
+      }
       yield put({
         type: 'changeLoginStatus',
+        payload: saveObj,
       });
-      console.log(payload, call, put);
     },
     *logout(_, { call }) {
       try {
@@ -89,6 +114,9 @@ export default {
     saveAuthList(state, { payload }) {
       const authList = payload || [];
       return { ...state, authList };
+    },
+    saveRoleList(state, { payload }) {
+      return { ...state, ...payload };
     },
   },
 };

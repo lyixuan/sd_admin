@@ -34,6 +34,16 @@ export async function CurrentUserListRole(params) {
     method: 'GET',
   });
 }
+/*
+* 切换用户权限角色
+* params：{userId}
+* */
+export async function userChangeRole(params) {
+  return request(`${HOST}/account/changeRole`, {
+    method: 'POST',
+    body: params,
+  });
+}
 
 /*
 * 用户退出登录接口

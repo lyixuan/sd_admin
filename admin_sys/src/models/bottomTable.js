@@ -1,4 +1,3 @@
-// import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import {
   getRangeDate,
@@ -61,12 +60,23 @@ export default {
       }
     },
     // 添加底表
-    *addTask({ payload }, { call }) {
-      const response = yield call(addTask, { ...payload });
+    *addTask({ payload }, { call, put }) {
+      const { addParams, listParams } = payload;
+      const response = yield call(addTask, addParams);
       if (response.code !== 2000) {
         message.error(response.msg);
       } else {
-        console.log(response.data);
+        message.success('添加任务成功！');
+        const responseList = yield call(bottomTableList, listParams);
+        const dataList1 = responseList.data || {};
+        if (responseList.code !== 2000) {
+          message.error(responseList.msg);
+        } else {
+          yield put({
+            type: 'bottomTableSave',
+            payload: { dataList: dataList1.content, totalNum: dataList1.totalElements },
+          });
+        }
       }
     },
     // 下载底表

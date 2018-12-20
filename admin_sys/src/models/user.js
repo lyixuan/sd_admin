@@ -42,7 +42,8 @@ export default {
         message.success('更新成功！');
         const response = yield call(userList, payload.userListParams);
         if (response.code === 2000) {
-          yield put({ type: 'userListSave', payload: { response } });
+          const userListData = response.data || [];
+          yield put({ type: 'userListSave', payload: { userListData } });
         } else {
           message.error(response.msg);
         }
@@ -66,7 +67,8 @@ export default {
         message.success('用户岗位删除成功！');
         const response = yield call(userList, payload.userListParams);
         if (response.code === 2000) {
-          yield put({ type: 'userListSave', payload: { response } });
+          const userListData = response.data || [];
+          yield put({ type: 'userListSave', payload: { userListData } });
         } else {
           message.error(response.msg);
         }

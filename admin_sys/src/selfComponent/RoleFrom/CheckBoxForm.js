@@ -63,7 +63,7 @@ class CheckBoxForm extends Component {
     this.props.getCheckObj(this.getVal.checkAllObj); // 传值给父级
 
     return (
-      <div>
+      <div className={styles.wrapContent}>
         <p className={styles.littleTitle}>{name}</p>
         {nodes.length === 0 ? null : (
           <div>

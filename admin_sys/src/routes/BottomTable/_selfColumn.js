@@ -27,7 +27,7 @@ export function columnsFn(callback) {
       dataIndex: 'type',
       render: text =>
         BOTTOM_TABLE_LIST.map(item => {
-          if (Number(item.id) === text) {
+          if (item.id !== '' && Number(item.id) === text) {
             return item.name;
           }
           return null;
@@ -36,11 +36,11 @@ export function columnsFn(callback) {
     {
       title: '底表时间',
       dataIndex: 'bottomTime',
-      render: text => formatDate(text),
+      render: text => formatDate(text).substr(0, 10),
     },
     {
       title: '添加时间',
-      dataIndex: 'modifyTime',
+      dataIndex: 'createTime',
       render: text => formatDate(text),
     },
     {

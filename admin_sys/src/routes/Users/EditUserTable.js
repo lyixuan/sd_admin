@@ -65,7 +65,6 @@ class EditUserTable extends Component {
     if (key.endView === '有') {
       defaultCheckedList.push('endView');
     }
-    console.log(key, defaultCheckedList);
     this.setState({
       clickFlag: 2,
       userType: userTypeDataReset[aa],
@@ -139,6 +138,10 @@ class EditUserTable extends Component {
         joinDate: !arrValue.joindate ? undefined : arrValue.joindate,
         idCard: !arrValue.idcard ? undefined : arrValue.idcard,
         sex: !arrValue.sex ? undefined : arrValue.sex,
+        roleId: Number(values.roleId),
+        scoreView,
+        privilegeView,
+        endView,
         positionList: {
           privilege: rUserType === 'admin' ? false : values.privilege === 1,
           userType: rUserType,
@@ -437,7 +440,7 @@ class EditUserTable extends Component {
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
     responseComList =
       !responseComList || responseComList.length === 0 ? responseComListBackup : responseComList;
-    const { visible } = this.state;
+    const { visible, currentstate } = this.state;
     const formLayout = 'inline';
     const aaa = !userVal.getUserlistData ? null : userVal.getUserlistData;
     const arrValue = !aaa
@@ -496,14 +499,12 @@ class EditUserTable extends Component {
                     rules: [
                       {
                         validator(rule, value, callback) {
-                          if (value.length <= 0) {
-                            callback();
-                          } else if (typeof value[0] === 'string' || !value[0]) {
+                          if (typeof value[0] === 'string' || !value[0]) {
                             if (
                               flag === 'admin' ||
                               flag === 'boss' ||
                               flag === 'others' ||
-                              this.state.currentstate === 2
+                              currentstate === 2
                             ) {
                               callback();
                             } else {
@@ -610,12 +611,13 @@ class EditUserTable extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="&nbsp;&nbsp;访问权限">
                   {getFieldDecorator('view', {
-                    initialValue: this.state.clickFlag === 1 ? 0 : this.state.defaultCheckedList,
+                    initialValue: this.state.clickFlag === 1 ? [] : this.state.defaultCheckedList,
                     rules: [],
                   })(
                     <CheckboxGroup
                       style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                       options={this.state.plainOptions}
+                      className={common.checkboxGroup}
                     />
                   )}
                 </FormItem>
@@ -665,7 +667,7 @@ class EditUserTable extends Component {
     );
 
     return (
-      <div>
+      <div className={common.wrapContent}>
         <Button
           style={{ marginTop: '36px', width: '110px' }}
           type="primary"

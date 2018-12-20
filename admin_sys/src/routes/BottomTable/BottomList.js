@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Select, DatePicker } from 'antd';
+import { message, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
+import 'moment/locale/zh-cn';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { formatDate } from '../../utils/FormatDate';
@@ -15,12 +15,14 @@ import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
+moment.locale('zh-cn');
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ bottomTable, loading }) => ({
   bottomTable,
-  loading: loading.effects['bottomTable/bottomTableList'],
+  loading: loading.models.bottomTable,
+  isLoading: loading.effects['bottomTable/getRange'],
 }))
 class BottomList extends Component {
   constructor(props) {
@@ -34,8 +36,8 @@ class BottomList extends Component {
       },
       modalParam: {
         bottomDate: '',
-        collegeId: 0,
-        type: 0,
+        collegeId: null,
+        type: null,
       },
       userId,
       type: null,
@@ -51,7 +53,7 @@ class BottomList extends Component {
     const initParams = {};
     if (JSON.stringify(initVal) !== '{}') {
       initParams.bottomTime = initVal.bottomTime ? Date.parse(new Date(initVal.bottomTime)) : null;
-      initParams.type = initVal.type ? Number(initVal.type) : null;
+      initParams.type = initVal.type && initVal.type !== '' ? Number(initVal.type) : '';
     }
     this.getDataList(initParams); // 列表数据
     this.getRange(); // 时间范围
@@ -61,21 +63,33 @@ class BottomList extends Component {
 
   onSubmit = data => {
     const bottomTime = data.bottomTime ? Date.parse(new Date(data.bottomTime)) : null;
-    this.getDataList({
-      bottomTime,
-      type: data.type ? Number(data.type) : null,
-    }); // 列表数据
-    console.log(data);
+    const type = data.type && data.type !== '' ? Number(data.type) : '';
+    const pageNum = data.pageNum ? Number(data.pageNum) : 0;
+    this.getDataList({ bottomTime, type, pageNum }); // 列表数据
+  };
+  // 获取最新时间和最小时间
+  getDateRange = () => {
+    const { bottomTable = {} } = this.props;
+    const { dateArea = {}, disDateList = [] } = bottomTable;
+    const { content = [] } = disDateList;
+    const disabledDate = content.map(item => item.dateTime);
+    return {
+      disabledDate,
+      newTime: dateArea.endTime, // 最新可用时间
+      minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
+    };
   };
 
   // 列表数据
   getDataList = paramObj => {
-    const { type, bottomTime, pageNum, pageSize } = this.state;
+    const { userId, type, bottomTime, pageNum, pageSize } = this.state;
+    const params = { userId, type, bottomTime, pageNum, pageSize, ...paramObj };
     this.props.dispatch({
       type: 'bottomTable/bottomTableList',
-      payload: { type, bottomTime, pageNum, pageSize, ...paramObj },
+      payload: params,
     });
   };
+
   // 所有学院列表
   getAllOrg = () => {
     this.props.dispatch({
@@ -91,25 +105,11 @@ class BottomList extends Component {
     });
   };
 
-  // 获取最新时间和最小时间
-  getDateRange = () => {
-    const { bottomTable = {} } = this.props;
-    const { dateArea = {}, disDateList = [] } = bottomTable;
-    const { content = [] } = disDateList;
-    const disabledDate = content.map(item => (item.dateTime / 1000).format(dateFormat));
-
-    return {
-      disabledDate,
-      newTime: dateArea.endTime, // 最新可用时间
-      minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
-    };
-  };
-
   // 点击某一页函数
-  changePage = (current, size) => {
+  changePage = (pageNum, size) => {
     this.getDataList({
       pageSize: size,
-      pageNum: current - 1,
+      pageNum,
     });
   };
   // 不可选时间
@@ -123,12 +123,19 @@ class BottomList extends Component {
 
   // 模态框确定
   clickModalOK = () => {
-    const { modalParam, userId } = this.state;
+    const { modalParam, type, userId, bottomTime, pageNum, pageSize } = this.state;
+    if (modalParam.bottomDate === '' || modalParam.type === null) {
+      message.error('请完善所有信息');
+      return;
+    }
+    const sendParam = {
+      addParams: { ...modalParam, userId },
+      listParams: { userId, type, bottomTime, pageNum, pageSize },
+    };
     this.props.dispatch({
       type: 'bottomTable/addTask',
-      payload: { ...modalParam, userId },
+      payload: sendParam,
     });
-    this.getDataList({}); // 列表数据
     this.showModal(false);
   };
   // 模态框显隐回调
@@ -137,6 +144,7 @@ class BottomList extends Component {
       visible: bol,
     });
   };
+
   // 添加任务
   addTasks = () => {
     this.setState({
@@ -144,7 +152,6 @@ class BottomList extends Component {
     });
   };
   downLoadBTable = record => {
-    console.log(record);
     this.props.dispatch({
       type: 'bottomTable/downLoadBT',
       payload: {
@@ -164,19 +171,29 @@ class BottomList extends Component {
   // 时间控件可展示的时间范围
   disabledDate = current => {
     const time = this.getDateRange();
-    return current > moment(formatDate(time.newTime)) || current < moment(formatDate(time.minTime));
+    const disableData = time.disabledDate.find(
+      item => formatDate(moment(current).valueOf()).substr(0, 10) === formatDate(item).substr(0, 10)
+    );
+    return (
+      disableData ||
+      current > moment(formatDate(time.newTime)) ||
+      current < moment(formatDate(time.minTime))
+    );
   };
   render() {
-    const { bottomTable = {}, loading } = this.props;
+    const { bottomTable = {}, loading, isLoading } = this.props;
     const { dataList = [], findAllOrg = [], totalNum = 0 } = bottomTable;
-    // const time = this.getDateRange();
-
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
-      <FormFilter onSubmit={this.onSubmit}>
+      <FormFilter onSubmit={this.onSubmit} isLoading={isLoading}>
         <div>
           <span style={{ lineHeight: '32px' }}>底表类型：</span>
-          <Select placeholder="底表类型" style={{ width: 230, height: 32 }} flag="type">
+          <Select
+            placeholder="底表类型"
+            style={{ width: 230, height: 32 }}
+            flag="type"
+            type="select"
+          >
             {BOTTOM_TABLE_LIST.map(item => (
               <Option key={item.id} value={item.id}>
                 {item.name}
@@ -191,6 +208,7 @@ class BottomList extends Component {
             disabledDate={this.disabledDate}
             style={{ width: 230, height: 32 }}
             flag="bottomTime"
+            type="datePicker"
           />
         </div>
       </FormFilter>
@@ -208,24 +226,13 @@ class BottomList extends Component {
             </AuthorizedButton>
           }
           contentTable={
-            <div>
-              <p className={common.totalNum}>总数：{totalNum}条</p>
-              <Table
-                bordered
-                loading={loading}
-                dataSource={dataList}
-                columns={columns}
-                pagination={false}
-                className={common.tableContentStyle}
-              />
-            </div>
-          }
-          contentPagination={
-            <SelfPagination
-              onChange={(current, pageSize) => {
-                this.changePage(current, pageSize);
-              }}
-              total={totalNum}
+            <FormFilter.Table
+              bordered
+              totalNum={totalNum}
+              loading={loading}
+              dataSource={dataList}
+              columns={columns}
+              onChangePage={this.changePage}
             />
           }
         />
