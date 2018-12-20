@@ -170,12 +170,10 @@ class BottomList extends Component {
   };
   // 时间控件可展示的时间范围
   disabledDate = current => {
-    console.log(current);
     const time = this.getDateRange();
     const disableData = time.disabledDate.find(
       item => formatDate(moment(current).valueOf()).substr(0, 10) === formatDate(item).substr(0, 10)
     );
-    console.log(current.format(dateFormat));
     return (
       disableData ||
       current > moment(formatDate(time.newTime)) ||
