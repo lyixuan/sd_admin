@@ -63,6 +63,7 @@ export default class SelfHeader extends PureComponent {
     const { roleSelected } = this.state;
     const { roleList = [] } = this.props;
     if (getAuthority(ADMIN_USER).userId === roleSelected) {
+      this.setState({ visible: false });
       return;
     }
     this.props.dispatch({
