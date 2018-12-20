@@ -67,6 +67,7 @@ export default {
       } else {
         message.success('添加任务成功！');
         const responseList = yield call(bottomTableList, {
+          userId: payload.userId,
           type: null,
           bottomTime: '',
           pageNum: 0,
