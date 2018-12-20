@@ -72,7 +72,10 @@ class BottomList extends Component {
     const { bottomTable = {} } = this.props;
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
-    const disabledDate = content.map(item => item.dateTime);
+    const disabledDate = content.map(item => {
+      console.log(moment(item.dateTime).format(dateFormat));
+      return item.dateTime;
+    });
     return {
       disabledDate,
       newTime: dateArea.endTime, // 最新可用时间
@@ -170,6 +173,7 @@ class BottomList extends Component {
   };
   // 时间控件可展示的时间范围
   disabledDate = current => {
+    console.log(current);
     const time = this.getDateRange();
     const disableData = time.disabledDate.find(
       item => formatDate(moment(current).valueOf()).substr(0, 10) === formatDate(item).substr(0, 10)
