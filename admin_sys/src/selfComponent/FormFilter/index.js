@@ -131,9 +131,7 @@ class FormPrams extends Component {
     return this.checkoutElementType(child);
   };
   checkoutElementType = child => {
-    const elementType = typeof child.type;
-    const type = elementType === 'function' ? child.type.name : child.type;
-
+    const type = typeof child.type === 'string' ? child.type : child.props.type;
     const returnObj = {};
     let dateValue = null;
     switch (type.toLowerCase()) {
@@ -152,7 +150,7 @@ class FormPrams extends Component {
         returnObj.onChange = value =>
           this.selectChange(value, child.props.flag, child.props.onChange);
         break;
-      case 'pickerwrapper':
+      case 'datepicker':
         dateValue = this.modal[child.props.flag] || child.props.value;
         returnObj.value = dateValue ? moment(dateValue) : dateValue;
         returnObj.onChange = (value, strData) =>

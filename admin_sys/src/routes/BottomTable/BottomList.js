@@ -76,7 +76,6 @@ class BottomList extends Component {
     const { bottomTable = {} } = this.props;
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
-
     const disabledDate = content.map(item => moment(item.dateTime).format(dateFormat));
     return {
       disabledDate,
@@ -192,7 +191,12 @@ class BottomList extends Component {
       <FormFilter onSubmit={this.onSubmit} isLoading={isLoading}>
         <div>
           <span style={{ lineHeight: '32px' }}>底表类型：</span>
-          <Select placeholder="底表类型" style={{ width: 230, height: 32 }} flag="type">
+          <Select
+            placeholder="底表类型"
+            style={{ width: 230, height: 32 }}
+            flag="type"
+            type="select"
+          >
             {BOTTOM_TABLE_LIST.map(item => (
               <Option key={item.id} value={item.id}>
                 {item.name}
@@ -207,6 +211,7 @@ class BottomList extends Component {
             disabledDate={this.disabledDate}
             style={{ width: 230, height: 32 }}
             flag="bottomTime"
+            type="datePicker"
           />
         </div>
       </FormFilter>
