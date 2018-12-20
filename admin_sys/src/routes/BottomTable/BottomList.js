@@ -170,7 +170,7 @@ class BottomList extends Component {
   disabledDate = current => {
     const time = this.getDateRange();
     const disableData = time.disabledDate.find(item =>
-      moment(current).isSame(moment(formatDate(item).substr(0, 10), dateFormat))
+      current.isSame(moment(formatDate(item).substr(0, 10), dateFormat))
     );
     return (
       disableData ||
