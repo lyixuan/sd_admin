@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { message, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
+import 'moment/locale/zh-cn';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -14,6 +15,7 @@ import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
+moment.locale('zh-cn');
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
@@ -167,11 +169,14 @@ class BottomList extends Component {
   // 时间控件可展示的时间范围
   disabledDate = current => {
     const time = this.getDateRange();
-    // const disableData = time.disabledDate.find(item =>
-    //   moment(current, dateFormat).valueOf()===item
-    // );
-    // console.log(disableData);
-    return current > moment(formatDate(time.newTime)) || current < moment(formatDate(time.minTime));
+    const disableData = time.disabledDate.find(item =>
+      moment(current).isSame(moment(formatDate(item).substr(0, 10), dateFormat))
+    );
+    return (
+      disableData ||
+      current > moment(formatDate(time.newTime)) ||
+      current < moment(formatDate(time.minTime))
+    );
   };
   render() {
     const { bottomTable = {}, loading, isLoading } = this.props;
