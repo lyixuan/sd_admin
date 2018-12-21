@@ -55,7 +55,7 @@ class FormPrams extends Component {
   }
   onReset = () => {
     this.flagKeyArr.forEach(item => {
-      this.modal[item] = null;
+      this.modal[item] = this.props.modal[item] || '';
     });
     this.saveData();
   };

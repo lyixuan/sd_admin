@@ -43,6 +43,12 @@ class BottomList extends Component {
       pageSize: 30,
       visible: false,
     };
+    this.dateAreaObj = {
+      newTime: '',
+      minTime: '',
+      disabledDate: [],
+    };
+    this.dateArea = [];
   }
   componentDidMount() {
     const initVal = this.props.getUrlParams();
@@ -56,6 +62,11 @@ class BottomList extends Component {
     this.disDateList(); // 不可选时间
     this.getAllOrg(); // 所有学院列表
   }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(nextProps.bottomTable) !== JSON.stringify(this.props.bottomTable)) {
+      this.getDateRange(nextProps.bottomTable);
+    }
+  }
 
   onSubmit = data => {
     const bottomTime = data.bottomTime ? Date.parse(new Date(data.bottomTime)) : null;
@@ -65,17 +76,13 @@ class BottomList extends Component {
   };
 
   // 获取最新时间和最小时间
-  getDateRange = () => {
-    const { bottomTable = {} } = this.props;
+  getDateRange = (bottomTable = {}) => {
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
-    const disabledDate = content.map(item => moment.unix(item.dateTime / 1000).format(dateFormat));
-    const newTime = this.haddleMaxDate(dateArea.endTime);
-    return {
-      disabledDate,
-      newTime, // 最新可用时间
-      minTime: Math.max(dateArea.beginTime, newTime - 9 * 24 * 3600000), // 最小时间
-    };
+    const { beginTime = '', endTime = '' } = dateArea;
+    const disabledDate = content.map(item => moment(item.dateTime).format(dateFormat));
+    const newTime = this.haddleMaxDate(endTime);
+    this.dateArea = this.haddleDateArea(newTime, beginTime, disabledDate);
   };
 
   // 列表数据
@@ -116,6 +123,19 @@ class BottomList extends Component {
     }
     return Math.min(endDate, newDate.valueOf());
   };
+  haddleDateArea = (maxTime, minTime, disabledDate) => {
+    const dateArr = [];
+    for (let i = maxTime; i >= minTime && dateArr.length < 10; i -= 86400000) {
+      const isSameDate = disabledDate.find(
+        item => moment(item).format(dateFormat) === moment(i).format(dateFormat)
+      );
+      if (!isSameDate) {
+        dateArr.push(moment(i).format(dateFormat));
+      }
+    }
+    return dateArr;
+  };
+
   // 点击某一页函数
   changePage = (pageNum, size) => {
     this.getDataList({
@@ -191,13 +211,8 @@ class BottomList extends Component {
   disabledDate = current => {
     const currentDate = current || moment();
     const currentFormat = moment(currentDate.format(dateFormat));
-    const time = this.getDateRange();
-    const disableData = time.disabledDate.find(item => currentFormat.isSame(item));
-    return (
-      disableData ||
-      currentFormat.isAfter(moment(time.newTime).format(dateFormat)) ||
-      currentFormat.isBefore(moment(time.minTime).format(dateFormat))
-    );
+    const disableData = this.dateArea.find(item => currentFormat.isSame(item));
+    return !disableData;
   };
   isDataAnalystFn = bol => {
     this.isDataAnalyst = bol;
