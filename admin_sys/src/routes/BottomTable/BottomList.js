@@ -44,7 +44,6 @@ class BottomList extends Component {
       visible: false,
     };
   }
-
   componentDidMount() {
     const initVal = this.props.getUrlParams();
     const initParams = {};
@@ -103,6 +102,8 @@ class BottomList extends Component {
       type: 'bottomTable/getRange',
     });
   };
+
+  isDataAnalyst = false; // 是否是数据分析员
   haddleMaxDate = endTime => {
     const endDate = endTime || moment().valueOf;
     const taday_13 = moment().format('YYYY-MM-DD 13:30');
@@ -136,6 +137,9 @@ class BottomList extends Component {
     const { modalParam, type, userId, bottomTime, pageNum, pageSize } = this.state;
     if (modalParam.bottomDate === '') {
       message.error('请选择底表时间');
+      return;
+    } else if (this.isDataAnalyst) {
+      message.error('请选择学院');
       return;
     }
     const sendParam = {
@@ -194,6 +198,9 @@ class BottomList extends Component {
       currentFormat.isAfter(moment(time.newTime).format(dateFormat)) ||
       currentFormat.isBefore(moment(time.minTime).format(dateFormat))
     );
+  };
+  isDataAnalystFn = bol => {
+    this.isDataAnalyst = bol;
   };
   render() {
     const { bottomTable = {}, loading, isLoading } = this.props;
@@ -265,6 +272,7 @@ class BottomList extends Component {
               updateModalData={this.updateModalData}
               selectOption={findAllOrg}
               authList={getAuthority(ADMIN_AUTH_LIST)}
+              isDataAnalyst={bol => this.isDataAnalystFn(bol)}
             />
           }
           showModal={bol => this.showModal(bol)}

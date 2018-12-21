@@ -61,6 +61,7 @@ export default class ModalContent extends React.Component {
 
     const options = this.selectOptions();
     const isDataAnalyst = this.isDataAnalystFn();
+    this.props.isDataAnalyst(isDataAnalyst);
 
     return (
       <>
