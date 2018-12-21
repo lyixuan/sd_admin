@@ -122,8 +122,8 @@ class BottomList extends Component {
   // 模态框确定
   clickModalOK = () => {
     const { modalParam, type, userId, bottomTime, pageNum, pageSize } = this.state;
-    if (modalParam.bottomDate === '' || modalParam.type === null) {
-      message.error('请完善所有信息');
+    if (modalParam.bottomDate === '') {
+      message.error('请选择底表时间');
       return;
     }
     const sendParam = {
@@ -183,7 +183,7 @@ class BottomList extends Component {
     const { dataList = [], findAllOrg = [], totalNum = 0 } = bottomTable;
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
-      <FormFilter onSubmit={this.onSubmit} isLoading={isLoading}>
+      <FormFilter onSubmit={this.onSubmit} isLoading={isLoading} modal={{ type: '' }}>
         <div>
           <span style={{ lineHeight: '32px' }}>底表类型：</span>
           <Select
