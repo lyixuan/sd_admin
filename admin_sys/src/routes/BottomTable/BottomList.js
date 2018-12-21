@@ -43,11 +43,6 @@ class BottomList extends Component {
       pageSize: 30,
       visible: false,
     };
-    this.dateAreaObj = {
-      newTime: '',
-      minTime: '',
-      disabledDate: [],
-    };
     this.dateArea = [];
   }
   componentDidMount() {
