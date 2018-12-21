@@ -24,7 +24,7 @@ class UserList extends Component {
       params: {
         name: '',
         mail: '',
-        isUpdate: 1,
+        isUpdate: 0,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
