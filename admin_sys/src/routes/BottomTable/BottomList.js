@@ -147,6 +147,11 @@ class BottomList extends Component {
   addTasks = () => {
     this.setState({
       visible: true,
+      modalParam: {
+        bottomDate: '',
+        collegeId: null,
+        type: 0,
+      },
     });
   };
   downLoadBTable = record => {
