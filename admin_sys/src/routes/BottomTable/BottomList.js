@@ -64,13 +64,14 @@ class BottomList extends Component {
     const pageNum = data.pageNum ? Number(data.pageNum) : 0;
     this.getDataList({ bottomTime, type, pageNum }); // 列表数据
   };
+
   // 获取最新时间和最小时间
   getDateRange = () => {
     const { bottomTable = {} } = this.props;
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
     const disabledDate = content.map(item => moment.unix(item.dateTime / 1000).format(dateFormat));
-    const newTime = Math.min(dateArea.endTime, moment().valueOf());
+    const newTime = this.haddleMaxDate(dateArea.endTime);
     return {
       disabledDate,
       newTime, // 最新可用时间
@@ -102,7 +103,18 @@ class BottomList extends Component {
       type: 'bottomTable/getRange',
     });
   };
-
+  haddleMaxDate = endTime => {
+    const endDate = endTime || moment().valueOf;
+    const taday_13 = moment().format('YYYY-MM-DD 13:30');
+    const isBeforeTaday_13 = moment().isBefore(taday_13);
+    let newDate = null;
+    if (isBeforeTaday_13) {
+      newDate = moment().subtract(2, 'd');
+    } else {
+      newDate = moment().subtract(1, 'd');
+    }
+    return Math.min(endDate, newDate.valueOf());
+  };
   // 点击某一页函数
   changePage = (pageNum, size) => {
     this.getDataList({
