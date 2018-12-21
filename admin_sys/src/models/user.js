@@ -4,7 +4,7 @@ import {
   userList,
   updateUserOrg,
   updateUserbasicInfo,
-  // userDelete,
+  getUserRoleList,
   wechatList,
   userAdd,
   listOrg,
@@ -19,8 +19,9 @@ export default {
 
   state: {
     // 接口返回数据存储
-    userList: [],
+    userList: {},
     wechatList: [],
+    getUserRoleList: [],
     listOrg: [],
     getUserlistData: null,
   },
@@ -29,7 +30,8 @@ export default {
     *userList({ payload }, { call, put }) {
       const response = yield call(userList, payload.userListParams);
       if (response.code === 2000) {
-        yield put({ type: 'userListSave', payload: { response } });
+        const userListData = response.data || [];
+        yield put({ type: 'userListSave', payload: { userListData } });
       } else {
         message.error(response.msg);
       }
@@ -40,7 +42,8 @@ export default {
         message.success('更新成功！');
         const response = yield call(userList, payload.userListParams);
         if (response.code === 2000) {
-          yield put({ type: 'userListSave', payload: { response } });
+          const userListData = response.data || [];
+          yield put({ type: 'userListSave', payload: { userListData } });
         } else {
           message.error(response.msg);
         }
@@ -64,7 +67,8 @@ export default {
         message.success('用户岗位删除成功！');
         const response = yield call(userList, payload.userListParams);
         if (response.code === 2000) {
-          yield put({ type: 'userListSave', payload: { response } });
+          const userListData = response.data || [];
+          yield put({ type: 'userListSave', payload: { userListData } });
         } else {
           message.error(response.msg);
         }
@@ -82,15 +86,24 @@ export default {
       }
     },
     *wechatList({ payload }, { call, put }) {
-      const response = yield call(wechatList, payload.wechatListParams);
+      const response = yield call(wechatList, payload.params);
       if (response.code === 2000) {
         yield put({ type: 'wechatListSave', payload: { response } });
       } else {
         message.error(response.msg);
       }
     },
+    *getUserRoleList({ payload }, { call, put }) {
+      const response = yield call(getUserRoleList, payload.params);
+      if (response.code === 2000) {
+        const dateArea = response.data || [];
+        yield put({ type: 'getUserRoleListSave', payload: { dateArea } });
+      } else {
+        message.error(response.msg);
+      }
+    },
     *listOrg({ payload }, { call, put }) {
-      const response = yield call(listOrg, payload.listOrgParams);
+      const response = yield call(listOrg, payload.params);
       if (response.code === 2000) {
         yield put({ type: 'listOrgSave', payload: { response } });
       } else {
@@ -167,6 +180,12 @@ export default {
       return {
         ...state,
         wechatList: action.payload,
+      };
+    },
+    getUserRoleListSave(state, action) {
+      return {
+        ...state,
+        getUserRoleList: action.payload,
       };
     },
     listOrgSave(state, action) {

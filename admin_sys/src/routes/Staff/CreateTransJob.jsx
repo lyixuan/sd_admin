@@ -51,7 +51,7 @@ class CreateTransJob extends Component {
     this.getData();
     this.getGroupList();
   }
-  componentWillReceiveProps(nextprops) {
+  UNSAFE_componentWillReceiveProps(nextprops) {
     if (
       JSON.stringify(nextprops.user.listOrg.response) !==
       JSON.stringify(this.props.user.listOrg.response)

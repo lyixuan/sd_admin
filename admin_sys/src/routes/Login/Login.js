@@ -36,7 +36,7 @@ export default class LoginPage extends Component {
       },
     };
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (
       JSON.stringify(nextProps.login.loginStatusObj) !==
       JSON.stringify(this.props.login.loginStatusObj)

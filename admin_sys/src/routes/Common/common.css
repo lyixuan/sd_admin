@@ -368,10 +368,6 @@
   background: #fff!important;
 }
 
-:global(.ant-calendar-picker-input) {
-  padding: 4px 4px !important;
-}
-
 :global(.ant-calendar-range-picker-input) {
   width: 35% !important;
 }
@@ -414,7 +410,6 @@
   margin-bottom: 20px;
 }
 .rangeItemContent{
-  /*height:50px;*/
   margin:30px 0 0 17px;
 }
 .xSpin{
@@ -427,10 +422,10 @@
 .checkBox, .checkboxGroup{
   font-size: 14px;
   color: #000;
+  margin-right: 8px;
 }
-:global(.ant-checkbox-group-item),.checkBox,.checkboxGroup{
-  margin-right: 130px;
-}
+
+
 :global(.ant-checkbox-checked .ant-checkbox-inner),:global(.ant-checkbox-indeterminate .ant-checkbox-inner){
   background-color: #52c9c2!important;
   border: #52c9c2!important;

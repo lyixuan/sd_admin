@@ -31,21 +31,18 @@ export default class GlobalHeader extends PureComponent {
       onNoticeVisibleChange,
       onMenuClick,
       onNoticeClear,
+      selectedGroup,
     } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-        <Menu.Item key="changePwd">
-          <span style={{ display: 'inline-block', width: '20px', marginLeft: '-3px' }}>
-            <Icon type="lock" style={{ fontSize: 15, position: 'relative', top: 2 }} />
-          </span>
-          修改密码
-        </Menu.Item>
-        <Menu.Item key="logout">
-          <span style={{ display: 'inline-block', width: '18px' }}>
-            <Icon type="logout" style={{ fontSize: 11 }} />
-          </span>
-          退出登录
-        </Menu.Item>
+        {selectedGroup.map(item => (
+          <Menu.Item key={item.id}>
+            <span style={{ display: 'inline-block', width: '20px', marginLeft: '-3px' }}>
+              <Icon type={item.icon} style={{ fontSize: 14, position: 'relative' }} />
+            </span>
+            {item.name}
+          </Menu.Item>
+        ))}
       </Menu>
     );
     return (

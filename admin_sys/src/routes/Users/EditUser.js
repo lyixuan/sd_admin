@@ -17,6 +17,7 @@ const WrappedRegistrationForm = Form.create()(EditUserForm);
   listOrg: loading.effects['user/listOrg'],
   userList: loading.effects['user/getUserlist'],
   addPosi: loading.effects['user/addPosition'],
+  roleOrg: loading.effects['user/getUserRoleList'],
 }))
 class EditUser extends Component {
   constructor(props) {
@@ -28,15 +29,18 @@ class EditUser extends Component {
   }
 
   componentDidMount() {
-    const wechatListParams = {};
+    const params = {};
     this.props.dispatch({
       type: 'user/wechatList',
-      payload: { wechatListParams },
+      payload: { params },
     });
-    const listOrgParams = {};
     this.props.dispatch({
       type: 'user/listOrg',
-      payload: { listOrgParams },
+      payload: { params },
+    });
+    this.props.dispatch({
+      type: 'user/getUserRoleList',
+      payload: { params },
     });
     const getUserlistParams = { mail: this.state.mail };
     this.props.dispatch({
@@ -62,7 +66,7 @@ class EditUser extends Component {
       sex: Number(values.sex),
       idCard: values.idCard,
       joinDate: data,
-      privilegeView: values.privilegeView === 1,
+      // privilegeView: values.privilegeView === 1,
       positionList: {
         wechatDepartmentId: Number(newRoleId),
         wechatDepartmentName: !rname ? undefined : rname,

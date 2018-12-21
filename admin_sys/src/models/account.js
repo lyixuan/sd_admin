@@ -7,7 +7,7 @@ import {
   deleteAccount,
   getRolePrivilegesList,
   queryAccountInfo,
-} from '../../services/api';
+} from '@/services/api';
 
 export default {
   namespace: 'account',

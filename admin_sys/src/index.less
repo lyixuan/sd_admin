@@ -24,7 +24,6 @@ body {
   margin: 40px 0 !important;
 }
 
-// temp fix for https://github.com/ant-design/ant-design/commit/a1fafb5b727b62cb0be29ce6e9eca8f579d4f8b7
 :global {
   .ant-spin-container {
     overflow: visible !important;
@@ -32,4 +31,22 @@ body {
 }
 :global(.ant-menu-item-selected) {
   background: #52c9c2 !important;
+}
+
+// 全局设置radio 样式
+:global(.ant-radio-checked .ant-radio-inner) {
+  border-color: #52c9c2 !important;
+}
+
+:global(.ant-radio-inner:after) {
+  background-color: #52c9c2 !important;
+}
+/* -----------页面全局样式-----------  */
+/* 固定浮框按钮 */
+:global(.fixBox) {
+  background: transparent;
+  position: fixed;
+  right: 20px;
+  bottom: 90px;
+  z-index: 500;
 }

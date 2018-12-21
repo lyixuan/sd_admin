@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="34px" height="34px" viewBox="0 0 34 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 19</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="底表下载" transform="translate(-1298.000000, -621.000000)">
+            <g id="Group-19" transform="translate(1298.000000, 621.000000)">
+                <circle id="Oval" fill-opacity="0.5" fill="#C5C5C5" cx="17" cy="17" r="17"></circle>
+                <g id="上传-向上-箭头" transform="translate(11.000000, 9.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <path d="M6,17 C5.44680851,17 5,16.6203743 5,16.1503615 L5,0.849638452 C5,0.379625691 5.44680851,0 6,0 C6.55319149,0 7,0.379625691 7,0.849638452 L7,16.1503615 C7,16.6203743 6.55319149,17 6,17 Z" id="Shape"></path>
+                    <path d="M11.1405159,7 C10.922003,7 10.7034901,6.91449814 10.5359636,6.74349442 L6.00182094,2.11524164 L1.46403642,6.74349442 C1.12898331,7.08550186 0.586342944,7.08550186 0.251289833,6.74349442 C-0.0837632777,6.40148699 -0.0837632777,5.84758364 0.251289833,5.50557621 L5.39362671,0.256505576 C5.72867982,-0.0855018587 6.27132018,-0.0855018587 6.60637329,0.256505576 L11.7487102,5.50557621 C12.0837633,5.84758364 12.0837633,6.40148699 11.7487102,6.74349442 C11.5811836,6.91449814 11.3626707,7 11.1405159,7 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

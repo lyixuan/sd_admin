@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Table, Form, Button, Row, Col, Select, Cascader, Radio } from 'antd';
+import { Table, Form, Button, Row, Col, Select, Cascader, Radio, Checkbox } from 'antd';
 import { connect } from 'dva';
 
 import common from '../Common/common.css';
@@ -7,11 +8,12 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import { userTypeData, userTypeDataReset } from '../../utils/dataDictionary';
 
+const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
-let flag1 = 'class'; // 创建时候的级别标示
-let flag2 = 'class'; // 编辑时候的级别标示
+let flag1 = 'class'; // 创建时候的前端角色标示
+let flag2 = 'class'; // 编辑时候的前端角色标示
 let flag = 'class';
 let responseComList = [];
 let responseComListBackup = [];
@@ -34,6 +36,9 @@ class EditUserTable extends Component {
       privilege: null,
       positionId: null,
       currentstate: null,
+      roleId: null,
+      plainOptions: Filter('VISIT_RIGHT_LIST|id->value,name->label'),
+      defaultCheckedList: [],
     };
   }
 
@@ -50,6 +55,16 @@ class EditUserTable extends Component {
         });
     userTypeFlag = userTypeDataReset[aa];
     flag = userTypeDataReset[aa];
+    const defaultCheckedList = [];
+    if (key.scoreView === '有') {
+      defaultCheckedList.push('scoreView');
+    }
+    if (key.privilegeView === '有') {
+      defaultCheckedList.push('privilegeView');
+    }
+    if (key.endView === '有') {
+      defaultCheckedList.push('endView');
+    }
     this.setState({
       clickFlag: 2,
       userType: userTypeDataReset[aa],
@@ -58,6 +73,8 @@ class EditUserTable extends Component {
       privilege: key.privilege === '无' ? 0 : 1,
       positionId: key.id,
       currentstate: key.currentstate,
+      roleId: key.roleId,
+      defaultCheckedList,
     });
   };
   // 创建岗位函数
@@ -96,6 +113,22 @@ class EditUserTable extends Component {
     ) {
       typeId = undefined;
     }
+
+    const { view = [] } = values;
+    const bol = true;
+    let scoreView = false;
+    let privilegeView = false;
+    let endView = false;
+    view.map(item => {
+      if (item === 'scoreView') {
+        scoreView = bol;
+      } else if (item === 'privilegeView') {
+        privilegeView = bol;
+      } else if (item === 'endView') {
+        endView = bol;
+      }
+      return 0;
+    });
     const getUserlistParams = { mail: this.state.mail };
     if (this.state.clickFlag === 1) {
       const addPositionParams = {
@@ -105,6 +138,10 @@ class EditUserTable extends Component {
         joinDate: !arrValue.joindate ? undefined : arrValue.joindate,
         idCard: !arrValue.idcard ? undefined : arrValue.idcard,
         sex: !arrValue.sex ? undefined : arrValue.sex,
+        roleId: Number(values.roleId),
+        scoreView,
+        privilegeView,
+        endView,
         positionList: {
           privilege: rUserType === 'admin' ? false : values.privilege === 1,
           userType: rUserType,
@@ -123,6 +160,10 @@ class EditUserTable extends Component {
       const updateUserPositionInfoParams = {
         id: !this.state.positionId ? undefined : this.state.positionId,
         privilege: rUserType === 'admin' ? false : values.privilege === 1,
+        roleId: Number(values.roleId),
+        scoreView,
+        privilegeView,
+        endView,
         userType: rUserType,
         userTypeId: typeId,
         wechatDepartmentId: Number(arrValue.wechatdepartmentid),
@@ -280,6 +321,9 @@ class EditUserTable extends Component {
       data.push({
         key: index,
         privilege: item.privilege ? '有' : '无',
+        scoreView: item.scoreView ? '有' : '无',
+        privilegeView: item.privilegeView ? '有' : '无',
+        endView: item.endView ? '有' : '无',
         userType: userTypeData[item.usertype],
         showName: !item.showname
           ? item.usertype === 'others' ? '无绩效岗位' : null
@@ -287,6 +331,8 @@ class EditUserTable extends Component {
         shownameid: !item.shownameid ? null : item.shownameid,
         id: item.positionid,
         currentstate: item.currentstate,
+        roleName: item.roleName,
+        roleId: item.roleId,
       })
     );
     return data;
@@ -300,12 +346,28 @@ class EditUserTable extends Component {
         dataIndex: 'id',
       },
       {
-        title: '级别',
+        title: '前端角色',
         dataIndex: 'userType',
       },
       {
-        title: '负责单位',
+        title: '组织',
         dataIndex: 'showName',
+      },
+      {
+        title: '后端角色',
+        dataIndex: 'roleName',
+      },
+      {
+        title: '学分访问',
+        dataIndex: 'scoreView',
+      },
+      {
+        title: '绩效访问',
+        dataIndex: 'privilegeView',
+      },
+      {
+        title: '后台访问',
+        dataIndex: 'endView',
       },
       {
         title: '绩效权限',
@@ -350,19 +412,35 @@ class EditUserTable extends Component {
       }
     });
   };
+  roleNameList = (val = []) => {
+    const list = !val ? [] : val;
+    return (
+      <Select style={{ width: 280 }}>
+        {list.map(item => (
+          <Option value={item.id} key={item.id}>
+            {item.name}
+          </Option>
+        ))}
+      </Select>
+    );
+  };
 
   render() {
     const columns = this.columnsData();
     const userVal = this.props.user;
-    const { addPosi } = this.props;
+    const { addPosi, roleOrg } = this.props;
     const disabled = true;
     const listOrgValues = !userVal.listOrg.response
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
+
+    const { dateArea = [] } = userVal.getUserRoleList;
+    const roleNameList = this.roleNameList(dateArea);
+
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
     responseComList =
       !responseComList || responseComList.length === 0 ? responseComListBackup : responseComList;
-    const { visible } = this.state;
+    const { visible, currentstate } = this.state;
     const formLayout = 'inline';
     const aaa = !userVal.getUserlistData ? null : userVal.getUserlistData;
     const arrValue = !aaa
@@ -380,14 +458,14 @@ class EditUserTable extends Component {
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:">
+                <FormItem label="*前端角色:">
                   {getFieldDecorator('userType', {
                     initialValue: this.state.clickFlag === 1 ? null : this.state.userType,
                     rules: [
                       {
                         validator(rule, value, callback) {
                           if (!value) {
-                            callback({ message: '请选择级别！' });
+                            callback({ message: '请选择前端角色！' });
                           }
                           callback();
                         },
@@ -403,13 +481,11 @@ class EditUserTable extends Component {
                           : this.state.privilege === 1 ? disabled : false
                       }
                     >
-                      <Option value="college">院长或副院长</Option>
-                      <Option value="family">家族长</Option>
-                      <Option value="group">运营长</Option>
-                      <Option value="class">班主任</Option>
-                      <Option value="admin">管理员</Option>
-                      <Option value="boss">管理层</Option>
-                      <Option value="others">无绩效岗位</Option>
+                      {Filter('FRONT_ROLE_TYPE_LIST').map(v => (
+                        <Option value={v.id} key={v.id}>
+                          {v.name}
+                        </Option>
+                      ))}
                     </Select>
                   )}
                 </FormItem>
@@ -417,7 +493,7 @@ class EditUserTable extends Component {
             </Row>
             <Row style={{ marginTop: '10px' }}>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="*负责单位">
+                <FormItem label="*组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织">
                   {getFieldDecorator('responseCom', {
                     initialValue: this.state.clickFlag === 1 ? [] : this.state.shownameid,
                     rules: [
@@ -428,11 +504,11 @@ class EditUserTable extends Component {
                               flag === 'admin' ||
                               flag === 'boss' ||
                               flag === 'others' ||
-                              this.state.currentstate === 2
+                              currentstate === 2
                             ) {
                               callback();
                             } else {
-                              callback({ message: '请选择负责单位！' });
+                              callback({ message: '请选择组织！' });
                             }
                           } else {
                             callback();
@@ -511,6 +587,42 @@ class EditUserTable extends Component {
                 </FormItem>
               </Col>
             </Row>
+
+            <Row>
+              <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
+                <FormItem label="*后端角色">
+                  {getFieldDecorator('roleId', {
+                    initialValue: this.state.clickFlag === 1 ? null : this.state.roleId,
+                    rules: [
+                      {
+                        validator(rule, value, callback) {
+                          if (!value) {
+                            callback({ message: '请选择后端角色！' });
+                          }
+                          callback();
+                        },
+                      },
+                    ],
+                  })(roleNameList)}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
+                <FormItem label="&nbsp;&nbsp;访问权限">
+                  {getFieldDecorator('view', {
+                    initialValue: this.state.clickFlag === 1 ? [] : this.state.defaultCheckedList,
+                    rules: [],
+                  })(
+                    <CheckboxGroup
+                      style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                      options={this.state.plainOptions}
+                      className={common.checkboxGroup}
+                    />
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
           </Form>
         </div>
       );
@@ -555,13 +667,13 @@ class EditUserTable extends Component {
     );
 
     return (
-      <div>
+      <div className={common.wrapContent}>
         <Button
           style={{ marginTop: '36px', width: '110px' }}
           type="primary"
           className={common.submitButton}
           onClick={() => this.onCreate()}
-          loading={addPosi}
+          loading={addPosi || roleOrg}
         >
           添加岗位
         </Button>

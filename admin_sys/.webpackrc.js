@@ -9,6 +9,7 @@ export default {
     },
   },
   alias: {
+    '@': path.resolve(__dirname, 'src'),
     components: path.resolve(__dirname, 'src/components/'),
     selfComponents: path.resolve(__dirname, 'src/selfComponent/'),
     utils: path.resolve(__dirname, 'src/utils/'),
@@ -21,4 +22,8 @@ export default {
   disableDynamicImport: false,
   publicPath: '/',
   hash: true,
+  define: {
+    'process.env.API_TYPE': process.env.API_TYPE,
+    USE_COMMA: 2,
+  },
 };

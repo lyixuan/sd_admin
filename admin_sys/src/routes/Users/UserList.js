@@ -24,7 +24,7 @@ class UserList extends Component {
       params: {
         name: '',
         mail: '',
-        isUpdate: 1,
+        isUpdate: 0,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
@@ -45,7 +45,7 @@ class UserList extends Component {
   // 删除用户
   onDelete = val => {
     const userDeleteParams = { id: val.id };
-    const userListParams = this.state.params
+    const userListParams = this.state.params;
     this.props.dispatch({
       type: 'user/userDelete',
       payload: { userDeleteParams, userListParams },
@@ -55,7 +55,7 @@ class UserList extends Component {
   // 更新用户
   onUpdate = val => {
     const updateUserOrgParams = { id: val.id };
-    const userListParams = this.state.params
+    const userListParams = this.state.params;
     this.props.dispatch({
       type: 'user/updateUserOrg',
       payload: { updateUserOrgParams, userListParams },
@@ -65,7 +65,7 @@ class UserList extends Component {
   // 编辑用户
   onEdit = val => {
     const mail = val.mail || '';
-    this.props.setRouteUrlParams('/user/editUser', {mail, userType: val.userType});
+    this.props.setRouteUrlParams('/user/editUser', { mail, userType: val.userType });
   };
 
   // 点击显示每页多少条数据函数
@@ -78,7 +78,7 @@ class UserList extends Component {
     const userListParams = { ...stateParams, ...params };
     this.props.dispatch({
       type: 'user/userList',
-      payload:{userListParams},
+      payload: { userListParams },
     });
     this.saveParams(userListParams);
   };
@@ -114,6 +114,7 @@ class UserList extends Component {
         id: item.id,
         wechatDepartmentId: item.wechatDepartmentId,
         wechatDepartmentName: item.wechatDepartmentName,
+        roleName: item.roleName,
       })
     );
 
@@ -136,12 +137,12 @@ class UserList extends Component {
         dataIndex: 'mail',
       },
       {
-        title: '级别',
+        title: '前端角色',
         dataIndex: 'userType',
         width: 120,
       },
       {
-        title: '负责单位',
+        title: '组织',
         dataIndex: 'showName',
         width: 170,
       },
@@ -149,6 +150,11 @@ class UserList extends Component {
         title: '企业家单位',
         dataIndex: 'changeShowName',
         width: 170,
+      },
+      {
+        title: '后端角色',
+        dataIndex: 'roleName',
+        width: 120,
       },
       {
         title: '绩效权限',
@@ -207,8 +213,8 @@ class UserList extends Component {
       pageSize: 30,
       pageNum: 0,
       isUpdate: 0,
-      name:'',
-      mail:'',
+      name: '',
+      mail: '',
     };
     this.getData(params);
   };
@@ -218,8 +224,8 @@ class UserList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-       const isUpdate = this.selectOptions.find(item => item.label === values.isUpdate).value;
-        const {mail=undefined} = values ;
+        const isUpdate = this.selectOptions.find(item => item.label === values.isUpdate).value;
+        const { mail = undefined } = values;
         const userListParams = {
           isUpdate,
           name: !values.name ? undefined : values.name.replace(/\s*/g, ''),
@@ -239,12 +245,10 @@ class UserList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { name,mail,isUpdate ,pageNum} = this.state.params;
-    const data = !this.props.user.userList.response
-      ? []
-      : !this.props.user.userList.response.data ? [] : this.props.user.userList.response.data;
-    const totalNum = !data.totalElements ? 0 : data.totalElements;
-    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
+    const { name, mail, isUpdate, pageNum } = this.state.params;
+    const { userListData = {} } = this.props.user.userList;
+    const { totalElements = 0, content = [] } = userListData;
+    const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     const formLayout = 'inline';
     const WrappedAdvancedSearchForm = Form.create()(props => {
@@ -292,7 +296,6 @@ class UserList extends Component {
                           {item.label}
                         </Option>
                       ))}
-
                     </Select>
                   )}
                 </FormItem>
@@ -333,7 +336,7 @@ class UserList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：{totalNum}条</p>
+            <p className={common.totalNum}>总数：{totalElements}条</p>
             <Table
               bordered
               loading={loading}
@@ -353,7 +356,7 @@ class UserList extends Component {
               this.onShowSizeChange(current, pageSize);
             }}
             defaultCurrent={pageNum + 1}
-            total={totalNum}
+            total={totalElements}
             defaultPageSize={30}
           />
         }

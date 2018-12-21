@@ -47,7 +47,7 @@ class EditDimission extends Component {
     this.getData();
     this.initParams();
   }
-  componentWillReceiveProps(nextprops) {
+  UNSAFE_componentWillReceiveProps(nextprops) {
     if (
       JSON.stringify(nextprops.staff.employeeInfo) !== JSON.stringify(this.props.staff.employeeInfo)
     ) {
@@ -204,7 +204,7 @@ class EditDimission extends Component {
                   </FormItem>
                 </span>
               </li>
-              <li style={{marginTop:'-1.5rem',color:'#9c9b9b'}}>
+              <li style={{ marginTop: '-1.5rem', color: '#9c9b9b' }}>
                 <span className={styles.labelText} />
                 <span className={styles.labelItem}>(*非最后工作日期)</span>
               </li>

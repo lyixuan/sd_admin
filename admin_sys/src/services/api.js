@@ -1,13 +1,11 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
-import config from '../config';
 
-const { NODE_ENV = 'pro' } = config;
 const hostObj = {
-  pro: 'http://bd.ministudy.com/apis',
-  dev: 'http://172.16.117.65:8090',
+  production: 'http://bd.ministudy.com/apis',
+  development: 'http://172.16.117.65:8090',
 };
-export const HOST = hostObj[NODE_ENV];
+export const HOST = hostObj[process.env.API_TYPE];
 /*
 * 用户登录接口
 * params：{name，password}
@@ -27,6 +25,26 @@ export async function queryCurrentUser(params) {
     method: 'GET',
   });
 }
+/*
+* 获取用户对应的角色信息信息
+* params：{userId}
+* */
+export async function CurrentUserListRole(params) {
+  return request(`${HOST}/account/listRole?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+/*
+* 切换用户权限角色
+* params：{userId}
+* */
+export async function userChangeRole(params) {
+  return request(`${HOST}/account/changeRole`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
 /*
 * 用户退出登录接口
 * params：{name，password}
@@ -358,6 +376,14 @@ export async function addPosition(params) {
     body: params,
   });
 }
+
+// 用户---后端岗位列表接口
+export async function getUserRoleList(params) {
+  return request(`${HOST}/user/getRoleList${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
 // 编辑用户时的回显接口
 export async function getUserlist(params) {
   return request(`${HOST}/user/getUserlist?${stringify(params)}`, {
@@ -672,6 +698,32 @@ export async function addPackage(params) {
 // 更新绩效包
 export async function updatePackage(params) {
   return request(`${HOST}/kpiLevel/updatePackage`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 底表列表
+export async function bottomTableList(params) {
+  return request(`${HOST}/consoleBottomDown/findAll?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+// 获取所有学院列表
+export async function findAllOrg(params) {
+  return request(`${HOST}/consoleBottomDown/findAllOrg?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+// 底表下载
+export function downLoadBT(params) {
+  return request(`${HOST}/consoleBottomDown/downLoad?${stringify(params)}`, {
+    method: 'GET',
+    stream: 'bolb',
+  });
+}
+// 底表添加任务
+export async function addTask(params) {
+  return request(`${HOST}/consoleBottomDown/addTask`, {
     method: 'POST',
     body: params,
   });

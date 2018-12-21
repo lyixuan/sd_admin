@@ -1,8 +1,22 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Form, Input, Cascader, Button, Row, Col, Select, Spin, DatePicker, Radio } from 'antd';
+import {
+  Form,
+  Input,
+  Cascader,
+  Checkbox,
+  Button,
+  Row,
+  Col,
+  Select,
+  Spin,
+  DatePicker,
+  Radio,
+} from 'antd';
 import common from '../../routes/Common/common.css';
 
 const FormItem = Form.Item;
+const CheckboxGroup = Checkbox.Group;
 const { Option } = Select;
 let responseComList = [];
 let responseComListBackup = [];
@@ -20,6 +34,8 @@ class CreateUserForm extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
       listOrgLiost: listOrgValues || [],
+      plainOptions: Filter('VISIT_RIGHT_LIST|id->value,name->label'),
+      defaultCheckedList: [],
     };
   }
   componentDidMount() {
@@ -67,6 +83,10 @@ class CreateUserForm extends Component {
     });
     return value;
   };
+
+  // viewChange = value => {
+  //   console.log('view修改内容', value);
+  // };
 
   handleSelectChange = value => {
     const aa = value;
@@ -146,6 +166,18 @@ class CreateUserForm extends Component {
       </Select>
     );
   };
+  roleNameList = (val = []) => {
+    const list = !val ? [] : val;
+    return (
+      <Select style={{ width: 280 }}>
+        {list.map(item => (
+          <Option value={item.id} key={item.id}>
+            {item.name}
+          </Option>
+        ))}
+      </Select>
+    );
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -155,16 +187,20 @@ class CreateUserForm extends Component {
       ? []
       : !userVal.wechatList.response.data ? [] : userVal.wechatList.response.data.department;
     const residences = !wechatValues ? [] : this.roleListFun(wechatValues);
+
+    const { dateArea = [] } = userVal.getUserRoleList;
+    const roleNameList = this.roleNameList(dateArea);
+
     const listOrgValues = !userVal.listOrg.response
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
     responseComList =
       !responseComList || responseComList.length === 0 ? responseComListBackup : responseComList;
-    const { submit, wechatList, listOrg } = this.props.jumpFunction;
+    const { submit, wechatList, listOrg, roleOrg } = this.props.jumpFunction;
     const formLayout = 'inline';
     return (
-      <Spin spinning={wechatList || listOrg}>
+      <Spin spinning={wechatList || listOrg || roleOrg}>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
           <Row>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
@@ -298,7 +334,7 @@ class CreateUserForm extends Component {
           </Row>
           <Row style={{ marginTop: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
+              <FormItem label="*前端角色">
                 {getFieldDecorator('userType', {
                   initialValue: null,
                   rules: [
@@ -313,13 +349,11 @@ class CreateUserForm extends Component {
                   ],
                 })(
                   <Select style={{ width: 280 }} onChange={this.handleSelectChange}>
-                    <Option value="college">院长或副院长</Option>
-                    <Option value="family">家族长</Option>
-                    <Option value="group">运营长</Option>
-                    <Option value="class">班主任</Option>
-                    <Option value="admin">管理员</Option>
-                    <Option value="boss">管理层</Option>
-                    <Option value="others">无绩效岗位</Option>
+                    {Filter('FRONT_ROLE_TYPE_LIST').map(v => (
+                      <Option value={v.id} key={v.id}>
+                        {v.name}
+                      </Option>
+                    ))}
                   </Select>
                 )}
               </FormItem>
@@ -345,7 +379,7 @@ class CreateUserForm extends Component {
 
           <Row style={{ marginTop: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*负责单位">
+              <FormItem label="*组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织">
                 {getFieldDecorator('responseCom', {
                   initialValue: [],
                   rules: [
@@ -355,7 +389,7 @@ class CreateUserForm extends Component {
                           if (flag === 'admin' || flag === 'boss' || flag === 'others') {
                             callback();
                           } else {
-                            callback({ message: '请选择负责单位！' });
+                            callback({ message: '请选择组织！' });
                           }
                         }
                         callback();
@@ -397,6 +431,41 @@ class CreateUserForm extends Component {
               </FormItem>
             </Col>
           </Row>
+
+          <Row style={{ marginTop: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*后端角色">
+                {getFieldDecorator('roleId', {
+                  initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '请选择后端角色！' });
+                        }
+                        callback();
+                      },
+                    },
+                  ],
+                })(roleNameList)}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="访问权限">
+                {getFieldDecorator('view', {
+                  initialValue: this.state.defaultCheckedList,
+                  rules: [],
+                })(
+                  <CheckboxGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                    options={this.state.plainOptions}
+                    className={common.checkboxGroup}
+                  />
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
           <Row style={{ marginTop: '20px' }}>
             <Col span={6} offset={17} style={{ textAlign: 'right' }}>
               <FormItem>

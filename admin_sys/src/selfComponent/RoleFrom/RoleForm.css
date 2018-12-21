@@ -12,7 +12,7 @@ p{
   height: 38px;
   background-color: #f6f7fa;
   font-size: 14px;
-  color: #000000;
+  color: #000;
   padding-left: 17px;
 }
 .content{
@@ -45,13 +45,15 @@ p{
   font-size: 14px;
   color: #000;
 }
-:global(.ant-checkbox-group-item),.checkBox,.checkboxGroup{
-margin-right: 130px;
+.wrapContent :global(.ant-checkbox-group-item),.checkBox,.checkboxGroup{
+  margin-right: 130px;
 }
-:global(.ant-checkbox-checked .ant-checkbox-inner),:global(.ant-checkbox-indeterminate .ant-checkbox-inner){
-  background-color: #52c9c2!important;
-  border: #52c9c2!important;
-}
+
+.wrapContent :global(.ant-checkbox-checked .ant-checkbox-inner),:global(.ant-checkbox-indeterminate .ant-checkbox-inner){
+    background-color: #52c9c2!important;
+    border: #52c9c2!important;
+  }
+
 .formCls :global(.ant-form-item-label label){
   display: inline-block;
   width: 100%;

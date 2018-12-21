@@ -19,7 +19,7 @@ export default class RetrievePassWord extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (
       JSON.stringify(nextProps.password.changePwdObj) !==
       JSON.stringify(this.props.password.changePwdObj)

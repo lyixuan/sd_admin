@@ -7,10 +7,10 @@ import dva from 'dva';
 import createHistory from 'history/createBrowserHistory';
 import createLoading from 'dva-loading';
 import 'moment/locale/zh-cn';
-import './rollbar';
 import './index.less';
+import './utils/global';
 
-const history = createHistory();
+export const history = createHistory();
 // 1. Initialize
 const app = dva({ history });
 
@@ -18,10 +18,13 @@ const app = dva({ history });
 app.use(createLoading());
 
 // 3. Register global model
-app.model(require('./models/global').default);
+app.model(require('./models/baseModels/global').default);
+app.model(require('./models/baseModels/login').default);
+app.model(require('./models/baseModels/menu').default);
 
 // 4. Router
 app.router(require('./router').default);
 // 5. Start
 app.start('#root');
+
 export default app._store; // eslint-disable-line

@@ -43,5 +43,14 @@ const urlPathMap = {
   '/performance/exportAmount': {
     name: '导出绩效金额',
   },
+  '/bottomTable/addBottomTable': {
+    name: '添加底表下载任务',
+  },
+  '/bottomTable/downloadBottomTable': {
+    name: '底表下载',
+  },
+  '/bottomTable/downloadAllBottomTable': {
+    name: '下载全部底表',
+  },
 };
 export { urlPathMap };
