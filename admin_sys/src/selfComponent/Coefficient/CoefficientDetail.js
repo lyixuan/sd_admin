@@ -26,10 +26,10 @@ class CoefficientDetail extends Component {
             组内老师人数：<span>{item.v1}</span>
           </span>
           <span className={styles.groupSpan1}>
-            运营长绩效：<span>{parseFloat((item.v2*100).toPrecision(12))}%</span>
+            运营长绩效：<span>{parseFloat((item.v2 * 100).toPrecision(12))}%</span>
           </span>
           <span className={styles.groupSpan2}>
-            班主任绩效：<span>{parseFloat((item.v3*100).toPrecision(12))}%</span>
+            班主任绩效：<span>{parseFloat((item.v3 * 100).toPrecision(12))}%</span>
           </span>
         </div>
       );
@@ -37,9 +37,9 @@ class CoefficientDetail extends Component {
     return val;
   };
 
-
-  IntervalItem = (v1=0, v2=false, percent) => {
-    const val1 = percent === 1 ? (v1 * 100>100?100:parseFloat((v1*100).toPrecision(12))) : v1;
+  IntervalItem = (v1 = 0, v2 = false, percent) => {
+    const val1 =
+      percent === 1 ? (v1 * 100 > 100 ? 100 : parseFloat((v1 * 100).toPrecision(12))) : v1;
     const bol = true;
     return (
       <span>
@@ -57,9 +57,9 @@ class CoefficientDetail extends Component {
     const val = data.map(item => {
       return (
         <div key={item.key} className={styles.coeffiDiv}>
-          {this.IntervalItem(item.v1,item.v2,percent)}
+          {this.IntervalItem(item.v1, item.v2, percent)}
           <span className={styles.xSpin}>～</span>
-          {this.IntervalItem(item.v3,item.v4,percent)}
+          {this.IntervalItem(item.v3, item.v4, percent)}
           {basic === 1 ? (
             <span className={styles.basicSpan}> 基数：{item.v5} 元</span>
           ) : (

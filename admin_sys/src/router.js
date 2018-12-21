@@ -3,14 +3,10 @@ import { routerRedux, Route, Switch } from 'dva/router';
 import { LocaleProvider, Spin } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import dynamic from 'dva/dynamic';
-import moment from 'moment';
-import 'moment/locale/zh-cn';
 import { getRouterData } from './common/router';
 import Authorized from './utils/Authorized';
 import styles from './index.less';
 import { checkoutLogin } from './utils/checkoutUserAuthInfo';
-
-moment.locale('zh-cn');
 
 const { ConnectedRouter } = routerRedux;
 const { AuthorizedRoute } = Authorized;

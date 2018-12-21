@@ -45,13 +45,6 @@ class FormPrams extends Component {
     if (JSON.stringify(nextProps.modal) !== JSON.stringify(this.props.modal)) {
       this.modal = this.props.modal;
     }
-    if (JSON.stringify(nextProps.isLoading) !== JSON.stringify(this.props.isLoading)) {
-      if (!nextProps.isLoading) {
-        this.modal = this.props.modal;
-        this.isLoading = this.props.isLoading;
-        this.initData();
-      }
-    }
   }
   onReset = () => {
     this.flagKeyArr.forEach(item => {

@@ -52,7 +52,6 @@ class BottomList extends Component {
       initParams.bottomTime = initVal.bottomTime ? Date.parse(new Date(initVal.bottomTime)) : null;
       initParams.type = initVal.type && initVal.type !== '' ? Number(initVal.type) : '';
     }
-    this.getDataList(initParams); // 列表数据
     this.getRange(); // 时间范围
     this.disDateList(); // 不可选时间
     this.getAllOrg(); // 所有学院列表
