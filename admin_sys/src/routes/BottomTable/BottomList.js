@@ -158,7 +158,7 @@ class BottomList extends Component {
     if (modalParam.bottomDate === '') {
       message.error('请选择底表时间');
       return;
-    } else if (this.isDataAnalyst) {
+    } else if (this.isDataAnalyst && modalParam.collegeId === null) {
       message.error('请选择学院');
       return;
     }
