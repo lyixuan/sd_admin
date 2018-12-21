@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b306c73d-e78a-4563-a1ea-df44bf25528c" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_sys/src/layouts/Content.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/layouts/Content.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js" afterDir="false" />
     </list>
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,10 +17,62 @@
       <file leaf-file-name="BottomList.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="169" column="29" selection-start-line="169" selection-start-column="29" selection-end-line="169" selection-end-column="29" />
+            <state relative-caret-position="180">
+              <caret line="72" column="53" selection-start-line="72" selection-start-column="47" selection-end-line="72" selection-end-column="53" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.ejs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/index.ejs">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="router.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/router.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Content.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/layouts/Content.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_modalContent.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="64" column="12" lean-forward="true" selection-start-line="64" selection-start-column="12" selection-end-line="64" selection-end-column="12" />
+              <folding>
+                <element signature="e#9#35#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -27,8 +81,17 @@
       <file leaf-file-name="bottomTable.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/admin_sys/src/models/bottomTable.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="479">
-              <caret line="74" column="11" lean-forward="true" selection-start-line="74" selection-start-column="11" selection-end-line="74" selection-end-column="11" />
+            <state relative-caret-position="298">
+              <caret line="63" column="48" selection-start-line="63" selection-start-column="48" selection-end-line="63" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin_sys/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -71,11 +134,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>onChange</find>
-      <find>addDisableTime</find>
-      <find>onShowSizeChange</find>
-      <find>pageSize</find>
-      <find>changePage</find>
       <find>getDateRange</find>
       <find>initFlagModal</find>
       <find>params</find>
@@ -89,18 +147,23 @@
       <find>checkoutElementType</find>
       <find>modal</find>
       <find>current</find>
-      <find>moment</find>
       <find>mome</find>
       <find>findAll</find>
       <find>getDataList</find>
-      <find>format</find>
       <find>userId</find>
-      <find>disabledDate</find>
       <find>sub</find>
       <find>str</find>
-      <find>console</find>
       <find>mom</find>
       <find>addTask</find>
+      <find>isSame</find>
+      <find>format</find>
+      <find>disabledDate</find>
+      <find>console</find>
+      <find>DatePicker</find>
+      <find>&lt;LocaleProvider locale={zh_CN}&gt;</find>
+      <find>ModalContent</find>
+      <find>LocaleProvider</find>
+      <find>moment</find>
     </findStrings>
     <replaceStrings>
       <replace>checkDetail</replace>
@@ -147,7 +210,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/RoleFrom/RoleForm.css" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/Role/CreateRole.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/Quality/QualityList.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/Common/common.css" />
@@ -187,7 +249,6 @@
         <option value="$PROJECT_DIR$/admin_sys/src/config.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/UserForm/CreateUserForm.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/utils/global.js" />
-        <option value="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/Users/UserList.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/utils/constants.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/layouts/ContentLayout.js" />
@@ -197,6 +258,8 @@
         <option value="$PROJECT_DIR$/admin_sys/src/selfComponent/FormFilter/index.js" />
         <option value="$PROJECT_DIR$/admin_sys/package.json" />
         <option value="$PROJECT_DIR$/admin_sys/src/models/bottomTable.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js" />
+        <option value="$PROJECT_DIR$/admin_sys/src/layouts/Content.js" />
         <option value="$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js" />
       </list>
     </option>
@@ -214,6 +277,10 @@
     <packageJsonPaths>
       <path value="$PROJECT_DIR$/admin_sys/package.json" />
     </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1440" />
+    <option name="height" value="900" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -245,7 +312,7 @@
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="admin_sys" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
+              <item name="layouts" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -359,7 +426,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="929991000" />
+    <option name="totallyTimeSpent" value="937123000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -420,16 +487,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/dataDictionary.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="8" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/Authorized.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/selfComponent/AccountForm.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -472,6 +529,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1320">
           <caret line="88" column="5" selection-start-line="88" selection-start-column="5" selection-end-line="88" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -666,16 +726,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="20" column="45" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="45" />
-          <folding>
-            <element signature="e#9#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/utils/constants.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="460">
@@ -716,29 +766,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/router.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/dist/17.5d23c8c8.async.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
           <caret column="288548" selection-start-column="288548" selection-end-column="288548" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -772,13 +803,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_sys/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/TimeManage/TimeList.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -799,17 +823,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/models/bottomTable.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="479">
-          <caret line="74" column="11" lean-forward="true" selection-start-line="74" selection-start-column="11" selection-end-line="74" selection-end-column="11" />
+        <state relative-caret-position="298">
+          <caret line="63" column="48" selection-start-line="63" selection-start-column="48" selection-end-line="63" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/_modalContent.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="64" column="12" lean-forward="true" selection-start-line="64" selection-start-column="12" selection-end-line="64" selection-end-column="12" />
+          <folding>
+            <element signature="e#9#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/index.ejs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_sys/src/layouts/Content.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/admin_sys/src/routes/BottomTable/BottomList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="169" column="29" selection-start-line="169" selection-start-column="29" selection-end-line="169" selection-end-column="29" />
+        <state relative-caret-position="180">
+          <caret line="72" column="53" selection-start-line="72" selection-start-column="47" selection-end-line="72" selection-end-column="53" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>

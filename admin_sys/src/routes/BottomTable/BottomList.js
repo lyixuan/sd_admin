@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { message, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
-import 'moment/locale/zh-cn';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -14,7 +13,6 @@ import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
-moment.locale('zh-cn');
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
