@@ -1,3 +1,4 @@
+import { Progress } from 'antd';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import { formatDate } from '../../utils/FormatDate';
 import { BOTTOM_TABLE_STATUS, BOTTOM_TABLE_LIST } from '../../utils/constants';
@@ -7,7 +8,7 @@ import compress from '../../assets/compress.svg';
 import packing from '../../assets/packing.svg';
 
 // 获取table列表头
-export function columnsFn(callback) {
+export function columnsFn(callback, percent) {
   const imgArr = [packing, packSucess, packError];
   const columns = [
     {
@@ -68,12 +69,20 @@ export function columnsFn(callback) {
           <>
             {Number(record.status) !== 1 ? null : (
               <AuthorizedButton authority="/bottomTable/downloadBottomTable">
-                <span
-                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                <div
+                  style={{
+                    color: '#52C9C2',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                  }}
                   onClick={() => callback(record)}
                 >
-                  下载
-                </span>
+                  <span style={{ marginRight: '8px' }}>下载</span>
+                  <div style={{ width: '32px' }}>
+                    <Progress percent={percent} showInfo={false} />
+                  </div>
+                </div>
               </AuthorizedButton>
             )}
           </>

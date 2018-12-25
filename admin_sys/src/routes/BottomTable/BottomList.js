@@ -214,7 +214,7 @@ class BottomList extends Component {
   render() {
     const { bottomTable = {}, loading, isLoading } = this.props;
     const { dataList = [], findAllOrg = [], totalNum = 0 } = bottomTable;
-    const columns = columnsFn(this.downLoadBTable);
+    const columns = columnsFn(this.downLoadBTable, 30);
     const WrappedAdvancedSearchForm = () => (
       <FormFilter onSubmit={this.onSubmit} isLoading={isLoading} modal={{ type: '' }}>
         <div>
