@@ -96,36 +96,30 @@ class StaffList extends Component {
         title: 'id',
         dataIndex: 'id',
         key: 'id',
-        width: 100,
       },
       {
         title: '姓名',
         dataIndex: 'name',
         key: 'name',
-        width: 120,
       },
       {
         title: '状态',
         dataIndex: 'currentStateName',
-        width: 100,
         key: 'currentStateName',
       },
       {
         title: '邮箱',
         dataIndex: 'mail',
-        width: 100,
         key: 'mail',
       },
       {
         title: '岗位',
         dataIndex: 'userType',
-        width: 150,
         key: 'userType',
       },
       {
         title: '负责单位',
         dataIndex: 'showName',
-        width: 340,
         key: 'showName',
       },
       {

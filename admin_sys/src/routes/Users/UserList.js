@@ -139,32 +139,26 @@ class UserList extends Component {
       {
         title: '前端角色',
         dataIndex: 'userType',
-        width: 120,
       },
       {
         title: '组织',
         dataIndex: 'showName',
-        width: 170,
       },
       {
         title: '企业家单位',
         dataIndex: 'changeShowName',
-        width: 170,
       },
       {
         title: '后端角色',
         dataIndex: 'roleName',
-        width: 120,
       },
       {
         title: '绩效权限',
         dataIndex: 'privilege',
-        width: 100,
       },
       {
         title: '操作',
         dataIndex: 'operation',
-        width: 150,
         render: (text, record) => {
           return (
             <div>
