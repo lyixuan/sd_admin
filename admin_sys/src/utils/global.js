@@ -52,6 +52,8 @@ window.Filter = param => {
             break;
           }
         }
+      } else if (!value) {
+        result = null;
       } else {
         console.warn('参数格式错误');
         return false;
