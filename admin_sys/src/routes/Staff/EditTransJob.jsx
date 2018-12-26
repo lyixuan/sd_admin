@@ -4,14 +4,16 @@ import { Form, Button, Select, DatePicker, Cascader, Radio } from 'antd';
 import moment from 'moment';
 import { assignUrlParams } from 'utils/utils';
 import ConfirmModal from 'selfComponents/ConfirmModal';
-import { BaseUtils } from './BaseUtils';
+import BaseUtils from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
 import styles from './styles/index.less';
 
+const FRONT_ROLE_TYPE_LIST = window.Filter('FRONT_ROLE_TYPE_LIST');
 const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
 const RadioGroup = Radio.Group;
+const FormItem = Form.Item;
 @connect(({ staff, user, loading }) => ({
   staff,
   user,
@@ -50,7 +52,6 @@ class EditTransJob extends Component {
       isShowModal: false,
     };
     this.state = assignUrlParams(initState, urlParams);
-    this.baseUtils = new BaseUtils();
   }
 
   componentDidMount() {
@@ -73,7 +74,7 @@ class EditTransJob extends Component {
     ) {
       const { positionType } = this.state;
       const responseComList = nextprops.user.listOrg.response.data || [];
-      this.handleOrgList(this.handleGroupLevel(positionType) || 3, responseComList);
+      this.handleOrgList(positionType, responseComList);
       this.setState({ responseComList });
     }
   }
@@ -116,7 +117,6 @@ class EditTransJob extends Component {
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
       const { effectDate, positionType, cascader, canceled } = values;
-      console.log(canceled);
       if (canceled !== 1) {
         if (!effectDate || !positionType) {
           return;
@@ -125,7 +125,7 @@ class EditTransJob extends Component {
 
       const groupObj = {};
       const groupArr = ['collegeId', 'familyId', 'groupId'];
-      const isNoPassGroup = ['boss', 'admin', 'others'].find(item => item === positionType);
+      const isNoPassGroup = this.disabledGroupType(positionType) === 0;
       groupArr.forEach((item, index) => {
         groupObj[item] = !isNoPassGroup ? cascader[index] || null : null;
       });
@@ -153,39 +153,12 @@ class EditTransJob extends Component {
     const positionType = value;
     // this.handleOrgList(value);
     this.props.form.setFieldsValue({ cascader: [] });
-    this.handleOrgList(this.handleGroupLevel(value));
+    this.handleOrgList(value);
     this.setState({ positionType });
   };
-  handleGroupLevel = groupType => {
-    let num = 3;
-    switch (groupType) {
-      case 'college':
-        num = 1;
-        // this.handleOrgList(1);
-        break;
-      case 'family':
-        num = 2;
-        // this.handleOrgList(2);
-        break;
-      case 'class':
-        num = 3;
-        // this.handleOrgList(3);
-        break;
-      case 'group':
-        num = 3;
-        // this.handleOrgList(3);
-        break;
-      case 'others':
-        break;
-      default:
-        num = 3;
-        // this.handleOrgList(3);
-        break;
-    }
-    return num;
-  };
-  handleOrgList = (leveNum = 3, dataScore = null) => {
+  handleOrgList = (type = '', dataScore = null) => {
     const { responseComList = [] } = this.state;
+    const leveNum = this.disabledGroupType(type);
     const handleData = dataScore || responseComList.slice(0);
     const splitOrgList = data => {
       if (!data) {
@@ -253,11 +226,14 @@ class EditTransJob extends Component {
   backToList = () => {
     this.props.history.goBack();
   };
+  disabledGroupType = (type = '') => {
+    const obj = FRONT_ROLE_TYPE_LIST.find(item => item.id === type);
+    return obj ? Number(obj.level) : 3;
+  };
   render() {
     const { staff = {}, creatLoading } = this.props;
     const employeeInfo = staff.employeeInfo || {};
     const { orgList, positionType, canceled, isShowModal, effectDate, groupList } = this.state;
-    const { FormItem, groupTypeObj } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
     const datePicker = (
       <DatePicker
@@ -278,20 +254,19 @@ class EditTransJob extends Component {
               <li>
                 <span className={styles.labelText}>邮箱:</span>
                 <span className={styles.labelItem}>
-                  {this.baseUtils.removeMailSymbal(employeeInfo.mail)}
+                  {BaseUtils.removeMailSymbal(employeeInfo.mail)}
                 </span>
               </li>
               <li>
                 <span className={styles.labelText}>现任岗位:</span>
                 <span className={styles.labelItem}>
-                  {this.baseUtils.returnGroupType(employeeInfo.userType)}
+                  {BaseUtils.returnGroupType(employeeInfo.userType)}
                 </span>
               </li>
               <li>
                 <span className={styles.labelText}>现任负责单位:</span>
                 <span className={styles.labelItem}>
-                  {employeeInfo.showName ||
-                    this.baseUtils.returnOrganization(employeeInfo.userType)}
+                  {employeeInfo.showName || BaseUtils.returnOrganization(employeeInfo.userType)}
                 </span>
               </li>
               <li>
@@ -337,9 +312,9 @@ class EditTransJob extends Component {
                         <Option value="" key={1}>
                           ---{' '}
                         </Option>
-                        {Object.keys(groupTypeObj).map(item => (
-                          <Option value={item} key={item}>
-                            {groupTypeObj[item]}
+                        {BaseUtils.groupTypeObj.map(item => (
+                          <Option value={item.id} key={item.id}>
+                            {item.name}
                           </Option>
                         ))}
                       </Select>
@@ -355,11 +330,7 @@ class EditTransJob extends Component {
                       initialValue: groupList,
                       rules: [
                         {
-                          required:
-                            canceled !== 1 &&
-                            positionType !== 'others' &&
-                            positionType !== 'boss' &&
-                            positionType !== 'admin',
+                          required: canceled !== 1 && this.disabledGroupType(positionType) !== 0,
                           message: '请选择有效负责单位',
                         },
                       ],
@@ -369,12 +340,7 @@ class EditTransJob extends Component {
                         onChange={this.onChangeCascader}
                         fieldNames={{ label: 'name', value: 'id', children: 'list' }}
                         style={{ width: 230, height: 32 }}
-                        disabled={
-                          positionType === 'others' ||
-                          positionType === 'boss' ||
-                          positionType === 'admin' ||
-                          canceled === 1
-                        }
+                        disabled={this.disabledGroupType(positionType) === 0 || canceled === 1}
                       />
                     )}
                   </FormItem>

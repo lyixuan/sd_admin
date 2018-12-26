@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button, Form, Input, Row, Col, Select } from 'antd';
 import { assignUrlParams } from 'utils/utils';
-import { BaseUtils } from './BaseUtils';
+import BaseUtils from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
@@ -12,16 +12,12 @@ import { renderAuthButtonList } from './_staffAuthMap';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const JOB_STATUS = window.Filter('JOB_STATUS');
 let propsVal = '';
-const jobStatus = {
-  全部: '',
-  在岗: 0,
-  休假中: 1,
-  已离职: 2,
-  待转岗: 3,
-  待休假: 4,
-  待离职: 5,
-};
+const jobStatus = {};
+JOB_STATUS.forEach(item => {
+  jobStatus[item.name] = item.id ? Number(item.id) : item.id;
+});
 
 @connect(({ staff, loading }) => ({
   staff,
@@ -42,7 +38,6 @@ class StaffList extends Component {
       },
     };
     this.state = assignUrlParams(initState, urlParams);
-    this.baseUtils = new BaseUtils();
   }
 
   // 页面render之前需要请求的接口
@@ -155,9 +150,9 @@ class StaffList extends Component {
     return data.map(item => {
       return {
         ...item,
-        mail: this.baseUtils.removeMailSymbal(item.mail),
-        userType: this.baseUtils.returnGroupType(item.userType),
-        showName: item.showName || this.baseUtils.returnOrganization(item.userType),
+        mail: BaseUtils.removeMailSymbal(item.mail),
+        userType: BaseUtils.returnGroupType(item.userType),
+        showName: item.showName || BaseUtils.returnOrganization(item.userType),
         key: item.id,
       };
     });

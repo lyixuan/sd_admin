@@ -31,6 +31,16 @@ export const FRONT_ROLE_TYPE_LIST = [
   { id: 'csleader', name: '客诉组长', level: '1' },
   { id: 'csofficer', name: '客诉专员', level: '1' },
 ];
+// 岗位状态
+export const JOB_STATUS = [
+  { id: '', name: '全部' },
+  { id: '0', name: '在岗' },
+  { id: '1', name: '休假中' },
+  { id: '2', name: '已离职' },
+  { id: '3', name: '待转岗' },
+  { id: '4', name: '待休假' },
+  { id: '5', name: '待离职' },
+];
 // 访问权限
 export const VISIT_RIGHT_LIST = [
   { id: 'scoreView', name: '学分' },
@@ -55,6 +65,7 @@ export default {
   ADMIN_AUTH_LIST,
   ADMIN_USER,
   FRONT_ROLE_TYPE_LIST,
+  JOB_STATUS,
   VISIT_RIGHT_LIST,
   DATA_ANALYST_ID,
   TABLE_PAGES_NUM,
