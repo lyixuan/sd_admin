@@ -30,7 +30,7 @@ class EditUserTable extends Component {
       mail: this.props.mail || '',
       visible: false,
       clickFlag: 1, // 1为创建进入，2为编辑进入
-      userType: null,
+      userType: 'class',
       shownameid: null,
       privilege: null,
       positionId: null,
@@ -43,14 +43,16 @@ class EditUserTable extends Component {
 
   // 编辑岗位函数
   onEdit = key => {
-    const userTypeVal = key.userType;
-    const shownameidVal = key.shownameid;
-    const strs = !shownameidVal ? [] : shownameidVal.split(',');
-    responseComList = this.responseComListFun(userTypeVal);
-    const arr = strs.map(el => {
-      return Number(el);
-    });
-    flag2 = FRONT_ROLE_TYPE_LIST.find(items => items.name === userTypeVal).id;
+    const aa = key.userType;
+    const bb = key.shownameid;
+    const strs = !bb ? [] : bb.split(',');
+    responseComList = this.responseComListFun(aa);
+    const arr = !strs
+      ? []
+      : strs.map(el => {
+          return Number(el);
+        });
+    flag2 = FRONT_ROLE_TYPE_LIST.find(items => items.name === aa).id;
     flag = flag2;
     const defaultCheckedList = [];
     if (key.scoreView === '有') {
@@ -254,13 +256,13 @@ class EditUserTable extends Component {
   };
 
   handleSelectChange = value => {
-    const roleType = value;
+    const aa = value;
     if (this.state.clickFlag === 1) {
-      flag1 = roleType;
+      flag1 = aa;
     } else {
-      flag2 = roleType;
+      flag2 = aa;
     }
-    flag = roleType;
+    flag = aa;
     const responseValue = [];
     const userVal = this.props.user;
     const listOrgValues = !userVal.listOrg.response
@@ -392,9 +394,10 @@ class EditUserTable extends Component {
   // 模态框回显
   editName = e => {
     const userVal = this.props.user;
-    const { getUserlistData = null } = userVal;
-    const { data = {} } = getUserlistData;
-    const arrValue = !data.generalAttribute ? null : data.generalAttribute;
+    const aaa = !userVal.getUserlistData ? null : userVal.getUserlistData;
+    const arrValue = !aaa
+      ? null
+      : !aaa.data ? null : !aaa.data.generalAttribute ? null : aaa.data.generalAttribute;
     this.handleSearch(e, arrValue);
   };
 
@@ -497,8 +500,7 @@ class EditUserTable extends Component {
                         validator(rule, value, callback) {
                           if (typeof value[0] === 'string' || !value[0]) {
                             if (
-                              FRONT_ROLE_TYPE_LIST.find(items => items.id === flag)
-                                .isPerformance === 0 ||
+                              FRONT_ROLE_TYPE_LIST.find(items => items.id === flag).level === '0' ||
                               currentstate === 2
                             ) {
                               callback();
@@ -517,12 +519,11 @@ class EditUserTable extends Component {
                       style={{ width: 280 }}
                       disabled={
                         this.state.clickFlag === 1
-                          ? FRONT_ROLE_TYPE_LIST.find(items => items.id === flag1).isPerformance ===
-                            0
+                          ? FRONT_ROLE_TYPE_LIST.find(items => items.id === flag1).level === '0'
                             ? disabled
                             : false
-                          : FRONT_ROLE_TYPE_LIST.find(items => items.id === flag2).isPerformance ===
-                              0 || this.state.privilege === 1
+                          : FRONT_ROLE_TYPE_LIST.find(items => items.id === flag2).level === '0' ||
+                            this.state.privilege === 1
                             ? disabled
                             : false
                       }
