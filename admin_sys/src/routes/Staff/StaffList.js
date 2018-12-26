@@ -154,6 +154,7 @@ class StaffList extends Component {
         userType: BaseUtils.returnGroupType(item.userType),
         showName: item.showName || BaseUtils.returnOrganization(item.userType),
         key: item.id,
+        currentStateName: window.Filter(`JOB_STATUS|id:${item.currentState}`),
       };
     });
   };
