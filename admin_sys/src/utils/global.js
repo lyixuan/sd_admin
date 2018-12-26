@@ -37,7 +37,9 @@ window.Filter = param => {
       // 获取string
       const type = condition.split(':')[0];
       const value = condition.split(':')[1];
-      if (result && Array.isArray(result) && type && value) {
+      if (value === '') {
+        result = null;
+      } else if (result && Array.isArray(result) && type) {
         // 存在第二个参数，查询常量名称存在，且常量值为数组，且有id或name参数
 
         const list = [...result];
@@ -52,8 +54,6 @@ window.Filter = param => {
             break;
           }
         }
-      } else if (!value) {
-        result = null;
       } else {
         console.warn('参数格式错误');
         return false;
