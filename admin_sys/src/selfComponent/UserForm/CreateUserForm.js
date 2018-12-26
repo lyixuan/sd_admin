@@ -127,7 +127,13 @@ class CreateUserForm extends Component {
         });
         return 0;
       });
-    } else if (flag === 'college') {
+    } else if (
+      flag === 'college' ||
+      flag === 'csmanager' ||
+      flag === 'cssupervisor' ||
+      flag === 'csleader' ||
+      flag === 'csofficer'
+    ) {
       newResponseComList.map(item => {
         responseValue.push({
           value: item.id,
@@ -341,7 +347,7 @@ class CreateUserForm extends Component {
                     {
                       validator(rule, value, callback) {
                         if (!value) {
-                          callback({ message: '请选择权岗位！' });
+                          callback({ message: '请选择前端角色！' });
                         }
                         callback();
                       },
@@ -366,7 +372,7 @@ class CreateUserForm extends Component {
                     {
                       validator(rule, value, callback) {
                         if (!value) {
-                          callback({ message: '请选择权微信部门！' });
+                          callback({ message: '请选择微信部门！' });
                         }
                         callback();
                       },

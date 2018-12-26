@@ -17,15 +17,19 @@ export const GLOBAL_HEADER_SELECT = [
   { id: 'logout', name: '退出登录', icon: 'logout' },
 ];
 
-// 前端角色类型
+// 前端角色类型,level含义是组织结构的层级，1代表选择到学院，2表示选择学院+家族，3代表选择三级，0代表不可选择
 export const FRONT_ROLE_TYPE_LIST = [
-  { id: 'college', name: '院长或副院长' },
-  { id: 'family', name: '家族长' },
-  { id: 'group', name: '运营长' },
-  { id: 'class', name: '班主任' },
-  { id: 'admin', name: '管理员' },
-  { id: 'boss', name: '管理层' },
-  { id: 'others', name: '无绩效岗位' },
+  { id: 'college', name: '院长或副院长', level: '1' },
+  { id: 'family', name: '家族长', level: '2' },
+  { id: 'group', name: '运营长', level: '3' },
+  { id: 'class', name: '班主任', level: '3' },
+  { id: 'admin', name: '管理员', level: '0' },
+  { id: 'boss', name: '管理层', level: '0' },
+  { id: 'others', name: '无绩效岗位', level: '0' },
+  { id: 'csmanager', name: '客诉经理', level: '1' },
+  { id: 'cssupervisor', name: '客诉主管', level: '1' },
+  { id: 'csleader', name: '客诉组长', level: '1' },
+  { id: 'csofficer', name: '客诉专员', level: '1' },
 ];
 // 访问权限
 export const VISIT_RIGHT_LIST = [

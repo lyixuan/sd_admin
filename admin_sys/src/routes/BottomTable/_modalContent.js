@@ -12,7 +12,7 @@ export default class ModalContent extends React.Component {
     this.state = {
       bottomDate: '',
       collegeId: null,
-      type: null,
+      type: 0,
     };
   }
   // 底表类型选择
@@ -61,6 +61,7 @@ export default class ModalContent extends React.Component {
 
     const options = this.selectOptions();
     const isDataAnalyst = this.isDataAnalystFn();
+    this.props.isDataAnalyst(isDataAnalyst);
 
     return (
       <>

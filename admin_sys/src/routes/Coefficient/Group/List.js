@@ -113,7 +113,7 @@ class List extends Component {
         render: (text, record) => {
           return (
             <div>
-              <AuthorizedButton authority="/account/editAccount">
+              <AuthorizedButton authority="/performance/groupCoefficient/check">
                 <span
                   style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                   onClick={() => this.detail(record)}
@@ -121,7 +121,7 @@ class List extends Component {
                   查看详情
                 </span>
               </AuthorizedButton>
-              <AuthorizedButton authority="/account/editAccount">
+              <AuthorizedButton authority="/performance/groupCoefficient/editor">
                 <span
                   style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                   onClick={() => this.onEdit(record)}
@@ -153,7 +153,7 @@ class List extends Component {
       <ContentLayout
         routerData={this.props.routerData}
         contentButton={
-          <AuthorizedButton authority="/account/createAccount">
+          <AuthorizedButton authority="/performance/groupCoefficient/create">
             <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
               + 创建
             </Button>

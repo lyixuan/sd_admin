@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { message, Button, Select, DatePicker } from 'antd';
 import moment from 'moment';
-import 'moment/locale/zh-cn';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
-import { formatDate } from '../../utils/FormatDate';
 import { getAuthority } from '../../utils/authority';
 import { BOTTOM_TABLE_LIST, ADMIN_AUTH_LIST, ADMIN_USER } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
@@ -15,7 +13,6 @@ import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
-moment.locale('zh-cn');
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
@@ -46,8 +43,8 @@ class BottomList extends Component {
       pageSize: 30,
       visible: false,
     };
+    this.dateArea = [];
   }
-
   componentDidMount() {
     const initVal = this.props.getUrlParams();
     const initParams = {};
@@ -55,10 +52,14 @@ class BottomList extends Component {
       initParams.bottomTime = initVal.bottomTime ? Date.parse(new Date(initVal.bottomTime)) : null;
       initParams.type = initVal.type && initVal.type !== '' ? Number(initVal.type) : '';
     }
-    this.getDataList(initParams); // 列表数据
     this.getRange(); // 时间范围
     this.disDateList(); // 不可选时间
     this.getAllOrg(); // 所有学院列表
+  }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(nextProps.bottomTable) !== JSON.stringify(this.props.bottomTable)) {
+      this.getDateRange(nextProps.bottomTable);
+    }
   }
 
   onSubmit = data => {
@@ -67,17 +68,15 @@ class BottomList extends Component {
     const pageNum = data.pageNum ? Number(data.pageNum) : 0;
     this.getDataList({ bottomTime, type, pageNum }); // 列表数据
   };
+
   // 获取最新时间和最小时间
-  getDateRange = () => {
-    const { bottomTable = {} } = this.props;
+  getDateRange = (bottomTable = {}) => {
     const { dateArea = {}, disDateList = [] } = bottomTable;
     const { content = [] } = disDateList;
-    const disabledDate = content.map(item => item.dateTime);
-    return {
-      disabledDate,
-      newTime: dateArea.endTime, // 最新可用时间
-      minTime: Math.min(dateArea.beginTime, Number(dateArea.endTime) - 10 * 24 * 3600000), // 最小时间
-    };
+    const { beginTime = '', endTime = '' } = dateArea;
+    const disabledDate = content.map(item => moment(item.dateTime).format(dateFormat));
+    const newTime = this.haddleMaxDate(endTime);
+    this.dateArea = this.haddleDateArea(newTime, beginTime, disabledDate);
   };
 
   // 列表数据
@@ -105,6 +104,32 @@ class BottomList extends Component {
     });
   };
 
+  isDataAnalyst = false; // 是否是数据分析员
+  haddleMaxDate = endTime => {
+    const endDate = endTime || moment().valueOf;
+    const taday_13 = moment().format('YYYY-MM-DD 13:30');
+    const isBeforeTaday_13 = moment().isBefore(taday_13);
+    let newDate = null;
+    if (isBeforeTaday_13) {
+      newDate = moment().subtract(2, 'd');
+    } else {
+      newDate = moment().subtract(1, 'd');
+    }
+    return Math.min(endDate, newDate.valueOf());
+  };
+  haddleDateArea = (maxTime, minTime, disabledDate) => {
+    const dateArr = [];
+    for (let i = maxTime; i >= minTime && dateArr.length < 10; i -= 86400000) {
+      const isSameDate = disabledDate.find(
+        item => moment(item).format(dateFormat) === moment(i).format(dateFormat)
+      );
+      if (!isSameDate) {
+        dateArr.push(moment(i).format(dateFormat));
+      }
+    }
+    return dateArr;
+  };
+
   // 点击某一页函数
   changePage = (pageNum, size) => {
     this.getDataList({
@@ -124,8 +149,11 @@ class BottomList extends Component {
   // 模态框确定
   clickModalOK = () => {
     const { modalParam, type, userId, bottomTime, pageNum, pageSize } = this.state;
-    if (modalParam.bottomDate === '' || modalParam.type === null) {
-      message.error('请完善所有信息');
+    if (modalParam.bottomDate === '') {
+      message.error('请选择底表时间');
+      return;
+    } else if (this.isDataAnalyst && modalParam.collegeId === null) {
+      message.error('请选择学院');
       return;
     }
     const sendParam = {
@@ -149,6 +177,11 @@ class BottomList extends Component {
   addTasks = () => {
     this.setState({
       visible: true,
+      modalParam: {
+        bottomDate: '',
+        collegeId: null,
+        type: 0,
+      },
     });
   };
   downLoadBTable = record => {
@@ -170,22 +203,20 @@ class BottomList extends Component {
   };
   // 时间控件可展示的时间范围
   disabledDate = current => {
-    const time = this.getDateRange();
-    const disableData = time.disabledDate.find(
-      item => formatDate(moment(current).valueOf()).substr(0, 10) === formatDate(item).substr(0, 10)
-    );
-    return (
-      disableData ||
-      current > moment(formatDate(time.newTime)) ||
-      current < moment(formatDate(time.minTime))
-    );
+    const currentDate = current || moment();
+    const currentFormat = moment(currentDate.format(dateFormat));
+    const disableData = this.dateArea.find(item => currentFormat.isSame(item));
+    return !disableData;
+  };
+  isDataAnalystFn = bol => {
+    this.isDataAnalyst = bol;
   };
   render() {
     const { bottomTable = {}, loading, isLoading } = this.props;
     const { dataList = [], findAllOrg = [], totalNum = 0 } = bottomTable;
-    const columns = columnsFn(this.downLoadBTable);
+    const columns = columnsFn(this.downLoadBTable, 30);
     const WrappedAdvancedSearchForm = () => (
-      <FormFilter onSubmit={this.onSubmit} isLoading={isLoading}>
+      <FormFilter onSubmit={this.onSubmit} isLoading={isLoading} modal={{ type: '' }}>
         <div>
           <span style={{ lineHeight: '32px' }}>底表类型：</span>
           <Select
@@ -250,6 +281,7 @@ class BottomList extends Component {
               updateModalData={this.updateModalData}
               selectOption={findAllOrg}
               authList={getAuthority(ADMIN_AUTH_LIST)}
+              isDataAnalyst={bol => this.isDataAnalystFn(bol)}
             />
           }
           showModal={bol => this.showModal(bol)}

@@ -32,7 +32,7 @@ class UserLayout extends React.PureComponent {
                 </div>
                 <div className={styles.loginContainer}>
                   <div className={styles.loginContent}>
-                    <span className={styles.header}>登录小德后台管理系统</span>
+                    <span className={styles.header}>登录小德BI系统</span>
                     <div className={styles.login}>
                       <Switch>
                         {getRoutes(match.path, routerData).map(item => (
