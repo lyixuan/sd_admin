@@ -6,7 +6,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import { userTypeData } from '../../utils/dataDictionary';
+import { FRONT_ROLE_TYPE_LIST } from '../../utils/constants';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -106,7 +106,7 @@ class UserList extends Component {
         name: item.name,
         privilege: item.privilege ? '有' : '无',
         mail: item.entUserId,
-        userType: userTypeData[item.userType],
+        userType: FRONT_ROLE_TYPE_LIST.find(items => items.id === item.userType).name,
         showName: !item.showName
           ? item.userType === 'others' ? '无绩效岗位' : null
           : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")

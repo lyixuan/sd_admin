@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import common from '../Common/common.css';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
-import { userTypeData, userTypeDataReset } from '../../utils/dataDictionary';
+import { FRONT_ROLE_TYPE_LIST } from '../../utils/constants';
 
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
@@ -53,8 +53,8 @@ class EditUserTable extends Component {
       : strs.map(el => {
           return Number(el);
         });
-    userTypeFlag = userTypeDataReset[aa];
-    flag = userTypeDataReset[aa];
+    userTypeFlag = FRONT_ROLE_TYPE_LIST.find(items => items.name === aa).id;
+    flag = userTypeFlag;
     const defaultCheckedList = [];
     if (key.scoreView === '有') {
       defaultCheckedList.push('scoreView');
@@ -67,7 +67,7 @@ class EditUserTable extends Component {
     }
     this.setState({
       clickFlag: 2,
-      userType: userTypeDataReset[aa],
+      userType: userTypeFlag,
       shownameid: arr,
       visible: true,
       privilege: key.privilege === '无' ? 0 : 1,
@@ -186,8 +186,7 @@ class EditUserTable extends Component {
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
-    const levelValue = !aa ? 'class' : userTypeDataReset[aa];
-    const userType = levelValue;
+    const userType = !aa ? 'class' : FRONT_ROLE_TYPE_LIST.find(items => items.name === aa).id;
     if (userType === 'family') {
       newResponseComList.map(item => {
         const firstChldren = [];
@@ -323,6 +322,7 @@ class EditUserTable extends Component {
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
+    console.log(val);
     val.map((item, index) =>
       data.push({
         key: index,
@@ -330,7 +330,7 @@ class EditUserTable extends Component {
         scoreView: item.scoreView ? '有' : '无',
         privilegeView: item.privilegeView ? '有' : '无',
         endView: item.endView ? '有' : '无',
-        userType: userTypeData[item.usertype],
+        userType: FRONT_ROLE_TYPE_LIST.find(items => items.id === item.usertype).name,
         showName: !item.showname
           ? item.usertype === 'others' ? '无绩效岗位' : null
           : item.showname.replace(/,/g, ' | '),
