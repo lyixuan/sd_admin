@@ -176,14 +176,14 @@ class EditUserTable extends Component {
     this.setDialogSHow(false);
   };
 
-  responseComListFun = aa => {
+  responseComListFun = val => {
     const responseValue = [];
     const userVal = this.props.user;
     const listOrgValues = !userVal.listOrg.response
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
-    const userType = !aa ? 'class' : FRONT_ROLE_TYPE_LIST.find(items => items.name === aa).id;
+    const userType = !val ? 'class' : FRONT_ROLE_TYPE_LIST.find(items => items.name === val).id;
     if (userType === 'family') {
       newResponseComList.map(item => {
         const firstChldren = [];
