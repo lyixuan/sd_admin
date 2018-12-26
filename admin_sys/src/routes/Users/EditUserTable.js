@@ -14,11 +14,11 @@ const { Option } = Select;
 const RadioGroup = Radio.Group;
 let flag1 = 'class'; // 创建时候的前端角色标示
 let flag2 = 'class'; // 编辑时候的前端角色标示
-let flag = 'class';
-let responseComList = [];
-let responseComListBackup = [];
+let flag = 'class'; // 为了方便组织的层级循环使用，不同的flag组织的层级是不一样的
+let responseComList = []; // 不同flag的层级结构
+let responseComListBackup = []; // 所有的层级结构
 let propsVal = '';
-let userTypeFlag = 'class';
+// let userTypeFlag = 'class';
 
 @connect(({ user, loading }) => ({
   user,
@@ -53,8 +53,8 @@ class EditUserTable extends Component {
       : strs.map(el => {
           return Number(el);
         });
-    userTypeFlag = FRONT_ROLE_TYPE_LIST.find(items => items.name === aa).id;
-    flag = userTypeFlag;
+    flag2 = FRONT_ROLE_TYPE_LIST.find(items => items.name === aa).id;
+    flag = flag2;
     const defaultCheckedList = [];
     if (key.scoreView === '有') {
       defaultCheckedList.push('scoreView');
@@ -67,7 +67,7 @@ class EditUserTable extends Component {
     }
     this.setState({
       clickFlag: 2,
-      userType: userTypeFlag,
+      userType: flag2,
       shownameid: arr,
       visible: true,
       privilege: key.privilege === '无' ? 0 : 1,
@@ -262,7 +262,7 @@ class EditUserTable extends Component {
       flag1 = aa;
     } else {
       flag2 = aa;
-      userTypeFlag = aa;
+      // userTypeFlag = aa;
     }
     flag = aa;
     const responseValue = [];
@@ -322,7 +322,6 @@ class EditUserTable extends Component {
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
-    console.log(val);
     val.map((item, index) =>
       data.push({
         key: index,
@@ -531,10 +530,7 @@ class EditUserTable extends Component {
                           ? flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others'
                             ? disabled
                             : false
-                          : userTypeFlag === 'admin' ||
-                            userTypeFlag === 'boss' ||
-                            userTypeFlag === 'others' ||
-                            flag2 === 'admin' ||
+                          : flag2 === 'admin' ||
                             flag2 === 'boss' ||
                             flag2 === 'others' ||
                             this.state.privilege === 1
@@ -562,7 +558,7 @@ class EditUserTable extends Component {
                         disabled={
                           this.state.clickFlag === 1
                             ? flag1 === 'admin' ? disabled : false
-                            : userTypeFlag === 'admin' || flag2 === 'admin'
+                            : flag2 === 'admin'
                               ? disabled
                               : this.state.privilege === 1
                                 ? this.state.userType === 'others' || this.state.currentstate === 2
