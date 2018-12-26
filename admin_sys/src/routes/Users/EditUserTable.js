@@ -43,16 +43,14 @@ class EditUserTable extends Component {
 
   // 编辑岗位函数
   onEdit = key => {
-    const aa = key.userType;
-    const bb = key.shownameid;
-    const strs = !bb ? [] : bb.split(',');
-    responseComList = this.responseComListFun(aa);
-    const arr = !strs
-      ? []
-      : strs.map(el => {
-          return Number(el);
-        });
-    flag2 = FRONT_ROLE_TYPE_LIST.find(items => items.name === aa).id;
+    const userTypeVal = key.userType;
+    const shownameidVal = key.shownameid;
+    const strs = !shownameidVal ? [] : shownameidVal.split(',');
+    responseComList = this.responseComListFun(userTypeVal);
+    const arr = strs.map(el => {
+      return Number(el) || [];
+    });
+    flag2 = FRONT_ROLE_TYPE_LIST.find(items => items.name === userTypeVal).id;
     flag = flag2;
     const defaultCheckedList = [];
     if (key.scoreView === '有') {
@@ -256,13 +254,13 @@ class EditUserTable extends Component {
   };
 
   handleSelectChange = value => {
-    const aa = value;
+    const roleType = value;
     if (this.state.clickFlag === 1) {
-      flag1 = aa;
+      flag1 = roleType;
     } else {
-      flag2 = aa;
+      flag2 = roleType;
     }
-    flag = aa;
+    flag = roleType;
     const responseValue = [];
     const userVal = this.props.user;
     const listOrgValues = !userVal.listOrg.response
