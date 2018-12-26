@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import { Button, Form, DatePicker, Row, Col, message, Table } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
-import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 
@@ -182,34 +181,30 @@ class CacheManage extends Component {
             </Col>
             <Col span={8} style={{ textAlign: 'center' }}>
               <FormItem>
-                <AuthorizedButton authority="/complaint/complaintAdd">
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className={common.createButton}
-                    loading={submit}
-                    disabled={flag === 1 ? false : disabled}
-                  >
-                    确定
-                  </Button>
-                </AuthorizedButton>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className={common.createButton}
+                  loading={submit}
+                  disabled={flag === 1 ? false : disabled}
+                >
+                  确定
+                </Button>
               </FormItem>
             </Col>
           </Row>
           <Row gutter={24}>
             <Col span={8}>
               <FormItem>
-                <AuthorizedButton authority="/complaint/complaintAdd">
-                  <Button
-                    type="primary"
-                    onClick={this.fresh}
-                    className={common.createButton}
-                    loading={cacheUpdate}
-                    style={{ marginTop: '20px' }}
-                  >
-                    刷新
-                  </Button>
-                </AuthorizedButton>
+                <Button
+                  type="primary"
+                  onClick={this.fresh}
+                  className={common.createButton}
+                  loading={cacheUpdate}
+                  style={{ marginTop: '20px' }}
+                >
+                  刷新
+                </Button>
               </FormItem>
             </Col>
           </Row>
