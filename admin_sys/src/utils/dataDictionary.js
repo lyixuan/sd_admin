@@ -6,6 +6,10 @@ const userTypeData = {
   admin: '管理员',
   boss: '管理层',
   others: '无绩效岗位',
+  csmanager: '客诉经理',
+  cssupervisor: '客诉主管',
+  csleader: '客诉组长',
+  csofficer: '客诉专员',
 };
 
 const userTypeDataReset = {
@@ -16,6 +20,10 @@ const userTypeDataReset = {
   管理员: 'admin',
   管理层: 'boss',
   无绩效岗位: 'others',
+  客诉经理: 'csmanager',
+  客诉主管: 'cssupervisor',
+  客诉组长: 'csleader',
+  客诉专员: 'csofficer',
 };
 
 const levelData = {

@@ -301,7 +301,13 @@ class EditUserTable extends Component {
         });
         return 0;
       });
-    } else if (flag === 'college') {
+    } else if (
+      flag === 'college' ||
+      flag === 'csmanager' ||
+      flag === 'cssupervisor' ||
+      flag === 'csleader' ||
+      flag === 'csofficer'
+    ) {
       newResponseComList.map(item => {
         responseValue.push({
           value: item.id,
