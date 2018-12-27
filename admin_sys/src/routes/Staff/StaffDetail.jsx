@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Table, Button } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import moment from 'moment';
-import { BaseUtils } from './BaseUtils';
+import BaseUtils from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import styles from './styles/index.less';
 import common from '../Common/common.css';
@@ -23,7 +23,6 @@ export default class StaffDetail extends Component {
       },
     };
     this.state = assignUrlParams(initState, urlParams);
-    this.baseUtils = new BaseUtils();
   }
   componentDidMount() {
     this.getData();
@@ -73,11 +72,11 @@ export default class StaffDetail extends Component {
       key: item.transferDate + index,
       beforeOrganization: item.beforeOrganization
         ? item.beforeOrganization
-        : this.baseUtils.returnOrganization(item.beforePostitonType),
-      beforePostitonType: this.baseUtils.returnGroupType(item.beforePostitonType),
-      afterPostitonType: this.baseUtils.returnGroupType(item.afterPostitonType),
+        : BaseUtils.returnOrganization(item.beforePostitonType),
+      beforePostitonType: BaseUtils.returnGroupType(item.beforePostitonType),
+      afterPostitonType: BaseUtils.returnGroupType(item.afterPostitonType),
       afterOrganization:
-        item.afterOrganization || this.baseUtils.returnOrganization(item.afterPostitonType),
+        item.afterOrganization || BaseUtils.returnOrganization(item.afterPostitonType),
     }));
     return (
       <ContentLayout routerData={this.props.routerData}>
@@ -94,14 +93,14 @@ export default class StaffDetail extends Component {
             <li>
               <span className={styles.labelText}>现任岗位:</span>
               <span className={styles.labelItem}>
-                {this.baseUtils.returnGroupType(staffDetail.nowPositionType)}
+                {BaseUtils.returnGroupType(staffDetail.nowPositionType)}
               </span>
             </li>
             <li>
               <span className={styles.labelText}>现任负责单位:</span>
               <span className={styles.labelItem}>
                 {staffDetail.nowOrgnization ||
-                  this.baseUtils.returnOrganization(staffDetail.nowPositionType)}
+                  BaseUtils.returnOrganization(staffDetail.nowPositionType)}
               </span>
             </li>
             <li>
@@ -113,12 +112,11 @@ export default class StaffDetail extends Component {
               <span className={styles.labelItem}>{staffDetail.vacationDuration}</span>
             </li>
             <li>
-              <span className={styles.labelText}>离职日期  (非最后工作日期):</span>
+              <span className={styles.labelText}>离职日期 (非最后工作日期):</span>
               <span className={styles.labelItem}>
                 {staffDetail.lastday ? moment(staffDetail.lastday).format(dateFormat) : null}
               </span>
             </li>
-
           </ul>
           <div className={styles.tableConent}>
             <h3 className={styles.tableTitle}>转岗信息:</h3>
