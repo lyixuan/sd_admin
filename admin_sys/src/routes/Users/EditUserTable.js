@@ -6,7 +6,6 @@ import { connect } from 'dva';
 import common from '../Common/common.css';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
-import { FRONT_ROLE_TYPE_LIST } from '../../utils/constants';
 
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
@@ -50,7 +49,7 @@ class EditUserTable extends Component {
     const arr = strs.map(el => {
       return Number(el) || [];
     });
-    flag2 = FRONT_ROLE_TYPE_LIST.find(items => items.name === userTypeVal).id;
+    flag2 = window.BI_Filter(`FRONT_ROLE_TYPE_LIST|name:${userTypeVal}`).id;
     flag = flag2;
     const defaultCheckedList = [];
     if (key.scoreView === '有') {
@@ -183,7 +182,7 @@ class EditUserTable extends Component {
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
-    const userType = !val ? 'class' : FRONT_ROLE_TYPE_LIST.find(items => items.name === val).id;
+    const userType = !val ? 'class' : window.BI_Filter(`FRONT_ROLE_TYPE_LIST|name:${val}`).id;
     if (userType === 'family') {
       newResponseComList.map(item => {
         const firstChldren = [];
@@ -271,7 +270,7 @@ class EditUserTable extends Component {
       privilege: 0,
       responseCom: [],
     });
-    if (FRONT_ROLE_TYPE_LIST.find(items => items.id === flag).level === '0') {
+    if (window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag}`).level === '0') {
       propsVal.form.setFieldsValue({
         responseCom: [],
       });
@@ -296,7 +295,7 @@ class EditUserTable extends Component {
         });
         return 0;
       });
-    } else if (FRONT_ROLE_TYPE_LIST.find(items => items.id === flag).level === '1') {
+    } else if (window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag}`).level === '1') {
       newResponseComList.map(item => {
         responseValue.push({
           value: item.id,
@@ -319,7 +318,7 @@ class EditUserTable extends Component {
         scoreView: item.scoreView ? '有' : '无',
         privilegeView: item.privilegeView ? '有' : '无',
         endView: item.endView ? '有' : '无',
-        userType: FRONT_ROLE_TYPE_LIST.find(items => items.id === item.usertype).name,
+        userType: window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${item.usertype}`).name,
         showName: !item.showname
           ? item.usertype === 'others' ? '无绩效岗位' : null
           : item.showname.replace(/,/g, ' | '),
@@ -448,7 +447,7 @@ class EditUserTable extends Component {
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
-      const roleType = FRONT_ROLE_TYPE_LIST.find(items => items.id === this.state.userType)
+      const roleType = window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${this.state.usertype}`)
         .isPerformance;
       return (
         <div>
@@ -498,7 +497,7 @@ class EditUserTable extends Component {
                         validator(rule, value, callback) {
                           if (typeof value[0] === 'string' || !value[0]) {
                             if (
-                              FRONT_ROLE_TYPE_LIST.find(items => items.id === flag).level === '0' ||
+                              window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag}`).level === '0' ||
                               currentstate === 2
                             ) {
                               callback();
@@ -517,10 +516,10 @@ class EditUserTable extends Component {
                       style={{ width: 280 }}
                       disabled={
                         this.state.clickFlag === 1
-                          ? FRONT_ROLE_TYPE_LIST.find(items => items.id === flag1).level === '0'
+                          ? window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag1}`).level === '0'
                             ? disabled
                             : false
-                          : FRONT_ROLE_TYPE_LIST.find(items => items.id === flag2).level === '0' ||
+                          : window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag2}`).level === '0' ||
                             this.state.privilege === 1
                             ? disabled
                             : false
