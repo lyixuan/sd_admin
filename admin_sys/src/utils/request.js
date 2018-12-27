@@ -21,10 +21,8 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 };
-
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
-    // console.log(response.body.getReader())
     return response;
   }
   const errortext = response.msg || codeMessage[response.status] || response.statusText;
@@ -39,6 +37,15 @@ export function checkoutToken() {
   const tokenObj = getAuthority('admin_user') || {};
   const { userId = '', token = '' } = tokenObj;
   return `${userId}_${token}`;
+}
+export function emitSys(res = {}) {
+  const { dispatch } = store;
+  if (res.code === -1005) {
+    dispatch({
+      type: 'login/logout',
+    });
+  }
+  return res;
 }
 
 /**
@@ -82,6 +89,7 @@ export default function request(url, options) {
       }
       return response.json();
     })
+    .then(emitSys)
     .catch(e => {
       const { dispatch } = store;
       const status = e.name;

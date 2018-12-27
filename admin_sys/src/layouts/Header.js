@@ -11,11 +11,11 @@ import styles from './styles/header.less';
 const { Header } = Layout;
 const RadioGroup = Radio.Group;
 
-@connect(({ login, loading }) => ({
+@connect(({ login = {}, loading }) => ({
   login,
   loading,
   getRoleListLoading: loading.effects['login/CurrentUserListRole'],
-  roleList: login.roleList,
+  roleList: login.roleList || [],
 }))
 export default class SelfHeader extends PureComponent {
   constructor(props) {
