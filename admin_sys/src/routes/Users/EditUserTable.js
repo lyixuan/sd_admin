@@ -37,7 +37,7 @@ class EditUserTable extends Component {
       positionId: null,
       currentstate: null,
       roleId: null,
-      plainOptions: Filter('VISIT_RIGHT_LIST|id->value,name->label'),
+      plainOptions: BI_Filter('VISIT_RIGHT_LIST|id->value,name->label'),
       defaultCheckedList: [],
     };
   }
@@ -486,7 +486,7 @@ class EditUserTable extends Component {
                           : this.state.privilege === 1 ? disabled : false
                       }
                     >
-                      {Filter('FRONT_ROLE_TYPE_LIST').map(v => (
+                      {BI_Filter('FRONT_ROLE_TYPE_LIST').map(v => (
                         <Option value={v.id} key={v.id}>
                           {v.name}
                         </Option>

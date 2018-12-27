@@ -34,7 +34,7 @@ class CreateUserForm extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
       listOrgLiost: listOrgValues || [],
-      plainOptions: Filter('VISIT_RIGHT_LIST|id->value,name->label'),
+      plainOptions: BI_Filter('VISIT_RIGHT_LIST|id->value,name->label'),
       defaultCheckedList: [],
     };
   }
@@ -355,7 +355,7 @@ class CreateUserForm extends Component {
                   ],
                 })(
                   <Select style={{ width: 280 }} onChange={this.handleSelectChange}>
-                    {Filter('FRONT_ROLE_TYPE_LIST').map(v => (
+                    {BI_Filter('FRONT_ROLE_TYPE_LIST').map(v => (
                       <Option value={v.id} key={v.id}>
                         {v.name}
                       </Option>
