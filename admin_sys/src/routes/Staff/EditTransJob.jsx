@@ -9,7 +9,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
 import styles from './styles/index.less';
 
-const FRONT_ROLE_TYPE_LIST = window.Filter('FRONT_ROLE_TYPE_LIST');
+const FRONT_ROLE_TYPE_LIST = window.BI_Filter('FRONT_ROLE_TYPE_LIST');
 const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
 const RadioGroup = Radio.Group;

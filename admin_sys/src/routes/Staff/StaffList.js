@@ -12,7 +12,7 @@ import { renderAuthButtonList } from './_staffAuthMap';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-const JOB_STATUS = window.Filter('JOB_STATUS');
+const JOB_STATUS = window.BI_Filter('JOB_STATUS');
 let propsVal = '';
 const jobStatus = {};
 JOB_STATUS.forEach(item => {
