@@ -447,7 +447,7 @@ class EditUserTable extends Component {
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
-      const roleType = window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${this.state.usertype}`)
+      const roleType = window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${this.state.userType}`)
         .isPerformance;
       return (
         <div>
