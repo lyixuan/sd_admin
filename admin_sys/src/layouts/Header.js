@@ -73,7 +73,7 @@ export default class SelfHeader extends PureComponent {
     this.setState({ visible: false });
   };
   handleMenuList = () => {
-    const selectedGroup = BI_Filter('GLOBAL_HEADER_SELECT');
+    const selectedGroup = window.BI_Filter('GLOBAL_HEADER_SELECT');
     const adminUser = getAuthority(ADMIN_USER) || {};
     const positionCount = adminUser.positionCount || 0;
     //  positionCount<=1  hide  changeRole selectItem
