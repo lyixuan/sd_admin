@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form, Button, DatePicker } from 'antd';
 import { assignUrlParams } from 'utils/utils';
-import { BaseUtils } from './BaseUtils';
+import BaseUtils from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
 import styles from './styles/index.less';
 
 const dateFormat = 'YYYY-MM-DD';
+const FormItem = Form.Item;
 @connect(({ staff, user, loading }) => ({
   staff,
   user,
@@ -32,7 +33,6 @@ class CreateDimission extends Component {
       ],
     };
     this.state = assignUrlParams(initState, urlParams);
-    this.baseUtils = new BaseUtils();
   }
 
   componentDidMount() {
@@ -75,7 +75,6 @@ class CreateDimission extends Component {
   render() {
     const { staff = {}, creatLoading } = this.props;
     const employeeInfo = staff.employeeInfo || {};
-    const { FormItem } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
     const datePicker = <DatePicker format={dateFormat} style={{ width: 230, height: 32 }} />;
     return (
@@ -90,20 +89,19 @@ class CreateDimission extends Component {
               <li>
                 <span className={styles.labelText}>邮箱:</span>
                 <span className={styles.labelItem}>
-                  {this.baseUtils.removeMailSymbal(employeeInfo.mail)}
+                  {BaseUtils.removeMailSymbal(employeeInfo.mail)}
                 </span>
               </li>
               <li>
                 <span className={styles.labelText}>现任岗位:</span>
                 <span className={styles.labelItem}>
-                  {this.baseUtils.returnGroupType(employeeInfo.userType)}
+                  {BaseUtils.returnGroupType(employeeInfo.userType)}
                 </span>
               </li>
               <li>
                 <span className={styles.labelText}>现任负责单位:</span>
                 <span className={styles.labelItem}>
-                  {employeeInfo.showName ||
-                    this.baseUtils.returnOrganization(employeeInfo.userType)}
+                  {employeeInfo.showName || BaseUtils.returnOrganization(employeeInfo.userType)}
                 </span>
               </li>
               <li className={styles.marB_24}>
@@ -117,11 +115,9 @@ class CreateDimission extends Component {
                   </FormItem>
                 </span>
               </li>
-              <li style={{marginTop:'-1.5rem',color:'#9c9b9b'}}>
+              <li style={{ marginTop: '-1.5rem', color: '#9c9b9b' }}>
                 <span className={styles.labelText} />
-                <span className={styles.labelItem}>
-                  (*非最后工作日期)
-                </span>
+                <span className={styles.labelItem}>(*非最后工作日期)</span>
               </li>
             </ul>
           </Form>

@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form, Button, Select, DatePicker, Cascader } from 'antd';
 import { assignUrlParams } from 'utils/utils';
-import { BaseUtils } from './BaseUtils';
+import BaseUtils from './BaseUtils';
 import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
 import styles from './styles/index.less';
 
+const FRONT_ROLE_TYPE_LIST = window.Filter('FRONT_ROLE_TYPE_LIST');
 const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
+const FormItem = Form.Item;
 @connect(({ staff, user, loading }) => ({
   staff,
   user,
@@ -44,7 +46,6 @@ class CreateTransJob extends Component {
       positionType: '',
     };
     this.state = assignUrlParams(initState, urlParams);
-    this.baseUtils = new BaseUtils();
   }
 
   componentDidMount() {
@@ -90,7 +91,7 @@ class CreateTransJob extends Component {
       }
       const groupObj = {};
       const groupArr = ['collegeId', 'familyId', 'groupId'];
-      const isNoPassGroup = ['boss', 'admin', 'others'].find(item => item === positionType);
+      const isNoPassGroup = this.disabledGroupType(positionType) === 0;
       groupArr.forEach((item, index) => {
         groupObj[item] = !isNoPassGroup ? cascader[index] || null : null;
       });
@@ -113,24 +114,9 @@ class CreateTransJob extends Component {
     this.setState({ positionType });
   };
   handleGroupLevel = groupType => {
-    switch (groupType) {
-      case 'college':
-        this.handleOrgList(1);
-        break;
-      case 'family':
-        this.handleOrgList(2);
-        break;
-      case 'class':
-        this.handleOrgList(3);
-        break;
-      case 'group':
-        this.handleOrgList(3);
-        break;
-      case 'others':
-        break;
-      default:
-        this.handleOrgList(3);
-        break;
+    const level = this.disabledGroupType(groupType);
+    if (level !== 0) {
+      this.handleOrgList(level);
     }
   };
   handleOrgList = (leveNum = 3, dataScore = null) => {
@@ -172,11 +158,14 @@ class CreateTransJob extends Component {
   backToList = () => {
     this.props.history.goBack();
   };
+  disabledGroupType = (type = '') => {
+    const obj = FRONT_ROLE_TYPE_LIST.find(item => item.id === type);
+    return obj ? Number(obj.level) : 3;
+  };
   render() {
     const { staff = {}, creatLoading } = this.props;
     const employeeInfo = staff.employeeInfo || {};
     const { orgList, positionType } = this.state;
-    const { FormItem, groupTypeObj } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
     const datePicker = <DatePicker format={dateFormat} style={{ width: 230, height: 32 }} />;
     return (
@@ -191,20 +180,19 @@ class CreateTransJob extends Component {
               <li>
                 <span className={styles.labelText}>邮箱:</span>
                 <span className={styles.labelItem}>
-                  {this.baseUtils.removeMailSymbal(employeeInfo.mail)}
+                  {BaseUtils.removeMailSymbal(employeeInfo.mail)}
                 </span>
               </li>
               <li>
                 <span className={styles.labelText}>现任岗位:</span>
                 <span className={styles.labelItem}>
-                  {this.baseUtils.returnGroupType(employeeInfo.userType)}
+                  {BaseUtils.returnGroupType(employeeInfo.userType)}
                 </span>
               </li>
               <li>
                 <span className={styles.labelText}>现任负责单位:</span>
                 <span className={styles.labelItem}>
-                  {employeeInfo.showName ||
-                    this.baseUtils.returnOrganization(employeeInfo.userType)}
+                  {employeeInfo.showName || BaseUtils.returnOrganization(employeeInfo.userType)}
                 </span>
               </li>
               <li className={styles.marB_24}>
@@ -234,9 +222,9 @@ class CreateTransJob extends Component {
                         <Option value="" key={1}>
                           ---{' '}
                         </Option>
-                        {Object.keys(groupTypeObj).map(item => (
-                          <Option value={item} key={item}>
-                            {groupTypeObj[item]}
+                        {BaseUtils.groupTypeObj.map(item => (
+                          <Option value={item.id} key={item.id}>
+                            {item.name}
                           </Option>
                         ))}
                       </Select>
@@ -252,10 +240,7 @@ class CreateTransJob extends Component {
                       initialValue: [],
                       rules: [
                         {
-                          required:
-                            positionType !== 'others' &&
-                            positionType !== 'boss' &&
-                            positionType !== 'admin',
+                          required: this.disabledGroupType(positionType) !== 0,
                           message: '请选择有效负责单位',
                         },
                       ],
@@ -265,11 +250,7 @@ class CreateTransJob extends Component {
                         onChange={this.onChangeCascader}
                         fieldNames={{ label: 'name', value: 'id', children: 'list' }}
                         style={{ width: 230, height: 32 }}
-                        disabled={
-                          positionType === 'others' ||
-                          positionType === 'boss' ||
-                          positionType === 'admin'
-                        }
+                        disabled={this.disabledGroupType(positionType) === 0}
                       />
                     )}
                   </FormItem>

@@ -4,13 +4,14 @@ import { Form, Button, DatePicker, Radio } from 'antd';
 import { assignUrlParams } from 'utils/utils';
 import moment from 'moment';
 import ConfirmModal from 'selfComponents/ConfirmModal';
-import { BaseUtils } from './BaseUtils.js';
+import BaseUtils from './BaseUtils.js';
 import ContentLayout from '../../layouts/ContentLayout';
 import common from '../Common/common.css';
 import styles from './styles/index.less';
 
 const dateFormat = 'YYYY-MM-DD';
 const RadioGroup = Radio.Group;
+const FormItem = Form.Item;
 
 @connect(({ staff, user, loading }) => ({
   staff,
@@ -40,7 +41,6 @@ class EditDimission extends Component {
       effectDate: null, // 离职时间
     };
     this.state = assignUrlParams(initState, urlParams);
-    this.baseUtils = new BaseUtils();
   }
 
   componentDidMount() {
@@ -141,7 +141,6 @@ class EditDimission extends Component {
     const { staff = {}, creatLoading } = this.props;
     const { canceled, effectDate, isShowModal } = this.state;
     const employeeInfo = staff.employeeInfo || {};
-    const { FormItem } = this.baseUtils;
     const { getFieldDecorator } = this.props.form;
     const datePicker = (
       <DatePicker
@@ -162,20 +161,19 @@ class EditDimission extends Component {
               <li>
                 <span className={styles.labelText}>邮箱:</span>
                 <span className={styles.labelItem}>
-                  {this.baseUtils.removeMailSymbal(employeeInfo.mail)}
+                  {BaseUtils.removeMailSymbal(employeeInfo.mail)}
                 </span>
               </li>
               <li>
                 <span className={styles.labelText}>现任岗位:</span>
                 <span className={styles.labelItem}>
-                  {this.baseUtils.returnGroupType(employeeInfo.userType)}
+                  {BaseUtils.returnGroupType(employeeInfo.userType)}
                 </span>
               </li>
               <li>
                 <span className={styles.labelText}>现任负责单位:</span>
                 <span className={styles.labelItem}>
-                  {employeeInfo.showName ||
-                    this.baseUtils.returnOrganization(employeeInfo.userType)}
+                  {employeeInfo.showName || BaseUtils.returnOrganization(employeeInfo.userType)}
                 </span>
               </li>
               <li className={styles.marB_24}>

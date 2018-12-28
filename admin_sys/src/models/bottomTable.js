@@ -15,6 +15,20 @@ function tagLoad(blob, name) {
   a.download = name;
   a.click();
 }
+function blobFileLoad(result) {
+  const promise = new Promise((res, err) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      if (e.target.result.indexOf('code') === -1 || JSON.parse(e.target.result).code !== 2000) {
+        err(JSON.parse(e.target.result));
+      } else {
+        res(result);
+      }
+    };
+    reader.readAsText(result);
+  });
+  return promise;
+}
 
 export default {
   namespace: 'bottomTable',
@@ -83,7 +97,16 @@ export default {
     *downLoadBT({ payload }, { call }) {
       const { id, taskName } = payload;
       const response = yield call(downLoadBT, { id });
-      yield call(tagLoad, response, taskName);
+      blobFileLoad(response).then(
+        blob => {
+          tagLoad(blob, taskName);
+        },
+        err => {
+          console.log(err);
+          message.error(err.msg);
+        }
+      );
+      // yield call(tagLoad, response, taskName);
     },
     // 不可选时间列表
     *getDates({ payload }, { call, put }) {

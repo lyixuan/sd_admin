@@ -72,10 +72,10 @@ export default class ModalContent extends React.Component {
             value={this.state.type}
             style={{ width: '230px' }}
           >
-            <Radio value={0} style={{ marginRight: '40px' }}>
+            <Radio value={0} style={{ width: '88px', marginRight: '40px' }}>
               学分底表
             </Radio>
-            <Radio value={1} style={{ marginRight: '0' }}>
+            <Radio value={1} style={{ width: '102px', marginRight: '0' }}>
               预估分底表
             </Radio>
           </Radio.Group>

@@ -6,7 +6,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import { userTypeData } from '../../utils/dataDictionary';
+// import { BI_Filter } from '../../utils/global';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -106,7 +106,7 @@ class UserList extends Component {
         name: item.name,
         privilege: item.privilege ? '有' : '无',
         mail: item.entUserId,
-        userType: userTypeData[item.userType],
+        userType: window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${item.userType}`).name,
         showName: !item.showName
           ? item.userType === 'others' ? '无绩效岗位' : null
           : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
@@ -139,32 +139,26 @@ class UserList extends Component {
       {
         title: '前端角色',
         dataIndex: 'userType',
-        width: 120,
       },
       {
         title: '组织',
         dataIndex: 'showName',
-        width: 170,
       },
       {
         title: '企业家单位',
         dataIndex: 'changeShowName',
-        width: 170,
       },
       {
         title: '后端角色',
         dataIndex: 'roleName',
-        width: 120,
       },
       {
         title: '绩效权限',
         dataIndex: 'privilege',
-        width: 100,
       },
       {
         title: '操作',
         dataIndex: 'operation',
-        width: 150,
         render: (text, record) => {
           return (
             <div>

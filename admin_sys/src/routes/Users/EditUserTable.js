@@ -6,7 +6,6 @@ import { connect } from 'dva';
 import common from '../Common/common.css';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
-import { userTypeData, userTypeDataReset } from '../../utils/dataDictionary';
 
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
@@ -14,11 +13,10 @@ const { Option } = Select;
 const RadioGroup = Radio.Group;
 let flag1 = 'class'; // 创建时候的前端角色标示
 let flag2 = 'class'; // 编辑时候的前端角色标示
-let flag = 'class';
-let responseComList = [];
-let responseComListBackup = [];
+let flag = 'class'; // 为了方便组织的层级循环使用，不同的flag组织的层级是不一样的
+let responseComList = []; // 不同flag的层级结构
+let responseComListBackup = []; // 所有的层级结构
 let propsVal = '';
-let userTypeFlag = 'class';
 
 @connect(({ user, loading }) => ({
   user,
@@ -31,30 +29,28 @@ class EditUserTable extends Component {
       mail: this.props.mail || '',
       visible: false,
       clickFlag: 1, // 1为创建进入，2为编辑进入
-      userType: null,
+      userType: 'class',
       shownameid: null,
       privilege: null,
       positionId: null,
       currentstate: null,
       roleId: null,
-      plainOptions: Filter('VISIT_RIGHT_LIST|id->value,name->label'),
+      plainOptions: BI_Filter('VISIT_RIGHT_LIST|id->value,name->label'),
       defaultCheckedList: [],
     };
   }
 
   // 编辑岗位函数
   onEdit = key => {
-    const aa = key.userType;
-    const bb = key.shownameid;
-    const strs = !bb ? [] : bb.split(',');
-    responseComList = this.responseComListFun(aa);
-    const arr = !strs
-      ? []
-      : strs.map(el => {
-          return Number(el);
-        });
-    userTypeFlag = userTypeDataReset[aa];
-    flag = userTypeDataReset[aa];
+    const userTypeVal = key.userType;
+    const shownameidVal = key.shownameid;
+    const strs = !shownameidVal ? [] : shownameidVal.split(',');
+    responseComList = this.responseComListFun(userTypeVal);
+    const arr = strs.map(el => {
+      return Number(el) || [];
+    });
+    flag2 = window.BI_Filter(`FRONT_ROLE_TYPE_LIST|name:${userTypeVal}`).id;
+    flag = flag2;
     const defaultCheckedList = [];
     if (key.scoreView === '有') {
       defaultCheckedList.push('scoreView');
@@ -67,7 +63,7 @@ class EditUserTable extends Component {
     }
     this.setState({
       clickFlag: 2,
-      userType: userTypeDataReset[aa],
+      userType: flag2,
       shownameid: arr,
       visible: true,
       privilege: key.privilege === '无' ? 0 : 1,
@@ -179,15 +175,14 @@ class EditUserTable extends Component {
     this.setDialogSHow(false);
   };
 
-  responseComListFun = aa => {
+  responseComListFun = val => {
     const responseValue = [];
     const userVal = this.props.user;
     const listOrgValues = !userVal.listOrg.response
       ? []
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     const newResponseComList = listOrgValues;
-    const levelValue = !aa ? 'class' : userTypeDataReset[aa];
-    const userType = levelValue;
+    const userType = !val ? 'class' : window.BI_Filter(`FRONT_ROLE_TYPE_LIST|name:${val}`).id;
     if (userType === 'family') {
       newResponseComList.map(item => {
         const firstChldren = [];
@@ -258,14 +253,13 @@ class EditUserTable extends Component {
   };
 
   handleSelectChange = value => {
-    const aa = value;
+    const roleType = value;
     if (this.state.clickFlag === 1) {
-      flag1 = aa;
+      flag1 = roleType;
     } else {
-      flag2 = aa;
-      userTypeFlag = aa;
+      flag2 = roleType;
     }
-    flag = aa;
+    flag = roleType;
     const responseValue = [];
     const userVal = this.props.user;
     const listOrgValues = !userVal.listOrg.response
@@ -276,7 +270,7 @@ class EditUserTable extends Component {
       privilege: 0,
       responseCom: [],
     });
-    if (flag === 'admin' || flag === 'others' || flag === 'boss') {
+    if (window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag}`).level === '0') {
       propsVal.form.setFieldsValue({
         responseCom: [],
       });
@@ -301,7 +295,7 @@ class EditUserTable extends Component {
         });
         return 0;
       });
-    } else if (flag === 'college') {
+    } else if (window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag}`).level === '1') {
       newResponseComList.map(item => {
         responseValue.push({
           value: item.id,
@@ -324,7 +318,7 @@ class EditUserTable extends Component {
         scoreView: item.scoreView ? '有' : '无',
         privilegeView: item.privilegeView ? '有' : '无',
         endView: item.endView ? '有' : '无',
-        userType: userTypeData[item.usertype],
+        userType: window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${item.usertype}`).name,
         showName: !item.showname
           ? item.usertype === 'others' ? '无绩效岗位' : null
           : item.showname.replace(/,/g, ' | '),
@@ -453,6 +447,8 @@ class EditUserTable extends Component {
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
+      const roleType = window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${this.state.usertype}`)
+        .isPerformance;
       return (
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
@@ -481,7 +477,7 @@ class EditUserTable extends Component {
                           : this.state.privilege === 1 ? disabled : false
                       }
                     >
-                      {Filter('FRONT_ROLE_TYPE_LIST').map(v => (
+                      {BI_Filter('FRONT_ROLE_TYPE_LIST').map(v => (
                         <Option value={v.id} key={v.id}>
                           {v.name}
                         </Option>
@@ -501,9 +497,7 @@ class EditUserTable extends Component {
                         validator(rule, value, callback) {
                           if (typeof value[0] === 'string' || !value[0]) {
                             if (
-                              flag === 'admin' ||
-                              flag === 'boss' ||
-                              flag === 'others' ||
+                              window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag}`).level === '0' ||
                               currentstate === 2
                             ) {
                               callback();
@@ -522,15 +516,10 @@ class EditUserTable extends Component {
                       style={{ width: 280 }}
                       disabled={
                         this.state.clickFlag === 1
-                          ? flag1 === 'admin' || flag1 === 'boss' || flag1 === 'others'
+                          ? window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag1}`).level === '0'
                             ? disabled
                             : false
-                          : userTypeFlag === 'admin' ||
-                            userTypeFlag === 'boss' ||
-                            userTypeFlag === 'others' ||
-                            flag2 === 'admin' ||
-                            flag2 === 'boss' ||
-                            flag2 === 'others' ||
+                          : window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${flag2}`).level === '0' ||
                             this.state.privilege === 1
                             ? disabled
                             : false
@@ -556,12 +545,10 @@ class EditUserTable extends Component {
                         disabled={
                           this.state.clickFlag === 1
                             ? flag1 === 'admin' ? disabled : false
-                            : userTypeFlag === 'admin' || flag2 === 'admin'
+                            : flag2 === 'admin'
                               ? disabled
                               : this.state.privilege === 1
-                                ? this.state.userType === 'others' || this.state.currentstate === 2
-                                  ? false
-                                  : disabled
+                                ? roleType === 0 || this.state.currentstate === 2 ? false : disabled
                                 : false
                         }
                       >
@@ -574,9 +561,7 @@ class EditUserTable extends Component {
                           this.state.clickFlag === 1
                             ? false
                             : this.state.privilege === 1
-                              ? this.state.userType === 'others' || this.state.currentstate === 2
-                                ? false
-                                : disabled
+                              ? roleType === 0 || this.state.currentstate === 2 ? false : disabled
                               : false
                         }
                       >

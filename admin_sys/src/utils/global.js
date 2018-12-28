@@ -2,15 +2,15 @@
 
 import constants from './constants';
 
-window.Filter = param => {
+window.BI_Filter = param => {
   /**
    * 获取静态常量(constants.js)中的数据
    *
    * @param String                    必传  说明: 以管道符分割，第一个参数表示要获取的常量名，第二个参数为附加条件;中括号表示可选
-   * eg: "constName"                  1、根据常量constName获取常量数据
-   * eg: "constName[|id:yourId]"      2、根据id获取name(constName为Array)
-   * eg: "constName[|name:yourName]"  3、根据name获取id(constName为Array)
-   * eg: "constName[|id->value,name->label]"  4、获取constName 数组对象，并修改key名称
+   * eg: BI_Filter('FRONT_ROLE_TYPE_LIST')                  1、根据常量constName获取常量数据
+   * eg: BI_Filter('FRONT_ROLE_TYPE_LIST|id:class')         2、根据id='class'筛选本行object数据(constName需为Array)
+   * eg: BI_Filter('FRONT_ROLE_TYPE_LIST|id:class').level           3、根据id='class'筛选本行object数据中level的值(constName需为Array)
+   * eg: BI_Filter('FRONT_ROLE_TYPE_LIST|id->value,name->label')    4、获取constName 数组对象，并修改key名称，将id改为value，将name改为label
    *
    * @return undefined or other
    * */
@@ -29,7 +29,7 @@ window.Filter = param => {
   const condition = tempArr[1];
 
   // 第一个参数结果, 以管道分割
-  let result = JSON.parse(JSON.stringify(constants[constName])) || null;
+  let result = constants[constName] ? JSON.parse(JSON.stringify(constants[constName])) : [];
 
   // 第二个参数结果, 以管道分割
   if (condition) {
@@ -37,24 +37,22 @@ window.Filter = param => {
       // 获取string
       const type = condition.split(':')[0];
       const value = condition.split(':')[1];
-      if (result && Array.isArray(result) && type && value) {
+      if (value === '') {
+        result = {};
+      } else if (result && Array.isArray(result) && type) {
         // 存在第二个参数，查询常量名称存在，且常量值为数组，且有id或name参数
 
         const list = [...result];
-        result = null;
+        result = {};
         for (let i = 0; i < list.length; i += 1) {
-          if (type === 'id' && list[i].id === value) {
-            result = list[i].name;
-            break;
-          }
-          if (type === 'name' && list[i].name === value) {
-            result = list[i].id;
+          if (list[i][type] === value) {
+            result = list[i];
             break;
           }
         }
       } else {
-        console.warn('参数格式错误');
-        return false;
+        console.warn('请求数据格不是数组，或key不存在');
+        return null;
       }
     } else if (condition.indexOf('->') > -1 && result && Array.isArray(result)) {
       // 获取数组并修改key

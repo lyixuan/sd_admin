@@ -11,11 +11,11 @@ import styles from './styles/header.less';
 const { Header } = Layout;
 const RadioGroup = Radio.Group;
 
-@connect(({ login, loading }) => ({
+@connect(({ login = {}, loading }) => ({
   login,
   loading,
   getRoleListLoading: loading.effects['login/CurrentUserListRole'],
-  roleList: login.roleList,
+  roleList: login.roleList || [],
 }))
 export default class SelfHeader extends PureComponent {
   constructor(props) {
@@ -73,7 +73,7 @@ export default class SelfHeader extends PureComponent {
     this.setState({ visible: false });
   };
   handleMenuList = () => {
-    const selectedGroup = window.Filter('GLOBAL_HEADER_SELECT');
+    const selectedGroup = window.BI_Filter('GLOBAL_HEADER_SELECT');
     const adminUser = getAuthority(ADMIN_USER) || {};
     const positionCount = adminUser.positionCount || 0;
     //  positionCount<=1  hide  changeRole selectItem

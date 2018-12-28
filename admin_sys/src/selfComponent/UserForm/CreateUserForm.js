@@ -34,7 +34,7 @@ class CreateUserForm extends Component {
       : !userVal.listOrg.response.data ? [] : userVal.listOrg.response.data;
     this.state = {
       listOrgLiost: listOrgValues || [],
-      plainOptions: Filter('VISIT_RIGHT_LIST|id->value,name->label'),
+      plainOptions: BI_Filter('VISIT_RIGHT_LIST|id->value,name->label'),
       defaultCheckedList: [],
     };
   }
@@ -127,7 +127,13 @@ class CreateUserForm extends Component {
         });
         return 0;
       });
-    } else if (flag === 'college') {
+    } else if (
+      flag === 'college' ||
+      flag === 'csmanager' ||
+      flag === 'cssupervisor' ||
+      flag === 'csleader' ||
+      flag === 'csofficer'
+    ) {
       newResponseComList.map(item => {
         responseValue.push({
           value: item.id,
@@ -341,7 +347,7 @@ class CreateUserForm extends Component {
                     {
                       validator(rule, value, callback) {
                         if (!value) {
-                          callback({ message: '请选择权岗位！' });
+                          callback({ message: '请选择前端角色！' });
                         }
                         callback();
                       },
@@ -349,7 +355,7 @@ class CreateUserForm extends Component {
                   ],
                 })(
                   <Select style={{ width: 280 }} onChange={this.handleSelectChange}>
-                    {Filter('FRONT_ROLE_TYPE_LIST').map(v => (
+                    {BI_Filter('FRONT_ROLE_TYPE_LIST').map(v => (
                       <Option value={v.id} key={v.id}>
                         {v.name}
                       </Option>
@@ -366,7 +372,7 @@ class CreateUserForm extends Component {
                     {
                       validator(rule, value, callback) {
                         if (!value) {
-                          callback({ message: '请选择权微信部门！' });
+                          callback({ message: '请选择微信部门！' });
                         }
                         callback();
                       },
