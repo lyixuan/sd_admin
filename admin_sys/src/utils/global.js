@@ -6,11 +6,11 @@ window.BI_Filter = param => {
   /**
    * 获取静态常量(constants.js)中的数据
    *
-   * @param String                    必传  说明: 以管道符分割，第一个参数表示要获取的常量名，第二个参数为附加条件;中括号表示可选
+   * @param String                                          必传  说明: 以管道符分割，第一个参数表示要获取的常量名，第二个参数为附加条件
    * eg: BI_Filter('FRONT_ROLE_TYPE_LIST')                  1、根据常量constName获取常量数据
    * eg: BI_Filter('FRONT_ROLE_TYPE_LIST|id:class')         2、根据id='class'筛选本行object数据(constName需为Array)
    * eg: BI_Filter('FRONT_ROLE_TYPE_LIST|id:class').level           3、根据id='class'筛选本行object数据中level的值(constName需为Array)
-   * eg: BI_Filter('FRONT_ROLE_TYPE_LIST|id->value,name->label')    4、获取constName 数组对象，并修改key名称，将id改为value，将name改为label
+   * eg: BI_Filter('FRONT_ROLE_TYPE_LIST|id->value,name->label')    4、获取constName 数组对象，并修改key名称，将id改为value，将name改为label (constName需为Array)
    *
    * @return undefined or other
    * */
