@@ -81,7 +81,7 @@ const dynamicWrapper = (app, models, component) => {
 export const getRouterData = app => {
   const routerConfig = {
     '/': {
-      component: dynamicWrapper(app, [], () => import('../layouts/BasicLayout')),
+      component: dynamicWrapper(app, ['login'], () => import('../layouts/BasicLayout')),
     },
     '/indexPage': {
       component: dynamicWrapper(app, [], () => import('../routes/IndexPage/IndexPage')),

@@ -24,6 +24,6 @@ export default {
   hash: true,
   define: {
     'process.env.API_TYPE': process.env.API_TYPE,
-    USE_COMMA: 2,
+    USE_COMMA: 222,
   },
 };

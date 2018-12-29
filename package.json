@@ -10,7 +10,6 @@
     "start:no-proxy": "cross-env NO_PROXY=true roadhog dev",
     "build": "cross-env API_TYPE=production roadhog build",
     "build:dev": "cross-env API_TYPE=development roadhog build",
-    "analyze": "cross-env ANALYZE=true roadhog build",
     "lint:style": "stylelint \"src/**/*.less\" --syntax less",
     "lint": "eslint --ext .js src mock tests && npm run lint:style",
     "lint:fix": "eslint --fix --ext .js src mock tests && npm run lint:style",
@@ -81,9 +80,6 @@
     "stylelint": "^8.4.0",
     "stylelint-config-prettier": "^3.0.4",
     "stylelint-config-standard": "^18.0.0"
-  },
-  "optionalDependencies": {
-    "puppeteer": "^1.4.0"
   },
   "lint-staged": {
     "**/*.{js,jsx,less}": [
