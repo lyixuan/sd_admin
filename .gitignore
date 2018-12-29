@@ -12,13 +12,11 @@ _roadhog-api-doc
 
 # misc
 .DS_Store
-../.DS_Store
 npm-debug.log*
 yarn-error.log
 
 /coverage
 .idea
-../.idea
 yarn.lock
 package-lock.json
 *bak
