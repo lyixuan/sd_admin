@@ -19,6 +19,7 @@ function blobFileLoad(result) {
   const promise = new Promise((res, err) => {
     const reader = new FileReader();
     reader.onload = e => {
+      console.log(result);
       if (typeof result === 'object' && result.type) {
         res(result);
       } else {
@@ -102,7 +103,6 @@ export default {
           tagLoad(blob, taskName);
         },
         err => {
-          console.log(err);
           message.error(err.msg);
         }
       );
