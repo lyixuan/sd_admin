@@ -103,7 +103,6 @@ export default {
           tagLoad(blob, taskName);
         },
         err => {
-          console.log(err);
           message.error(err.msg);
         }
       );
