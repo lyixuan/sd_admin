@@ -32,7 +32,7 @@ export default class Item extends React.Component {
       case '5': // 日均学分排名比（系数）- 壁垒
         return this.renderType1('系数');
       case '6': // 人均在服学院排名比（基数）
-        return this.renderType1('基数');
+        return this.renderType1('基数',2);
       case '7': // 日均学分排名比（系数）
         return this.renderType1('系数');
       case '8': // 绩效比例

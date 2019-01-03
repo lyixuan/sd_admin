@@ -91,7 +91,7 @@ class Check extends Component {
     const personRank = this.dataFormt(data, 6) || [];
     const dailyRank = this.dataFormt(data, 7) || [];
     const devicePer = this.classFormt(data, 8) || [];
-    const data1 = { compo: 1, percent: 1, basic: 1, data: personRank };
+    const data1 = { compo: 1, percent: 2, basic: 1, data: personRank };
     const data2 = { compo: 1, percent: 1, basic: 2, data: dailyRank };
     const data3 = { compo: 2, data: devicePer };
     return (
