@@ -317,7 +317,10 @@ class CertificationList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：{totalElements}条</p>
+            <p className={common.totalNum}>
+              <span className={common.totalNumLeft}>已开放:{totalElements}</span>
+              <span className={common.totalNumRight}>已关闭:{totalElements}</span>
+            </p>
             <Table
               bordered
               loading={loading}
