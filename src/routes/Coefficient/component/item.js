@@ -22,9 +22,9 @@ export default class Item extends React.Component {
   switchDom = type => {
     switch (type) {
       case '1': // 人均在服学院排名比（基数）- 自考
-        return this.renderType1('基数');
+        return this.renderType1('基数',2);
       case '2': // 人均在服学院排名比（基数）- 壁垒
-        return this.renderType1('基数');
+        return this.renderType1('基数',2);
       case '3': // 管理规模（系数）
         return this.renderType2('系数');
       case '4': // 日均学分排名比（系数）- 自考
@@ -72,19 +72,19 @@ export default class Item extends React.Component {
       </span>
     );
   };
-  renderType1 = baseName => {
+  renderType1 = (baseName,percent) => {
     const item = this.props.data || {};
     return (
       <div className={style.valueItem}>
         {this.renderInput(item, 'levelLowerLimit')}
-        <span className={style.percent}>%</span>
+        <span className={style.percent}>{percent?null:'%'}</span>
         <span className={style.checkBox}>
           {this.renderCheckBox(item, 'lowerClose')}
           <span>闭区间</span>
         </span>
         <span className={style.breakLine}>~</span>
         {this.renderInput(item, 'levelUpperLimit')}
-        <span className={style.percent}>%</span>
+        <span className={style.percent}>{percent?null:'%'}</span>
         <span className={style.checkBox}>
           {this.renderCheckBox(item, 'upperClose')}
           <span>闭区间</span>
