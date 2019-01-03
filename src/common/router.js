@@ -573,7 +573,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['certification'], () => import('../routes/SkillCertification/CertificationCreate')),
       bread: {
         name: '认证管理',
-        path: '/skillCertification/auditList',
+        path: '/skillCertification/certificationList',
       },
       name: '创建认证项目',
     },
@@ -581,7 +581,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['certification'], () => import('../routes/SkillCertification/CertificationEdit')),
       bread: {
         name: '认证管理',
-        path: '/skillCertification/auditList',
+        path: '/skillCertification/certificationList',
       },
       name: '编辑认证项目',
     },

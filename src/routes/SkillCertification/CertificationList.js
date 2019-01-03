@@ -26,6 +26,7 @@ class CertificationList extends Component {
         isUpdate: 0,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
+        selectedRows:[],
       },
     };
     this.state = assignUrlParams(initParams, params);
@@ -42,8 +43,6 @@ class CertificationList extends Component {
     console.log(val)
   };
 
-
-
   // 编辑
   onEdit = val => {
     console.log(val)
@@ -53,6 +52,13 @@ class CertificationList extends Component {
   onShowSizeChange = (current, size) => {
     this.changePage(current, size);
   };
+
+  onSelectChange = (key,arrayList) => {
+    const list ={selectedRows:arrayList}
+    const stateParams = this.state.params;
+    const params = { ...stateParams, ...list };
+    this.saveParams(params);
+  }
 
   getData = params => {
     const stateParams = this.state.params;
@@ -64,13 +70,23 @@ class CertificationList extends Component {
     this.saveParams(userListParams);
   };
 
-  // 关闭报名
-  closeApply = val => {
-    console.log(val)
+  // 单条数据开放/关闭报名   1是开放报名，2是关闭报名
+  selfApply = (type=1,dataList=[]) => {
+    if(type===1){
+      console.log('开放报名',dataList)
+    }else{
+      console.log('关闭报名',dataList)
+    }
   };
-  // 开放报名
-  openApply = val => {
-    console.log(val)
+  // 批量开放/关闭报名   1是批量开放，2是批量关闭
+  allApply = (type=1) => {
+    const {selectedRows=[]}=this.state.params
+    if(type===1){
+      console.log('批量开放报名',selectedRows,selectedRows.length>0?selectedRows:'未选中任何一项')
+    }else{
+      console.log('批量关闭报名',selectedRows,selectedRows.length>0?selectedRows:'未选中任何一项')
+    }
+
   };
 
   saveParams = params => {
@@ -158,7 +174,7 @@ class CertificationList extends Component {
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.closeApply(record)}
+                    onClick={() => this.selfApply(2,record)}
                   >
                     关闭报名
                   </span>
@@ -168,7 +184,7 @@ class CertificationList extends Component {
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.openApply(record)}
+                    onClick={() => this.selfApply(1,record)}
                   >
                     开放报名
                   </span>
@@ -202,9 +218,10 @@ class CertificationList extends Component {
     return columns || [];
   };
 
+
   render() {
     const { loading } = this.props;
-    const { pageNum=0,examinationCycle=0,type=0 } = this.state.params;
+    const { pageNum=0,examinationCycle=0,type=0,selectedRows=[] } = this.state.params;
     const { userListData = {} } = {};
     const { totalElements = 0, content = [] } = userListData;
     const dataSource = this.fillDataSource(content);
@@ -220,7 +237,7 @@ class CertificationList extends Component {
               <Col span={8}>
                 <FormItem label="报名通道状态">
                   {getFieldDecorator('type', {
-                    initialValue: window.BI_Filter(`Certification_TYPE|id:${type}`).name,// this.selectOptions.find(item => item.value === isUpdate).label,
+                    initialValue: window.BI_Filter(`Certification_TYPE|id:${type}`).name,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
                       {window.BI_Filter(`Certification_TYPE`).map(item => (
@@ -268,23 +285,30 @@ class CertificationList extends Component {
         </div>
       );
     });
+    const rowSelection = {
+      selectedRows,
+      onChange: this.onSelectChange,
+      // onChange: (selectedRowKeys, selectedRows) => {
+      //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      // },
+    };
     return (
       <ContentLayout
         routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>
-            <AuthorizedButton authority="/user/createUser">
-              <Button onClick={this.handleAdd} type="primary" className={common.longWidthButton} >
-                批量开发报名
+            <AuthorizedButton authority="/skillCertification/certificationEdit">
+              <Button onClick={() => this.allApply(1)} type="primary" className={common.longWidthButton} >
+                批量开放报名
               </Button>
             </AuthorizedButton>
-            <AuthorizedButton authority="/user/createUser">
-              <Button onClick={this.handleAdd} type="primary" className={common.deleteQualityButton} style={{width:'140px',margin:'0 10px'}}>
+            <AuthorizedButton authority="/skillCertification/certificationEdit">
+              <Button onClick={() => this.allApply(2)} type="primary" className={common.deleteQualityButton} style={{width:'140px',margin:'0 10px'}}>
                 批量关闭报名
               </Button>
             </AuthorizedButton>
-            <AuthorizedButton authority="/user/createUser">
+            <AuthorizedButton authority="/skillCertification/certificationCreate">
               <Button onClick={this.handleAdd} type="primary" className={common.createButton} style={{width:'140px',margin:'0 10px'}}>
                 创建认证项目
               </Button>
@@ -301,6 +325,7 @@ class CertificationList extends Component {
               columns={columns}
               pagination={false}
               className={common.tableContentStyle}
+              rowSelection={rowSelection}
             />
           </div>
         }
