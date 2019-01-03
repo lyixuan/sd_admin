@@ -79,15 +79,17 @@ class CertificationList extends Component {
 
   // 初始化tabale 列数据
   fillDataSource = () => {
+    const timeArea1=window.BI_Filter(`Certification_TIMEAREA|id:${1}`).name;
+    const timeArea2=window.BI_Filter(`Certification_TIMEAREA|id:${2}`).name;
     const data = [
-      {key:1,id:1,code:'RZ0001',name:'IM认证',timeArea:'月度',type:1,changeTime:'2018-11-28 09:32:32'},
-      {key:2,id:2,code:'RZ0001',name:'专业知识认证',timeArea:'季度',type:1,changeTime:'2018-11-28 09:32:32'},
-      {key:3,id:3,code:'RZ0001',name:'专业知识认证',timeArea:'季度',type:2,changeTime:'2018-11-28 09:32:32'},
-      {key:4,id:4,code:'RZ0001',name:'学习规划认证',timeArea:'月度',type:2,changeTime:'2018-11-28 09:32:32'},
-      {key:5,id:5,code:'RZ0001',name:'学习规划认证',timeArea:'月度',type:2,changeTime:'2018-11-28 09:32:32'},
-      {key:6,id:6,code:'RZ0001',name:'报考指导认证',timeArea:'季度',type:3,changeTime:'2018-11-28 09:32:32'},
-      {key:7,id:7,code:'RZ0001',name:'报考指导认证',timeArea:'季度',type:3,changeTime:'2018-11-28 09:32:32'},
-      {key:8,id:8,code:'RZ0001',name:'好学生推荐认证',timeArea:'月度',type:4,changeTime:'2018-11-28 09:32:32'},
+      {key:1,id:1,code:'RZ0001',name:'IM认证',timeArea:timeArea1,type:window.BI_Filter(`Certification_TYPE|id:${1}`).name,changeTime:'2018-11-28 09:32:32'},
+      {key:2,id:2,code:'RZ0001',name:'专业知识认证',timeArea:timeArea2,type:window.BI_Filter(`Certification_TYPE|id:${1}`).name,changeTime:'2018-11-28 09:32:32'},
+      {key:3,id:3,code:'RZ0001',name:'专业知识认证',timeArea:timeArea1,type:window.BI_Filter(`Certification_TYPE|id:${2}`).name,changeTime:'2018-11-28 09:32:32'},
+      {key:4,id:4,code:'RZ0001',name:'学习规划认证',timeArea:timeArea2,type:window.BI_Filter(`Certification_TYPE|id:${2}`).name,changeTime:'2018-11-28 09:32:32'},
+      {key:5,id:5,code:'RZ0001',name:'学习规划认证',timeArea:timeArea1,type:window.BI_Filter(`Certification_TYPE|id:${3}`).name,changeTime:'2018-11-28 09:32:32'},
+      {key:6,id:6,code:'RZ0001',name:'报考指导认证',timeArea:timeArea2,type:window.BI_Filter(`Certification_TYPE|id:${3}`).name,changeTime:'2018-11-28 09:32:32'},
+      {key:7,id:7,code:'RZ0001',name:'报考指导认证',timeArea:timeArea1,type:window.BI_Filter(`Certification_TYPE|id:${3}`).name,changeTime:'2018-11-28 09:32:32'},
+      {key:8,id:8,code:'RZ0001',name:'好学生推荐认证',timeArea:timeArea2,type:window.BI_Filter(`Certification_TYPE|id:${4}`).name,changeTime:'2018-11-28 09:32:32'},
     ];
     return data;
   };
@@ -123,9 +125,10 @@ class CertificationList extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
+          const type=Number(window.BI_Filter(`Certification_TYPE|name:${record.type}`).id);
           return (
             <div>
-              {record.type !== 1 ? null : (
+              {type !== 1 ? null : (
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
@@ -134,7 +137,7 @@ class CertificationList extends Component {
                   </span>
                 </AuthorizedButton>
               )}
-              {record.type !== 2 ? null : (
+              {type !== 2 ? null : (
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
@@ -143,7 +146,7 @@ class CertificationList extends Component {
                   </span>
                 </AuthorizedButton>
               )}
-              {record.type === 1 || record.type === 4  ? null : (
+              {type === 1 || type === 4  ? null : (
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
@@ -153,7 +156,7 @@ class CertificationList extends Component {
                   </span>
                 </AuthorizedButton>
               )}
-              {record.type === 1 || record.type === 4  ? null : (
+              {type === 1 || type === 4  ? null : (
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}

@@ -1,3 +1,5 @@
+import CertificationList from "../routes/SkillCertification/CertificationList";
+
 /**
  * 静态常量文件
  * */
@@ -59,8 +61,24 @@ export const BOTTOM_TABLE_STATUS = [
   { id: '1', name: '已完成' },
   { id: '2', name: '打包错误' },
 ];
+// 认证管理报名通道状态
+export const Certification_TYPE = [
+  { id: '0', name: '全部' },
+  { id: '1', name: '已开放' },
+  { id: '2', name: '已关闭' },
+  { id: '3', name: '已停用' },
+  { id: '4', name: '已删除' },
+];
+// 认证管理报名通道状态
+export const Certification_TIMEAREA = [
+  { id: '0', name: '全部' },
+  { id: '1', name: '月度' },
+  { id: '2', name: '季度' },
+];
 // 需要用于global filter 进行数据筛选的，必须加到default里
 export default {
+  Certification_TYPE,
+  Certification_TIMEAREA,
   TIME_LOCAL,
   ADMIN_AUTH_LIST,
   ADMIN_USER,
