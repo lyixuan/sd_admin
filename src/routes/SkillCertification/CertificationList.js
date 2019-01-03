@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { assignUrlParams } from 'utils/utils';
-import { Table, Button} from 'antd';
+import { Table, Button,Form,Row, Col, Select} from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-//
-// const FormItem = Form.Item;
-// const { Option } = Select;
-// let propsVal = '';
+
+const FormItem = Form.Item;
+const { Option } = Select;
+let propsVal = '';
 
 @connect(({ user, loading }) => ({
   user,
@@ -21,8 +21,8 @@ class CertificationList extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        type: 1,
-        timeArea: 1,
+        type: 0,
+        examinationCycle: 0,
         isUpdate: 0,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
@@ -37,12 +37,14 @@ class CertificationList extends Component {
     this.getData();
   }
 
-  // 删除用户
+  // 删除
   onDelete = val => {
     console.log(val)
   };
 
-  // 编辑用户
+
+
+  // 编辑
   onEdit = val => {
     console.log(val)
   };
@@ -62,6 +64,15 @@ class CertificationList extends Component {
     this.saveParams(userListParams);
   };
 
+  // 关闭报名
+  closeApply = val => {
+    console.log(val)
+  };
+  // 开放报名
+  openApply = val => {
+    console.log(val)
+  };
+
   saveParams = params => {
     this.setState({ params });
     this.props.setCurrentUrlParams(params);
@@ -74,6 +85,21 @@ class CertificationList extends Component {
       pageSize: size,
     };
     this.getData(params);
+  };
+
+  // 表单重置
+  handleReset = () => {
+    propsVal.form.resetFields();
+  };
+
+  // 表单搜索
+  handleSearch = e => {
+    e.preventDefault();
+    propsVal.form.validateFields((err, values) => {
+      if (!err) {
+       console.log(1111,values);
+      }
+    });
   };
 
 
@@ -132,6 +158,7 @@ class CertificationList extends Component {
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                    onClick={() => this.closeApply(record)}
                   >
                     关闭报名
                   </span>
@@ -141,6 +168,7 @@ class CertificationList extends Component {
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                    onClick={() => this.openApply(record)}
                   >
                     开放报名
                   </span>
@@ -176,15 +204,74 @@ class CertificationList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { pageNum } = this.state.params;
+    const { pageNum=0,examinationCycle=0,type=0 } = this.state.params;
     const { userListData = {} } = {};
     const { totalElements = 0, content = [] } = userListData;
     const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
-
+    const formLayout = 'inline';
+    const WrappedAdvancedSearchForm = Form.create()(props => {
+      propsVal = props;
+      const { getFieldDecorator } = props.form;
+      return (
+        <div style={{marginBottom:'10px'}}>
+          <Form layout={formLayout} onSubmit={this.handleSearch}>
+            <Row gutter={24}>
+              <Col span={8}>
+                <FormItem label="报名通道状态">
+                  {getFieldDecorator('type', {
+                    initialValue: window.BI_Filter(`Certification_TYPE|id:${type}`).name,// this.selectOptions.find(item => item.value === isUpdate).label,
+                  })(
+                    <Select placeholder="全部" style={{ width: 230, height: 32 }}>
+                      {window.BI_Filter(`Certification_TYPE`).map(item => (
+                        <Option value={Number(item.id)} key={Number(item.id)}>
+                          {item.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={8} style={{ textAlign: 'center' }}>
+                <FormItem label="考核周期">
+                  {getFieldDecorator('timeArea', {
+                    initialValue: window.BI_Filter(`Certification_TYPE|id:${examinationCycle}`).name,
+                  })(
+                    <Select placeholder="全部" style={{ width: 230, height: 32 }}>
+                      {window.BI_Filter(`Certification_TYPE`).map(item => (
+                        <Option value={Number(item.id)} key={Number(item.id)}>
+                          {item.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={8} style={{ textAlign: 'right' }}>
+                <FormItem>
+                  <div>
+                    <Button htmlType="submit" type="primary" className={common.searchButton}>
+                      搜 索
+                    </Button>
+                    <Button
+                      onClick={this.handleReset}
+                      type="primary"
+                      className={common.resetButton}
+                    >
+                      重 置
+                    </Button>
+                  </div>
+                </FormItem>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      );
+    });
     return (
       <ContentLayout
         routerData={this.props.routerData}
+        contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
           <div>
             <AuthorizedButton authority="/user/createUser">

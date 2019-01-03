@@ -1,5 +1,3 @@
-import CertificationList from "../routes/SkillCertification/CertificationList";
-
 /**
  * 静态常量文件
  * */
