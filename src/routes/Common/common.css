@@ -210,6 +210,23 @@
   color: #000;
 }
 
+.longWidthButton{
+  margin: 0 10px 0 0;
+  background-color: #7FCA38;
+  font-size: 14px;
+  width: 140px;
+  height: 32px;
+  border: 1px solid #7FCA38 !important;
+}
+.longWidthButton:hover{
+  background-color: #7FCA38;
+  border: 1px solid #7FCA38;
+}
+.longWidthButton:focus{
+  background-color: #7FCA38;
+  border: 1px solid #7FCA38;
+}
+
 .addQualityButton{
   margin: 0 10px 0 0;
   background-color: #46A3EF;
@@ -288,6 +305,21 @@
   line-height: 14px;
   margin-bottom: 10px;
 }
+.totalNumLeft{
+  font-size: 14px;
+  color: #000;
+  height: 14px;
+  line-height: 14px;
+  display: inline-block;
+  margin-right: 30px;
+}
+.totalNumRight{
+  font-size: 14px;
+  color: #000;
+  height: 14px;
+  line-height: 14px;
+}
+
 .leftInput{
   display: flex;
   justify-content: flex-start;

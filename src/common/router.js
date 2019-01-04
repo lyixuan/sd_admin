@@ -585,7 +585,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: '认证管理',
-        path: '/skillCertification/auditList',
+        path: '/skillCertification/certificationList',
       },
       name: '创建认证项目',
     },
@@ -595,7 +595,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: '认证管理',
-        path: '/skillCertification/auditList',
+        path: '/skillCertification/certificationList',
       },
       name: '编辑认证项目',
     },
