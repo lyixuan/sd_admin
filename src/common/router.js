@@ -536,11 +536,15 @@ export const getRouterData = app => {
 
     // 审核管理
     '/skillCertification/auditList': {
-      component: dynamicWrapper(app, ['audit'], () => import('../routes/SkillCertification/AuditList')),
+      component: dynamicWrapper(app, ['audit', 'user'], () =>
+        import('../routes/SkillCertification/AuditList')
+      ),
       name: '审核管理',
     },
     '/skillCertification/auditApply': {
-      component: dynamicWrapper(app, ['audit'], () => import('../routes/SkillCertification/AuditApply')),
+      component: dynamicWrapper(app, ['audit'], () =>
+        import('../routes/SkillCertification/AuditApply')
+      ),
       bread: {
         name: '审核管理',
         path: '/skillCertification/auditList',
@@ -548,7 +552,9 @@ export const getRouterData = app => {
       name: '报名审核',
     },
     '/skillCertification/auditImport': {
-      component: dynamicWrapper(app, ['audit'], () => import('../routes/SkillCertification/AuditImport')),
+      component: dynamicWrapper(app, ['audit'], () =>
+        import('../routes/SkillCertification/AuditImport')
+      ),
       bread: {
         name: '审核管理',
         path: '/skillCertification/auditList',
@@ -556,7 +562,9 @@ export const getRouterData = app => {
       name: '导入认证审核',
     },
     '/skillCertification/auditRecord': {
-      component: dynamicWrapper(app, ['audit'], () => import('../routes/SkillCertification/AuditRecord')),
+      component: dynamicWrapper(app, ['audit'], () =>
+        import('../routes/SkillCertification/AuditRecord')
+      ),
       bread: {
         name: '审核管理',
         path: '/skillCertification/auditList',
@@ -566,11 +574,15 @@ export const getRouterData = app => {
 
     // 认证管理
     '/skillCertification/certificationList': {
-      component: dynamicWrapper(app, ['certification'], () => import('../routes/SkillCertification/CertificationList')),
+      component: dynamicWrapper(app, ['certification'], () =>
+        import('../routes/SkillCertification/CertificationList')
+      ),
       name: '认证管理',
     },
     '/skillCertification/certificationCreate': {
-      component: dynamicWrapper(app, ['certification'], () => import('../routes/SkillCertification/CertificationCreate')),
+      component: dynamicWrapper(app, ['certification'], () =>
+        import('../routes/SkillCertification/CertificationCreate')
+      ),
       bread: {
         name: '认证管理',
         path: '/skillCertification/auditList',
@@ -578,14 +590,15 @@ export const getRouterData = app => {
       name: '创建认证项目',
     },
     '/skillCertification/certificationEdit': {
-      component: dynamicWrapper(app, ['certification'], () => import('../routes/SkillCertification/CertificationEdit')),
+      component: dynamicWrapper(app, ['certification'], () =>
+        import('../routes/SkillCertification/CertificationEdit')
+      ),
       bread: {
         name: '认证管理',
         path: '/skillCertification/auditList',
       },
       name: '编辑认证项目',
     },
-
   };
   // Get name from ./menu.js or just set it in the router data.
   // const menuData = getFlatMenuData(getMenuData());
