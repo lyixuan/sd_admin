@@ -23,14 +23,12 @@ class CertificationList extends Component {
       params: {
         type: 0,
         examinationCycle: 0,
-        isUpdate: 0,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
         selectedRows:[],
       },
     };
     this.state = assignUrlParams(initParams, params);
-
   }
 
   // 页面render之前需要请求的接口
@@ -62,12 +60,12 @@ class CertificationList extends Component {
 
   getData = params => {
     const stateParams = this.state.params;
-    const userListParams = { ...stateParams, ...params };
+    const listParams = { ...stateParams, ...params };
     // this.props.dispatch({
     //   type: 'user/userList',
     //   payload: { userListParams },
     // });
-    this.saveParams(userListParams);
+    this.saveParams(listParams);
   };
 
   // 单条数据开放/关闭报名   1是开放报名，2是关闭报名
