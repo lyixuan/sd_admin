@@ -319,11 +319,11 @@ class CertificationList extends Component {
               <Col span={8} style={{ textAlign: 'center' }}>
                 <FormItem label="考核周期">
                   {getFieldDecorator('timeArea', {
-                    initialValue: window.BI_Filter(`Certification_TYPE|id:${examinationCycle}`)
+                    initialValue: window.BI_Filter(`Certification_TIMEAREA|id:${examinationCycle}`)
                       .name,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
-                      {window.BI_Filter(`Certification_TYPE`).map(item => (
+                      {window.BI_Filter(`Certification_TIMEAREA`).map(item => (
                         <Option value={Number(item.id)} key={Number(item.id)}>
                           {item.name}
                         </Option>
@@ -370,7 +370,8 @@ class CertificationList extends Component {
               <Button
                 onClick={() => this.allApply(1)}
                 type="primary"
-                className={common.longWidthButton}
+                className={common.addQualityButton}
+                style={{ width: '140px' }}
               >
                 批量开放报名
               </Button>
@@ -380,7 +381,7 @@ class CertificationList extends Component {
                 onClick={() => this.allApply(2)}
                 type="primary"
                 className={common.deleteQualityButton}
-                style={{ width: '140px', margin: '0 10px' }}
+                style={{ width: '140px' }}
               >
                 批量关闭报名
               </Button>
