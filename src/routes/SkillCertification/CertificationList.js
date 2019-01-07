@@ -22,8 +22,8 @@ class CertificationList extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        type: 0,
-        examinationCycle: 0,
+        type: 0, // 报名通道状态
+        examinationCycle: 0, // 考核周期
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
@@ -40,12 +40,9 @@ class CertificationList extends Component {
   }
 
   // 删除
-  onDelete = (type=3,val={}) => {
+  onDelete = (modelType=3,val={}) => {
     console.log(val);
-    const list = { clickFlag: type ,visible:true};
-    const stateParams = this.state.params;
-    const params = { ...stateParams, ...list };
-    this.saveParams(params);
+    this.setState({clickFlag: modelType ,visible:true });
 
   };
 
@@ -60,30 +57,11 @@ class CertificationList extends Component {
   };
 
   onSelectChange = (key, arrayList) => {
-    const list = { selectedRows: arrayList };
-    const stateParams = this.state.params;
-    const params = { ...stateParams, ...list };
-    this.saveParams(params);
+    this.setState({ selectedRows:arrayList });
   };
 
   setDialogSHow(bol) {
-    // const list = { visible: bol };
-    // const stateParams = this.state.params;
-    // const params = { ...stateParams, ...list };
-    // this.saveParams(params);
-    const params={ visible:bol };
-    this.setState({ ...params,params });
-  }
-
-
-  stringToBoolean=(str)=> {
-    switch (str) {
-      case "true":return true;
-      case "false":
-      case null:
-        return false;
-      default:return Boolean(str);
-    }
+    this.setState({ visible: bol });
   }
 
   getData = params => {
@@ -96,18 +74,28 @@ class CertificationList extends Component {
     this.saveParams(listParams);
   };
 
+  stringToBoolean=(str)=> {
+    switch (str) {
+      case "true":return true;
+      case "false":
+      case null:
+        return false;
+      default:return Boolean(str);
+    }
+  }
+
   // 单条数据开放/关闭报名   1是开放报名，2是关闭报名
-  selfApply = (type = 1, dataList = []) => {
-    if (type === 1) {
+  selfApply = (modelType = 1, dataList = []) => {
+    if (modelType === 1) {
       console.log('开放报名', dataList);
     } else {
       console.log('关闭报名', dataList);
     }
   };
   // 批量开放/关闭报名   1是批量开放，2是批量关闭
-  allApply = (type = 1) => {
-    const { selectedRows = [] } = this.state.params;
-    if (type === 1) {
+  allApply = (modelType = 1) => {
+    const { selectedRows = [] } = this.state;
+    if (modelType === 1) {
       console.log(
         '批量开放报名',
         selectedRows,
@@ -120,8 +108,7 @@ class CertificationList extends Component {
         selectedRows.length > 0 ? selectedRows : '未选中任何一项'
       );
     }
-    const params={ clickFlag: type,visible:true };
-    this.setState({ ...params,params });
+    this.setState({ clickFlag: modelType,visible:true  });
   };
 
   saveParams = params => {
@@ -293,10 +280,10 @@ class CertificationList extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
-          const type = Number(window.BI_Filter(`Certification_TYPE|name:${record.type}`).id);
+          const operationType = Number(window.BI_Filter(`Certification_TYPE|name:${record.type}`).id);
           return (
             <div>
-              {type !== 1 ? null : (
+              {operationType !== 1 ? null : (
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
@@ -306,7 +293,7 @@ class CertificationList extends Component {
                   </span>
                 </AuthorizedButton>
               )}
-              {type !== 2 ? null : (
+              {operationType !== 2 ? null : (
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
@@ -316,7 +303,7 @@ class CertificationList extends Component {
                   </span>
                 </AuthorizedButton>
               )}
-              {type === 1 || type === 4 ? null : (
+              {operationType === 1 || operationType === 4 ? null : (
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
@@ -326,7 +313,7 @@ class CertificationList extends Component {
                   </span>
                 </AuthorizedButton>
               )}
-              {type === 1 || type === 4 ? null : (
+              {operationType === 1 || operationType === 4 ? null : (
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
@@ -346,7 +333,8 @@ class CertificationList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { pageNum = 0, examinationCycle = 0, type = 0, selectedRows = [],visible=false,clickFlag=1 } = this.state.params;
+    const {selectedRows=[], visible=false,clickFlag=1 }=this.state;
+    const { pageNum = 0, examinationCycle = 0, type = 0} = this.state.params;
     const { userListData = {} } = {};
     const { totalElements = 0, content = [] } = userListData;
     const dataSource = this.fillDataSource(content);
