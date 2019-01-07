@@ -4,6 +4,7 @@ import { assignUrlParams } from 'utils/utils';
 import { Table, Button, Form, Row, Col, Select } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import ModalDialog from '../../selfComponent/Modal/Modal';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 
@@ -26,6 +27,8 @@ class CertificationList extends Component {
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
         selectedRows: [],
+        clickFlag:1, // 1批量开发，2批量关闭，3删除
+        visible: false,// 控制弹框显隐
       },
     };
     this.state = assignUrlParams(initParams, params);
@@ -37,8 +40,12 @@ class CertificationList extends Component {
   }
 
   // 删除
-  onDelete = val => {
+  onDelete = (type=3,val={}) => {
     console.log(val);
+    const list = { clickFlag: type ,visible:true};
+    const stateParams = this.state.params;
+    const params = { ...stateParams, ...list };
+    this.saveParams(params);
   };
 
   // 编辑
@@ -57,6 +64,13 @@ class CertificationList extends Component {
     const params = { ...stateParams, ...list };
     this.saveParams(params);
   };
+
+  setDialogSHow(bol) {
+    const list = { visible: bol };
+    const stateParams = this.state.params;
+    const params = { ...stateParams, ...list };
+    this.saveParams(params);
+  }
 
   getData = params => {
     const stateParams = this.state.params;
@@ -92,6 +106,10 @@ class CertificationList extends Component {
         selectedRows.length > 0 ? selectedRows : '未选中任何一项'
       );
     }
+    const list = { clickFlag: type,visible:true };
+    const stateParams = this.state.params;
+    const params = { ...stateParams, ...list };
+    this.saveParams(params);
   };
 
   saveParams = params => {
@@ -111,6 +129,12 @@ class CertificationList extends Component {
   // 表单重置
   handleReset = () => {
     propsVal.form.resetFields();
+  };
+
+  // 模态框回显
+  editName = e => {
+    this.setDialogSHow(false);
+   console.log(e)
   };
 
   // 表单搜索
@@ -272,7 +296,7 @@ class CertificationList extends Component {
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onDelete(record)}
+                    onClick={() => this.onDelete(3,record)}
                   >
                     删除
                   </span>
@@ -288,7 +312,7 @@ class CertificationList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { pageNum = 0, examinationCycle = 0, type = 0, selectedRows = [] } = this.state.params;
+    const { pageNum = 0, examinationCycle = 0, type = 0, selectedRows = [],visible=false,clickFlag=1 } = this.state.params;
     const { userListData = {} } = {};
     const { totalElements = 0, content = [] } = userListData;
     const dataSource = this.fillDataSource(content);
@@ -360,75 +384,96 @@ class CertificationList extends Component {
       //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       // },
     };
+
+
+    const modalContent = (
+      <div>
+        test
+      </div>
+    );
     return (
-      <ContentLayout
-        routerData={this.props.routerData}
-        contentForm={<WrappedAdvancedSearchForm />}
-        contentButton={
-          <div>
-            <AuthorizedButton authority="/skillCertification/certificationEdit">
-              <Button
-                onClick={() => this.allApply(1)}
-                type="primary"
-                className={common.addQualityButton}
-                style={{ width: '140px' }}
-              >
-                批量开放报名
-              </Button>
-            </AuthorizedButton>
-            <AuthorizedButton authority="/skillCertification/certificationEdit">
-              <Button
-                onClick={() => this.allApply(2)}
-                type="primary"
-                className={common.deleteQualityButton}
-                style={{ width: '140px' }}
-              >
-                批量关闭报名
-              </Button>
-            </AuthorizedButton>
-            <AuthorizedButton authority="/skillCertification/certificationCreate">
-              <Button
-                onClick={this.handleAdd}
-                type="primary"
-                className={common.createButton}
-                style={{ width: '140px', margin: '0 10px' }}
-              >
-                创建认证项目
-              </Button>
-            </AuthorizedButton>
-          </div>
-        }
-        contentTable={
-          <div>
-            <p className={common.totalNum}>
-              <span className={common.totalNumLeft}>已开放:{totalElements}</span>
-              <span className={common.totalNumRight}>已关闭:{totalElements}</span>
-            </p>
-            <Table
-              bordered
-              loading={loading}
-              dataSource={dataSource}
-              columns={columns}
-              pagination={false}
-              className={common.tableContentStyle}
-              rowSelection={rowSelection}
+      <>
+        <ContentLayout
+          routerData={this.props.routerData}
+          contentForm={<WrappedAdvancedSearchForm />}
+          contentButton={
+            <div>
+              <AuthorizedButton authority="/skillCertification/certificationEdit">
+                <Button
+                  onClick={() => this.allApply(1)}
+                  type="primary"
+                  className={common.addQualityButton}
+                  style={{ width: '140px' }}
+                >
+                  批量开放报名
+                </Button>
+              </AuthorizedButton>
+              <AuthorizedButton authority="/skillCertification/certificationEdit">
+                <Button
+                  onClick={() => this.allApply(2)}
+                  type="primary"
+                  className={common.deleteQualityButton}
+                  style={{ width: '140px' }}
+                >
+                  批量关闭报名
+                </Button>
+              </AuthorizedButton>
+              <AuthorizedButton authority="/skillCertification/certificationCreate">
+                <Button
+                  onClick={this.handleAdd}
+                  type="primary"
+                  className={common.createButton}
+                  style={{ width: '140px', margin: '0 10px' }}
+                >
+                  创建认证项目
+                </Button>
+              </AuthorizedButton>
+            </div>
+          }
+          contentTable={
+            <div>
+              <p className={common.totalNum}>
+                <span className={common.totalNumLeft}>已开放:{totalElements}</span>
+                <span className={common.totalNumRight}>已关闭:{totalElements}</span>
+              </p>
+              <Table
+                bordered
+                loading={loading}
+                dataSource={dataSource}
+                columns={columns}
+                pagination={false}
+                className={common.tableContentStyle}
+                rowSelection={rowSelection}
+              />
+            </div>
+          }
+          contentPagination={
+            <SelfPagination
+              onChange={(current, pageSize) => {
+                this.changePage(current, pageSize);
+              }}
+              onShowSizeChange={(current, pageSize) => {
+                this.onShowSizeChange(current, pageSize);
+              }}
+              defaultCurrent={pageNum + 1}
+              total={totalElements}
+              defaultPageSize={30}
             />
-          </div>
-        }
-        contentPagination={
-          <SelfPagination
-            onChange={(current, pageSize) => {
-              this.changePage(current, pageSize);
-            }}
-            onShowSizeChange={(current, pageSize) => {
-              this.onShowSizeChange(current, pageSize);
-            }}
-            defaultCurrent={pageNum + 1}
-            total={totalElements}
-            defaultPageSize={30}
-          />
-        }
-      />
+          }
+        />
+
+        <ModalDialog
+          style={{ width: '520px' }}
+          title={clickFlag === 1 ? '批量开放通道' :(clickFlag === 2?'批量关闭通道':'删除确认')}
+          visible={visible}
+          modalContent={modalContent}
+          clickOK={e => this.editName(e)}
+          footButton={['取消', '提交']}
+          showModal={bol => {
+            this.setDialogSHow(bol);
+          }}
+        />
+    </>
     );
   }
 }
