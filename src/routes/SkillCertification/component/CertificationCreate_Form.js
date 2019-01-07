@@ -38,7 +38,7 @@ class CertificationCreate_Form extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const bol = false
-
+    const { TextArea } = Input;
     const formLayout = 'inline';
     return (
       <Spin spinning={bol}>
@@ -46,7 +46,7 @@ class CertificationCreate_Form extends Component {
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序">
-                {getFieldDecorator('name', {
+                {getFieldDecorator('id', {
                   initialValue: null,
                   rules: [
                     {
@@ -82,7 +82,7 @@ class CertificationCreate_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*考核周期">
-                {getFieldDecorator('sex', {
+                {getFieldDecorator('timeArea', {
                   initialValue: 1,
                 })(
                   <Select style={{ width: 280 }}>
@@ -93,6 +93,26 @@ class CertificationCreate_Form extends Component {
               </FormItem>
             </Col>
           </Row>
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="&nbsp;&nbsp;标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;准">
+                {getFieldDecorator('standard', {
+                  initialValue: null,
+                })(<TextArea rows={4} style={{ width: 280 }} />)}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="考核形式">
+                {getFieldDecorator('method', {
+                  initialValue: null,
+                })(<TextArea rows={4} style={{ width: 280 }} />)}
+              </FormItem>
+            </Col>
+          </Row>
+
+
+
+
           <Row style={{ marginTop: '20px' }}>
             <Col span={6} offset={17} style={{ textAlign: 'right' }}>
               <FormItem>

@@ -48,6 +48,7 @@ class CertificationEdit_Form extends Component {
     const { getFieldDecorator } = this.props.form;
     const bol = false
     const disabled = true;
+    const { TextArea } = Input;
     const {timeArea=1,id=null,name=null,code=null}=this.state
     const formLayout = 'inline';
     return (
@@ -107,6 +108,22 @@ class CertificationEdit_Form extends Component {
                     <Option value={2}>季度</Option>
                   </Select>
                 )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="&nbsp;&nbsp;标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;准">
+                {getFieldDecorator('standard', {
+                  initialValue: null,
+                })(<TextArea rows={4} style={{ width: 280 }} />)}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="考核形式">
+                {getFieldDecorator('method', {
+                  initialValue: null,
+                })(<TextArea rows={4} style={{ width: 280 }} />)}
               </FormItem>
             </Col>
           </Row>
