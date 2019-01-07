@@ -48,7 +48,8 @@ class CertificationList extends Component {
 
   // 编辑
   onEdit = val => {
-    console.log(val);
+    console.log(val.timeArea)
+    this.props.setRouteUrlParams('/skillCertification/certificationEdit', { timeArea: val.timeArea,id:val.id,code:val.code,name:val.name });
   };
 
   // 点击显示每页多少条数据函数
