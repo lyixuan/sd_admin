@@ -329,6 +329,11 @@ class CertificationList extends Component {
     return columns || [];
   };
 
+  // 创建认证项目
+  handleAdd = () => {
+    this.props.setRouteUrlParams('/skillCertification/certificationCreate');
+  };
+
   render() {
     const { loading } = this.props;
     const {selectedRows=[], visible=false,clickFlag=1 }=this.state;
