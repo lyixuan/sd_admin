@@ -26,10 +26,10 @@ class CertificationList extends Component {
         examinationCycle: 0,
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
-        selectedRows: [],
-        clickFlag:1, // 1批量开发，2批量关闭，3删除
-        visible: false,// 控制弹框显隐
       },
+      selectedRows: [], // 选中的行
+      clickFlag:1, // 1批量开发，2批量关闭，3删除
+      visible: false,// 控制弹框显隐
     };
     this.state = assignUrlParams(initParams, params);
   }
@@ -46,6 +46,7 @@ class CertificationList extends Component {
     const stateParams = this.state.params;
     const params = { ...stateParams, ...list };
     this.saveParams(params);
+
   };
 
   // 编辑
@@ -66,10 +67,23 @@ class CertificationList extends Component {
   };
 
   setDialogSHow(bol) {
-    const list = { visible: bol };
-    const stateParams = this.state.params;
-    const params = { ...stateParams, ...list };
-    this.saveParams(params);
+    // const list = { visible: bol };
+    // const stateParams = this.state.params;
+    // const params = { ...stateParams, ...list };
+    // this.saveParams(params);
+    const params={ visible:bol };
+    this.setState({ ...params,params });
+  }
+
+
+  stringToBoolean=(str)=> {
+    switch (str) {
+      case "true":return true;
+      case "false":
+      case null:
+        return false;
+      default:return Boolean(str);
+    }
   }
 
   getData = params => {
@@ -106,10 +120,8 @@ class CertificationList extends Component {
         selectedRows.length > 0 ? selectedRows : '未选中任何一项'
       );
     }
-    const list = { clickFlag: type,visible:true };
-    const stateParams = this.state.params;
-    const params = { ...stateParams, ...list };
-    this.saveParams(params);
+    const params={ clickFlag: type,visible:true };
+    this.setState({ ...params,params });
   };
 
   saveParams = params => {
@@ -250,6 +262,9 @@ class CertificationList extends Component {
       {
         title: '报名通道状态',
         dataIndex: 'type',
+        render: (text, record) => {
+          return (<span className={record.type!=='已开放'?common.openType:null}>{record.type}</span>)
+        },
       },
       {
         title: '报名变更时间',
@@ -380,16 +395,45 @@ class CertificationList extends Component {
     const rowSelection = {
       selectedRows,
       onChange: this.onSelectChange,
-      // onChange: (selectedRowKeys, selectedRows) => {
-      //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      // },
     };
 
 
+    const headerColu=[
+      {
+      title: '名称1',
+      dataIndex: 'name1',
+    },
+      {
+        title: '名称2',
+        dataIndex: 'name2',
+      },
+      {
+        title: '名称3',
+        dataIndex: 'name3',
+      },
+    ]
+    const columnData=[
+      {
+      key: 1,
+      name1: 'IM认证',
+      name2: '好学生推荐认证',
+      name3: '学习规划认证',
+      },
+      {
+        key: 2,
+        name1: '报考指导',
+      },
+    ]
     const modalContent = (
-      <div>
-        test
-      </div>
+      <>
+        <Table
+          columns={headerColu}
+          showHeader={false}
+          pagination={false}
+          dataSource={columnData}
+          bordered
+        />
+      </>
     );
     return (
       <>
@@ -397,7 +441,7 @@ class CertificationList extends Component {
           routerData={this.props.routerData}
           contentForm={<WrappedAdvancedSearchForm />}
           contentButton={
-            <div>
+            <>
               <AuthorizedButton authority="/skillCertification/certificationEdit">
                 <Button
                   onClick={() => this.allApply(1)}
@@ -428,10 +472,10 @@ class CertificationList extends Component {
                   创建认证项目
                 </Button>
               </AuthorizedButton>
-            </div>
+            </>
           }
           contentTable={
-            <div>
+            <>
               <p className={common.totalNum}>
                 <span className={common.totalNumLeft}>已开放:{totalElements}</span>
                 <span className={common.totalNumRight}>已关闭:{totalElements}</span>
@@ -445,7 +489,7 @@ class CertificationList extends Component {
                 className={common.tableContentStyle}
                 rowSelection={rowSelection}
               />
-            </div>
+            </>
           }
           contentPagination={
             <SelfPagination
@@ -465,7 +509,7 @@ class CertificationList extends Component {
         <ModalDialog
           style={{ width: '520px' }}
           title={clickFlag === 1 ? '批量开放通道' :(clickFlag === 2?'批量关闭通道':'删除确认')}
-          visible={visible}
+          visible={this.stringToBoolean(visible)}
           modalContent={modalContent}
           clickOK={e => this.editName(e)}
           footButton={['取消', '提交']}
