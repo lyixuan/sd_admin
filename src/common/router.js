@@ -536,7 +536,7 @@ export const getRouterData = app => {
 
     // 审核管理
     '/skillCertification/auditList': {
-      component: dynamicWrapper(app, ['audit', 'user'], () =>
+      component: dynamicWrapper(app, ['audit'], () =>
         import('../routes/SkillCertification/AuditList')
       ),
       name: '审核管理',

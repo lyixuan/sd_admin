@@ -1,38 +1,47 @@
 // import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import {
-  userList,
-} from '../services/api';
+import { listOrg } from '../services/api';
 
 export default {
   namespace: 'audit',
 
   state: {
-    // 接口返回数据存储
-    userList: {},
+    listOrg: [],
   },
 
   effects: {
-    *userList({ payload }, { call, put }) {
-      const response = yield call(userList, payload.userListParams);
+    *listOrg({ payload }, { call, put }) {
+      const response = yield call(listOrg, payload.params);
+      const listData = response && response.data ? [...response.data] : [];
       if (response.code === 2000) {
-        const userListData = response.data || [];
-        yield put({ type: 'userListSave', payload: { userListData } });
+        const resultData = dataDeal(listData);
+        yield put({ type: 'listOrgSave', payload: { resultData } });
       } else {
         message.error(response.msg);
       }
+      function dataDeal(list) {
+        const result = [];
+        list.forEach(v => {
+          const obj = {};
+          obj.value = v.id;
+          obj.label = v.name;
+          obj.level = v.level;
+          if (v.sub) {
+            obj.children = dataDeal(v.sub);
+          }
+          result.push(obj);
+        });
+        return result;
+      }
     },
-
   },
 
   reducers: {
-
-    userListSave(state, action) {
+    listOrgSave(state, action) {
       return {
         ...state,
-        userList: action.payload,
+        listOrg: action.payload.resultData,
       };
     },
-
   },
 };

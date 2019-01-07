@@ -6,15 +6,13 @@ import { Table, Button, Form, Popconfirm } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
-import AuditListForm from './AuditList_Form';
+import AuditListForm from './component/AuditList_Form';
 import common from '../Common/common.css';
 //
 const SearchForm = Form.create()(AuditListForm);
 
-@connect(({ audit, user, loading }) => ({
+@connect(({ audit }) => ({
   audit,
-  user,
-  listOrg: loading.effects['user/listOrg'],
 }))
 class AuditList extends Component {
   constructor(props) {
@@ -29,10 +27,10 @@ class AuditList extends Component {
     this.state = assignUrlParams(initParams, params);
   }
 
-  componentDidMount() {
+  UNSAFE_componentWillMount() {
     const params = {};
     this.props.dispatch({
-      type: 'user/listOrg',
+      type: 'audit/listOrg',
       payload: { params },
     });
   }
@@ -152,7 +150,7 @@ class AuditList extends Component {
   render() {
     const { loading } = this.props;
     const { pageNum } = this.state.params;
-    const { userListData = {} } = this.props.audit.userList;
+    const userListData = {};
     const { totalElements = 0, content = [] } = userListData;
     const dataSource = this.fillDataSource(content);
 
@@ -161,7 +159,7 @@ class AuditList extends Component {
         routerData={this.props.routerData}
         contentForm={
           <SearchForm
-            propsData={this.props}
+            auditData={this.props.audit}
             resetContent={() => {
               this.resetContent();
             }}

@@ -1,7 +1,8 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef,no-param-reassign */
 import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Cascader, DatePicker } from 'antd';
-import common from '../../routes/Common/common.css';
+import common from '../../Common/common.css';
+import { deepCopy } from '../../../utils/utils';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -12,19 +13,38 @@ let responseComListBackup = [];
 class AuditListForm extends Component {
   constructor(props) {
     super(props);
-    const { listOrg = {} } = this.props.propsData.user;
-    const listOrgValues = !listOrg.response
-      ? []
-      : !listOrg.response.data ? [] : listOrg.response.data;
+    this.orgOptions = [];
     this.state = {
       level: 'college',
       state1: '0',
       state2: '0',
       state3: '0',
       state4: '0',
-      listOrgList: listOrgValues || [],
     };
   }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { auditData: auditData2 } = this.props;
+    const { auditData } = nextProps;
+    if (JSON.stringify(auditData.listOrg) !== JSON.stringify(auditData2.listOrg)) {
+      this.listOrg = auditData.listOrg;
+      this.handleSelectChange('college');
+    }
+  };
+  handleSelectChange = value => {
+    this.orgOptions = deepCopy(this.listOrg);
+    if (value === 'college') {
+      this.orgOptions.forEach((v) => {
+        delete v.children;
+      });
+    } else if (value === 'family') {
+      this.orgOptions.forEach((item) => {
+        item.children.forEach((v)=>{
+          delete v.children;
+        })
+      });
+    }
+  };
 
   changeState = lv => {
     if (lv === 1) {
@@ -47,83 +67,7 @@ class AuditListForm extends Component {
     }
   };
 
-  fullListFun = val => {
-    const value = [];
-    val.map(item => {
-      const firstChldren = [];
-      const chldren1 = item.sub;
-      chldren1.map(obj => {
-        const chldren2 = obj.sub;
-        const secondChldren = [];
-        chldren2.map(list => {
-          secondChldren.push({
-            value: list.id,
-            label: list.name,
-            level: list.level,
-          });
-          return 0;
-        });
-        firstChldren.push({
-          value: obj.id,
-          label: obj.name,
-          level: obj.level,
-          children: secondChldren,
-        });
-        return 0;
-      });
-      value.push({
-        value: item.id,
-        label: item.name,
-        level: item.level,
-        children: firstChldren,
-      });
-      return 0;
-    });
-    return value;
-  };
-
   handleCycleChange = () => {};
-  handleSelectChange = value => {
-    const responseValue = [];
-    const { listOrg = {} } = this.props.propsData.user;
-    const listOrgValues = !listOrg.response
-      ? []
-      : !listOrg.response.data ? [] : listOrg.response.data;
-    responseComListBackup = !listOrgValues ? [] : this.fullListFun(listOrgValues);
-    const newResponseComList = listOrgValues;
-
-    if (value === 'family') {
-      newResponseComList.map(item => {
-        const firstChldren = [];
-        const chldren1 = item.sub;
-        chldren1.map(val => {
-          firstChldren.push({
-            value: val.id,
-            label: val.name,
-            level: val.level,
-          });
-          return 0;
-        });
-        responseValue.push({
-          value: item.id,
-          label: item.name,
-          level: item.level,
-          children: firstChldren,
-        });
-        return 0;
-      });
-    } else if (value === 'college') {
-      newResponseComList.map(item => {
-        responseValue.push({
-          value: item.id,
-          label: item.name,
-          level: item.level,
-        });
-        return 0;
-      });
-    }
-    responseComList = responseValue.length === 0 ? responseComListBackup : responseValue;
-  };
 
   // 表单重置
   handleReset = () => {
@@ -174,7 +118,7 @@ class AuditListForm extends Component {
             <FormItem label="组 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织">
               {getFieldDecorator('responseCom', {
                 initialValue: [],
-              })(<Cascader options={responseComList} style={{ width: 230 }} />)}
+              })(<Cascader options={this.orgOptions} style={{ width: 230 }} />)}
             </FormItem>
           </Col>
           <Col span={8}>
