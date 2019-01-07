@@ -98,13 +98,11 @@ class CertificationList extends Component {
     if (modelType === 1) {
       console.log(
         '批量开放报名',
-        selectedRows,
         selectedRows.length > 0 ? selectedRows : '未选中任何一项'
       );
     } else {
       console.log(
         '批量关闭报名',
-        selectedRows,
         selectedRows.length > 0 ? selectedRows : '未选中任何一项'
       );
     }
