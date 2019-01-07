@@ -9,6 +9,8 @@ import {
   Select,
   Spin,
   Radio,
+  Upload,
+  Modal,
 } from 'antd';
 import common from '../../Common/common.css';
 
@@ -28,6 +30,14 @@ class CertificationEdit_Form extends Component {
       id,
       name,
       code,
+      previewVisible: false,
+      previewImage: '',
+      fileList: [{
+        uid: '-1',
+        name: 'xxx.png',
+        status: 'done',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      }],
     };
   }
   componentDidMount() {
@@ -44,12 +54,33 @@ class CertificationEdit_Form extends Component {
   };
 
 
+  handleCancel = () => this.setState({ previewVisible: false })
+
+  handlePreview = (file) => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    });
+  }
+
+  handleChange = ({ fileList }) => this.setState({ fileList })
+
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const bol = false
     const disabled = true;
     const { TextArea } = Input;
-    const {timeArea=1,id=null,name=null,code=null}=this.state
+    const {timeArea=1,id=null,name=null,code=null,previewVisible, previewImage, fileList}=this.state
+    const uploadButton = (
+      <Button
+        type="primary"
+        className={common.submitButton}
+        loading={false}
+      >
+        添加图标
+      </Button>
+    );
     const formLayout = 'inline';
     return (
       <Spin spinning={bol}>
@@ -127,6 +158,74 @@ class CertificationEdit_Form extends Component {
               </FormItem>
             </Col>
           </Row>
+
+
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*已获得认证图标">
+                {getFieldDecorator('standard', {
+                  initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '已获得认证图标为必填项，请选择!' });
+                        }
+                        callback();
+                      },
+                    },
+                  ],
+                })(<>
+                  <Upload
+                    action="//jsonplaceholder.typicode.com/posts/"
+                    listType="picture-card"
+                    fileList={fileList}
+                    onPreview={this.handlePreview}
+                    onChange={this.handleChange}
+                  >
+                    {fileList.length >= 1 ? null : uploadButton}
+                  </Upload>
+                  <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                  </Modal>
+                </>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*未获得认证图标">
+                {getFieldDecorator('standard', {
+                  initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '已获得认证图标为必填项，请选择!' });
+                        }
+                        callback();
+                      },
+                    },
+                  ],
+                })(
+                  <div style={{ width: '280px', textAlign: 'left' }}>
+                    <Upload
+                      action="//jsonplaceholder.typicode.com/posts/"
+                      listType="picture-card"
+                      fileList={fileList}
+                      onPreview={this.handlePreview}
+                      onChange={this.handleChange}
+                    >
+                      {fileList.length >= 1 ? null : uploadButton}
+                    </Upload>
+                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                      <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                    </Modal>
+                  </div>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
           <Row>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;是否停用">
