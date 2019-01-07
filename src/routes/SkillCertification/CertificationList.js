@@ -240,6 +240,25 @@ class CertificationList extends Component {
     return data;
   };
 
+
+  // 获取table列表头
+  headerColu = () => {
+    const columns = [
+      {
+        title: '名称1',
+        dataIndex: 'name1',
+      },
+      {
+        title: '名称2',
+        dataIndex: 'name2',
+      },
+      {
+        title: '名称3',
+        dataIndex: 'name3',
+      },
+    ]
+    return columns || [];
+  }
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -398,20 +417,7 @@ class CertificationList extends Component {
     };
 
 
-    const headerColu=[
-      {
-      title: '名称1',
-      dataIndex: 'name1',
-    },
-      {
-        title: '名称2',
-        dataIndex: 'name2',
-      },
-      {
-        title: '名称3',
-        dataIndex: 'name3',
-      },
-    ]
+    const headerColu= this.headerColu();
     const columnData=[
       {
       key: 1,
@@ -426,13 +432,20 @@ class CertificationList extends Component {
     ]
     const modalContent = (
       <>
-        <Table
-          columns={headerColu}
-          showHeader={false}
-          pagination={false}
-          dataSource={columnData}
-          bordered
-        />
+        {clickFlag===3?(<>
+          <span>一经删除历史数据将全部清空！确定要删除吗？</span>
+        </>) : (
+          <>
+            <span>{clickFlag===1?'开放':'关闭'}如下报名通道吗？</span>
+            <Table
+              columns={headerColu}
+              showHeader={false}
+              pagination={false}
+              dataSource={columnData}
+              bordered
+            />
+          </>
+        )}
       </>
     );
     return (
