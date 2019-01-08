@@ -134,7 +134,7 @@ class CertificationEdit_Form extends Component {
                 {getFieldDecorator('sex', {
                   initialValue: timeArea,
                 })(
-                  <Select style={{ width: 280 }} disabled >
+                  <Select style={{ width: 280 }} disabled={disabled} >
                     <Option value={1}>月度</Option>
                     <Option value={2}>季度</Option>
                   </Select>
@@ -160,7 +160,7 @@ class CertificationEdit_Form extends Component {
           </Row>
 
 
-          <Row style={{ marginBottom: '20px' }}>
+          <Row style={{ marginBottom: '10px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*已获得认证图标">
                 {getFieldDecorator('standard', {

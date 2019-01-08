@@ -452,6 +452,21 @@
   border-radius: 0 !important;
   background-color: #fff !important;
 }
+
+
+:global(.ant-upload-list-picture-card .ant-upload-list-item ){
+  width: 80px !important;
+  height: 54px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
 .openType{
   color: #9B9B9B;
 }
+
+/*:global(.ant-upload-list-picture-card .ant-upload-list-item ) {*/
+  /*padding: 0 !important;*/
+  /*border: none !important;*/
+/*}*/
