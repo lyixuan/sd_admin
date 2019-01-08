@@ -10,16 +10,12 @@ class CertificationCreate_Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      previewVisible: false,
-      previewImage: '',
-      fileList: [
-        {
-          uid: '-1',
-          name: 'xxx.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-      ],
+      previewVisible1: false,
+      previewImage1: '',
+      previewVisible2: false,
+      previewImage2: '',
+      fileList1: [],
+      fileList2: [],
     };
   }
   componentDidMount() {}
@@ -32,22 +28,38 @@ class CertificationCreate_Form extends Component {
       }
     });
   };
-  handleCancel = () => this.setState({ previewVisible: false });
+  handleCancel1 = () => this.setState({ previewVisible1: false });
+  handleCancel2 = () => this.setState({ previewVisible1: false });
 
-  handlePreview = file => {
+  handlePreview1 = file => {
     this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
+      previewImage1: file.url || file.thumbUrl,
+      previewVisible1: true,
+    });
+  };
+  handlePreview2 = file => {
+    this.setState({
+      previewImage2: file.url || file.thumbUrl,
+      previewVisible2: true,
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange1 = ({ fileList }) => {
+    console.log(fileList)
+    this.setState({ fileList1:fileList });
+  }
+
+
+  handleChange2 = ({ fileList }) => {
+    console.log(fileList)
+    this.setState({ fileList2:fileList });
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const bol = false;
     const { TextArea } = Input;
-    const { previewVisible, previewImage, fileList } = this.state;
+    const { previewVisible1, previewImage1,previewVisible2, previewImage2, fileList2 , fileList1} = this.state;
     const uploadButton = (
       <Button type="primary" className={common.submitButton} loading={false}>
         添加图标
@@ -126,63 +138,43 @@ class CertificationCreate_Form extends Component {
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*已获得认证图标">
-                {getFieldDecorator('standard', {
+                {getFieldDecorator('havaOwed', {
                   initialValue: null,
-                  rules: [
-                    {
-                      validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '已获得认证图标为必填项，请选择!' });
-                        }
-                        callback();
-                      },
-                    },
-                  ],
                 })(
                   <>
                     <Upload
-                      action="//jsonplaceholder.typicode.com/posts/"
+                      action=""
                       listType="picture-card"
-                      fileList={fileList}
-                      onPreview={this.handlePreview}
-                      onChange={this.handleChange}
+                      fileList={fileList1}
+                      onPreview={this.handlePreview1}
+                      onChange={this.handleChange1}
                     >
-                      {fileList.length >= 1 ? null : uploadButton}
+                      {Array.isArray(fileList1)?fileList1.length >= 1 ? null : uploadButton:null}
                     </Upload>
-                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                      <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                    <Modal visible={previewVisible1} footer={null} onCancel={this.handleCancel1}>
+                      <img alt="example" style={{ width: '100%' }} src={previewImage1} />
                     </Modal>
                   </>
                 )}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
-              <FormItem label="*未获得认证图标">
-                {getFieldDecorator('standard', {
+              <FormItem label="*未获得认证图标"  >
+                {getFieldDecorator('unOwed', {
                   initialValue: null,
-                  rules: [
-                    {
-                      validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '已获得认证图标为必填项，请选择!' });
-                        }
-                        callback();
-                      },
-                    },
-                  ],
                 })(
                   <div style={{ width: '280px', textAlign: 'left' }}>
                     <Upload
-                      action="//jsonplaceholder.typicode.com/posts/"
+                      action=""
                       listType="picture-card"
-                      fileList={fileList}
-                      onPreview={this.handlePreview}
-                      onChange={this.handleChange}
+                      fileList={fileList2}
+                      onPreview={this.handlePreview2}
+                      onChange={this.handleChange2}
                     >
-                      {fileList.length >= 1 ? null : uploadButton}
+                      {Array.isArray(fileList2)?fileList2.length >= 1 ? null : uploadButton:null}
                     </Upload>
-                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                      <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                    <Modal visible={previewVisible2} footer={null} onCancel={this.handleCancel2}>
+                      <img alt="example" style={{ width: '100%' }} src={previewImage2} />
                     </Modal>
                   </div>
                 )}
