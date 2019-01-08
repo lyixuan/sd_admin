@@ -40,6 +40,17 @@ class AuditList extends Component {
   onRecord = () => {
     this.props.dispatch(routerRedux.push('/skillCertification/auditRecord'));
   };
+
+  // 报名审核
+  onSign = () => {
+    this.props.dispatch(routerRedux.push('/skillCertification/auditApply'));
+  };
+
+  // 导入认证
+  importExcel = () => {
+    this.props.dispatch(routerRedux.push('/skillCertification/auditImport'));
+  };
+
   // 表单搜索函数
   search = params => {
     this.props.dispatch({
@@ -101,7 +112,7 @@ class AuditList extends Component {
                 <AuthorizedButton authority="/skillCertification/auditApply">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onUpdate(record)}
+                    onClick={() => this.onSign(record)}
                   >
                     报名审核
                   </span>
@@ -161,7 +172,7 @@ class AuditList extends Component {
             </AuthorizedButton>
             <AuthorizedButton authority="/skillCertification/auditImport">
               <Button
-                onClick={this.handleAdd}
+                onClick={this.importExcel}
                 type="primary"
                 className={common.addQualityButton}
                 style={{ marginLeft: 10 }}

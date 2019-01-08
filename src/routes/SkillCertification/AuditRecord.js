@@ -127,17 +127,16 @@ class AuditRecord extends Component {
             showPageSize={3}
           />
         }
-        bottomLine={
-          <Button
-            onClick={this.handleBack}
-            type="primary"
-            style={{ float: 'right', marginBottom: 15 }}
-            className={common.createButton}
-          >
-            返回
-          </Button>
-        }
-      />
+      >
+        <Button
+          onClick={this.handleBack}
+          type="primary"
+          style={{ float: 'right', marginBottom: 15 }}
+          className={common.createButton}
+        >
+          返回
+        </Button>
+      </ContentLayout>
     );
   }
 }

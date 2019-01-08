@@ -35,12 +35,13 @@ export default {
         return result;
       }
     },
-    *getAuditList({ put }) {
+    *getAuditList({ payload }, { put }) {
       // *getAuditList({ payload }, { call, put }) {
       // const response = yield call(getAuditList, payload.params);
       // const listData = response && response.data ? [...response.data] : [];
       const listData = [
         {
+          a: payload,
           id: 1,
           code: 777,
           name: '小米',
