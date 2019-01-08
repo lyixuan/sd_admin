@@ -31,7 +31,8 @@ class CertificationList extends Component {
       },
       selectedRows: [], // 选中的行
       clickFlag: 1, // 1批量开发，2批量关闭，3删除
-      visible: false, // 控制弹框显隐
+      visible: false, // 控制批量弹框显隐
+      deleteVisible:false,// 控制删除弹框显隐
     };
     this.state = assignUrlParams(initParams, params);
   }
@@ -42,9 +43,9 @@ class CertificationList extends Component {
   }
 
   // 删除
-  onDelete = (modelType = 3, val = {}) => {
+  onDelete = (val = {}) => {
     console.log(val);
-    this.setState({ clickFlag: modelType, visible: true });
+    this.setState({  deleteVisible: true });
   };
 
   // 编辑
@@ -67,8 +68,13 @@ class CertificationList extends Component {
     this.setState({ selectedRows: arrayList });
   };
 
-  setDialogSHow(bol) {
-    this.setState({ visible: bol });
+  setDialogSHow(type,bol) {
+    if(type===1){
+      this.setState({visible: bol});
+    }else{
+      this.setState({deleteVisible:bol});
+    }
+
   }
 
   getData = params => {
@@ -131,10 +137,15 @@ class CertificationList extends Component {
     propsVal.form.resetFields();
   };
 
-  // 模态框回显
-  editName = e => {
-    this.setDialogSHow(false);
-    console.log(e);
+  // 批量模态框回显
+  allModel = e => {
+    this.setDialogSHow(1,false);
+    console.log('批量弹窗回西安',e);
+  };
+  // 删除模态框回显
+  deleteModel = e => {
+    this.setDialogSHow(2,false);
+    console.log('删除弹窗回西安',e);
   };
 
   // 表单搜索
@@ -321,7 +332,7 @@ class CertificationList extends Component {
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onDelete(3, record)}
+                    onClick={() => this.onDelete( record)}
                   >
                     删除
                   </span>
@@ -342,7 +353,7 @@ class CertificationList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { selectedRows = [], visible = false, clickFlag = 1 } = this.state;
+    const { selectedRows = [], visible = false, deleteVisible=false,clickFlag = 1 } = this.state;
     const { pageNum = 0, examinationCycle = 0, type = 0 } = this.state.params;
     const { userListData = {} } = {};
     const { totalElements = 0, content = [] } = userListData;
@@ -428,26 +439,24 @@ class CertificationList extends Component {
     ];
     const modalContent = (
       <>
-        {clickFlag === 3 ? (
-          <>
-            <img src={deleteTost} alt='delete' className={styles.imgStyle} />
-            <br />
-            <span className={styles.deletWord}>一经删除历史数据将全部清空！确定要删除吗？</span>
-          </>
-        ) : (
-          <div >
-            <span className={styles.allWordTost}>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
-            <Table
-              columns={headerColu}
-              showHeader={false}
-              pagination={false}
-              dataSource={columnData}
-              bordered
-            />
-          </div>
-        )}
+        <span className={styles.allWordTost}>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
+        <Table
+          columns={headerColu}
+          showHeader={false}
+          pagination={false}
+          dataSource={columnData}
+          bordered
+        />
       </>
     );
+
+    const modalContentDelete=(
+      <>
+        <img src={deleteTost} alt='delete' className={styles.imgStyle} />
+        <br />
+        <span className={styles.deletWord}>一经删除历史数据将全部清空！确定要删除吗？</span>
+      </>
+    )
     return (
       <>
         <ContentLayout
@@ -521,13 +530,24 @@ class CertificationList extends Component {
 
         <ModalDialog
           style={{ width: '520px' }}
-          title={clickFlag === 1 ? '批量开放通道' : clickFlag === 2 ? '批量关闭通道' : '删除确认'}
+          title={clickFlag === 1 ? '批量开放通道' : '批量关闭通道'}
           visible={this.stringToBoolean(visible)}
           modalContent={modalContent}
-          clickOK={e => this.editName(e)}
+          clickOK={e => this.allModel(e)}
           footButton={['取消', '提交']}
           showModal={bol => {
-            this.setDialogSHow(bol);
+            this.setDialogSHow(1,bol);
+          }}
+        />
+        <ModalDialog
+          style={{ width: '520px' }}
+          title='删除确认'
+          visible={this.stringToBoolean(deleteVisible)}
+          modalContent={modalContentDelete}
+          clickOK={e => this.deleteModel(e)}
+          footButton={['取消', '提交']}
+          showModal={bol => {
+            this.setDialogSHow(2,bol);
           }}
         />
       </>
