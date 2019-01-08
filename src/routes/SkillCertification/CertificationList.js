@@ -431,7 +431,7 @@ class CertificationList extends Component {
         {clickFlag === 3 ? (
           <>
             <img src={deleteTost} alt='delete' className={styles.imgStyle} />
-            <br/>
+            <br />
             <span className={styles.deletWord}>一经删除历史数据将全部清空！确定要删除吗？</span>
           </>
         ) : (
