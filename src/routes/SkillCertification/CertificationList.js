@@ -7,6 +7,8 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
+import styles from './certification.css';
+import deleteTost from '../../assets/deleteTost.svg';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -428,7 +430,9 @@ class CertificationList extends Component {
       <>
         {clickFlag === 3 ? (
           <>
-            <span>一经删除历史数据将全部清空！确定要删除吗？</span>
+            <img src={deleteTost} alt='delete' className={styles.imgStyle} />
+            <br/>
+            <span className={styles.deletWord}>一经删除历史数据将全部清空！确定要删除吗？</span>
           </>
         ) : (
           <>
