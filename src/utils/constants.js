@@ -91,6 +91,7 @@ export const CERTIFICATION_STATE = [
   { id: null, name: '全部' },
   { id: '1', name: '待审核' },
   { id: '2', name: '已审核' },
+  { id: '3', name: '已发布' },
 ];
 
 // 认证结果

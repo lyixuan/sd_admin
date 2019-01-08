@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import { Table, Button, Form } from 'antd';
 import { assignUrlParams } from 'utils/utils';
-import { Table, Button, Form, Popconfirm } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
@@ -39,7 +39,7 @@ class AuditList extends Component {
     const columns = [
       {
         title: '编号',
-        dataIndex: 'id',
+        dataIndex: 'code',
       },
       {
         title: '姓名',
@@ -47,35 +47,35 @@ class AuditList extends Component {
       },
       {
         title: '组织',
-        dataIndex: 'mail',
+        dataIndex: 'orgName',
       },
       {
         title: '认证项目',
-        dataIndex: 'userType',
+        dataIndex: 'certificationItemName',
       },
       {
         title: '考核周期',
-        dataIndex: 'showName',
+        dataIndex: 'assessCycStr',
       },
       {
         title: '报名月份',
-        dataIndex: 'changeShowName',
+        dataIndex: 'applyTimeMonth',
       },
       {
         title: '报名状态',
-        dataIndex: 'roleName',
+        dataIndex: 'signStatusStr',
       },
       {
         title: '报名结果',
-        dataIndex: 'privilege',
+        dataIndex: 'signResultStr',
       },
       {
         title: '认证状态',
-        dataIndex: 'privilege1',
+        dataIndex: 'examineStatusStr',
       },
       {
         title: '认证结果',
-        dataIndex: 'privilege2',
+        dataIndex: 'examineResultStr',
       },
       {
         title: '操作',
@@ -83,22 +83,15 @@ class AuditList extends Component {
         render: (text, record) => {
           return (
             <div>
-              {record.changeShowName &&
-              record.changeShowName !== '' &&
-              (record.userType !== 'admin' || record.userType !== 'boss') &&
-              record.changeShowName !== record.showName ? (
-                record.privilege === '有' ? null : (
-                  <AuthorizedButton authority="/user/updateUser">
-                    <span
-                      style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                      onClick={() => this.onUpdate(record)}
-                    >
-                      报名审核
-                    </span>
-                  </AuthorizedButton>
-                )
-              ) : null}
-              <AuthorizedButton authority="/user/editUser">
+              <AuthorizedButton authority="/skillCertification/auditList">
+                <span
+                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                  onClick={() => this.onUpdate(record)}
+                >
+                  报名审核
+                </span>
+              </AuthorizedButton>
+              <AuthorizedButton authority="/skillCertification/auditList">
                 <span
                   style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                   onClick={() => this.onEdit(record)}
@@ -106,43 +99,20 @@ class AuditList extends Component {
                   认证审核
                 </span>
               </AuthorizedButton>
-              {record.privilege === '有' ? null : (
-                <AuthorizedButton authority="/user/deleteUser">
-                  <Popconfirm title="是否确认删除该用户?" onConfirm={() => this.onDelete(record)}>
-                    <span style={{ color: '#52C9C2', cursor: 'pointer' }}>审核记录</span>
-                  </Popconfirm>
-                </AuthorizedButton>
-              )}
+              <AuthorizedButton authority="/skillCertification/auditList">
+                <span
+                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                  onClick={() => this.onEdit(record)}
+                >
+                  审核记录
+                </span>
+              </AuthorizedButton>
             </div>
           );
         },
       },
     ];
     return columns || [];
-  };
-
-  // 初始化tabale 列数据
-  fillDataSource = val => {
-    const data = [];
-    val.map((item, index) =>
-      data.push({
-        key: index,
-        name: item.name,
-        privilege: item.privilege ? '有' : '无',
-        mail: item.entUserId,
-        userType: window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${item.userType}`).name,
-        showName: !item.showName
-          ? item.userType === 'others' ? '无绩效岗位' : null
-          : item.showName.replace(/,/g, ' | '), // showName.replace(/\,/g,"|")
-        changeShowName: !item.changeShowName ? null : item.changeShowName.replace(/,/g, ' | '),
-        id: item.id,
-        wechatDepartmentId: item.wechatDepartmentId,
-        wechatDepartmentName: item.wechatDepartmentName,
-        roleName: item.roleName,
-      })
-    );
-
-    return data;
   };
 
   // 表单搜索函数
@@ -155,10 +125,7 @@ class AuditList extends Component {
   render() {
     const { loading } = this.props;
     const { pageNum } = this.state.params;
-    const userListData = {};
-    const { totalElements = 0, content = [] } = userListData;
-    const dataSource = this.fillDataSource(content);
-
+    const totalElements = 0;
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -171,7 +138,7 @@ class AuditList extends Component {
           />
         }
         contentButton={
-          <div style={{ marginTop: 10 }}>
+          <div style={{ marginTop: 20 }}>
             <AuthorizedButton authority="">
               <Button
                 onClick={this.handleAdd}
@@ -204,7 +171,7 @@ class AuditList extends Component {
             <Table
               bordered
               loading={loading}
-              dataSource={dataSource}
+              dataSource={this.props.audit.auditList}
               columns={this.columnsData()}
               pagination={false}
               className={common.tableContentStyle}

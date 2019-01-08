@@ -11,20 +11,27 @@ const { MonthPicker } = DatePicker;
 class AuditListForm extends Component {
   constructor(props) {
     super(props);
+    this.listOrg = [];
     this.orgOptions = [];
     this.certifiyOptions = [];
     this.canSignResult = false;
     this.canExamineStatus = false;
     this.canExamineResult = false;
     this.isMonth = true;
-    this.isOpenQuarter = false;
 
     this.state = {
       quarter: '',
     };
   }
 
-  // 根据props异步初始化
+  // 根据props初始化
+  UNSAFE_componentWillMount() {
+    const { auditData } = this.props;
+    this.listOrg = auditData.listOrg;
+    this.handleSelectChange('college');
+  }
+
+  // 刷新初始化
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { auditData: auditData2 } = this.props;
     const { auditData } = nextProps;
@@ -103,6 +110,9 @@ class AuditListForm extends Component {
       this.isMonth = true;
     } else {
       this.isMonth = false;
+      this.setState({
+        quarter: '',
+      });
     }
   };
 
@@ -160,6 +170,9 @@ class AuditListForm extends Component {
     this.canExamineStatus = false;
     this.canExamineResult = false;
     this.isMonth = true;
+    this.setState({
+      quarter: '',
+    });
     this.props.form.resetFields();
     this.submitSearch();
   };
@@ -205,7 +218,7 @@ class AuditListForm extends Component {
     const formLayout = 'inline';
     return (
       <Form layout={formLayout}>
-        <Row gutter={24} style={{ height: 50 }}>
+        <Row gutter={24} style={{ height: 40 }}>
           <Col span={8}>
             <FormItem label="级 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
               {getFieldDecorator('orgType', {
@@ -252,7 +265,7 @@ class AuditListForm extends Component {
             </FormItem>
           </Col>
         </Row>
-        <Row gutter={24} style={{ height: 50 }}>
+        <Row gutter={24} style={{ height: 40 }}>
           <Col span={8}>
             <FormItem label="考核周期">
               {getFieldDecorator('assessCyc', {
@@ -334,7 +347,7 @@ class AuditListForm extends Component {
             </FormItem>
           </Col>
         </Row>
-        <Row gutter={24} style={{ height: 50 }}>
+        <Row gutter={24} style={{ height: 40 }}>
           <Col span={8}>
             <FormItem label="报名状态">
               {getFieldDecorator('signStatus', {
@@ -380,7 +393,7 @@ class AuditListForm extends Component {
           </Col>
           <Col span={8}>&nbsp;</Col>
         </Row>
-        <Row gutter={24} style={{ height: 50 }}>
+        <Row gutter={24} style={{ height: 40 }}>
           <Col span={8}>
             <FormItem label="认证状态">
               {getFieldDecorator('examineStatus', {

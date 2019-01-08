@@ -52,5 +52,14 @@ const urlPathMap = {
   '/bottomTable/downloadAllBottomTable': {
     name: '下载全部底表',
   },
+  '/skillCertification/auditCertify': {
+    name: '认证审核',
+  },
+  '/skillCertification/exportTable': {
+    name: '导出底表',
+  },
+  '/skillCertification/certificationPublish': {
+    name: '发布认证',
+  },
 };
 export { urlPathMap };

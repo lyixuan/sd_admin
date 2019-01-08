@@ -219,5 +219,9 @@ export function assignUrlParams(paramsObj = {}, urlParams = {}) {
 }
 
 export function deepCopy(obj) {
-  return JSON.parse(JSON.stringify(obj));
+  if (typeof obj === 'object' && obj) {
+    return JSON.parse(JSON.stringify(obj));
+  } else {
+    return obj;
+  }
 }
