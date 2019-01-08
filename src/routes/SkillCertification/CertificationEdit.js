@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
 import CertificationEdit_Form from './component/CertificationEdit_Form.js';
+import Table from './component/CertificationEdit_Table.js';
 import ContentLayout from '../../layouts/ContentLayout';
-import CertificationEdit_Table from './component/CertificationEdit_Table.js';
 
 const WrappedRegistrationForm = Form.create()(CertificationEdit_Form);
 @connect(({ user, loading }) => ({
@@ -45,7 +45,7 @@ class CertificationEdit extends Component {
             />
           }
         />
-        <CertificationEdit_Table dataSource={{a:1,b:2}} />
+        <Table dataSource={1} />
       </>
     );
   }

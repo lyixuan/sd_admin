@@ -43,11 +43,6 @@ class CertificationEdit_Table extends Component {
   };
 
 
-
-  handleSelectChange = value => {
-    console.log(value)
-  };
-
   // 初始化tabale 列数据
   fillDataSource = () => {
     const data = [
@@ -123,7 +118,12 @@ class CertificationEdit_Table extends Component {
   };
 
   handleSearch = (e, arrValue) => {
-  console.log(e,arrValue)
+    e.preventDefault();
+    propsVal.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.getData(values, arrValue);
+      }
+    });
   };
 
   render() {
@@ -142,7 +142,7 @@ class CertificationEdit_Table extends Component {
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*子项分类:">
-                  {getFieldDecorator('userType', {
+                  {getFieldDecorator('childType', {
                     initialValue: null,
                     rules: [
                       {
@@ -165,14 +165,14 @@ class CertificationEdit_Table extends Component {
             </Row>
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="*子项分类:">
+                <FormItem label="*子项名称:">
                   {getFieldDecorator('userType', {
                     initialValue: null,
                     rules: [
                       {
                         validator(rule, value, callback) {
                           if (!value) {
-                            callback({ message: '请选择子项分类！' });
+                            callback({ message: '子项名称为必填项，请填写！' });
                           }
                           callback();
                         },
@@ -184,14 +184,14 @@ class CertificationEdit_Table extends Component {
             </Row>
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
-                <FormItem label="*子项分类:">
+                <FormItem label="*学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院:">
                   {getFieldDecorator('userType', {
                     initialValue: null,
                     rules: [
                       {
                         validator(rule, value, callback) {
                           if (!value) {
-                            callback({ message: '请选择子项分类！' });
+                            callback({ message: '请选择学院！' });
                           }
                           callback();
                         },
