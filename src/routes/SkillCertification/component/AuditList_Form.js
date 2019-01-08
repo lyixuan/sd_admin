@@ -31,6 +31,10 @@ class AuditListForm extends Component {
     this.handleSelectChange('college');
   }
 
+  componentDidMount() {
+    this.submitSearch();
+  }
+
   // 刷新初始化
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { auditData: auditData2 } = this.props;
@@ -207,8 +211,7 @@ class AuditListForm extends Component {
           examineStatus: values.examineStatus,
           examineResult: values.examineResult,
         };
-        console.log(subParams);
-        // this.props.handleSearch(subParams);
+        this.props.handleSearch(subParams);
       }
     });
   };
@@ -218,7 +221,7 @@ class AuditListForm extends Component {
     const formLayout = 'inline';
     return (
       <Form layout={formLayout}>
-        <Row gutter={24} style={{ height: 40 }}>
+        <Row gutter={24} style={{ height: 54 }}>
           <Col span={8}>
             <FormItem label="级 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
               {getFieldDecorator('orgType', {
@@ -253,8 +256,8 @@ class AuditListForm extends Component {
                   {
                     validator(rule, value, callback) {
                       const reg = !value ? '' : value.replace(/(^\s*)|(\s*$)/g, '');
-                      if (reg.length > 50) {
-                        callback({ message: '姓名最长为50个字符!' });
+                      if (reg.length > 56) {
+                        callback({ message: '姓名最长为56个字符!' });
                       } else {
                         callback();
                       }
@@ -265,7 +268,7 @@ class AuditListForm extends Component {
             </FormItem>
           </Col>
         </Row>
-        <Row gutter={24} style={{ height: 40 }}>
+        <Row gutter={24} style={{ height: 54 }}>
           <Col span={8}>
             <FormItem label="考核周期">
               {getFieldDecorator('assessCyc', {
@@ -347,7 +350,7 @@ class AuditListForm extends Component {
             </FormItem>
           </Col>
         </Row>
-        <Row gutter={24} style={{ height: 40 }}>
+        <Row gutter={24} style={{ height: 54 }}>
           <Col span={8}>
             <FormItem label="报名状态">
               {getFieldDecorator('signStatus', {
@@ -393,7 +396,7 @@ class AuditListForm extends Component {
           </Col>
           <Col span={8}>&nbsp;</Col>
         </Row>
-        <Row gutter={24} style={{ height: 40 }}>
+        <Row gutter={24} style={{ height: 54 }}>
           <Col span={8}>
             <FormItem label="认证状态">
               {getFieldDecorator('examineStatus', {
