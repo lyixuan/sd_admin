@@ -435,8 +435,8 @@ class CertificationList extends Component {
             <span className={styles.deletWord}>一经删除历史数据将全部清空！确定要删除吗？</span>
           </>
         ) : (
-          <>
-            <span>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
+          <div >
+            <span className={styles.allWordTost}>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
             <Table
               columns={headerColu}
               showHeader={false}
@@ -444,7 +444,7 @@ class CertificationList extends Component {
               dataSource={columnData}
               bordered
             />
-          </>
+          </div>
         )}
       </>
     );
