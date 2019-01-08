@@ -28,8 +28,8 @@ class CertificationList extends Component {
         pageSize: 30, // 每页显示数据
       },
       selectedRows: [], // 选中的行
-      clickFlag:1, // 1批量开发，2批量关闭，3删除
-      visible: false,// 控制弹框显隐
+      clickFlag: 1, // 1批量开发，2批量关闭，3删除
+      visible: false, // 控制弹框显隐
     };
     this.state = assignUrlParams(initParams, params);
   }
@@ -40,15 +40,20 @@ class CertificationList extends Component {
   }
 
   // 删除
-  onDelete = (modelType=3,val={}) => {
+  onDelete = (modelType = 3, val = {}) => {
     console.log(val);
-    this.setState({clickFlag: modelType ,visible:true });
-
+    this.setState({ clickFlag: modelType, visible: true });
   };
 
   // 编辑
   onEdit = val => {
-    console.log(val);
+    console.log(val.timeArea);
+    this.props.setRouteUrlParams('/skillCertification/certificationEdit', {
+      timeArea: val.timeArea,
+      id: val.id,
+      code: val.code,
+      name: val.name,
+    });
   };
 
   // 点击显示每页多少条数据函数
@@ -57,7 +62,7 @@ class CertificationList extends Component {
   };
 
   onSelectChange = (key, arrayList) => {
-    this.setState({ selectedRows:arrayList });
+    this.setState({ selectedRows: arrayList });
   };
 
   setDialogSHow(bol) {
@@ -74,15 +79,17 @@ class CertificationList extends Component {
     this.saveParams(listParams);
   };
 
-  stringToBoolean=(str)=> {
+  stringToBoolean = str => {
     switch (str) {
-      case "true":return true;
-      case "false":
+      case 'true':
+        return true;
+      case 'false':
       case null:
         return false;
-      default:return Boolean(str);
+      default:
+        return Boolean(str);
     }
-  }
+  };
 
   // 单条数据开放/关闭报名   1是开放报名，2是关闭报名
   selfApply = (modelType = 1, dataList = []) => {
@@ -96,17 +103,11 @@ class CertificationList extends Component {
   allApply = (modelType = 1) => {
     const { selectedRows = [] } = this.state;
     if (modelType === 1) {
-      console.log(
-        '批量开放报名',
-        selectedRows.length > 0 ? selectedRows : '未选中任何一项'
-      );
+      console.log('批量开放报名', selectedRows.length > 0 ? selectedRows : '未选中任何一项');
     } else {
-      console.log(
-        '批量关闭报名',
-        selectedRows.length > 0 ? selectedRows : '未选中任何一项'
-      );
+      console.log('批量关闭报名', selectedRows.length > 0 ? selectedRows : '未选中任何一项');
     }
-    this.setState({ clickFlag: modelType,visible:true  });
+    this.setState({ clickFlag: modelType, visible: true });
   };
 
   saveParams = params => {
@@ -131,7 +132,7 @@ class CertificationList extends Component {
   // 模态框回显
   editName = e => {
     this.setDialogSHow(false);
-   console.log(e)
+    console.log(e);
   };
 
   // 表单搜索
@@ -225,7 +226,6 @@ class CertificationList extends Component {
     return data;
   };
 
-
   // 获取table列表头
   headerColu = () => {
     const columns = [
@@ -241,9 +241,9 @@ class CertificationList extends Component {
         title: '名称3',
         dataIndex: 'name3',
       },
-    ]
+    ];
     return columns || [];
-  }
+  };
   // 获取table列表头
   columnsData = () => {
     const columns = [
@@ -267,7 +267,9 @@ class CertificationList extends Component {
         title: '报名通道状态',
         dataIndex: 'type',
         render: (text, record) => {
-          return (<span className={record.type!=='已开放'?common.openType:null}>{record.type}</span>)
+          return (
+            <span className={record.type !== '已开放' ? common.openType : null}>{record.type}</span>
+          );
         },
       },
       {
@@ -278,7 +280,9 @@ class CertificationList extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
-          const operationType = Number(window.BI_Filter(`Certification_TYPE|name:${record.type}`).id);
+          const operationType = Number(
+            window.BI_Filter(`Certification_TYPE|name:${record.type}`).id
+          );
           return (
             <div>
               {operationType !== 1 ? null : (
@@ -315,7 +319,7 @@ class CertificationList extends Component {
                 <AuthorizedButton authority="/skillCertification/certificationEdit">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onDelete(3,record)}
+                    onClick={() => this.onDelete(3, record)}
                   >
                     删除
                   </span>
@@ -336,8 +340,8 @@ class CertificationList extends Component {
 
   render() {
     const { loading } = this.props;
-    const {selectedRows=[], visible=false,clickFlag=1 }=this.state;
-    const { pageNum = 0, examinationCycle = 0, type = 0} = this.state.params;
+    const { selectedRows = [], visible = false, clickFlag = 1 } = this.state;
+    const { pageNum = 0, examinationCycle = 0, type = 0 } = this.state.params;
     const { userListData = {} } = {};
     const { totalElements = 0, content = [] } = userListData;
     const dataSource = this.fillDataSource(content);
@@ -407,27 +411,28 @@ class CertificationList extends Component {
       onChange: this.onSelectChange,
     };
 
-
-    const headerColu= this.headerColu();
-    const columnData=[
+    const headerColu = this.headerColu();
+    const columnData = [
       {
-      key: 1,
-      name1: 'IM认证',
-      name2: '好学生推荐认证',
-      name3: '学习规划认证',
+        key: 1,
+        name1: 'IM认证',
+        name2: '好学生推荐认证',
+        name3: '学习规划认证',
       },
       {
         key: 2,
         name1: '报考指导',
       },
-    ]
+    ];
     const modalContent = (
       <>
-        {clickFlag===3?(<>
-          <span>一经删除历史数据将全部清空！确定要删除吗？</span>
-        </>) : (
+        {clickFlag === 3 ? (
           <>
-            <span>{clickFlag===1?'开放':'关闭'}如下报名通道吗？</span>
+            <span>一经删除历史数据将全部清空！确定要删除吗？</span>
+          </>
+        ) : (
+          <>
+            <span>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
             <Table
               columns={headerColu}
               showHeader={false}
@@ -512,7 +517,7 @@ class CertificationList extends Component {
 
         <ModalDialog
           style={{ width: '520px' }}
-          title={clickFlag === 1 ? '批量开放通道' :(clickFlag === 2?'批量关闭通道':'删除确认')}
+          title={clickFlag === 1 ? '批量开放通道' : clickFlag === 2 ? '批量关闭通道' : '删除确认'}
           visible={this.stringToBoolean(visible)}
           modalContent={modalContent}
           clickOK={e => this.editName(e)}
@@ -521,7 +526,7 @@ class CertificationList extends Component {
             this.setDialogSHow(bol);
           }}
         />
-    </>
+      </>
     );
   }
 }

@@ -445,6 +445,23 @@
   background-color: #52c9c2!important;
   border: #52c9c2!important;
 }
+:global(.ant-upload.ant-upload-select-picture-card){
+  border: none !important;
+  width: 80px !important;
+  height: 32px !important;
+  border-radius: 0 !important;
+  background-color: #fff !important;
+}
+
+
+:global(.ant-upload-list-picture-card .ant-upload-list-item ){
+  width: 80px !important;
+  height: 54px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
 .openType{
   color: #9B9B9B;
 }
@@ -459,7 +476,3 @@
   background: transparent!important;
   color: transparent!important;
 }
-
-
-
-

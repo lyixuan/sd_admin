@@ -1,15 +1,28 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, Upload, Modal } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal } from 'antd';
 import common from '../../Common/common.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const RadioGroup = Radio.Group;
 
-class CertificationCreate_Form extends Component {
+class CertificationEdit_Form extends Component {
   constructor(props) {
     super(props);
+    const {
+      timeArea = '月度',
+      id = null,
+      name = null,
+      code = null,
+    } = this.props.jumpFunction.getUrlParams();
+
+    const timeType = Number(window.BI_Filter(`Certification_TIMEAREA|name:${timeArea}`).id);
     this.state = {
+      timeArea: timeType,
+      id,
+      name,
+      code,
       previewVisible: false,
       previewImage: '',
       fileList: [
@@ -32,6 +45,7 @@ class CertificationCreate_Form extends Component {
       }
     });
   };
+
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = file => {
@@ -46,8 +60,17 @@ class CertificationCreate_Form extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const bol = false;
+    const disabled = true;
     const { TextArea } = Input;
-    const { previewVisible, previewImage, fileList } = this.state;
+    const {
+      timeArea = 1,
+      id = null,
+      name = null,
+      code = null,
+      previewVisible,
+      previewImage,
+      fileList,
+    } = this.state;
     const uploadButton = (
       <Button type="primary" className={common.submitButton} loading={false}>
         添加图标
@@ -61,7 +84,7 @@ class CertificationCreate_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序">
                 {getFieldDecorator('id', {
-                  initialValue: null,
+                  initialValue: id,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -75,12 +98,19 @@ class CertificationCreate_Form extends Component {
                 })(<Input style={{ width: 280 }} />)}
               </FormItem>
             </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="&nbsp;&nbsp;认证编码">
+                {getFieldDecorator('code', {
+                  initialValue: code,
+                })(<Input style={{ width: 280 }} />)}
+              </FormItem>
+            </Col>
           </Row>
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*认证项目">
                 {getFieldDecorator('name', {
-                  initialValue: null,
+                  initialValue: name,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -96,10 +126,10 @@ class CertificationCreate_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*考核周期">
-                {getFieldDecorator('timeArea', {
-                  initialValue: 1,
+                {getFieldDecorator('sex', {
+                  initialValue: timeArea,
                 })(
-                  <Select style={{ width: 280 }}>
+                  <Select style={{ width: 280 }} disabled={disabled}>
                     <Option value={1}>月度</Option>
                     <Option value={2}>季度</Option>
                   </Select>
@@ -123,7 +153,8 @@ class CertificationCreate_Form extends Component {
               </FormItem>
             </Col>
           </Row>
-          <Row style={{ marginBottom: '20px' }}>
+
+          <Row style={{ marginBottom: '10px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*已获得认证图标">
                 {getFieldDecorator('standard', {
@@ -189,6 +220,46 @@ class CertificationCreate_Form extends Component {
               </FormItem>
             </Col>
           </Row>
+
+          <Row>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="&nbsp;&nbsp;是否停用">
+                {getFieldDecorator('view', {
+                  initialValue: 0,
+                })(
+                  <RadioGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                  >
+                    <Radio name="privilege" value={1}>
+                      是
+                    </Radio>
+                    <Radio name="privilege" value={0}>
+                      否
+                    </Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="子项是否允许手动输入">
+                {getFieldDecorator('view', {
+                  initialValue: 0,
+                })(
+                  <RadioGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                  >
+                    <Radio name="privilege" value={1}>
+                      是
+                    </Radio>
+                    <Radio name="privilege" value={0}>
+                      否
+                    </Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
           <Row style={{ marginTop: '20px' }}>
             <Col span={6} offset={17} style={{ textAlign: 'right' }}>
               <FormItem>
@@ -218,4 +289,4 @@ class CertificationCreate_Form extends Component {
   }
 }
 
-export default CertificationCreate_Form;
+export default CertificationEdit_Form;
