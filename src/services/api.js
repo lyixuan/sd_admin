@@ -728,3 +728,10 @@ export async function addTask(params) {
     body: params,
   });
 }
+
+// 获取审核管理列表
+export async function getAuditList(params) {
+  return request(`${HOST}/cem/list?${stringify(params)}`, {
+    method: 'GET',
+  });
+}

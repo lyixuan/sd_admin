@@ -13,14 +13,18 @@ class AuditListForm extends Component {
     super(props);
     this.orgOptions = [];
     this.certifiyOptions = [];
-    this.state1 = null;
-    this.state2 = null;
-    this.state3 = null;
-    this.state4 = null;
-    this.state = {};
+    this.canSignResult = false;
+    this.canExamineStatus = false;
+    this.canExamineResult = false;
+    this.isMonth = true;
+    this.isOpenQuarter = false;
+
+    this.state = {
+      quarter: '',
+    };
   }
 
-  // 根据props初始化
+  // 根据props异步初始化
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { auditData: auditData2 } = this.props;
     const { auditData } = nextProps;
@@ -31,6 +35,9 @@ class AuditListForm extends Component {
   }
   // 级联选级
   handleSelectChange = value => {
+    this.props.form.setFieldsValue({
+      orgList: [],
+    });
     this.orgOptions = deepCopy(this.listOrg);
     if (value === 'college') {
       this.orgOptions.forEach(v => {
@@ -44,42 +51,151 @@ class AuditListForm extends Component {
       });
     }
   };
-  // 联动更新
-  changeState = lv => {
+  // 联动更新数据和可用状态
+  changeState = (val, lv) => {
     if (lv === 1) {
       this.props.form.setFieldsValue({
         signResult: null,
         examineStatus: null,
         examineResult: null,
       });
+      if (val === '1') {
+        // 待审核
+        this.canSignResult = true;
+        this.canExamineStatus = true;
+        this.canExamineResult = true;
+      } else {
+        this.canSignResult = false;
+        this.canExamineStatus = false;
+        this.canExamineResult = false;
+      }
     }
     if (lv === 2) {
       this.props.form.setFieldsValue({
         examineStatus: null,
         examineResult: null,
       });
+      if (val === '2') {
+        // 报名结果未通过
+        this.canExamineStatus = true;
+        this.canExamineResult = true;
+      } else {
+        this.canExamineStatus = false;
+        this.canExamineResult = false;
+      }
     }
     if (lv === 3) {
       this.props.form.setFieldsValue({
         examineResult: null,
       });
+      if (val === '1') {
+        // 报名结果未通过
+        this.canExamineResult = true;
+      } else {
+        this.canExamineResult = false;
+      }
     }
   };
 
-  handleCycleChange = () => {};
+  // 季度月度切换
+  handleCycleChange = val => {
+    if (val === '1') {
+      this.isMonth = true;
+    } else {
+      this.isMonth = false;
+    }
+  };
 
+  // 月度组件改造为季度组件
+  quarterRender = data => {
+    const a = data.month();
+    if (a === 0) {
+      // 0 1 2
+      return <div style={{ textAlign: 'center' }}>第一季度(1-3)</div>;
+    }
+    if (a === 3) {
+      // 3 4 5
+      return <div style={{ textAlign: 'center' }}>第二季度(4-6)</div>;
+    }
+    if (a === 6) {
+      // 6 7 8
+      return <div style={{ textAlign: 'center' }}>第三季度(7-9)</div>;
+    }
+    if (a === 9) {
+      // 9 10 11
+      return <div style={{ textAlign: 'center' }}>第四季度(10-12)</div>;
+    }
+  };
+  // input与季度组件结合使用
+  checkQuarter = data => {
+    this.props.form.setFieldsValue({
+      quarterRange: data,
+    });
+    const y = data ? data.year() : '';
+    const a = data ? data.month() : null;
+    if (a === 0) {
+      this.setState({
+        quarter: `${y} 第一季度(1-3)`,
+      });
+    }
+    if (a === 3) {
+      this.setState({
+        quarter: `${y} 第二季度(4-6)`,
+      });
+    }
+    if (a === 6) {
+      this.setState({
+        quarter: `${y} 第三季度(7-9)`,
+      });
+    }
+    if (a === 9) {
+      this.setState({
+        quarter: `${y} 第四季度(10-12)`,
+      });
+    }
+  };
   // 表单重置
   handleReset = () => {
-    propsVal.form.resetFields();
-    this.props.setRouteUrlParams('/skillCertification/auditList');
-    this.getData({ size: 30, number: 0 });
+    this.canSignResult = false;
+    this.canExamineStatus = false;
+    this.canExamineResult = false;
+    this.isMonth = true;
+    this.props.form.resetFields();
+    this.submitSearch();
   };
 
   // 搜索数据整理
   submitSearch = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.handleSearch(values, '');
+        let applyTimeParamStart = null;
+        let applyTimeParamEnd = null;
+        if (values.assessCyc === '1') {
+          const m = values.monthRange ? values.monthRange.clone() : null;
+          applyTimeParamStart = m ? m.format('YYYY-MM') : null;
+          applyTimeParamEnd = m ? m.format('YYYY-MM') : null;
+        } else if (values.assessCyc === '2') {
+          const m = values.quarterRange ? values.quarterRange.clone() : null;
+          applyTimeParamStart = m ? m.format('YYYY-MM') : null;
+          applyTimeParamEnd = m ? m.add(2, 'month').format('YYYY-MM') : null;
+        }
+        const subParams = {
+          orgType: values.orgType,
+          collegeId: values.orgList[0] ? values.orgList[0] : null,
+          familyId: values.orgList[1] ? values.orgList[1] : null,
+          groupId: values.orgList[2] ? values.orgList[2] : null,
+          name: values.name,
+          assessCyc: values.assessCyc,
+          applyTimeParamStart,
+          applyTimeParamEnd,
+          certificationItemId: values.certificationItemId,
+          signStatus: values.signStatus,
+          signResult: values.signResult,
+          examineStatus: values.examineStatus,
+          examineResult: values.examineResult,
+        };
+        console.log(subParams);
+        // this.props.handleSearch(subParams);
       }
     });
   };
@@ -145,7 +261,7 @@ class AuditListForm extends Component {
                 <Select
                   placeholder="请选择考核周期"
                   style={{ width: 230, height: 32 }}
-                  onChange={this.handleCycleChange}
+                  onChange={val => this.handleCycleChange(val)}
                 >
                   {BI_Filter('CHECK_CYCLE').map(item => (
                     <Option value={item.id} key={item.name}>
@@ -157,17 +273,50 @@ class AuditListForm extends Component {
             </FormItem>
           </Col>
           <Col span={8}>
-            <FormItem label="报名月份">
-              {getFieldDecorator('monthRange', {
-                initialValue: null,
-              })(
-                <MonthPicker
-                  placeholder="选择月份"
-                  format="YYYY-MM"
-                  style={{ width: 230, height: 32 }}
-                />
-              )}
-            </FormItem>
+            {this.isMonth ? (
+              <FormItem label="报名月份">
+                {getFieldDecorator('monthRange', {
+                  initialValue: null,
+                })(
+                  <MonthPicker
+                    placeholder="选择月份"
+                    format="YYYY-MM"
+                    style={{ width: 230, height: 32 }}
+                  />
+                )}
+              </FormItem>
+            ) : (
+              <FormItem label="报名季度">
+                {getFieldDecorator('quarterRange', {
+                  initialValue: null,
+                })(
+                  <div>
+                    <Input
+                      style={{ width: 230, height: 32 }}
+                      value={this.state.quarter}
+                      placeholder="选择季度"
+                      readOnly
+                    />
+                    <MonthPicker
+                      allowClear={false}
+                      className="audit"
+                      dropdownClassName="audit"
+                      placeholder=""
+                      onChange={(data, str) => this.checkQuarter(data, str)}
+                      monthCellContentRender={this.quarterRender}
+                      style={{
+                        width: 230,
+                        height: 32,
+                        position: 'absolute',
+                        left: 0,
+                        zIndex: '1',
+                        top: 4,
+                      }}
+                    />
+                  </div>
+                )}
+              </FormItem>
+            )}
           </Col>
           <Col span={8}>
             <FormItem label="认证项目">
@@ -189,13 +338,13 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="报名状态">
               {getFieldDecorator('signStatus', {
-                initialValue: this.state1,
+                initialValue: null,
               })(
                 <Select
                   placeholder="请选择报名状态"
                   style={{ width: 230, height: 32 }}
-                  onChange={() => {
-                    this.changeState(1);
+                  onChange={value => {
+                    this.changeState(value, 1);
                   }}
                 >
                   {BI_Filter('APPLY_STATE').map(item => (
@@ -210,14 +359,15 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="报名结果">
               {getFieldDecorator('signResult', {
-                initialValue: this.state2,
+                initialValue: null,
               })(
                 <Select
                   placeholder="请选择报名结果"
                   style={{ width: 230, height: 32 }}
-                  onChange={() => {
-                    this.changeState(2);
+                  onChange={value => {
+                    this.changeState(value, 2);
                   }}
+                  disabled={this.canSignResult}
                 >
                   {BI_Filter('APPLY_RESULT').map(item => (
                     <Option value={item.id} key={item.name}>
@@ -234,14 +384,15 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="认证状态">
               {getFieldDecorator('examineStatus', {
-                initialValue: this.state3,
+                initialValue: null,
               })(
                 <Select
                   placeholder="请选择认证状态"
                   style={{ width: 230, height: 32 }}
-                  onChange={() => {
-                    this.changeState(3);
+                  onChange={value => {
+                    this.changeState(value, 3);
                   }}
+                  disabled={this.canExamineStatus}
                 >
                   {BI_Filter('CERTIFICATION_STATE').map(item => (
                     <Option value={item.id} key={item.name}>
@@ -255,9 +406,13 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="认证结果">
               {getFieldDecorator('examineResult', {
-                initialValue: this.state4,
+                initialValue: null,
               })(
-                <Select placeholder="请选择认证结果" style={{ width: 230, height: 32 }}>
+                <Select
+                  placeholder="请选择认证结果"
+                  style={{ width: 230, height: 32 }}
+                  disabled={this.canExamineResult}
+                >
                   {BI_Filter('CERTIFICATION_RESULT').map(item => (
                     <Option value={item.id} key={item.name}>
                       {item.name}

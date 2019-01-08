@@ -146,7 +146,12 @@ class AuditList extends Component {
   };
 
   // 表单搜索函数
-  search = () => {};
+  search = params => {
+    this.props.dispatch({
+      type: 'audit/getAuditList',
+      payload: { params },
+    });
+  };
   render() {
     const { loading } = this.props;
     const { pageNum } = this.state.params;
@@ -160,11 +165,8 @@ class AuditList extends Component {
         contentForm={
           <SearchForm
             auditData={this.props.audit}
-            resetContent={() => {
-              this.resetContent();
-            }}
-            handleSearch={(values, dataString) => {
-              this.search(values, dataString);
+            handleSearch={params => {
+              this.search(params);
             }}
           />
         }

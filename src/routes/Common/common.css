@@ -448,3 +448,18 @@
 .openType{
   color: #9B9B9B;
 }
+
+:global(.audit table td){
+  width: 280px!important;
+}
+:global(.audit .ant-calendar-month-panel-body){
+  overflow: hidden!important;
+}
+:global(.audit .ant-input){
+  background: transparent!important;
+  color: transparent!important;
+}
+
+
+
+

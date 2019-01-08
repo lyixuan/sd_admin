@@ -1,12 +1,13 @@
 // import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { listOrg } from '../services/api';
+import { listOrg, getAuditList } from '../services/api';
 
 export default {
   namespace: 'audit',
 
   state: {
     listOrg: [],
+    auditList: [],
   },
 
   effects: {
@@ -34,6 +35,15 @@ export default {
         return result;
       }
     },
+    *getAuditList({ payload }, { call, put }) {
+      const response = yield call(getAuditList, payload.params);
+      const listData = response && response.data ? [...response.data] : [];
+      if (response.code === 2000) {
+        yield put({ type: 'auditListSave', payload: { listData } });
+      } else {
+        message.error(response.msg);
+      }
+    },
   },
 
   reducers: {
@@ -41,6 +51,12 @@ export default {
       return {
         ...state,
         listOrg: action.payload.resultData,
+      };
+    },
+    auditListSave(state, action) {
+      return {
+        ...state,
+        auditList: action.payload.listData,
       };
     },
   },
