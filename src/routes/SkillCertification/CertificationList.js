@@ -9,6 +9,7 @@ import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
 import styles from './certification.css';
 import deleteTost from '../../assets/deleteTost.svg';
+import circle from '../../assets/circle.svg';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -240,24 +241,6 @@ class CertificationList extends Component {
   };
 
   // 获取table列表头
-  headerColu = () => {
-    const columns = [
-      {
-        title: '名称1',
-        dataIndex: 'name1',
-      },
-      {
-        title: '名称2',
-        dataIndex: 'name2',
-      },
-      {
-        title: '名称3',
-        dataIndex: 'name3',
-      },
-    ];
-    return columns || [];
-  };
-  // 获取table列表头
   columnsData = () => {
     const columns = [
       {
@@ -424,29 +407,24 @@ class CertificationList extends Component {
       onChange: this.onSelectChange,
     };
 
-    const headerColu = this.headerColu();
-    const columnData = [
-      {
-        key: 1,
-        name1: 'IM认证',
-        name2: '好学生推荐认证',
-        name3: '学习规划认证',
-      },
-      {
-        key: 2,
-        name1: '报考指导',
-      },
-    ];
     const modalContent = (
       <>
         <span className={styles.allWordTost}>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
-        <Table
-          columns={headerColu}
-          showHeader={false}
-          pagination={false}
-          dataSource={columnData}
-          bordered
-        />
+        <ul className={styles.m_ulStyle}>
+
+          <li className={styles.u_liStyle}>
+            <img src={circle} className={styles.u_circleImg} alt='圆点' />
+            好学生推荐认证好学生
+          </li>
+          <li className={styles.u_liStyle}>
+            <img src={circle} className={styles.u_circleImg} alt='圆点' />
+            好学生推荐认证好学好学生推荐认
+          </li>
+          <li className={styles.u_liStyle}>
+            <img src={circle} className={styles.u_circleImg} alt='圆点' />
+            认证好学
+          </li>
+        </ul>
       </>
     );
 

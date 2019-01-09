@@ -18,3 +18,19 @@
   width: 100%;
   text-align: left;
 }
+.m_ulStyle{
+  width: 470px;
+  text-align: left;
+  margin-bottom: 0;
+  border: 1px solid #E8E8E8;
+}
+.u_liStyle{
+  display: inline-block;
+  width: 234px;
+  text-align: left;
+  line-height: 32px;
+  font-size: 12px;
+}
+.u_circleImg{
+  width: 20px;
+}
