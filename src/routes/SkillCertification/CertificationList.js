@@ -16,7 +16,7 @@ let propsVal = '';
 
 @connect(({ user, loading }) => ({
   user,
-  loading: false,
+  loading: loading.effects[''],
 }))
 class CertificationList extends Component {
   constructor(props) {
