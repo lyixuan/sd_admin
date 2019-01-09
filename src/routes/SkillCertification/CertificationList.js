@@ -16,7 +16,7 @@ let propsVal = '';
 
 @connect(({ user, loading }) => ({
   user,
-  loading: loading.effects['user/userList'],
+  loading: false,
 }))
 class CertificationList extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class CertificationList extends Component {
         pageSize: 30, // 每页显示数据
       },
       selectedRows: [], // 选中的行
-      clickFlag: 1, // 1批量开发，2批量关闭，3删除
+      clickFlag: 1, // 1批量开发，2批量关闭
       visible: false, // 控制批量弹框显隐
       deleteVisible:false,// 控制删除弹框显隐
     };
