@@ -29,7 +29,7 @@ class CertificationCreate_Form extends Component {
     });
   };
   handleCancel1 = () => this.setState({ previewVisible1: false });
-  handleCancel2 = () => this.setState({ previewVisible1: false });
+  handleCancel2 = () => this.setState({ previewVisible2: false });
 
   handlePreview1 = file => {
     this.setState({
@@ -61,7 +61,7 @@ class CertificationCreate_Form extends Component {
     const { TextArea } = Input;
     const { previewVisible1, previewImage1,previewVisible2, previewImage2, fileList2 , fileList1} = this.state;
     const uploadButton = (
-      <Button type="primary" className={common.submitButton} loading={false}>
+      <Button type="primary" className={common.submitButton} style={{margin:'0'}} loading={false}>
         添加图标
       </Button>
     );

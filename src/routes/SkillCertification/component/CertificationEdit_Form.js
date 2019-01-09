@@ -43,7 +43,7 @@ class CertificationEdit_Form extends Component {
   };
 
   handleCancel1 = () => this.setState({ previewVisible1: false });
-  handleCancel2 = () => this.setState({ previewVisible1: false });
+  handleCancel2 = () => this.setState({ previewVisible2: false });
 
   handlePreview1 = file => {
     this.setState({
