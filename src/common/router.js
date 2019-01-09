@@ -552,7 +552,7 @@ export const getRouterData = app => {
       name: '报名审核',
     },
     '/skillCertification/auditImport': {
-      component: dynamicWrapper(app, ['audit'], () =>
+      component: dynamicWrapper(app, ['audit', 'quality'], () =>
         import('../routes/SkillCertification/AuditImport')
       ),
       bread: {

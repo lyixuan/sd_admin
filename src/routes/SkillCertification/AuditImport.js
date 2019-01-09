@@ -1,57 +1,219 @@
-/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Spin, Button, Steps } from 'antd';
-import { routerRedux } from 'dva/router';
-import ContentLayout from '../../layouts/ContentLayout';
-import common from '../Common/common.css';
+import { qualityUpload } from '../../services/api';
+import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
+import StepLayout from '../../layouts/stepLayout';
+import StepUpload from '../../selfComponent/setpForm/stepUpload';
+import StepTable from '../../selfComponent/setpForm/stepTable';
+import StepSucess from '../../selfComponent/setpForm/stepSucess';
 
-const { Step } = Steps;
-@connect(({ audit, loading }) => ({
-  audit,
-  loading: loading.effects['audit/getAuditList'],
+@connect(({ quality, loading }) => ({
+  quality,
+  loading,
 }))
 class AuditImport extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isDisabled: true,
+      checkParams: '',
+    };
+  }
+  componentDidMount() {
+    this.editCurrent(0);
   }
 
-  // 返回
-  handleBack = () => {
-    this.props.dispatch(routerRedux.push('/skillCertification/auditList'));
+  componentWillUnmount() {
+    clearConfirm();
+    this.initParamsFn(null);
+    // 点击添加的时候清除文件
+    this.saveFileList([]);
+  }
+  // 回调
+  onChildChange = (bol, checkParams) => {
+    if (checkParams) {
+      this.setState({
+        isDisabled: bol,
+        checkParams,
+      });
+    } else {
+      this.setState({
+        isDisabled: bol,
+      });
+    }
+  };
+  // 初始化一些值
+  initParamsFn = disableDel => {
+    this.props.dispatch({
+      type: 'quality/initParams',
+      payload: { disableDel },
+    });
+  };
+  // 校验excel文件
+  fetchCheckData = params => {
+    this.props.dispatch({
+      type: 'quality/checkQuality',
+      payload: { params },
+    });
+  };
+  // 保存excel数据
+  saveExcelData = params => {
+    this.props.dispatch({
+      type: 'quality/saveExcel',
+      payload: { params },
+    });
   };
 
+  saveFileList = fileList => {
+    this.props.dispatch({
+      type: 'quality/saveFileList',
+      payload: { fileList },
+    });
+  };
+  editCurrent = current => {
+    this.props.dispatch({
+      type: 'quality/editCurrent',
+      payload: { current },
+    });
+  };
+  editLoading = isLoading => {
+    this.props.dispatch({
+      type: 'quality/editLoading',
+      payload: { isLoading },
+    });
+  };
+  historyFn() {
+    this.props.history.push({
+      pathname: '/skillCertification/auditList',
+    });
+  }
+  columnsData = () => {
+    const columns = [
+      {
+        title: 'sheet页',
+        dataIndex: 'rowNum',
+      },
+      {
+        title: '行数',
+        dataIndex: 'qualityNum',
+      },
+      {
+        title: 'id',
+        dataIndex: 'qualityDate',
+      },
+      {
+        title: '姓名',
+        dataIndex: 'teaId',
+      },
+      {
+        title: '认证结果',
+        dataIndex: 'qualityType',
+      },
+    ];
+    return columns;
+  };
   render() {
-    // const { loading } = this.props;
+    console.log(this.props.quality);
+    let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
+    const { current, checkList, fileList, disableDel, isLoading } = this.props.quality;
+    const { isDisabled, checkParams } = this.state;
+    const sucessNum = !checkList ? 0 : checkList.data.num;
+    const errorList = !checkList ? [] : checkList.data.errorList;
+
+    const dataSource = !errorList.length > 0 ? null : errorList;
+    const columns = !this.columnsData() ? [] : this.columnsData();
+    const tableTitle =
+      !errorList.length > 0 ? (
+        <div
+          style={{
+            width: '590px',
+            height: '58px',
+            background: '#F6F7FA',
+            borderRadius: '3px',
+            lineHeight: '58px',
+            margin: '116px auto 0',
+          }}
+        >
+          本次导入认证审核数量
+          <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
+          条！确定上传？
+        </div>
+      ) : null;
+
+    const customTip = () => <p>多次导入，会覆盖之前的数据。</p>;
+
+    // 有数据之后刷新页面提示弹框
+    if (!isDisabled) {
+      setConfirm();
+    } else {
+      clearConfirm();
+    }
+
+    const steps = [
+      {
+        title: '选择Excel',
+        content: (
+          <StepUpload
+            uploadUrl={qualityUpload()}
+            fileList={fileList}
+            callBackParent={(bol, params) => {
+              this.onChildChange(bol, params);
+            }}
+            saveFileList={param => {
+              this.saveFileList(param);
+            }}
+            customTip={customTip}
+          />
+        ),
+      },
+      {
+        title: '校验文件',
+        content: (
+          <StepTable
+            tableTitle={tableTitle}
+            onlyTable="true"
+            dataSource={dataSource}
+            columns={columns}
+          />
+        ),
+      },
+      {
+        title: '上传成功',
+        content: <StepSucess isDelImg="false" tipSucess={`您已成功上传  ${sucessNum}  条数据！`} />,
+      },
+    ];
+    fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
     return (
-      <ContentLayout routerData={this.props.routerData}>
-        <Spin spinning={false}>
-          <div style={{ width: '720px', margin: 'auto' }}>
-            <Steps progressDot current={1}>
-              <Step title="选择Excel" />
-              <Step title="校验文件" />
-              <Step title="上传成功" />
-            </Steps>
-          </div>
-          <Button
-            onClick={this.handleBack}
-            type="primary"
-            style={{ float: 'right', marginBottom: 15 }}
-            className={common.createButton}
-          >
-            提交
-          </Button>
-          <Button
-            onClick={this.handleBack}
-            type="primary"
-            style={{ float: 'right', marginBottom: 15, marginRight: 5 }}
-            className={common.resetButton}
-          >
-            返回
-          </Button>
-        </Spin>
-      </ContentLayout>
+      <StepLayout
+        routerData={this.props.routerData}
+        title="导入认证审核"
+        steps={steps}
+        isDisabled={isDisabled}
+        disableDel={disableDel}
+        goBack={() => {
+          this.historyFn();
+        }}
+        callBackParent={bol => {
+          this.onChildChange(bol);
+        }}
+        initParamsFn={dis => {
+          this.initParamsFn(dis);
+        }}
+        step1Fetch={() => {
+          this.fetchCheckData({ filePath: fileData });
+        }}
+        step2Fetch={() => {
+          this.saveExcelData({ filePath: fileData });
+        }}
+        editLoading={loading => {
+          this.editLoading(loading);
+        }}
+        isLoading={isLoading}
+        current={current}
+        editCurrent={param => {
+          this.editCurrent(param);
+        }}
+      />
     );
   }
 }
