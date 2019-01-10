@@ -12,10 +12,9 @@ class AuditListForm extends Component {
   constructor(props) {
     super(props);
     this.isMonth = true;
+    this.quarter = '';
     this.canSignResult = false;
-    this.state = {
-      quarter: '',
-    };
+    this.state = {};
   }
 
   // 季度月度切换
@@ -24,9 +23,7 @@ class AuditListForm extends Component {
       this.isMonth = true;
     } else {
       this.isMonth = false;
-      this.setState({
-        quarter: '',
-      });
+      this.quarter = '';
     }
   };
 
@@ -52,33 +49,24 @@ class AuditListForm extends Component {
   };
   // input与季度组件结合使用
   checkQuarter = data => {
-    console.log(propsVal);
-    console.log(data);
     propsVal.form.setFieldsValue({
       quarterRange: data,
     });
     const y = data ? data.year() : '';
     const a = data ? data.month() : null;
     if (a === 0) {
-      this.setState({
-        quarter: `${y} 第一季度(1-3)`,
-      });
+      this.quarter = `${y} 第一季度(1-3)`;
     }
     if (a === 3) {
-      this.setState({
-        quarter: `${y} 第二季度(4-6)`,
-      });
+      this.quarter = `${y} 第二季度(4-6)`;
     }
     if (a === 6) {
-      this.setState({
-        quarter: `${y} 第三季度(7-9)`,
-      });
+      this.quarter = `${y} 第三季度(7-9)`;
     }
     if (a === 9) {
-      this.setState({
-        quarter: `${y} 第四季度(10-12)`,
-      });
+      this.quarter = `${y} 第四季度(10-12)`;
     }
+    console.log(this.quarter);
   };
 
   // 联动更新数据和可用状态
@@ -99,7 +87,6 @@ class AuditListForm extends Component {
   handleOk = () => {
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values);
         let applyTimeParamStart = null;
         let applyTimeParamEnd = null;
         if (values.assessCyc === '1') {
@@ -127,9 +114,7 @@ class AuditListForm extends Component {
   handleCancel = () => {
     this.isMonth = true;
     this.canSignResult = false;
-    this.setState({
-      quarter: '',
-    });
+    this.quarter = '';
     propsVal.form.resetFields();
     this.props.onCancel();
   };
@@ -161,7 +146,7 @@ class AuditListForm extends Component {
                 <Select
                   placeholder="请选择考核周期"
                   style={{ width: 230, height: 32 }}
-                  onChange={val => this.handleCycleChange(val)}
+                  onChange={this.handleCycleChange}
                 >
                   {BI_Filter('CHECK_CYCLE').map(item => (
                     <Option value={item.id} key={item.name}>
@@ -192,7 +177,7 @@ class AuditListForm extends Component {
                 <div>
                   <Input
                     style={{ width: 230, height: 32 }}
-                    value={this.state.quarter}
+                    value={this.quarter}
                     placeholder="选择季度"
                     readOnly
                   />
@@ -293,7 +278,7 @@ class AuditListForm extends Component {
 
     return (
       <Modal
-        wrapClassName="audit"
+        wrapClassName="auditModel"
         title={this.props.title}
         visible={this.props.visible}
         onOk={this.handleOk}

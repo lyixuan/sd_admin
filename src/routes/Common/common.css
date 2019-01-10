@@ -454,7 +454,7 @@
 }
 
 
-:global(.ant-upload-list-picture-card .ant-upload-list-item ){
+:global(.ant-upload-list-picture-card .ant-upload-list-item){
   width: 80px !important;
   height: 54px !important;
   margin: 0 !important;
@@ -466,6 +466,7 @@
   color: #9B9B9B;
 }
 
+/* -------audit------------ */
 :global(.audit table td){
   width: 280px!important;
 }
@@ -477,7 +478,7 @@
   color: transparent!important;
 }
 
-:global(.audit .ant-btn){
+:global(.auditModel .ant-btn){
   margin: 0 10px 0 0;
   background-color: #fff;
   font-size: 14px;
@@ -487,26 +488,26 @@
   color: #000;
 }
 
-:global(.audit .ant-btn:hover, .audit .ant-btn:focus){
+:global(.auditModel .ant-btn:hover, .audit .ant-btn:focus){
   background-color: #fff;
   color: #000;
   border: 1px solid #DCDDE0;
 }
 
-:global(.audit .ant-btn-primary){
+:global(.auditModel .ant-btn-primary){
   margin: 0;
   background-color: #52C9C2;
   border: 1px solid #52C9C2 !important;
   color: #fff;
 }
 
-:global(.audit .ant-btn-primary:hover, .audit .ant-btn-primary:focus){
+:global(.auditModel .ant-btn-primary:hover, .audit .ant-btn-primary:focus){
   background-color: #52C9C2;
   border: 1px solid #52C9C2;
   color: #fff;
 }
 
-:global(.audit .ant-form .ant-row){
+:global(.auditModel .ant-form .ant-row){
   margin: 0 0 5px 70px;
 }
 
