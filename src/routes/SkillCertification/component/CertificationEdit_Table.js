@@ -37,8 +37,8 @@ class CertificationEdit_Table extends Component {
     this.setState({ visible: bol });
   }
 
-  getData = (values, arrValue) => {
-    console.log(values, arrValue);
+  getData = (values) => {
+    console.log(values);
   };
 
   // 初始化tabale 列数据
@@ -112,14 +112,15 @@ class CertificationEdit_Table extends Component {
   };
   // 模态框回显
   editName = e => {
-    console.log(e);
+    this.handleSearch(e);
   };
 
-  handleSearch = (e, arrValue) => {
+  handleSearch = (e) => {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.getData(values, arrValue);
+        console.log(values)
+        this.getData(values);
       }
     });
   };
@@ -164,7 +165,7 @@ class CertificationEdit_Table extends Component {
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*子项名称:">
-                  {getFieldDecorator('userType', {
+                  {getFieldDecorator('name', {
                     initialValue: null,
                     rules: [
                       {
@@ -183,7 +184,7 @@ class CertificationEdit_Table extends Component {
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院:">
-                  {getFieldDecorator('userType', {
+                  {getFieldDecorator('college', {
                     initialValue: null,
                     rules: [
                       {
