@@ -280,7 +280,7 @@ class CertificationList extends Component {
           return (
             <div>
               {operationType !== 1 ? null : (
-                <AuthorizedButton authority="/skillCertification/certificationEdit">
+                <AuthorizedButton authority="/skillCertification/certificationClose">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                     onClick={() => this.selfApply(2, record)}
@@ -290,7 +290,7 @@ class CertificationList extends Component {
                 </AuthorizedButton>
               )}
               {operationType !== 2 ? null : (
-                <AuthorizedButton authority="/skillCertification/certificationEdit">
+                <AuthorizedButton authority="/skillCertification/certificationOpen">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                     onClick={() => this.selfApply(1, record)}
@@ -310,7 +310,7 @@ class CertificationList extends Component {
                 </AuthorizedButton>
               )}
               {operationType === 1 || operationType === 4 ? null : (
-                <AuthorizedButton authority="/skillCertification/certificationEdit">
+                <AuthorizedButton authority="/skillCertification/certificationDelete">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                     onClick={() => this.onDelete( record)}
@@ -442,7 +442,7 @@ class CertificationList extends Component {
           contentForm={<WrappedAdvancedSearchForm />}
           contentButton={
             <>
-              <AuthorizedButton authority="/skillCertification/certificationEdit">
+              <AuthorizedButton authority="/skillCertification/certificationOpen">
                 <Button
                   onClick={() => this.allApply(1)}
                   type="primary"
@@ -452,7 +452,7 @@ class CertificationList extends Component {
                   批量开放报名
                 </Button>
               </AuthorizedButton>
-              <AuthorizedButton authority="/skillCertification/certificationEdit">
+              <AuthorizedButton authority="/skillCertification/certificationClose">
                 <Button
                   onClick={() => this.allApply(2)}
                   type="primary"
