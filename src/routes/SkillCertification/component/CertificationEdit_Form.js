@@ -37,7 +37,7 @@ class CertificationEdit_Form extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values);
+        this.props.handleSubmit(values);
       }
     });
   };
@@ -208,7 +208,7 @@ class CertificationEdit_Form extends Component {
           <Row>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;是否停用">
-                {getFieldDecorator('view', {
+                {getFieldDecorator('isStop', {
                   initialValue: 0,
                 })(
                   <RadioGroup
@@ -226,7 +226,7 @@ class CertificationEdit_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="子项是否允许手动输入">
-                {getFieldDecorator('view', {
+                {getFieldDecorator('isInput', {
                   initialValue: 0,
                 })(
                   <RadioGroup

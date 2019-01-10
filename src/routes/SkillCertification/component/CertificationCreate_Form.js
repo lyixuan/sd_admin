@@ -24,7 +24,7 @@ class CertificationCreate_Form extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values);
+        this.props.handleSubmit(values);
       }
     });
   };
