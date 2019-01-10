@@ -111,9 +111,12 @@ class CertificationCreate_Form extends Component {
                 {getFieldDecorator('timeArea', {
                   initialValue: 1,
                 })(
-                  <Select style={{ width: 280 }}>
-                    <Option value={1}>月度</Option>
-                    <Option value={2}>季度</Option>
+                  <Select placeholder="月度" style={{ width: 280, height: 32 }}>
+                    {window.BI_Filter(`CHECK_CYCLE`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
                   </Select>
                 )}
               </FormItem>

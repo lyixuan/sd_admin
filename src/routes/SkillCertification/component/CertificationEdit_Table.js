@@ -119,7 +119,6 @@ class CertificationEdit_Table extends Component {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values)
         this.getData(values);
       }
     });
@@ -127,10 +126,8 @@ class CertificationEdit_Table extends Component {
 
   render() {
     const columns = this.columnsData();
-
     const { visible } = this.state;
     const formLayout = 'inline';
-
     const dataSource = this.fillDataSource();
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -154,9 +151,12 @@ class CertificationEdit_Table extends Component {
                       },
                     ],
                   })(
-                    <Select style={{ width: 280 }}>
-                      <Option value={1}>月度</Option>
-                      <Option value={2}>季度</Option>
+                    <Select placeholder="月度" style={{ width: 280, height: 32 }}>
+                      {window.BI_Filter(`CHECK_CYCLE`).map(item => (
+                        <Option value={Number(item.id)} key={Number(item.id)}>
+                          {item.name}
+                        </Option>
+                        ))}
                     </Select>
                   )}
                 </FormItem>
