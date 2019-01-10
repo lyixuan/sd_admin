@@ -8,6 +8,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import AuditListForm from './component/AuditList_Form';
+import AuditListModel from './component/AuditList_Model';
 import common from '../Common/common.css';
 //
 const SearchForm = Form.create()(AuditListForm);
@@ -25,6 +26,11 @@ class AuditList extends Component {
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
+    };
+    this.state = {
+      visible: false,
+      modelType: '',
+      title: '',
     };
     this.state = assignUrlParams(initParams, params);
   }
@@ -49,6 +55,27 @@ class AuditList extends Component {
   // 导入认证
   importExcel = () => {
     this.props.dispatch(routerRedux.push('/skillCertification/auditImport'));
+  };
+
+  showModal = (t, record) => {
+    this.setState({
+      visible: true,
+      modelType: t,
+      title: t === 1 ? '发布认证' : t === 2 ? '导出底表' : '认证审核',
+    });
+    this.record = record;
+  };
+
+  handleOk = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    });
   };
 
   // 表单搜索函数
@@ -122,7 +149,7 @@ class AuditList extends Component {
                 <AuthorizedButton authority="/skillCertification/auditCertify">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onEdit(record)}
+                    onClick={() => this.showModal(3, record)}
                   >
                     认证审核
                   </span>
@@ -148,6 +175,7 @@ class AuditList extends Component {
     const { loading } = this.props;
     const { pageNum } = this.state.params;
     const totalElements = 4;
+
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -163,7 +191,7 @@ class AuditList extends Component {
           <div style={{ marginTop: 15 }}>
             <AuthorizedButton authority="/skillCertification/exportTable">
               <Button
-                onClick={this.handleAdd}
+                onClick={() => this.showModal(2)}
                 type="primary"
                 className={common.deleteQualityButton}
               >
@@ -181,7 +209,11 @@ class AuditList extends Component {
               </Button>
             </AuthorizedButton>
             <AuthorizedButton authority="/skillCertification/certificationPublish">
-              <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
+              <Button
+                onClick={() => this.showModal(1)}
+                type="primary"
+                className={common.createButton}
+              >
                 发布认证
               </Button>
             </AuthorizedButton>
@@ -215,7 +247,16 @@ class AuditList extends Component {
             defaultPageSize={3}
           />
         }
-      />
+      >
+        <AuditListModel
+          title={this.state.title}
+          visible={this.state.visible}
+          modelType={this.state.modelType}
+          record={this.record}
+          onOk={params => this.handleOk(params)}
+          onCancel={this.handleCancel}
+        />
+      </ContentLayout>
     );
   }
 }

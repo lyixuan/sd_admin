@@ -17,7 +17,7 @@ class AuditApply extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
+      value: null,
     };
   }
 
@@ -86,9 +86,6 @@ class AuditApply extends Component {
                 <RadioGroup onChange={this.onChange} value={this.state.value}>
                   <Radio value={1}>通过</Radio>
                   <Radio value={2}>驳回</Radio>
-                  <Radio value={0} style={{ visibility: 'hidden' }}>
-                    &nbsp;
-                  </Radio>
                 </RadioGroup>
               </span>
             </div>
@@ -112,9 +109,6 @@ class AuditApply extends Component {
                 <RadioGroup onChange={this.onChange} value={this.state.value}>
                   <Radio value={1}>通过</Radio>
                   <Radio value={2}>驳回</Radio>
-                  <Radio value={0} style={{ visibility: 'hidden' }}>
-                    &nbsp;
-                  </Radio>
                 </RadioGroup>
               </span>
             </div>
