@@ -141,7 +141,7 @@ class CertificationEdit_Table extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*子项分类:">
                   {getFieldDecorator('childType', {
-                    initialValue: null,
+                    initialValue: 1,
                     rules: [
                       {
                         validator(rule, value, callback) {

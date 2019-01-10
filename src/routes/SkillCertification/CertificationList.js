@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { assignUrlParams } from 'utils/utils';
-import { Table, Button, Form, Row, Col, Select } from 'antd';
+import { Table, Button, Form, Row, Col, Select,message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -34,6 +34,7 @@ class CertificationList extends Component {
       clickFlag: 1, // 1批量开发，2批量关闭
       visible: false, // 控制批量弹框显隐
       deleteVisible:false,// 控制删除弹框显隐
+      deleteRow:{}, // 初始化删除内容
     };
     this.state = assignUrlParams(initParams, params);
   }
@@ -45,13 +46,11 @@ class CertificationList extends Component {
 
   // 删除
   onDelete = (val = {}) => {
-    console.log(val);
-    this.setState({  deleteVisible: true });
+    this.setState({  deleteVisible: true,deleteRow:val });
   };
 
   // 编辑
   onEdit = val => {
-    console.log(val.timeArea);
     this.props.setRouteUrlParams('/skillCertification/certificationEdit', {
       timeArea: val.timeArea,
       id: val.id,
@@ -101,7 +100,7 @@ class CertificationList extends Component {
   };
 
   // 单条数据开放/关闭报名   1是开放报名，2是关闭报名
-  selfApply = (modelType = 1, dataList = []) => {
+  selfApply = (modelType = 1, dataList = {}) => {
     if (modelType === 1) {
       console.log('开放报名', dataList);
     } else {
@@ -111,12 +110,11 @@ class CertificationList extends Component {
   // 批量开放/关闭报名   1是批量开放，2是批量关闭
   allApply = (modelType = 1) => {
     const { selectedRows = [] } = this.state;
-    if (modelType === 1) {
-      console.log('批量开放报名', selectedRows.length > 0 ? selectedRows : '未选中任何一项');
+    if (selectedRows.length > 0) {
+      this.setState({ clickFlag: modelType, visible: true });
     } else {
-      console.log('批量关闭报名', selectedRows.length > 0 ? selectedRows : '未选中任何一项');
+      message.error("未选中任何一项");
     }
-    this.setState({ clickFlag: modelType, visible: true });
   };
 
   saveParams = params => {
@@ -139,14 +137,14 @@ class CertificationList extends Component {
   };
 
   // 批量模态框回显
-  allModel = e => {
+  allModel = (val) => {
     this.setDialogSHow(1,false);
-    console.log('批量弹窗回西安',e);
+    console.log('批量弹窗回西安',val);
   };
   // 删除模态框回显
-  deleteModel = e => {
+  deleteModel = (val) => {
     this.setDialogSHow(2,false);
-    console.log('删除弹窗回西安',e);
+    console.log('删除弹窗回西安',val);
   };
 
   // 表单搜索
@@ -336,7 +334,7 @@ class CertificationList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { selectedRows = [], visible = false, deleteVisible=false,clickFlag = 1 } = this.state;
+    const { selectedRows = [], visible = false, deleteVisible=false,clickFlag = 1,deleteRow={} } = this.state;
     const { pageNum = 0, examinationCycle = 0, type = 0 } = this.state.params;
     const { userListData = {} } = {};
     const { totalElements = 0, content = [] } = userListData;
@@ -403,27 +401,29 @@ class CertificationList extends Component {
       );
     });
     const rowSelection = {
-      selectedRows,
-      onChange: this.onSelectChange,
+      onChange: (selectedRowKeys, rowList) => {
+        this.onSelectChange(selectedRowKeys, rowList)
+      },
+      getCheckboxProps: record => ({
+        disabled: record.type === '已停用'|| record.type === '已删除',
+      }),
     };
 
     const modalContent = (
       <>
         <span className={styles.allWordTost}>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
         <ul className={styles.m_ulStyle}>
+          {
+            selectedRows.map((item ) =>{
+              return(
+                <li className={styles.u_liStyle} key={item.id}>
+                  <img src={circle} className={styles.u_circleImg} alt='圆点' />
+                  {item.name}
+                </li>
 
-          <li className={styles.u_liStyle}>
-            <img src={circle} className={styles.u_circleImg} alt='圆点' />
-            好学生推荐认证好学生
-          </li>
-          <li className={styles.u_liStyle}>
-            <img src={circle} className={styles.u_circleImg} alt='圆点' />
-            好学生推荐认证好学好学生推荐认
-          </li>
-          <li className={styles.u_liStyle}>
-            <img src={circle} className={styles.u_circleImg} alt='圆点' />
-            认证好学
-          </li>
+              );
+            })
+          }
         </ul>
       </>
     );
@@ -511,7 +511,7 @@ class CertificationList extends Component {
           title={clickFlag === 1 ? '批量开放通道' : '批量关闭通道'}
           visible={this.stringToBoolean(visible)}
           modalContent={modalContent}
-          clickOK={e => this.allModel(e)}
+          clickOK={() => this.allModel(selectedRows)}
           footButton={['取消', '提交']}
           showModal={bol => {
             this.setDialogSHow(1,bol);
@@ -522,7 +522,7 @@ class CertificationList extends Component {
           title='删除确认'
           visible={this.stringToBoolean(deleteVisible)}
           modalContent={modalContentDelete}
-          clickOK={e => this.deleteModel(e)}
+          clickOK={() => this.deleteModel(deleteRow)}
           footButton={['取消', '提交']}
           showModal={bol => {
             this.setDialogSHow(2,bol);
