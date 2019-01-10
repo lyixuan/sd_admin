@@ -401,12 +401,14 @@ class CertificationList extends Component {
       );
     });
     const rowSelection = {
-      selectedRows,
-      onChange: this.onSelectChange,
+      onChange: (selectedRowKeys, rowList) => {
+        this.onSelectChange(selectedRowKeys, rowList)
+      },
+      getCheckboxProps: record => ({
+        disabled: record.type === '已停用'|| record.type === '已删除',
+      }),
     };
 
-
-    // console.log(selectedRows)
     const modalContent = (
       <>
         <span className={styles.allWordTost}>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
