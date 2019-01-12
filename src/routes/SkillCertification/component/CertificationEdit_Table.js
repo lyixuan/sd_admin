@@ -15,13 +15,15 @@ class CertificationEdit_Table extends Component {
     this.state = {
       visible: false, // 弹窗显隐
       clickFlag: 1, // 1为创建进入，2为编辑进入
+      name: null, // 子项名称初始值
+      college: null, // 学院初始值
     };
   }
 
   // 编辑
   onEdit = key => {
     console.log(key);
-    this.setState({ visible: true, clickFlag: 2 });
+    this.setState({ visible: true, clickFlag: 2, name: key.childName, college: key.college });
   };
   // 创建
   onCreate = () => {
@@ -37,8 +39,8 @@ class CertificationEdit_Table extends Component {
     this.setState({ visible: bol });
   }
 
-  getData = (values) => {
-    console.log(values);
+  getData = values => {
+    this.props.tableSubmit(values);
   };
 
   // 初始化tabale 列数据
@@ -115,11 +117,10 @@ class CertificationEdit_Table extends Component {
     this.handleSearch(e);
   };
 
-  handleSearch = (e) => {
+  handleSearch = e => {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values)
         this.getData(values);
       }
     });
@@ -127,10 +128,9 @@ class CertificationEdit_Table extends Component {
 
   render() {
     const columns = this.columnsData();
-
-    const { visible } = this.state;
+    const { visible = false, clickFlag = 1, name = null, college = 1 } = this.state;
+    const disabled = true;
     const formLayout = 'inline';
-
     const dataSource = this.fillDataSource();
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
@@ -143,20 +143,9 @@ class CertificationEdit_Table extends Component {
                 <FormItem label="*子项分类:">
                   {getFieldDecorator('childType', {
                     initialValue: 1,
-                    rules: [
-                      {
-                        validator(rule, value, callback) {
-                          if (!value) {
-                            callback({ message: '请选择子项分类！' });
-                          }
-                          callback();
-                        },
-                      },
-                    ],
                   })(
-                    <Select style={{ width: 280 }}>
-                      <Option value={1}>月度</Option>
-                      <Option value={2}>季度</Option>
+                    <Select style={{ width: 280, height: 32 }} disabled={disabled}>
+                      <Option value={1}>负责专业项目</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -166,7 +155,7 @@ class CertificationEdit_Table extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*子项名称:">
                   {getFieldDecorator('name', {
-                    initialValue: null,
+                    initialValue: clickFlag === 1 ? null : name,
                     rules: [
                       {
                         validator(rule, value, callback) {
@@ -185,7 +174,7 @@ class CertificationEdit_Table extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院:">
                   {getFieldDecorator('college', {
-                    initialValue: null,
+                    initialValue: clickFlag === 1 ? null : college,
                     rules: [
                       {
                         validator(rule, value, callback) {

@@ -21,6 +21,11 @@ class CertificationEdit extends Component {
   handleSubmit = values => {
     console.log(values);
   };
+
+  // table点击确定按钮请求接口
+  tableSubmit = values => {
+    console.log(values);
+  };
   // 点击取消按钮跳转到list页面
   resetContent = () => {
     window.history.go(-1);
@@ -37,13 +42,18 @@ class CertificationEdit extends Component {
               resetContent={() => {
                 this.resetContent();
               }}
-              handleSubmit={(values, dataString) => {
-                this.handleSubmit(values, dataString);
+              handleSubmit={values => {
+                this.handleSubmit(values);
               }}
             />
           }
         />
-        <Table dataSource={1} />
+        <Table
+          dataSource={1}
+          tableSubmit={values => {
+            this.tableSubmit(values);
+          }}
+        />
       </>
     );
   }

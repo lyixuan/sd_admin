@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { assignUrlParams } from 'utils/utils';
-import { Table, Button, Form, Row, Col, Select,message } from 'antd';
+import { Table, Button, Form, Row, Col, Select, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -15,9 +15,9 @@ const FormItem = Form.Item;
 const { Option } = Select;
 let propsVal = '';
 
-@connect(({ user, loading }) => ({
-  user,
-  loading: loading.effects[''],
+@connect(({ certification, loading }) => ({
+  certification,
+  loading: loading.effects['certification/certificationList'],
 }))
 class CertificationList extends Component {
   constructor(props) {
@@ -25,16 +25,16 @@ class CertificationList extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        type: 0, // 报名通道状态
-        examinationCycle: 0, // 考核周期
+        status: null, // 报名通道状态
+        assessCyc: null, // 考核周期
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
       selectedRows: [], // 选中的行
       clickFlag: 1, // 1批量开发，2批量关闭
       visible: false, // 控制批量弹框显隐
-      deleteVisible:false,// 控制删除弹框显隐
-      deleteRow:{}, // 初始化删除内容
+      deleteVisible: false, // 控制删除弹框显隐
+      deleteRow: {}, // 初始化删除内容
     };
     this.state = assignUrlParams(initParams, params);
   }
@@ -46,13 +46,13 @@ class CertificationList extends Component {
 
   // 删除
   onDelete = (val = {}) => {
-    this.setState({  deleteVisible: true,deleteRow:val });
+    this.setState({ deleteVisible: true, deleteRow: val });
   };
 
   // 编辑
   onEdit = val => {
     this.props.setRouteUrlParams('/skillCertification/certificationEdit', {
-      timeArea: val.timeArea,
+      assessCyc: val.assessCyc,
       id: val.id,
       code: val.code,
       name: val.name,
@@ -68,23 +68,22 @@ class CertificationList extends Component {
     this.setState({ selectedRows: arrayList });
   };
 
-  setDialogSHow(type,bol) {
-    if(type===1){
-      this.setState({visible: bol});
-    }else{
-      this.setState({deleteVisible:bol});
+  setDialogSHow(type, bol) {
+    if (type === 1) {
+      this.setState({ visible: bol });
+    } else {
+      this.setState({ deleteVisible: bol });
     }
-
   }
 
   getData = params => {
     const stateParams = this.state.params;
-    const listParams = { ...stateParams, ...params };
-    // this.props.dispatch({
-    //   type: 'user/userList',
-    //   payload: { userListParams },
-    // });
-    this.saveParams(listParams);
+    const certificationListParams = { ...stateParams, ...params };
+    this.props.dispatch({
+      type: 'certification/certificationList',
+      payload: { certificationListParams },
+    });
+    this.saveParams(certificationListParams);
   };
 
   stringToBoolean = str => {
@@ -113,7 +112,7 @@ class CertificationList extends Component {
     if (selectedRows.length > 0) {
       this.setState({ clickFlag: modelType, visible: true });
     } else {
-      message.error("未选中任何一项");
+      message.error('未选中任何一项');
     }
   };
 
@@ -134,17 +133,24 @@ class CertificationList extends Component {
   // 表单重置
   handleReset = () => {
     propsVal.form.resetFields();
+    const params = {
+      status: undefined,
+      assessCyc: undefined,
+      pageNum: 0,
+      pageSize: 30,
+    };
+    this.getData(params);
   };
 
   // 批量模态框回显
-  allModel = (val) => {
-    this.setDialogSHow(1,false);
-    console.log('批量弹窗回西安',val);
+  allModel = val => {
+    this.setDialogSHow(1, false);
+    console.log('批量弹窗回西安', val);
   };
   // 删除模态框回显
-  deleteModel = (val) => {
-    this.setDialogSHow(2,false);
-    console.log('删除弹窗回西安',val);
+  deleteModel = val => {
+    this.setDialogSHow(2, false);
+    console.log('删除弹窗回西安', val);
   };
 
   // 表单搜索
@@ -152,89 +158,32 @@ class CertificationList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        console.log(1111, values);
+        const { assessCyc = null, status = null } = values;
+        const certificationListParams = {
+          assessCyc: assessCyc === '全部' ? undefined : Number(assessCyc),
+          status: status === '全部' ? undefined : Number(status),
+          pageSize: 30,
+          pageNum: 0,
+        };
+        this.getData(certificationListParams);
       }
     });
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
-    const timeArea1 = window.BI_Filter(`Certification_TIMEAREA|id:${1}`).name;
-    const timeArea2 = window.BI_Filter(`Certification_TIMEAREA|id:${2}`).name;
-    const data = [
-      {
-        key: 1,
-        id: 1,
-        code: 'RZ0001',
-        name: 'IM认证',
-        timeArea: timeArea1,
-        type: window.BI_Filter(`Certification_TYPE|id:${1}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 2,
-        id: 2,
-        code: 'RZ0001',
-        name: '专业知识认证',
-        timeArea: timeArea2,
-        type: window.BI_Filter(`Certification_TYPE|id:${1}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 3,
-        id: 3,
-        code: 'RZ0001',
-        name: '专业知识认证',
-        timeArea: timeArea1,
-        type: window.BI_Filter(`Certification_TYPE|id:${2}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 4,
-        id: 4,
-        code: 'RZ0001',
-        name: '学习规划认证',
-        timeArea: timeArea2,
-        type: window.BI_Filter(`Certification_TYPE|id:${2}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 5,
-        id: 5,
-        code: 'RZ0001',
-        name: '学习规划认证',
-        timeArea: timeArea1,
-        type: window.BI_Filter(`Certification_TYPE|id:${3}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 6,
-        id: 6,
-        code: 'RZ0001',
-        name: '报考指导认证',
-        timeArea: timeArea2,
-        type: window.BI_Filter(`Certification_TYPE|id:${3}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 7,
-        id: 7,
-        code: 'RZ0001',
-        name: '报考指导认证',
-        timeArea: timeArea1,
-        type: window.BI_Filter(`Certification_TYPE|id:${3}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 8,
-        id: 8,
-        code: 'RZ0001',
-        name: '好学生推荐认证',
-        timeArea: timeArea2,
-        type: window.BI_Filter(`Certification_TYPE|id:${4}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-    ];
+  fillDataSource = val => {
+    const data = [];
+    val.map(item =>
+      data.push({
+        key: item.id,
+        id: item.id,
+        code: item.code,
+        name: item.name,
+        assessCyc: window.BI_Filter(`Certification_TIMEAREA|id:${item.assessCyc}`).name,
+        status: window.BI_Filter(`Certification_TYPE|id:${item.status}`).name,
+        modifyTime: item.modifyTime,
+      })
+    );
     return data;
   };
 
@@ -255,32 +204,34 @@ class CertificationList extends Component {
       },
       {
         title: '考核周期',
-        dataIndex: 'timeArea',
+        dataIndex: 'assessCyc',
       },
       {
         title: '报名通道状态',
-        dataIndex: 'type',
+        dataIndex: 'status',
         render: (text, record) => {
           return (
-            <span className={record.type !== '已开放' ? common.openType : null}>{record.type}</span>
+            <span className={record.status !== '已开放' ? common.openType : null}>
+              {record.status}
+            </span>
           );
         },
       },
       {
         title: '报名变更时间',
-        dataIndex: 'changeTime',
+        dataIndex: 'modifyTime',
       },
       {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
           const operationType = Number(
-            window.BI_Filter(`Certification_TYPE|name:${record.type}`).id
+            window.BI_Filter(`Certification_TYPE|name:${record.status}`).id
           );
           return (
             <div>
               {operationType !== 1 ? null : (
-                <AuthorizedButton authority="/skillCertification/certificationEdit">
+                <AuthorizedButton authority="/skillCertification/certificationClose">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                     onClick={() => this.selfApply(2, record)}
@@ -290,7 +241,7 @@ class CertificationList extends Component {
                 </AuthorizedButton>
               )}
               {operationType !== 2 ? null : (
-                <AuthorizedButton authority="/skillCertification/certificationEdit">
+                <AuthorizedButton authority="/skillCertification/certificationOpen">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
                     onClick={() => this.selfApply(1, record)}
@@ -310,10 +261,10 @@ class CertificationList extends Component {
                 </AuthorizedButton>
               )}
               {operationType === 1 || operationType === 4 ? null : (
-                <AuthorizedButton authority="/skillCertification/certificationEdit">
+                <AuthorizedButton authority="/skillCertification/certificationDelete">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onDelete( record)}
+                    onClick={() => this.onDelete(record)}
                   >
                     删除
                   </span>
@@ -334,10 +285,16 @@ class CertificationList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { selectedRows = [], visible = false, deleteVisible=false,clickFlag = 1,deleteRow={} } = this.state;
-    const { pageNum = 0, examinationCycle = 0, type = 0 } = this.state.params;
-    const { userListData = {} } = {};
-    const { totalElements = 0, content = [] } = userListData;
+    const {
+      selectedRows = [],
+      visible = false,
+      deleteVisible = false,
+      clickFlag = 1,
+      deleteRow = {},
+    } = this.state;
+    const { pageNum = 0, assessCyc = 0, status = 0 } = this.state.params;
+    const { certificationListData = {} } = this.props.certification.certificationList;
+    const { totalElements = 0, content = [] } = certificationListData;
     const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     const formLayout = 'inline';
@@ -350,8 +307,8 @@ class CertificationList extends Component {
             <Row gutter={24}>
               <Col span={8}>
                 <FormItem label="报名通道状态">
-                  {getFieldDecorator('type', {
-                    initialValue: window.BI_Filter(`Certification_TYPE|id:${type}`).name,
+                  {getFieldDecorator('status', {
+                    initialValue: window.BI_Filter(`Certification_TYPE|id:${status}`).name,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
                       {window.BI_Filter(`Certification_TYPE`).map(item => (
@@ -365,9 +322,8 @@ class CertificationList extends Component {
               </Col>
               <Col span={8} style={{ textAlign: 'center' }}>
                 <FormItem label="考核周期">
-                  {getFieldDecorator('timeArea', {
-                    initialValue: window.BI_Filter(`Certification_TIMEAREA|id:${examinationCycle}`)
-                      .name,
+                  {getFieldDecorator('assessCyc', {
+                    initialValue: window.BI_Filter(`Certification_TIMEAREA|id:${assessCyc}`).name,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
                       {window.BI_Filter(`Certification_TIMEAREA`).map(item => (
@@ -402,39 +358,38 @@ class CertificationList extends Component {
     });
     const rowSelection = {
       onChange: (selectedRowKeys, rowList) => {
-        this.onSelectChange(selectedRowKeys, rowList)
+        this.onSelectChange(selectedRowKeys, rowList);
       },
       getCheckboxProps: record => ({
-        disabled: record.type === '已停用'|| record.type === '已删除',
+        disabled: record.status === '已停用' || record.status === '已删除',
       }),
     };
 
     const modalContent = (
       <>
-        <span className={styles.allWordTost}>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
+        <span className={styles.allWordTost}>
+          {clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？
+        </span>
         <ul className={styles.m_ulStyle}>
-          {
-            selectedRows.map((item ) =>{
-              return(
-                <li className={styles.u_liStyle} key={item.id}>
-                  <img src={circle} className={styles.u_circleImg} alt='圆点' />
-                  {item.name}
-                </li>
-
-              );
-            })
-          }
+          {selectedRows.map(item => {
+            return (
+              <li className={styles.u_liStyle} key={item.id}>
+                <img src={circle} className={styles.u_circleImg} alt="圆点" />
+                {item.name}
+              </li>
+            );
+          })}
         </ul>
       </>
     );
 
-    const modalContentDelete=(
+    const modalContentDelete = (
       <>
-        <img src={deleteTost} alt='delete' className={styles.imgStyle} />
+        <img src={deleteTost} alt="delete" className={styles.imgStyle} />
         <br />
         <span className={styles.deletWord}>一经删除历史数据将全部清空！确定要删除吗？</span>
       </>
-    )
+    );
     return (
       <>
         <ContentLayout
@@ -442,7 +397,7 @@ class CertificationList extends Component {
           contentForm={<WrappedAdvancedSearchForm />}
           contentButton={
             <>
-              <AuthorizedButton authority="/skillCertification/certificationEdit">
+              <AuthorizedButton authority="/skillCertification/certificationOpen">
                 <Button
                   onClick={() => this.allApply(1)}
                   type="primary"
@@ -452,7 +407,7 @@ class CertificationList extends Component {
                   批量开放报名
                 </Button>
               </AuthorizedButton>
-              <AuthorizedButton authority="/skillCertification/certificationEdit">
+              <AuthorizedButton authority="/skillCertification/certificationClose">
                 <Button
                   onClick={() => this.allApply(2)}
                   type="primary"
@@ -514,18 +469,18 @@ class CertificationList extends Component {
           clickOK={() => this.allModel(selectedRows)}
           footButton={['取消', '提交']}
           showModal={bol => {
-            this.setDialogSHow(1,bol);
+            this.setDialogSHow(1, bol);
           }}
         />
         <ModalDialog
           style={{ width: '520px' }}
-          title='删除确认'
+          title="删除确认"
           visible={this.stringToBoolean(deleteVisible)}
           modalContent={modalContentDelete}
           clickOK={() => this.deleteModel(deleteRow)}
           footButton={['取消', '提交']}
           showModal={bol => {
-            this.setDialogSHow(2,bol);
+            this.setDialogSHow(2, bol);
           }}
         />
       </>
