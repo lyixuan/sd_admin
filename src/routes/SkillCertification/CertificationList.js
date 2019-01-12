@@ -111,15 +111,7 @@ class CertificationList extends Component {
   // 批量开放/关闭报名   1是批量开放，2是批量关闭
   allApply = (modelType = 1) => {
     const { selectedRows = [] } = this.state;
-    const data = [];
     if (selectedRows.length > 0) {
-      selectedRows.map(item => data.push({ id: Number(item.id)}));
-      const certificationModifyParams = { ids: data ,type:modelType};
-      const certificationListParams = this.state.params;
-      this.props.dispatch({
-        type: 'certification/certificationModify',
-        payload: { certificationModifyParams, certificationListParams },
-      });
       this.setState({ clickFlag: modelType, visible: true });
     } else {
       message.error('未选中任何一项');
@@ -153,9 +145,17 @@ class CertificationList extends Component {
   };
 
   // 批量模态框回显
-  allModel = val => {
+  allModel = (val,modelType=1) => {
+    const data = [];
+    val.map(item => data.push({ id: Number(item.id)}));
+    const certificationModifyParams = { ids: data ,type:modelType};
+    const certificationListParams = this.state.params;
+    this.props.dispatch({
+      type: 'certification/certificationModify',
+      payload: { certificationModifyParams, certificationListParams },
+    });
     this.setDialogSHow(1, false);
-    console.log('批量弹窗回西安', val);
+
   };
   // 删除模态框回显
   deleteModel = (val) => {
@@ -481,7 +481,7 @@ class CertificationList extends Component {
           title={clickFlag === 1 ? '批量开放通道' : '批量关闭通道'}
           visible={this.stringToBoolean(visible)}
           modalContent={modalContent}
-          clickOK={() => this.allModel(selectedRows)}
+          clickOK={() => this.allModel(selectedRows,clickFlag)}
           footButton={['取消', '提交']}
           showModal={bol => {
             this.setDialogSHow(1, bol);
