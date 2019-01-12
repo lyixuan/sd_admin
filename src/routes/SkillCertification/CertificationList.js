@@ -15,9 +15,9 @@ const FormItem = Form.Item;
 const { Option } = Select;
 let propsVal = '';
 
-@connect(({ user, loading }) => ({
-  user,
-  loading: loading.effects[''],
+@connect(({ certification, loading }) => ({
+  certification,
+  loading: loading.effects['certification/certificationList'],
 }))
 class CertificationList extends Component {
   constructor(props) {
@@ -25,8 +25,8 @@ class CertificationList extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        type: 0, // 报名通道状态
-        examinationCycle: 0, // 考核周期
+        status: null, // 报名通道状态
+        assessCyc: null, // 考核周期
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
@@ -52,7 +52,7 @@ class CertificationList extends Component {
   // 编辑
   onEdit = val => {
     this.props.setRouteUrlParams('/skillCertification/certificationEdit', {
-      timeArea: val.timeArea,
+      assessCyc: val.assessCyc,
       id: val.id,
       code: val.code,
       name: val.name,
@@ -79,12 +79,12 @@ class CertificationList extends Component {
 
   getData = params => {
     const stateParams = this.state.params;
-    const listParams = { ...stateParams, ...params };
-    // this.props.dispatch({
-    //   type: 'user/userList',
-    //   payload: { userListParams },
-    // });
-    this.saveParams(listParams);
+    const certificationListParams = { ...stateParams, ...params };
+    this.props.dispatch({
+      type: 'certification/certificationList',
+      payload: { certificationListParams },
+    });
+    this.saveParams(certificationListParams);
   };
 
   stringToBoolean = str => {
@@ -152,89 +152,32 @@ class CertificationList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        console.log(1111, values);
+        const {assessCyc=null,status=null} = values
+        const userListParams = {
+          assessCyc,
+          status,
+          pageSize: 30,
+          pageNum: 0,
+        };
+        this.getData(userListParams);
       }
     });
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
-    const timeArea1 = window.BI_Filter(`Certification_TIMEAREA|id:${1}`).name;
-    const timeArea2 = window.BI_Filter(`Certification_TIMEAREA|id:${2}`).name;
-    const data = [
-      {
-        key: 1,
-        id: 1,
-        code: 'RZ0001',
-        name: 'IM认证',
-        timeArea: timeArea1,
-        type: window.BI_Filter(`Certification_TYPE|id:${1}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 2,
-        id: 2,
-        code: 'RZ0001',
-        name: '专业知识认证',
-        timeArea: timeArea2,
-        type: window.BI_Filter(`Certification_TYPE|id:${1}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 3,
-        id: 3,
-        code: 'RZ0001',
-        name: '专业知识认证',
-        timeArea: timeArea1,
-        type: window.BI_Filter(`Certification_TYPE|id:${2}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 4,
-        id: 4,
-        code: 'RZ0001',
-        name: '学习规划认证',
-        timeArea: timeArea2,
-        type: window.BI_Filter(`Certification_TYPE|id:${2}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 5,
-        id: 5,
-        code: 'RZ0001',
-        name: '学习规划认证',
-        timeArea: timeArea1,
-        type: window.BI_Filter(`Certification_TYPE|id:${3}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 6,
-        id: 6,
-        code: 'RZ0001',
-        name: '报考指导认证',
-        timeArea: timeArea2,
-        type: window.BI_Filter(`Certification_TYPE|id:${3}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 7,
-        id: 7,
-        code: 'RZ0001',
-        name: '报考指导认证',
-        timeArea: timeArea1,
-        type: window.BI_Filter(`Certification_TYPE|id:${3}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-      {
-        key: 8,
-        id: 8,
-        code: 'RZ0001',
-        name: '好学生推荐认证',
-        timeArea: timeArea2,
-        type: window.BI_Filter(`Certification_TYPE|id:${4}`).name,
-        changeTime: '2018-11-28 09:32:32',
-      },
-    ];
+  fillDataSource = (val) => {
+    const data = [];
+    val.map((item) =>
+      data.push({
+        key: item.id,
+        id: item.id,
+        code: item.code,
+        name: item.name,
+        assessCyc: window.BI_Filter(`Certification_TIMEAREA|id:${item.assessCyc}`).name,
+        status: window.BI_Filter(`Certification_TYPE|id:${item.status}`).name,
+        modifyTime: item.modifyTime,
+      })
+    );
     return data;
   };
 
@@ -255,27 +198,27 @@ class CertificationList extends Component {
       },
       {
         title: '考核周期',
-        dataIndex: 'timeArea',
+        dataIndex: 'assessCyc',
       },
       {
         title: '报名通道状态',
-        dataIndex: 'type',
+        dataIndex: 'status',
         render: (text, record) => {
           return (
-            <span className={record.type !== '已开放' ? common.openType : null}>{record.type}</span>
+            <span className={record.status !== '已开放' ? common.openType : null}>{record.status}</span>
           );
         },
       },
       {
         title: '报名变更时间',
-        dataIndex: 'changeTime',
+        dataIndex: 'modifyTime',
       },
       {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
           const operationType = Number(
-            window.BI_Filter(`Certification_TYPE|name:${record.type}`).id
+            window.BI_Filter(`Certification_TYPE|name:${record.status}`).id
           );
           return (
             <div>
@@ -335,9 +278,10 @@ class CertificationList extends Component {
   render() {
     const { loading } = this.props;
     const { selectedRows = [], visible = false, deleteVisible=false,clickFlag = 1,deleteRow={} } = this.state;
-    const { pageNum = 0, examinationCycle = 0, type = 0 } = this.state.params;
-    const { userListData = {} } = {};
-    const { totalElements = 0, content = [] } = userListData;
+    const { pageNum = 0, assessCyc = 0, status = 0 } = this.state.params;
+    const { certificationListData = {} } = this.props.certification.certificationList;
+    const { totalElements = 0, content = [] } = certificationListData;
+    console.log(certificationListData,content)
     const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     const formLayout = 'inline';
@@ -350,8 +294,8 @@ class CertificationList extends Component {
             <Row gutter={24}>
               <Col span={8}>
                 <FormItem label="报名通道状态">
-                  {getFieldDecorator('type', {
-                    initialValue: window.BI_Filter(`Certification_TYPE|id:${type}`).name,
+                  {getFieldDecorator('status', {
+                    initialValue: window.BI_Filter(`Certification_TYPE|id:${status}`).name,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
                       {window.BI_Filter(`Certification_TYPE`).map(item => (
@@ -365,8 +309,8 @@ class CertificationList extends Component {
               </Col>
               <Col span={8} style={{ textAlign: 'center' }}>
                 <FormItem label="考核周期">
-                  {getFieldDecorator('timeArea', {
-                    initialValue: window.BI_Filter(`Certification_TIMEAREA|id:${examinationCycle}`)
+                  {getFieldDecorator('assessCyc', {
+                    initialValue: window.BI_Filter(`Certification_TIMEAREA|id:${assessCyc}`)
                       .name,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
@@ -405,7 +349,7 @@ class CertificationList extends Component {
         this.onSelectChange(selectedRowKeys, rowList)
       },
       getCheckboxProps: record => ({
-        disabled: record.type === '已停用'|| record.type === '已删除',
+        disabled: record.status === '已停用'|| record.status === '已删除',
       }),
     };
 

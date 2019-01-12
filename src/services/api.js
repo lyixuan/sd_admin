@@ -735,3 +735,34 @@ export async function getAuditList(params) {
     method: 'GET',
   });
 }
+
+/*
+* 获取认证管理列表
+* params：{status,assessCyc,pageSize,pageNum}
+* */
+export async function certificationList(params) {
+  return request(`${HOST}/certificationItem/findAll?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 删除认证项目
+* params：{id}
+* */
+export async function certificationDelete(params) {
+  return request(`${HOST}/certificationItem/delItemById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 开放或关闭报名
+* params：{id}
+* */
+export async function certificationModify(params) {
+  return request(`${HOST}/certificationItem/modifyStatus`, {
+    method: 'POST',
+    body: params,
+  });
+}
