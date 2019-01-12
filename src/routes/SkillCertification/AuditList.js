@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button, Form } from 'antd';
 import { routerRedux } from 'dva/router';
-import { assignUrlParams } from 'utils/utils';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
@@ -20,19 +19,14 @@ const SearchForm = Form.create()(AuditListForm);
 class AuditList extends Component {
   constructor(props) {
     super(props);
-    const params = this.props.getUrlParams();
-    const initParams = {
-      params: {
-        pageNum: 0, // 翻页---当前页码
-        pageSize: 30, // 每页显示数据
-      },
-    };
+    this.pageNum = 0;
+    this.pageSize = 30;
+    this.params = {};
     this.state = {
       visible: false,
       modelType: '',
       title: '',
     };
-    this.state = assignUrlParams(initParams, params);
   }
 
   UNSAFE_componentWillMount() {
@@ -80,10 +74,20 @@ class AuditList extends Component {
 
   // 表单搜索函数
   search = params => {
+    const obj = params ? { ...params } : this.params;
+    obj.pageNum = this.pageNum;
+    obj.pageSize = this.pageSize;
+    this.params = { ...obj };
     this.props.dispatch({
       type: 'audit/getAuditList',
-      payload: { params },
+      payload: { obj },
     });
+  };
+
+  // 点击某一页函数
+  changePage = current => {
+    this.pageNum = current;
+    this.search();
   };
 
   // 获取table列表头
@@ -173,8 +177,7 @@ class AuditList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { pageNum } = this.state.params;
-    const totalElements = 4;
+    const { content, totalElements } = this.props.audit.auditList;
 
     return (
       <ContentLayout
@@ -226,7 +229,7 @@ class AuditList extends Component {
               rowKey={record => record.id}
               bordered
               loading={loading}
-              dataSource={this.props.audit.auditList}
+              dataSource={content}
               columns={this.columnsData()}
               pagination={false}
               className={common.tableContentStyle}
@@ -238,13 +241,8 @@ class AuditList extends Component {
             onChange={(current, pageSize) => {
               this.changePage(current, pageSize);
             }}
-            onShowSizeChange={(current, pageSize) => {
-              this.onShowSizeChange(current, pageSize);
-            }}
-            defaultCurrent={pageNum + 1}
+            defaultCurrent={this.pageNum + 1}
             total={totalElements}
-            showPageSize={3}
-            defaultPageSize={3}
           />
         }
       >
