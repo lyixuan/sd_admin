@@ -21,7 +21,7 @@ class CertificationCreate extends Component {
 
   // 点击确定按钮请求接口
   handleSubmit = (values) => {
-    const certificationItemForm = {
+    const saveOrModifyItemParams = {
       certificationItemForm:{
         orderNum:Number(values.orderNum),
         name:values.name,
@@ -32,11 +32,11 @@ class CertificationCreate extends Component {
         originalIcon:'/staticFile/aicon.png',
       },
     };
-    console.log(values,certificationItemForm)
-    // this.props.dispatch({
-    //   type: 'certification/saveOrModifyItem',
-    //   payload: { certificationItemForm },
-    // });
+    console.log(values,saveOrModifyItemParams)
+    this.props.dispatch({
+      type: 'certification/saveOrModifyItem',
+      payload: { saveOrModifyItemParams },
+    });
   };
   // 点击取消按钮跳转到list页面
   resetContent = () => {
