@@ -1,10 +1,6 @@
 // import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import {
-  certificationList,
-  certificationDelete,
-  certificationModify,
-} from "../services/api";
+import { certificationList, certificationDelete, certificationModify } from '../services/api';
 
 export default {
   namespace: 'certification',
@@ -56,17 +52,14 @@ export default {
         message.error(result.msg);
       }
     },
-
   },
 
   reducers: {
-
     certificationListSave(state, action) {
       return {
         ...state,
         certificationList: action.payload,
       };
     },
-
   },
 };

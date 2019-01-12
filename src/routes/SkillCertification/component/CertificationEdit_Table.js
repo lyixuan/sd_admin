@@ -15,15 +15,15 @@ class CertificationEdit_Table extends Component {
     this.state = {
       visible: false, // 弹窗显隐
       clickFlag: 1, // 1为创建进入，2为编辑进入
-      name:null, // 子项名称初始值
-      college:null, // 学院初始值
+      name: null, // 子项名称初始值
+      college: null, // 学院初始值
     };
   }
 
   // 编辑
   onEdit = key => {
     console.log(key);
-    this.setState({ visible: true, clickFlag: 2,name:key.childName,college:key.college });
+    this.setState({ visible: true, clickFlag: 2, name: key.childName, college: key.college });
   };
   // 创建
   onCreate = () => {
@@ -39,7 +39,7 @@ class CertificationEdit_Table extends Component {
     this.setState({ visible: bol });
   }
 
-  getData = (values) => {
+  getData = values => {
     this.props.tableSubmit(values);
   };
 
@@ -117,7 +117,7 @@ class CertificationEdit_Table extends Component {
     this.handleSearch(e);
   };
 
-  handleSearch = (e) => {
+  handleSearch = e => {
     e.preventDefault();
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -128,7 +128,7 @@ class CertificationEdit_Table extends Component {
 
   render() {
     const columns = this.columnsData();
-    const { visible=false,clickFlag=1,name=null,college=1 } = this.state;
+    const { visible = false, clickFlag = 1, name = null, college = 1 } = this.state;
     const disabled = true;
     const formLayout = 'inline';
     const dataSource = this.fillDataSource();
@@ -144,10 +144,8 @@ class CertificationEdit_Table extends Component {
                   {getFieldDecorator('childType', {
                     initialValue: 1,
                   })(
-                    <Select  style={{ width: 280, height: 32 }} disabled={disabled}>
-                      <Option value={1}>
-                        负责专业项目
-                      </Option>
+                    <Select style={{ width: 280, height: 32 }} disabled={disabled}>
+                      <Option value={1}>负责专业项目</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -176,7 +174,7 @@ class CertificationEdit_Table extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院:">
                   {getFieldDecorator('college', {
-                    initialValue: clickFlag === 1 ? null :college ,
+                    initialValue: clickFlag === 1 ? null : college,
                     rules: [
                       {
                         validator(rule, value, callback) {

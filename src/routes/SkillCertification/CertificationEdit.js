@@ -42,7 +42,7 @@ class CertificationEdit extends Component {
               resetContent={() => {
                 this.resetContent();
               }}
-              handleSubmit={(values) => {
+              handleSubmit={values => {
                 this.handleSubmit(values);
               }}
             />
@@ -50,9 +50,9 @@ class CertificationEdit extends Component {
         />
         <Table
           dataSource={1}
-          tableSubmit={(values) => {
-          this.tableSubmit(values);
-        }}
+          tableSubmit={values => {
+            this.tableSubmit(values);
+          }}
         />
       </>
     );

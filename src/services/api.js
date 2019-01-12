@@ -729,13 +729,76 @@ export async function addTask(params) {
   });
 }
 
+// ------------------------------------------------------ 认证审核
+
 // 获取审核管理列表
 export async function getAuditList(params) {
-  return request(`${HOST}/cem/list?${stringify(params)}`, {
+  return request(`${HOST}/cem/list`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 报名审核
+export async function getSignExamineInfo(params) {
+  return request(`${HOST}/cem/getSignExamineInfo?${stringify(params)}`, {
     method: 'GET',
   });
 }
 
+// 认证审核
+export async function submitExamineResult(params) {
+  return request(`${HOST}/cem/submitExamineResult`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 审核记录查询
+export async function auditLogList(params) {
+  return request(`${HOST}/cem/logList?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 报名审核结果提交
+export async function submitSignResult(params) {
+  return request(`${HOST}/cem/submitSignResult`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 导出底表
+export async function exportBottomTable(params) {
+  return request(`${HOST}/cem/exportBottomTable?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 发布认证
+export async function auditPublish(params) {
+  return request(`${HOST}/cem/publish`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 校验审核excel文件 - 导入认证
+export async function verifyAuditDataExcel(params) {
+  return request(`${HOST}/cem/verifyDataFromExcel`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 确定excel文件数据插入数据库 -- 导入认证
+export async function auditSaveExcel(params) {
+  return request(`${HOST}/cem/saveDatas`, {
+    method: 'POST',
+    body: params,
+  });
+}
 /*
 * 获取认证管理列表
 * params：{status,assessCyc,pageSize,pageNum}

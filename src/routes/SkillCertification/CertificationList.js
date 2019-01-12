@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { assignUrlParams } from 'utils/utils';
-import { Table, Button, Form, Row, Col, Select,message } from 'antd';
+import { Table, Button, Form, Row, Col, Select, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -33,8 +33,8 @@ class CertificationList extends Component {
       selectedRows: [], // 选中的行
       clickFlag: 1, // 1批量开发，2批量关闭
       visible: false, // 控制批量弹框显隐
-      deleteVisible:false,// 控制删除弹框显隐
-      deleteRow:{}, // 初始化删除内容
+      deleteVisible: false, // 控制删除弹框显隐
+      deleteRow: {}, // 初始化删除内容
     };
     this.state = assignUrlParams(initParams, params);
   }
@@ -46,7 +46,7 @@ class CertificationList extends Component {
 
   // 删除
   onDelete = (val = {}) => {
-    this.setState({  deleteVisible: true,deleteRow:val });
+    this.setState({ deleteVisible: true, deleteRow: val });
   };
 
   // 编辑
@@ -68,13 +68,12 @@ class CertificationList extends Component {
     this.setState({ selectedRows: arrayList });
   };
 
-  setDialogSHow(type,bol) {
-    if(type===1){
-      this.setState({visible: bol});
-    }else{
-      this.setState({deleteVisible:bol});
+  setDialogSHow(type, bol) {
+    if (type === 1) {
+      this.setState({ visible: bol });
+    } else {
+      this.setState({ deleteVisible: bol });
     }
-
   }
 
   getData = params => {
@@ -113,7 +112,7 @@ class CertificationList extends Component {
     if (selectedRows.length > 0) {
       this.setState({ clickFlag: modelType, visible: true });
     } else {
-      message.error("未选中任何一项");
+      message.error('未选中任何一项');
     }
   };
 
@@ -144,9 +143,9 @@ class CertificationList extends Component {
   };
 
   // 批量模态框回显
-  allModel = (val) => {
-    this.setDialogSHow(1,false);
-    console.log('批量弹窗回西安',val);
+  allModel = val => {
+    this.setDialogSHow(1, false);
+    console.log('批量弹窗回西安', val);
   };
   // 删除模态框回显
   deleteModel = (val) => {
@@ -179,9 +178,9 @@ class CertificationList extends Component {
   };
 
   // 初始化tabale 列数据
-  fillDataSource = (val) => {
+  fillDataSource = val => {
     const data = [];
-    val.map((item) =>
+    val.map(item =>
       data.push({
         key: item.id,
         id: item.id,
@@ -219,7 +218,9 @@ class CertificationList extends Component {
         dataIndex: 'status',
         render: (text, record) => {
           return (
-            <span className={record.status !== '已开放' ? common.openType : null}>{record.status}</span>
+            <span className={record.status !== '已开放' ? common.openType : null}>
+              {record.status}
+            </span>
           );
         },
       },
@@ -270,7 +271,7 @@ class CertificationList extends Component {
                 <AuthorizedButton authority="/skillCertification/certificationDelete">
                   <span
                     style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onDelete( record)}
+                    onClick={() => this.onDelete(record)}
                   >
                     删除
                   </span>
@@ -291,7 +292,13 @@ class CertificationList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { selectedRows = [], visible = false, deleteVisible=false,clickFlag = 1,deleteRow={} } = this.state;
+    const {
+      selectedRows = [],
+      visible = false,
+      deleteVisible = false,
+      clickFlag = 1,
+      deleteRow = {},
+    } = this.state;
     const { pageNum = 0, assessCyc = 0, status = 0 } = this.state.params;
     const { certificationListData = {} } = this.props.certification.certificationList;
     const { totalElements = 0, content = [] } = certificationListData;
@@ -323,8 +330,7 @@ class CertificationList extends Component {
               <Col span={8} style={{ textAlign: 'center' }}>
                 <FormItem label="考核周期">
                   {getFieldDecorator('assessCyc', {
-                    initialValue: window.BI_Filter(`Certification_TIMEAREA|id:${assessCyc}`)
-                      .name,
+                    initialValue: window.BI_Filter(`Certification_TIMEAREA|id:${assessCyc}`).name,
                   })(
                     <Select placeholder="全部" style={{ width: 230, height: 32 }}>
                       {window.BI_Filter(`Certification_TIMEAREA`).map(item => (
@@ -359,39 +365,38 @@ class CertificationList extends Component {
     });
     const rowSelection = {
       onChange: (selectedRowKeys, rowList) => {
-        this.onSelectChange(selectedRowKeys, rowList)
+        this.onSelectChange(selectedRowKeys, rowList);
       },
       getCheckboxProps: record => ({
-        disabled: record.status === '已停用'|| record.status === '已删除',
+        disabled: record.status === '已停用' || record.status === '已删除',
       }),
     };
 
     const modalContent = (
       <>
-        <span className={styles.allWordTost}>{clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？</span>
+        <span className={styles.allWordTost}>
+          {clickFlag === 1 ? '开放' : '关闭'}如下报名通道吗？
+        </span>
         <ul className={styles.m_ulStyle}>
-          {
-            selectedRows.map((item ) =>{
-              return(
-                <li className={styles.u_liStyle} key={item.id}>
-                  <img src={circle} className={styles.u_circleImg} alt='圆点' />
-                  {item.name}
-                </li>
-
-              );
-            })
-          }
+          {selectedRows.map(item => {
+            return (
+              <li className={styles.u_liStyle} key={item.id}>
+                <img src={circle} className={styles.u_circleImg} alt="圆点" />
+                {item.name}
+              </li>
+            );
+          })}
         </ul>
       </>
     );
 
-    const modalContentDelete=(
+    const modalContentDelete = (
       <>
-        <img src={deleteTost} alt='delete' className={styles.imgStyle} />
+        <img src={deleteTost} alt="delete" className={styles.imgStyle} />
         <br />
         <span className={styles.deletWord}>一经删除历史数据将全部清空！确定要删除吗？</span>
       </>
-    )
+    );
     return (
       <>
         <ContentLayout
@@ -471,18 +476,18 @@ class CertificationList extends Component {
           clickOK={() => this.allModel(selectedRows)}
           footButton={['取消', '提交']}
           showModal={bol => {
-            this.setDialogSHow(1,bol);
+            this.setDialogSHow(1, bol);
           }}
         />
         <ModalDialog
           style={{ width: '520px' }}
-          title='删除确认'
+          title="删除确认"
           visible={this.stringToBoolean(deleteVisible)}
           modalContent={modalContentDelete}
           clickOK={() => this.deleteModel(deleteRow)}
           footButton={['取消', '提交']}
           showModal={bol => {
-            this.setDialogSHow(2,bol);
+            this.setDialogSHow(2, bol);
           }}
         />
       </>
