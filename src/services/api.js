@@ -799,6 +799,7 @@ export async function auditSaveExcel(params) {
     body: params,
   });
 }
+
 /*
 * 获取认证管理列表
 * params：{status,assessCyc,pageSize,pageNum}
@@ -820,11 +821,66 @@ export async function certificationDelete(params) {
 }
 
 /*
+* 删除子认证项目
+* params：{id}
+* */
+export async function delSubItemById(params) {
+  return request(`${HOST}/certificationItem/delSubItemById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 删除认证图标
+* params：{type,picName}
+* */
+export async function delIcon(params) {
+  return request(`${HOST}/certificationItem/delIcon?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
 * 开放或关闭报名
 * params：{id}
 * */
 export async function certificationModify(params) {
   return request(`${HOST}/certificationItem/modifyStatus`, {
+    method: 'POST',
+    body: params,
+  });
+}
+/*
+*
+上传认证图标
+* params：{certificationItemForm}
+* */
+export async function uploadIcon(params) {
+  return request(`${HOST}/certificationItem/uploadIcon`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+/*
+*
+添加或修改认证项目
+* params：{certificationItemForm}
+* */
+export async function saveOrModifyItem(params) {
+  return request(`${HOST}/certificationItem/saveOrModifyItem`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+/*
+*
+添加或修改子认证项目
+* params：{certificationItemForm}
+* */
+export async function saveOrModifySubItem(params) {
+  return request(`${HOST}/certificationItem/saveOrModifySubItem`, {
     method: 'POST',
     body: params,
   });
