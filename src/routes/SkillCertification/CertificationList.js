@@ -25,8 +25,8 @@ class CertificationList extends Component {
     const params = this.props.getUrlParams();
     const initParams = {
       params: {
-        status: null, // 报名通道状态
-        assessCyc: null, // 考核周期
+        status: undefined, // 报名通道状态
+        assessCyc: undefined, // 考核周期
         pageNum: 0, // 翻页---当前页码
         pageSize: 30, // 每页显示数据
       },
@@ -150,8 +150,14 @@ class CertificationList extends Component {
   };
   // 删除模态框回显
   deleteModel = (val) => {
+    const certificationDeleteParams = { id: val.id };
+    const certificationListParams = this.state.params;
+    console.log('删除弹窗回西安',val,certificationDeleteParams,certificationListParams);
+    this.props.dispatch({
+      type: 'certification/certificationDelete',
+      payload: { certificationDeleteParams, certificationListParams },
+    });
     this.setDialogSHow(2,false);
-    console.log('删除弹窗回西安',val);
   };
 
   // 表单搜索
@@ -160,9 +166,10 @@ class CertificationList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         const {assessCyc=null,status=null} = values
+        console.log(assessCyc,status)
         const certificationListParams = {
-          assessCyc:assessCyc==='全部'?undefined:Number(assessCyc),
-          status:status==='全部'?undefined:Number(status),
+          assessCyc:assessCyc?Number(assessCyc):undefined,
+          status:status?Number(status):undefined,
           pageSize: 30,
           pageNum: 0,
         };

@@ -103,7 +103,7 @@ export const CERTIFICATION_RESULT = [
 
 // 认证管理报名通道状态
 export const Certification_TYPE = [
-  { id: null, name: '全部' },
+  { id: undefined, name: '全部' },
   { id: '1', name: '已开放' },
   { id: '2', name: '已关闭' },
   { id: '3', name: '已停用' },
@@ -111,7 +111,7 @@ export const Certification_TYPE = [
 ];
 // 认证管理报名通道状态
 export const Certification_TIMEAREA = [
-  { id: null, name: '全部' },
+  { id: undefined, name: '全部' },
   { id: '1', name: '月度' },
   { id: '2', name: '季度' },
 ];
