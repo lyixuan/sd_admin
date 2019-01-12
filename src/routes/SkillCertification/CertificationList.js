@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import moment from "moment/moment";
 import { assignUrlParams } from 'utils/utils';
 import { Table, Button, Form, Row, Col, Select, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -11,9 +12,11 @@ import styles from './certification.css';
 import deleteTost from '../../assets/deleteTost.svg';
 import circle from '../../assets/circle.svg';
 
+
 const FormItem = Form.Item;
 const { Option } = Select;
 let propsVal = '';
+const dateFormat = 'YYYY-MM-DD h:mm:ss  ';
 
 @connect(({ certification, loading }) => ({
   certification,
@@ -196,7 +199,7 @@ class CertificationList extends Component {
         name: item.name,
         assessCyc: window.BI_Filter(`Certification_TIMEAREA|id:${item.assessCyc}`).name,
         status: window.BI_Filter(`Certification_TYPE|id:${item.status}`).name,
-        modifyTime: item.modifyTime,
+        modifyTime: moment.unix(item.modifyTime / 1000).format(dateFormat),
       })
     );
     return data;
