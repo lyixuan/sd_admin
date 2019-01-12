@@ -134,6 +134,13 @@ class CertificationList extends Component {
   // 表单重置
   handleReset = () => {
     propsVal.form.resetFields();
+    const params = {
+      status: undefined,
+      assessCyc: undefined,
+      pageNum: 0,
+      pageSize: 30,
+    };
+    this.getData(params);
   };
 
   // 批量模态框回显
@@ -153,13 +160,13 @@ class CertificationList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         const {assessCyc=null,status=null} = values
-        const userListParams = {
-          assessCyc,
-          status,
+        const certificationListParams = {
+          assessCyc:assessCyc==='全部'?undefined:Number(assessCyc),
+          status:status==='全部'?undefined:Number(status),
           pageSize: 30,
           pageNum: 0,
         };
-        this.getData(userListParams);
+        this.getData(certificationListParams);
       }
     });
   };
@@ -281,7 +288,6 @@ class CertificationList extends Component {
     const { pageNum = 0, assessCyc = 0, status = 0 } = this.state.params;
     const { certificationListData = {} } = this.props.certification.certificationList;
     const { totalElements = 0, content = [] } = certificationListData;
-    console.log(certificationListData,content)
     const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     const formLayout = 'inline';
