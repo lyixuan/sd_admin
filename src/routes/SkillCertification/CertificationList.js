@@ -100,11 +100,13 @@ class CertificationList extends Component {
 
   // 单条数据开放/关闭报名   1是开放报名，2是关闭报名
   selfApply = (modelType = 1, dataList = {}) => {
-    if (modelType === 1) {
-      console.log('开放报名', dataList);
-    } else {
-      console.log('关闭报名', dataList);
-    }
+    const {id=null}=dataList
+      const certificationModifyParams = { ids: [{ id}] ,type:modelType};
+      const certificationListParams = this.state.params;
+      this.props.dispatch({
+        type: 'certification/certificationModify',
+        payload: { certificationModifyParams, certificationListParams },
+      });
   };
   // 批量开放/关闭报名   1是批量开放，2是批量关闭
   allApply = (modelType = 1) => {
@@ -151,7 +153,6 @@ class CertificationList extends Component {
   deleteModel = (val) => {
     const certificationDeleteParams = { id: val.id };
     const certificationListParams = this.state.params;
-    console.log('删除弹窗回西安',val,certificationDeleteParams,certificationListParams);
     this.props.dispatch({
       type: 'certification/certificationDelete',
       payload: { certificationDeleteParams, certificationListParams },
@@ -165,7 +166,6 @@ class CertificationList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         const {assessCyc=null,status=null} = values
-        console.log(assessCyc,status)
         const certificationListParams = {
           assessCyc:assessCyc?Number(assessCyc):undefined,
           status:status?Number(status):undefined,
