@@ -5,9 +5,11 @@ import CertificationCreate_Form from './component/CertificationCreate_Form.js';
 import ContentLayout from '../../layouts/ContentLayout';
 
 const WrappedRegistrationForm = Form.create()(CertificationCreate_Form);
-@connect(({ user, loading }) => ({
-  user,
-  submit: loading.effects['user/userAdd'],
+@connect(({ certification, loading }) => ({
+  certification,
+  submit: loading.effects['certification/saveOrModifyItem'],
+  // listOrg: loading.effects['certification/listOrg'],
+  // roleOrg: loading.effects['certification/getUserRoleList'],
 }))
 class CertificationCreate extends Component {
   constructor(props) {
@@ -19,7 +21,22 @@ class CertificationCreate extends Component {
 
   // 点击确定按钮请求接口
   handleSubmit = (values) => {
-    console.log(values)
+    const certificationItemForm = {
+      certificationItemForm:{
+        orderNum:Number(values.orderNum),
+        name:values.name,
+        assessCyc: Number(values.assessCyc),
+        assessStyle:values.assessStyle,
+        assessStandard:values.assessStandard,
+        obtainedIcon:'/staticFile/aicon.png',
+        originalIcon:'/staticFile/aicon.png',
+      },
+    };
+    console.log(values,certificationItemForm)
+    // this.props.dispatch({
+    //   type: 'certification/saveOrModifyItem',
+    //   payload: { certificationItemForm },
+    // });
   };
   // 点击取消按钮跳转到list页面
   resetContent = () => {
