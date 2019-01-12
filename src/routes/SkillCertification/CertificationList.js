@@ -101,17 +101,25 @@ class CertificationList extends Component {
   // 单条数据开放/关闭报名   1是开放报名，2是关闭报名
   selfApply = (modelType = 1, dataList = {}) => {
     const {id=null}=dataList
-      const certificationModifyParams = { ids: [{ id}] ,type:modelType};
+    const certificationModifyParams = { ids: [{ id}] ,type:modelType};
+    const certificationListParams = this.state.params;
+    this.props.dispatch({
+      type: 'certification/certificationModify',
+      payload: { certificationModifyParams, certificationListParams },
+    });
+  };
+  // 批量开放/关闭报名   1是批量开放，2是批量关闭
+  allApply = (modelType = 1) => {
+    const { selectedRows = [] } = this.state;
+    const data = [];
+    if (selectedRows.length > 0) {
+      selectedRows.map(item => data.push({ id: Number(item.id)}));
+      const certificationModifyParams = { ids: data ,type:modelType};
       const certificationListParams = this.state.params;
       this.props.dispatch({
         type: 'certification/certificationModify',
         payload: { certificationModifyParams, certificationListParams },
       });
-  };
-  // 批量开放/关闭报名   1是批量开放，2是批量关闭
-  allApply = (modelType = 1) => {
-    const { selectedRows = [] } = this.state;
-    if (selectedRows.length > 0) {
       this.setState({ clickFlag: modelType, visible: true });
     } else {
       message.error('未选中任何一项');

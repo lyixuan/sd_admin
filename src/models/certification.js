@@ -40,7 +40,6 @@ export default {
     *certificationModify({ payload }, { call, put }) {
       const result = yield call(certificationModify, payload.certificationModifyParams);
       if (result.code === 2000) {
-        message.success('更新成功！');
         const response = yield call(certificationList, payload.certificationListParams);
         if (response.code === 2000) {
           const certificationListData = response.data || [];
