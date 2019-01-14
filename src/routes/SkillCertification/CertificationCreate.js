@@ -21,18 +21,22 @@ class CertificationCreate extends Component {
 
   // 点击确定按钮请求接口
   handleSubmit = (values) => {
+    const assessStyleRest = values.assessStyle || "";
+    const assessStandardRest = values.assessStandard ||"";
+    const assessStyle = assessStyleRest.replace(/↵/g,'\r\n');
+    const assessStandard=assessStandardRest.replace(/↵/g,'\r\n');
     const saveOrModifyItemParams = {
       certificationItemForm:{
         orderNum:Number(values.orderNum),
         name:values.name,
         assessCyc: Number(values.assessCyc),
-        assessStyle:values.assessStyle,
-        assessStandard:values.assessStandard,
+        assessStyle,
+        assessStandard,
         obtainedIcon:'/staticFile/aicon.png',
         originalIcon:'/staticFile/aicon.png',
       },
     };
-    console.log(values,saveOrModifyItemParams)
+    // console.log(assessStandardRest,'-----',assessStandard,assessStyleRest,'-----',assessStyle,'=====',saveOrModifyItemParams,"\r\n")
     this.props.dispatch({
       type: 'certification/saveOrModifyItem',
       payload: { saveOrModifyItemParams },
