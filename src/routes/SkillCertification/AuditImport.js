@@ -7,8 +7,8 @@ import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 
-@connect(({ quality, loading }) => ({
-  quality,
+@connect(({ audit, loading }) => ({
+  audit,
   loading,
 }))
 class AuditImport extends Component {
@@ -45,40 +45,40 @@ class AuditImport extends Component {
   // 初始化一些值
   initParamsFn = disableDel => {
     this.props.dispatch({
-      type: 'quality/initParams',
+      type: 'audit/initParams',
       payload: { disableDel },
     });
   };
   // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
-      type: 'quality/checkQuality',
+      type: 'audit/checkQuality',
       payload: { params },
     });
   };
   // 保存excel数据
   saveExcelData = params => {
     this.props.dispatch({
-      type: 'quality/saveExcel',
+      type: 'audit/saveExcel',
       payload: { params },
     });
   };
 
   saveFileList = fileList => {
     this.props.dispatch({
-      type: 'quality/saveFileList',
+      type: 'audit/saveFileList',
       payload: { fileList },
     });
   };
   editCurrent = current => {
     this.props.dispatch({
-      type: 'quality/editCurrent',
+      type: 'audit/editCurrent',
       payload: { current },
     });
   };
   editLoading = isLoading => {
     this.props.dispatch({
-      type: 'quality/editLoading',
+      type: 'audit/editLoading',
       payload: { isLoading },
     });
   };
@@ -113,9 +113,8 @@ class AuditImport extends Component {
     return columns;
   };
   render() {
-    console.log(this.props.quality);
     let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
-    const { current, checkList, fileList, disableDel, isLoading } = this.props.quality;
+    const { current, checkList, fileList, disableDel, isLoading } = this.props.audit;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
     const errorList = !checkList ? [] : checkList.data.errorList;

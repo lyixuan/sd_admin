@@ -18,7 +18,11 @@ class AuditListForm extends Component {
     this.canExamineStatus = false;
     this.canExamineResult = false;
     this.isMonth = true;
-
+    const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
+    if (storageData) {
+      // todo
+      sessionStorage.removeItem('tempFrom');
+    }
     this.state = {
       quarter: '',
     };
@@ -217,7 +221,7 @@ class AuditListForm extends Component {
           examineStatus: values.examineStatus,
           examineResult: values.examineResult,
         };
-        this.props.handleSearch(subParams);
+        this.props.handleSearch(subParams, values);
       }
     });
   };

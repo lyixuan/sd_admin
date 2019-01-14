@@ -10,6 +10,8 @@ import {
   auditLogList,
   getSignExamineInfo,
   submitSignResult,
+  verifyAuditDataExcel,
+  auditSaveExcel,
 } from '../services/api';
 
 export default {
@@ -23,6 +25,10 @@ export default {
     logData: {},
     signExamineInfo: {},
     signExamineList: [],
+    disableDel: null, // 根据接口返回决定是否禁止下一步按钮：true--禁止
+    fileList: [],
+    isLoading: null,
+    current: 0,
   },
 
   effects: {
@@ -151,6 +157,60 @@ export default {
         message.error(response.msg);
       }
     },
+    // ------ 质检
+    *checkQuality({ payload }, { call, put }) {
+      const logMsg = [];
+      const { params } = payload;
+      const checkList = yield call(verifyAuditDataExcel, { ...params });
+
+      if (checkList.code !== 2000) {
+        if (checkList.data.excelError) {
+          checkList.data.excelError.forEach(item => {
+            logMsg.push(item.log);
+          });
+          message.error(logMsg.join(','));
+        } else {
+          message.error(checkList.msg);
+        }
+        yield put({ type: 'save', payload: { current: 0, isLoading: false } });
+      } else if (checkList.data.errorList.length > 0) {
+        yield put({
+          type: 'save',
+          payload: { checkList, current: 1, disableDel: true, isLoading: false },
+        });
+      } else {
+        yield put({
+          type: 'save',
+          payload: { checkList, current: 1, disableDel: false, isLoading: false },
+        });
+      }
+    },
+    *saveExcel({ payload }, { call, put }) {
+      const { params } = payload;
+      const excelData = yield call(auditSaveExcel, { ...params });
+      if (excelData.code !== 2000) {
+        message.error(excelData.msg);
+        yield put({ type: 'save', payload: { current: 1, isLoading: false } });
+      } else {
+        yield put({ type: 'save', payload: { current: 2, isLoading: false } });
+      }
+    },
+    *saveFileList({ payload }, { put }) {
+      const { fileList } = payload;
+      yield put({ type: 'save', payload: { fileList } });
+    },
+    *editCurrent({ payload }, { put }) {
+      const { current } = payload;
+      yield put({ type: 'save', payload: { current, isLoading: false } });
+    },
+    *editLoading({ payload }, { put }) {
+      const { isLoading } = payload;
+      yield put({ type: 'save', payload: { isLoading } });
+    },
+    *initParams({ payload }, { put }) {
+      const { disableDel, nums } = payload;
+      yield put({ type: 'save', payload: { disableDel, nums } });
+    },
   },
 
   reducers: {
@@ -190,6 +250,18 @@ export default {
         ...state,
         visible: action.payload.visible,
       };
+    },
+    save(state, action) {
+      const { checkList } = action.payload;
+      if (checkList) {
+        const { errorList } = checkList.data;
+        if (errorList) {
+          errorList.forEach((item, i) => {
+            errorList[i].key = i;
+          });
+        }
+      }
+      return { ...state, ...action.payload };
     },
   },
 };

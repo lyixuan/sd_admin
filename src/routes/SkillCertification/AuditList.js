@@ -22,6 +22,7 @@ class AuditList extends Component {
     this.pageNum = 0;
     this.pageSize = 30;
     this.params = {};
+    this.oriSearchParams = {};
     this.state = {
       modelType: '',
       title: '',
@@ -44,6 +45,7 @@ class AuditList extends Component {
     this.props.setRouteUrlParams('/skillCertification/auditRecord', {
       userId: val.userId,
     });
+    sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
   };
 
   // 报名审核
@@ -51,11 +53,13 @@ class AuditList extends Component {
     this.props.setRouteUrlParams('/skillCertification/auditApply', {
       certificationInfoId: val.certificationInfoId,
     });
+    sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
   };
 
   // 导入认证
   importExcel = () => {
     this.props.dispatch(routerRedux.push('/skillCertification/auditImport'));
+    sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
   };
 
   showModal = (t, record) => {
@@ -99,7 +103,8 @@ class AuditList extends Component {
   };
 
   // 表单搜索函数
-  search = params => {
+  search = (params, values) => {
+    this.oriSearchParams = values;
     const obj = params ? { ...params } : this.params;
     obj.number = this.pageNum;
     obj.size = this.pageSize;
@@ -211,8 +216,8 @@ class AuditList extends Component {
         contentForm={
           <SearchForm
             auditData={this.props.audit}
-            handleSearch={params => {
-              this.search(params);
+            handleSearch={(params, values) => {
+              this.search(params, values);
             }}
           />
         }
