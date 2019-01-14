@@ -313,12 +313,9 @@ class CertificationList extends Component {
     } = this.state;
     const { pageNum = 0, assessCyc = 0, status = 0 } = this.state.params;
     const { certificationListData = {} } = this.props.certification.certificationList;
-    // const { countItemByStatusData = {} } = this.props.certification;
-    // const aa =countItemByStatusData.countItemByStatusData||{}
-    // const {closeNum=null}=aa['关闭']
-    // const {openNum=null}=aa['开放']
-    // console.log(closeNum,openNum)
-    const { totalElements = 0, content = [] } = certificationListData;
+    const { countItemByStatusData = {} } = this.props.certification.countItemByStatus;
+    const {close=0,open=0}=countItemByStatusData;
+    const {totalElements=0,content = [] } = certificationListData;
     const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     const formLayout = 'inline';
@@ -456,8 +453,8 @@ class CertificationList extends Component {
           contentTable={
             <>
               <p className={common.totalNum}>
-                <span className={common.totalNumLeft}>已开放:{totalElements}</span>
-                <span className={common.totalNumRight}>已关闭:{totalElements}</span>
+                <span className={common.totalNumLeft}>已开放:{open}</span>
+                <span className={common.totalNumRight}>已关闭:{close}</span>
               </p>
               <Table
                 bordered

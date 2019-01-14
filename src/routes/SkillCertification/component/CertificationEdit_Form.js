@@ -10,23 +10,8 @@ const RadioGroup = Radio.Group;
 class CertificationEdit_Form extends Component {
   constructor(props) {
     super(props);
-    const {
-      assessCyc = '月度',
-      orderNum = null,
-      name = null,
-      code = null,
-      assessStyle=null,
-      assessStandard=null,
-    } = this.props.jumpFunction.getUrlParams();
-
-    const timeType = Number(window.BI_Filter(`Certification_TIMEAREA|name:${assessCyc}`).id);
+    // const timeType = Number(window.BI_Filter(`Certification_TIMEAREA|name:${assessCyc}`).id);
     this.state = {
-      assessCyc: timeType,
-      orderNum,
-      name,
-      code,
-      assessStyle,
-      assessStandard,
       previewVisible1: false,
       previewImage1: '',
       previewVisible2: false,
@@ -35,7 +20,7 @@ class CertificationEdit_Form extends Component {
       fileList2: [],
     };
   }
-  componentDidMount() {}
+
 
   handleSubmit = e => {
     e.preventDefault();
@@ -74,17 +59,19 @@ class CertificationEdit_Form extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const bol = false;
-    const { submit } = this.props.jumpFunction;
+    const { submit ,itemDetal} = this.props.jumpFunction;
+    const { getItemByIdData = {} } = this.props.jumpFunction.certification.getItemById;
+    const {orderNum = null,
+      name = null,
+      code = null,
+      status=1,
+      enabledSubDefine=false,
+      assessCyc=1,
+      assessStyle=null,
+      assessStandard=null} = getItemByIdData
     const disabled = true;
     const { TextArea } = Input;
     const {
-      orderNum = null,
-      name = null,
-      code = null,
-      assessCyc=1,
-      assessStyle=null,
-      assessStandard=null,
       previewVisible1,
       previewImage1,
       previewVisible2,
@@ -92,6 +79,7 @@ class CertificationEdit_Form extends Component {
       fileList2,
       fileList1,
     } = this.state;
+    const bol=true
     const uploadButton = (
       <Button type="primary" className={common.submitButton} loading={false}>
         添加图标
@@ -99,7 +87,7 @@ class CertificationEdit_Form extends Component {
     );
     const formLayout = 'inline';
     return (
-      <Spin spinning={bol}>
+      <Spin spinning={itemDetal}>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
@@ -156,7 +144,7 @@ class CertificationEdit_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*考核周期">
                 {getFieldDecorator('assessCyc', {
-                  initialValue: assessCyc,
+                  initialValue: Number(assessCyc),
                 })(
                   <Select placeholder="月度" style={{ width: 280, height: 32 }} disabled={disabled}>
                     {window.BI_Filter(`CHECK_CYCLE`).map(item => (
@@ -265,15 +253,15 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;是否停用">
                 {getFieldDecorator('isDisable', {
-                  initialValue: 0,
+                  initialValue: status===3?bol:false,
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={1}>
+                    <Radio name="privilege" value={bol}>
                       是
                     </Radio>
-                    <Radio name="privilege" value={0}>
+                    <Radio name="privilege" value={false}>
                       否
                     </Radio>
                   </RadioGroup>
@@ -283,15 +271,15 @@ class CertificationEdit_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="子项是否允许手动输入">
                 {getFieldDecorator('enabledSubDefine', {
-                  initialValue: 0,
+                  initialValue: enabledSubDefine,
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={1}>
+                    <Radio name="privilege" value={bol}>
                       是
                     </Radio>
-                    <Radio name="privilege" value={0}>
+                    <Radio name="privilege" value={false}>
                       否
                     </Radio>
                   </RadioGroup>

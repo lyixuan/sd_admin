@@ -10,30 +10,46 @@ const WrappedRegistrationForm = Form.create()(CertificationEdit_Form);
   certification,
   submit: loading.effects['certification/saveOrModifyItem'],
   collegeList: loading.effects['certification/findAllOrg'],
+  itemDetal: loading.effects['certification/getItemById'],
 }))
 class CertificationEdit extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const { id = null} = this.props.getUrlParams();
+    this.state = {
+      id,
+    };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    const {id=null}=this.state
+    const params={id}
+    this.props.dispatch({
+      type: 'certification/getItemById',
+      payload: { params },
+    });
+  }
 
   // 点击确定按钮请求接口
   handleSubmit = values => {
+    const {id=1}=this.state;
     const saveOrModifyItemParams = {
+        id:Number(id),
         orderNum:Number(values.orderNum),
         name:values.name,
         assessCyc: Number(values.assessCyc),
         assessStyle:values.assessStyle,
         assessStandard:values.assessStandard,
+        code:values.code,
         obtainedIcon:'/staticFile/aicon.png',
         originalIcon:'/staticFile/aicon.png',
+        isDisable:values.isDisable,
+        enabledSubDefine:values.enabledSubDefine,
+
     };
-    console.log(values,saveOrModifyItemParams)
-    // this.props.dispatch({
-    //   type: 'certification/saveOrModifyItem',
-    //   payload: { saveOrModifyItemParams },
-    // });
+    this.props.dispatch({
+      type: 'certification/saveOrModifyItem',
+      payload: { saveOrModifyItemParams },
+    });
   };
 
   // table点击确定按钮请求接口

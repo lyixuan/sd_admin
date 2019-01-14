@@ -23,8 +23,8 @@ export default {
     // 接口返回数据存储
     certificationList: {},
     findAllOrgList:{},
-    getItemByIdData:{},
-    countItemByStatusData:{},
+    getItemById:{},
+    countItemByStatus:{},
   },
 
   effects: {
@@ -108,7 +108,7 @@ export default {
     },
 
     *getItemById({ payload }, { call,put }) {
-      const result = yield call(getItemById, payload.getItemByIdParams);
+      const result = yield call(getItemById, payload.params);
       if (result.code === 2000) {
         const getItemByIdData = result.data || [];
         yield put({ type: 'getItemByIdSave', payload: { getItemByIdData } });
@@ -145,13 +145,13 @@ export default {
     getItemByIdSave(state, action) {
       return {
         ...state,
-        getItemByIdData: action.payload,
+        getItemById: action.payload,
       };
     },
     countItemByStatusSave(state, action) {
       return {
         ...state,
-        countItemByStatusData: action.payload,
+        countItemByStatus: action.payload,
       };
     },
 
