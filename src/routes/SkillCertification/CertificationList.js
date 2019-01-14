@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import moment from "moment/moment";
 import { assignUrlParams } from 'utils/utils';
 import { Table, Button, Form, Row, Col, Select, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -11,9 +12,11 @@ import styles from './certification.css';
 import deleteTost from '../../assets/deleteTost.svg';
 import circle from '../../assets/circle.svg';
 
+
 const FormItem = Form.Item;
 const { Option } = Select;
 let propsVal = '';
+const dateFormat = 'YYYY-MM-DD h:mm:ss  ';
 
 @connect(({ certification, loading }) => ({
   certification,
@@ -100,11 +103,13 @@ class CertificationList extends Component {
 
   // 单条数据开放/关闭报名   1是开放报名，2是关闭报名
   selfApply = (modelType = 1, dataList = {}) => {
-    if (modelType === 1) {
-      console.log('开放报名', dataList);
-    } else {
-      console.log('关闭报名', dataList);
-    }
+    const {id=null}=dataList
+    const certificationModifyParams = { ids: [{ id}] ,type:modelType};
+    const certificationListParams = this.state.params;
+    this.props.dispatch({
+      type: 'certification/certificationModify',
+      payload: { certificationModifyParams, certificationListParams },
+    });
   };
   // 批量开放/关闭报名   1是批量开放，2是批量关闭
   allApply = (modelType = 1) => {
@@ -143,15 +148,22 @@ class CertificationList extends Component {
   };
 
   // 批量模态框回显
-  allModel = val => {
+  allModel = (val,modelType=1) => {
+    const data = [];
+    val.map(item => data.push({ id: Number(item.id)}));
+    const certificationModifyParams = { ids: data ,type:modelType};
+    const certificationListParams = this.state.params;
+    this.props.dispatch({
+      type: 'certification/certificationModify',
+      payload: { certificationModifyParams, certificationListParams },
+    });
     this.setDialogSHow(1, false);
-    console.log('批量弹窗回西安', val);
+
   };
   // 删除模态框回显
   deleteModel = (val) => {
     const certificationDeleteParams = { id: val.id };
     const certificationListParams = this.state.params;
-    console.log('删除弹窗回西安',val,certificationDeleteParams,certificationListParams);
     this.props.dispatch({
       type: 'certification/certificationDelete',
       payload: { certificationDeleteParams, certificationListParams },
@@ -165,7 +177,6 @@ class CertificationList extends Component {
     propsVal.form.validateFields((err, values) => {
       if (!err) {
         const {assessCyc=null,status=null} = values
-        console.log(assessCyc,status)
         const certificationListParams = {
           assessCyc:assessCyc?Number(assessCyc):undefined,
           status:status?Number(status):undefined,
@@ -188,7 +199,7 @@ class CertificationList extends Component {
         name: item.name,
         assessCyc: window.BI_Filter(`Certification_TIMEAREA|id:${item.assessCyc}`).name,
         status: window.BI_Filter(`Certification_TYPE|id:${item.status}`).name,
-        modifyTime: item.modifyTime,
+        modifyTime: moment.unix(item.modifyTime / 1000).format(dateFormat),
       })
     );
     return data;
@@ -473,7 +484,7 @@ class CertificationList extends Component {
           title={clickFlag === 1 ? '批量开放通道' : '批量关闭通道'}
           visible={this.stringToBoolean(visible)}
           modalContent={modalContent}
-          clickOK={() => this.allModel(selectedRows)}
+          clickOK={() => this.allModel(selectedRows,clickFlag)}
           footButton={['取消', '提交']}
           showModal={bol => {
             this.setDialogSHow(1, bol);

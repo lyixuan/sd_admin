@@ -74,7 +74,6 @@ class CertificationEdit_Form extends Component {
     const disabled = true;
     const { TextArea } = Input;
     const {
-      timeArea = 1,
       id = null,
       name = null,
       code = null,
@@ -97,15 +96,19 @@ class CertificationEdit_Form extends Component {
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序">
-                {getFieldDecorator('id', {
+                {getFieldDecorator('orderNum', {
                   initialValue: id,
                   rules: [
                     {
                       validator(rule, value, callback) {
+                        const reg = /^\d{3,6}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
                         if (!value) {
-                          callback({ message: '排序为必填项，请选择!' });
+                          callback({ message: '排序为必填项，请填写!' });
+                        }else if (!reg.test(value) && value) {
+                          callback({ message: '排序需要是3-6位数字组成，请修改！' });
+                        }else{
+                          callback();
                         }
-                        callback();
                       },
                     },
                   ],
@@ -128,10 +131,14 @@ class CertificationEdit_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '认证项目为必填项，请选择!' });
+                        const reg = !value ? '' : value.replace(/\s*/g, '');
+                        if (!reg) {
+                          callback({ message: '认证项目为必填项，请填写!' });
+                        }else if (reg.length > 15) {
+                          callback({ message: '认证项目限制在15个字符之内，请修改!' });
+                        } else {
+                          callback();
                         }
-                        callback();
                       },
                     },
                   ],
@@ -140,12 +147,15 @@ class CertificationEdit_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*考核周期">
-                {getFieldDecorator('sex', {
-                  initialValue: timeArea,
+                {getFieldDecorator('assessCyc', {
+                  initialValue: 1,
                 })(
-                  <Select style={{ width: 280 }} disabled={disabled}>
-                    <Option value={1}>月度</Option>
-                    <Option value={2}>季度</Option>
+                  <Select placeholder="月度" style={{ width: 280, height: 32 }} disabled={disabled}>
+                    {window.BI_Filter(`CHECK_CYCLE`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
                   </Select>
                 )}
               </FormItem>
@@ -154,15 +164,39 @@ class CertificationEdit_Form extends Component {
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;准">
-                {getFieldDecorator('standard', {
+                {getFieldDecorator('assessStandard', {
                   initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        const reg = !value ? '' : value.replace(/\s*/g, '');
+                        if (reg.length > 100) {
+                          callback({ message: '标准限制在200个字符之内，请修改!' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
                 })(<TextArea rows={4} style={{ width: 280 }} />)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="考核形式">
-                {getFieldDecorator('method', {
+                {getFieldDecorator('assessStyle', {
                   initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        const reg = !value ? '' : value.replace(/\s*/g, '');
+                        if (reg.length > 100) {
+                          callback({ message: '考核形式限制在200个字符之内，请修改!' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
                 })(<TextArea rows={4} style={{ width: 280 }} />)}
               </FormItem>
             </Col>
@@ -171,7 +205,7 @@ class CertificationEdit_Form extends Component {
           <Row>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*已获得认证图标">
-                {getFieldDecorator('havaOwed', {
+                {getFieldDecorator('obtainedIcon', {
                   initialValue: null,
                 })(
                   <>
@@ -195,7 +229,7 @@ class CertificationEdit_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*未获得认证图标">
-                {getFieldDecorator('unOwed', {
+                {getFieldDecorator('originalIcon', {
                   initialValue: null,
                 })(
                   <div style={{ width: '280px', textAlign: 'left' }}>
@@ -222,7 +256,7 @@ class CertificationEdit_Form extends Component {
           <Row>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;是否停用">
-                {getFieldDecorator('isStop', {
+                {getFieldDecorator('isDisable', {
                   initialValue: 0,
                 })(
                   <RadioGroup
@@ -240,7 +274,7 @@ class CertificationEdit_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="子项是否允许手动输入">
-                {getFieldDecorator('isInput', {
+                {getFieldDecorator('enabledSubDefine', {
                   initialValue: 0,
                 })(
                   <RadioGroup

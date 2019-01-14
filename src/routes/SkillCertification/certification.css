@@ -34,3 +34,7 @@
 .u_circleImg{
   width: 20px;
 }
+
+:global(.ant-checkbox-indeterminate .ant-checkbox-inner:after) {
+  opacity: 0 !important;
+}
