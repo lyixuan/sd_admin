@@ -729,26 +729,11 @@ export async function addTask(params) {
   });
 }
 
-// ------------------------------------------------------ 认证审核
+// ------------------- 认证审核 begin -------------------
 
 // 获取审核管理列表
 export async function getAuditList(params) {
   return request(`${HOST}/cem/list`, {
-    method: 'POST',
-    body: params,
-  });
-}
-
-// 报名审核
-export async function getSignExamineInfo(params) {
-  return request(`${HOST}/cem/getSignExamineInfo?${stringify(params)}`, {
-    method: 'GET',
-  });
-}
-
-// 认证审核
-export async function submitExamineResult(params) {
-  return request(`${HOST}/cem/submitExamineResult`, {
     method: 'POST',
     body: params,
   });
@@ -761,9 +746,24 @@ export async function auditLogList(params) {
   });
 }
 
+// 获取报名审核表单
+export async function getSignExamineInfo(params) {
+  return request(`${HOST}/cem/getSignExamineInfo?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
 // 报名审核结果提交
 export async function submitSignResult(params) {
   return request(`${HOST}/cem/submitSignResult`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 认证审核
+export async function submitExamineResult(params) {
+  return request(`${HOST}/cem/submitExamineResult`, {
     method: 'POST',
     body: params,
   });
@@ -801,6 +801,14 @@ export async function auditSaveExcel(params) {
   });
 }
 
+// 认证项目列表
+export async function findCertificationList() {
+  return request(`${HOST}/certificationItem/findAllItemList`, {
+    method: 'GET',
+  });
+}
+
+// ------------------- 认证审核 end -------------------
 /*
 * 获取认证管理列表
 * params：{status,assessCyc,pageSize,pageNum}

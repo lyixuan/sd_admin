@@ -13,7 +13,7 @@ class AuditListForm extends Component {
     super(props);
     this.listOrg = [];
     this.orgOptions = [];
-    this.certifiyOptions = [];
+    this.certificationList = [];
     this.canSignResult = false;
     this.canExamineStatus = false;
     this.canExamineResult = false;
@@ -28,6 +28,7 @@ class AuditListForm extends Component {
   UNSAFE_componentWillMount() {
     const { auditData } = this.props;
     this.listOrg = auditData.listOrg;
+    this.certificationList = auditData.certificationList;
     this.handleSelectChange('college');
   }
 
@@ -42,6 +43,11 @@ class AuditListForm extends Component {
     if (JSON.stringify(auditData.listOrg) !== JSON.stringify(auditData2.listOrg)) {
       this.listOrg = auditData.listOrg;
       this.handleSelectChange('college');
+    }
+    if (
+      JSON.stringify(auditData.certificationList) !== JSON.stringify(auditData2.certificationList)
+    ) {
+      this.certificationList = auditData.certificationList;
     }
   }
   // 级联选级
@@ -337,10 +343,10 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="认证项目">
               {getFieldDecorator('certificationItemId', {
-                initialValue: '',
+                initialValue: null,
               })(
-                <Select placeholder="请选择认证项目" style={{ width: 230, height: 32 }}>
-                  {this.certifiyOptions.map(item => (
+                <Select placeholder="请选择认证项目" style={{ width: 230, height: 32 }} allowClear>
+                  {this.certificationList.map(item => (
                     <Option value={item.id} key={item.name}>
                       {item.name}
                     </Option>

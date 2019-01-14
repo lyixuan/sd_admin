@@ -1,4 +1,4 @@
-/* eslint-disable no-undef,no-param-reassign */
+/* eslint-disable no-undef,no-param-reassign,no-unused-expressions */
 import React, { Component } from 'react';
 import { Form, Input, Select, DatePicker, Modal, Radio } from 'antd';
 
@@ -125,12 +125,15 @@ class AuditListForm extends Component {
           applyTimeParamEnd,
           signStatus: values.signStatus ? Number(values.signStatus) : null,
           signResult: values.signResult ? Number(values.signResult) : null,
+          certificationDetailInfoId: this.props.record ? this.props.record.id : null,
+          result: values.result,
         };
+        console.log(values);
+        console.log(params);
         this.props.onOk(params);
         this.isMonth = true;
         this.canSignResult = false;
         this.quarter = '';
-        propsVal.form.resetFields();
       }
     });
   };
@@ -139,11 +142,12 @@ class AuditListForm extends Component {
     this.isMonth = true;
     this.canSignResult = false;
     this.quarter = '';
-    propsVal.form.resetFields();
     this.props.onCancel();
+    propsVal.form.resetFields();
   };
 
   render() {
+    propsVal && propsVal.form.resetFields();
     const ModalForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -202,6 +206,7 @@ class AuditListForm extends Component {
             <FormItem label="报名季度">
               {getFieldDecorator('quarterRange', {
                 initialValue: null,
+                rules: [{ required: true, message: '请选择季度' }],
               })(
                 <div>
                   <Input
@@ -277,22 +282,22 @@ class AuditListForm extends Component {
           {/* 认证审核 */}
           {this.props.modelType === 3 ? (
             <FormItem label="姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名">
-              {getFieldDecorator('name', {
+              {getFieldDecorator('userName', {
                 initialValue: '',
-              })(<div style={{ width: 230, height: 32 }}>{this.props.record.name}</div>)}
+              })(<div style={{ width: 230, height: 32 }}>{this.props.record.userName}</div>)}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
             <FormItem label="认证项目">
-              {getFieldDecorator('audit', {
+              {getFieldDecorator('orgName', {
                 initialValue: '',
-              })(<div style={{ width: 230, height: 32 }}>{this.props.record.orgName}</div>)}
+              })(<div style={{ width: 250, height: 32 }}>{this.props.record.orgName}</div>)}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
             <FormItem label="认证审核">
-              {getFieldDecorator('audit', {
-                initialValue: '1',
+              {getFieldDecorator('result', {
+                initialValue: this.props.record.examineResult,
               })(
                 <RadioGroup style={{ width: 230, height: 32 }}>
                   <Radio value={1}>通过</Radio>

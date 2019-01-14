@@ -1,5 +1,16 @@
 import { message } from 'antd';
-import { listOrg, getAuditList, exportBottomTable } from '../services/api';
+import { routerRedux } from 'dva/router';
+import {
+  listOrg,
+  getAuditList,
+  exportBottomTable,
+  auditPublish,
+  submitExamineResult,
+  findCertificationList,
+  auditLogList,
+  getSignExamineInfo,
+  submitSignResult,
+} from '../services/api';
 
 export default {
   namespace: 'audit',
@@ -8,6 +19,10 @@ export default {
     listOrg: [],
     auditList: [],
     visible: false,
+    certificationList: [],
+    logData: {},
+    signExamineInfo: {},
+    signExamineList: [],
   },
 
   effects: {
@@ -35,6 +50,7 @@ export default {
         return result;
       }
     },
+    // 获取审核列表
     *getAuditList({ payload }, { call, put }) {
       const response = yield call(getAuditList, payload.obj);
       const listData = response && response.data ? { ...response.data } : {};
@@ -45,6 +61,7 @@ export default {
         message.error(response.msg);
       }
     },
+    // 导出底表
     *exportBottomTable({ payload }, { call, put }) {
       const start = payload.params.applyTimeParamStart.split('-');
       const end = payload.params.applyTimeParamEnd.split('-');
@@ -73,6 +90,67 @@ export default {
         window.URL.revokeObjectURL(href); // 释放掉blob对象
       }
     },
+    // 发布认证
+    *auditPublish({ payload }, { call, put }) {
+      const response = yield call(auditPublish, payload.params);
+      const backparams = payload.callbackParams;
+      if (response.code === 2000) {
+        yield put({ type: 'showModel', payload: { visible: false } });
+        yield put({ type: 'getAuditList', payload: { obj: backparams } });
+      } else {
+        message.error(response.msg);
+      }
+    },
+    // 认证审核
+    *submitExamineResult({ payload }, { call, put }) {
+      const response = yield call(submitExamineResult, payload.params);
+      const backparams = payload.callbackParams;
+      if (response.code === 2000) {
+        yield put({ type: 'showModel', payload: { visible: false } });
+        yield put({ type: 'getAuditList', payload: { obj: backparams } });
+      } else {
+        message.error(response.msg);
+      }
+    },
+    // 认证项目列表
+    *findCertificationList({ payload }, { call, put }) {
+      const response = yield call(findCertificationList, payload.params);
+      const listData = response && response.data ? [...response.data] : [];
+      if (response.code === 2000) {
+        yield put({ type: 'certificationListSave', payload: { listData } });
+      } else {
+        message.error(response.msg);
+      }
+    },
+    // 审核记录
+    *auditLogList({ payload }, { call, put }) {
+      const response = yield call(auditLogList, payload.params);
+      const listData = response && response.data ? { ...response.data } : {};
+      if (response.code === 2000) {
+        yield put({ type: 'logDataSave', payload: { listData } });
+      } else {
+        message.error(response.msg);
+      }
+    },
+    // 获取报名审核列表
+    *getSignExamineInfo({ payload }, { call, put }) {
+      const response = yield call(getSignExamineInfo, payload.params);
+      const listData = response && response.data ? { ...response.data } : {};
+      if (response.code === 2000) {
+        yield put({ type: 'signExamineInfoSave', payload: { listData } });
+      } else {
+        message.error(response.msg);
+      }
+    },
+    // 报名审核提交
+    *submitSignResult({ payload }, { call, put }) {
+      const response = yield call(submitSignResult, payload.params);
+      if (response.code === 2000) {
+        yield put(routerRedux.push('/skillCertification/auditList'));
+      } else {
+        message.error(response.msg);
+      }
+    },
   },
 
   reducers: {
@@ -86,6 +164,25 @@ export default {
       return {
         ...state,
         auditList: action.payload.listData,
+      };
+    },
+    certificationListSave(state, action) {
+      return {
+        ...state,
+        certificationList: action.payload.listData,
+      };
+    },
+    logDataSave(state, action) {
+      return {
+        ...state,
+        logData: action.payload.listData,
+      };
+    },
+    signExamineInfoSave(state, action) {
+      return {
+        ...state,
+        signExamineList: action.payload.listData.certificationSignInfoList,
+        signExamineInfo: action.payload.listData,
       };
     },
     showModel(state, action) {

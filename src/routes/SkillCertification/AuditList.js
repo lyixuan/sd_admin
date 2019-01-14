@@ -34,15 +34,23 @@ class AuditList extends Component {
       type: 'audit/listOrg',
       payload: { params },
     });
+    this.props.dispatch({
+      type: 'audit/findCertificationList',
+      payload: { params },
+    });
   }
   // 审核记录
-  onRecord = () => {
-    this.props.dispatch(routerRedux.push('/skillCertification/auditRecord'));
+  onRecord = val => {
+    this.props.setRouteUrlParams('/skillCertification/auditRecord', {
+      userId: val.userId,
+    });
   };
 
   // 报名审核
-  onSign = () => {
-    this.props.dispatch(routerRedux.push('/skillCertification/auditApply'));
+  onSign = val => {
+    this.props.setRouteUrlParams('/skillCertification/auditApply', {
+      certificationInfoId: val.certificationInfoId,
+    });
   };
 
   // 导入认证
@@ -63,10 +71,24 @@ class AuditList extends Component {
   };
 
   handleOk = params => {
-    this.props.dispatch({
-      type: 'audit/exportBottomTable',
-      payload: { params },
-    });
+    if (this.state.modelType === 2) {
+      this.props.dispatch({
+        type: 'audit/exportBottomTable',
+        payload: { params },
+      });
+    }
+    if (this.state.modelType === 1) {
+      this.props.dispatch({
+        type: 'audit/auditPublish',
+        payload: { params, callbackParams: this.params },
+      });
+    }
+    if (this.state.modelType === 3) {
+      this.props.dispatch({
+        type: 'audit/submitExamineResult',
+        payload: { params, callbackParams: this.params },
+      });
+    }
   };
 
   handleCancel = () => {
@@ -99,11 +121,11 @@ class AuditList extends Component {
     const columns = [
       {
         title: '编号',
-        dataIndex: 'code',
+        dataIndex: 'certificationInfoId',
       },
       {
         title: '姓名',
-        dataIndex: 'name',
+        dataIndex: 'userName',
       },
       {
         title: '组织',
