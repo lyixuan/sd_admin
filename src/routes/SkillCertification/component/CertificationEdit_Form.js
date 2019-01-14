@@ -11,16 +11,16 @@ class CertificationEdit_Form extends Component {
   constructor(props) {
     super(props);
     const {
-      timeArea = '月度',
-      id = null,
+      assessCyc = '月度',
+      orderNum = null,
       name = null,
       code = null,
     } = this.props.jumpFunction.getUrlParams();
 
-    const timeType = Number(window.BI_Filter(`Certification_TIMEAREA|name:${timeArea}`).id);
+    const timeType = Number(window.BI_Filter(`Certification_TIMEAREA|name:${assessCyc}`).id);
     this.state = {
-      timeArea: timeType,
-      id,
+      assessCyc: timeType,
+      orderNum,
       name,
       code,
       previewVisible1: false,
@@ -71,12 +71,14 @@ class CertificationEdit_Form extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const bol = false;
+    const { submit } = this.props.jumpFunction;
     const disabled = true;
     const { TextArea } = Input;
     const {
-      id = null,
+      orderNum = null,
       name = null,
       code = null,
+      assessCyc=1,
       previewVisible1,
       previewImage1,
       previewVisible2,
@@ -97,7 +99,7 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序">
                 {getFieldDecorator('orderNum', {
-                  initialValue: id,
+                  initialValue: orderNum,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -148,7 +150,7 @@ class CertificationEdit_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*考核周期">
                 {getFieldDecorator('assessCyc', {
-                  initialValue: 1,
+                  initialValue: assessCyc,
                 })(
                   <Select placeholder="月度" style={{ width: 280, height: 32 }} disabled={disabled}>
                     {window.BI_Filter(`CHECK_CYCLE`).map(item => (
@@ -307,7 +309,7 @@ class CertificationEdit_Form extends Component {
                     htmlType="submit"
                     type="primary"
                     className={common.submitButton}
-                    loading={false}
+                    loading={submit}
                   >
                     提交
                   </Button>

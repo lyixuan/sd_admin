@@ -6,9 +6,9 @@ import Table from './component/CertificationEdit_Table.js';
 import ContentLayout from '../../layouts/ContentLayout';
 
 const WrappedRegistrationForm = Form.create()(CertificationEdit_Form);
-@connect(({ user, loading }) => ({
-  user,
-  submit: loading.effects['user/userAdd'],
+@connect(({ certification, loading }) => ({
+  certification,
+  submit: loading.effects['certification/saveOrModifyItem'],
 }))
 class CertificationEdit extends Component {
   constructor(props) {
@@ -19,7 +19,24 @@ class CertificationEdit extends Component {
 
   // 点击确定按钮请求接口
   handleSubmit = values => {
-    console.log(values);
+    const assessStyleRest = values.assessStyle || "";
+    const assessStandardRest = values.assessStandard ||"";
+    const assessStyle = assessStyleRest.replace(/↵/g,'\r\n');
+    const assessStandard=assessStandardRest.replace(/↵/g,'\r\n');
+    const saveOrModifyItemParams = {
+        orderNum:Number(values.orderNum),
+        name:values.name,
+        assessCyc: Number(values.assessCyc),
+        assessStyle,
+        assessStandard,
+        obtainedIcon:'/staticFile/aicon.png',
+        originalIcon:'/staticFile/aicon.png',
+    };
+    console.log(values,saveOrModifyItemParams)
+    this.props.dispatch({
+      type: 'certification/saveOrModifyItem',
+      payload: { saveOrModifyItemParams },
+    });
   };
 
   // table点击确定按钮请求接口

@@ -26,7 +26,6 @@ class CertificationCreate extends Component {
     const assessStyle = assessStyleRest.replace(/↵/g,'\r\n');
     const assessStandard=assessStandardRest.replace(/↵/g,'\r\n');
     const saveOrModifyItemParams = {
-      certificationItemForm:{
         orderNum:Number(values.orderNum),
         name:values.name,
         assessCyc: Number(values.assessCyc),
@@ -34,9 +33,8 @@ class CertificationCreate extends Component {
         assessStandard,
         obtainedIcon:'/staticFile/aicon.png',
         originalIcon:'/staticFile/aicon.png',
-      },
     };
-    // console.log(assessStandardRest,'-----',assessStandard,assessStyleRest,'-----',assessStyle,'=====',saveOrModifyItemParams,"\r\n")
+    console.log(values,saveOrModifyItemParams)
     this.props.dispatch({
       type: 'certification/saveOrModifyItem',
       payload: { saveOrModifyItemParams },

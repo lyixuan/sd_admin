@@ -56,7 +56,7 @@ class CertificationList extends Component {
   onEdit = val => {
     this.props.setRouteUrlParams('/skillCertification/certificationEdit', {
       assessCyc: val.assessCyc,
-      id: val.id,
+      orderNum: val.orderNum,
       code: val.code,
       name: val.name,
     });
@@ -194,7 +194,8 @@ class CertificationList extends Component {
     val.map(item =>
       data.push({
         key: item.id,
-        id: item.id,
+        id:item.id,
+        orderNum: item.orderNum,
         code: item.code,
         name: item.name,
         assessCyc: window.BI_Filter(`Certification_TIMEAREA|id:${item.assessCyc}`).name,
