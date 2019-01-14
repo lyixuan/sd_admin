@@ -37,7 +37,7 @@ class CertificationEdit extends Component {
   }
 
   // 点击确定按钮请求接口
-  handleSubmit = values => {
+  handleSubmit = (values) => {
     const {id=1}=this.state;
     const saveOrModifyItemParams = {
         id:Number(id),
@@ -65,15 +65,16 @@ class CertificationEdit extends Component {
   }
 
   // table点击确定按钮请求接口
-  tableSubmit = values => {
+  tableSubmit = (values,clickFlag,subId) => {
     const {id=1}=this.state;
     const params={id}
-    const saveOrModifySubItemParams = {
+    const temParam ={
       certificationItemId:Number(id),
       orgType:'college',
       name:values.name,
       collegeId:Number(values.collegeId),
     };
+    const saveOrModifySubItemParams=clickFlag===1?temParam:{...temParam,id:subId}
     this.props.dispatch({
       type: 'certification/saveOrModifySubItem',
       payload: { saveOrModifySubItemParams,params },
@@ -103,8 +104,8 @@ class CertificationEdit extends Component {
         />
         <Table
           dataSource={this.props}
-          tableSubmit={values => {
-            this.tableSubmit(values);
+          tableSubmit={(values,clickFlag,id) => {
+            this.tableSubmit(values,clickFlag,id);
           }}
         />
       </>
