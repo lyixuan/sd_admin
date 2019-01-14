@@ -10,19 +10,8 @@ const RadioGroup = Radio.Group;
 class CertificationEdit_Form extends Component {
   constructor(props) {
     super(props);
-    const {
-      timeArea = '月度',
-      id = null,
-      name = null,
-      code = null,
-    } = this.props.jumpFunction.getUrlParams();
-
-    const timeType = Number(window.BI_Filter(`Certification_TIMEAREA|name:${timeArea}`).id);
+    // const timeType = Number(window.BI_Filter(`Certification_TIMEAREA|name:${assessCyc}`).id);
     this.state = {
-      timeArea: timeType,
-      id,
-      name,
-      code,
       previewVisible1: false,
       previewImage1: '',
       previewVisible2: false,
@@ -31,7 +20,7 @@ class CertificationEdit_Form extends Component {
       fileList2: [],
     };
   }
-  componentDidMount() {}
+
 
   handleSubmit = e => {
     e.preventDefault();
@@ -70,13 +59,19 @@ class CertificationEdit_Form extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const bol = false;
+    const { submit ,itemDetal} = this.props.jumpFunction;
+    const { getItemByIdData = {} } = this.props.jumpFunction.certification.getItemById;
+    const {orderNum = null,
+      name = null,
+      code = null,
+      status=1,
+      enabledSubDefine=false,
+      assessCyc=1,
+      assessStyle=null,
+      assessStandard=null} = getItemByIdData
     const disabled = true;
     const { TextArea } = Input;
     const {
-      id = null,
-      name = null,
-      code = null,
       previewVisible1,
       previewImage1,
       previewVisible2,
@@ -84,6 +79,7 @@ class CertificationEdit_Form extends Component {
       fileList2,
       fileList1,
     } = this.state;
+    const bol=true
     const uploadButton = (
       <Button type="primary" className={common.submitButton} loading={false}>
         添加图标
@@ -91,13 +87,13 @@ class CertificationEdit_Form extends Component {
     );
     const formLayout = 'inline';
     return (
-      <Spin spinning={bol}>
+      <Spin spinning={itemDetal}>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序">
                 {getFieldDecorator('orderNum', {
-                  initialValue: id,
+                  initialValue: orderNum,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -148,7 +144,7 @@ class CertificationEdit_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*考核周期">
                 {getFieldDecorator('assessCyc', {
-                  initialValue: 1,
+                  initialValue: Number(assessCyc),
                 })(
                   <Select placeholder="月度" style={{ width: 280, height: 32 }} disabled={disabled}>
                     {window.BI_Filter(`CHECK_CYCLE`).map(item => (
@@ -165,7 +161,7 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;准">
                 {getFieldDecorator('assessStandard', {
-                  initialValue: null,
+                  initialValue: assessStandard,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -184,7 +180,7 @@ class CertificationEdit_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="考核形式">
                 {getFieldDecorator('assessStyle', {
-                  initialValue: null,
+                  initialValue: assessStyle,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -257,15 +253,15 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;是否停用">
                 {getFieldDecorator('isDisable', {
-                  initialValue: 0,
+                  initialValue: status===3?bol:false,
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={1}>
+                    <Radio name="privilege" value={bol}>
                       是
                     </Radio>
-                    <Radio name="privilege" value={0}>
+                    <Radio name="privilege" value={false}>
                       否
                     </Radio>
                   </RadioGroup>
@@ -275,15 +271,15 @@ class CertificationEdit_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="子项是否允许手动输入">
                 {getFieldDecorator('enabledSubDefine', {
-                  initialValue: 0,
+                  initialValue: enabledSubDefine,
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={1}>
+                    <Radio name="privilege" value={bol}>
                       是
                     </Radio>
-                    <Radio name="privilege" value={0}>
+                    <Radio name="privilege" value={false}>
                       否
                     </Radio>
                   </RadioGroup>
@@ -307,7 +303,7 @@ class CertificationEdit_Form extends Component {
                     htmlType="submit"
                     type="primary"
                     className={common.submitButton}
-                    loading={false}
+                    loading={submit}
                   >
                     提交
                   </Button>

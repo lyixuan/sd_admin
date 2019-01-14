@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import moment from "moment/moment";
 import { assignUrlParams } from 'utils/utils';
-import { Table, Button, Form, Row, Col, Select, message } from 'antd';
+import { Table, Button, Form, Row, Col, Select, message,Spin } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -21,6 +21,7 @@ const dateFormat = 'YYYY-MM-DD h:mm:ss  ';
 @connect(({ certification, loading }) => ({
   certification,
   loading: loading.effects['certification/certificationList'],
+  itemNum: loading.effects['certification/countItemByStatus'],
 }))
 class CertificationList extends Component {
   constructor(props) {
@@ -44,6 +45,11 @@ class CertificationList extends Component {
 
   // 页面render之前需要请求的接口
   componentDidMount() {
+    const params={}
+    this.props.dispatch({
+      type: 'certification/countItemByStatus',
+      payload: { params },
+    });
     this.getData();
   }
 
@@ -54,12 +60,7 @@ class CertificationList extends Component {
 
   // 编辑
   onEdit = val => {
-    this.props.setRouteUrlParams('/skillCertification/certificationEdit', {
-      assessCyc: val.assessCyc,
-      id: val.id,
-      code: val.code,
-      name: val.name,
-    });
+    this.props.setRouteUrlParams('/skillCertification/certificationEdit', { id:val.id});
   };
 
   // 点击显示每页多少条数据函数
@@ -194,7 +195,7 @@ class CertificationList extends Component {
     val.map(item =>
       data.push({
         key: item.id,
-        id: item.id,
+        id:item.id,
         code: item.code,
         name: item.name,
         assessCyc: window.BI_Filter(`Certification_TIMEAREA|id:${item.assessCyc}`).name,
@@ -302,7 +303,7 @@ class CertificationList extends Component {
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading ,itemNum} = this.props;
     const {
       selectedRows = [],
       visible = false,
@@ -312,7 +313,9 @@ class CertificationList extends Component {
     } = this.state;
     const { pageNum = 0, assessCyc = 0, status = 0 } = this.state.params;
     const { certificationListData = {} } = this.props.certification.certificationList;
-    const { totalElements = 0, content = [] } = certificationListData;
+    const { countItemByStatusData = {} } = this.props.certification.countItemByStatus;
+    const {close=0,open=0}=countItemByStatusData;
+    const {totalElements=0,content = [] } = certificationListData;
     const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     const formLayout = 'inline';
@@ -409,7 +412,7 @@ class CertificationList extends Component {
       </>
     );
     return (
-      <>
+      <Spin spinning={itemNum}>
         <ContentLayout
           routerData={this.props.routerData}
           contentForm={<WrappedAdvancedSearchForm />}
@@ -450,8 +453,8 @@ class CertificationList extends Component {
           contentTable={
             <>
               <p className={common.totalNum}>
-                <span className={common.totalNumLeft}>已开放:{totalElements}</span>
-                <span className={common.totalNumRight}>已关闭:{totalElements}</span>
+                <span className={common.totalNumLeft}>已开放:{open}</span>
+                <span className={common.totalNumRight}>已关闭:{close}</span>
               </p>
               <Table
                 bordered
@@ -501,7 +504,7 @@ class CertificationList extends Component {
             this.setDialogSHow(2, bol);
           }}
         />
-      </>
+      </Spin>
     );
   }
 }

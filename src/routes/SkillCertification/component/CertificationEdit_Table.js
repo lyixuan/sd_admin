@@ -17,22 +17,25 @@ class CertificationEdit_Table extends Component {
       clickFlag: 1, // 1为创建进入，2为编辑进入
       name: null, // 子项名称初始值
       college: null, // 学院初始值
+      collegeList:[], // 学院下拉选初始值
     };
   }
 
   // 编辑
   onEdit = key => {
     console.log(key);
-    this.setState({ visible: true, clickFlag: 2, name: key.childName, college: key.college });
+    this.setState({ visible: true, clickFlag: 2, name: key.name, college: key.collegeId });
   };
   // 创建
   onCreate = () => {
-    this.setState({ visible: true, clickFlag: 1 });
+    const { certification} = this.props.dataSource;
+    const { collegeList = []}  = certification.findAllOrgList;
+    this.setState({ visible: true, clickFlag: 1,collegeList });
   };
 
   // 删除
   onDelete = val => {
-    console.log(val);
+    this.props.subItemDelete(val);
   };
 
   setDialogSHow(bol) {
@@ -41,26 +44,23 @@ class CertificationEdit_Table extends Component {
 
   getData = values => {
     this.props.tableSubmit(values);
+    this.setDialogSHow(false);
   };
 
   // 初始化tabale 列数据
-  fillDataSource = () => {
-    const data = [
-      {
-        key: 1,
-        id: 1,
-        childType: '负责专业项目',
-        college: '自变量学院',
-        childName: '法律（专+本）',
-      },
-      {
-        key: 2,
-        id: 1,
-        childType: '负责专业项目',
-        college: '自变量学院',
-        childName: '全国工商企业管理（专+本）',
-      },
-    ];
+  fillDataSource = (val) => {
+    const data = [];
+    const { certification} = this.props.dataSource;
+    const { collegeList = []}  = certification.findAllOrgList;
+    val.map((item,index) =>
+      data.push({
+        key: index,
+        id:item.id,
+        type: item.type,
+        name: item.name,
+        college: collegeList.find(subItem => subItem.collegeId === item.collegeId)?collegeList.find(subItem => subItem.collegeId === item.collegeId).collegeName:null,
+      })
+    );
     return data;
   };
 
@@ -73,7 +73,7 @@ class CertificationEdit_Table extends Component {
       },
       {
         title: '子项分类',
-        dataIndex: 'childType',
+        dataIndex: 'type',
       },
       {
         title: '学院',
@@ -81,7 +81,7 @@ class CertificationEdit_Table extends Component {
       },
       {
         title: '子项名称',
-        dataIndex: 'childName',
+        dataIndex: 'name',
       },
       {
         title: '操作',
@@ -126,12 +126,16 @@ class CertificationEdit_Table extends Component {
     });
   };
 
+
   render() {
     const columns = this.columnsData();
-    const { visible = false, clickFlag = 1, name = null, college = 1 } = this.state;
+    const { visible = false, clickFlag = 1, name = null, college = 1,collegeList=[] } = this.state;
+    const {  collegeFlag,itemDetal,subItemFlag,certification} = this.props.dataSource;
+    const { getItemByIdData = {} } = certification.getItemById;
+    const {certificationSubItemList =[]} = getItemByIdData
     const disabled = true;
     const formLayout = 'inline';
-    const dataSource = this.fillDataSource();
+    const dataSource = this.fillDataSource(certificationSubItemList);
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -173,7 +177,7 @@ class CertificationEdit_Table extends Component {
             <Row>
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院:">
-                  {getFieldDecorator('college', {
+                  {getFieldDecorator('collegeId', {
                     initialValue: clickFlag === 1 ? null : college,
                     rules: [
                       {
@@ -187,9 +191,11 @@ class CertificationEdit_Table extends Component {
                     ],
                   })(
                     <Select style={{ width: 280 }}>
-                      <Option value={1}>胡萝学院</Option>
-                      <Option value={2}>自变量学院</Option>
-                      <Option value={3}>拍学院</Option>
+                      {collegeList.map((item) => (
+                        <Option value={Number(item.collegeId)} key={Number(item.cpId)} >
+                          {item.collegeName}
+                        </Option>
+                      ))}
                     </Select>
                   )}
                 </FormItem>
@@ -213,12 +219,14 @@ class CertificationEdit_Table extends Component {
           type="primary"
           className={common.submitButton}
           onClick={() => this.onCreate()}
+          loading={subItemFlag}
         >
           添加子项
         </Button>
         <Table
           style={{ marginTop: '24px' }}
           bordered
+          loading={itemDetal||collegeFlag}
           dataSource={dataSource}
           columns={columns}
           pagination={false}

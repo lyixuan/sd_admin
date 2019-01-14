@@ -9,6 +9,8 @@ import {
   saveOrModifyItem,
   saveOrModifySubItem,
   delSubItemById,
+  getItemById,
+  countItemByStatus,
   // uploadIcon,
   // delIcon,
 } from "../services/api";
@@ -21,6 +23,8 @@ export default {
     // 接口返回数据存储
     certificationList: {},
     findAllOrgList:{},
+    getItemById:{},
+    countItemByStatus:{},
   },
 
   effects: {
@@ -66,7 +70,7 @@ export default {
     },
 
     *findAllOrg({ payload }, { call, put }) {
-      const response = yield call(findAllOrg, payload.params);
+      const response = yield call(findAllOrg, payload.nullParams);
       if (response.code === 2000) {
         const collegeList = response.data || [];
         yield put({ type: 'findAllOrgSave', payload: { collegeList } });
@@ -85,10 +89,16 @@ export default {
       }
     },
 
-    *saveOrModifySubItem({ payload }, { call }) {
+    *saveOrModifySubItem({ payload }, { call,put }) {
       const addPositionData = yield call(saveOrModifySubItem, payload.saveOrModifySubItemParams);
       if (addPositionData.code === 2000) {
-        message.success('操作成功！');
+        const response = yield call(getItemById, payload.params);
+        if (response.code === 2000) {
+          const getItemByIdData = response.data || [];
+          yield put({ type: 'getItemByIdSave', payload: { getItemByIdData } });
+        } else {
+          message.error(response.msg);
+        }
       } else {
         message.error(addPositionData.msg);
       }
@@ -98,6 +108,26 @@ export default {
       const result = yield call(delSubItemById, payload.delSubItemByIdParams);
       if (result.code === 2000) {
         message.success('删除成功！');
+      } else {
+        message.error(result.msg);
+      }
+    },
+
+    *getItemById({ payload }, { call,put }) {
+      const result = yield call(getItemById, payload.params);
+      if (result.code === 2000) {
+        const getItemByIdData = result.data || [];
+        yield put({ type: 'getItemByIdSave', payload: { getItemByIdData } });
+      } else {
+        message.error(result.msg);
+      }
+    },
+
+    *countItemByStatus({ payload }, { call ,put }) {
+      const result = yield call(countItemByStatus, payload.countItemByStatusParams);
+      if (result.code === 2000) {
+        const countItemByStatusData = result.data || [];
+        yield put({ type: 'countItemByStatusSave', payload: { countItemByStatusData } });
       } else {
         message.error(result.msg);
       }
@@ -116,6 +146,18 @@ export default {
       return {
         ...state,
         findAllOrgList: action.payload,
+      };
+    },
+    getItemByIdSave(state, action) {
+      return {
+        ...state,
+        getItemById: action.payload,
+      };
+    },
+    countItemByStatusSave(state, action) {
+      return {
+        ...state,
+        countItemByStatus: action.payload,
       };
     },
 

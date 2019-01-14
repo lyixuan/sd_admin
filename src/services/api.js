@@ -850,6 +850,26 @@ export async function delIcon(params) {
 }
 
 /*
+* 认证项目详情
+* params：{id}
+* */
+export async function getItemById(params) {
+  return request(`${HOST}/certificationItem/getItemById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 统计认证项目状态条目
+* params：{}
+* */
+export async function countItemByStatus(params) {
+  return request(`${HOST}/certificationItem/countItemByStatus?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
 * 开放或关闭报名
 * params：{id}
 * */
