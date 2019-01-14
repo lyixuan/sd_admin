@@ -70,7 +70,7 @@ export default {
     },
 
     *findAllOrg({ payload }, { call, put }) {
-      const response = yield call(findAllOrg, payload.params);
+      const response = yield call(findAllOrg, payload.nullParams);
       if (response.code === 2000) {
         const collegeList = response.data || [];
         yield put({ type: 'findAllOrgSave', payload: { collegeList } });
@@ -89,10 +89,16 @@ export default {
       }
     },
 
-    *saveOrModifySubItem({ payload }, { call }) {
+    *saveOrModifySubItem({ payload }, { call,put }) {
       const addPositionData = yield call(saveOrModifySubItem, payload.saveOrModifySubItemParams);
       if (addPositionData.code === 2000) {
-        message.success('操作成功！');
+        const response = yield call(getItemById, payload.params);
+        if (response.code === 2000) {
+          const getItemByIdData = response.data || [];
+          yield put({ type: 'getItemByIdSave', payload: { getItemByIdData } });
+        } else {
+          message.error(response.msg);
+        }
       } else {
         message.error(addPositionData.msg);
       }

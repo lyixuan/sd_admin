@@ -9,8 +9,9 @@ const WrappedRegistrationForm = Form.create()(CertificationEdit_Form);
 @connect(({ certification, loading }) => ({
   certification,
   submit: loading.effects['certification/saveOrModifyItem'],
-  collegeList: loading.effects['certification/findAllOrg'],
+  collegeFlag: loading.effects['certification/findAllOrg'],
   itemDetal: loading.effects['certification/getItemById'],
+  subItemFlag: loading.effects['certification/saveOrModifySubItem'],
 }))
 class CertificationEdit extends Component {
   constructor(props) {
@@ -23,10 +24,16 @@ class CertificationEdit extends Component {
   componentDidMount() {
     const {id=null}=this.state
     const params={id}
+    const nullParams={}
     this.props.dispatch({
       type: 'certification/getItemById',
       payload: { params },
     });
+    this.props.dispatch({
+      type: 'certification/findAllOrg',
+      payload: { nullParams },
+    });
+
   }
 
   // 点击确定按钮请求接口
@@ -52,9 +59,25 @@ class CertificationEdit extends Component {
     });
   };
 
+  // 删除子项目
+  subItemDelete=val=>{
+    console.log(val);
+  }
+
   // table点击确定按钮请求接口
   tableSubmit = values => {
-    console.log(values);
+    const {id=1}=this.state;
+    const params={id}
+    const saveOrModifySubItemParams = {
+      certificationItemId:Number(id),
+      orgType:'college',
+      name:values.name,
+      collegeId:Number(values.collegeId),
+    };
+    this.props.dispatch({
+      type: 'certification/saveOrModifySubItem',
+      payload: { saveOrModifySubItemParams,params },
+    });
   };
   // 点击取消按钮跳转到list页面
   resetContent = () => {
@@ -79,7 +102,7 @@ class CertificationEdit extends Component {
           }
         />
         <Table
-          dataSource={1}
+          dataSource={this.props}
           tableSubmit={values => {
             this.tableSubmit(values);
           }}
