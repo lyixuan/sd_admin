@@ -16,21 +16,18 @@ class CertificationEdit_Table extends Component {
       visible: false, // 弹窗显隐
       clickFlag: 1, // 1为创建进入，2为编辑进入
       name: null, // 子项名称初始值
-      college: null, // 学院初始值
-      collegeList:[], // 学院下拉选初始值
+      collegeId: null, // 学院初始值
+      id:null, // 当编辑的时候，传入id子项目的值
     };
   }
 
   // 编辑
   onEdit = key => {
-    console.log(key);
-    this.setState({ visible: true, clickFlag: 2, name: key.name, college: key.collegeId });
+    this.setState({ visible: true, clickFlag: 2, name: key.name, collegeId: key.collegeId ,id:key.id});
   };
   // 创建
   onCreate = () => {
-    const { certification} = this.props.dataSource;
-    const { collegeList = []}  = certification.findAllOrgList;
-    this.setState({ visible: true, clickFlag: 1,collegeList });
+    this.setState({ visible: true, clickFlag: 1 });
   };
 
   // 删除
@@ -43,22 +40,22 @@ class CertificationEdit_Table extends Component {
   }
 
   getData = values => {
-    this.props.tableSubmit(values);
+    const {clickFlag=1,id=1}=this.state
+    this.props.tableSubmit(values,clickFlag,id);
     this.setDialogSHow(false);
   };
 
   // 初始化tabale 列数据
-  fillDataSource = (val) => {
+  fillDataSource = (val,list) => {
     const data = [];
-    const { certification} = this.props.dataSource;
-    const { collegeList = []}  = certification.findAllOrgList;
     val.map((item,index) =>
       data.push({
         key: index,
         id:item.id,
         type: item.type,
         name: item.name,
-        college: collegeList.find(subItem => subItem.collegeId === item.collegeId)?collegeList.find(subItem => subItem.collegeId === item.collegeId).collegeName:null,
+        college: list.find(subItem => subItem.collegeId === item.collegeId)?list.find(subItem => subItem.collegeId === item.collegeId).collegeName:null,
+        collegeId:item.collegeId,
       })
     );
     return data;
@@ -129,13 +126,14 @@ class CertificationEdit_Table extends Component {
 
   render() {
     const columns = this.columnsData();
-    const { visible = false, clickFlag = 1, name = null, college = 1,collegeList=[] } = this.state;
+    const { visible = false, clickFlag = 1, name = null, collegeId = 1 } = this.state;
     const {  collegeFlag,itemDetal,subItemFlag,certification} = this.props.dataSource;
     const { getItemByIdData = {} } = certification.getItemById;
+    const { collegeList = []}  = certification.findAllOrgList;
     const {certificationSubItemList =[]} = getItemByIdData
     const disabled = true;
     const formLayout = 'inline';
-    const dataSource = this.fillDataSource(certificationSubItemList);
+    const dataSource = this.fillDataSource(certificationSubItemList,collegeList);
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -178,7 +176,7 @@ class CertificationEdit_Table extends Component {
               <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="*学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院:">
                   {getFieldDecorator('collegeId', {
-                    initialValue: clickFlag === 1 ? null : college,
+                    initialValue: clickFlag === 1 ? null : collegeId,
                     rules: [
                       {
                         validator(rule, value, callback) {
@@ -192,7 +190,7 @@ class CertificationEdit_Table extends Component {
                   })(
                     <Select style={{ width: 280 }}>
                       {collegeList.map((item) => (
-                        <Option value={Number(item.collegeId)} key={Number(item.cpId)} >
+                        <Option value={Number(item.collegeId)} key={item.cpId} >
                           {item.collegeName}
                         </Option>
                       ))}
