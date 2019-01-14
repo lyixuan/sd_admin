@@ -773,6 +773,7 @@ export async function submitSignResult(params) {
 export async function exportBottomTable(params) {
   return request(`${HOST}/cem/exportBottomTable?${stringify(params)}`, {
     method: 'GET',
+    stream: 'bolb',
   });
 }
 

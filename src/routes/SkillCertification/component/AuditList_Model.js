@@ -12,6 +12,7 @@ class AuditListForm extends Component {
   constructor(props) {
     super(props);
     this.isMonth = true;
+    this.canCycle = true;
     this.quarter = '';
     this.canSignResult = false;
     this.state = {};
@@ -24,6 +25,22 @@ class AuditListForm extends Component {
     } else {
       this.isMonth = false;
       this.quarter = '';
+    }
+  };
+
+  // 底表类型切换
+  handleTypeChange = e => {
+    if (e.target.value === 1) {
+      this.isMonth = true;
+      this.canCycle = false;
+      propsVal.form.setFieldsValue({
+        assessCyc: '1',
+      });
+    } else {
+      this.canCycle = true;
+      propsVal.form.setFieldsValue({
+        monthRange: null,
+      });
     }
   };
 
@@ -66,7 +83,6 @@ class AuditListForm extends Component {
     if (a === 9) {
       this.quarter = `${y} 第四季度(10-12)`;
     }
-    console.log(this.quarter);
   };
 
   // 联动更新数据和可用状态
@@ -89,24 +105,32 @@ class AuditListForm extends Component {
       if (!err) {
         let applyTimeParamStart = null;
         let applyTimeParamEnd = null;
-        if (values.assessCyc === '1') {
-          const m = values.monthRange ? values.monthRange.clone() : null;
-          applyTimeParamStart = m ? m.format('YYYY-MM') : null;
-          applyTimeParamEnd = m ? m.format('YYYY-MM') : null;
-        } else if (values.assessCyc === '2') {
+        if (values.assessCyc === '2') {
           const m = values.quarterRange ? values.quarterRange.clone() : null;
           applyTimeParamStart = m ? m.format('YYYY-MM') : null;
           applyTimeParamEnd = m ? m.add(2, 'month').format('YYYY-MM') : null;
+        } else {
+          // values.assessCyc === '1' 或 null
+          const m = values.monthRange ? values.monthRange.clone() : null;
+          applyTimeParamStart = m ? m.format('YYYY-MM') : null;
+          applyTimeParamEnd = m ? m.format('YYYY-MM') : null;
         }
         const params = {
-          assessCyc: values.assessCyc,
+          exportTableType: values.exportTableType,
+          assessCyc:
+            values.exportTableType === 1
+              ? null
+              : values.assessCyc ? Number(values.assessCyc) : null,
           applyTimeParamStart,
           applyTimeParamEnd,
-          signStatus: values.signStatus,
-          signResult: values.signResult,
+          signStatus: values.signStatus ? Number(values.signStatus) : null,
+          signResult: values.signResult ? Number(values.signResult) : null,
         };
-        console.log(params);
         this.props.onOk(params);
+        this.isMonth = true;
+        this.canSignResult = false;
+        this.quarter = '';
+        propsVal.form.resetFields();
       }
     });
   };
@@ -128,17 +152,21 @@ class AuditListForm extends Component {
         <Form layout={formLayout}>
           {this.props.modelType === 2 ? (
             <FormItem label="底表类型">
-              {getFieldDecorator('bottomType', {
-                initialValue: '1',
+              {getFieldDecorator('exportTableType', {
+                initialValue: null,
+                rules: [{ required: true, message: '请选择底表类型' }],
               })(
-                <RadioGroup style={{ width: 230, height: 32 }}>
+                <RadioGroup
+                  style={{ width: 230, height: 32 }}
+                  onChange={e => this.handleTypeChange(e)}
+                >
                   <Radio value={1}>报名底表</Radio>
                   <Radio value={2}>认证底表</Radio>
                 </RadioGroup>
               )}
             </FormItem>
           ) : null}
-          {this.props.modelType === 2 || this.props.modelType === 1 ? (
+          {(this.props.modelType === 2 && this.canCycle) || this.props.modelType === 1 ? (
             <FormItem label="考核周期">
               {getFieldDecorator('assessCyc', {
                 initialValue: '1',
@@ -161,6 +189,7 @@ class AuditListForm extends Component {
             <FormItem label="报名月份">
               {getFieldDecorator('monthRange', {
                 initialValue: null,
+                rules: [{ required: true, message: '请选择月份' }],
               })(
                 <MonthPicker
                   placeholder="选择月份"

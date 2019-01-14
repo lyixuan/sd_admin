@@ -23,7 +23,6 @@ class AuditList extends Component {
     this.pageSize = 30;
     this.params = {};
     this.state = {
-      visible: false,
       modelType: '',
       title: '',
     };
@@ -53,30 +52,35 @@ class AuditList extends Component {
 
   showModal = (t, record) => {
     this.setState({
-      visible: true,
       modelType: t,
       title: t === 1 ? '发布认证' : t === 2 ? '导出底表' : '认证审核',
+    });
+    this.props.dispatch({
+      type: 'audit/showModel',
+      payload: { visible: true },
     });
     this.record = record;
   };
 
-  handleOk = () => {
-    this.setState({
-      visible: false,
+  handleOk = params => {
+    this.props.dispatch({
+      type: 'audit/exportBottomTable',
+      payload: { params },
     });
   };
 
   handleCancel = () => {
-    this.setState({
-      visible: false,
+    this.props.dispatch({
+      type: 'audit/showModel',
+      payload: { visible: false },
     });
   };
 
   // 表单搜索函数
   search = params => {
     const obj = params ? { ...params } : this.params;
-    obj.pageNum = this.pageNum;
-    obj.pageSize = this.pageSize;
+    obj.number = this.pageNum;
+    obj.size = this.pageSize;
     this.params = { ...obj };
     this.props.dispatch({
       type: 'audit/getAuditList',
@@ -248,7 +252,7 @@ class AuditList extends Component {
       >
         <AuditListModel
           title={this.state.title}
-          visible={this.state.visible}
+          visible={this.props.audit.visible}
           modelType={this.state.modelType}
           record={this.record}
           onOk={params => this.handleOk(params)}
