@@ -104,10 +104,17 @@ export default {
       }
     },
 
-    *delSubItemById({ payload }, { call }) {
-      const result = yield call(delSubItemById, payload.delSubItemByIdParams);
+    *delSubItemById({ payload }, { call,put }) {
+      const result = yield call(delSubItemById, payload.params);
       if (result.code === 2000) {
         message.success('删除成功！');
+        const response = yield call(getItemById, payload.param);
+        if (response.code === 2000) {
+          const getItemByIdData = response.data || [];
+          yield put({ type: 'getItemByIdSave', payload: { getItemByIdData } });
+        } else {
+          message.error(response.msg);
+        }
       } else {
         message.error(result.msg);
       }
