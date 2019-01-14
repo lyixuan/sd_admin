@@ -15,6 +15,8 @@ class CertificationEdit_Form extends Component {
       orderNum = null,
       name = null,
       code = null,
+      assessStyle=null,
+      assessStandard=null,
     } = this.props.jumpFunction.getUrlParams();
 
     const timeType = Number(window.BI_Filter(`Certification_TIMEAREA|name:${assessCyc}`).id);
@@ -23,6 +25,8 @@ class CertificationEdit_Form extends Component {
       orderNum,
       name,
       code,
+      assessStyle,
+      assessStandard,
       previewVisible1: false,
       previewImage1: '',
       previewVisible2: false,
@@ -79,6 +83,8 @@ class CertificationEdit_Form extends Component {
       name = null,
       code = null,
       assessCyc=1,
+      assessStyle=null,
+      assessStandard=null,
       previewVisible1,
       previewImage1,
       previewVisible2,
@@ -167,7 +173,7 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;准">
                 {getFieldDecorator('assessStandard', {
-                  initialValue: null,
+                  initialValue: assessStandard,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -186,7 +192,7 @@ class CertificationEdit_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="考核形式">
                 {getFieldDecorator('assessStyle', {
-                  initialValue: null,
+                  initialValue: assessStyle,
                   rules: [
                     {
                       validator(rule, value, callback) {

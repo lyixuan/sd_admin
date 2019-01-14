@@ -8,33 +8,24 @@ const WrappedRegistrationForm = Form.create()(CertificationCreate_Form);
 @connect(({ certification, loading }) => ({
   certification,
   submit: loading.effects['certification/saveOrModifyItem'],
-  // listOrg: loading.effects['certification/listOrg'],
-  // roleOrg: loading.effects['certification/getUserRoleList'],
 }))
 class CertificationCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-  componentDidMount() {
-  }
 
   // 点击确定按钮请求接口
   handleSubmit = (values) => {
-    const assessStyleRest = values.assessStyle || "";
-    const assessStandardRest = values.assessStandard ||"";
-    const assessStyle = assessStyleRest.replace(/↵/g,'\r\n');
-    const assessStandard=assessStandardRest.replace(/↵/g,'\r\n');
     const saveOrModifyItemParams = {
         orderNum:Number(values.orderNum),
         name:values.name,
         assessCyc: Number(values.assessCyc),
-        assessStyle,
-        assessStandard,
+        assessStyle:values.assessStyle,
+        assessStandard:values.assessStandard,
         obtainedIcon:'/staticFile/aicon.png',
         originalIcon:'/staticFile/aicon.png',
     };
-    console.log(values,saveOrModifyItemParams)
     this.props.dispatch({
       type: 'certification/saveOrModifyItem',
       payload: { saveOrModifyItemParams },

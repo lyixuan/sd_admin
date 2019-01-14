@@ -9,6 +9,8 @@ import {
   saveOrModifyItem,
   saveOrModifySubItem,
   delSubItemById,
+  getItemById,
+  countItemByStatus,
   // uploadIcon,
   // delIcon,
 } from "../services/api";
@@ -21,6 +23,8 @@ export default {
     // 接口返回数据存储
     certificationList: {},
     findAllOrgList:{},
+    getItemByIdData:{},
+    countItemByStatusData:{},
   },
 
   effects: {
@@ -103,6 +107,26 @@ export default {
       }
     },
 
+    *getItemById({ payload }, { call,put }) {
+      const result = yield call(getItemById, payload.getItemByIdParams);
+      if (result.code === 2000) {
+        const getItemByIdData = result.data || [];
+        yield put({ type: 'getItemByIdSave', payload: { getItemByIdData } });
+      } else {
+        message.error(result.msg);
+      }
+    },
+
+    *countItemByStatus({ payload }, { call ,put }) {
+      const result = yield call(countItemByStatus, payload.countItemByStatusParams);
+      if (result.code === 2000) {
+        const countItemByStatusData = result.data || [];
+        yield put({ type: 'countItemByStatusSave', payload: { countItemByStatusData } });
+      } else {
+        message.error(result.msg);
+      }
+    },
+
   },
 
   reducers: {
@@ -116,6 +140,18 @@ export default {
       return {
         ...state,
         findAllOrgList: action.payload,
+      };
+    },
+    getItemByIdSave(state, action) {
+      return {
+        ...state,
+        getItemByIdData: action.payload,
+      };
+    },
+    countItemByStatusSave(state, action) {
+      return {
+        ...state,
+        countItemByStatusData: action.payload,
       };
     },
 

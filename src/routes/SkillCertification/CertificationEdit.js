@@ -9,6 +9,7 @@ const WrappedRegistrationForm = Form.create()(CertificationEdit_Form);
 @connect(({ certification, loading }) => ({
   certification,
   submit: loading.effects['certification/saveOrModifyItem'],
+  collegeList: loading.effects['certification/findAllOrg'],
 }))
 class CertificationEdit extends Component {
   constructor(props) {
@@ -19,24 +20,20 @@ class CertificationEdit extends Component {
 
   // 点击确定按钮请求接口
   handleSubmit = values => {
-    const assessStyleRest = values.assessStyle || "";
-    const assessStandardRest = values.assessStandard ||"";
-    const assessStyle = assessStyleRest.replace(/↵/g,'\r\n');
-    const assessStandard=assessStandardRest.replace(/↵/g,'\r\n');
     const saveOrModifyItemParams = {
         orderNum:Number(values.orderNum),
         name:values.name,
         assessCyc: Number(values.assessCyc),
-        assessStyle,
-        assessStandard,
+        assessStyle:values.assessStyle,
+        assessStandard:values.assessStandard,
         obtainedIcon:'/staticFile/aicon.png',
         originalIcon:'/staticFile/aicon.png',
     };
     console.log(values,saveOrModifyItemParams)
-    this.props.dispatch({
-      type: 'certification/saveOrModifyItem',
-      payload: { saveOrModifyItemParams },
-    });
+    // this.props.dispatch({
+    //   type: 'certification/saveOrModifyItem',
+    //   payload: { saveOrModifyItemParams },
+    // });
   };
 
   // table点击确定按钮请求接口
