@@ -1,4 +1,4 @@
-/* eslint-disable no-undef,no-param-reassign */
+/* eslint-disable no-undef,no-param-reassign,guard-for-in */
 import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Cascader, DatePicker } from 'antd';
 import common from '../../Common/common.css';
@@ -18,14 +18,19 @@ class AuditListForm extends Component {
     this.canExamineStatus = false;
     this.canExamineResult = false;
     this.isMonth = true;
-    const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
-    if (storageData) {
-      // todo
-      sessionStorage.removeItem('tempFrom');
-    }
     this.state = {
       quarter: '',
+      assessCyc: 1,
+      orgList: [],
+      orgType: 'college',
     };
+    const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
+    if (storageData) {
+      for (const key in storageData) {
+        this.state[key] = storageData[key];
+      }
+      sessionStorage.removeItem('tempFrom');
+    }
   }
 
   // 根据props初始化
@@ -80,7 +85,7 @@ class AuditListForm extends Component {
         examineStatus: null,
         examineResult: null,
       });
-      if (val === '1') {
+      if (val === 1) {
         // 待审核
         this.canSignResult = true;
         this.canExamineStatus = true;
@@ -96,7 +101,7 @@ class AuditListForm extends Component {
         examineStatus: null,
         examineResult: null,
       });
-      if (val === '2') {
+      if (val === 2) {
         // 报名结果未通过
         this.canExamineStatus = true;
         this.canExamineResult = true;
@@ -109,7 +114,7 @@ class AuditListForm extends Component {
       this.props.form.setFieldsValue({
         examineResult: null,
       });
-      if (val === '1') {
+      if (val === 1) {
         // 报名结果未通过
         this.canExamineResult = true;
       } else {
@@ -120,7 +125,7 @@ class AuditListForm extends Component {
 
   // 季度月度切换
   handleCycleChange = val => {
-    if (val === '1') {
+    if (val === 1) {
       this.isMonth = true;
     } else {
       this.isMonth = false;
@@ -197,11 +202,11 @@ class AuditListForm extends Component {
       if (!err) {
         let applyTimeParamStart = null;
         let applyTimeParamEnd = null;
-        if (values.assessCyc === '1') {
+        if (values.assessCyc === 1) {
           const m = values.monthRange ? values.monthRange.clone() : null;
           applyTimeParamStart = m ? m.format('YYYY-MM') : null;
           applyTimeParamEnd = m ? m.format('YYYY-MM') : null;
-        } else if (values.assessCyc === '2') {
+        } else if (values.assessCyc === 2) {
           const m = values.quarterRange ? values.quarterRange.clone() : null;
           applyTimeParamStart = m ? m.format('YYYY-MM') : null;
           applyTimeParamEnd = m ? m.add(2, 'month').format('YYYY-MM') : null;
@@ -235,7 +240,7 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="级 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
               {getFieldDecorator('orgType', {
-                initialValue: 'college',
+                initialValue: this.state.orgType && 'college',
               })(
                 <Select
                   placeholder="请选择级别"
@@ -254,14 +259,14 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="组 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织">
               {getFieldDecorator('orgList', {
-                initialValue: [],
+                initialValue: this.state.orgList,
               })(<Cascader options={this.orgOptions} style={{ width: 230 }} />)}
             </FormItem>
           </Col>
           <Col span={8}>
             <FormItem label="姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名">
               {getFieldDecorator('name', {
-                initialValue: '',
+                initialValue: this.state.name,
                 rules: [
                   {
                     validator(rule, value, callback) {
@@ -282,7 +287,7 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="考核周期">
               {getFieldDecorator('assessCyc', {
-                initialValue: '1',
+                initialValue: this.state.assessCyc,
               })(
                 <Select
                   placeholder="请选择考核周期"
@@ -290,7 +295,7 @@ class AuditListForm extends Component {
                   onChange={val => this.handleCycleChange(val)}
                 >
                   {BI_Filter('CHECK_CYCLE').map(item => (
-                    <Option value={item.id} key={item.name}>
+                    <Option value={Number(item.id)} key={item.name}>
                       {item.name}
                     </Option>
                   ))}
@@ -374,7 +379,7 @@ class AuditListForm extends Component {
                   }}
                 >
                   {BI_Filter('APPLY_STATE').map(item => (
-                    <Option value={item.id} key={item.name}>
+                    <Option value={Number(item.id) || item.id} key={item.name}>
                       {item.name}
                     </Option>
                   ))}
@@ -396,7 +401,7 @@ class AuditListForm extends Component {
                   disabled={this.canSignResult}
                 >
                   {BI_Filter('APPLY_RESULT').map(item => (
-                    <Option value={item.id} key={item.name}>
+                    <Option value={Number(item.id) || item.id} key={item.name}>
                       {item.name}
                     </Option>
                   ))}
@@ -421,7 +426,7 @@ class AuditListForm extends Component {
                   disabled={this.canExamineStatus}
                 >
                   {BI_Filter('CERTIFICATION_STATE').map(item => (
-                    <Option value={item.id} key={item.name}>
+                    <Option value={Number(item.id) || item.id} key={item.name}>
                       {item.name}
                     </Option>
                   ))}
@@ -440,7 +445,7 @@ class AuditListForm extends Component {
                   disabled={this.canExamineResult}
                 >
                   {BI_Filter('CERTIFICATION_RESULT').map(item => (
-                    <Option value={item.id} key={item.name}>
+                    <Option value={Number(item.id) || item.id} key={item.name}>
                       {item.name}
                     </Option>
                   ))}

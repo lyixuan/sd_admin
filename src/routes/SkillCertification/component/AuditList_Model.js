@@ -20,7 +20,7 @@ class AuditListForm extends Component {
 
   // 季度月度切换
   handleCycleChange = val => {
-    if (val === '1') {
+    if (val === 1) {
       this.isMonth = true;
     } else {
       this.isMonth = false;
@@ -34,7 +34,7 @@ class AuditListForm extends Component {
       this.isMonth = true;
       this.canCycle = false;
       propsVal.form.setFieldsValue({
-        assessCyc: '1',
+        assessCyc: 1,
       });
     } else {
       this.canCycle = true;
@@ -91,7 +91,7 @@ class AuditListForm extends Component {
       propsVal.form.setFieldsValue({
         signResult: null,
       });
-      if (val === '1') {
+      if (val === 1) {
         // 待审核
         this.canSignResult = true;
       } else {
@@ -105,31 +105,26 @@ class AuditListForm extends Component {
       if (!err) {
         let applyTimeParamStart = null;
         let applyTimeParamEnd = null;
-        if (values.assessCyc === '2') {
+        if (values.assessCyc === 2) {
           const m = values.quarterRange ? values.quarterRange.clone() : null;
           applyTimeParamStart = m ? m.format('YYYY-MM') : null;
           applyTimeParamEnd = m ? m.add(2, 'month').format('YYYY-MM') : null;
         } else {
-          // values.assessCyc === '1' 或 null
+          // values.assessCyc === 1 或 null
           const m = values.monthRange ? values.monthRange.clone() : null;
           applyTimeParamStart = m ? m.format('YYYY-MM') : null;
           applyTimeParamEnd = m ? m.format('YYYY-MM') : null;
         }
         const params = {
           exportTableType: values.exportTableType,
-          assessCyc:
-            values.exportTableType === 1
-              ? null
-              : values.assessCyc ? Number(values.assessCyc) : null,
+          assessCyc: values.exportTableType === 1 ? null : values.assessCyc,
           applyTimeParamStart,
           applyTimeParamEnd,
-          signStatus: values.signStatus ? Number(values.signStatus) : null,
-          signResult: values.signResult ? Number(values.signResult) : null,
+          signStatus: values.signStatus,
+          signResult: values.signResult,
           certificationDetailInfoId: this.props.record ? this.props.record.id : null,
           result: values.result,
         };
-        console.log(values);
-        console.log(params);
         this.props.onOk(params);
         this.isMonth = true;
         this.canSignResult = false;
@@ -173,7 +168,7 @@ class AuditListForm extends Component {
           {(this.props.modelType === 2 && this.canCycle) || this.props.modelType === 1 ? (
             <FormItem label="考核周期">
               {getFieldDecorator('assessCyc', {
-                initialValue: '1',
+                initialValue: 1,
               })(
                 <Select
                   placeholder="请选择考核周期"
@@ -181,7 +176,7 @@ class AuditListForm extends Component {
                   onChange={this.handleCycleChange}
                 >
                   {BI_Filter('CHECK_CYCLE').map(item => (
-                    <Option value={item.id} key={item.name}>
+                    <Option value={Number(item.id)} key={item.name}>
                       {item.name}
                     </Option>
                   ))}
@@ -248,7 +243,7 @@ class AuditListForm extends Component {
                   }}
                 >
                   {BI_Filter('APPLY_STATE').map(item => (
-                    <Option value={item.id} key={item.name}>
+                    <Option value={Number(item.id) || item.id} key={item.name}>
                       {item.name}
                     </Option>
                   ))}
@@ -270,7 +265,7 @@ class AuditListForm extends Component {
                   disabled={this.canSignResult}
                 >
                   {BI_Filter('APPLY_RESULT').map(item => (
-                    <Option value={item.id} key={item.name}>
+                    <Option value={Number(item.id) || item.id} key={item.name}>
                       {item.name}
                     </Option>
                   ))}
@@ -298,6 +293,7 @@ class AuditListForm extends Component {
             <FormItem label="认证审核">
               {getFieldDecorator('result', {
                 initialValue: this.props.record.examineResult,
+                rules: [{ required: true, message: '请选择审核结果' }],
               })(
                 <RadioGroup style={{ width: 230, height: 32 }}>
                   <Radio value={1}>通过</Radio>
