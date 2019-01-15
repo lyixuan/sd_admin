@@ -16,22 +16,12 @@ class CertificationCreate extends Component {
     };
   }
 
-
-  saveFileList = (fileList,type) => {
-    this.props.dispatch({
-      type: 'certification/saveFileList',
-      payload: { fileList,type },
-    });
-  };
-
   // 点击确定按钮请求接口
   handleSubmit = (values,fileList1=[],fileList2=[]) => {
     const {response}=fileList1[0]?fileList1[0]:'';
     const obtainedIcon=response.data?response.data:'';
-
     const file2=fileList2[0]?fileList2[0].response:'';
     const originalIcon=file2?file2.data:'';
-
     const saveOrModifyItemParams = {
         orderNum:Number(values.orderNum),
         name:values.name,
@@ -64,8 +54,6 @@ class CertificationCreate extends Component {
             handleSubmit={(values, fileList1,fileList2) => {
               this.handleSubmit(values,  fileList1,fileList2);
             }}
-            saveFileList={(file)=>{this.saveFileList(file)}
-            }
           />
         }
       />

@@ -37,7 +37,11 @@ class CertificationEdit extends Component {
   }
 
   // 点击确定按钮请求接口
-  handleSubmit = (values) => {
+  handleSubmit = (values,fileList1=[],fileList2=[]) => {
+    const {response}=fileList1[0]?fileList1[0]:'';
+    const obtainedIcon=response.data?response.data:'';
+    const file2=fileList2[0]?fileList2[0].response:'';
+    const originalIcon=file2?file2.data:'';
     const {id=1}=this.state;
     const saveOrModifyItemParams = {
         id:Number(id),
@@ -47,8 +51,8 @@ class CertificationEdit extends Component {
         assessStyle:values.assessStyle,
         assessStandard:values.assessStandard,
         code:values.code,
-        obtainedIcon:'/staticFile/aicon.png',
-        originalIcon:'/staticFile/aicon.png',
+        obtainedIcon,
+        originalIcon,
         isDisable:values.isDisable,
         enabledSubDefine:values.enabledSubDefine,
 
@@ -103,8 +107,8 @@ class CertificationEdit extends Component {
               resetContent={() => {
                 this.resetContent();
               }}
-              handleSubmit={values => {
-                this.handleSubmit(values);
+              handleSubmit={(values, fileList1,fileList2) => {
+                this.handleSubmit(values,  fileList1,fileList2);
               }}
             />
           }

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal,message } from 'antd';
 import common from '../../Common/common.css';
+import { uploadIcon } from "../../../services/api";
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -33,12 +34,29 @@ class CertificationEdit_Form extends Component {
     }else{
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log(values)
-          // this.props.handleSubmit(values);
+          this.props.handleSubmit(values,fileList1,fileList2);
         }
       });
     }
   };
+
+  deleteDispatch=(val=[],type=1)=>{
+    const {response={}}=val[0]
+    const {data=null}=response
+    const params={type,picName:data}
+    this.props.jumpFunction.dispatch({
+      type: 'certification/delIcon',
+      payload: { params },
+    });
+  }
+
+  deleteIcon=(type=1)=>{
+    if(type===1){
+      this.deleteDispatch(this.state.fileList1,type)
+    }else{
+      this.deleteDispatch(this.state.fileList2,type)
+    }
+  }
 
   // 删除已获得认证图标
   handleCancel1 = () =>{
@@ -62,32 +80,27 @@ class CertificationEdit_Form extends Component {
     });
   };
 
-  handleChange1 = ({ fileList }) => {
-    const file=fileList.length>0?fileList[0]:{}
-    const {type=null}=file
-    const isPNG =type === 'image/png';
-    if (!isPNG &&type) {
-      message.error('图片仅支持PNG格式，请重新选择!');
-    }else if(!type){
-      this.setState({ fileList1: [] });
+  commonFun=(info={},type=1)=>{
+    const {fileList=[],file={}} = info
+    if (file.response) {
+      if (file.response.code === 2000) {
+        if(type===1){
+          this.setState({ fileList1: fileList });
+        }else{
+          this.setState({ fileList2: fileList });
+        }
+      } else {
+        message.error(file.response.msg);
+      }
     }
-    else{
-      this.setState({ fileList1: fileList });
-    }
+  }
+
+  handleChange1 = (info) => {
+    this.commonFun(info,1)
   };
 
-  handleChange2 = ({ fileList }) => {
-    const file=fileList.length>0?fileList[0]:{}
-    const {type=null}=file
-    const isPNG =type === 'image/png';
-    if (!isPNG &&type) {
-      message.error('图片仅支持PNG格式，请重新选择!');
-    }else if(!type){
-      this.setState({ fileList2: [] });
-    }
-    else{
-      this.setState({ fileList2: fileList });
-    }
+  handleChange2 = (info) => {
+    this.commonFun(info,2)
   };
 
   beforeUpload=(file)=> {
@@ -219,7 +232,6 @@ class CertificationEdit_Form extends Component {
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
-
               <FormItem label="*已获得认证图标">
                 {getFieldDecorator('obtainedIcon', {
                   initialValue: null,
@@ -237,12 +249,14 @@ class CertificationEdit_Form extends Component {
                 })(
                   <div style={{ width: '280px', textAlign: 'left' }}>
                     <Upload
-                      action=""
+                      action={uploadIcon()}
                       listType="picture-card"
-                      fileList={fileList1}
                       onPreview={this.handlePreview1}
+                      // fileList={fileList1}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
+                      data={{type:1}}
+                      onRemove={()=>this.deleteIcon(1)}
                     >
                       {Array.isArray(fileList1)
                         ? fileList1.length >= 1 ? null : uploadButton
@@ -254,7 +268,6 @@ class CertificationEdit_Form extends Component {
                   </div>
                 )}
               </FormItem>
-
             </Col>
           </Row>
 
@@ -296,12 +309,13 @@ class CertificationEdit_Form extends Component {
                 })(
                   <div style={{ width: '280px', textAlign: 'left' }}>
                     <Upload
-                      action=""
+                      action={uploadIcon()}
                       listType="picture-card"
-                      fileList={fileList2}
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
+                      data={{type:2}}
+                      onRemove={()=>this.deleteIcon(2)}
                     >
                       {Array.isArray(fileList2)
                         ? fileList2.length >= 1 ? null : uploadButton
