@@ -131,8 +131,8 @@ class CertificationEdit_Form extends Component {
       assessCyc=1,
       assessStyle=null,
       assessStandard=null,
-      obtainedIcon=null,
-      originalIcon=null,
+      // obtainedIcon=null,
+      // originalIcon=null,
     } = getItemByIdData
     const disabled = true;
     const { TextArea } = Input;
