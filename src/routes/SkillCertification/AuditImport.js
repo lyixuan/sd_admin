@@ -91,23 +91,23 @@ class AuditImport extends Component {
     const columns = [
       {
         title: 'sheet页',
-        dataIndex: 'rowNum',
+        dataIndex: 'sheetName',
       },
       {
         title: '行数',
-        dataIndex: 'qualityNum',
+        dataIndex: 'rowNum',
       },
       {
         title: 'id',
-        dataIndex: 'qualityDate',
+        dataIndex: 'id',
       },
       {
         title: '姓名',
-        dataIndex: 'teaId',
+        dataIndex: 'name',
       },
       {
         title: '认证结果',
-        dataIndex: 'qualityType',
+        dataIndex: 'examineResult',
       },
     ];
     return columns;
@@ -120,6 +120,7 @@ class AuditImport extends Component {
     const errorList = !checkList ? [] : checkList.data.errorList;
 
     const dataSource = !errorList.length > 0 ? null : errorList;
+    console.log(dataSource);
     const columns = !this.columnsData() ? [] : this.columnsData();
     const tableTitle =
       !errorList.length > 0 ? (

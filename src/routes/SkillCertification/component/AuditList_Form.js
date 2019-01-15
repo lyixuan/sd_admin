@@ -1,6 +1,7 @@
 /* eslint-disable no-undef,no-param-reassign,guard-for-in */
 import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Cascader, DatePicker } from 'antd';
+import moment from 'moment/moment';
 import common from '../../Common/common.css';
 import { deepCopy } from '../../../utils/utils';
 
@@ -23,12 +24,30 @@ class AuditListForm extends Component {
       assessCyc: 1,
       orgList: [],
       orgType: 'college',
+      signStatus: null,
+      signResult: null,
+      examineStatus: null,
+      examineResult: null,
     };
+    // 搜索还原
     const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
     if (storageData) {
       for (const key in storageData) {
-        this.state[key] = storageData[key];
+        if (key === 'monthRange' || key === 'quarterRange') {
+          this.state[key] = moment(storageData[key]);
+        } else {
+          this.state[key] = storageData[key];
+        }
       }
+      if (this.state.assessCyc === 1) {
+        this.isMonth = true;
+      } else {
+        this.isMonth = false;
+      }
+      this.changeState(this.state.signStatus, 1);
+      this.changeState(this.state.signResult, 2);
+      this.changeState(this.state.examineStatus, 3);
+
       sessionStorage.removeItem('tempFrom');
     }
   }
@@ -226,6 +245,7 @@ class AuditListForm extends Component {
           examineStatus: values.examineStatus,
           examineResult: values.examineResult,
         };
+        values.quarter = this.state.quarter;
         this.props.handleSearch(subParams, values);
       }
     });
@@ -240,7 +260,7 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="级 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别">
               {getFieldDecorator('orgType', {
-                initialValue: this.state.orgType && 'college',
+                initialValue: this.state.orgType,
               })(
                 <Select
                   placeholder="请选择级别"
@@ -307,7 +327,7 @@ class AuditListForm extends Component {
             {this.isMonth ? (
               <FormItem label="报名月份">
                 {getFieldDecorator('monthRange', {
-                  initialValue: null,
+                  initialValue: this.state.monthRange,
                 })(
                   <MonthPicker
                     placeholder="选择月份"
@@ -319,7 +339,7 @@ class AuditListForm extends Component {
             ) : (
               <FormItem label="报名季度">
                 {getFieldDecorator('quarterRange', {
-                  initialValue: null,
+                  initialValue: this.state.quarterRange,
                 })(
                   <div>
                     <Input
@@ -352,7 +372,7 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="认证项目">
               {getFieldDecorator('certificationItemId', {
-                initialValue: null,
+                initialValue: this.state.certificationItemId,
               })(
                 <Select placeholder="请选择认证项目" style={{ width: 230, height: 32 }} allowClear>
                   {this.certificationList.map(item => (
@@ -369,7 +389,7 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="报名状态">
               {getFieldDecorator('signStatus', {
-                initialValue: null,
+                initialValue: this.state.signStatus,
               })(
                 <Select
                   placeholder="请选择报名状态"
@@ -390,7 +410,7 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="报名结果">
               {getFieldDecorator('signResult', {
-                initialValue: null,
+                initialValue: this.state.signResult,
               })(
                 <Select
                   placeholder="请选择报名结果"
@@ -415,7 +435,7 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="认证状态">
               {getFieldDecorator('examineStatus', {
-                initialValue: null,
+                initialValue: this.state.examineStatus,
               })(
                 <Select
                   placeholder="请选择认证状态"
@@ -437,7 +457,7 @@ class AuditListForm extends Component {
           <Col span={8}>
             <FormItem label="认证结果">
               {getFieldDecorator('examineResult', {
-                initialValue: null,
+                initialValue: this.state.examineResult,
               })(
                 <Select
                   placeholder="请选择认证结果"

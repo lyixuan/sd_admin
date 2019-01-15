@@ -104,7 +104,6 @@ class AuditList extends Component {
 
   // 表单搜索函数
   search = (params, values) => {
-    this.oriSearchParams = values;
     const obj = params ? { ...params } : this.params;
     obj.number = this.pageNum;
     obj.size = this.pageSize;
@@ -113,6 +112,9 @@ class AuditList extends Component {
       type: 'audit/getAuditList',
       payload: { obj },
     });
+    this.oriSearchParams = values;
+    this.oriSearchParams.pageNum = this.pageNum;
+    this.oriSearchParams.size = this.size;
   };
 
   // 点击某一页函数

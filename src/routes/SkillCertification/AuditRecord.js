@@ -91,11 +91,12 @@ class AuditRecord extends Component {
         contentTable={
           <div>
             <Table
-              rowKey={record => record.id}
+              rowKey={record => record.signExamineTime}
               bordered
               loading={loading}
               dataSource={logList}
               columns={this.columnsData()}
+              pagination={false}
               className={common.tableContentStyle}
             />
           </div>
