@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal,message } from 'antd';
 import common from '../../Common/common.css';
 
 const FormItem = Form.Item;
@@ -24,15 +24,30 @@ class CertificationEdit_Form extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        this.props.handleSubmit(values);
-      }
-    });
+    const {fileList1=[],fileList2=[]}=this.state;
+    const file1=fileList1.length;
+    const file2=fileList2.length
+    console.log(file1,file2)
+    if(file1===0 || file2===0){
+      message.error('已获得或未获得图片是必传项，请选择！')
+    }else{
+      this.props.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          console.log(values)
+          // this.props.handleSubmit(values);
+        }
+      });
+    }
   };
 
-  handleCancel1 = () => this.setState({ previewVisible1: false });
-  handleCancel2 = () => this.setState({ previewVisible2: false });
+  // 删除已获得认证图标
+  handleCancel1 = () =>{
+    this.setState({ previewVisible1: false});
+  }
+  // 删除未获得认证图标
+  handleCancel2 = () => {
+    this.setState({ previewVisible2: false});
+  }
 
   handlePreview1 = file => {
     this.setState({
@@ -48,14 +63,40 @@ class CertificationEdit_Form extends Component {
   };
 
   handleChange1 = ({ fileList }) => {
-    console.log(fileList);
-    this.setState({ fileList1: fileList });
+    const file=fileList.length>0?fileList[0]:{}
+    const {type=null}=file
+    const isPNG =type === 'image/png';
+    if (!isPNG &&type) {
+      message.error('图片仅支持PNG格式，请重新选择!');
+    }else if(!type){
+      this.setState({ fileList1: [] });
+    }
+    else{
+      this.setState({ fileList1: fileList });
+    }
   };
 
   handleChange2 = ({ fileList }) => {
-    console.log(fileList);
-    this.setState({ fileList2: fileList });
+    const file=fileList.length>0?fileList[0]:{}
+    const {type=null}=file
+    const isPNG =type === 'image/png';
+    if (!isPNG &&type) {
+      message.error('图片仅支持PNG格式，请重新选择!');
+    }else if(!type){
+      this.setState({ fileList2: [] });
+    }
+    else{
+      this.setState({ fileList2: fileList });
+    }
   };
+
+  beforeUpload=(file)=> {
+    const isPNG = file.type === 'image/png';
+    if (!isPNG) {
+      message.error('图片仅支持PNG格式!');
+    }
+    return isPNG;
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -174,7 +215,7 @@ class CertificationEdit_Form extends Component {
                       },
                     },
                   ],
-                })(<TextArea rows={4} style={{ width: 280 }} />)}
+                })(<TextArea rows={4} style={{ width: '280px',height:'84px' }} />)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
@@ -182,6 +223,17 @@ class CertificationEdit_Form extends Component {
               <FormItem label="*已获得认证图标">
                 {getFieldDecorator('obtainedIcon', {
                   initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value ) {
+                          callback({ message: '已获得认证图标为必填项，请上传！' });
+                        }else{
+                          callback();
+                        }
+                      },
+                    },
+                  ],
                 })(
                   <div style={{ width: '280px', textAlign: 'left' }}>
                     <Upload
@@ -189,6 +241,7 @@ class CertificationEdit_Form extends Component {
                       listType="picture-card"
                       fileList={fileList1}
                       onPreview={this.handlePreview1}
+                      beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
                     >
                       {Array.isArray(fileList1)
@@ -222,13 +275,24 @@ class CertificationEdit_Form extends Component {
                       },
                     },
                   ],
-                })(<TextArea rows={4} style={{ width: 280 }} />)}
+                })(<TextArea rows={4} style={{ width: '280px',height:'84px' }} />)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*未获得认证图标">
                 {getFieldDecorator('originalIcon', {
                   initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '未获得认证图标为必填项，请上传！' });
+                        }else{
+                          callback();
+                        }
+                      },
+                    },
+                  ],
                 })(
                   <div style={{ width: '280px', textAlign: 'left' }}>
                     <Upload
@@ -236,6 +300,7 @@ class CertificationEdit_Form extends Component {
                       listType="picture-card"
                       fileList={fileList2}
                       onPreview={this.handlePreview2}
+                      beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
                     >
                       {Array.isArray(fileList2)
