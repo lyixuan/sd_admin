@@ -54,6 +54,19 @@ class CertificationCreate_Form extends Component {
     this.setState({ fileList2: fileList });
   };
 
+  beforeUpload=(file)=> {
+    console.log(file)
+    // const isJPG = file.type === 'image/jpeg';
+    // if (!isJPG) {
+    //   message.error('You can only upload JPG file!');
+    // }
+    // const isLt2M = file.size / 1024 / 1024 < 2;
+    // if (!isLt2M) {
+    //   message.error('Image must smaller than 2MB!');
+    // }
+    // return isJPG && isLt2M;
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { submit } = this.props.jumpFunction;
@@ -163,7 +176,34 @@ class CertificationCreate_Form extends Component {
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
-              <FormItem label="考核形式">
+              <FormItem label="*已获得认证图标">
+                {getFieldDecorator('obtainedIcon', {
+                  initialValue: null,
+                })(
+                  <div style={{ width: '280px', textAlign: 'left' }}>
+                    <Upload
+                      action=""
+                      listType="picture-card"
+                      fileList={fileList1}
+                      onPreview={this.handlePreview1}
+                      beforeUpload={this.beforeUpload}
+                      onChange={this.handleChange1}
+                    >
+                      {Array.isArray(fileList1)
+                        ? fileList1.length >= 1 ? null : uploadButton
+                        : null}
+                    </Upload>
+                    <Modal visible={previewVisible1} footer={null} onCancel={this.handleCancel1}>
+                      <img alt="example" style={{ width: '100%' }} src={previewImage1} />
+                    </Modal>
+                  </div>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="&nbsp;&nbsp;考核形式">
                 {getFieldDecorator('assessStyle', {
                   initialValue: null,
                   rules: [
@@ -181,32 +221,6 @@ class CertificationCreate_Form extends Component {
                 })(<TextArea rows={4} style={{ width: 280 }} />)}
               </FormItem>
             </Col>
-          </Row>
-          <Row style={{ marginBottom: '20px' }}>
-            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*已获得认证图标">
-                {getFieldDecorator('obtainedIcon', {
-                  initialValue: null,
-                })(
-                  <>
-                    <Upload
-                      action=""
-                      listType="picture-card"
-                      fileList={fileList1}
-                      onPreview={this.handlePreview1}
-                      onChange={this.handleChange1}
-                    >
-                      {Array.isArray(fileList1)
-                        ? fileList1.length >= 1 ? null : uploadButton
-                        : null}
-                    </Upload>
-                    <Modal visible={previewVisible1} footer={null} onCancel={this.handleCancel1}>
-                      <img alt="example" style={{ width: '100%' }} src={previewImage1} />
-                    </Modal>
-                  </>
-                )}
-              </FormItem>
-            </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*未获得认证图标">
                 {getFieldDecorator('originalIcon', {
@@ -218,6 +232,7 @@ class CertificationCreate_Form extends Component {
                       listType="picture-card"
                       fileList={fileList2}
                       onPreview={this.handlePreview2}
+                      beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
                     >
                       {Array.isArray(fileList2)
