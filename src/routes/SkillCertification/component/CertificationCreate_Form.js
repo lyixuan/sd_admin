@@ -9,15 +9,14 @@ const { Option } = Select;
 
 class CertificationCreate_Form extends Component {
   constructor(props) {
-    const {fileList1=[],fileList2=[]}=props.jumpFunction.certification
     super(props);
     this.state = {
       previewVisible1: false,
       previewImage1: '',
       previewVisible2: false,
       previewImage2: '',
-      fileList1,
-      fileList2,
+      fileList1:[],
+      fileList2:[],
 
     };
   }
@@ -34,13 +33,29 @@ class CertificationCreate_Form extends Component {
     }else{
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log(values)
-          // this.props.handleSubmit(values);
+          this.props.handleSubmit(values,fileList1,fileList2);
         }
       });
     }
   };
 
+  deleteDispatch=(val=[],type=1)=>{
+    const {response={}}=val[0]
+    const {data=null}=response
+    const params={type,picName:data}
+    this.props.jumpFunction.dispatch({
+      type: 'certification/delIcon',
+      payload: { params },
+    });
+  }
+
+  deleteIcon=(type=1)=>{
+    if(type===1){
+      this.deleteDispatch(this.state.fileList1,type)
+    }else{
+      this.deleteDispatch(this.state.fileList2,type)
+    }
+  }
   // 删除已获得认证图标
   handleCancel1 = () =>{
     this.setState({ previewVisible1: false});
@@ -64,13 +79,13 @@ class CertificationCreate_Form extends Component {
   };
 
   commonFun=(info={},type=1)=>{
-    const {saveFileList} =this.props
     const {fileList=[],file={}} = info
-    console.log(fileList,info)
     if (file.response) {
       if (file.response.code === 2000) {
-        if (saveFileList) {
-          saveFileList(fileList,type);
+        if(type===1){
+          this.setState({ fileList1: fileList });
+        }else{
+          this.setState({ fileList2: fileList });
         }
       } else {
         message.error(file.response.msg);
@@ -79,29 +94,11 @@ class CertificationCreate_Form extends Component {
   }
 
   handleChange1 = (info) => {
-    console.log(info)
-    // const {fileList=[]} = info
-    // this.commonFun(info,1)
-    // const fileData=fileList.length>0?fileList[0]:{}
-    // const {type=null}=fileData
-    // const isPNG =type === 'image/png';
-    // if (!isPNG &&type) {
-    //   message.error('图片仅支持PNG格式，请重新选择!');
-    // }
-
-
+    this.commonFun(info,1)
   };
 
   handleChange2 = (info) => {
-    console.log(info)
-    // const {fileList=[]} = info
-    // this.commonFun(info,2)
-    // const fileData=fileList.length>0?fileList[0]:{}
-    // const {type=null}=fileData
-    // const isPNG =type === 'image/png';
-    // if (!isPNG &&type) {
-    //   message.error('图片仅支持PNG格式，请重新选择!');
-    // }
+    this.commonFun(info,2)
   };
 
   beforeUpload=(file)=> {
@@ -239,11 +236,12 @@ class CertificationCreate_Form extends Component {
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"
-                      fileList={fileList1}
                       onPreview={this.handlePreview1}
+                      // fileList={fileList1}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
                       data={{type:1}}
+                      onRemove={()=>this.deleteIcon(1)}
                     >
                       {Array.isArray(fileList1)
                         ? fileList1.length >= 1 ? null : uploadButton
@@ -297,11 +295,11 @@ class CertificationCreate_Form extends Component {
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"
-                      fileList={fileList2}
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
                       data={{type:2}}
+                      onRemove={()=>this.deleteIcon(2)}
                     >
                       {Array.isArray(fileList2)
                         ? fileList2.length >= 1 ? null : uploadButton

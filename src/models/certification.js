@@ -12,7 +12,7 @@ import {
   getItemById,
   countItemByStatus,
   delIcon,
-  uploadIcon,
+  // uploadIcon,
 } from "../services/api";
 
 
@@ -137,16 +137,6 @@ export default {
       if (result.code === 2000) {
         const countItemByStatusData = result.data || [];
         yield put({ type: 'countItemByStatusSave', payload: { countItemByStatusData } });
-      } else {
-        message.error(result.msg);
-      }
-    },
-
-    *uploadIcon({ payload }, { call ,put }) {
-      const result = yield call(uploadIcon, payload.params);
-      if (result.code === 2000) {
-        const uploadIconData = result.data || [];
-        yield put({ type: 'save', payload: { uploadIconData } });
       } else {
         message.error(result.msg);
       }
