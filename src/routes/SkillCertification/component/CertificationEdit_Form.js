@@ -178,7 +178,36 @@ class CertificationEdit_Form extends Component {
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
-              <FormItem label="考核形式">
+
+              <FormItem label="*已获得认证图标">
+                {getFieldDecorator('obtainedIcon', {
+                  initialValue: null,
+                })(
+                  <div style={{ width: '280px', textAlign: 'left' }}>
+                    <Upload
+                      action=""
+                      listType="picture-card"
+                      fileList={fileList1}
+                      onPreview={this.handlePreview1}
+                      onChange={this.handleChange1}
+                    >
+                      {Array.isArray(fileList1)
+                        ? fileList1.length >= 1 ? null : uploadButton
+                        : null}
+                    </Upload>
+                    <Modal visible={previewVisible1} footer={null} onCancel={this.handleCancel1}>
+                      <img alt="example" style={{ width: '100%' }} src={previewImage1} />
+                    </Modal>
+                  </div>
+                )}
+              </FormItem>
+
+            </Col>
+          </Row>
+
+          <Row>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="&nbsp;&nbsp;考核形式">
                 {getFieldDecorator('assessStyle', {
                   initialValue: assessStyle,
                   rules: [
@@ -194,33 +223,6 @@ class CertificationEdit_Form extends Component {
                     },
                   ],
                 })(<TextArea rows={4} style={{ width: 280 }} />)}
-              </FormItem>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*已获得认证图标">
-                {getFieldDecorator('obtainedIcon', {
-                  initialValue: null,
-                })(
-                  <>
-                    <Upload
-                      action=""
-                      listType="picture-card"
-                      fileList={fileList1}
-                      onPreview={this.handlePreview1}
-                      onChange={this.handleChange1}
-                    >
-                      {Array.isArray(fileList1)
-                        ? fileList1.length >= 1 ? null : uploadButton
-                        : null}
-                    </Upload>
-                    <Modal visible={previewVisible1} footer={null} onCancel={this.handleCancel1}>
-                      <img alt="example" style={{ width: '100%' }} src={previewImage1} />
-                    </Modal>
-                  </>
-                )}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>

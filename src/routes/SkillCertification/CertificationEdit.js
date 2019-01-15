@@ -61,7 +61,14 @@ class CertificationEdit extends Component {
 
   // 删除子项目
   subItemDelete=val=>{
-    console.log(val);
+    // console.log(val);
+    const {id=1}=this.state;
+    const params={id:val.id} // 子项目删除
+    const param = {id}; // 传入认证项目id为了删除后重新渲染list
+    this.props.dispatch({
+      type: 'certification/delSubItemById',
+      payload: { params,param },
+    });
   }
 
   // table点击确定按钮请求接口
@@ -106,6 +113,9 @@ class CertificationEdit extends Component {
           dataSource={this.props}
           tableSubmit={(values,clickFlag,id) => {
             this.tableSubmit(values,clickFlag,id);
+          }}
+          subItemDelete={(val)=>{
+            this.subItemDelete(val);
           }}
         />
       </>
