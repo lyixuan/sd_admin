@@ -120,7 +120,6 @@ class AuditImport extends Component {
     const errorList = !checkList ? [] : checkList.data.errorList;
 
     const dataSource = !errorList.length > 0 ? null : errorList;
-    console.log(dataSource);
     const columns = !this.columnsData() ? [] : this.columnsData();
     const tableTitle =
       !errorList.length > 0 ? (

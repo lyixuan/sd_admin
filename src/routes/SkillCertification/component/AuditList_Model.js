@@ -15,6 +15,7 @@ class AuditListForm extends Component {
     this.canCycle = true;
     this.quarter = '';
     this.canSignResult = false;
+    this.canSignState = false;
     this.state = {};
   }
 
@@ -33,13 +34,21 @@ class AuditListForm extends Component {
     if (e.target.value === 1) {
       this.isMonth = true;
       this.canCycle = false;
+      this.canSignResult = false;
+      this.canSignState = false;
       propsVal.form.setFieldsValue({
         assessCyc: 1,
+        signStatus: null,
+        signResult: null,
       });
     } else {
       this.canCycle = true;
+      this.canSignResult = true;
+      this.canSignState = true;
       propsVal.form.setFieldsValue({
         monthRange: null,
+        signStatus: 2,
+        signResult: 1,
       });
     }
   };
@@ -128,6 +137,8 @@ class AuditListForm extends Component {
         this.props.onOk(params);
         this.isMonth = true;
         this.canSignResult = false;
+        this.canSignState = false;
+        this.canSignResult = false;
         this.quarter = '';
       }
     });
@@ -136,6 +147,8 @@ class AuditListForm extends Component {
   handleCancel = () => {
     this.isMonth = true;
     this.canSignResult = false;
+    this.canSignResult = false;
+    this.canSignState = false;
     this.quarter = '';
     this.props.onCancel();
     propsVal.form.resetFields();
@@ -241,6 +254,7 @@ class AuditListForm extends Component {
                   onChange={value => {
                     this.changeState(value, 1);
                   }}
+                  disabled={this.canSignState}
                 >
                   {BI_Filter('APPLY_STATE').map(item => (
                     <Option value={Number(item.id) || item.id} key={item.name}>
