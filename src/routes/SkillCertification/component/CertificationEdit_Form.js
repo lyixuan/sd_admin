@@ -32,7 +32,6 @@ class CertificationEdit_Form extends Component {
     const {fileList1=[],fileList2=[]}=this.state;
     const file1=fileList1.length;
     const file2=fileList2.length
-    console.log(file1,file2)
     if(file1===0 || file2===0){
       message.error('已获得或未获得图片是必传项，请选择！')
     }else{
