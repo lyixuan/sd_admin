@@ -12,11 +12,26 @@ const WrappedRegistrationForm = Form.create()(CertificationCreate_Form);
 class CertificationCreate extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const {fileList1=[],fileList2=[]}=props.certification
+    console.log(fileList1,fileList2)
+    this.state = {
+      // obtainedIcon:'',
+      // originalIcon:'',
+    };
   }
+
+
+  saveFileList = (fileList,type) => {
+    console.log(fileList,type)
+    // this.props.dispatch({
+    //   type: 'certification/saveFileList',
+    //   payload: { fileList,type },
+    // });
+  };
 
   // 点击确定按钮请求接口
   handleSubmit = (values) => {
+    // cons
     const saveOrModifyItemParams = {
         orderNum:Number(values.orderNum),
         name:values.name,
@@ -26,10 +41,11 @@ class CertificationCreate extends Component {
         obtainedIcon:'/staticFile/aicon.png',
         originalIcon:'/staticFile/aicon.png',
     };
-    this.props.dispatch({
-      type: 'certification/saveOrModifyItem',
-      payload: { saveOrModifyItemParams },
-    });
+    console.log(saveOrModifyItemParams)
+    // this.props.dispatch({
+    //   type: 'certification/saveOrModifyItem',
+    //   payload: { saveOrModifyItemParams },
+    // });
   };
   // 点击取消按钮跳转到list页面
   resetContent = () => {
@@ -49,6 +65,8 @@ class CertificationCreate extends Component {
             handleSubmit={(values, dataString) => {
               this.handleSubmit(values, dataString);
             }}
+            saveFileList={(file)=>{this.saveFileList(file)}
+            }
           />
         }
       />

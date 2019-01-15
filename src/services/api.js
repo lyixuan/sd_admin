@@ -884,12 +884,15 @@ export async function certificationModify(params) {
 上传认证图标
 * params：{certificationItemForm}
 * */
-export async function uploadIcon(params) {
-  return request(`${HOST}/certificationItem/uploadIcon`, {
-    method: 'POST',
-    body: params,
-  });
+// export function uploadIcon(params) {
+//   return `${HOST}/certificationItem/uploadIcon`
+// }
+
+// 上传图片地址
+export function uploadIcon() {
+  return `${HOST}/certificationItem/uploadIcon`;
 }
+
 
 /*
 *

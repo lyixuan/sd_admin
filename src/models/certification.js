@@ -11,8 +11,8 @@ import {
   delSubItemById,
   getItemById,
   countItemByStatus,
-  // uploadIcon,
-  // delIcon,
+  delIcon,
+  uploadIcon,
 } from "../services/api";
 
 
@@ -25,6 +25,8 @@ export default {
     findAllOrgList:{},
     getItemById:{},
     countItemByStatus:{},
+    fileList1:[],
+    fileList2:[],
   },
 
   effects: {
@@ -140,7 +142,37 @@ export default {
       }
     },
 
+    *uploadIcon({ payload }, { call ,put }) {
+      const result = yield call(uploadIcon, payload.params);
+      if (result.code === 2000) {
+        const uploadIconData = result.data || [];
+        yield put({ type: 'save', payload: { uploadIconData } });
+      } else {
+        message.error(result.msg);
+      }
+    },
+
+    *delIcon({ payload }, { call }) {
+      const result = yield call(delIcon, payload.params);
+      if (result.code === 2000) {
+        message.success('删除成功！');
+      } else {
+        message.error(result.msg);
+      }
+    },
+
+    *saveFileList({ payload }, { put }) {
+      const { type,fileList } = payload;
+      if(type===1){
+        const fileList1=fileList
+        yield put({ type: 'save', payload: { fileList1} });
+      }else{
+        const fileList2=fileList
+        yield put({ type: 'save', payload: { fileList2} });
+      }
+    },
   },
+
 
   reducers: {
     certificationListSave(state, action) {
@@ -166,6 +198,9 @@ export default {
         ...state,
         countItemByStatus: action.payload,
       };
+    },
+    save(state, action) {
+      return { ...state, ...action.payload };
     },
 
   },
