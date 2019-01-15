@@ -455,8 +455,8 @@
 
 
 :global(.ant-upload-list-picture-card .ant-upload-list-item){
-  width: 80px !important;
-  height: 54px !important;
+  width: 84px !important;
+  height: 84px !important;
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
