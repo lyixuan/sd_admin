@@ -8,10 +8,15 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 
+const hostObj = {
+  production: 'http://bd.ministudy.com/apis',
+  development: 'http://172.16.117.65:8090',
+};
+export const HOST = hostObj[process.env.API_TYPE];
+
 class CertificationEdit_Form extends Component {
   constructor(props) {
     super(props);
-    // const timeType = Number(window.BI_Filter(`Certification_TIMEAREA|name:${assessCyc}`).id);
     this.state = {
       previewVisible1: false,
       previewImage1: '',
@@ -21,7 +26,6 @@ class CertificationEdit_Form extends Component {
       fileList2: [],
     };
   }
-
 
   handleSubmit = e => {
     e.preventDefault();
@@ -48,6 +52,11 @@ class CertificationEdit_Form extends Component {
       type: 'certification/delIcon',
       payload: { params },
     });
+    if(type===1){
+      this.setState({ fileList1: []});
+    }else{
+      this.setState({ fileList2: []});
+    }
   }
 
   deleteIcon=(type=1)=>{
@@ -122,7 +131,10 @@ class CertificationEdit_Form extends Component {
       enabledSubDefine=false,
       assessCyc=1,
       assessStyle=null,
-      assessStandard=null} = getItemByIdData
+      assessStandard=null,
+      obtainedIcon=null,
+      originalIcon=null,
+    } = getItemByIdData
     const disabled = true;
     const { TextArea } = Input;
     const {
@@ -133,6 +145,21 @@ class CertificationEdit_Form extends Component {
       fileList2,
       fileList1,
     } = this.state;
+    // const file1=[{
+    //   ...fileList1[0],
+    //   url:`${HOST}${obtainedIcon}`,
+    //   uid: '-1',
+    //   name: 'obtainedIcon.png',
+    //   status: 'done',
+    // }]
+    // const file2=[{
+    //   ...fileList2[0],
+    //   url:`${HOST}${originalIcon}`,
+    //   uid: '-2',
+    //   name: 'originalIcon.png',
+    //   status: 'done',
+    // }]
+    // console.log(file1,file2)
     const bol=true
     const uploadButton = (
       <Button type="primary" className={common.submitButton} loading={false}>
@@ -252,7 +279,7 @@ class CertificationEdit_Form extends Component {
                       action={uploadIcon()}
                       listType="picture-card"
                       onPreview={this.handlePreview1}
-                      // fileList={fileList1}
+                      // fileList={file1}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
                       data={{type:1}}
@@ -316,6 +343,7 @@ class CertificationEdit_Form extends Component {
                       onChange={this.handleChange2}
                       data={{type:2}}
                       onRemove={()=>this.deleteIcon(2)}
+                      // fileList={file2}
                     >
                       {Array.isArray(fileList2)
                         ? fileList2.length >= 1 ? null : uploadButton
