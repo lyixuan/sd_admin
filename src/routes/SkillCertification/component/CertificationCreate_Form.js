@@ -93,22 +93,18 @@ class CertificationCreate_Form extends Component {
   };
 
   handleChange2 = (info) => {
-    const {fileList=[]} = info
     console.log(info)
-    this.commonFun(info,2)
-    const fileData=fileList.length>0?fileList[0]:{}
-    const {type=null}=fileData
-    const isPNG =type === 'image/png';
-    if (!isPNG &&type) {
-      message.error('图片仅支持PNG格式，请重新选择!');
-    }
+    // const {fileList=[]} = info
+    // this.commonFun(info,2)
+    // const fileData=fileList.length>0?fileList[0]:{}
+    // const {type=null}=fileData
+    // const isPNG =type === 'image/png';
+    // if (!isPNG &&type) {
+    //   message.error('图片仅支持PNG格式，请重新选择!');
+    // }
   };
 
   beforeUpload=(file)=> {
-    // this.props.jumpFunction.dispatch({
-    //   type: 'certification/uploadIcon',
-    //   payload: { fileList,type },
-    // })
     const isPNG = file.type === 'image/png';
     if (!isPNG) {
       message.error('图片仅支持PNG格式!');
@@ -299,12 +295,13 @@ class CertificationCreate_Form extends Component {
                 })(
                   <div style={{ width: '280px', textAlign: 'left' }}>
                     <Upload
-                      // action={uploadIcon()}
+                      action={uploadIcon()}
                       listType="picture-card"
                       fileList={fileList2}
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
+                      data={{type:2}}
                     >
                       {Array.isArray(fileList2)
                         ? fileList2.length >= 1 ? null : uploadButton
