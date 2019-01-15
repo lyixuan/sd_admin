@@ -112,14 +112,16 @@ class AuditList extends Component {
       type: 'audit/getAuditList',
       payload: { obj },
     });
-    this.oriSearchParams = values;
-    this.oriSearchParams.pageNum = this.pageNum;
+    if (values) {
+      this.oriSearchParams = values;
+    }
     this.oriSearchParams.size = this.size;
+    this.oriSearchParams.pageNum = this.pageNum;
   };
 
   // 点击某一页函数
   changePage = current => {
-    this.pageNum = current;
+    this.pageNum = current - 1;
     this.search();
   };
 
