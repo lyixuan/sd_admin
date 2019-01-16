@@ -8,12 +8,6 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 
-const hostObj = {
-  production: 'http://bd.ministudy.com/apis',
-  development: 'http://172.16.117.65:8090',
-};
-export const HOST = hostObj[process.env.API_TYPE];
-
 class CertificationEdit_Form extends Component {
   constructor(props) {
     super(props);
@@ -22,18 +16,31 @@ class CertificationEdit_Form extends Component {
       previewImage1: '',
       previewVisible2: false,
       previewImage2: '',
-      fileList1: [],
-      fileList2: [],
+      fileList1:[],
+      fileList2:[],
     };
     this.id=null;
   }
 
+  UNSAFE_componentWillReceiveProps(nexprops) {
+    if (nexprops.certification ){
+      if(JSON.stringify(nexprops.certification.fileList1)!==JSON.stringify(this.props.certification.fileList1)) {
+        const { fileList1} = this.nexprops.certification;
+        this.setState({fileList1})
+      }
+      if (JSON.stringify(nexprops.certification.fileList2)!==JSON.stringify(this.props.certification.fileList2)) {
+        const { fileList2} = this.nexprops.certification;
+        this.setState({fileList2})
+      }
+    }
+  }
+
   handleSubmit = e => {
     e.preventDefault();
-    const {fileList1=[],fileList2=[]}=this.state;
-    const file1=fileList1.length;
-    const file2=fileList2.length
-    if(file1===0 || file2===0){
+    let {fileList1,fileList2}=this.state;
+    fileList1=fileList1.length===0?this.props.jumpFunction.certification.fileList1:fileList1;
+    fileList2=fileList2.length===0?this.props.jumpFunction.certification.fileList2:fileList2;
+    if(fileList1.length===0 || fileList2.length===0){
       message.error('已获得或未获得图片是必传项，请选择！')
     }else{
       this.props.form.validateFieldsAndScroll((err, values) => {
@@ -44,37 +51,9 @@ class CertificationEdit_Form extends Component {
     }
   };
 
-  deleteDispatch=(val=[],type=1)=>{
-    const {response={}}=val.length>0?val[0]:{}
-    const {data=null}=response
-    const params={type,picName:data,id:this.id}
-    this.props.jumpFunction.dispatch({
-      type: 'certification/delIcon',
-      payload: { params },
-    });
-    if(type===1){
-      this.setState({ fileList1: []});
-    }else{
-      this.setState({ fileList2: []});
-    }
-  }
 
-  deleteIcon=(type=1)=>{
-    if(type===1){
-      this.deleteDispatch(this.state.fileList1,type)
-    }else{
-      this.deleteDispatch(this.state.fileList2,type)
-    }
-  }
-
-  // 删除已获得认证图标
-  handleCancel1 = () =>{
-    this.setState({ previewVisible1: false});
-  }
-  // 删除未获得认证图标
-  handleCancel2 = () => {
-    this.setState({ previewVisible2: false});
-  }
+  handleCancel1 = () =>{this.setState({ previewVisible1: false});}
+  handleCancel2 = () => {this.setState({ previewVisible2: false});}
 
   handlePreview1 = file => {
     this.setState({
@@ -90,27 +69,25 @@ class CertificationEdit_Form extends Component {
   };
 
   commonFun=(info={},type=1)=>{
-    const {fileList=[],file={}} = info
+    const {file={}} = info
+    const oneList = info.fileList;
+   const fileList = oneList.slice(-1);
+    if(type===1){
+      this.setState({ fileList1: fileList });
+    }else{
+      this.setState({ fileList2: fileList });
+    }
     if (file.response) {
       if (file.response.code === 2000) {
-        if(type===1){
-          this.setState({ fileList1: fileList });
-        }else{
-          this.setState({ fileList2: fileList });
-        }
+        this.props.saveFileList(fileList,type);
       } else {
         message.error(file.response.msg);
       }
     }
   }
 
-  handleChange1 = (info) => {
-    this.commonFun(info,1)
-  };
-
-  handleChange2 = (info) => {
-    this.commonFun(info,2)
-  };
+  handleChange1 = (info) => {this.commonFun(info,1)};
+  handleChange2 = (info) => {this.commonFun(info,2)};
 
   beforeUpload=(file)=> {
     const isPNG = file.type === 'image/png';
@@ -120,10 +97,18 @@ class CertificationEdit_Form extends Component {
     return isPNG;
   }
 
+   wordFun=(text)=> {
+    return (
+      <Button type="primary" className={common.submitButton} loading={false}>
+        {text}图标
+      </Button>
+    )
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { submit ,itemDetal} = this.props.jumpFunction;
-    const { getItemByIdData = {} } = this.props.jumpFunction.certification.getItemById;
+    const { getItemById = {}} = this.props.jumpFunction.certification;
     const {orderNum = null,
       name = null,
       code = null,
@@ -133,7 +118,7 @@ class CertificationEdit_Form extends Component {
       assessStyle=null,
       assessStandard=null,
       id=null,
-    } = getItemByIdData
+    } = getItemById
     this.id=id;
     const disabled = true;
     const { TextArea } = Input;
@@ -142,15 +127,11 @@ class CertificationEdit_Form extends Component {
       previewImage1,
       previewVisible2,
       previewImage2,
-      fileList2,
-      fileList1,
     } = this.state;
     const bol=true
-    const uploadButton = (
-      <Button type="primary" className={common.submitButton} loading={false}>
-        添加图标
-      </Button>
-    );
+    let {fileList1,fileList2}= this.state;
+    fileList1=fileList1.length===0?this.props.jumpFunction.certification.fileList1:fileList1;
+    fileList2=fileList2.length===0?this.props.jumpFunction.certification.fileList2:fileList2;
     const formLayout = 'inline';
     return (
       <Spin spinning={itemDetal}>
@@ -264,14 +245,14 @@ class CertificationEdit_Form extends Component {
                       action={uploadIcon()}
                       listType="picture-card"
                       onPreview={this.handlePreview1}
-                      // fileList={file1}
+                      fileList={fileList1}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
                       data={{type:1}}
-                      onRemove={()=>this.deleteIcon(1)}
+                      showUploadList={{showRemoveIcon:false}}
                     >
                       {Array.isArray(fileList1)
-                        ? fileList1.length >= 1 ? null : uploadButton
+                        ? fileList1.length >= 1 ? this.wordFun('更新') : this.wordFun('添加')
                         : null}
                     </Upload>
                     <Modal visible={previewVisible1} footer={null} onCancel={this.handleCancel1}>
@@ -307,17 +288,6 @@ class CertificationEdit_Form extends Component {
               <FormItem label="*未获得认证图标">
                 {getFieldDecorator('originalIcon', {
                   initialValue: null,
-                  rules: [
-                    {
-                      validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '未获得认证图标为必填项，请上传！' });
-                        }else{
-                          callback();
-                        }
-                      },
-                    },
-                  ],
                 })(
                   <div style={{ width: '280px', textAlign: 'left' }}>
                     <Upload
@@ -327,11 +297,11 @@ class CertificationEdit_Form extends Component {
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
                       data={{type:2}}
-                      onRemove={()=>this.deleteIcon(2)}
-                      // fileList={file2}
+                      showUploadList={{showRemoveIcon:false}}
+                      fileList={fileList2}
                     >
                       {Array.isArray(fileList2)
-                        ? fileList2.length >= 1 ? null : uploadButton
+                        ? fileList2.length >= 1 ? this.wordFun('更新') : this.wordFun('添加')
                         : null}
                     </Upload>
                     <Modal visible={previewVisible2} footer={null} onCancel={this.handleCancel2}>

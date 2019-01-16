@@ -15,6 +15,23 @@ import {
   // uploadIcon,
 } from "../services/api";
 
+const hostObj = {
+  production: 'http://bd.ministudy.com/apis',
+  development: 'http://172.16.117.65',
+};
+export const HOST = hostObj[process.env.API_TYPE];
+
+ const turnArrar=(val,type)=>{
+  const fileList=val?[
+    {
+      uid:type,
+      name:'test.png',
+      url:`${HOST}${val}`,
+      response:{data:val},
+    },
+  ]:[]
+  return fileList;
+};
 
 export default {
   namespace: 'certification',
@@ -97,7 +114,7 @@ export default {
         const response = yield call(getItemById, payload.params);
         if (response.code === 2000) {
           const getItemByIdData = response.data || [];
-          yield put({ type: 'getItemByIdSave', payload: { getItemByIdData } });
+          yield put({ type: 'getItemByIdSave', payload: {getItemById: getItemByIdData } });
         } else {
           message.error(response.msg);
         }
@@ -113,7 +130,7 @@ export default {
         const response = yield call(getItemById, payload.param);
         if (response.code === 2000) {
           const getItemByIdData = response.data || [];
-          yield put({ type: 'getItemByIdSave', payload: { getItemByIdData } });
+          yield put({ type: 'getItemByIdSave', payload: { getItemById:getItemByIdData } });
         } else {
           message.error(response.msg);
         }
@@ -126,7 +143,8 @@ export default {
       const result = yield call(getItemById, payload.params);
       if (result.code === 2000) {
         const getItemByIdData = result.data || [];
-        yield put({ type: 'getItemByIdSave', payload: { getItemByIdData } });
+        const {obtainedIcon='',originalIcon=''} = getItemByIdData
+        yield put({ type: 'getItemByIdSave', payload: { getItemById:getItemByIdData,fileList1:turnArrar(obtainedIcon,1),fileList2:turnArrar(originalIcon,2) } });
       } else {
         message.error(result.msg);
       }
@@ -180,7 +198,7 @@ export default {
     getItemByIdSave(state, action) {
       return {
         ...state,
-        getItemById: action.payload,
+        ...action.payload,
       };
     },
     countItemByStatusSave(state, action) {

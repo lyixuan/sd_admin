@@ -42,6 +42,7 @@ class CertificationEdit extends Component {
     const obtainedIcon=response.data?response.data:'';
     const file2=fileList2[0]?fileList2[0].response:'';
     const originalIcon=file2?file2.data:'';
+
     const {id=1}=this.state;
     const saveOrModifyItemParams = {
         id:Number(id),
@@ -63,9 +64,15 @@ class CertificationEdit extends Component {
     });
   };
 
+  saveFileList = (fileList,type) => {
+    this.props.dispatch({
+      type: 'certification/saveFileList',
+      payload: { fileList,type },
+    });
+  };
+
   // 删除子项目
   subItemDelete=val=>{
-    // console.log(val);
     const {id=1}=this.state;
     const params={id:val.id} // 子项目删除
     const param = {id}; // 传入认证项目id为了删除后重新渲染list
@@ -107,8 +114,11 @@ class CertificationEdit extends Component {
               resetContent={() => {
                 this.resetContent();
               }}
-              handleSubmit={(values, fileList1,fileList2) => {
-                this.handleSubmit(values,  fileList1,fileList2);
+              handleSubmit={(values, file1,file2) => {
+                this.handleSubmit(values,  file1,file2);
+              }}
+              saveFileList={(param,type) => {
+                this.saveFileList(param,type);
               }}
             />
           }
