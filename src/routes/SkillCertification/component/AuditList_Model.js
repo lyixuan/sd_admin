@@ -173,7 +173,7 @@ class AuditListForm extends Component {
       return (
         <Form layout={formLayout}>
           {this.props.modelType === 2 ? (
-            <FormItem label="底表类型" {...formItemLayout}>
+            <FormItem label="*底表类型" {...formItemLayout}>
               {getFieldDecorator('exportTableType', {
                 initialValue: null,
                 rules: [{ required: true, message: '请选择底表类型' }],
@@ -189,7 +189,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {(this.props.modelType === 2 && this.canCycle) || this.props.modelType === 1 ? (
-            <FormItem label="考核周期" {...formItemLayout}>
+            <FormItem label="*考核周期" {...formItemLayout}>
               {getFieldDecorator('assessCyc', {
                 initialValue: 1,
               })(
@@ -208,7 +208,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {(this.props.modelType === 1 || this.props.modelType === 2) && this.isMonth ? (
-            <FormItem label="报名月份" {...formItemLayout}>
+            <FormItem label="*报名月份" {...formItemLayout}>
               {getFieldDecorator('monthRange', {
                 initialValue: null,
                 rules: [{ required: true, message: '请选择月份' }],
@@ -221,7 +221,7 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           ) : (this.props.modelType === 1 || this.props.modelType === 2) && !this.isMonth ? (
-            <FormItem label="报名季度" {...formItemLayout}>
+            <FormItem label="*报名季度" {...formItemLayout}>
               {getFieldDecorator('quarterRange', {
                 initialValue: null,
                 rules: [{ required: true, message: '请选择季度' }],
@@ -254,7 +254,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="报名状态" {...formItemLayout}>
+            <FormItem label="*报名状态" {...formItemLayout}>
               {getFieldDecorator('signStatus', {
                 initialValue: null,
               })(
@@ -276,7 +276,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="报名结果" {...formItemLayout}>
+            <FormItem label="*报名结果" {...formItemLayout}>
               {getFieldDecorator('signResult', {
                 initialValue: null,
               })(
