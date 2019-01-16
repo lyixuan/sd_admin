@@ -39,7 +39,7 @@ class CertificationCreate_Form extends Component {
   };
 
   deleteDispatch=(val=[],type=1)=>{
-    const {response={}}=val[0]
+    const {response={}}=val.length>0?val[0]:{}
     const {data=null}=response
     const params={type,picName:data}
     this.props.jumpFunction.dispatch({

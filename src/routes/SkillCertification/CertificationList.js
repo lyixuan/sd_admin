@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import moment from "moment/moment";
 import { assignUrlParams } from 'utils/utils';
-import { Table, Button, Form, Row, Col, Select, message,Spin } from 'antd';
+import { Table, Button, Form, Row, Col, Select, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -21,7 +21,7 @@ const dateFormat = 'YYYY-MM-DD h:mm:ss  ';
 @connect(({ certification, loading }) => ({
   certification,
   loading: loading.effects['certification/certificationList'],
-  itemNum: loading.effects['certification/countItemByStatus'],
+  // itemNum: loading.effects['certification/countItemByStatus'],
 }))
 class CertificationList extends Component {
   constructor(props) {
@@ -303,7 +303,7 @@ class CertificationList extends Component {
   };
 
   render() {
-    const { loading ,itemNum} = this.props;
+    const { loading } = this.props;
     const {
       selectedRows = [],
       visible = false,
@@ -412,7 +412,7 @@ class CertificationList extends Component {
       </>
     );
     return (
-      <Spin spinning={itemNum}>
+      <>
         <ContentLayout
           routerData={this.props.routerData}
           contentForm={<WrappedAdvancedSearchForm />}
@@ -504,7 +504,7 @@ class CertificationList extends Component {
             this.setDialogSHow(2, bol);
           }}
         />
-      </Spin>
+      </>
     );
   }
 }

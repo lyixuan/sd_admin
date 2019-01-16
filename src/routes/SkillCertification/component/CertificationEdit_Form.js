@@ -25,6 +25,7 @@ class CertificationEdit_Form extends Component {
       fileList1: [],
       fileList2: [],
     };
+    this.id=null;
   }
 
   handleSubmit = e => {
@@ -44,9 +45,9 @@ class CertificationEdit_Form extends Component {
   };
 
   deleteDispatch=(val=[],type=1)=>{
-    const {response={}}=val[0]
+    const {response={}}=val.length>0?val[0]:{}
     const {data=null}=response
-    const params={type,picName:data}
+    const params={type,picName:data,id:this.id}
     this.props.jumpFunction.dispatch({
       type: 'certification/delIcon',
       payload: { params },
@@ -131,9 +132,9 @@ class CertificationEdit_Form extends Component {
       assessCyc=1,
       assessStyle=null,
       assessStandard=null,
-      // obtainedIcon=null,
-      // originalIcon=null,
+      id=null,
     } = getItemByIdData
+    this.id=id;
     const disabled = true;
     const { TextArea } = Input;
     const {
@@ -144,21 +145,6 @@ class CertificationEdit_Form extends Component {
       fileList2,
       fileList1,
     } = this.state;
-    // const file1=[{
-    //   ...fileList1[0],
-    //   url:`${HOST}${obtainedIcon}`,
-    //   uid: '-1',
-    //   name: 'obtainedIcon.png',
-    //   status: 'done',
-    // }]
-    // const file2=[{
-    //   ...fileList2[0],
-    //   url:`${HOST}${originalIcon}`,
-    //   uid: '-2',
-    //   name: 'originalIcon.png',
-    //   status: 'done',
-    // }]
-    // console.log(file1,file2)
     const bol=true
     const uploadButton = (
       <Button type="primary" className={common.submitButton} loading={false}>
