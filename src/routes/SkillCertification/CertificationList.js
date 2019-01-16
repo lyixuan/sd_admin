@@ -38,6 +38,7 @@ class CertificationList extends Component {
       visible: false, // 控制批量弹框显隐
       deleteVisible: false, // 控制删除弹框显隐
       deleteRow: {}, // 初始化删除内容
+      selectedRowKeys: [],
     };
     this.state = assignUrlParams(initParams, params);
   }
@@ -67,8 +68,9 @@ class CertificationList extends Component {
     this.changePage(current, size);
   };
 
-  onSelectChange = (key, arrayList) => {
-    this.setState({ selectedRows: arrayList });
+  onSelectChange = (selectedRowKeys, arrayList) => {
+    console.log(selectedRowKeys);
+    this.setState({ selectedRows: arrayList, selectedRowKeys });
   };
 
   setDialogSHow(type, bol) {
@@ -110,14 +112,15 @@ class CertificationList extends Component {
       type: 'certification/certificationModify',
       payload: { certificationModifyParams, certificationListParams },
     });
+    this.setState({ selectedRowKeys: [] });
   };
   // 批量开放/关闭报名   1是批量开放，2是批量关闭
   allApply = (modelType = 1) => {
-    const { selectedRows = [] } = this.state;
-    if (selectedRows.length > 0) {
-      this.setState({ clickFlag: modelType, visible: true });
+    const { selectedRows = [], selectedRowKeys = [] } = this.state;
+    if (selectedRows.length > 0 && selectedRowKeys.length > 1) {
+      this.setState({ clickFlag: modelType, visible: true, selectedRowKeys: [] });
     } else {
-      message.error('未选中任何一项');
+      message.error('请勾选大于1条认证项目');
     }
   };
 
@@ -310,6 +313,7 @@ class CertificationList extends Component {
       deleteVisible = false,
       clickFlag = 1,
       deleteRow = {},
+      selectedRowKeys = [],
     } = this.state;
     const { pageNum = 0, assessCyc = 0, status = 0 } = this.state.params;
     const { certificationListData = {} } = this.props.certification.certificationList;
@@ -378,8 +382,9 @@ class CertificationList extends Component {
       );
     });
     const rowSelection = {
-      onChange: (selectedRowKeys, rowList) => {
-        this.onSelectChange(selectedRowKeys, rowList);
+      selectedRowKeys,
+      onChange: (rowKeys, rowList) => {
+        this.onSelectChange(rowKeys, rowList);
       },
       getCheckboxProps: record => ({
         disabled: record.status === '已停用' || record.status === '已删除',
