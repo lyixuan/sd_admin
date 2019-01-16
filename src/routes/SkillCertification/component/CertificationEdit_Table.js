@@ -4,6 +4,8 @@ import { Table, Form, Button, Row, Col, Select, Input } from 'antd';
 import common from '../../Common/common.css';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../../selfComponent/Modal/Modal';
+import styles from '../certification.css';
+import deleteTost from '../../../assets/deleteTost.svg';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -18,6 +20,8 @@ class CertificationEdit_Table extends Component {
       name: null, // 子项名称初始值
       collegeId: null, // 学院初始值
       id: null, // 当编辑的时候，传入id子项目的值
+      deleteId: null,
+      deleteVisible: false, // 控制子项目删除弹窗的显隐
     };
   }
 
@@ -38,17 +42,39 @@ class CertificationEdit_Table extends Component {
 
   // 删除
   onDelete = val => {
-    this.props.subItemDelete(val);
+    this.setState({ deleteVisible: true, deleteId: val.id });
   };
 
-  setDialogSHow(bol) {
-    this.setState({ visible: bol });
+  setDialogSHow(type, bol) {
+    if (type === 1) {
+      this.setState({ visible: bol });
+    } else {
+      this.setState({ deleteVisible: bol });
+    }
   }
 
   getData = values => {
     const { clickFlag = 1, id = 1 } = this.state;
     this.props.tableSubmit(values, clickFlag, id);
-    this.setDialogSHow(false);
+    this.setDialogSHow(1, false);
+  };
+
+  stringToBoolean = str => {
+    switch (str) {
+      case 'true':
+        return true;
+      case 'false':
+      case null:
+        return false;
+      default:
+        return Boolean(str);
+    }
+  };
+
+  // 删除模态框回显
+  deleteModel = val => {
+    this.props.subItemDelete(val);
+    this.setDialogSHow(2, false);
   };
 
   // 初始化tabale 列数据
@@ -133,11 +159,18 @@ class CertificationEdit_Table extends Component {
 
   render() {
     const columns = this.columnsData();
-    const { visible = false, clickFlag = 1, name = null, collegeId = 1 } = this.state;
+    const {
+      visible = false,
+      clickFlag = 1,
+      name = null,
+      collegeId = 1,
+      deleteVisible,
+      deleteId,
+    } = this.state;
     const { collegeFlag, itemDetal, subItemFlag, certification } = this.props.dataSource;
-    const { getItemByIdData = {} } = certification.getItemById;
+    const { getItemById = {} } = certification;
     const { collegeList = [] } = certification.findAllOrgList;
-    const { certificationSubItemList = [] } = getItemByIdData;
+    const { certificationSubItemList = [] } = getItemById;
     const disabled = true;
     const formLayout = 'inline';
     const dataSource = this.fillDataSource(certificationSubItemList, collegeList);
@@ -201,7 +234,7 @@ class CertificationEdit_Table extends Component {
                   })(
                     <Select style={{ width: 280 }}>
                       {collegeList.map(item => (
-                        <Option value={Number(item.collegeId)} key={item.cpId}>
+                        <Option value={Number(item.collegeId)} key={item.collegeId}>
                           {item.collegeName}
                         </Option>
                       ))}
@@ -215,9 +248,13 @@ class CertificationEdit_Table extends Component {
       );
     });
 
-    const modalContent = (
+    const modalContent = <WrappedAdvancedSearchForm />;
+
+    const modalContentDelete = (
       <>
-        <WrappedAdvancedSearchForm />
+        <img src={deleteTost} alt="delete" className={styles.imgStyle} />
+        <br />
+        <span className={styles.deletWord}>确定删除此子项吗？</span>
       </>
     );
 
@@ -249,7 +286,18 @@ class CertificationEdit_Table extends Component {
           clickOK={e => this.editName(e)}
           footButton={['取消', '提交']}
           showModal={bol => {
-            this.setDialogSHow(bol);
+            this.setDialogSHow(1, bol);
+          }}
+        />
+        <ModalDialog
+          style={{ width: '520px' }}
+          title="删除确认"
+          visible={this.stringToBoolean(deleteVisible)}
+          modalContent={modalContentDelete}
+          clickOK={() => this.deleteModel(deleteId)}
+          footButton={['取消', '提交']}
+          showModal={bol => {
+            this.setDialogSHow(2, bol);
           }}
         />
       </div>

@@ -869,6 +869,12 @@ export async function countItemByStatus(params) {
   });
 }
 
+export async function findAllCollege(params) {
+  return request(`${HOST}/consoleBottomDown/findAllCollege?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
 /*
 * 开放或关闭报名
 * params：{id}
@@ -892,7 +898,6 @@ export async function certificationModify(params) {
 export function uploadIcon() {
   return `${HOST}/certificationItem/uploadIcon`;
 }
-
 
 /*
 *
