@@ -175,7 +175,7 @@ class CertificationEdit_Form extends Component {
               <FormItem label="&nbsp;&nbsp;认证编码">
                 {getFieldDecorator('code', {
                   initialValue: code,
-                })(<Input style={{ width: 280 }} />)}
+                })(<Input style={{ width: 280 }} disabled={disabled} />)}
               </FormItem>
             </Col>
           </Row>
