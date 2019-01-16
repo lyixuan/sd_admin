@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import moment from "moment/moment";
+import moment from 'moment/moment';
 import { assignUrlParams } from 'utils/utils';
 import { Table, Button, Form, Row, Col, Select, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -12,11 +12,10 @@ import styles from './certification.css';
 import deleteTost from '../../assets/deleteTost.svg';
 import circle from '../../assets/circle.svg';
 
-
 const FormItem = Form.Item;
 const { Option } = Select;
 let propsVal = '';
-const dateFormat = 'YYYY-MM-DD h:mm:ss  ';
+const dateFormat = 'YYYY-MM-DD HH:mm:ss  ';
 
 @connect(({ certification, loading }) => ({
   certification,
@@ -45,7 +44,7 @@ class CertificationList extends Component {
 
   // 页面render之前需要请求的接口
   componentDidMount() {
-    const params={}
+    const params = {};
     this.props.dispatch({
       type: 'certification/countItemByStatus',
       payload: { params },
@@ -60,7 +59,7 @@ class CertificationList extends Component {
 
   // 编辑
   onEdit = val => {
-    this.props.setRouteUrlParams('/skillCertification/certificationEdit', { id:val.id});
+    this.props.setRouteUrlParams('/skillCertification/certificationEdit', { id: val.id });
   };
 
   // 点击显示每页多少条数据函数
@@ -104,8 +103,8 @@ class CertificationList extends Component {
 
   // 单条数据开放/关闭报名   1是开放报名，2是关闭报名
   selfApply = (modelType = 1, dataList = {}) => {
-    const {id=null}=dataList
-    const certificationModifyParams = { ids: [{ id}] ,type:modelType};
+    const { id = null } = dataList;
+    const certificationModifyParams = { ids: [{ id }], type: modelType };
     const certificationListParams = this.state.params;
     this.props.dispatch({
       type: 'certification/certificationModify',
@@ -149,27 +148,26 @@ class CertificationList extends Component {
   };
 
   // 批量模态框回显
-  allModel = (val,modelType=1) => {
+  allModel = (val, modelType = 1) => {
     const data = [];
-    val.map(item => data.push({ id: Number(item.id)}));
-    const certificationModifyParams = { ids: data ,type:modelType};
+    val.map(item => data.push({ id: Number(item.id) }));
+    const certificationModifyParams = { ids: data, type: modelType };
     const certificationListParams = this.state.params;
     this.props.dispatch({
       type: 'certification/certificationModify',
       payload: { certificationModifyParams, certificationListParams },
     });
     this.setDialogSHow(1, false);
-
   };
   // 删除模态框回显
-  deleteModel = (val) => {
+  deleteModel = val => {
     const certificationDeleteParams = { id: val.id };
     const certificationListParams = this.state.params;
     this.props.dispatch({
       type: 'certification/certificationDelete',
       payload: { certificationDeleteParams, certificationListParams },
     });
-    this.setDialogSHow(2,false);
+    this.setDialogSHow(2, false);
   };
 
   // 表单搜索
@@ -177,10 +175,10 @@ class CertificationList extends Component {
     e.preventDefault();
     propsVal.form.validateFields((err, values) => {
       if (!err) {
-        const {assessCyc=null,status=null} = values
+        const { assessCyc = null, status = null } = values;
         const certificationListParams = {
-          assessCyc:assessCyc?Number(assessCyc):undefined,
-          status:status?Number(status):undefined,
+          assessCyc: assessCyc ? Number(assessCyc) : undefined,
+          status: status ? Number(status) : undefined,
           pageSize: 30,
           pageNum: 0,
         };
@@ -195,12 +193,14 @@ class CertificationList extends Component {
     val.map(item =>
       data.push({
         key: item.id,
-        id:item.id,
+        id: item.id,
         code: item.code,
         name: item.name,
         assessCyc: window.BI_Filter(`Certification_TIMEAREA|id:${item.assessCyc}`).name,
         status: window.BI_Filter(`Certification_TYPE|id:${item.status}`).name,
-        modifyTime: moment.unix(item.modifyTime / 1000).format(dateFormat),
+        statusChangedTime: item.statusChangedTime
+          ? moment(item.statusChangedTime).format(dateFormat)
+          : null,
       })
     );
     return data;
@@ -210,7 +210,7 @@ class CertificationList extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '编号',
+        title: 'id',
         dataIndex: 'id',
       },
       {
@@ -237,8 +237,8 @@ class CertificationList extends Component {
         },
       },
       {
-        title: '报名变更时间',
-        dataIndex: 'modifyTime',
+        title: '状态变更时间',
+        dataIndex: 'statusChangedTime',
       },
       {
         title: '操作',
@@ -314,8 +314,8 @@ class CertificationList extends Component {
     const { pageNum = 0, assessCyc = 0, status = 0 } = this.state.params;
     const { certificationListData = {} } = this.props.certification.certificationList;
     const { countItemByStatusData = {} } = this.props.certification.countItemByStatus;
-    const {close=0,open=0}=countItemByStatusData;
-    const {totalElements=0,content = [] } = certificationListData;
+    const { close = 0, open = 0 } = countItemByStatusData;
+    const { totalElements = 0, content = [] } = certificationListData;
     const dataSource = this.fillDataSource(content);
     const columns = this.columnsData();
     const formLayout = 'inline';
@@ -487,7 +487,7 @@ class CertificationList extends Component {
           title={clickFlag === 1 ? '批量开放通道' : '批量关闭通道'}
           visible={this.stringToBoolean(visible)}
           modalContent={modalContent}
-          clickOK={() => this.allModel(selectedRows,clickFlag)}
+          clickOK={() => this.allModel(selectedRows, clickFlag)}
           footButton={['取消', '提交']}
           showModal={bol => {
             this.setDialogSHow(1, bol);
