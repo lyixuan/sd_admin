@@ -1,11 +1,11 @@
 // import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { routerRedux } from "dva/router";
+import { routerRedux } from 'dva/router';
 import {
   certificationList,
   certificationDelete,
   certificationModify,
-  findAllOrg,
+  findAllCollege,
   saveOrModifyItem,
   saveOrModifySubItem,
   delSubItemById,
@@ -13,7 +13,7 @@ import {
   countItemByStatus,
   delIcon,
   // uploadIcon,
-} from "../services/api";
+} from '../services/api';
 
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
@@ -21,15 +21,17 @@ const hostObj = {
 };
 export const HOST = hostObj[process.env.API_TYPE];
 
- const turnArrar=(val,type)=>{
-  const fileList=val?[
-    {
-      uid:type,
-      name:'test.png',
-      url:`${HOST}${val}`,
-      response:{data:val},
-    },
-  ]:[]
+const turnArrar = (val, type) => {
+  const fileList = val
+    ? [
+        {
+          uid: type,
+          name: 'test.png',
+          url: `${HOST}${val}`,
+          response: { data: val },
+        },
+      ]
+    : [];
   return fileList;
 };
 
@@ -39,11 +41,11 @@ export default {
   state: {
     // 接口返回数据存储
     certificationList: {},
-    findAllOrgList:{},
-    getItemById:{},
-    countItemByStatus:{},
-    fileList1:[],
-    fileList2:[],
+    findAllOrgList: {},
+    getItemById: {},
+    countItemByStatus: {},
+    fileList1: [],
+    fileList2: [],
   },
 
   effects: {
@@ -89,7 +91,7 @@ export default {
     },
 
     *findAllOrg({ payload }, { call, put }) {
-      const response = yield call(findAllOrg, payload.nullParams);
+      const response = yield call(findAllCollege, payload.nullParams);
       if (response.code === 2000) {
         const collegeList = response.data || [];
         yield put({ type: 'findAllOrgSave', payload: { collegeList } });
@@ -108,13 +110,13 @@ export default {
       }
     },
 
-    *saveOrModifySubItem({ payload }, { call,put }) {
+    *saveOrModifySubItem({ payload }, { call, put }) {
       const addPositionData = yield call(saveOrModifySubItem, payload.saveOrModifySubItemParams);
       if (addPositionData.code === 2000) {
         const response = yield call(getItemById, payload.params);
         if (response.code === 2000) {
           const getItemByIdData = response.data || [];
-          yield put({ type: 'getItemByIdSave', payload: {getItemById: getItemByIdData } });
+          yield put({ type: 'getItemByIdSave', payload: { getItemById: getItemByIdData } });
         } else {
           message.error(response.msg);
         }
@@ -123,14 +125,14 @@ export default {
       }
     },
 
-    *delSubItemById({ payload }, { call,put }) {
+    *delSubItemById({ payload }, { call, put }) {
       const result = yield call(delSubItemById, payload.params);
       if (result.code === 2000) {
         message.success('删除成功！');
         const response = yield call(getItemById, payload.param);
         if (response.code === 2000) {
           const getItemByIdData = response.data || [];
-          yield put({ type: 'getItemByIdSave', payload: { getItemById:getItemByIdData } });
+          yield put({ type: 'getItemByIdSave', payload: { getItemById: getItemByIdData } });
         } else {
           message.error(response.msg);
         }
@@ -139,18 +141,25 @@ export default {
       }
     },
 
-    *getItemById({ payload }, { call,put }) {
+    *getItemById({ payload }, { call, put }) {
       const result = yield call(getItemById, payload.params);
       if (result.code === 2000) {
         const getItemByIdData = result.data || [];
-        const {obtainedIcon='',originalIcon=''} = getItemByIdData
-        yield put({ type: 'getItemByIdSave', payload: { getItemById:getItemByIdData,fileList1:turnArrar(obtainedIcon,1),fileList2:turnArrar(originalIcon,2) } });
+        const { obtainedIcon = '', originalIcon = '' } = getItemByIdData;
+        yield put({
+          type: 'getItemByIdSave',
+          payload: {
+            getItemById: getItemByIdData,
+            fileList1: turnArrar(obtainedIcon, 1),
+            fileList2: turnArrar(originalIcon, 2),
+          },
+        });
       } else {
         message.error(result.msg);
       }
     },
 
-    *countItemByStatus({ payload }, { call ,put }) {
+    *countItemByStatus({ payload }, { call, put }) {
       const result = yield call(countItemByStatus, payload.countItemByStatusParams);
       if (result.code === 2000) {
         const countItemByStatusData = result.data || [];
@@ -170,17 +179,16 @@ export default {
     },
 
     *saveFileList({ payload }, { put }) {
-      const { type,fileList } = payload;
-      if(type===1){
-        const fileList1=fileList
-        yield put({ type: 'save', payload: { fileList1} });
-      }else{
-        const fileList2=fileList
-        yield put({ type: 'save', payload: { fileList2} });
+      const { type, fileList } = payload;
+      if (type === 1) {
+        const fileList1 = fileList;
+        yield put({ type: 'save', payload: { fileList1 } });
+      } else {
+        const fileList2 = fileList;
+        yield put({ type: 'save', payload: { fileList2 } });
       }
     },
   },
-
 
   reducers: {
     certificationListSave(state, action) {
@@ -210,6 +218,5 @@ export default {
     save(state, action) {
       return { ...state, ...action.payload };
     },
-
   },
 };
