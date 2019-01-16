@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, Upload, Modal,message } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, Upload, Modal, message } from 'antd';
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
 
@@ -15,54 +15,53 @@ class CertificationCreate_Form extends Component {
       previewImage1: '',
       previewVisible2: false,
       previewImage2: '',
-      fileList1:[],
-      fileList2:[],
-
+      fileList1: [],
+      fileList2: [],
     };
   }
   componentDidMount() {}
 
   handleSubmit = e => {
     e.preventDefault();
-    const {fileList1=[],fileList2=[]}=this.state;
-    const file1=fileList1.length;
-    const file2=fileList2.length
-    if(file1===0 || file2===0){
-      message.error('已获得或未获得图片是必传项，请选择！')
-    }else{
+    const { fileList1 = [], fileList2 = [] } = this.state;
+    const file1 = fileList1.length;
+    const file2 = fileList2.length;
+    if (file1 === 0 || file2 === 0) {
+      message.error('已获得或未获得图片是必传项，请选择！');
+    } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          this.props.handleSubmit(values,fileList1,fileList2);
+          this.props.handleSubmit(values, fileList1, fileList2);
         }
       });
     }
   };
 
-  deleteDispatch=(val=[],type=1)=>{
-    const {response={}}=val.length>0?val[0]:{}
-    const {data=null}=response
-    const params={type,picName:data}
+  deleteDispatch = (val = [], type = 1) => {
+    const { response = {} } = val.length > 0 ? val[0] : {};
+    const { data = null } = response;
+    const params = { type, picName: data };
     this.props.jumpFunction.dispatch({
       type: 'certification/delIcon',
       payload: { params },
     });
-  }
+  };
 
-  deleteIcon=(type=1)=>{
-    if(type===1){
-      this.deleteDispatch(this.state.fileList1,type)
-    }else{
-      this.deleteDispatch(this.state.fileList2,type)
+  deleteIcon = (type = 1) => {
+    if (type === 1) {
+      this.deleteDispatch(this.state.fileList1, type);
+    } else {
+      this.deleteDispatch(this.state.fileList2, type);
     }
-  }
+  };
   // 删除已获得认证图标
-  handleCancel1 = () =>{
-    this.setState({ previewVisible1: false});
-  }
+  handleCancel1 = () => {
+    this.setState({ previewVisible1: false });
+  };
   // 删除未获得认证图标
   handleCancel2 = () => {
-    this.setState({ previewVisible2: false});
-  }
+    this.setState({ previewVisible2: false });
+  };
 
   handlePreview1 = file => {
     this.setState({
@@ -77,36 +76,36 @@ class CertificationCreate_Form extends Component {
     });
   };
 
-  commonFun=(info={},type=1)=>{
-    const {fileList=[],file={}} = info
+  commonFun = (info = {}, type = 1) => {
+    const { fileList = [], file = {} } = info;
     if (file.response) {
       if (file.response.code === 2000) {
-        if(type===1){
+        if (type === 1) {
           this.setState({ fileList1: fileList });
-        }else{
+        } else {
           this.setState({ fileList2: fileList });
         }
       } else {
         message.error(file.response.msg);
       }
     }
-  }
-
-  handleChange1 = (info) => {
-    this.commonFun(info,1)
   };
 
-  handleChange2 = (info) => {
-    this.commonFun(info,2)
+  handleChange1 = info => {
+    this.commonFun(info, 1);
   };
 
-  beforeUpload=(file)=> {
+  handleChange2 = info => {
+    this.commonFun(info, 2);
+  };
+
+  beforeUpload = file => {
     const isPNG = file.type === 'image/png';
     if (!isPNG) {
       message.error('图片仅支持PNG格式!');
     }
     return isPNG;
-  }
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -145,9 +144,9 @@ class CertificationCreate_Form extends Component {
                         const reg = /^\d{3,6}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
                         if (!value) {
                           callback({ message: '排序为必填项，请填写!' });
-                        }else if (!reg.test(value) && value) {
+                        } else if (!reg.test(value) && value) {
                           callback({ message: '排序需要是3-6位数字组成，请修改！' });
-                        }else{
+                        } else {
                           callback();
                         }
                       },
@@ -168,7 +167,7 @@ class CertificationCreate_Form extends Component {
                         const reg = !value ? '' : value.replace(/\s*/g, '');
                         if (!reg) {
                           callback({ message: '认证项目为必填项，请填写!' });
-                        }else if (reg.length > 15) {
+                        } else if (reg.length > 15) {
                           callback({ message: '认证项目限制在15个字符之内，请修改!' });
                         } else {
                           callback();
@@ -212,7 +211,7 @@ class CertificationCreate_Form extends Component {
                       },
                     },
                   ],
-                })(<TextArea rows={4} style={{ width: '280px',height:'84px' }} />)}
+                })(<TextArea rows={4} style={{ width: '280px', height: '84px' }} />)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
@@ -222,11 +221,11 @@ class CertificationCreate_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value ) {
-                            callback({ message: '已获得认证图标为必填项，请上传！' });
-                        }else{
-                            callback();
-                          }
+                        if (!value) {
+                          callback({ message: '已获得认证图标为必填项，请上传！' });
+                        } else {
+                          callback();
+                        }
                       },
                     },
                   ],
@@ -239,8 +238,8 @@ class CertificationCreate_Form extends Component {
                       // fileList={fileList1}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
-                      data={{type:1}}
-                      onRemove={()=>this.deleteIcon(1)}
+                      data={{ type: 1 }}
+                      onRemove={() => this.deleteIcon(1)}
                     >
                       {Array.isArray(fileList1)
                         ? fileList1.length >= 1 ? null : uploadButton
@@ -271,7 +270,7 @@ class CertificationCreate_Form extends Component {
                       },
                     },
                   ],
-                })(<TextArea rows={4} style={{ width: '280px',height:'84px' }} />)}
+                })(<TextArea rows={4} style={{ width: '280px', height: '84px' }} />)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
@@ -283,7 +282,7 @@ class CertificationCreate_Form extends Component {
                       validator(rule, value, callback) {
                         if (!value) {
                           callback({ message: '未获得认证图标为必填项，请上传！' });
-                        }else{
+                        } else {
                           callback();
                         }
                       },
@@ -297,8 +296,8 @@ class CertificationCreate_Form extends Component {
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
-                      data={{type:2}}
-                      onRemove={()=>this.deleteIcon(2)}
+                      data={{ type: 2 }}
+                      onRemove={() => this.deleteIcon(2)}
                     >
                       {Array.isArray(fileList2)
                         ? fileList2.length >= 1 ? null : uploadButton

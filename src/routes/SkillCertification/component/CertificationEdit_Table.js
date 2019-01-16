@@ -17,13 +17,19 @@ class CertificationEdit_Table extends Component {
       clickFlag: 1, // 1为创建进入，2为编辑进入
       name: null, // 子项名称初始值
       collegeId: null, // 学院初始值
-      id:null, // 当编辑的时候，传入id子项目的值
+      id: null, // 当编辑的时候，传入id子项目的值
     };
   }
 
   // 编辑
   onEdit = key => {
-    this.setState({ visible: true, clickFlag: 2, name: key.name, collegeId: key.collegeId ,id:key.id});
+    this.setState({
+      visible: true,
+      clickFlag: 2,
+      name: key.name,
+      collegeId: key.collegeId,
+      id: key.id,
+    });
   };
   // 创建
   onCreate = () => {
@@ -40,22 +46,24 @@ class CertificationEdit_Table extends Component {
   }
 
   getData = values => {
-    const {clickFlag=1,id=1}=this.state
-    this.props.tableSubmit(values,clickFlag,id);
+    const { clickFlag = 1, id = 1 } = this.state;
+    this.props.tableSubmit(values, clickFlag, id);
     this.setDialogSHow(false);
   };
 
   // 初始化tabale 列数据
-  fillDataSource = (val,list) => {
+  fillDataSource = (val, list) => {
     const data = [];
-    val.map((item,index) =>
+    val.map((item, index) =>
       data.push({
         key: index,
-        id:item.id,
+        id: item.id,
         type: item.type,
         name: item.name,
-        college: list.find(subItem => subItem.collegeId === item.collegeId)?list.find(subItem => subItem.collegeId === item.collegeId).collegeName:null,
-        collegeId:item.collegeId,
+        college: list.find(subItem => subItem.collegeId === item.collegeId)
+          ? list.find(subItem => subItem.collegeId === item.collegeId).collegeName
+          : null,
+        collegeId: item.collegeId,
       })
     );
     return data;
@@ -123,17 +131,16 @@ class CertificationEdit_Table extends Component {
     });
   };
 
-
   render() {
     const columns = this.columnsData();
     const { visible = false, clickFlag = 1, name = null, collegeId = 1 } = this.state;
-    const {  collegeFlag,itemDetal,subItemFlag,certification} = this.props.dataSource;
+    const { collegeFlag, itemDetal, subItemFlag, certification } = this.props.dataSource;
     const { getItemByIdData = {} } = certification.getItemById;
-    const { collegeList = []}  = certification.findAllOrgList;
-    const {certificationSubItemList =[]} = getItemByIdData
+    const { collegeList = [] } = certification.findAllOrgList;
+    const { certificationSubItemList = [] } = getItemByIdData;
     const disabled = true;
     const formLayout = 'inline';
-    const dataSource = this.fillDataSource(certificationSubItemList,collegeList);
+    const dataSource = this.fillDataSource(certificationSubItemList, collegeList);
     const WrappedAdvancedSearchForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -161,10 +168,14 @@ class CertificationEdit_Table extends Component {
                     rules: [
                       {
                         validator(rule, value, callback) {
-                          if (!value) {
-                            callback({ message: '子项名称为必填项，请填写！' });
+                          const reg = !value ? '' : value.replace(/\s*/g, '');
+                          if (!reg) {
+                            callback({ message: '子项名称为必填项，请填写!' });
+                          } else if (reg.length > 15) {
+                            callback({ message: '子项名称限制在15个字符之内，请修改!' });
+                          } else {
+                            callback();
                           }
-                          callback();
                         },
                       },
                     ],
@@ -189,8 +200,8 @@ class CertificationEdit_Table extends Component {
                     ],
                   })(
                     <Select style={{ width: 280 }}>
-                      {collegeList.map((item) => (
-                        <Option value={Number(item.collegeId)} key={item.cpId} >
+                      {collegeList.map(item => (
+                        <Option value={Number(item.collegeId)} key={item.cpId}>
                           {item.collegeName}
                         </Option>
                       ))}
@@ -224,7 +235,7 @@ class CertificationEdit_Table extends Component {
         <Table
           style={{ marginTop: '24px' }}
           bordered
-          loading={itemDetal||collegeFlag}
+          loading={itemDetal || collegeFlag}
           dataSource={dataSource}
           columns={columns}
           pagination={false}
