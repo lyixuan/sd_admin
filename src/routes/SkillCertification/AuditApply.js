@@ -144,15 +144,15 @@ class AuditApply extends Component {
             </span>
             <span>
               组 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织：{signExamineInfo.orgName
-                ? `${signExamineInfo.orgName.collegeName}|${signExamineInfo.orgName.familyName}|${
-                    signExamineInfo.orgName.groupName
-                  }`
+                ? `${signExamineInfo.orgName.collegeName} | ${
+                    signExamineInfo.orgName.familyName
+                  } | ${signExamineInfo.orgName.groupName}`
                 : ''}
             </span>
           </div>
           <div style={{ margin: '26px 0 36px 18px', color: '#000' }}>
             <span style={{ width: 540, float: 'left' }}>归属地：{signExamineInfo.city}</span>
-            <span>报名日期：{moment(signExamineInfo.signDate).format('YYYY-MM-DD hh:mm:ss')}</span>
+            <span>报名日期：{moment(signExamineInfo.signDate).format('YYYY-MM-DD HH:mm:ss')}</span>
           </div>
           <div
             style={{

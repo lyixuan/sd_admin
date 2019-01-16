@@ -7,6 +7,16 @@ const { Option } = Select;
 const { MonthPicker } = DatePicker;
 const RadioGroup = Radio.Group;
 let propsVal = '';
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+  },
+};
 
 class AuditListForm extends Component {
   constructor(props) {
@@ -163,7 +173,7 @@ class AuditListForm extends Component {
       return (
         <Form layout={formLayout}>
           {this.props.modelType === 2 ? (
-            <FormItem label="底表类型">
+            <FormItem label="底表类型" {...formItemLayout}>
               {getFieldDecorator('exportTableType', {
                 initialValue: null,
                 rules: [{ required: true, message: '请选择底表类型' }],
@@ -179,7 +189,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {(this.props.modelType === 2 && this.canCycle) || this.props.modelType === 1 ? (
-            <FormItem label="考核周期">
+            <FormItem label="考核周期" {...formItemLayout}>
               {getFieldDecorator('assessCyc', {
                 initialValue: 1,
               })(
@@ -198,7 +208,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {(this.props.modelType === 1 || this.props.modelType === 2) && this.isMonth ? (
-            <FormItem label="报名月份">
+            <FormItem label="报名月份" {...formItemLayout}>
               {getFieldDecorator('monthRange', {
                 initialValue: null,
                 rules: [{ required: true, message: '请选择月份' }],
@@ -211,7 +221,7 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           ) : (this.props.modelType === 1 || this.props.modelType === 2) && !this.isMonth ? (
-            <FormItem label="报名季度">
+            <FormItem label="报名季度" {...formItemLayout}>
               {getFieldDecorator('quarterRange', {
                 initialValue: null,
                 rules: [{ required: true, message: '请选择季度' }],
@@ -244,7 +254,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="报名状态">
+            <FormItem label="报名状态" {...formItemLayout}>
               {getFieldDecorator('signStatus', {
                 initialValue: null,
               })(
@@ -266,7 +276,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="报名结果">
+            <FormItem label="报名结果" {...formItemLayout}>
               {getFieldDecorator('signResult', {
                 initialValue: null,
               })(
@@ -290,21 +300,21 @@ class AuditListForm extends Component {
 
           {/* 认证审核 */}
           {this.props.modelType === 3 ? (
-            <FormItem label="姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名">
+            <FormItem label="姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名" {...formItemLayout}>
               {getFieldDecorator('userName', {
                 initialValue: '',
               })(<div style={{ width: 230, height: 32 }}>{this.props.record.userName}</div>)}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
-            <FormItem label="认证项目">
+            <FormItem label="认证项目" {...formItemLayout}>
               {getFieldDecorator('orgName', {
                 initialValue: '',
               })(<div style={{ width: 250, height: 32 }}>{this.props.record.orgName}</div>)}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
-            <FormItem label="认证审核">
+            <FormItem label="*认证审核" {...formItemLayout}>
               {getFieldDecorator('result', {
                 initialValue: this.props.record.examineResult,
                 rules: [{ required: true, message: '请选择审核结果' }],
