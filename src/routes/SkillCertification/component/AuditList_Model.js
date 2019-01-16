@@ -192,6 +192,7 @@ class AuditListForm extends Component {
             <FormItem label="*考核周期" {...formItemLayout}>
               {getFieldDecorator('assessCyc', {
                 initialValue: 1,
+                rules: [{ required: true, message: '请选择' }],
               })(
                 <Select
                   placeholder="请选择考核周期"
@@ -254,7 +255,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="*报名状态" {...formItemLayout}>
+            <FormItem label="报名状态" {...formItemLayout}>
               {getFieldDecorator('signStatus', {
                 initialValue: null,
               })(
@@ -276,7 +277,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="*报名结果" {...formItemLayout}>
+            <FormItem label="报名结果" {...formItemLayout}>
               {getFieldDecorator('signResult', {
                 initialValue: null,
               })(
@@ -303,7 +304,7 @@ class AuditListForm extends Component {
             <FormItem label="姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名" {...formItemLayout}>
               {getFieldDecorator('userName', {
                 initialValue: '',
-              })(<div style={{ width: 230, height: 32 }}>{this.props.record.userName}</div>)}
+              })(<div style={{ width: 250, height: 32 }}>{this.props.record.userName}</div>)}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
@@ -319,7 +320,7 @@ class AuditListForm extends Component {
                 initialValue: this.props.record.examineResult,
                 rules: [{ required: true, message: '请选择审核结果' }],
               })(
-                <RadioGroup style={{ width: 230, height: 32 }}>
+                <RadioGroup style={{ width: 250, height: 32 }}>
                   <Radio value={1}>通过</Radio>
                   <Radio value={2}>不通过</Radio>
                 </RadioGroup>
