@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal,message } from 'antd';
+import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal, message } from 'antd';
 import common from '../../Common/common.css';
-import { uploadIcon } from "../../../services/api";
+import { uploadIcon } from '../../../services/api';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -16,44 +16,55 @@ class CertificationEdit_Form extends Component {
       previewImage1: '',
       previewVisible2: false,
       previewImage2: '',
-      fileList1:[],
-      fileList2:[],
+      fileList1: [],
+      fileList2: [],
     };
-    this.id=null;
+    this.id = null;
   }
 
   UNSAFE_componentWillReceiveProps(nexprops) {
-    if (nexprops.certification ){
-      if(JSON.stringify(nexprops.certification.fileList1)!==JSON.stringify(this.props.certification.fileList1)) {
-        const { fileList1} = this.nexprops.certification;
-        this.setState({fileList1})
+    if (nexprops.certification) {
+      if (
+        JSON.stringify(nexprops.certification.fileList1) !==
+        JSON.stringify(this.props.certification.fileList1)
+      ) {
+        const { fileList1 } = this.nexprops.certification;
+        this.setState({ fileList1 });
       }
-      if (JSON.stringify(nexprops.certification.fileList2)!==JSON.stringify(this.props.certification.fileList2)) {
-        const { fileList2} = this.nexprops.certification;
-        this.setState({fileList2})
+      if (
+        JSON.stringify(nexprops.certification.fileList2) !==
+        JSON.stringify(this.props.certification.fileList2)
+      ) {
+        const { fileList2 } = this.nexprops.certification;
+        this.setState({ fileList2 });
       }
     }
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    let {fileList1,fileList2}=this.state;
-    fileList1=fileList1.length===0?this.props.jumpFunction.certification.fileList1:fileList1;
-    fileList2=fileList2.length===0?this.props.jumpFunction.certification.fileList2:fileList2;
-    if(fileList1.length===0 || fileList2.length===0){
-      message.error('已获得或未获得图片是必传项，请选择！')
-    }else{
+    let { fileList1, fileList2 } = this.state;
+    fileList1 =
+      fileList1.length === 0 ? this.props.jumpFunction.certification.fileList1 : fileList1;
+    fileList2 =
+      fileList2.length === 0 ? this.props.jumpFunction.certification.fileList2 : fileList2;
+    if (fileList1.length === 0 || fileList2.length === 0) {
+      message.error('已获得或未获得图片是必传项，请选择！');
+    } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          this.props.handleSubmit(values,fileList1,fileList2);
+          this.props.handleSubmit(values, fileList1, fileList2);
         }
       });
     }
   };
 
-
-  handleCancel1 = () =>{this.setState({ previewVisible1: false});}
-  handleCancel2 = () => {this.setState({ previewVisible2: false});}
+  handleCancel1 = () => {
+    this.setState({ previewVisible1: false });
+  };
+  handleCancel2 = () => {
+    this.setState({ previewVisible2: false });
+  };
 
   handlePreview1 = file => {
     this.setState({
@@ -68,70 +79,72 @@ class CertificationEdit_Form extends Component {
     });
   };
 
-  commonFun=(info={},type=1)=>{
-    const {file={}} = info
+  commonFun = (info = {}, type = 1) => {
+    const { file = {} } = info;
     const oneList = info.fileList;
-   const fileList = oneList.slice(-1);
-    if(type===1){
+    const fileList = oneList.slice(-1);
+    if (type === 1) {
       this.setState({ fileList1: fileList });
-    }else{
+    } else {
       this.setState({ fileList2: fileList });
     }
     if (file.response) {
       if (file.response.code === 2000) {
-        this.props.saveFileList(fileList,type);
+        this.props.saveFileList(fileList, type);
       } else {
         message.error(file.response.msg);
       }
     }
-  }
+  };
 
-  handleChange1 = (info) => {this.commonFun(info,1)};
-  handleChange2 = (info) => {this.commonFun(info,2)};
+  handleChange1 = info => {
+    this.commonFun(info, 1);
+  };
+  handleChange2 = info => {
+    this.commonFun(info, 2);
+  };
 
-  beforeUpload=(file)=> {
+  beforeUpload = file => {
     const isPNG = file.type === 'image/png';
     if (!isPNG) {
       message.error('图片仅支持PNG格式!');
     }
     return isPNG;
-  }
+  };
 
-   wordFun=(text)=> {
+  wordFun = text => {
     return (
       <Button type="primary" className={common.submitButton} loading={false}>
         {text}图标
       </Button>
-    )
-  }
+    );
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { submit ,itemDetal} = this.props.jumpFunction;
-    const { getItemById = {}} = this.props.jumpFunction.certification;
-    const {orderNum = null,
+    const { submit, itemDetal } = this.props.jumpFunction;
+    const { getItemById = {} } = this.props.jumpFunction.certification;
+    const {
+      orderNum = null,
       name = null,
       code = null,
-      status=1,
-      enabledSubDefine=false,
-      assessCyc=1,
-      assessStyle=null,
-      assessStandard=null,
-      id=null,
-    } = getItemById
-    this.id=id;
+      status = 1,
+      enabledSubDefine = false,
+      assessCyc = 1,
+      assessStyle = null,
+      assessStandard = null,
+      id = null,
+    } = getItemById;
+    this.id = id;
     const disabled = true;
     const { TextArea } = Input;
-    const {
-      previewVisible1,
-      previewImage1,
-      previewVisible2,
-      previewImage2,
-    } = this.state;
-    const bol=true
-    let {fileList1,fileList2}= this.state;
-    fileList1=fileList1.length===0?this.props.jumpFunction.certification.fileList1:fileList1;
-    fileList2=fileList2.length===0?this.props.jumpFunction.certification.fileList2:fileList2;
+    const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
+    const bol = true;
+    let { fileList1, fileList2 } = this.state;
+    fileList1 =
+      fileList1.length === 0 ? this.props.jumpFunction.certification.fileList1 : fileList1;
+    fileList2 =
+      fileList2.length === 0 ? this.props.jumpFunction.certification.fileList2 : fileList2;
     const formLayout = 'inline';
     return (
       <Spin spinning={itemDetal}>
@@ -147,9 +160,9 @@ class CertificationEdit_Form extends Component {
                         const reg = /^\d{3,6}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
                         if (!value) {
                           callback({ message: '排序为必填项，请填写!' });
-                        }else if (!reg.test(value) && value) {
+                        } else if (!reg.test(value) && value) {
                           callback({ message: '排序需要是3-6位数字组成，请修改！' });
-                        }else{
+                        } else {
                           callback();
                         }
                       },
@@ -177,7 +190,7 @@ class CertificationEdit_Form extends Component {
                         const reg = !value ? '' : value.replace(/\s*/g, '');
                         if (!reg) {
                           callback({ message: '认证项目为必填项，请填写!' });
-                        }else if (reg.length > 15) {
+                        } else if (reg.length > 15) {
                           callback({ message: '认证项目限制在15个字符之内，请修改!' });
                         } else {
                           callback();
@@ -221,7 +234,7 @@ class CertificationEdit_Form extends Component {
                       },
                     },
                   ],
-                })(<TextArea rows={4} style={{ width: '280px',height:'84px' }} />)}
+                })(<TextArea rows={4} style={{ width: '280px', height: '84px' }} />)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
@@ -231,9 +244,9 @@ class CertificationEdit_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value ) {
+                        if (!value) {
                           callback({ message: '已获得认证图标为必填项，请上传！' });
-                        }else{
+                        } else {
                           callback();
                         }
                       },
@@ -248,8 +261,8 @@ class CertificationEdit_Form extends Component {
                       fileList={fileList1}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
-                      data={{type:1}}
-                      showUploadList={{showRemoveIcon:false}}
+                      data={{ type: 1 }}
+                      showUploadList={{ showRemoveIcon: false }}
                     >
                       {Array.isArray(fileList1)
                         ? fileList1.length >= 1 ? this.wordFun('更新') : this.wordFun('添加')
@@ -281,7 +294,7 @@ class CertificationEdit_Form extends Component {
                       },
                     },
                   ],
-                })(<TextArea rows={4} style={{ width: '280px',height:'84px' }} />)}
+                })(<TextArea rows={4} style={{ width: '280px', height: '84px' }} />)}
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
@@ -296,8 +309,8 @@ class CertificationEdit_Form extends Component {
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
-                      data={{type:2}}
-                      showUploadList={{showRemoveIcon:false}}
+                      data={{ type: 2 }}
+                      showUploadList={{ showRemoveIcon: false }}
                       fileList={fileList2}
                     >
                       {Array.isArray(fileList2)
@@ -317,7 +330,7 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;是否停用">
                 {getFieldDecorator('isDisable', {
-                  initialValue: status===3?bol:false,
+                  initialValue: status === 3 ? bol : false,
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
