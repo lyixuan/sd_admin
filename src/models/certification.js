@@ -59,17 +59,11 @@ export default {
       }
     },
     *certificationDelete({ payload }, { call, put }) {
-      // const result = yield call(userDelete, payload.userDeleteParams);
       const result = yield call(certificationDelete, payload.certificationDeleteParams);
       if (result.code === 2000) {
         message.success('删除成功！');
-        const response = yield call(certificationList, payload.certificationListParams);
-        if (response.code === 2000) {
-          const certificationListData = response.data || [];
-          yield put({ type: 'certificationListSave', payload: { certificationListData } });
-        } else {
-          message.error(response.msg);
-        }
+        const { certificationListParams } = payload;
+        yield put({ type: 'certificationList', payload: { certificationListParams } });
       } else {
         message.error(result.msg);
       }
@@ -78,13 +72,10 @@ export default {
     *certificationModify({ payload }, { call, put }) {
       const result = yield call(certificationModify, payload.certificationModifyParams);
       if (result.code === 2000) {
-        const response = yield call(certificationList, payload.certificationListParams);
-        if (response.code === 2000) {
-          const certificationListData = response.data || [];
-          yield put({ type: 'certificationListSave', payload: { certificationListData } });
-        } else {
-          message.error(response.msg);
-        }
+        const { certificationListParams } = payload;
+        yield put({ type: 'certificationList', payload: { certificationListParams } });
+        const countItemByStatusParams = {};
+        yield put({ type: 'countItemByStatus', payload: { countItemByStatusParams } });
       } else {
         message.error(result.msg);
       }
@@ -113,13 +104,8 @@ export default {
     *saveOrModifySubItem({ payload }, { call, put }) {
       const addPositionData = yield call(saveOrModifySubItem, payload.saveOrModifySubItemParams);
       if (addPositionData.code === 2000) {
-        const response = yield call(getItemById, payload.params);
-        if (response.code === 2000) {
-          const getItemByIdData = response.data || [];
-          yield put({ type: 'getItemByIdSave', payload: { getItemById: getItemByIdData } });
-        } else {
-          message.error(response.msg);
-        }
+        const { params } = payload;
+        yield put({ type: 'getItemById', payload: { params } });
       } else {
         message.error(addPositionData.msg);
       }
@@ -129,13 +115,8 @@ export default {
       const result = yield call(delSubItemById, payload.params);
       if (result.code === 2000) {
         message.success('删除成功！');
-        const response = yield call(getItemById, payload.param);
-        if (response.code === 2000) {
-          const getItemByIdData = response.data || [];
-          yield put({ type: 'getItemByIdSave', payload: { getItemById: getItemByIdData } });
-        } else {
-          message.error(response.msg);
-        }
+        const { params } = payload;
+        yield put({ type: 'getItemById', payload: { params } });
       } else {
         message.error(result.msg);
       }

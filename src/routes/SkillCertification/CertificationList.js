@@ -115,7 +115,6 @@ class CertificationList extends Component {
       type: 'certification/certificationModify',
       payload: { certificationModifyParams, certificationListParams },
     });
-    this.getNum();
     this.setState({ selectedRowKeys: [] });
   };
   // 批量开放/关闭报名   1是批量开放，2是批量关闭
@@ -164,7 +163,6 @@ class CertificationList extends Component {
       type: 'certification/certificationModify',
       payload: { certificationModifyParams, certificationListParams },
     });
-    this.getNum();
     this.setDialogSHow(1, false);
   };
   // 删除模态框回显
@@ -175,7 +173,6 @@ class CertificationList extends Component {
       type: 'certification/certificationDelete',
       payload: { certificationDeleteParams, certificationListParams },
     });
-    this.getNum();
     this.setDialogSHow(2, false);
   };
 
@@ -431,7 +428,7 @@ class CertificationList extends Component {
       </>
     );
     return (
-      <Spin spinning={itemNum}>
+      <>
         <ContentLayout
           routerData={this.props.routerData}
           contentForm={<WrappedAdvancedSearchForm />}
@@ -470,7 +467,7 @@ class CertificationList extends Component {
             </>
           }
           contentTable={
-            <>
+            <Spin spinning={itemNum}>
               <p className={common.totalNum}>
                 <span className={common.totalNumLeft}>已开放:{open}</span>
                 <span className={common.totalNumRight}>已关闭:{close}</span>
@@ -484,7 +481,7 @@ class CertificationList extends Component {
                 className={common.tableContentStyle}
                 rowSelection={rowSelection}
               />
-            </>
+            </Spin>
           }
           contentPagination={
             <SelfPagination
@@ -523,7 +520,7 @@ class CertificationList extends Component {
             this.setDialogSHow(2, bol);
           }}
         />
-      </Spin>
+      </>
     );
   }
 }

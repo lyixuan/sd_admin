@@ -241,17 +241,6 @@ class CertificationEdit_Form extends Component {
               <FormItem label="*已获得认证图标">
                 {getFieldDecorator('obtainedIcon', {
                   initialValue: null,
-                  rules: [
-                    {
-                      validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '已获得认证图标为必填项，请上传！' });
-                        } else {
-                          callback();
-                        }
-                      },
-                    },
-                  ],
                 })(
                   <div style={{ width: '280px', textAlign: 'left' }}>
                     <Upload
