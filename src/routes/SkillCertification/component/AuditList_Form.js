@@ -28,6 +28,7 @@ class AuditListForm extends Component {
       signResult: null,
       examineStatus: null,
       examineResult: null,
+      certificationItemId: null,
     };
     // 搜索还原
     const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
@@ -375,6 +376,9 @@ class AuditListForm extends Component {
                 initialValue: this.state.certificationItemId,
               })(
                 <Select placeholder="请选择认证项目" style={{ width: 230, height: 32 }} allowClear>
+                  <Option value={null} key={null}>
+                    全部
+                  </Option>
                   {this.certificationList.map(item => (
                     <Option value={item.id} key={item.name}>
                       {item.name}

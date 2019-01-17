@@ -57,14 +57,19 @@ class AuditApply extends Component {
 
   handleSubmit = () => {
     const params = { checkResultList: [] };
+    let flag = 0;
     this.signExamineList.forEach(v => {
       if (!v.signResult) {
         message.warn('请选择审核结果');
-        return;
+        flag = 1;
       }
       if (v.signResult === 2 && !v.rejectReason) {
         message.warn('请填写驳回原因');
-        return;
+        flag = 1;
+      }
+      if (v.rejectReason && v.rejectReason.length > 50) {
+        message.warn('驳回原因字数超限');
+        flag = 1;
       }
       params.checkResultList.push({
         certificationDetailInfoId: v.certificationDetailInfoId,
@@ -72,6 +77,9 @@ class AuditApply extends Component {
         result: v.signResult,
       });
     });
+    if (flag) {
+      return;
+    }
     this.props.dispatch({
       type: 'audit/submitSignResult',
       payload: { params },
@@ -112,7 +120,7 @@ class AuditApply extends Component {
                 <TextArea
                   onChange={e => this.onReasonChange(e, i)}
                   value={this.signExamineList[i].rejectReason}
-                  placeholder="请填写驳回原因"
+                  placeholder="请填写驳回原因，限制50字内。"
                   autosize={{ minRows: 3, maxRows: 3 }}
                 />
               </span>
