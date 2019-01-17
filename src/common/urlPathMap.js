@@ -70,5 +70,8 @@ const urlPathMap = {
   '/skillCertification/certificationClose': {
     name: '认证关闭报名',
   },
+  '/appeal/scoreAdjustDel': {
+    name: '删除学分调整',
+  },
 };
 export { urlPathMap };

@@ -1,16 +1,21 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form } from 'antd';
-import { routerRedux } from 'dva/router';
+import { Table, Button, Form, Popconfirm, Popover, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import AuditListForm from './component/ScoreAdjustList_Form';
-import AuditListModel from './component/ScoreAdjustList_Model';
 import common from '../Common/common.css';
-//
+import style from './score.css';
+
 const SearchForm = Form.create()(AuditListForm);
+const contentDel = (
+  <div style={{ marginBottom: '-15px' }}>
+    <p>是否确认删除该条数据？</p>
+    <p>记得联系产研一组产品经理刷新缓存后生效哦</p>
+  </div>
+);
 
 @connect(({ audit, loading }) => ({
   audit,
@@ -23,10 +28,7 @@ class ScoreAdjustList extends Component {
     this.pageSize = 30;
     this.params = {};
     this.oriSearchParams = {};
-    this.state = {
-      modelType: '',
-      title: '',
-    };
+    this.state = {};
   }
 
   UNSAFE_componentWillMount() {
@@ -40,66 +42,24 @@ class ScoreAdjustList extends Component {
       payload: { params },
     });
   }
-  // 审核记录
-  onRecord = val => {
-    this.props.setRouteUrlParams('/skillCertification/auditRecord', {
-      userId: val.userId,
-    });
+  // 添加调整
+  onCreate = () => {
+    this.props.setRouteUrlParams('/appeal/scoreAdjustCreate', {});
     sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
   };
 
-  // 报名审核
-  onSign = val => {
-    this.props.setRouteUrlParams('/skillCertification/auditApply', {
+  // 编辑调整
+  onEdit = val => {
+    this.props.setRouteUrlParams('/appeal/scoreAdjustEdit', {
       certificationInfoId: val.certificationInfoId,
     });
     sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
   };
 
-  // 导入认证
-  importExcel = () => {
-    this.props.dispatch(routerRedux.push('/skillCertification/auditImport'));
-    sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
-  };
-
-  showModal = (t, record) => {
-    this.setState({
-      modelType: t,
-      title: t === 1 ? '发布认证' : t === 2 ? '导出底表' : '认证审核',
-    });
-    this.props.dispatch({
-      type: 'audit/showModel',
-      payload: { visible: true },
-    });
-    this.record = record;
-  };
-
-  handleOk = params => {
-    if (this.state.modelType === 2) {
-      this.props.dispatch({
-        type: 'audit/exportBottomTable',
-        payload: { params },
-      });
-    }
-    if (this.state.modelType === 1) {
-      this.props.dispatch({
-        type: 'audit/auditPublish',
-        payload: { params, callbackParams: this.params },
-      });
-    }
-    if (this.state.modelType === 3) {
-      this.props.dispatch({
-        type: 'audit/submitExamineResult',
-        payload: { params, callbackParams: this.params },
-      });
-    }
-  };
-
-  handleCancel = () => {
-    this.props.dispatch({
-      type: 'audit/showModel',
-      payload: { visible: false },
-    });
+  // 删除
+  onDel = val => {
+    console.log(val);
+    message.success('Click on Yes');
   };
 
   // 表单搜索函数
@@ -129,78 +89,73 @@ class ScoreAdjustList extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '编号',
+        title: '序号',
         dataIndex: 'certificationInfoId',
       },
       {
-        title: '姓名',
+        title: '学分日期',
         dataIndex: 'userName',
       },
       {
-        title: '组织',
+        title: '调整类型',
         dataIndex: 'orgName',
       },
       {
-        title: '认证项目',
+        title: '均分',
         dataIndex: 'certificationItemName',
       },
       {
-        title: '考核周期',
+        title: '调整级别',
         dataIndex: 'assessCycStr',
       },
       {
-        title: '报名月份',
+        title: '调整组织',
         dataIndex: 'applyTimeMonth',
       },
       {
-        title: '报名状态',
+        title: '操作人',
         dataIndex: 'signStatusStr',
       },
       {
-        title: '报名结果',
+        title: '更新时间',
         dataIndex: 'signResultStr',
-      },
-      {
-        title: '认证状态',
-        dataIndex: 'examineStatusStr',
-      },
-      {
-        title: '认证结果',
-        dataIndex: 'examineResultStr',
       },
       {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
           return (
-            <div>
-              {record.signStatus === 1 && (
-                <AuthorizedButton authority="/skillCertification/auditApply">
-                  <span
-                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onSign(record)}
-                  >
-                    报名审核
-                  </span>
-                </AuthorizedButton>
-              )}
-              {record.signResult === 1 && (
-                <AuthorizedButton authority="/skillCertification/auditCertify">
-                  <span
-                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.showModal(3, record)}
-                  >
-                    认证审核
-                  </span>
-                </AuthorizedButton>
-              )}
-              <AuthorizedButton authority="/skillCertification/auditRecord">
-                <span
-                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                  onClick={() => this.onRecord(record)}
-                >
-                  审核记录
+            <div className="scoreAdjust">
+              <Popover
+                content={
+                  <div className={style.bline}>
+                    尚德经历尚德经历尚德经历 \n 数据代理洒djd到家了时间的家连锁店
+                  </div>
+                }
+                trigger="click"
+              >
+                <span style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}>
+                  查看备注
                 </span>
+              </Popover>
+              {record.signResult === 1 && (
+                <AuthorizedButton authority="/appeal/scoreAdjustEdit">
+                  <span
+                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                    onClick={() => this.onEdit(record)}
+                  >
+                    编辑
+                  </span>
+                </AuthorizedButton>
+              )}
+              <AuthorizedButton authority="/appeal/scoreAdjustDel">
+                <Popconfirm
+                  placement="topRight"
+                  title={contentDel}
+                  onConfirm={() => this.onDel(record)}
+                >
+                  <span style={{ color: '#52C9C2', cursor: 'pointer' }}>删除</span>
+                </Popconfirm>
               </AuthorizedButton>
             </div>
           );
@@ -227,32 +182,13 @@ class ScoreAdjustList extends Component {
         }
         contentButton={
           <div style={{ marginTop: 15 }}>
-            <AuthorizedButton authority="/skillCertification/exportTable">
+            <AuthorizedButton authority="/appeal/scoreAdjustCreate">
               <Button
-                onClick={() => this.showModal(2)}
-                type="primary"
-                className={common.deleteQualityButton}
-              >
-                导出底表
-              </Button>
-            </AuthorizedButton>
-            <AuthorizedButton authority="/skillCertification/auditImport">
-              <Button
-                onClick={this.importExcel}
-                type="primary"
-                className={common.addQualityButton}
-                style={{ marginLeft: 10 }}
-              >
-                导入认证
-              </Button>
-            </AuthorizedButton>
-            <AuthorizedButton authority="/skillCertification/certificationPublish">
-              <Button
-                onClick={() => this.showModal(1)}
+                onClick={() => this.onCreate()}
                 type="primary"
                 className={common.createButton}
               >
-                发布认证
+                添加调整
               </Button>
             </AuthorizedButton>
           </div>
@@ -280,16 +216,7 @@ class ScoreAdjustList extends Component {
             total={totalElements}
           />
         }
-      >
-        <AuditListModel
-          title={this.state.title}
-          visible={this.props.audit.visible}
-          modelType={this.state.modelType}
-          record={this.record}
-          onOk={params => this.handleOk(params)}
-          onCancel={this.handleCancel}
-        />
-      </ContentLayout>
+      />
     );
   }
 }

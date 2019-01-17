@@ -78,13 +78,11 @@
 :global(.ant-popover-inner-content){
   padding: 28px 24px !important;
   width: 356px;
-  height: 136px;
 }
 
 :global(.ant-popover-message) {
   font-size: 14px;
   color: #262626;
-  width: 170px;
 }
 :global(.ant-popover-buttons) {
   text-align: right;
