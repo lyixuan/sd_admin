@@ -80,6 +80,7 @@ class CreateUser extends Component {
       idCard: values.idCard,
       sex: values.sex,
       roleId: Number(values.roleId),
+      city: values.city,
       scoreView,
       privilegeView,
       endView,
