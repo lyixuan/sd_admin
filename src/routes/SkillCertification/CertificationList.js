@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import moment from 'moment/moment';
 import { assignUrlParams } from 'utils/utils';
-import { Table, Button, Form, Row, Col, Select, message } from 'antd';
+import { Table, Button, Form, Row, Col, Select, message, Spin } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -20,7 +20,7 @@ const dateFormat = 'YYYY-MM-DD HH:mm:ss  ';
 @connect(({ certification, loading }) => ({
   certification,
   loading: loading.effects['certification/certificationList'],
-  // itemNum: loading.effects['certification/countItemByStatus'],
+  itemNum: loading.effects['certification/countItemByStatus'],
 }))
 class CertificationList extends Component {
   constructor(props) {
@@ -45,11 +45,7 @@ class CertificationList extends Component {
 
   // 页面render之前需要请求的接口
   componentDidMount() {
-    const params = {};
-    this.props.dispatch({
-      type: 'certification/countItemByStatus',
-      payload: { params },
-    });
+    this.getNum();
     this.getData();
   }
 
@@ -69,7 +65,6 @@ class CertificationList extends Component {
   };
 
   onSelectChange = (selectedRowKeys, arrayList) => {
-    console.log(selectedRowKeys);
     this.setState({ selectedRows: arrayList, selectedRowKeys });
   };
 
@@ -89,6 +84,14 @@ class CertificationList extends Component {
       payload: { certificationListParams },
     });
     this.saveParams(certificationListParams);
+  };
+
+  getNum = () => {
+    const params = {};
+    this.props.dispatch({
+      type: 'certification/countItemByStatus',
+      payload: { params },
+    });
   };
 
   stringToBoolean = str => {
@@ -112,6 +115,7 @@ class CertificationList extends Component {
       type: 'certification/certificationModify',
       payload: { certificationModifyParams, certificationListParams },
     });
+    this.getNum();
     this.setState({ selectedRowKeys: [] });
   };
   // 批量开放/关闭报名   1是批量开放，2是批量关闭
@@ -160,6 +164,7 @@ class CertificationList extends Component {
       type: 'certification/certificationModify',
       payload: { certificationModifyParams, certificationListParams },
     });
+    this.getNum();
     this.setDialogSHow(1, false);
   };
   // 删除模态框回显
@@ -170,6 +175,7 @@ class CertificationList extends Component {
       type: 'certification/certificationDelete',
       payload: { certificationDeleteParams, certificationListParams },
     });
+    this.getNum();
     this.setDialogSHow(2, false);
   };
 
@@ -180,8 +186,16 @@ class CertificationList extends Component {
       if (!err) {
         const { assessCyc = null, status = null } = values;
         const certificationListParams = {
-          assessCyc: assessCyc ? Number(assessCyc) : undefined,
-          status: status ? Number(status) : undefined,
+          assessCyc: assessCyc
+            ? Number(assessCyc)
+              ? Number(assessCyc)
+              : Number(window.BI_Filter(`Certification_TIMEAREA|name:${assessCyc}`).id)
+            : undefined,
+          status: status
+            ? Number(status)
+              ? Number(status)
+              : Number(window.BI_Filter(`Certification_TYPE|name:${status}`).id)
+            : undefined,
           pageSize: 30,
           pageNum: 0,
         };
@@ -306,7 +320,7 @@ class CertificationList extends Component {
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading, itemNum } = this.props;
     const {
       selectedRows = [],
       visible = false,
@@ -417,7 +431,7 @@ class CertificationList extends Component {
       </>
     );
     return (
-      <>
+      <Spin spinning={itemNum}>
         <ContentLayout
           routerData={this.props.routerData}
           contentForm={<WrappedAdvancedSearchForm />}
@@ -509,7 +523,7 @@ class CertificationList extends Component {
             this.setDialogSHow(2, bol);
           }}
         />
-      </>
+      </Spin>
     );
   }
 }
