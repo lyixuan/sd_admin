@@ -447,8 +447,8 @@
 }
 :global(.ant-upload.ant-upload-select-picture-card){
   border: none !important;
-  width: 80px !important;
-  height: 32px !important;
+  width: 84px !important;
+  height: 84px !important;
   border-radius: 0 !important;
   background-color: #fff !important;
 }
@@ -460,6 +460,16 @@
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
+}
+:global(.ant-upload-list){
+  position: relative !important;
+  top: 0 !important;
+  width: 84px !important;
+  background: none !important;
+}
+
+:global(.ant-upload.ant-upload-select-picture-card),:global(.ant-upload) {
+  vertical-align: inherit !important;
 }
 
 .openType{

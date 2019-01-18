@@ -49,7 +49,7 @@ class CertificationEdit_Form extends Component {
     fileList2 =
       fileList2.length === 0 ? this.props.jumpFunction.certification.fileList2 : fileList2;
     if (fileList1.length === 0 || fileList2.length === 0) {
-      message.error('已获得或未获得图片是必传项，请选择！');
+      message.error('已获得或未获得图片是必传项，图片仅支持PNG格式，请重新选择！');
     } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {

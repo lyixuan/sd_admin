@@ -12,14 +12,9 @@ import {
   getItemById,
   countItemByStatus,
   delIcon,
-  // uploadIcon,
 } from '../services/api';
 
-const hostObj = {
-  production: 'http://bd.ministudy.com/apis',
-  development: 'http://172.16.117.65',
-};
-export const HOST = hostObj[process.env.API_TYPE];
+/* global UPLOAD_HOST */
 
 const turnArrar = (val, type) => {
   const fileList = val
@@ -27,7 +22,7 @@ const turnArrar = (val, type) => {
         {
           uid: type,
           name: 'test.png',
-          url: `${HOST}${val}`,
+          url: `${UPLOAD_HOST}${val}`,
           response: { data: val },
         },
       ]
