@@ -19,7 +19,6 @@ class CertificationCreate_Form extends Component {
       fileList2: [],
     };
   }
-  componentDidMount() {}
 
   handleSubmit = e => {
     e.preventDefault();
@@ -27,7 +26,7 @@ class CertificationCreate_Form extends Component {
     const file1 = fileList1.length;
     const file2 = fileList2.length;
     if (file1 === 0 || file2 === 0) {
-      message.error('已获得或未获得图片是必传项，请选择！');
+      message.error('已获得或未获得图片是必传项，图片仅支持PNG格式，请重新选择！');
     } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
