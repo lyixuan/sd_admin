@@ -145,26 +145,21 @@ class AuditListForm extends Component {
           result: values.result,
         };
         this.props.onOk(params);
-        this.isMonth = true;
-        this.canSignResult = false;
-        this.canSignState = false;
-        this.canSignResult = false;
-        this.quarter = '';
       }
     });
   };
 
   handleCancel = () => {
-    this.isMonth = true;
-    this.canSignResult = false;
-    this.canSignResult = false;
-    this.canSignState = false;
-    this.quarter = '';
     this.props.onCancel();
     propsVal.form.resetFields();
   };
 
   render() {
+    this.isMonth = true;
+    this.canSignResult = false;
+    this.canSignState = false;
+    this.canSignResult = false;
+    this.quarter = '';
     propsVal && propsVal.form.resetFields();
     const ModalForm = Form.create()(props => {
       propsVal = props;
