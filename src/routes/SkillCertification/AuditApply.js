@@ -88,7 +88,7 @@ class AuditApply extends Component {
 
   render() {
     const { loading } = this.props;
-    const { signExamineInfo, signExamineList } = this.props.audit;
+    const { signExamineInfo, signExamineList, applySubmitting } = this.props.audit;
     this.signExamineList = signExamineList;
     const item = this.signExamineList.map((v, i) => (
       <div key={v.certificationDetailInfoId}>
@@ -181,6 +181,7 @@ class AuditApply extends Component {
             type="primary"
             style={{ float: 'right', marginBottom: 15 }}
             className={common.createButton}
+            loading={applySubmitting}
           >
             提交
           </Button>

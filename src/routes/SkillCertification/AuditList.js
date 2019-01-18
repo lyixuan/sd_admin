@@ -213,6 +213,7 @@ class AuditList extends Component {
   render() {
     const { loading } = this.props;
     const { content, totalElements } = this.props.audit.auditList;
+    const { publicSubmitting } = this.props.audit;
 
     return (
       <ContentLayout
@@ -286,6 +287,7 @@ class AuditList extends Component {
           visible={this.props.audit.visible}
           modelType={this.state.modelType}
           record={this.record}
+          publicSubmitting={publicSubmitting}
           onOk={params => this.handleOk(params)}
           onCancel={this.handleCancel}
         />

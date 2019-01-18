@@ -304,14 +304,14 @@ class AuditListForm extends Component {
             <FormItem label="姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名" {...formItemLayout}>
               {getFieldDecorator('userName', {
                 initialValue: '',
-              })(<div style={{ width: 250, height: 32 }}>{this.props.record.userName}</div>)}
+              })(<div style={{ width: 280, height: 32 }}>{this.props.record.userName}</div>)}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
             <FormItem label="认证项目" {...formItemLayout}>
               {getFieldDecorator('orgName', {
                 initialValue: '',
-              })(<div style={{ width: 250, height: 32 }}>{this.props.record.orgName}</div>)}
+              })(<div style={{ width: 280, height: 32 }}>{this.props.record.orgName}</div>)}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
@@ -320,7 +320,7 @@ class AuditListForm extends Component {
                 initialValue: this.props.record.examineResult,
                 rules: [{ required: true, message: '请选择审核结果' }],
               })(
-                <RadioGroup style={{ width: 250, height: 32 }}>
+                <RadioGroup style={{ width: 280, height: 32 }}>
                   <Radio value={1}>通过</Radio>
                   <Radio value={2}>不通过</Radio>
                 </RadioGroup>
@@ -338,6 +338,7 @@ class AuditListForm extends Component {
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
+        confirmLoading={this.props.publicSubmitting}
       >
         <ModalForm style={{ margin: 'auto' }} />
       </Modal>

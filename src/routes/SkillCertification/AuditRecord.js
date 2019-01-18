@@ -90,6 +90,7 @@ class AuditRecord extends Component {
         }
         contentTable={
           <div>
+            <p className={common.totalNum}>总数：{logList.length}条</p>
             <Table
               rowKey={record => record.signExamineTime}
               bordered
