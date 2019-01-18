@@ -155,12 +155,14 @@ class AuditListForm extends Component {
   };
 
   render() {
-    this.isMonth = true;
-    this.canSignResult = false;
-    this.canSignState = false;
-    this.canSignResult = false;
-    this.quarter = '';
-    propsVal && propsVal.form.resetFields();
+    const { visible } = this.props;
+    if (!visible) {
+      this.isMonth = true;
+      this.canSignResult = false;
+      this.canSignState = false;
+      this.quarter = '';
+      propsVal && propsVal.form.resetFields();
+    }
     const ModalForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
