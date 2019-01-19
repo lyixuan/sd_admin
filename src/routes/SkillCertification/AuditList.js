@@ -228,7 +228,7 @@ class AuditList extends Component {
           />
         }
         contentButton={
-          <div style={{ marginTop: 15 }}>
+          <div>
             <AuthorizedButton authority="/skillCertification/exportTable">
               <Button
                 onClick={() => this.showModal(2)}

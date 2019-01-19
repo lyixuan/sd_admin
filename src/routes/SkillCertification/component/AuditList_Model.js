@@ -311,7 +311,11 @@ class AuditListForm extends Component {
             <FormItem label="&nbsp;&nbsp;认证项目" {...formItemLayout}>
               {getFieldDecorator('orgName', {
                 initialValue: '',
-              })(<div style={{ width: 280, height: 32 }}>{this.props.record.orgName}</div>)}
+              })(
+                <div style={{ width: 280, height: 32 }}>
+                  {this.props.record.certificationItemName}
+                </div>
+              )}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (

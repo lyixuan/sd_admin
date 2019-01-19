@@ -83,7 +83,7 @@ class AuditRecord extends Component {
       <ContentLayout
         routerData={this.props.routerData}
         contentButton={
-          <div style={{ marginTop: 15, color: '#000', marginBottom: 30 }}>
+          <div style={{ marginTop: 15, color: '#000', marginBottom: 8 }}>
             <span>姓名：{this.props.audit.logData.userName}</span>
             <span style={{ marginLeft: 400 }}>组织：{this.props.audit.logData.organization}</span>
           </div>
