@@ -252,7 +252,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="报名状态" {...formItemLayout}>
+            <FormItem label="&nbsp;&nbsp;报名状态" {...formItemLayout}>
               {getFieldDecorator('signStatus', {
                 initialValue: null,
               })(
@@ -274,7 +274,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="报名结果" {...formItemLayout}>
+            <FormItem label="&nbsp;&nbsp;报名结果" {...formItemLayout}>
               {getFieldDecorator('signResult', {
                 initialValue: null,
               })(
@@ -298,14 +298,17 @@ class AuditListForm extends Component {
 
           {/* 认证审核 */}
           {this.props.modelType === 3 ? (
-            <FormItem label="姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名" {...formItemLayout}>
+            <FormItem
+              label="&nbsp;&nbsp;姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名"
+              {...formItemLayout}
+            >
               {getFieldDecorator('userName', {
                 initialValue: '',
               })(<div style={{ width: 280, height: 32 }}>{this.props.record.userName}</div>)}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
-            <FormItem label="认证项目" {...formItemLayout}>
+            <FormItem label="&nbsp;&nbsp;认证项目" {...formItemLayout}>
               {getFieldDecorator('orgName', {
                 initialValue: '',
               })(<div style={{ width: 280, height: 32 }}>{this.props.record.orgName}</div>)}
