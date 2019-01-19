@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal, message } from 'antd';
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
+import styles from '../certification.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -242,7 +243,7 @@ class CertificationEdit_Form extends Component {
                 {getFieldDecorator('obtainedIcon', {
                   initialValue: null,
                 })(
-                  <div style={{ width: '280px', textAlign: 'left' }}>
+                  <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"
@@ -291,7 +292,7 @@ class CertificationEdit_Form extends Component {
                 {getFieldDecorator('originalIcon', {
                   initialValue: null,
                 })(
-                  <div style={{ width: '280px', textAlign: 'left' }}>
+                  <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"

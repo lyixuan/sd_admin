@@ -34,7 +34,38 @@
 .u_circleImg{
   width: 20px;
 }
+.divContent{
+  width: 280px;
+  text-align: left
+}
+
 
 :global(.ant-checkbox-indeterminate .ant-checkbox-inner:after) {
   opacity: 0 !important;
+}
+
+:global(.ant-upload-list-picture-card .ant-upload-list-item){
+  width: 84px !important;
+  height: 84px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+:global(.ant-upload-list){
+  position: relative !important;
+  top: 0 !important;
+  width: 84px !important;
+  background: none !important;
+}
+
+:global(.ant-upload.ant-upload-select-picture-card),:global(.ant-upload) {
+  vertical-align: inherit !important;
+}
+
+:global(.ant-upload.ant-upload-select-picture-card){
+  border: none !important;
+  width: 84px !important;
+  height: 84px !important;
+  border-radius: 0 !important;
+  background-color: #fff !important;
 }

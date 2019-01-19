@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Spin, Upload, Modal, message } from 'antd';
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
+import styles from '../certification.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -229,7 +230,7 @@ class CertificationCreate_Form extends Component {
                     },
                   ],
                 })(
-                  <div style={{ width: '280px', textAlign: 'left' }}>
+                  <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"
@@ -288,7 +289,7 @@ class CertificationCreate_Form extends Component {
                     },
                   ],
                 })(
-                  <div style={{ width: '280px', textAlign: 'left' }}>
+                  <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"
