@@ -58,7 +58,7 @@
   background: none !important;
 }
 
-.divContent :global(.ant-upload.ant-upload-select-picture-card),:global(.ant-upload) {
+.divContent :global(.ant-upload.ant-upload-select-picture-card),.divContent :global(.ant-upload) {
   vertical-align: inherit !important;
 }
 
