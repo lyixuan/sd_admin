@@ -171,7 +171,7 @@ class AuditList extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
-        width: 165,
+        width: 163,
         render: (text, record) => {
           return (
             <div>

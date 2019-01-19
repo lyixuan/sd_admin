@@ -96,7 +96,7 @@ class AuditApply extends Component {
           <span>认证项目：{v.certificationName}</span>
         </div>
         {v.subItemName ? (
-          <div style={{ margin: '25px 0 20px 18px', color: '#000' }}>
+          <div style={{ margin: '0 0 20px 18px', color: '#000' }}>
             <span>负责专业项目：{v.subItemName}</span>
           </div>
         ) : null}
