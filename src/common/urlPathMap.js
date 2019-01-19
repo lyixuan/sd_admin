@@ -52,5 +52,23 @@ const urlPathMap = {
   '/bottomTable/downloadAllBottomTable': {
     name: '下载全部底表',
   },
+  '/skillCertification/auditCertify': {
+    name: '认证审核',
+  },
+  '/skillCertification/exportTable': {
+    name: '导出底表',
+  },
+  '/skillCertification/certificationPublish': {
+    name: '发布认证',
+  },
+  '/skillCertification/certificationDelete': {
+    name: '认证删除',
+  },
+  '/skillCertification/certificationOpen': {
+    name: '认证开放报名',
+  },
+  '/skillCertification/certificationClose': {
+    name: '认证关闭报名',
+  },
 };
 export { urlPathMap };

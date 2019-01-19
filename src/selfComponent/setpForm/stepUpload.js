@@ -71,7 +71,8 @@ class stepUpload extends Component {
       action: uploadUrl,
       beforeUpload(file) {
         isDel = false;
-        isExcel = file.name.split('.')[1] === 'xlsx' || file.name.split('.')[1] === 'xls';
+        const arr = file.name.split('.');
+        isExcel = arr[arr.length - 1] === 'xlsx' || arr[arr.length - 1] === 'xls';
         if (!isExcel) {
           message.error('请上传 Excel 文件！');
         }

@@ -1,3 +1,4 @@
+/* eslint-disable no-extend-native */
 // 全局函数文件
 
 import constants from './constants';

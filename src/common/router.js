@@ -81,7 +81,7 @@ const dynamicWrapper = (app, models, component) => {
 export const getRouterData = app => {
   const routerConfig = {
     '/': {
-      component: dynamicWrapper(app, [], () => import('../layouts/BasicLayout')),
+      component: dynamicWrapper(app, ['login'], () => import('../layouts/BasicLayout')),
     },
     '/indexPage': {
       component: dynamicWrapper(app, [], () => import('../routes/IndexPage/IndexPage')),
@@ -557,6 +557,73 @@ export const getRouterData = app => {
     },
     '/userLayout/login': {
       component: dynamicWrapper(app, ['baseModels/login'], () => import('../routes/Login/Login')),
+    },
+    // 业务技能认证
+
+    // 审核管理
+    '/skillCertification/auditList': {
+      component: dynamicWrapper(app, ['audit'], () =>
+        import('../routes/SkillCertification/AuditList')
+      ),
+      name: '审核管理',
+    },
+    '/skillCertification/auditApply': {
+      component: dynamicWrapper(app, ['audit'], () =>
+        import('../routes/SkillCertification/AuditApply')
+      ),
+      bread: {
+        name: '审核管理',
+        path: '/skillCertification/auditList',
+      },
+      name: '报名审核',
+    },
+    '/skillCertification/auditImport': {
+      component: dynamicWrapper(app, ['audit', 'quality'], () =>
+        import('../routes/SkillCertification/AuditImport')
+      ),
+      bread: {
+        name: '审核管理',
+        path: '/skillCertification/auditList',
+      },
+      name: '导入认证审核',
+    },
+    '/skillCertification/auditRecord': {
+      component: dynamicWrapper(app, ['audit'], () =>
+        import('../routes/SkillCertification/AuditRecord')
+      ),
+      bread: {
+        name: '审核管理',
+        path: '/skillCertification/auditList',
+      },
+      name: '审核记录',
+    },
+
+    // 认证管理
+    '/skillCertification/certificationList': {
+      component: dynamicWrapper(app, ['certification'], () =>
+        import('../routes/SkillCertification/CertificationList')
+      ),
+      name: '认证管理',
+    },
+    '/skillCertification/certificationCreate': {
+      component: dynamicWrapper(app, ['certification'], () =>
+        import('../routes/SkillCertification/CertificationCreate')
+      ),
+      bread: {
+        name: '认证管理',
+        path: '/skillCertification/certificationList',
+      },
+      name: '创建认证项目',
+    },
+    '/skillCertification/certificationEdit': {
+      component: dynamicWrapper(app, ['certification'], () =>
+        import('../routes/SkillCertification/CertificationEdit')
+      ),
+      bread: {
+        name: '认证管理',
+        path: '/skillCertification/certificationList',
+      },
+      name: '编辑认证项目',
     },
   };
   // Get name from ./menu.js or just set it in the router data.

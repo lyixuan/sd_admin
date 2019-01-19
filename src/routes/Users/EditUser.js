@@ -59,6 +59,7 @@ class EditUser extends Component {
       }
       return 0;
     });
+
     const updateUserInfoParams = {
       name: values.name.replace(/\s*/g, ''),
       mail: values.mail,
@@ -66,6 +67,7 @@ class EditUser extends Component {
       sex: Number(values.sex),
       idCard: values.idCard,
       joinDate: data,
+      city: values.city,
       // privilegeView: values.privilegeView === 1,
       positionList: {
         wechatDepartmentId: Number(newRoleId),

@@ -7,8 +7,10 @@ import dva from 'dva';
 import createHistory from 'history/createBrowserHistory';
 import createLoading from 'dva-loading';
 import 'moment/locale/zh-cn';
-import './index.less';
 import './utils/global';
+import './index.less'; // css init
+import './theme/antTheme.css'; // ant自定义主题
+import './theme/antCustom.css'; // ant局部页面特殊样式，加class前缀
 
 export const history = createHistory();
 // 1. Initialize
