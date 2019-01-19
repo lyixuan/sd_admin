@@ -127,7 +127,7 @@ class AuditApply extends Component {
             </span>
           </div>
         ) : null}
-        <Divider />
+        {this.signExamineList && this.signExamineList.length > 1 ? <Divider /> : null}
       </div>
     ));
     return (
