@@ -171,6 +171,7 @@ class AuditList extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
+        width: 155,
         render: (text, record) => {
           return (
             <div>
@@ -196,7 +197,7 @@ class AuditList extends Component {
               )}
               <AuthorizedButton authority="/skillCertification/auditRecord">
                 <span
-                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                  style={{ color: '#52C9C2', cursor: 'pointer' }}
                   onClick={() => this.onRecord(record)}
                 >
                   审核记录
