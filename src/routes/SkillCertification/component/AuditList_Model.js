@@ -170,7 +170,7 @@ class AuditListForm extends Component {
       return (
         <Form layout={formLayout}>
           {this.props.modelType === 2 ? (
-            <FormItem label="*底表类型" {...formItemLayout}>
+            <FormItem label="*底表类型" {...formItemLayout} className="SpecialAuditCSS">
               {getFieldDecorator('exportTableType', {
                 initialValue: null,
                 rules: [{ required: true, message: '请选择底表类型' }],
