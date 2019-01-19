@@ -453,8 +453,8 @@
   background-color: #fff !important;
 }
 
-:global(textarea.ant-input:focus),:global(textarea.ant-input:hover){
-  border: 1px solid #d9d9d9!important;
+:global(textarea.ant-input:focus, textarea.ant-input:hover) {
+  border: 1px solid #d9d9d9 !important;
 }
 
 .openType{
