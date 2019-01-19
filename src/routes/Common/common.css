@@ -17,7 +17,7 @@
   height: 44px;
 }
 :global(.ant-table-thead  tr  th) {
-  padding: 0 16px !important;
+  padding: 0 10px !important;
   height: 44px;
 }
 :global(.ant-pagination-item-active) {
@@ -115,6 +115,8 @@
   color: #fff;
   background-color: #52C9C2;
   border-color: #52C9C2;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 
