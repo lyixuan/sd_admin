@@ -55,6 +55,7 @@ class AuditRecord extends Component {
       {
         title: '报名审核时间',
         dataIndex: 'signExamineTime',
+        width: 120,
       },
       {
         title: '认证结果',
@@ -67,10 +68,12 @@ class AuditRecord extends Component {
       {
         title: '认证审核时间',
         dataIndex: 'certificationExamineTime',
+        width: 120,
       },
       {
         title: '认证发布时间',
         dataIndex: 'certificationPublishTime',
+        width: 120,
       },
     ];
     return columns || [];
