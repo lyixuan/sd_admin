@@ -216,7 +216,7 @@ class ScoreAdjust_CE extends Component {
 
     return (
       <Spin spinning={loading || false}>
-        <ModalForm style={{ margin: 'auto' }} />;
+        <ModalForm style={{ margin: 'auto' }} />
       </Spin>
     );
   }
