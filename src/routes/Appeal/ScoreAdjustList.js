@@ -11,8 +11,8 @@ import style from './score.css';
 
 const SearchForm = Form.create()(AuditListForm);
 const contentDel = (
-  <div style={{ marginBottom: '-15px' }}>
-    <p>是否确认删除该条数据？</p>
+  <div style={{ marginBottom: '-22px' }}>
+    <p style={{ marginBottom: '7px' }}>是否确认删除该条数据？</p>
     <p>记得联系产研一组产品经理刷新缓存后生效哦</p>
   </div>
 );
