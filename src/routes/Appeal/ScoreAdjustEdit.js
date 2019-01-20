@@ -10,7 +10,7 @@ class ScoreAdjustCreate extends Component {
   render() {
     return (
       <ContentLayout routerData={this.props.routerData}>
-        <ScoreAdjust type="edit" modelType={1} />
+        <ScoreAdjust type="edit" {...this.props} />
       </ContentLayout>
     );
   }

@@ -509,4 +509,8 @@
   margin: 0 0 5px 70px;
 }
 
-
+:global(.ant-form-item .ant-form-extra){
+  font-size: 11px;
+  color: #C3C3C3;
+  letter-spacing: 0;
+}

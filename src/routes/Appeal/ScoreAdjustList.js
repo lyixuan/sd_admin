@@ -51,7 +51,7 @@ class ScoreAdjustList extends Component {
   // 编辑调整
   onEdit = val => {
     this.props.setRouteUrlParams('/appeal/scoreAdjustEdit', {
-      certificationInfoId: val.certificationInfoId,
+      id: val.id,
     });
     sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
   };
