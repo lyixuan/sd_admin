@@ -181,7 +181,11 @@ class CertificationEdit_Table extends Component {
         <div>
           <Form layout={formLayout} onSubmit={this.handleSearch}>
             <Row>
-              <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
+              <Col
+                span={20}
+                offset={1}
+                style={{ padding: '3px', marginBottom: '8px', textAlign: 'left' }}
+              >
                 <FormItem label="*子项分类:">
                   {getFieldDecorator('childType', {
                     initialValue: 1,
@@ -194,7 +198,11 @@ class CertificationEdit_Table extends Component {
               </Col>
             </Row>
             <Row>
-              <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
+              <Col
+                span={20}
+                offset={1}
+                style={{ padding: '3px', marginBottom: '8px', textAlign: 'left' }}
+              >
                 <FormItem label="*子项名称:">
                   {getFieldDecorator('name', {
                     initialValue: clickFlag === 1 ? null : name,

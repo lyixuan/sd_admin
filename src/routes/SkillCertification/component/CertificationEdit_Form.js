@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal, message } from 'antd';
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
+import styles from '../certification.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -49,7 +50,7 @@ class CertificationEdit_Form extends Component {
     fileList2 =
       fileList2.length === 0 ? this.props.jumpFunction.certification.fileList2 : fileList2;
     if (fileList1.length === 0 || fileList2.length === 0) {
-      message.error('已获得或未获得图片是必传项，请选择！');
+      message.error('已获得或未获得图片是必传项，图片仅支持PNG格式，请重新选择！');
     } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
@@ -242,7 +243,7 @@ class CertificationEdit_Form extends Component {
                 {getFieldDecorator('obtainedIcon', {
                   initialValue: null,
                 })(
-                  <div style={{ width: '280px', textAlign: 'left' }}>
+                  <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"
@@ -291,7 +292,7 @@ class CertificationEdit_Form extends Component {
                 {getFieldDecorator('originalIcon', {
                   initialValue: null,
                 })(
-                  <div style={{ width: '280px', textAlign: 'left' }}>
+                  <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"

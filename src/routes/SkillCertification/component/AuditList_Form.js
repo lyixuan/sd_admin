@@ -28,6 +28,7 @@ class AuditListForm extends Component {
       signResult: null,
       examineStatus: null,
       examineResult: null,
+      certificationItemId: null,
     };
     // 搜索还原
     const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
@@ -212,11 +213,11 @@ class AuditListForm extends Component {
       quarter: '',
     });
     this.props.form.resetFields();
-    this.submitSearch();
+    this.submitSearch(1);
   };
 
   // 搜索数据整理
-  submitSearch = () => {
+  submitSearch = rs => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         let applyTimeParamStart = null;
@@ -246,7 +247,7 @@ class AuditListForm extends Component {
           examineResult: values.examineResult,
         };
         values.quarter = this.state.quarter;
-        this.props.handleSearch(subParams, values);
+        this.props.handleSearch(subParams, values, rs);
       }
     });
   };
@@ -276,14 +277,14 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={8} style={{ textAlign: 'center' }}>
             <FormItem label="组 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织">
               {getFieldDecorator('orgList', {
                 initialValue: this.state.orgList,
               })(<Cascader options={this.orgOptions} style={{ width: 230 }} />)}
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={8} style={{ textAlign: 'right' }}>
             <FormItem label="姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名">
               {getFieldDecorator('name', {
                 initialValue: this.state.name,
@@ -323,7 +324,7 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={8} style={{ textAlign: 'center' }}>
             {this.isMonth ? (
               <FormItem label="报名月份">
                 {getFieldDecorator('monthRange', {
@@ -369,12 +370,15 @@ class AuditListForm extends Component {
               </FormItem>
             )}
           </Col>
-          <Col span={8}>
+          <Col span={8} style={{ textAlign: 'right' }}>
             <FormItem label="认证项目">
               {getFieldDecorator('certificationItemId', {
                 initialValue: this.state.certificationItemId,
               })(
                 <Select placeholder="请选择认证项目" style={{ width: 230, height: 32 }} allowClear>
+                  <Option value={null} key={null}>
+                    全部
+                  </Option>
                   {this.certificationList.map(item => (
                     <Option value={item.id} key={item.name}>
                       {item.name}
@@ -407,7 +411,7 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={8} style={{ textAlign: 'center' }}>
             <FormItem label="报名结果">
               {getFieldDecorator('signResult', {
                 initialValue: this.state.signResult,
@@ -429,10 +433,7 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={8}>&nbsp;</Col>
-        </Row>
-        <Row gutter={24} style={{ height: 54 }}>
-          <Col span={8}>
+          <Col span={8} style={{ textAlign: 'right' }}>
             <FormItem label="认证状态">
               {getFieldDecorator('examineStatus', {
                 initialValue: this.state.examineStatus,
@@ -454,7 +455,9 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={8}>
+        </Row>
+        <Row gutter={24} style={{ height: 54 }}>
+          <Col span={16}>
             <FormItem label="认证结果">
               {getFieldDecorator('examineResult', {
                 initialValue: this.state.examineResult,
@@ -473,7 +476,7 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={8} style={{ textAlign: 'right' }}>
             <FormItem>
               <div style={{ width: 300, textAlign: 'right' }}>
                 <Button

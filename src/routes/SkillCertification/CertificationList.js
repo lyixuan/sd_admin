@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import moment from 'moment/moment';
 import { assignUrlParams } from 'utils/utils';
-import { Table, Button, Form, Row, Col, Select, message, Spin } from 'antd';
+import { Table, Button, Form, Row, Col, Select, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
@@ -20,7 +20,7 @@ const dateFormat = 'YYYY-MM-DD HH:mm:ss  ';
 @connect(({ certification, loading }) => ({
   certification,
   loading: loading.effects['certification/certificationList'],
-  itemNum: loading.effects['certification/countItemByStatus'],
+  // itemNum: loading.effects['certification/countItemByStatus'],
 }))
 class CertificationList extends Component {
   constructor(props) {
@@ -208,6 +208,7 @@ class CertificationList extends Component {
       data.push({
         key: item.id,
         id: item.id,
+        orderNum: item.orderNum,
         code: item.code,
         name: item.name,
         assessCyc: window.BI_Filter(`Certification_TIMEAREA|id:${item.assessCyc}`).name,
@@ -226,6 +227,10 @@ class CertificationList extends Component {
       {
         title: 'id',
         dataIndex: 'id',
+      },
+      {
+        title: '排序',
+        dataIndex: 'orderNum',
       },
       {
         title: '认证编码',
@@ -317,7 +322,7 @@ class CertificationList extends Component {
   };
 
   render() {
-    const { loading, itemNum } = this.props;
+    const { loading } = this.props;
     const {
       selectedRows = [],
       visible = false,
@@ -467,7 +472,7 @@ class CertificationList extends Component {
             </>
           }
           contentTable={
-            <Spin spinning={itemNum}>
+            <>
               <p className={common.totalNum}>
                 <span className={common.totalNumLeft}>已开放:{open}</span>
                 <span className={common.totalNumRight}>已关闭:{close}</span>
@@ -481,7 +486,7 @@ class CertificationList extends Component {
                 className={common.tableContentStyle}
                 rowSelection={rowSelection}
               />
-            </Spin>
+            </>
           }
           contentPagination={
             <SelfPagination

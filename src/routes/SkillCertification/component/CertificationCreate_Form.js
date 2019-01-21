@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Form, Input, Button, Row, Col, Select, Spin, Upload, Modal, message } from 'antd';
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
+import styles from '../certification.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -19,7 +20,6 @@ class CertificationCreate_Form extends Component {
       fileList2: [],
     };
   }
-  componentDidMount() {}
 
   handleSubmit = e => {
     e.preventDefault();
@@ -27,7 +27,7 @@ class CertificationCreate_Form extends Component {
     const file1 = fileList1.length;
     const file2 = fileList2.length;
     if (file1 === 0 || file2 === 0) {
-      message.error('已获得或未获得图片是必传项，请选择！');
+      message.error('已获得或未获得图片是必传项，图片仅支持PNG格式，请重新选择！');
     } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
@@ -230,7 +230,7 @@ class CertificationCreate_Form extends Component {
                     },
                   ],
                 })(
-                  <div style={{ width: '280px', textAlign: 'left' }}>
+                  <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"
@@ -289,7 +289,7 @@ class CertificationCreate_Form extends Component {
                     },
                   ],
                 })(
-                  <div style={{ width: '280px', textAlign: 'left' }}>
+                  <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
                       listType="picture-card"

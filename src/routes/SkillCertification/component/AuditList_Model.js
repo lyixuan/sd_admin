@@ -145,27 +145,24 @@ class AuditListForm extends Component {
           result: values.result,
         };
         this.props.onOk(params);
-        this.isMonth = true;
-        this.canSignResult = false;
-        this.canSignState = false;
-        this.canSignResult = false;
-        this.quarter = '';
       }
     });
   };
 
   handleCancel = () => {
-    this.isMonth = true;
-    this.canSignResult = false;
-    this.canSignResult = false;
-    this.canSignState = false;
-    this.quarter = '';
     this.props.onCancel();
     propsVal.form.resetFields();
   };
 
   render() {
-    propsVal && propsVal.form.resetFields();
+    const { visible } = this.props;
+    if (!visible) {
+      this.isMonth = true;
+      this.canSignResult = false;
+      this.canSignState = false;
+      this.quarter = '';
+      propsVal && propsVal.form.resetFields();
+    }
     const ModalForm = Form.create()(props => {
       propsVal = props;
       const { getFieldDecorator } = props.form;
@@ -173,7 +170,7 @@ class AuditListForm extends Component {
       return (
         <Form layout={formLayout}>
           {this.props.modelType === 2 ? (
-            <FormItem label="*底表类型" {...formItemLayout}>
+            <FormItem label="*底表类型" {...formItemLayout} className="SpecialAuditCSS">
               {getFieldDecorator('exportTableType', {
                 initialValue: null,
                 rules: [{ required: true, message: '请选择底表类型' }],
@@ -255,7 +252,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="报名状态" {...formItemLayout}>
+            <FormItem label="&nbsp;&nbsp;报名状态" {...formItemLayout}>
               {getFieldDecorator('signStatus', {
                 initialValue: null,
               })(
@@ -277,7 +274,7 @@ class AuditListForm extends Component {
             </FormItem>
           ) : null}
           {this.props.modelType === 2 ? (
-            <FormItem label="报名结果" {...formItemLayout}>
+            <FormItem label="&nbsp;&nbsp;报名结果" {...formItemLayout}>
               {getFieldDecorator('signResult', {
                 initialValue: null,
               })(
@@ -301,17 +298,24 @@ class AuditListForm extends Component {
 
           {/* 认证审核 */}
           {this.props.modelType === 3 ? (
-            <FormItem label="姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名" {...formItemLayout}>
+            <FormItem
+              label="&nbsp;&nbsp;姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名"
+              {...formItemLayout}
+            >
               {getFieldDecorator('userName', {
                 initialValue: '',
-              })(<div style={{ width: 250, height: 32 }}>{this.props.record.userName}</div>)}
+              })(<div style={{ width: 280, height: 32 }}>{this.props.record.userName}</div>)}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
-            <FormItem label="认证项目" {...formItemLayout}>
+            <FormItem label="&nbsp;&nbsp;认证项目" {...formItemLayout}>
               {getFieldDecorator('orgName', {
                 initialValue: '',
-              })(<div style={{ width: 250, height: 32 }}>{this.props.record.orgName}</div>)}
+              })(
+                <div style={{ width: 280, height: 32 }}>
+                  {this.props.record.certificationItemName}
+                </div>
+              )}
             </FormItem>
           ) : null}
           {this.props.modelType === 3 ? (
@@ -320,7 +324,7 @@ class AuditListForm extends Component {
                 initialValue: this.props.record.examineResult,
                 rules: [{ required: true, message: '请选择审核结果' }],
               })(
-                <RadioGroup style={{ width: 250, height: 32 }}>
+                <RadioGroup style={{ width: 280, height: 32 }}>
                   <Radio value={1}>通过</Radio>
                   <Radio value={2}>不通过</Radio>
                 </RadioGroup>
@@ -338,6 +342,7 @@ class AuditListForm extends Component {
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
+        confirmLoading={this.props.publicSubmitting}
       >
         <ModalForm style={{ margin: 'auto' }} />
       </Modal>

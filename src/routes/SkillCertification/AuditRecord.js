@@ -55,6 +55,7 @@ class AuditRecord extends Component {
       {
         title: '报名审核时间',
         dataIndex: 'signExamineTime',
+        width: 120,
       },
       {
         title: '认证结果',
@@ -67,10 +68,12 @@ class AuditRecord extends Component {
       {
         title: '认证审核时间',
         dataIndex: 'certificationExamineTime',
+        width: 120,
       },
       {
         title: '认证发布时间',
         dataIndex: 'certificationPublishTime',
+        width: 120,
       },
     ];
     return columns || [];
@@ -83,13 +86,14 @@ class AuditRecord extends Component {
       <ContentLayout
         routerData={this.props.routerData}
         contentButton={
-          <div style={{ marginTop: 15, color: '#000', marginBottom: 30 }}>
+          <div style={{ marginTop: 15, color: '#000', marginBottom: 8 }}>
             <span>姓名：{this.props.audit.logData.userName}</span>
             <span style={{ marginLeft: 400 }}>组织：{this.props.audit.logData.organization}</span>
           </div>
         }
         contentTable={
           <div>
+            <p className={common.totalNum}>总数：{logList ? logList.length : 0}条</p>
             <Table
               rowKey={record => record.signExamineTime}
               bordered

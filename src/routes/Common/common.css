@@ -13,11 +13,11 @@
 }
 
 :global(.ant-table-tbody  tr  td) {
-  padding: 0 16px !important;
+  padding: 0 10px !important;
   height: 44px;
 }
 :global(.ant-table-thead  tr  th) {
-  padding: 0 16px !important;
+  padding: 0 10px !important;
   height: 44px;
 }
 :global(.ant-pagination-item-active) {
@@ -113,6 +113,8 @@
   color: #fff;
   background-color: #52C9C2;
   border-color: #52C9C2;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 
@@ -455,19 +457,10 @@
 }
 :global(.ant-upload.ant-upload-select-picture-card){
   border: none !important;
-  width: 80px !important;
-  height: 32px !important;
-  border-radius: 0 !important;
-  background-color: #fff !important;
-}
-
-
-:global(.ant-upload-list-picture-card .ant-upload-list-item){
   width: 84px !important;
   height: 84px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
+  border-radius: 0 !important;
+  background-color: #fff !important;
 }
 
 .openType{
@@ -516,7 +509,15 @@
 }
 
 :global(.auditModel .ant-form .ant-row){
-  margin: 0 0 5px 70px;
+  margin: 0 0 10px 60px;
+}
+
+:global(.auditModel .ant-form .ant-row:last-child){
+  margin: 0 0 0 60px;
+}
+
+:global(.auditModel .ant-form .ant-row.SpecialAuditCSS){
+  margin: -9px 0 10px 60px;
 }
 /* -------audit end------------ */
 
@@ -529,7 +530,9 @@
   padding-top: 0!important;
 }
 
+
 :global(.scoreadjust .ant-form-item){
   margin-bottom: 20px;
 }
 /* -------score change end------------ */
+

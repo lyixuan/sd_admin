@@ -21,6 +21,11 @@ class AuditList extends Component {
     super(props);
     this.pageNum = 0;
     this.pageSize = 30;
+    const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
+    if (storageData) {
+      this.pageNum = storageData.pageNum;
+      this.pageSize = storageData.pageSize;
+    }
     this.params = {};
     this.oriSearchParams = {};
     this.state = {
@@ -103,8 +108,9 @@ class AuditList extends Component {
   };
 
   // 表单搜索函数
-  search = (params, values) => {
+  search = (params, values, pg) => {
     const obj = params ? { ...params } : this.params;
+    this.pageNum = pg === 1 ? 0 : this.pageNum;
     obj.number = this.pageNum;
     obj.size = this.pageSize;
     this.params = { ...obj };
@@ -115,7 +121,7 @@ class AuditList extends Component {
     if (values) {
       this.oriSearchParams = values;
     }
-    this.oriSearchParams.size = this.size;
+    this.oriSearchParams.pageSize = this.pageSize;
     this.oriSearchParams.pageNum = this.pageNum;
   };
 
@@ -171,6 +177,7 @@ class AuditList extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
+        width: 163,
         render: (text, record) => {
           return (
             <div>
@@ -196,7 +203,7 @@ class AuditList extends Component {
               )}
               <AuthorizedButton authority="/skillCertification/auditRecord">
                 <span
-                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                  style={{ color: '#52C9C2', cursor: 'pointer' }}
                   onClick={() => this.onRecord(record)}
                 >
                   审核记录
@@ -213,6 +220,7 @@ class AuditList extends Component {
   render() {
     const { loading } = this.props;
     const { content, totalElements } = this.props.audit.auditList;
+    const { publicSubmitting } = this.props.audit;
 
     return (
       <ContentLayout
@@ -220,13 +228,13 @@ class AuditList extends Component {
         contentForm={
           <SearchForm
             auditData={this.props.audit}
-            handleSearch={(params, values) => {
-              this.search(params, values);
+            handleSearch={(params, values, rs) => {
+              this.search(params, values, rs);
             }}
           />
         }
         contentButton={
-          <div style={{ marginTop: 15 }}>
+          <div>
             <AuthorizedButton authority="/skillCertification/exportTable">
               <Button
                 onClick={() => this.showModal(2)}
@@ -286,6 +294,7 @@ class AuditList extends Component {
           visible={this.props.audit.visible}
           modelType={this.state.modelType}
           record={this.record}
+          publicSubmitting={publicSubmitting}
           onOk={params => this.handleOk(params)}
           onCancel={this.handleCancel}
         />

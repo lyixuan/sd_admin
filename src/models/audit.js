@@ -25,6 +25,8 @@ export default {
     logData: {},
     signExamineInfo: {},
     signExamineList: [],
+    applySubmitting: false,
+    publicSubmitting: false,
     disableDel: null, // 根据接口返回决定是否禁止下一步按钮：true--禁止
     fileList: [],
     isLoading: null,
@@ -69,6 +71,7 @@ export default {
     },
     // 导出底表
     *exportBottomTable({ payload }, { call, put }) {
+      yield put({ type: 'publicSubmitting', payload: { publicSubmitting: true } });
       const start = payload.params.applyTimeParamStart.split('-');
       const end = payload.params.applyTimeParamEnd.split('-');
       const start1 = start[0].substring(2);
@@ -84,7 +87,7 @@ export default {
       const response = yield call(exportBottomTable, payload.params);
       downBlob(response, fileName);
       yield put({ type: 'showModel', payload: { visible: false } });
-
+      yield put({ type: 'publicSubmitting', payload: { publicSubmitting: false } });
       function downBlob(blob, name) {
         const downloadElement = document.createElement('a');
         const href = window.URL.createObjectURL(blob); // 创建下载的链接
@@ -98,6 +101,7 @@ export default {
     },
     // 发布认证
     *auditPublish({ payload }, { call, put }) {
+      yield put({ type: 'publicSubmitting', payload: { publicSubmitting: true } });
       const response = yield call(auditPublish, payload.params);
       const backparams = payload.callbackParams;
       if (response.code === 2000) {
@@ -106,9 +110,11 @@ export default {
       } else {
         message.error(response.msg);
       }
+      yield put({ type: 'publicSubmitting', payload: { publicSubmitting: false } });
     },
     // 认证审核
     *submitExamineResult({ payload }, { call, put }) {
+      yield put({ type: 'publicSubmitting', payload: { publicSubmitting: true } });
       const response = yield call(submitExamineResult, payload.params);
       const backparams = payload.callbackParams;
       if (response.code === 2000) {
@@ -117,6 +123,7 @@ export default {
       } else {
         message.error(response.msg);
       }
+      yield put({ type: 'publicSubmitting', payload: { publicSubmitting: false } });
     },
     // 认证项目列表
     *findCertificationList({ payload }, { call, put }) {
@@ -150,12 +157,14 @@ export default {
     },
     // 报名审核提交
     *submitSignResult({ payload }, { call, put }) {
+      yield put({ type: 'applySubmitting', payload: { applySubmitting: true } });
       const response = yield call(submitSignResult, payload.params);
       if (response.code === 2000) {
         yield put(routerRedux.push('/skillCertification/auditList'));
       } else {
         message.error(response.msg);
       }
+      yield put({ type: 'applySubmitting', payload: { applySubmitting: false } });
     },
     // ------ 质检
     *checkQuality({ payload }, { call, put }) {
@@ -262,6 +271,18 @@ export default {
         }
       }
       return { ...state, ...action.payload };
+    },
+    applySubmitting(state, action) {
+      return {
+        ...state,
+        applySubmitting: action.payload.applySubmitting,
+      };
+    },
+    publicSubmitting(state, action) {
+      return {
+        ...state,
+        publicSubmitting: action.payload.publicSubmitting,
+      };
     },
   },
 };

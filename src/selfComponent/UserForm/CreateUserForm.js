@@ -315,6 +315,21 @@ class CreateUserForm extends Component {
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;归属地">
+                {getFieldDecorator('city', {
+                  initialValue: null,
+                })(
+                  <Select style={{ width: 280 }}>
+                    <Option value="北京">北京</Option>
+                    <Option value="广州">广州</Option>
+                    <Option value="武汉">武汉</Option>
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*入职日期">
                 {getFieldDecorator('joinDate', {
                   initialValue: null,
@@ -337,7 +352,25 @@ class CreateUserForm extends Component {
                 )}
               </FormItem>
             </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*微信部门">
+                {getFieldDecorator('wechatDepartmentName', {
+                  initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '请选择微信部门！' });
+                        }
+                        callback();
+                      },
+                    },
+                  ],
+                })(residences)}
+              </FormItem>
+            </Col>
           </Row>
+
           <Row style={{ marginTop: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*前端角色">
@@ -365,26 +398,6 @@ class CreateUserForm extends Component {
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
-              <FormItem label="*微信部门">
-                {getFieldDecorator('wechatDepartmentName', {
-                  initialValue: null,
-                  rules: [
-                    {
-                      validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '请选择微信部门！' });
-                        }
-                        callback();
-                      },
-                    },
-                  ],
-                })(residences)}
-              </FormItem>
-            </Col>
-          </Row>
-
-          <Row style={{ marginTop: '20px' }}>
-            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织">
                 {getFieldDecorator('responseCom', {
                   initialValue: [],
@@ -413,6 +426,26 @@ class CreateUserForm extends Component {
                 )}
               </FormItem>
             </Col>
+          </Row>
+
+          <Row style={{ marginTop: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*后端角色">
+                {getFieldDecorator('roleId', {
+                  initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '请选择后端角色！' });
+                        }
+                        callback();
+                      },
+                    },
+                  ],
+                })(roleNameList)}
+              </FormItem>
+            </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*绩效权限">
                 {getFieldDecorator('privilege', {
@@ -437,26 +470,8 @@ class CreateUserForm extends Component {
               </FormItem>
             </Col>
           </Row>
-
           <Row style={{ marginTop: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
-              <FormItem label="*后端角色">
-                {getFieldDecorator('roleId', {
-                  initialValue: null,
-                  rules: [
-                    {
-                      validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '请选择后端角色！' });
-                        }
-                        callback();
-                      },
-                    },
-                  ],
-                })(roleNameList)}
-              </FormItem>
-            </Col>
-            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="访问权限">
                 {getFieldDecorator('view', {
                   initialValue: this.state.defaultCheckedList,

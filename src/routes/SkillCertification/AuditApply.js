@@ -57,14 +57,19 @@ class AuditApply extends Component {
 
   handleSubmit = () => {
     const params = { checkResultList: [] };
+    let flag = 0;
     this.signExamineList.forEach(v => {
       if (!v.signResult) {
         message.warn('请选择审核结果');
-        return;
+        flag = 1;
       }
       if (v.signResult === 2 && !v.rejectReason) {
         message.warn('请填写驳回原因');
-        return;
+        flag = 1;
+      }
+      if (v.rejectReason && v.rejectReason.length > 50) {
+        message.warn('驳回原因字数超限');
+        flag = 1;
       }
       params.checkResultList.push({
         certificationDetailInfoId: v.certificationDetailInfoId,
@@ -72,6 +77,9 @@ class AuditApply extends Component {
         result: v.signResult,
       });
     });
+    if (flag) {
+      return;
+    }
     this.props.dispatch({
       type: 'audit/submitSignResult',
       payload: { params },
@@ -80,7 +88,7 @@ class AuditApply extends Component {
 
   render() {
     const { loading } = this.props;
-    const { signExamineInfo, signExamineList } = this.props.audit;
+    const { signExamineInfo, signExamineList, applySubmitting } = this.props.audit;
     this.signExamineList = signExamineList;
     const item = this.signExamineList.map((v, i) => (
       <div key={v.certificationDetailInfoId}>
@@ -88,7 +96,7 @@ class AuditApply extends Component {
           <span>认证项目：{v.certificationName}</span>
         </div>
         {v.subItemName ? (
-          <div style={{ margin: '25px 0 20px 18px', color: '#000' }}>
+          <div style={{ margin: '0 0 20px 18px', color: '#000' }}>
             <span>负责专业项目：{v.subItemName}</span>
           </div>
         ) : null}
@@ -110,16 +118,17 @@ class AuditApply extends Component {
               <span style={{ float: 'left' }}>驳回原因：</span>
               <span style={{ float: 'left', width: 'calc(100% - 70px)' }}>
                 <TextArea
+                  maxlength={50}
                   onChange={e => this.onReasonChange(e, i)}
                   value={this.signExamineList[i].rejectReason}
-                  placeholder="请填写驳回原因"
+                  placeholder="请填写驳回原因，限制50字内。"
                   autosize={{ minRows: 3, maxRows: 3 }}
                 />
               </span>
             </span>
           </div>
         ) : null}
-        <Divider />
+        {this.signExamineList && this.signExamineList.length !== i + 1 ? <Divider /> : null}
       </div>
     ));
     return (
@@ -173,6 +182,7 @@ class AuditApply extends Component {
             type="primary"
             style={{ float: 'right', marginBottom: 15 }}
             className={common.createButton}
+            loading={applySubmitting}
           >
             提交
           </Button>

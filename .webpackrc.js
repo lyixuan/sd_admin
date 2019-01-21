@@ -1,5 +1,10 @@
 const path = require('path');
 
+const uploadImageHostObj = {
+  production: 'http://bd.ministudy.com/apis',
+  development: 'http://172.16.117.65',
+};
+
 export default {
   entry: 'src/index.js',
   extraBabelPlugins: [['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }]],
@@ -25,5 +30,6 @@ export default {
   define: {
     'process.env.API_TYPE': process.env.API_TYPE,
     USE_COMMA: 222,
+    UPLOAD_HOST: uploadImageHostObj[process.env.API_TYPE],
   },
 };
