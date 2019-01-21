@@ -19,11 +19,11 @@ function blobFileLoad(result) {
   const promise = new Promise((res, err) => {
     const reader = new FileReader();
     reader.onload = e => {
-      console.log(result);
+      // if (e.target.result.indexOf('code') === -1 || JSON.parse(e.target.result).code !== 2000) {
       if (typeof result === 'object' && result.type) {
         res(result);
       } else {
-        err(JSON.parse(e.target.result || '{}'));
+        err(JSON.parse(e.target.result));
       }
     };
     reader.readAsText(result);

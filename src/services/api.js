@@ -728,3 +728,197 @@ export async function addTask(params) {
     body: params,
   });
 }
+
+// ------------------- 认证审核 begin -------------------
+
+// 获取审核管理列表
+export async function getAuditList(params) {
+  return request(`${HOST}/cem/list`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 审核记录查询
+export async function auditLogList(params) {
+  return request(`${HOST}/cem/logList?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 获取报名审核表单
+export async function getSignExamineInfo(params) {
+  return request(`${HOST}/cem/getSignExamineInfo?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 报名审核结果提交
+export async function submitSignResult(params) {
+  return request(`${HOST}/cem/submitSignResult`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 认证审核
+export async function submitExamineResult(params) {
+  return request(`${HOST}/cem/submitExamineResult`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 导出底表
+export async function exportBottomTable(params) {
+  return request(`${HOST}/cem/exportBottomTable?${stringify(params)}`, {
+    method: 'GET',
+    stream: 'bolb',
+  });
+}
+
+// 发布认证
+export async function auditPublish(params) {
+  return request(`${HOST}/cem/publish`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 校验审核excel文件 - 导入认证
+export async function verifyAuditDataExcel(params) {
+  return request(`${HOST}/cem/verifyDataFromExcel`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 确定excel文件数据插入数据库 -- 导入认证
+export async function auditSaveExcel(params) {
+  return request(`${HOST}/cem/saveDatas`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 认证项目列表
+export async function findCertificationList() {
+  return request(`${HOST}/certificationItem/findAllItemList`, {
+    method: 'GET',
+  });
+}
+
+// ------------------- 认证审核 end -------------------
+/*
+* 获取认证管理列表
+* params：{status,assessCyc,pageSize,pageNum}
+* */
+export async function certificationList(params) {
+  return request(`${HOST}/certificationItem/findAll?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 删除认证项目
+* params：{id}
+* */
+export async function certificationDelete(params) {
+  return request(`${HOST}/certificationItem/delItemById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 删除子认证项目
+* params：{id}
+* */
+export async function delSubItemById(params) {
+  return request(`${HOST}/certificationItem/delSubItemById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 删除认证图标
+* params：{type,picName}
+* */
+export async function delIcon(params) {
+  return request(`${HOST}/certificationItem/delIcon?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 认证项目详情
+* params：{id}
+* */
+export async function getItemById(params) {
+  return request(`${HOST}/certificationItem/getItemById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 统计认证项目状态条目
+* params：{}
+* */
+export async function countItemByStatus(params) {
+  return request(`${HOST}/certificationItem/countItemByStatus?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+export async function findAllCollege(params) {
+  return request(`${HOST}/consoleBottomDown/findAllCollege?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 开放或关闭报名
+* params：{id}
+* */
+export async function certificationModify(params) {
+  return request(`${HOST}/certificationItem/modifyStatus`, {
+    method: 'POST',
+    body: params,
+  });
+}
+/*
+*
+上传认证图标
+* params：{certificationItemForm}
+* */
+// export function uploadIcon(params) {
+//   return `${HOST}/certificationItem/uploadIcon`
+// }
+
+// 上传图片地址
+export function uploadIcon() {
+  return `${HOST}/certificationItem/uploadIcon`;
+}
+
+/*
+*
+添加或修改认证项目
+* params：{certificationItemForm}
+* */
+export async function saveOrModifyItem(params) {
+  return request(`${HOST}/certificationItem/saveOrModifyItem`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+/*
+*
+添加或修改子认证项目
+* params：{certificationItemForm}
+* */
+export async function saveOrModifySubItem(params) {
+  return request(`${HOST}/certificationItem/saveOrModifySubItem`, {
+    method: 'POST',
+    body: params,
+  });
+}

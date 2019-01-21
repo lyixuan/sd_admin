@@ -184,6 +184,21 @@ class EditUserForm extends Component {
               </FormItem>
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;归属地">
+                {getFieldDecorator('city', {
+                  initialValue: !arrValue ? null : !arrValue.city ? null : arrValue.city,
+                })(
+                  <Select style={{ width: 280 }}>
+                    <Option value="北京">北京</Option>
+                    <Option value="广州">广州</Option>
+                    <Option value="武汉">武汉</Option>
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*入职日期">
                 {getFieldDecorator('joindate', {
                   initialValue: !arrValue
@@ -210,9 +225,7 @@ class EditUserForm extends Component {
                 )}
               </FormItem>
             </Col>
-          </Row>
-          <Row style={{ marginTop: '20px' }}>
-            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*微信部门">
                 {getFieldDecorator('wechatDepartmentName', {
                   initialValue: !arrValue

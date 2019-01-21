@@ -10,6 +10,9 @@ export const ADMIN_USER = 'admin_user';
 
 // Component setting
 export const TABLE_PAGES_NUM = 30;
+// 数据分析师id
+export const DATA_ANALYST_ID = '122';
+
 // Global Header Select
 export const GLOBAL_HEADER_SELECT = [
   { id: 'changeRole', name: '切换角色', icon: 'user' },
@@ -47,8 +50,7 @@ export const VISIT_RIGHT_LIST = [
   { id: 'privilegeView', name: '绩效' },
   { id: 'endView', name: '后台' },
 ];
-// 数据分析师id
-export const DATA_ANALYST_ID = '122';
+
 export const BOTTOM_TABLE_LIST = [
   { id: '', name: '全部' },
   { id: '0', name: '学分底表' },
@@ -59,8 +61,64 @@ export const BOTTOM_TABLE_STATUS = [
   { id: '1', name: '已完成' },
   { id: '2', name: '打包错误' },
 ];
+
+// 用户级别
+export const USER_LEVEL = [
+  { id: 'college', name: '学院级' },
+  { id: 'family', name: '家族级' },
+  { id: 'group', name: '小组级' },
+];
+
+// 考核周期
+export const CHECK_CYCLE = [{ id: '1', name: '月度' }, { id: '2', name: '季度' }];
+
+// 报名状态
+export const APPLY_STATE = [
+  { id: null, name: '全部' },
+  { id: '1', name: '待审核' },
+  { id: '2', name: '已审核' },
+];
+
+// 报名结果
+export const APPLY_RESULT = [
+  { id: null, name: '全部' },
+  { id: '1', name: '通过' },
+  { id: '2', name: '未通过' },
+];
+
+// 认证状态
+export const CERTIFICATION_STATE = [
+  { id: null, name: '全部' },
+  { id: '1', name: '待审核' },
+  { id: '2', name: '已审核' },
+  { id: '3', name: '已发布' },
+];
+
+// 认证结果
+export const CERTIFICATION_RESULT = [
+  { id: null, name: '全部' },
+  { id: '1', name: '通过' },
+  { id: '2', name: '未通过' },
+];
+
+// 认证管理报名通道状态
+export const Certification_TYPE = [
+  { id: undefined, name: '全部' },
+  { id: '1', name: '已开放' },
+  { id: '2', name: '已关闭' },
+  { id: '3', name: '已停用' },
+  { id: '4', name: '已删除' },
+];
+// 认证管理报名通道状态
+export const Certification_TIMEAREA = [
+  { id: undefined, name: '全部' },
+  { id: '1', name: '月度' },
+  { id: '2', name: '季度' },
+];
 // 需要用于global filter 进行数据筛选的，必须加到default里
 export default {
+  Certification_TYPE,
+  Certification_TIMEAREA,
   TIME_LOCAL,
   ADMIN_AUTH_LIST,
   ADMIN_USER,
@@ -72,4 +130,10 @@ export default {
   BOTTOM_TABLE_LIST,
   BOTTOM_TABLE_STATUS,
   GLOBAL_HEADER_SELECT,
+  USER_LEVEL,
+  CHECK_CYCLE,
+  APPLY_STATE,
+  APPLY_RESULT,
+  CERTIFICATION_STATE,
+  CERTIFICATION_RESULT,
 };

@@ -217,3 +217,11 @@ export function assignUrlParams(paramsObj = {}, urlParams = {}) {
   });
   return returnParams;
 }
+
+export function deepCopy(obj) {
+  if (typeof obj === 'object' && obj) {
+    return JSON.parse(JSON.stringify(obj));
+  } else {
+    return obj;
+  }
+}
