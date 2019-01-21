@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { message, Button, Select, DatePicker } from 'antd';
+import { message, Button, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { getAuthority } from '../../utils/authority';
-import { BOTTOM_TABLE_LIST, ADMIN_AUTH_LIST, ADMIN_USER } from '../../utils/constants';
+import { ADMIN_AUTH_LIST, ADMIN_USER } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
 import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
-const { Option } = Select;
+// const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ bottomTable, loading }) => ({
@@ -217,7 +217,8 @@ class BottomList extends Component {
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
       <FormFilter onSubmit={this.onSubmit} isLoading={isLoading} modal={{ type: '' }}>
-        <div>
+        {/*
+         <div>
           <span style={{ lineHeight: '32px' }}>底表类型：</span>
           <Select
             placeholder="底表类型"
@@ -232,6 +233,9 @@ class BottomList extends Component {
             ))}
           </Select>
         </div>
+
+        */}
+
         <div>
           <span style={{ lineHeight: '32px' }}>底表时间：</span>
           <DatePicker

@@ -26,11 +26,13 @@ class AddAppeal extends Component {
       stuId = null,
       workorderId = null,
       countValue = null,
+      deleteNum = null,
     } = values;
     const countBeginTime = !firstcountBeginTime ? undefined : firstcountBeginTime;
     const newWorkorderId = type.substr(0, 2) === '工单' ? workorderId : null;
     const newConsultId = type.substr(0, 2) === 'IM' ? consultId : null;
     const newCountValue = type === 'IM不及时' ? countValue : null;
+    const newDeleteNum = type === '优新开班电话' || type === '优新随堂考' ? deleteNum : null;
     const localStorage = getAuthority('admin_user');
     const operator = !localStorage ? null : localStorage.userId;
     const addAppealParams = {
@@ -41,16 +43,19 @@ class AddAppeal extends Component {
       stuId: !stuId ? null : Number(stuId),
       workorderId: !newWorkorderId ? null : Number(newWorkorderId),
       countValue: !newCountValue ? null : Number(newCountValue),
+      deleteNum: !newDeleteNum ? null : Number(newDeleteNum),
       operator,
     };
     const appealListParams = {
       pageSize: 30,
       pageNum: 0,
     };
-    this.props.dispatch({
-      type: 'appeal/addAppeal',
-      payload: { addAppealParams, appealListParams },
-    });
+
+    console.log(addAppealParams, appealListParams);
+    // this.props.dispatch({
+    //   type: 'appeal/addAppeal',
+    //   payload: { addAppealParams, appealListParams },
+    // });
   };
 
   resetContent = () => {
