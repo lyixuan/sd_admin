@@ -26,6 +26,11 @@ class ScoreAdjustList extends Component {
     super(props);
     this.pageNum = 0;
     this.pageSize = 30;
+    const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
+    if (storageData) {
+      this.pageNum = storageData.pageNum;
+      this.pageSize = storageData.pageSize;
+    }
     this.params = {};
     this.oriSearchParams = {};
     this.state = {};
@@ -75,7 +80,7 @@ class ScoreAdjustList extends Component {
     if (values) {
       this.oriSearchParams = values;
     }
-    this.oriSearchParams.size = this.size;
+    this.oriSearchParams.pageSize = this.pageSize;
     this.oriSearchParams.pageNum = this.pageNum;
   };
 
