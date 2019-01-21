@@ -118,6 +118,7 @@ class AuditApply extends Component {
               <span style={{ float: 'left' }}>驳回原因：</span>
               <span style={{ float: 'left', width: 'calc(100% - 70px)' }}>
                 <TextArea
+                  maxlength={50}
                   onChange={e => this.onReasonChange(e, i)}
                   value={this.signExamineList[i].rejectReason}
                   placeholder="请填写驳回原因，限制50字内。"
