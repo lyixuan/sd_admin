@@ -213,11 +213,11 @@ class AuditListForm extends Component {
       quarter: '',
     });
     this.props.form.resetFields();
-    this.submitSearch();
+    this.submitSearch(1);
   };
 
   // 搜索数据整理
-  submitSearch = () => {
+  submitSearch = rs => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         let applyTimeParamStart = null;
@@ -247,7 +247,7 @@ class AuditListForm extends Component {
           examineResult: values.examineResult,
         };
         values.quarter = this.state.quarter;
-        this.props.handleSearch(subParams, values);
+        this.props.handleSearch(subParams, values, rs);
       }
     });
   };
