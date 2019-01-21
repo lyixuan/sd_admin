@@ -110,8 +110,8 @@ export default {
       const result = yield call(delSubItemById, payload.params);
       if (result.code === 2000) {
         message.success('删除成功！');
-        const { params } = payload;
-        yield put({ type: 'getItemById', payload: { params } });
+        const { getItemByIdParam } = payload;
+        yield put({ type: 'getItemById', payload: { getItemByIdParam } });
       } else {
         message.error(result.msg);
       }
