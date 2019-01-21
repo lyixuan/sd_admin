@@ -208,6 +208,7 @@ class CertificationList extends Component {
       data.push({
         key: item.id,
         id: item.id,
+        orderNum: item.orderNum,
         code: item.code,
         name: item.name,
         assessCyc: window.BI_Filter(`Certification_TIMEAREA|id:${item.assessCyc}`).name,
@@ -226,6 +227,10 @@ class CertificationList extends Component {
       {
         title: 'id',
         dataIndex: 'id',
+      },
+      {
+        title: '排序',
+        dataIndex: 'orderNum',
       },
       {
         title: '认证编码',
