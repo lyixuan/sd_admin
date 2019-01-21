@@ -464,7 +464,7 @@
   color: #9B9B9B;
 }
 
-/* -------audit------------ */
+/* -------audit begin------------ */
 :global(.audit table td){
   width: 280px!important;
 }
@@ -508,9 +508,17 @@
 :global(.auditModel .ant-form .ant-row){
   margin: 0 0 5px 70px;
 }
+/* -------audit end------------ */
 
+/* -------score change begin------------ */
 :global(.ant-form-item .ant-form-extra){
   font-size: 11px;
   color: #C3C3C3;
   letter-spacing: 0;
+  position: absolute;
 }
+
+:global(.scoreadjust .ant-form-item){
+  margin-bottom: 20px;
+}
+/* -------score change end------------ */

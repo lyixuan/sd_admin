@@ -109,7 +109,7 @@ class ScoreAdjust_CE extends Component {
       propsVal = props;
       const { getFieldDecorator } = props.form;
       return (
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} className="scoreadjust">
           <FormItem label="*学分日期" {...formItemLayout}>
             {getFieldDecorator('exportTableType', {
               initialValue: null,
