@@ -73,9 +73,7 @@ class CertificationEdit extends Component {
   subItemDelete = val => {
     const { id = 1 } = this.state;
     const delSubItemByIdParams = { id: val }; // 子项目删除
-
     const params = { id }; // 传入认证项目id为了删除后重新渲染list
-    console.log(params);
     this.props.dispatch({
       type: 'certification/delSubItemById',
       payload: { params, delSubItemByIdParams },
