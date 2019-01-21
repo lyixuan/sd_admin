@@ -1,7 +1,7 @@
 const path = require('path');
 
 const uploadImageHostObj = {
-  production: 'http://bd.ministudy.com/staticFile/classFile',
+  production: 'http://bd-admin.ministudy.com/staticFile/classFile', // http://bi-admin.ministudy.com/staticFile/classFile
   development: 'http://172.16.117.65',
 };
 
