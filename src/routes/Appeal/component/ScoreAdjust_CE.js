@@ -1,6 +1,18 @@
 /* eslint-disable no-undef,no-param-reassign,no-unused-expressions */
 import React, { Component } from 'react';
-import { Form, Input, Select, DatePicker, Radio, Cascader, Spin, Row, Col, Button } from 'antd';
+import {
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  Radio,
+  Cascader,
+  Spin,
+  Row,
+  Col,
+  Button,
+  InputNumber,
+} from 'antd';
 import { connect } from 'dva/index';
 import common from '../../../routes/Common/common.css';
 
@@ -33,7 +45,9 @@ class ScoreAdjust_CE extends Component {
       });
     }
   }
-
+  onChangeInput = val => {
+    console.log(val);
+  };
   handleSubmit = () => {
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -77,7 +91,7 @@ class ScoreAdjust_CE extends Component {
     });
   };
 
-  handleCancel = () => {
+  goBack = () => {
     this.props.setRouteUrlParams('/appeal/scoreAdjustList');
   };
 
@@ -113,7 +127,7 @@ class ScoreAdjust_CE extends Component {
           <FormItem label="*学分日期" {...formItemLayout}>
             {getFieldDecorator('exportTableType', {
               initialValue: null,
-              rules: [{ required: true, message: '请选择日期' }],
+              rules: [{ required: true, message: '请选择学分日期' }],
             })(<DatePicker style={{ width: 380 }} />)}
           </FormItem>
           <FormItem label="*调整类型" {...formItemLayout}>
@@ -127,10 +141,32 @@ class ScoreAdjust_CE extends Component {
               </RadioGroup>
             )}
           </FormItem>
-          <FormItem label="*均分" {...formItemLayout}>
+          <FormItem label="*均 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分" {...formItemLayout}>
             {getFieldDecorator('userName', {
               initialValue: '',
-            })(<Input placeholder="请输入姓名" style={{ width: 380 }} />)}
+              rules: [
+                {
+                  validator(rule, value, callback) {
+                    if (Number(value) === 0) {
+                      callback({ message: '均分不能为0' });
+                    } else if (!value) {
+                      callback({ message: '请输入均分' });
+                    } else {
+                      callback();
+                    }
+                  },
+                },
+              ],
+            })(
+              <InputNumber
+                min={0}
+                max={9999999}
+                step={0.1}
+                placeholder="请输入"
+                onChange={this.onChangeInput}
+                style={{ width: 380 }}
+              />
+            )}
           </FormItem>
           <FormItem
             label="*调整级别"
@@ -139,9 +175,10 @@ class ScoreAdjust_CE extends Component {
           >
             {getFieldDecorator('orgType', {
               initialValue: this.state.orgType,
+              rules: [{ required: true, message: '请选择调整级别' }],
             })(
               <Select
-                placeholder="请选择级别"
+                placeholder="请选择"
                 style={{ width: 380 }}
                 onChange={this.handleSelectChange}
               >
@@ -156,6 +193,7 @@ class ScoreAdjust_CE extends Component {
           <FormItem label="*调整组织" {...formItemLayout}>
             {getFieldDecorator('orgList', {
               initialValue: this.state.orgList,
+              rules: [{ required: true, message: '请选择调整组织' }],
             })(<Cascader options={this.orgOptions} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem label="*组织类别" {...formItemLayout}>
@@ -172,11 +210,11 @@ class ScoreAdjust_CE extends Component {
           <FormItem
             label="*调整原因"
             {...formItemLayout}
-            extra="编辑后记得联系产研一组刷新缓存后生效哦"
+            extra="编辑后记得联系产研一组产品经理刷新缓存后生效哦"
           >
             {getFieldDecorator('result', {
               initialValue: '',
-              rules: [{ required: true, message: '请填写调整原因' }],
+              rules: [{ required: true, message: '请填写原因' }],
             })(
               <TextArea
                 onChange={e => this.onReasonChange(e, i)}
@@ -191,11 +229,7 @@ class ScoreAdjust_CE extends Component {
             <Col span={6} offset={7}>
               <FormItem>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Button
-                    onClick={this.props.resetContent}
-                    type="primary"
-                    className={common.cancleButton}
-                  >
+                  <Button onClick={this.goBack} type="primary" className={common.cancleButton}>
                     取消
                   </Button>
                   <Button

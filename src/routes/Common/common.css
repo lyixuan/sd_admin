@@ -147,6 +147,16 @@
   border: 1px solid #52C9C2;
   box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
 }
+
+:global(.ant-input-number:hover){
+  border-color: #52C9C2 !important;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+:global(.ant-input-number:focus){
+  border-color: #52C9C2 !important;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+
 :global(.ant-cascader-picker:focus .ant-cascader-input) {
   border: 1px solid #52C9C2 !important;
   box-shadow: 0 0 0 2px rgba(82,201,194, 0.2) !important;
@@ -516,6 +526,7 @@
   color: #C3C3C3;
   letter-spacing: 0;
   position: absolute;
+  padding-top: 0!important;
 }
 
 :global(.scoreadjust .ant-form-item){
