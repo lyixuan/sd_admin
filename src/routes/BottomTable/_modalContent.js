@@ -72,7 +72,7 @@ export default class ModalContent extends React.Component {
               width: '230px',
               display: 'inline-block',
               textAlign: 'left',
-              color: 'rgba(0, 0, 0, 0.45);',
+              color: 'rgba(0, 0, 0, 0.45)',
             }}
           >
             学分底表{' '}
