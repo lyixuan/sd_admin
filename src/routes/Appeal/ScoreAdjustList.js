@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Table, Button, Form, Popconfirm, Popover, message } from 'antd';
+import moment from 'moment/moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
@@ -17,9 +18,9 @@ const contentDel = (
   </div>
 );
 
-@connect(({ audit, loading }) => ({
-  audit,
-  loading: loading.effects['audit/getAuditList'],
+@connect(({ scoreAdjust, loading }) => ({
+  scoreAdjust,
+  loading: loading.effects['scoreAdjust/getList'],
 }))
 class ScoreAdjustList extends Component {
   constructor(props) {
@@ -36,17 +37,14 @@ class ScoreAdjustList extends Component {
     this.state = {};
   }
 
-  UNSAFE_componentWillMount() {
-    const params = {};
-    this.props.dispatch({
-      type: 'audit/listOrg',
-      payload: { params },
-    });
-    this.props.dispatch({
-      type: 'audit/findCertificationList',
-      payload: { params },
-    });
-  }
+  // UNSAFE_componentWillMount() {
+  //   const params = {};
+  //   this.props.dispatch({
+  //     type: 'audit/getList',
+  //     payload: { params },
+  //   });
+  // }
+
   // 添加调整
   onCreate = () => {
     this.props.setRouteUrlParams('/appeal/scoreAdjustCreate', {});
@@ -70,11 +68,11 @@ class ScoreAdjustList extends Component {
   // 表单搜索函数
   search = (params, values) => {
     const obj = params ? { ...params } : this.params;
-    obj.number = this.pageNum;
-    obj.size = this.pageSize;
+    obj.pageNum = this.pageNum;
+    obj.pageSize = this.pageSize;
     this.params = { ...obj };
     this.props.dispatch({
-      type: 'audit/getAuditList',
+      type: 'scoreAdjust/getList',
       payload: { obj },
     });
     if (values) {
@@ -82,6 +80,12 @@ class ScoreAdjustList extends Component {
     }
     this.oriSearchParams.pageSize = this.pageSize;
     this.oriSearchParams.pageNum = this.pageNum;
+  };
+
+  // 表单重置
+  reset = params => {
+    this.pageNum = 0;
+    this.search(params);
   };
 
   // 点击某一页函数
@@ -95,23 +99,23 @@ class ScoreAdjustList extends Component {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'certificationInfoId',
+        dataIndex: 'index',
       },
       {
         title: '学分日期',
-        dataIndex: 'userName',
+        dataIndex: 'adjustDate2',
       },
       {
         title: '调整类型',
-        dataIndex: 'orgName',
+        dataIndex: 'type2',
       },
       {
         title: '均分',
-        dataIndex: 'certificationItemName',
+        dataIndex: 'creditScore2',
       },
       {
         title: '调整级别',
-        dataIndex: 'assessCycStr',
+        dataIndex: 'groupType2',
       },
       {
         title: '调整组织',
@@ -123,7 +127,7 @@ class ScoreAdjustList extends Component {
       },
       {
         title: '更新时间',
-        dataIndex: 'signResultStr',
+        dataIndex: 'modifyTime2',
       },
       {
         title: '操作',
@@ -131,14 +135,7 @@ class ScoreAdjustList extends Component {
         render: (text, record) => {
           return (
             <div className="scoreAdjust">
-              <Popover
-                content={
-                  <div className={style.bline}>
-                    尚德经历尚德经历尚德经历 \n 数据代理洒djd到家了时间的家连锁店
-                  </div>
-                }
-                trigger="click"
-              >
+              <Popover content={<div className={style.bline}>{record.reason}</div>} trigger="click">
                 <span style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}>
                   查看备注
                 </span>
@@ -172,8 +169,18 @@ class ScoreAdjustList extends Component {
 
   render() {
     const { loading } = this.props;
-    const { content, totalElements } = this.props.audit.auditList;
+    const { content, totalElements } = this.props.scoreAdjust.list;
 
+    if (content) {
+      content.forEach((v, i) => {
+        content[i].modifyTime2 = moment(v.modifyTime).format('YYYY-MM-DD HH:mm:ss');
+        content[i].adjustDate2 = moment(v.adjustDate).format('YYYY-MM-DD');
+        content[i].type2 = v.type === 1 ? '调增学分' : '调减学分';
+        content[i].groupType2 = BI_Filter(`USER_LEVEL|id:${v.groupType}`).name;
+        content[i].creditScore2 = v.type === 2 ? `-${v.creditScore}` : v.creditScore;
+        content[i].index = i + 1;
+      });
+    }
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -182,6 +189,9 @@ class ScoreAdjustList extends Component {
             auditData={this.props.audit}
             handleSearch={(params, values) => {
               this.search(params, values);
+            }}
+            reset={params => {
+              this.reset(params);
             }}
           />
         }

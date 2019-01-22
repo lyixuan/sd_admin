@@ -21,6 +21,8 @@ class AuditListForm extends Component {
     this.isMonth = true;
     this.state = {
       quarter: '',
+      quarterRange: null,
+      monthRange: null,
       assessCyc: 1,
       orgList: [],
       orgType: 'college',

@@ -602,11 +602,15 @@ export const getRouterData = app => {
 
     // ---- 申诉  学分调整 begin-----
     '/appeal/scoreAdjustList': {
-      component: dynamicWrapper(app, ['audit'], () => import('../routes/Appeal/ScoreAdjustList')),
+      component: dynamicWrapper(app, ['scoreAdjust'], () =>
+        import('../routes/Appeal/ScoreAdjustList')
+      ),
       name: '学分调整',
     },
     '/appeal/scoreAdjustCreate': {
-      component: dynamicWrapper(app, ['audit'], () => import('../routes/Appeal/ScoreAdjustCreate')),
+      component: dynamicWrapper(app, ['scoreAdjust'], () =>
+        import('../routes/Appeal/ScoreAdjustCreate')
+      ),
       bread: {
         name: '学分调整',
         path: '/appeal/scoreAdjustList',
@@ -614,7 +618,9 @@ export const getRouterData = app => {
       name: '添加调整',
     },
     '/appeal/scoreAdjustEdit': {
-      component: dynamicWrapper(app, ['audit'], () => import('../routes/Appeal/ScoreAdjustEdit')),
+      component: dynamicWrapper(app, ['scoreAdjust'], () =>
+        import('../routes/Appeal/ScoreAdjustEdit')
+      ),
       bread: {
         name: '学分调整',
         path: '/appeal/scoreAdjustList',
