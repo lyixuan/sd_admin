@@ -171,20 +171,21 @@ class AppealForm extends Component {
                     rules: [
                       {
                         validator(rule, value, callback) {
+                          const reg = /^(0\.[0-9]{0,4}|1\.[0]{0,4})$/;
                           if ((flag === '优新开班电话' || flag === '优新随堂考') && !value) {
                             callback({ message: '删除数量为必填项，请填写！' });
                           } else if (
-                            isNaN(value) &&
+                            !reg.test(value) &&
                             value &&
                             (flag === '优新开班电话' || flag === '优新随堂考')
                           ) {
-                            callback({ message: '删除数量需要是数字组成' });
+                            callback({ message: '请输入0～1的数字,限制到小数点后四位' });
                           }
                           callback();
                         },
                       },
                     ],
-                  })(<Input style={{ width: 380 }} />)}
+                  })(<Input style={{ width: 380 }} placeholder="请输入0～1的数字" />)}
                 </FormItem>
               ) : null}
 
