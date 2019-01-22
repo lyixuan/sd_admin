@@ -3,8 +3,7 @@ import request from '../utils/request';
 
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
-  // development: 'http://172.16.117.65:8090',
-  development: 'http://172.16.58.83:9901',
+  development: 'http://172.16.117.65:8090',
 };
 export const HOST = hostObj[process.env.API_TYPE];
 /*
