@@ -922,3 +922,47 @@ export async function saveOrModifySubItem(params) {
     body: params,
   });
 }
+
+// ------------------- 学分调整 begin -------------------
+
+// 学分调整列表
+export async function creditAdjustGetList(params) {
+  return request(`${HOST}/creditAdjust/findAll?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 删除学分调整
+export async function creditAdjustDelById(params) {
+  return request(`${HOST}/creditAdjust/deleteById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 根据id获取详细信息
+export async function creditAdjustGetDetail(params) {
+  return request(`${HOST}/creditAdjust/getInfoById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 更新或保存学分调整
+* */
+export async function creditAdjustSaveOrModify(params) {
+  return request(`${HOST}/creditAdjust/saveOrModify`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+/*
+* 获取组织架构接口
+* */
+export async function organizationList(params) {
+  return request(`${HOST}/organization/list?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// ------------------- 学分调整 end -------------------

@@ -76,15 +76,13 @@
 }
 
 :global(.ant-popover-inner-content){
-  padding: 28px 24px !important;
+  padding: 20px 20px !important;
   width: 356px;
-  height: 136px;
 }
 
 :global(.ant-popover-message) {
   font-size: 14px;
   color: #262626;
-  width: 170px;
 }
 :global(.ant-popover-buttons) {
   text-align: right;
@@ -151,6 +149,16 @@
   border: 1px solid #52C9C2;
   box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
 }
+
+:global(.ant-input-number:hover){
+  border-color: #52C9C2 !important;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+:global(.ant-input-number:focus){
+  border-color: #52C9C2 !important;
+  box-shadow: 0 0 0 2px rgba(82,201,194, 0.2);
+}
+
 :global(.ant-cascader-picker:focus .ant-cascader-input) {
   border: 1px solid #52C9C2 !important;
   box-shadow: 0 0 0 2px rgba(82,201,194, 0.2) !important;
@@ -459,7 +467,7 @@
   color: #9B9B9B;
 }
 
-/* -------audit------------ */
+/* -------audit begin------------ */
 :global(.audit table td){
   width: 280px!important;
 }
@@ -511,8 +519,20 @@
 :global(.auditModel .ant-form .ant-row.SpecialAuditCSS){
   margin: -9px 0 10px 60px;
 }
+/* -------audit end------------ */
+
+/* -------score change begin------------ */
+:global(.ant-form-item .ant-form-extra){
+  font-size: 11px;
+  color: #C3C3C3;
+  letter-spacing: 0;
+  position: absolute;
+  padding-top: 0!important;
+}
 
 
-
-
+:global(.scoreadjust .ant-form-item){
+  margin-bottom: 20px;
+}
+/* -------score change end------------ */
 
