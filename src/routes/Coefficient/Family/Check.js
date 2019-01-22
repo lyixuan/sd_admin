@@ -78,8 +78,8 @@ class Check extends Component {
     const dailyRankSelf = this.dataFormt(data, 4) || [];
     const dailyRank = this.dataFormt(data, 5) || [];
     const manage = this.dataFormt(data, 3) || [];
-    const data1 = { compo: 1, percent: 1, basic: 1, data: personRankSelf };
-    const data2 = { compo: 1, percent: 1, basic: 1, data: personRank };
+    const data1 = { compo: 1, percent: 2, basic: 1, data: personRankSelf };
+    const data2 = { compo: 1, percent: 2, basic: 1, data: personRank };
     const data3 = { compo: 1, percent: 1, basic: 2, data: dailyRankSelf };
     const data4 = { compo: 1, percent: 1, basic: 2, data: dailyRank };
     const data5 = { compo: 1, percent: 2, basic: 3, data: manage };

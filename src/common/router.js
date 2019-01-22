@@ -495,6 +495,32 @@ export const getRouterData = app => {
       ),
       name: '底表下载',
     },
+    '/goodStudent/goodStudentList': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/GoodStudent/GoodStudentList')
+      ),
+      name: '好学生推荐',
+    },
+    '/goodStudent/goodStudentAdd': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/GoodStudent/GoodStudentAdd')
+      ),
+      bread: {
+        name: '好学生推荐',
+        path: '/goodStudent/goodStudentList',
+      },
+      name: '添加数据',
+    },
+    '/goodStudent/goodStudentDel': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/GoodStudent/GoodStudentDel')
+      ),
+      bread: {
+        name: '好学生推荐',
+        path: '/goodStudent/goodStudentList',
+      },
+      name: '删除数据',
+    },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
     },
