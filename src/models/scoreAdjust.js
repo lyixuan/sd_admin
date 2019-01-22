@@ -1,4 +1,5 @@
 import { message } from 'antd';
+import { routerRedux } from 'dva/router';
 import {
   creditAdjustGetList,
   creditAdjustDelById,
@@ -12,6 +13,8 @@ export default {
 
   state: {
     list: {},
+    orgList: [],
+    detail: {},
   },
 
   effects: {
@@ -25,42 +28,39 @@ export default {
         message.error(response.msg);
       }
     },
-    *delById({ payload }, { call, put }) {
-      const response = yield call(creditAdjustDelById, payload.obj);
-      const listData = response && response.data ? { ...response.data } : {};
+    *delById({ payload }, { call }) {
+      const response = yield call(creditAdjustDelById, payload);
 
       if (response.code === 2000) {
-        yield put({ type: 'auditListSave', payload: { listData } });
+        console.log('ok');
       } else {
         message.error(response.msg);
       }
     },
-    *getDetail({ payload }, { call, put }) {
-      const response = yield call(creditAdjustGetDetail, payload.obj);
+    *getDetailById({ payload }, { call, put }) {
+      const response = yield call(creditAdjustGetDetail, payload);
       const listData = response && response.data ? { ...response.data } : {};
 
       if (response.code === 2000) {
-        yield put({ type: 'auditListSave', payload: { listData } });
+        yield put({ type: 'detailSave', payload: { listData } });
       } else {
         message.error(response.msg);
       }
     },
     *saveDetail({ payload }, { call, put }) {
-      const response = yield call(creditAdjustSaveOrModify, payload.obj);
-      const listData = response && response.data ? { ...response.data } : {};
-
+      const response = yield call(creditAdjustSaveOrModify, payload.params);
       if (response.code === 2000) {
-        yield put({ type: 'auditListSave', payload: { listData } });
+        yield put(routerRedux.push('/appeal/scoreAdjustList'));
       } else {
         message.error(response.msg);
       }
     },
     *organizationList({ payload }, { call, put }) {
-      const response = yield call(organizationList, payload.obj);
-      const listData = response && response.data ? { ...response.data } : {};
+      const response = yield call(organizationList, payload);
+      const listData = response && response.data ? [...response.data] : [];
 
       if (response.code === 2000) {
-        yield put({ type: 'auditListSave', payload: { listData } });
+        yield put({ type: 'orgSave', payload: { listData } });
       } else {
         message.error(response.msg);
       }
@@ -72,6 +72,18 @@ export default {
       return {
         ...state,
         list: action.payload.listData,
+      };
+    },
+    orgSave(state, action) {
+      return {
+        ...state,
+        orgList: action.payload.listData,
+      };
+    },
+    detailSave(state, action) {
+      return {
+        ...state,
+        detail: action.payload.listData,
       };
     },
   },

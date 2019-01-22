@@ -15,6 +15,7 @@ import {
 } from 'antd';
 import { connect } from 'dva/index';
 import common from '../../../routes/Common/common.css';
+import { deepCopy } from '../../../utils/utils';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -24,8 +25,8 @@ let propsVal = '';
 
 @connect(({ scoreAdjust, loading }) => ({
   scoreAdjust,
-  loading: loading.effects['scoreAdjust/organizationList'],
-  submit: loading.effects['scoreAdjust/updatePermission'],
+  initLoading: loading.effects['scoreAdjust/getDetailById'],
+  submit: loading.effects['scoreAdjust/saveDetail'],
 }))
 class ScoreAdjust_CE extends Component {
   constructor(props) {
@@ -33,73 +34,89 @@ class ScoreAdjust_CE extends Component {
     const urlParams = this.props.getUrlParams();
     this.state = {
       editId: urlParams && urlParams.id ? urlParams.id : null, // 编辑的id
-      adjustDate: null,
-      type: null,
-      groupType: null,
+      adjustDate: undefined,
+      type: undefined,
+      creditScore: undefined,
+      groupType: undefined,
       orgList: [],
+      familyType: undefined,
+      reason: undefined,
     };
+    this.orgOptions = [];
+    this.showFamily = true;
   }
 
   componentDidMount() {
     if (this.props.type === 'edit') {
       // 编辑 ,请求回显数据
       this.props.dispatch({
-        type: 'scoreAdjust/organizationList',
-        payload: { a: this.state.editId },
+        type: 'scoreAdjust/getDetailById',
+        payload: { id: this.state.editId },
       });
     }
   }
 
-  onChangeInput = val => {
-    console.log(val);
-  };
-
-  changeDate = () => {
+  changeDate = val => {
     this.props.dispatch({
       type: 'scoreAdjust/organizationList',
-      payload: { date: this.state.editId },
+      payload: { beginDate: val.format('YYYY-MM-DD'), endDate: val.format('YYYY-MM-DD') },
     });
+    propsVal.form.setFieldsValue({
+      groupType: null,
+      orgList: [],
+      familyType: null,
+    });
+  };
+
+  // 级联选级
+  handleSelectChange = value => {
+    propsVal.form.setFieldsValue({
+      orgList: [],
+      familyType: null,
+    });
+    this.orgOptions = deepCopy(this.props.scoreAdjust.orgList);
+    if (value === 'college') {
+      this.orgOptions.forEach(v => {
+        delete v.children;
+      });
+      this.showFamily = true;
+    } else if (value === 'family') {
+      this.orgOptions.forEach(item => {
+        item.children.forEach(v => {
+          delete v.children;
+        });
+      });
+      this.showFamily = false;
+    } else {
+      this.showFamily = false;
+    }
   };
 
   handleSubmit = () => {
     propsVal.form.validateFieldsAndScroll((err, values) => {
+      console.log(values);
       if (!err) {
-        let applyTimeParamStart = null;
-        let applyTimeParamEnd = null;
-        if (values.assessCyc === 2) {
-          const m = values.quarterRange ? values.quarterRange.clone() : null;
-          applyTimeParamStart = m ? m.format('YYYY-MM') : null;
-          applyTimeParamEnd = m ? m.add(2, 'month').format('YYYY-MM') : null;
-        } else {
-          // values.assessCyc === 1 或 null
-          const m = values.monthRange ? values.monthRange.clone() : null;
-          applyTimeParamStart = m ? m.format('YYYY-MM') : null;
-          applyTimeParamEnd = m ? m.format('YYYY-MM') : null;
-        }
+        const m = values.adjustDate ? values.adjustDate.clone() : undefined;
+        const adjustDate = m ? m.format('YYYY-MM-DD') : undefined;
         const params = {
-          exportTableType: values.exportTableType,
-          assessCyc: values.exportTableType === 1 ? null : values.assessCyc,
-          applyTimeParamStart,
-          applyTimeParamEnd,
-          signStatus: values.signStatus,
-          signResult: values.signResult,
-          certificationDetailInfoId: this.props.record ? this.props.record.id : null,
-          result: values.result,
+          adjustDate,
+          type: values.type,
+          creditScore: values.creditScore ? parseFloat(values.creditScore) : undefined,
+          groupType: values.groupType,
+          collegeId: values.orgList[0] ? values.orgList[0] : undefined,
+          familyId: values.orgList[1] ? values.orgList[1] : undefined,
+          groupId: values.orgList[2] ? values.orgList[2] : undefined,
+          reason: values.reason,
         };
+
         if (this.props.type === 'edit') {
           // 编辑提交
-          this.props.dispatch({
-            type: 'audit/exportBottomTable',
-            payload: { params },
-          });
+          params.id = this.state.editId;
         }
-        if (this.props.type === 'add') {
-          // 新增提交
-          this.props.dispatch({
-            type: 'audit/auditPublish',
-            payload: { params, callbackParams: this.params },
-          });
-        }
+        this.props.dispatch({
+          type: 'scoreAdjust/saveDetail',
+          payload: { params },
+        });
       }
     });
   };
@@ -109,7 +126,7 @@ class ScoreAdjust_CE extends Component {
   };
 
   render() {
-    const { loading, submit } = this.props;
+    const { initLoading, submit } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -136,7 +153,7 @@ class ScoreAdjust_CE extends Component {
       propsVal = props;
       const { getFieldDecorator } = props.form;
       return (
-        <Form onSubmit={this.handleSubmit} className="scoreadjust">
+        <Form className="scoreadjust">
           <FormItem label="*学分日期" {...formItemLayout}>
             {getFieldDecorator('adjustDate', {
               initialValue: this.state.adjustDate,
@@ -174,9 +191,8 @@ class ScoreAdjust_CE extends Component {
               <InputNumber
                 min={0}
                 max={9999999}
-                step={0.1}
+                step={0.01}
                 placeholder="请输入"
-                onChange={this.onChangeInput}
                 style={{ width: 380 }}
               />
             )}
@@ -209,17 +225,19 @@ class ScoreAdjust_CE extends Component {
               rules: [{ required: true, message: '请选择调整组织' }],
             })(<Cascader options={this.orgOptions} style={{ width: 380 }} />)}
           </FormItem>
-          <FormItem label="*组织类别" {...formItemLayout}>
-            {getFieldDecorator('familyType', {
-              initialValue: this.state.familyType,
-              rules: [{ required: true, message: '请选择组织类别' }],
-            })(
-              <RadioGroup style={{ width: 380 }}>
-                <Radio value={0}>自考</Radio>
-                <Radio value={1}>壁垒</Radio>
-              </RadioGroup>
-            )}
-          </FormItem>
+          {this.showFamily ? (
+            <FormItem label="*组织类别" {...formItemLayout}>
+              {getFieldDecorator('familyType', {
+                initialValue: this.state.familyType,
+                rules: [{ required: true, message: '请选择组织类别' }],
+              })(
+                <RadioGroup style={{ width: 380 }}>
+                  <Radio value={0}>自考</Radio>
+                  <Radio value={1}>壁垒</Radio>
+                </RadioGroup>
+              )}
+            </FormItem>
+          ) : null}
           <FormItem
             label="*调整原因"
             {...formItemLayout}
@@ -227,11 +245,21 @@ class ScoreAdjust_CE extends Component {
           >
             {getFieldDecorator('reason', {
               initialValue: this.state.reason,
-              rules: [{ required: true, message: '请填写原因' }],
+              rules: [
+                { required: true, message: '请填写原因' },
+                {
+                  validator(rule, value, callback) {
+                    if (value && value.length > 500) {
+                      callback({ message: '限制500字以内!' });
+                    } else {
+                      callback();
+                    }
+                  },
+                },
+              ],
             })(
               <TextArea
-                onChange={e => this.onReasonChange(e, i)}
-                placeholder="请填写调整原因"
+                placeholder="限制500字以内"
                 autosize={{ minRows: 3, maxRows: 3 }}
                 style={{ width: 380 }}
               />
@@ -250,6 +278,7 @@ class ScoreAdjust_CE extends Component {
                     type="primary"
                     className={common.submitButton}
                     loading={submit}
+                    onClick={this.handleSubmit}
                   >
                     提交
                   </Button>
@@ -262,7 +291,7 @@ class ScoreAdjust_CE extends Component {
     });
 
     return (
-      <Spin spinning={loading || false}>
+      <Spin spinning={this.props.type === 'edit' ? initLoading : false}>
         <ModalForm style={{ margin: 'auto' }} />
       </Spin>
     );

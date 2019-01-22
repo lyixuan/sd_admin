@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form, Popconfirm, Popover, message } from 'antd';
+import { Table, Button, Form, Popconfirm, Popover } from 'antd';
 import moment from 'moment/moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -61,8 +61,10 @@ class ScoreAdjustList extends Component {
 
   // 删除
   onDel = val => {
-    console.log(val);
-    message.success('Click on Yes');
+    this.props.dispatch({
+      type: 'scoreAdjust/delById',
+      payload: { id: val },
+    });
   };
 
   // 表单搜索函数

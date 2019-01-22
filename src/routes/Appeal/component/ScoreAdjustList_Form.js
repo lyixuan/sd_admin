@@ -15,7 +15,7 @@ class AuditListForm extends Component {
     this.orgOptions = [];
     this.certificationList = [];
     this.state = {
-      orgId: null,
+      orgId: undefined,
       dateRange: [],
     };
     // 搜索还原
@@ -67,10 +67,10 @@ class AuditListForm extends Component {
       if (!err) {
         const subParams = {};
         if (values.dateRange) {
-          const m1 = values.dateRange[0] ? values.dateRange[0].clone() : null;
-          const m2 = values.dateRange[1] ? values.dateRange[1].clone() : null;
-          const beginDate = m1 ? m1.format('YYYY-MM-DD') : null;
-          const endDate = m2 ? m2.format('YYYY-MM-DD') : null;
+          const m1 = values.dateRange[0] ? values.dateRange[0].clone() : undefined;
+          const m2 = values.dateRange[1] ? values.dateRange[1].clone() : undefined;
+          const beginDate = m1 ? m1.format('YYYY-MM-DD') : undefined;
+          const endDate = m2 ? m2.format('YYYY-MM-DD') : undefined;
           subParams.beginDate = beginDate;
           subParams.endDate = endDate;
         }
