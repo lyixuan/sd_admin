@@ -33,7 +33,7 @@ class AppealForm extends Component {
           message.error('请输入咨询id');
         } else if (flag === 'IM不及时' && !values.countValue) {
           message.error('请输入申诉个数');
-        } else if ((flag === '优新开班电话' || flag === '优新随堂考') && !values.deleteNum) {
+        } else if ((flag === '优新开班电话' || flag === '优新随堂考') && !values.eliminate_value) {
           message.error('请输入删除个数');
         } else {
           this.props.handleSubmit(values, firstcountBeginTime);
@@ -166,7 +166,7 @@ class AppealForm extends Component {
 
               {!flag ? null : flag === '优新开班电话' || flag === '优新随堂考' ? (
                 <FormItem {...formItemLayout} label="*删除数量">
-                  {getFieldDecorator('deleteNum', {
+                  {getFieldDecorator('eliminate_value', {
                     initialValue: null,
                     rules: [
                       {
