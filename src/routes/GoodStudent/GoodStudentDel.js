@@ -51,13 +51,13 @@ class RefundDel extends Component {
   };
   fetchPreDel = params => {
     this.props.dispatch({
-      type: 'goodStudent/preDelQuality',
+      type: 'goodStudent/deleteCheck',
       payload: { params },
     });
   };
   fetchDel = params => {
     this.props.dispatch({
-      type: 'goodStudent/delQuality',
+      type: 'goodStudent/deleteCheck',
       payload: { params },
     });
   };
@@ -218,13 +218,13 @@ class RefundDel extends Component {
           this.initParamsFn(dis);
         }}
         step1Fetch={() => {
-          this.fetchPreDel({ nums });
+          this.fetchPreDel({ orderIdStr: nums });
         }}
         step2Fetch={() => {
           this.editCurrent(2);
         }}
         step3Fetch={() => {
-          this.fetchDel({ nums: successNums.join(' ') });
+          this.fetchDel({ orderIdStr: successNums.join(' ') });
         }}
         editLoading={loading => {
           this.editLoading(loading);

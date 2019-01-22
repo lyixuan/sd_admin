@@ -1,10 +1,11 @@
 import { message } from 'antd';
 import {
-  getQualityList,
-  checkQualityList,
-  delQualityList,
-  preDelQualityList,
-  saveDataQuality,
+  recommendList,
+  importCheck,
+  importUpload,
+  deleteCheck,
+  deleteReview,
+  findAllOrg,
 } from '../services/api';
 
 export default {
@@ -16,23 +17,34 @@ export default {
     disableDel: null, // 根据接口返回决定是否禁止下一步按钮：true--禁止
     qualityList: [],
     fileList: [],
+    findAllOrg: [], // 所有学院列表
     isLoading: null,
   },
 
   effects: {
-    *getQualityList({ payload }, { call, put }) {
-      const { getListParams } = payload;
-      const response = yield call(getQualityList, { ...getListParams });
-      yield put({ type: 'qualityListSave', payload: { response, getListParams } });
+    // 所有学院列表
+    *findAllOrg(_, { call, put }) {
+      const response = yield call(findAllOrg);
+      if (response.code !== 2000) {
+        message.error(response.msg);
+      } else {
+        yield put({
+          type: 'save',
+          payload: { findAllOrg: response.data },
+        });
+      }
     },
-    *checkQuality({ payload }, { call, put }) {
+    *recommendList({ payload }, { call, put }) {
+      const { getListParams } = payload;
+      const response = yield call(recommendList, { ...getListParams });
+      yield put({ type: 'pureSave', payload: { response, getListParams } });
+    },
+    *importCheck({ payload }, { call, put }) {
       const logMsg = [];
-      const { params } = payload;
-      const checkList = yield call(checkQualityList, { ...params });
-
+      const checkList = yield call(importCheck, { ...payload });
       if (checkList.code !== 2000) {
-        if (checkList.data.excelError) {
-          checkList.data.excelError.forEach(item => {
+        if (checkList.data.failList) {
+          checkList.data.failList.forEach(item => {
             logMsg.push(item.log);
           });
           message.error(logMsg.join(','));
@@ -40,7 +52,7 @@ export default {
           message.error(checkList.msg);
         }
         yield put({ type: 'save', payload: { current: 0, isLoading: false } });
-      } else if (checkList.data.errorList.length > 0) {
+      } else if (checkList.data.failList.length > 0) {
         yield put({
           type: 'save',
           payload: { checkList, current: 1, disableDel: true, isLoading: false },
@@ -52,9 +64,8 @@ export default {
         });
       }
     },
-    *saveExcel({ payload }, { call, put }) {
-      const { params } = payload;
-      const excelData = yield call(saveDataQuality, { ...params });
+    *importUpload({ payload }, { call, put }) {
+      const excelData = yield call(importUpload, { ...payload });
       if (excelData.code !== 2000) {
         message.error(excelData.msg);
         yield put({ type: 'save', payload: { current: 1, isLoading: false } });
@@ -62,14 +73,14 @@ export default {
         yield put({ type: 'save', payload: { current: 2, isLoading: false } });
       }
     },
-    *preDelQuality({ payload }, { call, put }) {
+    *deleteCheck({ payload }, { call, put }) {
       const { params } = payload;
-      const preDelData = yield call(preDelQualityList, { ...params });
+      const preDelData = yield call(deleteCheck, { ...params });
 
       if (preDelData.code !== 2000) {
         message.error(preDelData.msg);
         yield put({ type: 'save', payload: { current: 0, isLoading: false } });
-      } else if (preDelData.data.successSize > 0) {
+      } else if (preDelData.data.successCount > 0) {
         yield put({
           type: 'save',
           payload: { preDelData, current: 1, disableDel: false, isLoading: false },
@@ -81,9 +92,9 @@ export default {
         });
       }
     },
-    *delQuality({ payload }, { call, put }) {
+    *deleteReview({ payload }, { call, put }) {
       const { params } = payload;
-      const delData = yield call(delQualityList, { ...params });
+      const delData = yield call(deleteReview, { ...params });
       if (delData.code !== 2000) {
         message.error(delData.msg);
         yield put({ type: 'save', payload: { current: 2, isLoading: false } });
@@ -117,16 +128,16 @@ export default {
     save(state, action) {
       const { checkList } = action.payload;
       if (checkList) {
-        const { errorList } = checkList.data;
-        if (errorList) {
-          errorList.forEach((item, i) => {
-            errorList[i].key = i;
+        const { failList } = checkList.data;
+        if (failList) {
+          failList.forEach((item, i) => {
+            failList[i].key = i;
           });
         }
       }
       return { ...state, ...action.payload };
     },
-    qualityListSave(state, action) {
+    pureSave(state, action) {
       return {
         ...state,
         qualityList: action.payload,

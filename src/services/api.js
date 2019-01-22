@@ -3,7 +3,8 @@ import request from '../utils/request';
 
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
-  development: 'http://172.16.117.65:8090',
+  // development: 'http://172.16.117.65:8090',
+  development: 'http://172.16.58.83:9901',
 };
 export const HOST = hostObj[process.env.API_TYPE];
 /*
@@ -918,6 +919,52 @@ export async function saveOrModifyItem(params) {
 * */
 export async function saveOrModifySubItem(params) {
   return request(`${HOST}/certificationItem/saveOrModifySubItem`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 以下为好学生推荐接口
+export async function recommendList(params) {
+  return request(`${HOST}/student/recommend/list?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+// 校验编号
+export async function deleteCheck(params) {
+  return request(`${HOST}/student/recommend/deleteCheck`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 删除编号
+export async function deleteRecommend(params) {
+  return request(`${HOST}/student/recommend/deleteRecommend`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 复合编号
+export async function deleteReview(params) {
+  return request(`${HOST}/student/recommend/deleteReview`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 选择文件
+export function importSelect() {
+  return `${HOST}/student/recommend/importSelect`;
+}
+// 检验文件
+export async function importCheck(params) {
+  return request(`${HOST}/student/recommend/importCheck`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 上传图片地址
+export async function importUpload(params) {
+  return request(`${HOST}/student/recommend/importUpload`, {
     method: 'POST',
     body: params,
   });
