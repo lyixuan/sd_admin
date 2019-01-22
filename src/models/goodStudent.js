@@ -5,6 +5,7 @@ import {
   importUpload,
   deleteCheck,
   deleteReview,
+  deleteRecommend,
   findAllOrg,
 } from '../services/api';
 
@@ -93,13 +94,27 @@ export default {
       }
     },
     *deleteReview({ payload }, { call, put }) {
-      const { params } = payload;
-      const delData = yield call(deleteReview, { ...params });
+      const delData = yield call(deleteReview, { ...payload });
       if (delData.code !== 2000) {
         message.error(delData.msg);
+        yield put({ type: 'save', payload: { current: 1, isLoading: false } });
+      } else {
+        yield put({
+          type: 'save',
+          payload: { delData: delData.data, current: 2, isLoading: false },
+        });
+      }
+    },
+    *deleteRecommend({ payload }, { call, put }) {
+      const delSucessData = yield call(deleteRecommend, { ...payload });
+      if (delSucessData.code !== 2000) {
+        message.error(delSucessData.msg);
         yield put({ type: 'save', payload: { current: 2, isLoading: false } });
       } else {
-        yield put({ type: 'save', payload: { delData, current: 3, isLoading: false } });
+        yield put({
+          type: 'save',
+          payload: { delSucessData: delSucessData.data, current: 3, isLoading: false },
+        });
       }
     },
     *getNums({ payload }, { put }) {

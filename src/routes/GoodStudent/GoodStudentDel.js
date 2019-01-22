@@ -55,16 +55,22 @@ class RefundDel extends Component {
       payload: { params },
     });
   };
-  fetchDel = params => {
+  fetchDel = deleteKey => {
     this.props.dispatch({
-      type: 'goodStudent/deleteCheck',
-      payload: { params },
+      type: 'goodStudent/deleteRecommend',
+      payload: { deleteKey },
     });
   };
   editCurrent = current => {
     this.props.dispatch({
       type: 'goodStudent/editCurrent',
       payload: { current },
+    });
+  };
+  fetchCheckDel = deleteKey => {
+    this.props.dispatch({
+      type: 'goodStudent/deleteReview',
+      payload: { deleteKey },
     });
   };
   editLoading = isLoading => {
@@ -104,46 +110,51 @@ class RefundDel extends Component {
         dataIndex: 'key',
       },
       {
-        title: '质检编号',
-        dataIndex: 'qualityNum',
+        title: '报名日期',
+        dataIndex: 'bizDate',
       },
       {
-        title: '扣除学分',
+        title: '子订单编号',
+        dataIndex: 'ordId',
+      },
+      {
+        title: '组织',
+        dataIndex: 'collegeName',
+      },
+      {
+        title: '老师姓名',
+        dataIndex: 'cpName',
+      },
+      {
+        title: '学员姓名',
+        dataIndex: 'stuName',
+      },
+      {
+        title: '分值',
         dataIndex: 'countValue',
-      },
-      {
-        title: '质检等级',
-        dataIndex: 'qualityTypeName',
-      },
-      {
-        title: '老师名称',
-        dataIndex: 'teaName',
-      },
-      {
-        title: '学院 | 家族 | 小组',
-        dataIndex: 'name',
       },
     ];
 
     return columns;
   };
   render() {
-    const { preDelData, nums, current, disableDel, isLoading } = this.props.goodStudent;
+    const { preDelData, delData, nums, current, disableDel, isLoading } = this.props.goodStudent;
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
-    const dataSource = !data || !data.successNums ? [] : this.fillDataSource(data.successNums);
+    const dataSource = !delData ? [] : this.fillDataSource(delData);
     const columns = !this.columnsData() ? [] : this.columnsData();
 
-    const successNums = [];
-    if (dataSource.length > 0) {
-      data.successNums.forEach(item => {
-        successNums.push(item.qualityNum);
-      });
-    }
-    const failNums = data ? data.failNums : [];
-    const successSize = data ? data.successSize : 0;
-    const inputContent = data ? data.failSize > 0 : null;
+    // const successNums = [];
+    // if (dataSource.length > 0) {
+    //   data.successNums.forEach(item => {
+    //     successNums.push(item.qualityNum);
+    //   });
+    // }
+    const failNums = data ? data.failOrderIdStr : [];
+
+    const successSize = data ? data.successCount : 0;
+    const inputContent = data ? data.failCount > 0 : null;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -154,14 +165,18 @@ class RefundDel extends Component {
 
     const tipSucess = `您已成功删除 ${successSize} 条数据！`;
     const checkRes = !data ? null : (
-      <CheckResult totalSize={data.totalSize} successSize={successSize} failSize={data.failSize} />
+      <CheckResult
+        totalSize={data.totalCount}
+        successSize={successSize}
+        failSize={data.failCount}
+      />
     );
     const steps = [
       {
         title: '输入编号',
         content: (
           <StepInput
-            inputTitle="请输入想删除的 “质检编号”："
+            inputTitle="请输入想删除的 “子订单编号”："
             inputContent="true"
             inputTip="true"
             nums={nums}
@@ -200,6 +215,7 @@ class RefundDel extends Component {
         content: <StepSucess isDelImg="true" tipSucess={tipSucess} />,
       },
     ];
+    console.log(data);
     return (
       <StepLayout
         routerData={this.props.routerData}
@@ -221,10 +237,11 @@ class RefundDel extends Component {
           this.fetchPreDel({ orderIdStr: nums });
         }}
         step2Fetch={() => {
-          this.editCurrent(2);
+          // this.editCurrent(2);
+          this.fetchCheckDel(data.deleteKey);
         }}
         step3Fetch={() => {
-          this.fetchDel({ orderIdStr: successNums.join(' ') });
+          this.fetchDel(data.deleteKey);
         }}
         editLoading={loading => {
           this.editLoading(loading);

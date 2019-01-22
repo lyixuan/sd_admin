@@ -25,7 +25,12 @@ class stepInput extends Component {
   }
   render() {
     const { inputTitle, inputInfo, inputContent, inputTip, disabled, faileData, nums } = this.props;
-    const valueData = !faileData ? nums : faileData.slice(1, faileData.length - 1);
+    let valueData = '';
+    if (!faileData) {
+      valueData = nums;
+    } else {
+      valueData = faileData.indexOf('[') < 0 ? faileData : faileData.slice(1, faileData.length - 1);
+    }
     return (
       <div className={styles.wrap}>
         {inputTitle ? <div className={styles.inputTitle}>{inputTitle}</div> : null}
