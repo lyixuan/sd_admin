@@ -22,10 +22,10 @@ const RadioGroup = Radio.Group;
 const { TextArea } = Input;
 let propsVal = '';
 
-@connect(({ permission, loading }) => ({
-  permission,
-  loading: loading.effects['permission/permissionById'],
-  submit: loading.effects['permission/updatePermission'],
+@connect(({ scoreAdjust, loading }) => ({
+  scoreAdjust,
+  loading: loading.effects['scoreAdjust/organizationList'],
+  submit: loading.effects['scoreAdjust/updatePermission'],
 }))
 class ScoreAdjust_CE extends Component {
   constructor(props) {
@@ -33,6 +33,10 @@ class ScoreAdjust_CE extends Component {
     const urlParams = this.props.getUrlParams();
     this.state = {
       editId: urlParams && urlParams.id ? urlParams.id : null, // 编辑的id
+      adjustDate: null,
+      type: null,
+      groupType: null,
+      orgList: [],
     };
   }
 
@@ -40,14 +44,23 @@ class ScoreAdjust_CE extends Component {
     if (this.props.type === 'edit') {
       // 编辑 ,请求回显数据
       this.props.dispatch({
-        type: 'permission/permissionById',
+        type: 'scoreAdjust/organizationList',
         payload: { a: this.state.editId },
       });
     }
   }
+
   onChangeInput = val => {
     console.log(val);
   };
+
+  changeDate = () => {
+    this.props.dispatch({
+      type: 'scoreAdjust/organizationList',
+      payload: { date: this.state.editId },
+    });
+  };
+
   handleSubmit = () => {
     propsVal.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -125,14 +138,14 @@ class ScoreAdjust_CE extends Component {
       return (
         <Form onSubmit={this.handleSubmit} className="scoreadjust">
           <FormItem label="*学分日期" {...formItemLayout}>
-            {getFieldDecorator('exportTableType', {
-              initialValue: null,
+            {getFieldDecorator('adjustDate', {
+              initialValue: this.state.adjustDate,
               rules: [{ required: true, message: '请选择学分日期' }],
-            })(<DatePicker style={{ width: 380 }} />)}
+            })(<DatePicker onChange={this.changeDate} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem label="*调整类型" {...formItemLayout}>
-            {getFieldDecorator('result', {
-              initialValue: '',
+            {getFieldDecorator('type', {
+              initialValue: this.state.type,
               rules: [{ required: true, message: '请选择调整类型' }],
             })(
               <RadioGroup style={{ width: 380 }}>
@@ -142,8 +155,8 @@ class ScoreAdjust_CE extends Component {
             )}
           </FormItem>
           <FormItem label="*均 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分" {...formItemLayout}>
-            {getFieldDecorator('userName', {
-              initialValue: '',
+            {getFieldDecorator('creditScore', {
+              initialValue: this.state.creditScore,
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -173,8 +186,8 @@ class ScoreAdjust_CE extends Component {
             {...formItemLayout}
             extra="仅影响选择的级别的学分，不影响其上下级组织的学分"
           >
-            {getFieldDecorator('orgType', {
-              initialValue: this.state.orgType,
+            {getFieldDecorator('groupType', {
+              initialValue: this.state.groupType,
               rules: [{ required: true, message: '请选择调整级别' }],
             })(
               <Select
@@ -197,13 +210,13 @@ class ScoreAdjust_CE extends Component {
             })(<Cascader options={this.orgOptions} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem label="*组织类别" {...formItemLayout}>
-            {getFieldDecorator('result', {
-              initialValue: '',
+            {getFieldDecorator('familyType', {
+              initialValue: this.state.familyType,
               rules: [{ required: true, message: '请选择组织类别' }],
             })(
               <RadioGroup style={{ width: 380 }}>
-                <Radio value={1}>自考</Radio>
-                <Radio value={2}>壁垒</Radio>
+                <Radio value={0}>自考</Radio>
+                <Radio value={1}>壁垒</Radio>
               </RadioGroup>
             )}
           </FormItem>
@@ -212,8 +225,8 @@ class ScoreAdjust_CE extends Component {
             {...formItemLayout}
             extra="编辑后记得联系产研一组产品经理刷新缓存后生效哦"
           >
-            {getFieldDecorator('result', {
-              initialValue: '',
+            {getFieldDecorator('reason', {
+              initialValue: this.state.reason,
               rules: [{ required: true, message: '请填写原因' }],
             })(
               <TextArea
