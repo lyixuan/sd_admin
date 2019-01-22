@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { Table, Button, Form, Input, Row, Col } from 'antd';
+import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
+import { columnsFn } from './_selfColumn';
 import ContentLayout from '../../layouts/ContentLayout';
+import FormFilter from '../../selfComponent/FormFilter';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
+import styles from './goodStrudent.less';
 
-const FormItem = Form.Item;
-let propsVal = '';
-let firstTeaName = '';
-let firstQualityNum = '';
-let firstPage = 0; // 分页的默认起开页面
+const dateFormat = 'YYYY-MM-DD';
+const { Option } = Select;
+const { RangePicker } = DatePicker;
+
 @connect(({ goodStudent, loading }) => ({
   goodStudent,
   loading: loading.models.goodStudent,
@@ -18,77 +19,88 @@ let firstPage = 0; // 分页的默认起开页面
 class GoodStudentList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      collegeId: null,
+      beginDate: null,
+      endDate: null,
+    };
   }
   componentDidMount() {
-    const initVal = this.props.getUrlParams();
-    firstTeaName = !initVal.firstTeaName ? '' : initVal.firstTeaName;
-    firstQualityNum = !initVal.firstQualityNum ? '' : Number(initVal.firstQualityNum);
-    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
-    const teaName = !firstTeaName ? undefined : firstTeaName;
-    const qualityNum = !firstQualityNum ? undefined : firstQualityNum;
-    const number = !firstPage ? 0 : firstPage;
-    this.getData({ size: 30, number, teaName, qualityNum });
-  }
-
-  componentWillUnmount() {
-    firstTeaName = null;
-    firstQualityNum = null;
+    this.getData({ size: 30 });
+    this.getAllOrg();
   }
 
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     this.changePage(current, pageSize);
   };
+  // 学院选择
+  onSelectChange = val => {
+    this.setState({ collegeId: val });
+  };
+  onChange = (dates, dateStrings) => {
+    console.log(dateStrings);
+    this.setState({
+      beginDate: dateStrings[0],
+      endDate: dateStrings[1],
+    });
+  };
+  // 所有学院列表
+  getAllOrg = () => {
+    this.props.dispatch({
+      type: 'goodStudent/findAllOrg',
+      payload: {},
+    });
+  };
 
   getData = params => {
     const getListParams = { ...this.props.goodStudent.getListParams, ...params };
     this.props.dispatch({
-      type: 'goodStudent/getQualityList',
+      type: 'goodStudent/recommendList',
       payload: { getListParams },
     });
   };
   // 点击某一页函数
-  changePage = (current, pageSize) => {
-    firstPage = current - 1;
-    this.props.setCurrentUrlParams({ firstPage });
+  changePage = (pageNum, size) => {
     this.getData({
-      size: pageSize,
-      number: firstPage,
-      teaName: !firstTeaName ? undefined : firstTeaName,
-      qualityNum: !firstQualityNum ? undefined : firstQualityNum,
+      pageSize: size,
+      pageNum,
     });
   };
-
   // 表单搜索函数
-  handleSearch = e => {
-    e.preventDefault();
-    propsVal.form.validateFields((err, values) => {
-      if (!err) {
-        firstTeaName = !values.teaName ? undefined : values.teaName;
-        firstQualityNum = !values.qualityNum ? undefined : values.qualityNum;
-        firstPage = 0;
-        const qualityListParams = {
-          size: 30,
-          number: 0,
-          teaName: firstTeaName,
-          qualityNum: firstQualityNum,
-        };
-        this.getData(qualityListParams);
-        this.props.setCurrentUrlParams({ firstTeaName, firstQualityNum, firstPage });
-      }
-    });
-  };
-  // 表单重置
-  handleReset = () => {
-    firstTeaName = '';
-    firstQualityNum = '';
-    firstPage = 0;
-    propsVal.form.resetFields();
-    this.props.setRouteUrlParams('/goodStudent/qualityList');
-    this.getData({ size: 30, number: 0 });
+  handleSearch = data => {
+    const { endDate, beginDate, collegeId } = this.state;
+    console.log(data);
+    console.log(endDate, beginDate, collegeId);
+    // e.preventDefault();
+    // propsVal.form.validateFields((err, values) => {
+    //   if (!err) {
+    //     firstTeaName = !values.teaName ? undefined : values.teaName;
+    //     firstQualityNum = !values.qualityNum ? undefined : values.qualityNum;
+    //     firstPage = 0;
+    //     const qualityListParams = {
+    //       size: 30,
+    //       number: 0,
+    //       teaName: firstTeaName,
+    //       qualityNum: firstQualityNum,
+    //     };
+    //     this.getData(qualityListParams);
+    //   }
+    // });
   };
 
+  // 过滤数据
+  selectOptions = () => {
+    const { findAllOrg } = this.props.goodStudent;
+    const hash = {};
+    return findAllOrg.reduce((preVal, curVal) => {
+      if (!hash[curVal.collegeId]) {
+        hash[curVal.collegeId] = true;
+        preVal.push(curVal);
+      }
+      return preVal;
+    }, []);
+  };
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
@@ -108,51 +120,6 @@ class GoodStudentList extends Component {
     );
     return data;
   };
-
-  // 获取table列表头
-  columnsData = () => {
-    const columns = [
-      {
-        title: 'id',
-        dataIndex: 'id',
-        width: '80px',
-      },
-      {
-        title: '学院',
-        dataIndex: 'collegeName',
-      },
-      {
-        title: '家族',
-        dataIndex: 'familyName',
-      },
-      {
-        title: '组别',
-        dataIndex: 'groupName',
-      },
-      {
-        title: '归属班主任',
-        dataIndex: 'teaName',
-      },
-      {
-        title: '学员姓名',
-        dataIndex: 'stuName',
-      },
-      {
-        title: '违规等级',
-        dataIndex: 'qualityTypeName',
-      },
-      {
-        title: '扣除学分',
-        dataIndex: 'countValue',
-      },
-      {
-        title: '质检单号',
-        dataIndex: 'qualityNum',
-      },
-    ];
-    return columns;
-  };
-
   // 删除数据
   goodStudentDel = () => {
     this.props.setRouteUrlParams('/goodStudent/goodStudentDel');
@@ -164,64 +131,57 @@ class GoodStudentList extends Component {
   };
 
   render() {
+    const options = this.selectOptions();
+
     const val = this.props.goodStudent.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const columns = !this.columnsData() ? [] : this.columnsData();
-    const formLayout = 'inline';
-    const WrappedAdvancedSearchForm = Form.create()(props => {
-      propsVal = props;
-      const { getFieldDecorator } = props.form;
-      return (
-        <div>
-          <Form layout={formLayout} onSubmit={this.handleSearch}>
-            <Row gutter={24}>
-              <Col span={8}>
-                <FormItem label="归属班主任">
-                  {getFieldDecorator('teaName', {
-                    initialValue: firstTeaName,
-                    rules: [],
-                  })(<Input placeholder="请输入归属班主任" style={{ width: 230, height: 32 }} />)}
-                </FormItem>
-              </Col>
-              <Col span={8} style={{ textAlign: 'center' }}>
-                <FormItem label="质检单号">
-                  {getFieldDecorator('qualityNum', {
-                    initialValue: firstQualityNum,
-                    rules: [],
-                  })(
-                    <Input
-                      placeholder="请输入质检单号"
-                      maxLength={20}
-                      style={{ width: 230, height: 32 }}
-                    />
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={8} style={{ textAlign: 'right' }}>
-                <FormItem>
-                  <Button
-                    onClick={this.handleSearch}
-                    type="primary"
-                    className={common.searchButton}
-                  >
-                    搜 索
-                  </Button>
-                  <Button onClick={this.handleReset} type="primary" className={common.resetButton}>
-                    重 置
-                  </Button>
-                </FormItem>
-              </Col>
-            </Row>
-          </Form>
+    const columns = columnsFn();
+    const WrappedAdvancedSearchForm = () => (
+      <FormFilter onSubmit={this.handleSearch} isLoading={this.props.loading} modal={{ type: '' }}>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>报名日期：</span>
+          <RangePicker
+            format={dateFormat}
+            style={{ width: 230, height: 32 }}
+            onChange={this.onChange}
+          />
         </div>
-      );
-    });
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>
+            学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：
+          </span>
+          <Select
+            placeholder="请选择学院"
+            onChange={this.onSelectChange}
+            style={{ width: 230, height: 32 }}
+          >
+            {options.map(item => (
+              <Option key={item.collegeId} value={item.collegeId}>
+                {item.collegeName}
+              </Option>
+            ))}
+          </Select>
+        </div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>子订单编号：</span>
+          <Input placeholder="请输入" maxLength={20} style={{ width: 230, height: 32 }} />
+        </div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>学院姓名：</span>
+          <Input placeholder="请输入" maxLength={20} style={{ width: 230, height: 32 }} />
+        </div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>老师姓名：</span>
+          <Input placeholder="请输入" maxLength={20} style={{ width: 230, height: 32 }} />
+        </div>
+      </FormFilter>
+    );
     return (
       <ContentLayout
         routerData={this.props.routerData}
-        contentForm={<WrappedAdvancedSearchForm />}
+        contentForm={WrappedAdvancedSearchForm()}
         contentButton={
           <div>
             <AuthorizedButton authority="/goodStudent/goodStudentAdd">
@@ -246,29 +206,15 @@ class GoodStudentList extends Component {
         }
         contentTable={
           <div>
-            <p className={common.totalNum}>总数：{totalNum}条</p>
-            <Table
-              loading={this.props.loading}
+            <FormFilter.Table
               bordered
+              totalNum={totalNum}
+              loading={this.props.loading}
               dataSource={dataSource}
               columns={columns}
-              pagination={false}
-              className={common.tableContentStyle}
+              onChangePage={this.changePage}
             />
           </div>
-        }
-        contentPagination={
-          <SelfPagination
-            onChange={(current, pageSize) => {
-              this.changePage(current, pageSize);
-            }}
-            onShowSizeChange={(current, pageSize) => {
-              this.onShowSizeChange(current, pageSize);
-            }}
-            defaultCurrent={firstPage + 1}
-            total={totalNum}
-            defaultPageSize={30}
-          />
         }
       />
     );

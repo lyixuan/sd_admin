@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { qualityUpload } from '../../services/api';
+import { importSelect } from '../../services/api';
 import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 import StepLayout from '../../layouts/stepLayout';
 import StepUpload from '../../selfComponent/setpForm/stepUpload';
@@ -52,15 +52,15 @@ class RefundAdd extends Component {
   // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
-      type: 'goodStudent/checkQuality',
-      payload: { params },
+      type: 'goodStudent/importCheck',
+      payload: { ...params },
     });
   };
   // 保存excel数据
   saveExcelData = params => {
     this.props.dispatch({
-      type: 'goodStudent/saveExcel',
-      payload: { params },
+      type: 'goodStudent/importUpload',
+      payload: { ...params },
     });
   };
 
@@ -92,27 +92,31 @@ class RefundAdd extends Component {
     const columns = [
       {
         title: '行数',
-        dataIndex: 'rowNum',
+        dataIndex: 'rowIndex',
       },
       {
-        title: '质检单号',
-        dataIndex: 'qualityNum',
+        title: '子订单编号',
+        dataIndex: 'ordIdResult',
       },
       {
-        title: '监控日期',
-        dataIndex: 'qualityDate',
+        title: '报名时间',
+        dataIndex: 'bizDateResult',
       },
       {
-        title: '班主任id',
-        dataIndex: 'teaId',
+        title: '学院名称',
+        dataIndex: 'collegeNameResult',
       },
       {
-        title: '违规等级',
-        dataIndex: 'qualityType',
+        title: '推荐等级',
+        dataIndex: 'recommendLevelResult',
       },
       {
-        title: '扣除学分',
-        dataIndex: 'countValue',
+        title: 'up值达标',
+        dataIndex: 'upFlagResult',
+      },
+      {
+        title: '学分',
+        dataIndex: 'countValueResult',
       },
     ];
     return columns;
@@ -122,12 +126,12 @@ class RefundAdd extends Component {
     const { current, checkList, fileList, disableDel, isLoading } = this.props.goodStudent;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.num;
-    const errorList = !checkList ? [] : checkList.data.errorList;
+    const failList = !checkList ? [] : checkList.data.failList;
 
-    const dataSource = !errorList.length > 0 ? null : errorList;
+    const dataSource = !failList.length > 0 ? null : failList;
     const columns = !this.columnsData() ? [] : this.columnsData();
     const tableTitle =
-      !errorList.length > 0 ? (
+      !failList.length > 0 ? (
         <div
           style={{
             width: '590px',
@@ -156,7 +160,7 @@ class RefundAdd extends Component {
         title: '选择Excel',
         content: (
           <StepUpload
-            uploadUrl={qualityUpload()}
+            uploadUrl={importSelect()}
             fileList={fileList}
             callBackParent={(bol, params) => {
               this.onChildChange(bol, params);
@@ -184,6 +188,7 @@ class RefundAdd extends Component {
       },
     ];
     fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
+    console.log(fileData);
     return (
       <StepLayout
         routerData={this.props.routerData}
@@ -201,10 +206,10 @@ class RefundAdd extends Component {
           this.initParamsFn(dis);
         }}
         step1Fetch={() => {
-          this.fetchCheckData({ filePath: fileData });
+          this.fetchCheckData(fileData);
         }}
         step2Fetch={() => {
-          this.saveExcelData({ filePath: fileData });
+          this.saveExcelData(fileData);
         }}
         editLoading={loading => {
           this.editLoading(loading);
