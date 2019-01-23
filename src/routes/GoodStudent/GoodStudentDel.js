@@ -91,10 +91,11 @@ class RefundDel extends Component {
     val.map((item, index) =>
       data.push({
         key: index + 1,
-        qualityNum: item.qualityNum,
+        bizDate: item.bizDate,
+        ordId: item.ordId,
+        cpName: item.cpName,
+        stuName: item.stuName,
         countValue: item.countValue,
-        qualityTypeName: item.qualityTypeName,
-        teaName: item.teaName,
         name:
           item.groupName && item.familyName
             ? `${item.collegeName} | ${item.familyName} | ${item.groupName}`
@@ -119,7 +120,7 @@ class RefundDel extends Component {
       },
       {
         title: '组织',
-        dataIndex: 'collegeName',
+        dataIndex: 'name',
       },
       {
         title: '老师姓名',
@@ -142,7 +143,7 @@ class RefundDel extends Component {
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
-    const dataSource = !delData ? [] : this.fillDataSource(delData);
+    const dataSource = !delData ? [] : delData;
     const columns = !this.columnsData() ? [] : this.columnsData();
 
     // const successNums = [];
