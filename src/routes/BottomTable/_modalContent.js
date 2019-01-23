@@ -1,6 +1,7 @@
 // 自定义弹框
 import React from 'react';
 import { Select, DatePicker } from 'antd';
+import memoizeOne from 'memoize-one';
 import { DATA_ANALYST_ID } from '../../utils/constants';
 
 const dateFormat = 'YYYY-MM-DD';
@@ -45,21 +46,20 @@ export default class ModalContent extends React.Component {
     return this.isDataAnalyst;
   };
   // 过滤数据
-  selectOptions = () => {
-    const { selectOption } = this.props;
+  memoizedFilter = memoizeOne(findAllOrg => {
     const hash = {};
-    return selectOption.reduce((preVal, curVal) => {
+    return findAllOrg.reduce((preVal, curVal) => {
       if (!hash[curVal.collegeId]) {
         hash[curVal.collegeId] = true;
         preVal.push(curVal);
       }
       return preVal;
     }, []);
-  };
+  });
   render() {
-    const { disabledDate } = this.props;
+    const { disabledDate, selectOption } = this.props;
+    const options = this.memoizedFilter(selectOption);
 
-    const options = this.selectOptions();
     const isDataAnalyst = this.isDataAnalystFn();
     this.props.isDataAnalyst(isDataAnalyst);
 

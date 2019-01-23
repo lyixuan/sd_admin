@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Input, Select, DatePicker, Row, Col } from 'antd';
+import memoizeOne from 'memoize-one';
+import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import { columnsFn } from './_selfColumn';
@@ -103,8 +104,7 @@ class GoodStudentList extends Component {
     return params;
   };
   // 过滤数据
-  selectOptions = () => {
-    const { findAllOrg } = this.props.goodStudent;
+  memoizedFilter = memoizeOne(findAllOrg => {
     const hash = {};
     return findAllOrg.reduce((preVal, curVal) => {
       if (!hash[curVal.collegeId]) {
@@ -113,7 +113,7 @@ class GoodStudentList extends Component {
       }
       return preVal;
     }, []);
-  };
+  });
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
@@ -146,7 +146,9 @@ class GoodStudentList extends Component {
   };
 
   render() {
-    const options = this.selectOptions();
+    const { findAllOrg } = this.props.goodStudent;
+    const options = this.memoizedFilter(findAllOrg);
+
     const { urlParams } = this.state;
     const val = this.props.goodStudent.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
@@ -159,80 +161,65 @@ class GoodStudentList extends Component {
         isLoading={this.props.loading}
         otherModal={urlParams}
       >
-        <Row gutter={24}>
-          <Col span={8}>
-            <div className={styles.u_div}>
-              <span style={{ lineHeight: '32px' }}>报名日期：</span>
-              <RangePicker
-                value={[urlParams.beginDate, urlParams.endDate].map(
-                  item => (item ? moment(item) : null)
-                )}
-                format={dateFormat}
-                style={{ width: 240, height: 32 }}
-                onChange={this.onChange}
-              />
-            </div>
-          </Col>
-          <Col span={8}>
-            <div className={styles.u_div}>
-              <span style={{ lineHeight: '32px' }}>
-                学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：
-              </span>
-              <Select
-                placeholder="请选择学院"
-                onChange={this.onSelectChange}
-                style={{ width: 240, height: 32 }}
-                value={urlParams.collegeId}
-              >
-                <Option value={null}>全部</Option>
-                {options.map(item => (
-                  <Option key={item.collegeId} value={item.collegeId}>
-                    {item.collegeName}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-          </Col>
-          <Col span={8} style={{ textAlign: 'right' }}>
-            <div className={styles.u_div}>
-              <span style={{ lineHeight: '32px' }}>子订单编号：</span>
-              <Input
-                placeholder="请输入"
-                maxLength={20}
-                style={{ width: 240, height: 32 }}
-                type="input"
-                flag="orderId"
-              />
-            </div>
-          </Col>
-        </Row>
-
-        <Row gutter={24}>
-          <Col span={12}>
-            <div className={styles.u_div}>
-              <span style={{ lineHeight: '32px' }}>学员姓名：</span>
-              <Input
-                placeholder="请输入"
-                maxLength={20}
-                style={{ width: 240, height: 32 }}
-                type="input"
-                flag="studentName"
-              />
-            </div>
-          </Col>
-          <Col span={12}>
-            <div className={styles.u_div}>
-              <span style={{ lineHeight: '32px' }}>老师姓名：</span>
-              <Input
-                placeholder="请输入"
-                maxLength={20}
-                style={{ width: 240, height: 32 }}
-                type="input"
-                flag="teacherName"
-              />
-            </div>
-          </Col>
-        </Row>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>报名日期：</span>
+          <RangePicker
+            value={[urlParams.beginDate, urlParams.endDate].map(
+              item => (item ? moment(item) : null)
+            )}
+            format={dateFormat}
+            style={{ width: 230, height: 32 }}
+            onChange={this.onChange}
+          />
+        </div>
+        <div className={styles.u_div} style={{ textAlign: 'center' }}>
+          <span style={{ lineHeight: '32px' }}>
+            学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：
+          </span>
+          <Select
+            placeholder="请选择学院"
+            onChange={this.onSelectChange}
+            style={{ width: 230, height: 32 }}
+            value={urlParams.collegeId}
+          >
+            <Option value={null}>全部</Option>
+            {options.map(item => (
+              <Option key={item.collegeId} value={item.collegeId}>
+                {item.collegeName}
+              </Option>
+            ))}
+          </Select>
+        </div>
+        <div className={styles.u_div} style={{ textAlign: 'right' }}>
+          <span style={{ lineHeight: '32px' }}>子订单编号：</span>
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="orderId"
+          />
+        </div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>学员姓名：</span>
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="studentName"
+          />
+        </div>
+        <div className={styles.u_div} style={{ textAlign: 'center' }}>
+          <span style={{ lineHeight: '32px' }}>老师姓名：</span>
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="teacherName"
+          />
+        </div>
       </FormFilter>
     );
     return (

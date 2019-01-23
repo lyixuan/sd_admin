@@ -12,7 +12,7 @@ import { saveParamsInUrl, filterEmptyUrlParams, getUrlParams, pageObj } from './
 *@params clicktype     string   作用于button上面用于处理提交,撤销等事件(onSubmit,onReset)
 *@params url           string   点击提交时的跳转以及将参数绑定到该url上面
 *@params otherModal    object   用于复杂参数的保存,不在此组件对value值得处理
-*@params getUrlParams  function  用于初始化获取url上面的参数   
+*@params getUrlParams  function  用于初始化获取url上面的参数
 *renderDom             element   默认传入onSubmit,当有此方法的时候再会显示onSubit按钮,同理onReset
 @params  isLoading     boolean   用于回显数据异步加载,加载完成时回调onSubmit
 */
@@ -193,7 +193,7 @@ class FormPrams extends Component {
     return (
       <div className={styles.formCls}>
         {[...children]}
-        <div className={styles.buttonContainer}>
+        <div className={styles.u_div}>
           <ButtonBox {...this.props} onSubmit={this.onSubmit} onReset={this.onReset} />
         </div>
         <div>{this.props.table ? this.props.table : null}</div>
