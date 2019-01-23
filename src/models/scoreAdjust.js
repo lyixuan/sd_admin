@@ -6,6 +6,7 @@ import {
   creditAdjustGetDetail,
   creditAdjustSaveOrModify,
   organizationList,
+  findAllCollege,
 } from '../services/api';
 
 export default {
@@ -15,6 +16,7 @@ export default {
     list: {},
     orgList: [],
     detail: {},
+    college: [],
   },
 
   effects: {
@@ -24,6 +26,16 @@ export default {
 
       if (response.code === 2000) {
         yield put({ type: 'listSave', payload: { listData } });
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *findAllCollege({ payload }, { call, put }) {
+      const response = yield call(findAllCollege, payload.obj);
+      const listData = response && response.data ? [...response.data] : [];
+
+      if (response.code === 2000) {
+        yield put({ type: 'collegeSave', payload: { listData } });
       } else {
         message.error(response.msg);
       }
@@ -57,9 +69,8 @@ export default {
     },
     *organizationList({ payload }, { call, put }) {
       const response = yield call(organizationList, payload);
-      const listData = response && response.data ? [...response.data] : [];
-
-      if (response.code === 2000) {
+      if (response && response.code === 2000) {
+        const listData = response.data ? [...response.data] : [];
         yield put({ type: 'orgSave', payload: { listData } });
       } else {
         message.error(response.msg);
@@ -78,6 +89,12 @@ export default {
       return {
         ...state,
         orgList: action.payload.listData,
+      };
+    },
+    collegeSave(state, action) {
+      return {
+        ...state,
+        college: action.payload.listData,
       };
     },
     detailSave(state, action) {

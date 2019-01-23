@@ -37,13 +37,13 @@ class ScoreAdjustList extends Component {
     this.state = {};
   }
 
-  // UNSAFE_componentWillMount() {
-  //   const params = {};
-  //   this.props.dispatch({
-  //     type: 'audit/getList',
-  //     payload: { params },
-  //   });
-  // }
+  UNSAFE_componentWillMount() {
+    const params = {};
+    this.props.dispatch({
+      type: 'scoreAdjust/findAllCollege',
+      payload: { params },
+    });
+  }
 
   // 添加调整
   onCreate = () => {
@@ -121,11 +121,11 @@ class ScoreAdjustList extends Component {
       },
       {
         title: '调整组织',
-        dataIndex: 'applyTimeMonth',
+        dataIndex: 'orgName2',
       },
       {
         title: '操作人',
-        dataIndex: 'signStatusStr',
+        dataIndex: 'operateName',
       },
       {
         title: '更新时间',
@@ -180,6 +180,12 @@ class ScoreAdjustList extends Component {
         content[i].type2 = v.type === 1 ? '调增学分' : '调减学分';
         content[i].groupType2 = BI_Filter(`USER_LEVEL|id:${v.groupType}`).name;
         content[i].creditScore2 = v.type === 2 ? `-${v.creditScore}` : v.creditScore;
+        content[i].orgName2 =
+          v.collegeName && v.familyName && v.groupName
+            ? `${v.collegeName} | ${v.familyName} | ${v.groupName}`
+            : v.collegeName && v.familyName
+              ? `${v.collegeName} | ${v.familyName}`
+              : v.collegeName ? v.collegeName : '';
         content[i].index = i + 1;
       });
     }
@@ -188,7 +194,7 @@ class ScoreAdjustList extends Component {
         routerData={this.props.routerData}
         contentForm={
           <SearchForm
-            auditData={this.props.audit}
+            propData={this.props.scoreAdjust}
             handleSearch={(params, values) => {
               this.search(params, values);
             }}

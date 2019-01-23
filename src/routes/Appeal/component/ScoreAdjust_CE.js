@@ -59,7 +59,7 @@ class ScoreAdjust_CE extends Component {
   changeDate = val => {
     this.props.dispatch({
       type: 'scoreAdjust/organizationList',
-      payload: { beginDate: val.format('YYYY-MM-DD'), endDate: val.format('YYYY-MM-DD') },
+      payload: { bizDate: val.format('YYYY-MM-DD') },
     });
     propsVal.form.setFieldsValue({
       groupType: null,
@@ -94,7 +94,6 @@ class ScoreAdjust_CE extends Component {
 
   handleSubmit = () => {
     propsVal.form.validateFieldsAndScroll((err, values) => {
-      console.log(values);
       if (!err) {
         const m = values.adjustDate ? values.adjustDate.clone() : undefined;
         const adjustDate = m ? m.format('YYYY-MM-DD') : undefined;
@@ -126,7 +125,6 @@ class ScoreAdjust_CE extends Component {
   };
 
   render() {
-    const { initLoading, submit } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -149,11 +147,12 @@ class ScoreAdjust_CE extends Component {
         },
       },
     };
-    const ModalForm = Form.create()(props => {
-      propsVal = props;
-      const { getFieldDecorator } = props.form;
-      return (
-        <Form className="scoreadjust">
+    const { initLoading, submit } = this.props;
+    const { getFieldDecorator } = this.props.form;
+    propsVal = this.props;
+    return (
+      <Spin spinning={this.props.type === 'edit' ? initLoading : false}>
+        <Form style={{ margin: 'auto' }} className="scoreadjust">
           <FormItem label="*学分日期" {...formItemLayout}>
             {getFieldDecorator('adjustDate', {
               initialValue: this.state.adjustDate,
@@ -287,15 +286,10 @@ class ScoreAdjust_CE extends Component {
             </Col>
           </Row>
         </Form>
-      );
-    });
-
-    return (
-      <Spin spinning={this.props.type === 'edit' ? initLoading : false}>
-        <ModalForm style={{ margin: 'auto' }} />
       </Spin>
     );
   }
 }
 
-export default ScoreAdjust_CE;
+const ModalForm = Form.create()(ScoreAdjust_CE);
+export default ModalForm;

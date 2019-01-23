@@ -11,11 +11,9 @@ const { Option } = Select;
 class AuditListForm extends Component {
   constructor(props) {
     super(props);
-    this.listOrg = [];
     this.orgOptions = [];
-    this.certificationList = [];
     this.state = {
-      orgId: undefined,
+      collegeId: null,
       dateRange: [],
     };
     // 搜索还原
@@ -26,30 +24,23 @@ class AuditListForm extends Component {
     this.initDate();
   }
 
-  // 根据props初始化
-  // UNSAFE_componentWillMount() {
-  //   const { auditData } = this.props;
-  //   this.listOrg = auditData.listOrg;
-  //   this.certificationList = auditData.certificationList;
-  // }
+  UNSAFE_componentWillMount() {
+    const { propData } = this.props;
+    this.listOrg = propData.college;
+  }
 
   componentDidMount() {
     this.submitSearch();
   }
 
   // 刷新初始化
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   const { auditData: auditData2 } = this.props;
-  //   const { auditData } = nextProps;
-  //   if (JSON.stringify(auditData.listOrg) !== JSON.stringify(auditData2.listOrg)) {
-  //     this.listOrg = auditData.listOrg;
-  //   }
-  //   if (
-  //     JSON.stringify(auditData.certificationList) !== JSON.stringify(auditData2.certificationList)
-  //   ) {
-  //     this.certificationList = auditData.certificationList;
-  //   }
-  // }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { propData: propData2 } = this.props;
+    const { propData } = nextProps;
+    if (JSON.stringify(propData.college) !== JSON.stringify(propData2.college)) {
+      this.listOrg = propData.college;
+    }
+  }
   initDate() {
     this.startT = moment(new Date()).subtract(1, 'months');
     this.endT = moment(new Date());
@@ -74,7 +65,9 @@ class AuditListForm extends Component {
           subParams.beginDate = beginDate;
           subParams.endDate = endDate;
         }
-        subParams.collegeId = values.collegeId;
+        if (values.collegeId) {
+          subParams.collegeId = values.collegeId;
+        }
         if (rs === 1) {
           this.props.reset(subParams);
         } else {
@@ -105,16 +98,16 @@ class AuditListForm extends Component {
           </Col>
           <Col span={8}>
             <FormItem label="学 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院">
-              {getFieldDecorator('orgId', {
-                initialValue: this.state.orgId,
+              {getFieldDecorator('collegeId', {
+                initialValue: this.state.collegeId,
               })(
                 <Select placeholder="请选择" style={{ width: 230, height: 32 }} allowClear>
                   <Option value={null} key={null}>
                     全部
                   </Option>
-                  {this.certificationList.map(item => (
-                    <Option value={item.id} key={item.name}>
-                      {item.name}
+                  {this.listOrg.map(item => (
+                    <Option value={item.collegeId} key={item.collegeName}>
+                      {item.collegeName}
                     </Option>
                   ))}
                 </Select>
