@@ -188,7 +188,7 @@ class RefundAdd extends Component {
       },
     ];
     fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
-    console.log(fileData);
+
     return (
       <StepLayout
         routerData={this.props.routerData}
