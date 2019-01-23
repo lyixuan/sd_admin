@@ -535,8 +535,8 @@
   margin-bottom: 20px;
 }
 
-:global(th.column-creditScore2, td.column-creditScore2){
-  text-align: right !important;
+:global(.column-creditScore2){
+  text-align: left !important;
 }
 /* -------score change end------------ */
 

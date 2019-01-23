@@ -173,7 +173,7 @@ class ScoreAdjust_CE extends Component {
         <Form style={{ margin: 'auto' }} className="scoreadjust">
           <FormItem label="*学分日期" {...formItemLayout}>
             {getFieldDecorator('adjustDate', {
-              initialValue: this.state.adjustDate,
+              initialValue: this.props.scoreAdjust.adjustDate,
               rules: [{ required: true, message: '请选择学分日期' }],
             })(<DatePicker onChange={this.changeDate} style={{ width: 380 }} />)}
           </FormItem>

@@ -69,11 +69,12 @@ export default {
           yield put({ type: 'orgSave', payload: { listData: listData2 } });
           yield call(payload.changeOption, listData.groupType);
           yield put({ type: 'detailSave', payload: { listData } });
-        } else if (response && response.code === 1202) {
-          yield put(routerRedux.push('/appeal/scoreAdjustList'));
         } else {
           message.error(response.msg);
         }
+      } else if (response && response.code === 1202) {
+        yield put(routerRedux.push('/appeal/scoreAdjustList'));
+        message.error('该数据不可修改');
       } else {
         message.error(response.msg);
       }
