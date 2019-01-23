@@ -171,7 +171,7 @@ class AppealForm extends Component {
                     rules: [
                       {
                         validator(rule, value, callback) {
-                          const reg = /^(0\.[0-9]{0,4}|1\.[0]{0,4})$/;
+                          const reg = /^(0\.[0-9]{0,2}|1\.[0]{0,2})$/;
                           if ((flag === '优新开班电话' || flag === '优新随堂考') && !value) {
                             callback({ message: '删除数量为必填项，请填写！' });
                           } else if (
@@ -179,7 +179,7 @@ class AppealForm extends Component {
                             value &&
                             (flag === '优新开班电话' || flag === '优新随堂考')
                           ) {
-                            callback({ message: '请输入0～1的数字,限制到小数点后四位' });
+                            callback({ message: '请输入0～1的数字,限制到小数点后两位' });
                           }
                           callback();
                         },
