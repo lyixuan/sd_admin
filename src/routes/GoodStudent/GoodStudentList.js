@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
+import moment from 'moment';
 import { columnsFn } from './_selfColumn';
 import ContentLayout from '../../layouts/ContentLayout';
 import FormFilter from '../../selfComponent/FormFilter';
@@ -20,29 +21,35 @@ class GoodStudentList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collegeId: null,
-      beginDate: null,
-      endDate: null,
+      urlParams: {
+        collegeId: null,
+        // familyId:null,
+        // groupId:null,
+        beginDate: null,
+        endDate: null,
+      },
     };
   }
   componentDidMount() {
-    this.getData({ size: 30 });
     this.getAllOrg();
   }
-
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     this.changePage(current, pageSize);
   };
   // 学院选择
   onSelectChange = val => {
-    this.setState({ collegeId: val });
+    const urlParams = { ...this.state.urlParams, collegeId: val };
+    this.setState({ urlParams });
   };
   onChange = (dates, dateStrings) => {
-    console.log(dateStrings);
-    this.setState({
+    const urlParams = {
+      ...this.state.urlParams,
       beginDate: dateStrings[0],
       endDate: dateStrings[1],
+    };
+    this.setState({
+      urlParams,
     });
   };
   // 所有学院列表
@@ -61,34 +68,40 @@ class GoodStudentList extends Component {
     });
   };
   // 点击某一页函数
-  changePage = (pageNum, size) => {
+  changePage = (pageIndex, size) => {
     this.getData({
       pageSize: size,
-      pageNum,
+      pageIndex,
     });
   };
   // 表单搜索函数
-  handleSearch = data => {
-    const { endDate, beginDate, collegeId } = this.state;
-    console.log(data);
-    console.log(endDate, beginDate, collegeId);
-    // e.preventDefault();
-    // propsVal.form.validateFields((err, values) => {
-    //   if (!err) {
-    //     firstTeaName = !values.teaName ? undefined : values.teaName;
-    //     firstQualityNum = !values.qualityNum ? undefined : values.qualityNum;
-    //     firstPage = 0;
-    //     const qualityListParams = {
-    //       size: 30,
-    //       number: 0,
-    //       teaName: firstTeaName,
-    //       qualityNum: firstQualityNum,
-    //     };
-    //     this.getData(qualityListParams);
-    //   }
-    // });
+  handleSearch = params => {
+    const { beginDate = null, endDate = null, studentName = null, teacherName = null } = params;
+    const collegeId = params.collegeId ? Number(params.collegeId) : null;
+    const orderId = params.orderId ? Number(params.orderId) : null;
+    const urlParams = { ...this.state.urlParams, collegeId, beginDate, endDate };
+    const pageIndex = urlParams.pageNum ? Number(urlParams.pageNum) : 0;
+    const newParams = {
+      collegeId,
+      beginDate,
+      endDate,
+      orderId,
+      studentName,
+      teacherName,
+      pageIndex,
+    };
+    this.getData(this.filterEmptyParams(newParams));
+    this.setState({ urlParams });
   };
-
+  filterEmptyParams = data => {
+    const params = data;
+    for (const i in params) {
+      if (params[i] === undefined || params[i] === null) {
+        delete params[i];
+      }
+    }
+    return params;
+  };
   // 过滤数据
   selectOptions = () => {
     const { findAllOrg } = this.props.goodStudent;
@@ -132,17 +145,24 @@ class GoodStudentList extends Component {
 
   render() {
     const options = this.selectOptions();
-
+    const { urlParams } = this.state;
     const val = this.props.goodStudent.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = columnsFn();
     const WrappedAdvancedSearchForm = () => (
-      <FormFilter onSubmit={this.handleSearch} isLoading={this.props.loading} modal={{ type: '' }}>
+      <FormFilter
+        onSubmit={this.handleSearch}
+        isLoading={this.props.loading}
+        otherModal={urlParams}
+      >
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>报名日期：</span>
           <RangePicker
+            value={[urlParams.beginDate, urlParams.endDate].map(
+              item => (item ? moment(item) : null)
+            )}
             format={dateFormat}
             style={{ width: 230, height: 32 }}
             onChange={this.onChange}
@@ -156,7 +176,9 @@ class GoodStudentList extends Component {
             placeholder="请选择学院"
             onChange={this.onSelectChange}
             style={{ width: 230, height: 32 }}
+            value={urlParams.collegeId}
           >
+            <Option value={null}>全部</Option>
             {options.map(item => (
               <Option key={item.collegeId} value={item.collegeId}>
                 {item.collegeName}
@@ -166,15 +188,33 @@ class GoodStudentList extends Component {
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>子订单编号：</span>
-          <Input placeholder="请输入" maxLength={20} style={{ width: 230, height: 32 }} />
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="orderId"
+          />
         </div>
         <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>学院姓名：</span>
-          <Input placeholder="请输入" maxLength={20} style={{ width: 230, height: 32 }} />
+          <span style={{ lineHeight: '32px' }}>学员姓名：</span>
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="studentName"
+          />
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>老师姓名：</span>
-          <Input placeholder="请输入" maxLength={20} style={{ width: 230, height: 32 }} />
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="teacherName"
+          />
         </div>
       </FormFilter>
     );
