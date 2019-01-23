@@ -534,5 +534,9 @@
 :global(.scoreadjust .ant-form-item){
   margin-bottom: 20px;
 }
+
+:global(th.column-creditScore2, td.column-creditScore2){
+  text-align: right !important;
+}
 /* -------score change end------------ */
 

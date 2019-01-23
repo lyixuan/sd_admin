@@ -26,6 +26,7 @@ let propsVal = '';
 @connect(({ scoreAdjust, loading }) => ({
   scoreAdjust,
   initLoading: loading.effects['scoreAdjust/getDetailById'],
+  initLoading2: loading.effects['scoreAdjust/organizationList'],
   submit: loading.effects['scoreAdjust/saveDetail'],
 }))
 class ScoreAdjust_CE extends Component {
@@ -34,13 +35,6 @@ class ScoreAdjust_CE extends Component {
     const urlParams = this.props.getUrlParams();
     this.state = {
       editId: urlParams && urlParams.id ? urlParams.id : null, // 编辑的id
-      adjustDate: undefined,
-      type: undefined,
-      creditScore: undefined,
-      groupType: undefined,
-      orgList: [],
-      familyType: undefined,
-      reason: undefined,
     };
     this.orgOptions = [];
     this.showFamily = true;
@@ -51,7 +45,18 @@ class ScoreAdjust_CE extends Component {
       // 编辑 ,请求回显数据
       this.props.dispatch({
         type: 'scoreAdjust/getDetailById',
-        payload: { id: this.state.editId },
+        payload: {
+          id: this.state.editId,
+          changeOption: value => {
+            this.handleSelectChange(value, 1);
+          },
+        },
+      });
+    } else {
+      const obj = {};
+      this.props.dispatch({
+        type: 'scoreAdjust/initDetail',
+        payload: { obj },
       });
     }
   }
@@ -63,17 +68,19 @@ class ScoreAdjust_CE extends Component {
     });
     propsVal.form.setFieldsValue({
       groupType: null,
-      orgList: [],
+      orgCheckList: [],
       familyType: null,
     });
   };
 
   // 级联选级
-  handleSelectChange = value => {
-    propsVal.form.setFieldsValue({
-      orgList: [],
-      familyType: null,
-    });
+  handleSelectChange = (value, v2) => {
+    if (v2 !== 1) {
+      propsVal.form.setFieldsValue({
+        orgCheckList: [],
+        familyType: null,
+      });
+    }
     this.orgOptions = deepCopy(this.props.scoreAdjust.orgList);
     if (value === 'college') {
       this.orgOptions.forEach(v => {
@@ -90,6 +97,15 @@ class ScoreAdjust_CE extends Component {
     } else {
       this.showFamily = false;
     }
+    console.log(this.orgOptions);
+  };
+
+  orgChange = (val, obj) => {
+    if (obj.length > 1) {
+      this.setState({
+        familyType: obj[1].familyType,
+      });
+    }
   };
 
   handleSubmit = () => {
@@ -102,15 +118,16 @@ class ScoreAdjust_CE extends Component {
           type: values.type,
           creditScore: values.creditScore ? parseFloat(values.creditScore) : undefined,
           groupType: values.groupType,
-          collegeId: values.orgList[0] ? values.orgList[0] : undefined,
-          familyId: values.orgList[1] ? values.orgList[1] : undefined,
-          groupId: values.orgList[2] ? values.orgList[2] : undefined,
+          collegeId: values.orgCheckList[0] ? values.orgCheckList[0] : undefined,
+          familyId: values.orgCheckList[1] ? values.orgCheckList[1] : undefined,
+          groupId: values.orgCheckList[2] ? values.orgCheckList[2] : undefined,
+          familyType: values.groupType === 'college' ? values.familyType : this.state.familyType,
           reason: values.reason,
         };
 
         if (this.props.type === 'edit') {
           // 编辑提交
-          params.id = this.state.editId;
+          params.id = Number(this.state.editId);
         }
         this.props.dispatch({
           type: 'scoreAdjust/saveDetail',
@@ -155,13 +172,13 @@ class ScoreAdjust_CE extends Component {
         <Form style={{ margin: 'auto' }} className="scoreadjust">
           <FormItem label="*学分日期" {...formItemLayout}>
             {getFieldDecorator('adjustDate', {
-              initialValue: this.state.adjustDate,
+              initialValue: this.props.scoreAdjust.adjustDate,
               rules: [{ required: true, message: '请选择学分日期' }],
             })(<DatePicker onChange={this.changeDate} style={{ width: 380 }} />)}
           </FormItem>
           <FormItem label="*调整类型" {...formItemLayout}>
             {getFieldDecorator('type', {
-              initialValue: this.state.type,
+              initialValue: this.props.scoreAdjust.type,
               rules: [{ required: true, message: '请选择调整类型' }],
             })(
               <RadioGroup style={{ width: 380 }}>
@@ -172,7 +189,7 @@ class ScoreAdjust_CE extends Component {
           </FormItem>
           <FormItem label="*均 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分" {...formItemLayout}>
             {getFieldDecorator('creditScore', {
-              initialValue: this.state.creditScore,
+              initialValue: this.props.scoreAdjust.creditScore,
               rules: [
                 {
                   validator(rule, value, callback) {
@@ -180,6 +197,12 @@ class ScoreAdjust_CE extends Component {
                       callback({ message: '均分不能为0' });
                     } else if (!value) {
                       callback({ message: '请输入均分' });
+                    } else if (
+                      value &&
+                      String(value).split('.')[1] &&
+                      String(value).split('.')[1].length > 2
+                    ) {
+                      callback({ message: '最多保留两位小数' });
                     } else {
                       callback();
                     }
@@ -202,7 +225,7 @@ class ScoreAdjust_CE extends Component {
             extra="仅影响选择的级别的学分，不影响其上下级组织的学分"
           >
             {getFieldDecorator('groupType', {
-              initialValue: this.state.groupType,
+              initialValue: this.props.scoreAdjust.groupType,
               rules: [{ required: true, message: '请选择调整级别' }],
             })(
               <Select
@@ -219,15 +242,21 @@ class ScoreAdjust_CE extends Component {
             )}
           </FormItem>
           <FormItem label="*调整组织" {...formItemLayout}>
-            {getFieldDecorator('orgList', {
-              initialValue: this.state.orgList,
+            {getFieldDecorator('orgCheckList', {
+              initialValue: this.props.scoreAdjust.orgCheckList,
               rules: [{ required: true, message: '请选择调整组织' }],
-            })(<Cascader options={this.orgOptions} style={{ width: 380 }} />)}
+            })(
+              <Cascader
+                options={this.orgOptions}
+                onChange={this.orgChange}
+                style={{ width: 380 }}
+              />
+            )}
           </FormItem>
           {this.showFamily ? (
             <FormItem label="*组织类别" {...formItemLayout}>
               {getFieldDecorator('familyType', {
-                initialValue: this.state.familyType,
+                initialValue: this.props.scoreAdjust.familyType,
                 rules: [{ required: true, message: '请选择组织类别' }],
               })(
                 <RadioGroup style={{ width: 380 }}>
@@ -243,7 +272,7 @@ class ScoreAdjust_CE extends Component {
             extra="编辑后记得联系产研一组产品经理刷新缓存后生效哦"
           >
             {getFieldDecorator('reason', {
-              initialValue: this.state.reason,
+              initialValue: this.props.scoreAdjust.reason,
               rules: [
                 { required: true, message: '请填写原因' },
                 {

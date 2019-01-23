@@ -38,6 +38,7 @@ class ScoreAdjustList extends Component {
   }
 
   UNSAFE_componentWillMount() {
+    // 获取搜索下拉
     const params = {};
     this.props.dispatch({
       type: 'scoreAdjust/findAllCollege',
@@ -63,7 +64,12 @@ class ScoreAdjustList extends Component {
   onDel = val => {
     this.props.dispatch({
       type: 'scoreAdjust/delById',
-      payload: { id: val },
+      payload: {
+        id: val.id,
+        action: () => {
+          this.search();
+        },
+      },
     });
   };
 
@@ -114,6 +120,7 @@ class ScoreAdjustList extends Component {
       {
         title: '均分',
         dataIndex: 'creditScore2',
+        className: 'column-creditScore2',
       },
       {
         title: '调整级别',
@@ -142,16 +149,14 @@ class ScoreAdjustList extends Component {
                   查看备注
                 </span>
               </Popover>
-              {record.signResult === 1 && (
-                <AuthorizedButton authority="/appeal/scoreAdjustEdit">
-                  <span
-                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
-                    onClick={() => this.onEdit(record)}
-                  >
-                    编辑
-                  </span>
-                </AuthorizedButton>
-              )}
+              <AuthorizedButton authority="/appeal/scoreAdjustEdit">
+                <span
+                  style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                  onClick={() => this.onEdit(record)}
+                >
+                  编辑
+                </span>
+              </AuthorizedButton>
               <AuthorizedButton authority="/appeal/scoreAdjustDel">
                 <Popconfirm
                   placement="topRight"
@@ -179,7 +184,10 @@ class ScoreAdjustList extends Component {
         content[i].adjustDate2 = moment(v.adjustDate).format('YYYY-MM-DD');
         content[i].type2 = v.type === 1 ? '调增学分' : '调减学分';
         content[i].groupType2 = BI_Filter(`USER_LEVEL|id:${v.groupType}`).name;
-        content[i].creditScore2 = v.type === 2 ? `-${v.creditScore}` : v.creditScore;
+        content[i].creditScore2 = parseFloat(content[i].creditScore).toFixed(2);
+        if (v.type === 2) {
+          content[i].creditScore2 = `-${content[i].creditScore2}`;
+        }
         content[i].orgName2 =
           v.collegeName && v.familyName && v.groupName
             ? `${v.collegeName} | ${v.familyName} | ${v.groupName}`
