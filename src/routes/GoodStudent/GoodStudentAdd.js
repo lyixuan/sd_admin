@@ -85,7 +85,7 @@ class RefundAdd extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/goodStudent/qualityList',
+      pathname: '/goodStudent/goodStudentList',
     });
   }
   columnsData = () => {
@@ -125,7 +125,7 @@ class RefundAdd extends Component {
     let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
     const { current, checkList, fileList, disableDel, isLoading } = this.props.goodStudent;
     const { isDisabled, checkParams } = this.state;
-    const sucessNum = !checkList ? 0 : checkList.data.num;
+    const sucessNum = !checkList ? 0 : checkList.data.totalCount;
     const failList = !checkList ? [] : checkList.data.failList;
 
     const dataSource = !failList.length > 0 ? null : failList;
@@ -142,7 +142,7 @@ class RefundAdd extends Component {
             margin: '116px auto 0',
           }}
         >
-          本次添加质检数量
+          本次添加好学生推荐数量
           <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
           条！确定上传？
         </div>
