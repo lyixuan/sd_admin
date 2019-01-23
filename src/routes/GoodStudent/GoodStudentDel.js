@@ -82,7 +82,7 @@ class RefundDel extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/goodStudent/qualityList',
+      pathname: '/goodStudent/goodStudentList',
     });
   }
   // 初始化tabale 列数据
@@ -143,7 +143,7 @@ class RefundDel extends Component {
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
-    const dataSource = !delData ? [] : delData;
+    const dataSource = !delData ? [] : this.fillDataSource(delData);
     const columns = !this.columnsData() ? [] : this.columnsData();
 
     // const successNums = [];
