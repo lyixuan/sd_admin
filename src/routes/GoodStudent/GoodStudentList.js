@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import memoizeOne from 'memoize-one';
 import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
@@ -103,8 +104,7 @@ class GoodStudentList extends Component {
     return params;
   };
   // 过滤数据
-  selectOptions = () => {
-    const { findAllOrg } = this.props.goodStudent;
+  memoizedFilter = memoizeOne(findAllOrg => {
     const hash = {};
     return findAllOrg.reduce((preVal, curVal) => {
       if (!hash[curVal.collegeId]) {
@@ -113,7 +113,7 @@ class GoodStudentList extends Component {
       }
       return preVal;
     }, []);
-  };
+  });
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
@@ -146,7 +146,9 @@ class GoodStudentList extends Component {
   };
 
   render() {
-    const options = this.selectOptions();
+    const { findAllOrg } = this.props.goodStudent;
+    const options = this.memoizedFilter(findAllOrg);
+
     const { urlParams } = this.state;
     const val = this.props.goodStudent.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
