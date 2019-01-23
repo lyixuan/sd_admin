@@ -117,18 +117,17 @@ class GoodStudentList extends Component {
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
+    const RECOMMEND_LEVEL = window.BI_Filter('RECOMMEND_LEVEL');
     val.map((item, index) =>
       data.push({
+        ...item,
         key: index,
         id: item.id,
-        collegeName: item.collegeName,
-        familyName: item.familyName,
-        groupName: item.groupName,
-        teaName: item.teaName,
-        stuName: item.stuName,
-        countValue: item.countValue,
-        qualityTypeName: item.qualityTypeName,
-        qualityNum: item.qualityNum,
+        upFlag: item.upFlag ? '是' : '否',
+        recommendLevel: RECOMMEND_LEVEL.find(ls => ls.id === item.recommendLevel)
+          ? RECOMMEND_LEVEL.find(ls => ls.id === item.recommendLevel).name
+          : null,
+        orgName: this.splitOrgName(item.collegeName, item.familyName, item.groupName),
       })
     );
     return data;
@@ -141,6 +140,9 @@ class GoodStudentList extends Component {
   // 添加数据
   goodStudentAdd = () => {
     this.props.setRouteUrlParams('/goodStudent/goodStudentAdd');
+  };
+  splitOrgName = (...argument) => {
+    return argument.filter(item => item).join('|');
   };
 
   render() {
