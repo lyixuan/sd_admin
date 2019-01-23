@@ -2,3 +2,15 @@
   flex: 1 1 33.3%;
   margin-bottom: 24px;
 }
+.u_div:nth-child(3n + 2) {
+  &:extend(.u_div);
+  text-align: center;
+}
+.u_div:nth-child(3n + 1) {
+  &:extend(.u_div);
+  text-align: left;
+}
+.u_div:nth-child(3n + 0) {
+  &:extend(.u_div);
+  text-align: right;
+}
