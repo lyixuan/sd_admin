@@ -115,6 +115,12 @@ export const Certification_TIMEAREA = [
   { id: '1', name: '月度' },
   { id: '2', name: '季度' },
 ];
+// 好学生推荐等级
+export const RECOMMEND_LEVEL = [
+  { id: 0, name: '60分钟以下' },
+  { id: 1, name: '60至120分钟' },
+  { id: 2, name: '120分钟以上' },
+];
 // 需要用于global filter 进行数据筛选的，必须加到default里
 export default {
   Certification_TYPE,
@@ -136,4 +142,5 @@ export default {
   APPLY_RESULT,
   CERTIFICATION_STATE,
   CERTIFICATION_RESULT,
+  RECOMMEND_LEVEL,
 };

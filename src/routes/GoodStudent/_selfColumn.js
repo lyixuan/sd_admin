@@ -8,19 +8,19 @@ export function columnsFn() {
     },
     {
       title: '报名日期',
-      dataIndex: 'collegeName',
+      dataIndex: 'bizDate',
     },
     {
       title: '子订单编号',
-      dataIndex: 'familyName',
+      dataIndex: 'ordId',
     },
     {
       title: '组织',
-      dataIndex: 'groupName',
+      dataIndex: 'orgName',
     },
     {
       title: '老师姓名',
-      dataIndex: 'teaName',
+      dataIndex: 'cpName',
     },
     {
       title: '学员姓名',
@@ -28,15 +28,15 @@ export function columnsFn() {
     },
     {
       title: '推荐等级',
-      dataIndex: 'qualityTypeName',
+      dataIndex: 'recommendLevel',
     },
     {
       title: 'up值达标',
-      dataIndex: 'countValue',
+      dataIndex: 'upFlag',
     },
     {
       title: '分值',
-      dataIndex: 'qualityNum',
+      dataIndex: 'countValue',
     },
   ];
   return columns || [];

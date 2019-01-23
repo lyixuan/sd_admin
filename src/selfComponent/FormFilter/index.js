@@ -11,6 +11,8 @@ import { saveParamsInUrl, filterEmptyUrlParams, getUrlParams, pageObj } from './
 *@params flag          string   用于储存值以及返回数据key
 *@params clicktype     string   作用于button上面用于处理提交,撤销等事件(onSubmit,onReset)
 *@params url           string   点击提交时的跳转以及将参数绑定到该url上面
+*@params otherModal    object   用于复杂参数的保存,不在此组件对value值得处理
+*@params getUrlParams  function  用于初始化获取url上面的参数
 *renderDom             element   默认传入onSubmit,当有此方法的时候再会显示onSubit按钮,同理onReset
 @params  isLoading     boolean   用于回显数据异步加载,加载完成时回调onSubmit
 */
@@ -20,19 +22,21 @@ class FormPrams extends Component {
     className: PropTypes.string,
     onSubmit: PropTypes.func,
     modal: PropTypes.object,
+    otherModal: PropTypes.object,
   };
   static defaultProps = {
     className: '',
     onSubmit: () => {},
     modal: {},
+    otherModal: {},
   };
   constructor(props) {
     super(props);
     this.state = {
       isUpdate: false, // 用于强制更新组件
     };
-    this.modal = this.props.modal || {};
-    this.flagKeyArr = [pageObj.key]; // 用于储存flag值,默认获取分页
+    this.modal = Object.assign({}, this.props.modal, this.props.otherModal);
+    this.flagKeyArr = [pageObj.key].concat(Object.keys(this.props.otherModal)); // 用于储存flag值,默认获取分页
     this.isLoading = this.props.isLoading || false;
   }
 
@@ -42,13 +46,16 @@ class FormPrams extends Component {
     }
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (JSON.stringify(nextProps.modal) !== JSON.stringify(this.props.modal)) {
-      this.modal = this.props.modal;
+    // if (JSON.stringify(nextProps.modal) !== JSON.stringify(this.props.modal)) {
+    //   this.modal = this.props.modal;
+    // }
+    if (JSON.stringify(nextProps.otherModal) !== JSON.stringify(this.props.otherModal)) {
+      this.modal = Object.assign({}, this.modal, nextProps.otherModal);
     }
   }
   onReset = () => {
     this.flagKeyArr.forEach(item => {
-      this.modal[item] = this.props.modal[item] || '';
+      this.modal[item] = this.props.modal[item] || null;
     });
     this.saveData();
   };
@@ -65,6 +72,9 @@ class FormPrams extends Component {
     });
     this.modal[pageObj.key] = this.modal[pageObj.key] || pageObj.value;
     this.modal = filterEmptyUrlParams(this.modal);
+    if (this.props.getUrlParams) {
+      this.props.getUrlParams(this.modal);
+    }
     this.onSubmit();
   };
 
@@ -78,6 +88,7 @@ class FormPrams extends Component {
     if (originEvent) {
       originEvent.call(null, e);
     }
+    this.forceUpdate();
   };
   selectChange = (value, flag, originEvent) => {
     this.modal[flag] = value;
@@ -110,7 +121,9 @@ class FormPrams extends Component {
     if (child.props.flag) {
       //  form  表单输入值都有flag
       const { flag } = child.props;
-      this.flagKeyArr = [...this.flagKeyArr, flag];
+      if (!this.flagKeyArr.find(item => item === flag)) {
+        this.flagKeyArr.push(flag);
+      }
       addParams = Object.assign({}, addParams, this.resetAttribute(child));
     }
     if (child.props.clicktype) {
@@ -180,7 +193,7 @@ class FormPrams extends Component {
     return (
       <div className={styles.formCls}>
         {[...children]}
-        <div className={styles.buttonContainer}>
+        <div className={styles.u_div}>
           <ButtonBox {...this.props} onSubmit={this.onSubmit} onReset={this.onReset} />
         </div>
         <div>{this.props.table ? this.props.table : null}</div>
