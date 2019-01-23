@@ -102,7 +102,7 @@ class ScoreAdjust_CE extends Component {
 
   orgChange = (val, obj) => {
     if (obj.length > 1) {
-      this.setState({
+      this.props.form.setFieldsValue({
         familyType: obj[1].familyType,
       });
     }
@@ -121,7 +121,8 @@ class ScoreAdjust_CE extends Component {
           collegeId: values.orgCheckList[0] ? values.orgCheckList[0] : undefined,
           familyId: values.orgCheckList[1] ? values.orgCheckList[1] : undefined,
           groupId: values.orgCheckList[2] ? values.orgCheckList[2] : undefined,
-          familyType: values.groupType === 'college' ? values.familyType : this.state.familyType,
+          familyType:
+            values.groupType === 'college' ? values.familyType : this.props.scoreAdjust.familyType,
           reason: values.reason,
         };
 
@@ -172,7 +173,7 @@ class ScoreAdjust_CE extends Component {
         <Form style={{ margin: 'auto' }} className="scoreadjust">
           <FormItem label="*学分日期" {...formItemLayout}>
             {getFieldDecorator('adjustDate', {
-              initialValue: this.props.scoreAdjust.adjustDate,
+              initialValue: this.state.adjustDate,
               rules: [{ required: true, message: '请选择学分日期' }],
             })(<DatePicker onChange={this.changeDate} style={{ width: 380 }} />)}
           </FormItem>
