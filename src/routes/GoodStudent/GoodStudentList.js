@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Select, DatePicker } from 'antd';
+import { Button, Input, Select, DatePicker, Row, Col } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import { columnsFn } from './_selfColumn';
@@ -159,65 +159,80 @@ class GoodStudentList extends Component {
         isLoading={this.props.loading}
         otherModal={urlParams}
       >
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>报名日期：</span>
-          <RangePicker
-            value={[urlParams.beginDate, urlParams.endDate].map(
-              item => (item ? moment(item) : null)
-            )}
-            format={dateFormat}
-            style={{ width: 230, height: 32 }}
-            onChange={this.onChange}
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>
-            学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：
-          </span>
-          <Select
-            placeholder="请选择学院"
-            onChange={this.onSelectChange}
-            style={{ width: 230, height: 32 }}
-            value={urlParams.collegeId}
-          >
-            <Option value={null}>全部</Option>
-            {options.map(item => (
-              <Option key={item.collegeId} value={item.collegeId}>
-                {item.collegeName}
-              </Option>
-            ))}
-          </Select>
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>子订单编号：</span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="orderId"
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>学员姓名：</span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="studentName"
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>老师姓名：</span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="teacherName"
-          />
-        </div>
+        <Row gutter={24}>
+          <Col span={8}>
+            <div className={styles.u_div}>
+              <span style={{ lineHeight: '32px' }}>报名日期：</span>
+              <RangePicker
+                value={[urlParams.beginDate, urlParams.endDate].map(
+                  item => (item ? moment(item) : null)
+                )}
+                format={dateFormat}
+                style={{ width: 240, height: 32 }}
+                onChange={this.onChange}
+              />
+            </div>
+          </Col>
+          <Col span={8}>
+            <div className={styles.u_div}>
+              <span style={{ lineHeight: '32px' }}>
+                学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：
+              </span>
+              <Select
+                placeholder="请选择学院"
+                onChange={this.onSelectChange}
+                style={{ width: 240, height: 32 }}
+                value={urlParams.collegeId}
+              >
+                <Option value={null}>全部</Option>
+                {options.map(item => (
+                  <Option key={item.collegeId} value={item.collegeId}>
+                    {item.collegeName}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </Col>
+          <Col span={8} style={{ textAlign: 'right' }}>
+            <div className={styles.u_div}>
+              <span style={{ lineHeight: '32px' }}>子订单编号：</span>
+              <Input
+                placeholder="请输入"
+                maxLength={20}
+                style={{ width: 240, height: 32 }}
+                type="input"
+                flag="orderId"
+              />
+            </div>
+          </Col>
+        </Row>
+
+        <Row gutter={24}>
+          <Col span={12}>
+            <div className={styles.u_div}>
+              <span style={{ lineHeight: '32px' }}>学员姓名：</span>
+              <Input
+                placeholder="请输入"
+                maxLength={20}
+                style={{ width: 240, height: 32 }}
+                type="input"
+                flag="studentName"
+              />
+            </div>
+          </Col>
+          <Col span={12}>
+            <div className={styles.u_div}>
+              <span style={{ lineHeight: '32px' }}>老师姓名：</span>
+              <Input
+                placeholder="请输入"
+                maxLength={20}
+                style={{ width: 240, height: 32 }}
+                type="input"
+                flag="teacherName"
+              />
+            </div>
+          </Col>
+        </Row>
       </FormFilter>
     );
     return (
