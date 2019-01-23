@@ -172,7 +172,7 @@ class GoodStudentList extends Component {
             onChange={this.onChange}
           />
         </div>
-        <div className={styles.u_div}>
+        <div className={styles.u_div} style={{ textAlign: 'center' }}>
           <span style={{ lineHeight: '32px' }}>
             学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：
           </span>
@@ -190,7 +190,7 @@ class GoodStudentList extends Component {
             ))}
           </Select>
         </div>
-        <div className={styles.u_div}>
+        <div className={styles.u_div} style={{ textAlign: 'right' }}>
           <span style={{ lineHeight: '32px' }}>子订单编号：</span>
           <Input
             placeholder="请输入"
@@ -210,7 +210,7 @@ class GoodStudentList extends Component {
             flag="studentName"
           />
         </div>
-        <div className={styles.u_div}>
+        <div className={styles.u_div} style={{ textAlign: 'center' }}>
           <span style={{ lineHeight: '32px' }}>老师姓名：</span>
           <Input
             placeholder="请输入"
