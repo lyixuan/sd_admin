@@ -82,7 +82,7 @@ class AuditListForm extends Component {
           subParams.collegeId = values.collegeId;
         }
         if (rs === 1) {
-          this.props.reset(subParams);
+          this.props.reset(subParams, values);
         } else {
           this.props.handleSearch(subParams, values, rs || 1);
         }

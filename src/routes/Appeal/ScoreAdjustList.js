@@ -93,9 +93,9 @@ class ScoreAdjustList extends Component {
   };
 
   // 表单重置
-  reset = params => {
+  reset = (params, val) => {
     this.pageNum = 0;
-    this.search(params);
+    this.search(params, val);
   };
 
   // 点击某一页函数
@@ -213,8 +213,8 @@ class ScoreAdjustList extends Component {
             handleSearch={(params, values, rs) => {
               this.search(params, values, rs);
             }}
-            reset={params => {
-              this.reset(params);
+            reset={(params, val) => {
+              this.reset(params, val);
             }}
           />
         }
