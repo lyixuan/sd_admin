@@ -38,6 +38,7 @@ class ScoreAdjust_CE extends Component {
     };
     this.orgOptions = [];
     this.showFamily = true;
+    this.mFamilyType = 0;
   }
 
   componentDidMount() {
@@ -101,11 +102,13 @@ class ScoreAdjust_CE extends Component {
   };
 
   orgChange = (val, obj) => {
+    console.log(obj);
     if (obj.length > 1) {
       this.props.form.setFieldsValue({
         familyType: obj[1].familyType,
       });
     }
+    this.mFamilyType = obj[1].familyType;
   };
 
   handleSubmit = () => {
@@ -113,6 +116,7 @@ class ScoreAdjust_CE extends Component {
       if (!err) {
         const m = values.adjustDate ? values.adjustDate.clone() : undefined;
         const adjustDate = m ? m.format('YYYY-MM-DD') : undefined;
+        console.log(values);
         const params = {
           adjustDate,
           type: values.type,
@@ -121,8 +125,7 @@ class ScoreAdjust_CE extends Component {
           collegeId: values.orgCheckList[0] ? values.orgCheckList[0] : undefined,
           familyId: values.orgCheckList[1] ? values.orgCheckList[1] : undefined,
           groupId: values.orgCheckList[2] ? values.orgCheckList[2] : undefined,
-          familyType:
-            values.groupType === 'college' ? values.familyType : this.props.scoreAdjust.familyType,
+          familyType: values.groupType === 'college' ? values.familyType : this.mFamilyType,
           reason: values.reason,
         };
 
