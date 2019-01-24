@@ -219,7 +219,7 @@ class ScoreAdjust_CE extends Component {
                 {
                   validator(rule, value, callback) {
                     if (Number(value) === 0) {
-                      callback({ message: '均分不能为0' });
+                      callback({ message: '均分应为大于0的数字' });
                     } else if (!value) {
                       callback({ message: '请输入均分' });
                     } else if (
