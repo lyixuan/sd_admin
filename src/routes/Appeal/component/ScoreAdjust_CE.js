@@ -1,4 +1,4 @@
-/* eslint-disable no-undef,no-param-reassign,no-unused-expressions */
+/* eslint-disable no-undef,no-param-reassign,no-unused-expressions,prefer-destructuring */
 import React, { Component } from 'react';
 import {
   Form,
@@ -101,7 +101,6 @@ class ScoreAdjust_CE extends Component {
   };
 
   orgChange = (val, obj) => {
-    console.log(obj);
     if (obj.length > 1) {
       this.props.dispatch({
         type: 'scoreAdjust/initFamilyType',
@@ -115,20 +114,42 @@ class ScoreAdjust_CE extends Component {
       if (!err) {
         const m = values.adjustDate ? values.adjustDate.clone() : undefined;
         const adjustDate = m ? m.format('YYYY-MM-DD') : undefined;
-        console.log(values);
         const params = {
           adjustDate,
           type: values.type,
           creditScore: values.creditScore ? parseFloat(values.creditScore) : undefined,
           groupType: values.groupType,
-          collegeId: values.orgCheckList[0] ? values.orgCheckList[0] : undefined,
-          familyId: values.orgCheckList[1] ? values.orgCheckList[1] : undefined,
-          groupId: values.orgCheckList[2] ? values.orgCheckList[2] : undefined,
           familyType:
             values.groupType === 'college' ? values.familyType : this.props.scoreAdjust.familyType,
           reason: values.reason,
         };
 
+        if (values.orgCheckList[0]) {
+          params.collegeId = values.orgCheckList[0];
+          this.props.scoreAdjust.orgList.forEach(v => {
+            if (v.value === values.orgCheckList[0]) {
+              params.collegeName = v.label;
+
+              if (values.orgCheckList[1]) {
+                params.familyId = values.orgCheckList[1];
+                v.children.forEach(v1 => {
+                  if (v1.value === values.orgCheckList[1]) {
+                    params.familyName = v1.label;
+
+                    if (values.orgCheckList[2]) {
+                      params.groupId = values.orgCheckList[2];
+                      v1.children.forEach(v2 => {
+                        if (v2.value === values.orgCheckList[2]) {
+                          params.groupName = v2.label;
+                        }
+                      });
+                    }
+                  }
+                });
+              }
+            }
+          });
+        }
         if (this.props.type === 'edit') {
           // 编辑提交
           params.id = Number(this.state.editId);
