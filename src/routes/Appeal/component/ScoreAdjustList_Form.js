@@ -109,7 +109,7 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={8} style={{ textAlign: 'center' }}>
             <FormItem label="学 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院">
               {getFieldDecorator('collegeId', {
                 initialValue: this.state.collegeId,
@@ -127,7 +127,7 @@ class AuditListForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={8} style={{ textAlign: 'right' }}>
             <FormItem>
               <div style={{ width: 300, textAlign: 'right' }}>
                 <Button
