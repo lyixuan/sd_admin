@@ -46,8 +46,8 @@ class GoodStudentList extends Component {
   onChange = (dates, dateStrings) => {
     const urlParams = {
       ...this.state.urlParams,
-      beginDate: dateStrings[0],
-      endDate: dateStrings[1],
+      beginDate: dateStrings[0] || null,
+      endDate: dateStrings[1] || null,
     };
     this.setState({
       urlParams,
