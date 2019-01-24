@@ -107,8 +107,8 @@ class ScoreAdjust_CE extends Component {
       this.props.form.setFieldsValue({
         familyType: obj[1].familyType,
       });
+      this.mFamilyType = obj[1].familyType;
     }
-    this.mFamilyType = obj[1].familyType;
   };
 
   handleSubmit = () => {
