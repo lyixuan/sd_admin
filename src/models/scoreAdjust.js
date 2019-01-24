@@ -147,5 +147,11 @@ export default {
         reason: undefined,
       };
     },
+    initFamilyType(state, action) {
+      return {
+        ...state,
+        familyType: action.payload.familyType,
+      };
+    },
   },
 };

@@ -38,7 +38,6 @@ class ScoreAdjust_CE extends Component {
     };
     this.orgOptions = [];
     this.showFamily = true;
-    this.mFamilyType = 0;
   }
 
   componentDidMount() {
@@ -104,10 +103,10 @@ class ScoreAdjust_CE extends Component {
   orgChange = (val, obj) => {
     console.log(obj);
     if (obj.length > 1) {
-      this.props.form.setFieldsValue({
-        familyType: obj[1].familyType,
+      this.props.dispatch({
+        type: 'scoreAdjust/initFamilyType',
+        payload: { familyType: obj[1].familyType },
       });
-      this.mFamilyType = obj[1].familyType;
     }
   };
 
@@ -125,7 +124,8 @@ class ScoreAdjust_CE extends Component {
           collegeId: values.orgCheckList[0] ? values.orgCheckList[0] : undefined,
           familyId: values.orgCheckList[1] ? values.orgCheckList[1] : undefined,
           groupId: values.orgCheckList[2] ? values.orgCheckList[2] : undefined,
-          familyType: values.groupType === 'college' ? values.familyType : this.mFamilyType,
+          familyType:
+            values.groupType === 'college' ? values.familyType : this.props.scoreAdjust.familyType,
           reason: values.reason,
         };
 
