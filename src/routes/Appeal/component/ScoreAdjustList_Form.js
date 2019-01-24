@@ -71,7 +71,7 @@ class AuditListForm extends Component {
         if (rs === 1) {
           this.props.reset(subParams);
         } else {
-          this.props.handleSearch(subParams, values);
+          this.props.handleSearch(subParams, values, 1);
         }
       }
     });

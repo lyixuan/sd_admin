@@ -74,8 +74,9 @@ class ScoreAdjustList extends Component {
   };
 
   // 表单搜索函数
-  search = (params, values) => {
+  search = (params, values, pg) => {
     const obj = params ? { ...params } : this.params;
+    this.pageNum = pg === 1 ? 0 : this.pageNum;
     obj.pageNum = this.pageNum;
     obj.pageSize = this.pageSize;
     this.params = { ...obj };
@@ -203,8 +204,8 @@ class ScoreAdjustList extends Component {
         contentForm={
           <SearchForm
             propData={this.props.scoreAdjust}
-            handleSearch={(params, values) => {
-              this.search(params, values);
+            handleSearch={(params, values, rs) => {
+              this.search(params, values, rs);
             }}
             reset={params => {
               this.reset(params);
