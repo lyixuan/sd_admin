@@ -19,8 +19,11 @@ class AuditListForm extends Component {
     // 搜索还原
     const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
     if (storageData) {
-      this.state.collegeId = storageData.collegeId;
-      this.state.dateRange = [moment(storageData.dateRange[0]), moment(storageData.dateRange[1])];
+      this.state.collegeId = storageData.collegeId ? storageData.collegeId : null;
+      this.state.dateRange =
+        storageData.dateRange.length > 0
+          ? [moment(storageData.dateRange[0]), moment(storageData.dateRange[1])]
+          : [];
     }
     this.initDate();
     sessionStorage.removeItem('tempFrom');
@@ -50,8 +53,16 @@ class AuditListForm extends Component {
 
   // 表单重置
   handleReset = () => {
-    this.props.form.resetFields();
-    this.submitSearch(1);
+    this.setState(
+      {
+        collegeId: null,
+        dateRange: [],
+      },
+      () => {
+        this.props.form.resetFields();
+        this.submitSearch(1);
+      }
+    );
   };
 
   // 搜索数据整理
@@ -73,7 +84,7 @@ class AuditListForm extends Component {
         if (rs === 1) {
           this.props.reset(subParams);
         } else {
-          this.props.handleSearch(subParams, values, 1);
+          this.props.handleSearch(subParams, values, rs || 1);
         }
       }
     });

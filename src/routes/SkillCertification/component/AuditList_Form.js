@@ -64,7 +64,7 @@ class AuditListForm extends Component {
   }
 
   componentDidMount() {
-    this.submitSearch();
+    this.submitSearch(1);
   }
 
   // 刷新初始化
@@ -211,11 +211,25 @@ class AuditListForm extends Component {
     this.canExamineStatus = false;
     this.canExamineResult = false;
     this.isMonth = true;
-    this.setState({
-      quarter: '',
-    });
-    this.props.form.resetFields();
-    this.submitSearch(1);
+    this.setState(
+      {
+        quarter: '',
+        quarterRange: null,
+        monthRange: null,
+        assessCyc: 1,
+        orgList: [],
+        orgType: 'college',
+        signStatus: null,
+        signResult: null,
+        examineStatus: null,
+        examineResult: null,
+        certificationItemId: null,
+      },
+      () => {
+        this.props.form.resetFields();
+        this.submitSearch(1);
+      }
+    );
   };
 
   // 搜索数据整理
