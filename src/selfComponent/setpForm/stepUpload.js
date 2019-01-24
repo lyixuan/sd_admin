@@ -33,6 +33,7 @@ class stepUpload extends Component {
     if (isDel) {
       return callBackParent(true, '');
     }
+    callBackParent(true, '');
     if (info.file.response) {
       if (info.file.response.code === 2000) {
         callBackParent(false, info.file.response.data);
