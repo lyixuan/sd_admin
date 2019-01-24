@@ -149,6 +149,7 @@ class AppealList extends Component {
         consultId: item.consultId,
         countValue: item.countValue,
         modifyTime: formatDate(item.modifyTime),
+        eliminateValue: item.eliminateValue,
       })
     );
     return data;
@@ -188,6 +189,10 @@ class AppealList extends Component {
       {
         title: '申诉个数',
         dataIndex: 'countValue',
+      },
+      {
+        title: '剔除数量',
+        dataIndex: 'eliminateValue',
       },
       {
         title: '操作时间',
