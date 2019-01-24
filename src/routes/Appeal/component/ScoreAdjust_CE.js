@@ -189,11 +189,11 @@ class ScoreAdjust_CE extends Component {
         },
       },
     };
-    const { initLoading, submit } = this.props;
+    const { initLoading = false, initLoading2 = false, submit } = this.props;
     const { getFieldDecorator } = this.props.form;
     propsVal = this.props;
     return (
-      <Spin spinning={this.props.type === 'edit' ? initLoading : false}>
+      <Spin spinning={this.props.type === 'edit' ? initLoading || initLoading2 : initLoading2}>
         <Form style={{ margin: 'auto' }} className="scoreadjust">
           <FormItem label="*学分日期" {...formItemLayout}>
             {getFieldDecorator('adjustDate', {
