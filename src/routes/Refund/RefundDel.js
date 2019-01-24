@@ -104,7 +104,7 @@ class RefundDel extends Component {
         dataIndex: 'key',
       },
       {
-        title: '子订单编号',
+        title: '工单编号',
         dataIndex: 'ordId',
       },
       {
@@ -160,7 +160,7 @@ class RefundDel extends Component {
         title: '输入编号',
         content: (
           <StepInput
-            inputTitle="请输入想删除的 “子订单编号”："
+            inputTitle="请输入想删除的 “工单编号”："
             inputContent="true"
             inputTip="true"
             nums={nums}
