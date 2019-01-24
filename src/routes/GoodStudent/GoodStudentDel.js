@@ -5,6 +5,7 @@ import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import CheckResult from '../../selfComponent/setpForm/checkResult';
+import { trim } from '../../utils/utils';
 import { clearConfirm, setConfirm } from '../../utils/reloadConfirm';
 
 @connect(({ goodStudent, loading }) => ({
@@ -235,7 +236,7 @@ class RefundDel extends Component {
           this.initParamsFn(dis);
         }}
         step1Fetch={() => {
-          this.fetchPreDel({ orderIdStr: nums });
+          this.fetchPreDel({ orderIdStr: trim(nums) });
         }}
         step2Fetch={() => {
           // this.editCurrent(2);

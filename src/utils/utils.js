@@ -225,3 +225,7 @@ export function deepCopy(obj) {
     return obj;
   }
 }
+// 去除前后和中间多个空格
+export function trim(str) {
+  return str.replace(/(^\s*)|(\s*$)/g, '').replace(/\s */g, ' ');
+}
