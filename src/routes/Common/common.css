@@ -82,6 +82,7 @@
 
 :global(.ant-popover-message) {
   font-size: 14px;
+  width: 356px!important;
   color: #262626;
 }
 :global(.ant-popover-buttons) {
