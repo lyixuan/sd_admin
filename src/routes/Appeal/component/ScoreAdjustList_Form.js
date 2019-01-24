@@ -19,9 +19,11 @@ class AuditListForm extends Component {
     // 搜索还原
     const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
     if (storageData) {
-      sessionStorage.removeItem('tempFrom');
+      this.state.collegeId = storageData.collegeId;
+      this.state.dateRange = [moment(storageData.dateRange[0]), moment(storageData.dateRange[1])];
     }
     this.initDate();
+    sessionStorage.removeItem('tempFrom');
   }
 
   UNSAFE_componentWillMount() {
@@ -30,7 +32,7 @@ class AuditListForm extends Component {
   }
 
   componentDidMount() {
-    this.submitSearch();
+    this.submitSearch(2);
   }
 
   // 刷新初始化

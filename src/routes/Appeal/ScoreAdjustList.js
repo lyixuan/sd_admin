@@ -28,6 +28,7 @@ class ScoreAdjustList extends Component {
     this.pageNum = 0;
     this.pageSize = 30;
     const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
+    console.log(storageData);
     if (storageData) {
       this.pageNum = storageData.pageNum;
       this.pageSize = storageData.pageSize;

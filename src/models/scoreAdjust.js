@@ -51,6 +51,7 @@ export default {
       const response = yield call(creditAdjustDelById, payload);
       if (response && response.code === 2000) {
         yield call(payload.action);
+        message.success('删除成功');
       } else if (response && response.code === 1201) {
         message.error('该数据不可删除');
       } else {
