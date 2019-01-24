@@ -133,6 +133,10 @@ class ScoreAdjustList extends Component {
         dataIndex: 'orgName2',
       },
       {
+        title: '组织类型',
+        dataIndex: 'familyType2',
+      },
+      {
         title: '操作人',
         dataIndex: 'operateName',
       },
@@ -186,6 +190,7 @@ class ScoreAdjustList extends Component {
         content[i].adjustDate2 = moment(v.adjustDate).format('YYYY-MM-DD');
         content[i].type2 = v.type === 1 ? '调增学分' : '调减学分';
         content[i].groupType2 = BI_Filter(`USER_LEVEL|id:${v.groupType}`).name;
+        content[i].familyType2 = v.familyType === 0 ? '自考' : '壁垒';
         content[i].creditScore2 = parseFloat(content[i].creditScore).toFixed(2);
         if (v.type === 2) {
           content[i].creditScore2 = `-${content[i].creditScore2}`;
