@@ -171,7 +171,7 @@ class AppealForm extends Component {
                     rules: [
                       {
                         validator(rule, value, callback) {
-                          const reg = /^(0\.[0-9]{0,2}|1|1\.[0]{0,2})$/;
+                          const reg = /^(0\.[0-9][1-9]{0,2}|1|1\.[0]{0,2})$/;
                           if ((flag === '优新开班电话' || flag === '优新随堂考') && !value) {
                             callback({ message: '删除数量为必填项，请填写！' });
                           } else if (
