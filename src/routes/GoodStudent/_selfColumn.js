@@ -35,7 +35,7 @@ export function columnsFn() {
       dataIndex: 'upFlag',
     },
     {
-      title: '分值',
+      title: '学分',
       dataIndex: 'countValue',
     },
   ];

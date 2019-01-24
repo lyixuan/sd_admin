@@ -131,7 +131,7 @@ class RefundDel extends Component {
         dataIndex: 'stuName',
       },
       {
-        title: '分值',
+        title: '学分',
         dataIndex: 'countValue',
       },
     ];
