@@ -69,19 +69,25 @@ class GoodStudentList extends Component {
     });
   };
   // 点击某一页函数
-  changePage = (pageIndex, size) => {
-    this.getData({
-      pageSize: size,
-      pageIndex,
-    });
+  changePage = (pageNum, size) => {
+    const params = FormFilter.getParams();
+    const newParams = this.handleParams({ ...params, pageNum, size });
+    this.getData(this.filterEmptyParams(newParams));
   };
   // 表单搜索函数
   handleSearch = params => {
+    const { beginDate = null, endDate = null } = params;
+    const collegeId = params.collegeId ? Number(params.collegeId) : null;
+    const urlParams = { ...this.state.urlParams, collegeId, beginDate, endDate };
+    const newParams = this.handleParams(params);
+    this.getData(this.filterEmptyParams(newParams));
+    this.setState({ urlParams });
+  };
+  handleParams = params => {
     const { beginDate = null, endDate = null, studentName = null, teacherName = null } = params;
     const collegeId = params.collegeId ? Number(params.collegeId) : null;
     const orderId = params.orderId ? Number(params.orderId) : null;
-    const urlParams = { ...this.state.urlParams, collegeId, beginDate, endDate };
-    const pageIndex = urlParams.pageNum ? Number(urlParams.pageNum) : 0;
+    const pageIndex = params.pageNum ? Number(params.pageNum) : 0;
     const newParams = {
       collegeId,
       beginDate,
@@ -91,13 +97,12 @@ class GoodStudentList extends Component {
       teacherName,
       pageIndex,
     };
-    this.getData(this.filterEmptyParams(newParams));
-    this.setState({ urlParams });
+    return newParams;
   };
   filterEmptyParams = data => {
     const params = data;
     for (const i in params) {
-      if (params[i] === undefined || params[i] === null) {
+      if (params[i] === undefined || params[i] === null || params[i] === '') {
         delete params[i];
       }
     }
@@ -142,7 +147,7 @@ class GoodStudentList extends Component {
     this.props.setRouteUrlParams('/goodStudent/goodStudentAdd');
   };
   splitOrgName = (...argument) => {
-    return argument.filter(item => item).join('|');
+    return argument.filter(item => item).join(' | ');
   };
 
   render() {

@@ -35,6 +35,7 @@ class FormPrams extends Component {
     this.state = {
       isUpdate: false, // 用于强制更新组件
     };
+    FormPrams.getParams = this.getParams; // 用于获取保存参数;
     this.modal = Object.assign({}, this.props.modal, this.props.otherModal);
     this.flagKeyArr = [pageObj.key].concat(Object.keys(this.props.otherModal)); // 用于储存flag值,默认获取分页
     this.isLoading = this.props.isLoading || false;
@@ -53,6 +54,7 @@ class FormPrams extends Component {
       this.modal = Object.assign({}, this.modal, nextProps.otherModal);
     }
   }
+
   onReset = () => {
     this.flagKeyArr.forEach(item => {
       this.modal[item] = this.props.modal[item] || null;
@@ -62,7 +64,7 @@ class FormPrams extends Component {
   onSubmit = () => {
     this.saveData();
   };
-  initData = () => {
+  getParams = () => {
     let params = getUrlParams();
     if (this.props.modal) {
       params = this.assignUrlParams(params);
@@ -72,9 +74,10 @@ class FormPrams extends Component {
     });
     this.modal[pageObj.key] = this.modal[pageObj.key] || pageObj.value;
     this.modal = filterEmptyUrlParams(this.modal);
-    if (this.props.getUrlParams) {
-      this.props.getUrlParams(this.modal);
-    }
+    return this.modal;
+  };
+  initData = () => {
+    this.getParams();
     this.onSubmit();
   };
 
