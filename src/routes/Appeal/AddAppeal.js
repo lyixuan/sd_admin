@@ -51,8 +51,6 @@ class AddAppeal extends Component {
       pageSize: 30,
       pageNum: 0,
     };
-
-    console.log(addAppealParams, appealListParams);
     this.props.dispatch({
       type: 'appeal/addAppeal',
       payload: { addAppealParams, appealListParams },
