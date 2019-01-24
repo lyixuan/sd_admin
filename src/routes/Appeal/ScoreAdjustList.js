@@ -191,10 +191,7 @@ class ScoreAdjustList extends Component {
         content[i].type2 = v.type === 1 ? '调增学分' : '调减学分';
         content[i].groupType2 = BI_Filter(`USER_LEVEL|id:${v.groupType}`).name;
         content[i].familyType2 = v.familyType === 0 ? '自考' : '壁垒';
-        content[i].creditScore2 = parseFloat(content[i].creditScore).toFixed(2);
-        if (v.type === 2) {
-          content[i].creditScore2 = `-${content[i].creditScore2}`;
-        }
+        content[i].creditScore2 = content[i].creditScore;
         content[i].orgName2 =
           v.collegeName && v.familyName && v.groupName
             ? `${v.collegeName} | ${v.familyName} | ${v.groupName}`
