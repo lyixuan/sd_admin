@@ -44,7 +44,7 @@ class AddAppeal extends Component {
       stuId: !stuId ? null : Number(stuId),
       workorderId: !newWorkorderId ? null : Number(newWorkorderId),
       countValue: !newCountValue ? null : Number(newCountValue),
-      eliminate_value: !newEliminate_value ? null : Number(newEliminate_value),
+      eliminateValue: !newEliminate_value ? null : Number(newEliminate_value),
       operator,
     };
     const appealListParams = {
