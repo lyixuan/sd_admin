@@ -97,6 +97,7 @@ class RefundDel extends Component {
     );
     return data;
   };
+
   columnsData = () => {
     const columns = [
       {
@@ -105,7 +106,7 @@ class RefundDel extends Component {
       },
       {
         title: '工单编号',
-        dataIndex: 'ordId',
+        dataIndex: 'bottomLineNum',
       },
       {
         title: '投诉时间',
