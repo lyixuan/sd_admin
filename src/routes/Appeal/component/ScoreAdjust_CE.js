@@ -240,7 +240,7 @@ class ScoreAdjust_CE extends Component {
                 max={9999999}
                 step={0.01}
                 formatter={value => String(value).replace(/-/g, '')}
-                placeholder="请输入"
+                placeholder="请输入大于0的数字"
                 style={{ width: 380 }}
               />
             )}
