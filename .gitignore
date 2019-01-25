@@ -2,7 +2,6 @@
 
 # dependencies
 /node_modules
-# roadhog-api-doc ignore
 /src/utils/request-temp.js
 
 # production
