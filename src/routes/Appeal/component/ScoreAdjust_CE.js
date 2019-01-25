@@ -236,9 +236,10 @@ class ScoreAdjust_CE extends Component {
               ],
             })(
               <InputNumber
-                min={0}
+                min={-9999999}
                 max={9999999}
                 step={0.01}
+                formatter={value => String(value).replace(/-/g, '')}
                 placeholder="请输入"
                 style={{ width: 380 }}
               />
