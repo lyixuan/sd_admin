@@ -70,15 +70,23 @@
   font-size: 12px!important;
 }
 :global(.anticon-paper-clip:before){
-  color: #52c9c2;
   font-size: 12px;
   margin-left: 13px!important;
 }
 :global(.anticon-paper-clip){
+  color: #52c9c2!important;
   top: 3px!important;
 }
-:global(.anticon-loading){
+:global(.ant-upload-list-item-info .anticon-loading){
+  color: #52c9c2;
   top: 1px!important;
+}
+:global(.ant-btn .anticon-loading){
+  color: #fff;
+  left: 3px;
+}
+:global(.anticon-close){
+  color: #52c9c2!important;
 }
 :global(.ant-upload-list-item-error){
   font-size: 12px!important;

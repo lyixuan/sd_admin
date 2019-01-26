@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { message, Button, Select, DatePicker } from 'antd';
+import { message, Button, DatePicker } from 'antd';
 import moment from 'moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import common from '../Common/common.css';
 import { getAuthority } from '../../utils/authority';
-import { BOTTOM_TABLE_LIST, ADMIN_AUTH_LIST, ADMIN_USER } from '../../utils/constants';
+import { ADMIN_AUTH_LIST, ADMIN_USER } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
 import ModalContent from './_modalContent';
 import backTop from '../../assets/backTop.svg';
 import FormFilter from '../../selfComponent/FormFilter';
 
-const { Option } = Select;
+// const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
 @connect(({ bottomTable, loading }) => ({
@@ -37,7 +37,7 @@ class BottomList extends Component {
         type: null,
       },
       userId,
-      type: null,
+      type: 0,
       bottomTime: '',
       pageNum: 0,
       pageSize: 30,
@@ -50,7 +50,7 @@ class BottomList extends Component {
     const initParams = {};
     if (JSON.stringify(initVal) !== '{}') {
       initParams.bottomTime = initVal.bottomTime ? Date.parse(new Date(initVal.bottomTime)) : null;
-      initParams.type = initVal.type && initVal.type !== '' ? Number(initVal.type) : '';
+      initParams.type = 0; // initVal.type && initVal.type !== '' ? Number(initVal.type) : '';
     }
     this.getRange(); // 时间范围
     this.disDateList(); // 不可选时间
@@ -64,7 +64,7 @@ class BottomList extends Component {
 
   onSubmit = data => {
     const bottomTime = data.bottomTime ? Date.parse(new Date(data.bottomTime)) : null;
-    const type = data.type && data.type !== '' ? Number(data.type) : '';
+    const type = 0; // data.type && data.type !== '' ? Number(data.type) : '';
     const pageNum = data.pageNum ? Number(data.pageNum) : 0;
     this.getDataList({ bottomTime, type, pageNum }); // 列表数据
   };
@@ -148,7 +148,7 @@ class BottomList extends Component {
 
   // 模态框确定
   clickModalOK = () => {
-    const { modalParam, type, userId, bottomTime, pageNum, pageSize } = this.state;
+    const { modalParam, type = 0, userId, bottomTime, pageNum, pageSize } = this.state;
     if (modalParam.bottomDate === '') {
       message.error('请选择底表时间');
       return;
@@ -217,7 +217,8 @@ class BottomList extends Component {
     const columns = columnsFn(this.downLoadBTable);
     const WrappedAdvancedSearchForm = () => (
       <FormFilter onSubmit={this.onSubmit} isLoading={isLoading} modal={{ type: '' }}>
-        <div>
+        {/*
+         <div>
           <span style={{ lineHeight: '32px' }}>底表类型：</span>
           <Select
             placeholder="底表类型"
@@ -232,6 +233,9 @@ class BottomList extends Component {
             ))}
           </Select>
         </div>
+
+        */}
+
         <div>
           <span style={{ lineHeight: '32px' }}>底表时间：</span>
           <DatePicker

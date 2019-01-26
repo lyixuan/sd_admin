@@ -6,7 +6,7 @@ import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import SelfPagination from '../../selfComponent/selfPagination/SelfPagination';
 import common from '../Common/common.css';
-import { formatDate } from '../../utils/FormatDate';
+import { formatDateNew } from '../../utils/FormatDate';
 import { appealType, appealTypeRest } from '../../utils/dataDictionary';
 
 const FormItem = Form.Item;
@@ -143,12 +143,13 @@ class AppealList extends Component {
         id: item.id,
         type: !appealTypeRest[item.type] ? null : appealTypeRest[item.type],
         stuId: item.stuId,
-        countBeginTime: formatDate(item.countBeginTime),
+        countBeginTime: formatDateNew(item.countBeginTime),
         ordId: item.ordId,
         workorderId: item.workorderId,
         consultId: item.consultId,
         countValue: item.countValue,
-        modifyTime: formatDate(item.modifyTime),
+        modifyTime: formatDateNew(item.modifyTime),
+        eliminateValue: item.eliminateValue,
       })
     );
     return data;
@@ -188,6 +189,10 @@ class AppealList extends Component {
       {
         title: '申诉个数',
         dataIndex: 'countValue',
+      },
+      {
+        title: '剔除数量',
+        dataIndex: 'eliminateValue',
       },
       {
         title: '操作时间',

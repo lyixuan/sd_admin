@@ -1,7 +1,7 @@
 // import { Progress } from 'antd';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import { formatDate } from '../../utils/FormatDate';
-import { BOTTOM_TABLE_STATUS, BOTTOM_TABLE_LIST } from '../../utils/constants';
+import { BOTTOM_TABLE_STATUS } from '../../utils/constants';
 import packSucess from '../../assets/packSucess.svg';
 import packError from '../../assets/packError.svg';
 import compress from '../../assets/compress.svg';
@@ -23,17 +23,17 @@ export function columnsFn(callback) {
         );
       },
     },
-    {
-      title: '底表类型',
-      dataIndex: 'type',
-      render: text =>
-        BOTTOM_TABLE_LIST.map(item => {
-          if (item.id !== '' && Number(item.id) === text) {
-            return item.name;
-          }
-          return null;
-        }),
-    },
+    // {
+    //   title: '底表类型',
+    //   dataIndex: 'type',
+    //   render: text =>
+    //     BOTTOM_TABLE_LIST.map(item => {
+    //       if (item.id !== '' && Number(item.id) === text) {
+    //         return item.name;
+    //       }
+    //       return null;
+    //     }),
+    // },
     {
       title: '底表时间',
       dataIndex: 'bottomTime',

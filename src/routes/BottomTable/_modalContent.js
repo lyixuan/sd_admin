@@ -1,6 +1,7 @@
 // 自定义弹框
 import React from 'react';
-import { Radio, Select, DatePicker } from 'antd';
+import { Select, DatePicker } from 'antd';
+import memoizeOne from 'memoize-one';
 import { DATA_ANALYST_ID } from '../../utils/constants';
 
 const dateFormat = 'YYYY-MM-DD';
@@ -16,10 +17,10 @@ export default class ModalContent extends React.Component {
     };
   }
   // 底表类型选择
-  onRadioChange = e => {
-    this.setState({ type: e.target.value });
-    this.props.updateModalData({ ...this.state, type: e.target.value });
-  };
+  // onRadioChange = e => {
+  //   this.setState({ type: e.target.value });
+  //   this.props.updateModalData({ ...this.state, type: e.target.value });
+  // };
   // 底表时间选择
   onDateChange = (date, dateString) => {
     this.setState({ bottomDate: dateString });
@@ -45,21 +46,20 @@ export default class ModalContent extends React.Component {
     return this.isDataAnalyst;
   };
   // 过滤数据
-  selectOptions = () => {
-    const { selectOption } = this.props;
+  memoizedFilter = memoizeOne(findAllOrg => {
     const hash = {};
-    return selectOption.reduce((preVal, curVal) => {
+    return findAllOrg.reduce((preVal, curVal) => {
       if (!hash[curVal.collegeId]) {
         hash[curVal.collegeId] = true;
         preVal.push(curVal);
       }
       return preVal;
     }, []);
-  };
+  });
   render() {
-    const { disabledDate } = this.props;
+    const { disabledDate, selectOption } = this.props;
+    const options = this.memoizedFilter(selectOption);
 
-    const options = this.selectOptions();
     const isDataAnalyst = this.isDataAnalystFn();
     this.props.isDataAnalyst(isDataAnalyst);
 
@@ -67,7 +67,18 @@ export default class ModalContent extends React.Component {
       <>
         <>
           <span>底表类型：</span>
-          <Radio.Group
+          <span
+            style={{
+              width: '230px',
+              display: 'inline-block',
+              textAlign: 'left',
+              color: 'rgba(0, 0, 0, 0.45)',
+            }}
+          >
+            学分底表{' '}
+          </span>
+          {/*
+            <Radio.Group
             onChange={this.onRadioChange}
             value={this.state.type}
             style={{ width: '230px' }}
@@ -79,6 +90,7 @@ export default class ModalContent extends React.Component {
               预估分底表
             </Radio>
           </Radio.Group>
+           */}
         </>
         <div style={{ margin: '17px auto' }}>
           <span>底表时间：</span>

@@ -922,3 +922,93 @@ export async function saveOrModifySubItem(params) {
     body: params,
   });
 }
+// 以下为好学生推荐接口
+export async function recommendList(params) {
+  return request(`${HOST}/student/recommend/list?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+// 校验编号
+export async function deleteCheck(params) {
+  return request(`${HOST}/student/recommend/deleteCheck`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 删除编号
+export async function deleteRecommend(params) {
+  return request(`${HOST}/student/recommend/deleteRecommend`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 复合编号
+export async function deleteReview(params) {
+  return request(`${HOST}/student/recommend/deleteReview`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 选择文件
+export function importSelect() {
+  return `${HOST}/student/recommend/importSelect`;
+}
+// 检验文件
+export async function importCheck(params) {
+  return request(`${HOST}/student/recommend/importCheck`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 上传图片地址
+export async function importUpload(params) {
+  return request(`${HOST}/student/recommend/importUpload`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// ------------------- 学分调整 begin -------------------
+
+// 学分调整列表
+export async function creditAdjustGetList(params) {
+  return request(`${HOST}/creditAdjust/findAll?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 删除学分调整
+export async function creditAdjustDelById(params) {
+  return request(`${HOST}/creditAdjust/deleteById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 根据id获取详细信息
+export async function creditAdjustGetDetail(params) {
+  return request(`${HOST}/creditAdjust/getInfoById?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+/*
+* 更新或保存学分调整
+* */
+export async function creditAdjustSaveOrModify(params) {
+  return request(`${HOST}/creditAdjust/saveOrModify`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+/*
+* 获取组织架构接口
+* */
+export async function organizationList(params) {
+  return request(`${HOST}/organization/list?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// ------------------- 学分调整 end -------------------

@@ -495,6 +495,32 @@ export const getRouterData = app => {
       ),
       name: '底表下载',
     },
+    '/goodStudent/goodStudentList': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/GoodStudent/GoodStudentList')
+      ),
+      name: '好学生推荐',
+    },
+    '/goodStudent/goodStudentAdd': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/GoodStudent/GoodStudentAdd')
+      ),
+      bread: {
+        name: '好学生推荐',
+        path: '/goodStudent/goodStudentList',
+      },
+      name: '添加数据',
+    },
+    '/goodStudent/goodStudentDel': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/GoodStudent/GoodStudentDel')
+      ),
+      bread: {
+        name: '好学生推荐',
+        path: '/goodStudent/goodStudentList',
+      },
+      name: '删除数据',
+    },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
     },
@@ -599,6 +625,35 @@ export const getRouterData = app => {
       },
       name: '编辑认证项目',
     },
+
+    // ---- 申诉  学分调整 begin-----
+    '/appeal/scoreAdjustList': {
+      component: dynamicWrapper(app, ['scoreAdjust'], () =>
+        import('../routes/Appeal/ScoreAdjustList')
+      ),
+      name: '学分调整',
+    },
+    '/appeal/scoreAdjustCreate': {
+      component: dynamicWrapper(app, ['scoreAdjust'], () =>
+        import('../routes/Appeal/ScoreAdjustCreate')
+      ),
+      bread: {
+        name: '学分调整',
+        path: '/appeal/scoreAdjustList',
+      },
+      name: '添加调整',
+    },
+    '/appeal/scoreAdjustEdit': {
+      component: dynamicWrapper(app, ['scoreAdjust'], () =>
+        import('../routes/Appeal/ScoreAdjustEdit')
+      ),
+      bread: {
+        name: '学分调整',
+        path: '/appeal/scoreAdjustList',
+      },
+      name: '编辑调整',
+    },
+    // ---- 申诉  学分调整 end -----
   };
   // Get name from ./menu.js or just set it in the router data.
   // const menuData = getFlatMenuData(getMenuData());

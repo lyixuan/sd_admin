@@ -5,10 +5,11 @@ import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import CheckResult from '../../selfComponent/setpForm/checkResult';
-import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
+import { trim } from '../../utils/utils';
+import { clearConfirm, setConfirm } from '../../utils/reloadConfirm';
 
-@connect(({ blRefund, loading }) => ({
-  blRefund,
+@connect(({ goodStudent, loading }) => ({
+  goodStudent,
   loading,
 }))
 class RefundDel extends Component {
@@ -23,6 +24,7 @@ class RefundDel extends Component {
     // init current
     this.editCurrent(0);
   }
+
   // 离开页面的时候，把disableDel，nums恢复默认值null
   componentWillUnmount() {
     clearConfirm();
@@ -30,53 +32,58 @@ class RefundDel extends Component {
   }
   // 回调
   onChildChange = bol => {
-    console.log(bol);
     this.setState({
       isDisabled: bol,
     });
   };
   getNums = nums => {
     this.props.dispatch({
-      type: 'blRefund/getNums',
+      type: 'goodStudent/getNums',
       payload: nums,
     });
   };
   // 初始化一些值
   initParamsFn = (disableDel, nums) => {
-    const num = !nums ? this.props.blRefund.nums : '';
+    const num = !nums ? this.props.goodStudent.nums : '';
     this.props.dispatch({
-      type: 'blRefund/initParams',
+      type: 'goodStudent/initParams',
       payload: { disableDel, nums: num },
     });
   };
   fetchPreDel = params => {
     this.props.dispatch({
-      type: 'blRefund/preDelRefund',
+      type: 'goodStudent/deleteCheck',
       payload: { params },
     });
   };
-  fetchDel = params => {
+  fetchDel = deleteKey => {
     this.props.dispatch({
-      type: 'blRefund/delRefund',
-      payload: { params },
+      type: 'goodStudent/deleteRecommend',
+      payload: { deleteKey },
     });
   };
   editCurrent = current => {
     this.props.dispatch({
-      type: 'blRefund/editCurrent',
+      type: 'goodStudent/editCurrent',
       payload: { current },
+    });
+  };
+  fetchCheckDel = deleteKey => {
+    this.props.dispatch({
+      type: 'goodStudent/deleteReview',
+      payload: { deleteKey },
     });
   };
   editLoading = isLoading => {
     console.log(isLoading);
     this.props.dispatch({
-      type: 'blRefund/editLoading',
+      type: 'goodStudent/editLoading',
       payload: { isLoading },
     });
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/bottomLine/refundList',
+      pathname: '/goodStudent/goodStudentList',
     });
   }
   // 初始化tabale 列数据
@@ -85,10 +92,11 @@ class RefundDel extends Component {
     val.map((item, index) =>
       data.push({
         key: index + 1,
-        bottomLineNum: item.bottomLineNum,
-        complainTime: item.complainTime,
-        stuName: `${item.stuName} | ${item.stuId}`,
+        bizDate: item.bizDate,
+        ordId: item.ordId,
         cpName: item.cpName,
+        stuName: item.stuName,
+        countValue: item.countValue,
         name:
           item.groupName && item.familyName
             ? `${item.collegeName} | ${item.familyName} | ${item.groupName}`
@@ -97,7 +105,6 @@ class RefundDel extends Component {
     );
     return data;
   };
-
   columnsData = () => {
     const columns = [
       {
@@ -105,45 +112,51 @@ class RefundDel extends Component {
         dataIndex: 'key',
       },
       {
-        title: '工单编号',
-        dataIndex: 'bottomLineNum',
+        title: '报名日期',
+        dataIndex: 'bizDate',
       },
       {
-        title: '投诉时间',
-        dataIndex: 'complainTime',
+        title: '子订单编号',
+        dataIndex: 'ordId',
       },
       {
-        title: '学生名称 | id',
-        dataIndex: 'stuName',
+        title: '组织',
+        dataIndex: 'name',
       },
       {
-        title: '老师名称',
+        title: '老师姓名',
         dataIndex: 'cpName',
       },
       {
-        title: '学院 | 家族 | 小组',
-        dataIndex: 'name',
+        title: '学员姓名',
+        dataIndex: 'stuName',
+      },
+      {
+        title: '学分',
+        dataIndex: 'countValue',
       },
     ];
+
     return columns;
   };
   render() {
-    const { preDelData, nums, current, disableDel, isLoading } = this.props.blRefund;
+    const { preDelData, delData, nums, current, disableDel, isLoading } = this.props.goodStudent;
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
-    const dataSource = !data || !data.successNums ? [] : this.fillDataSource(data.successNums);
+    const dataSource = !delData ? [] : this.fillDataSource(delData);
     const columns = !this.columnsData() ? [] : this.columnsData();
 
-    const successArr = [];
-    if (dataSource.length > 0) {
-      data.successNums.forEach(item => {
-        successArr.push(item.bottomLineNum);
-      });
-    }
-    const failNums = data ? data.failNums : [];
-    const successSize = data ? data.successSize : 0;
-    const inputContent = data ? data.failSize > 0 : null;
+    // const successNums = [];
+    // if (dataSource.length > 0) {
+    //   data.successNums.forEach(item => {
+    //     successNums.push(item.qualityNum);
+    //   });
+    // }
+    const failNums = data ? data.failOrderIdStr : [];
+
+    const successSize = data ? data.successCount : 0;
+    const inputContent = data ? data.failCount > 0 : null;
 
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
@@ -154,14 +167,18 @@ class RefundDel extends Component {
 
     const tipSucess = `您已成功删除 ${successSize} 条数据！`;
     const checkRes = !data ? null : (
-      <CheckResult totalSize={data.totalSize} successSize={successSize} failSize={data.failSize} />
+      <CheckResult
+        totalSize={data.totalCount}
+        successSize={successSize}
+        failSize={data.failCount}
+      />
     );
     const steps = [
       {
         title: '输入编号',
         content: (
           <StepInput
-            inputTitle="请输入想删除的 “工单编号”："
+            inputTitle="请输入想删除的 “子订单编号”："
             inputContent="true"
             inputTip="true"
             nums={nums}
@@ -200,12 +217,15 @@ class RefundDel extends Component {
         content: <StepSucess isDelImg="true" tipSucess={tipSucess} />,
       },
     ];
+    console.log(data);
     return (
       <StepLayout
         routerData={this.props.routerData}
-        title="删除退费"
+        title="删除质检"
         steps={steps}
         tipSucess={tipSucess}
+        isDisabled={isDisabled}
+        disableDel={disableDel}
         goBack={() => {
           this.historyFn();
         }}
@@ -216,20 +236,19 @@ class RefundDel extends Component {
           this.initParamsFn(dis);
         }}
         step1Fetch={() => {
-          this.fetchPreDel({ nums });
+          this.fetchPreDel({ orderIdStr: trim(nums) });
         }}
         step2Fetch={() => {
-          this.editCurrent(2);
+          // this.editCurrent(2);
+          this.fetchCheckDel(data.deleteKey);
         }}
         step3Fetch={() => {
-          this.fetchDel({ nums: successArr.join(' ') });
+          this.fetchDel(data.deleteKey);
         }}
         editLoading={loading => {
           this.editLoading(loading);
         }}
         isLoading={isLoading}
-        isDisabled={isDisabled}
-        disableDel={disableDel}
         current={current}
         editCurrent={param => {
           this.editCurrent(param);
