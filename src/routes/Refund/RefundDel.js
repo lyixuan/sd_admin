@@ -138,7 +138,7 @@ class RefundDel extends Component {
     const successArr = [];
     if (dataSource.length > 0) {
       data.successNums.forEach(item => {
-        successArr.push(item.ordId);
+        successArr.push(item.bottomLineNum);
       });
     }
     const failNums = data ? data.failNums : [];
