@@ -114,10 +114,14 @@ class ScoreAdjust_CE extends Component {
       if (!err) {
         const m = values.adjustDate ? values.adjustDate.clone() : undefined;
         const adjustDate = m ? m.format('YYYY-MM-DD') : undefined;
+        const creditScore =
+          values.creditScore && values.creditScore < 0
+            ? 0 - values.creditScore
+            : values.creditScore;
         const params = {
           adjustDate,
           type: values.type,
-          creditScore: values.creditScore ? parseFloat(values.creditScore) : undefined,
+          creditScore: creditScore ? parseFloat(creditScore) : undefined,
           groupType: values.groupType,
           familyType:
             values.groupType === 'college' ? values.familyType : this.props.scoreAdjust.familyType,
