@@ -334,6 +334,17 @@ class CertificationCreate_Form extends Component {
               <FormItem label="*申请方式">
                 {getFieldDecorator('applyMethod', {
                   initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '申请方式为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
                 })(
                   <Select style={{ width: 280, height: 32 }}>
                     {window.BI_Filter(`Certification_APPLYMETHOD`).map(item => (
@@ -348,16 +359,26 @@ class CertificationCreate_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*允许添加附件">
                 {getFieldDecorator('allowAdd', {
-                  initialValue: 0,
-                  rules: [],
+                  initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '允许添加附件为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={1}>
+                    <Radio name="allowAdd" value={1}>
                       是
                     </Radio>
-                    <Radio name="privilege" value={0}>
+                    <Radio name="allowAdd" value={0}>
                       否
                     </Radio>
                   </RadioGroup>
@@ -371,6 +392,17 @@ class CertificationCreate_Form extends Component {
               <FormItem label="*适用用户">
                 {getFieldDecorator('perfectUser', {
                   initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '适用用户为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
                 })(
                   <Select style={{ width: 280, height: 32 }}>
                     {window.BI_Filter(`Certification_SUITUSER`).map(item => (
@@ -384,9 +416,19 @@ class CertificationCreate_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*指定用户">
-                {getFieldDecorator('assessCyc', {
+                {getFieldDecorator('onlyUser', {
                   initialValue: this.state.defaultCheckedList,
-                  rules: [],
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value || value.length <= 0) {
+                          callback({ message: '指定用户为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
                 })(
                   <CheckboxGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
