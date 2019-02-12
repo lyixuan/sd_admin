@@ -36,6 +36,8 @@ class CertificationCreate_Form extends Component {
       plainOptions: BI_Filter('Certification_ONLYUSER|id->value,name->label'),
       defaultCheckedList: [],
     };
+    this.applyFlag = null; // 标记申请方式是电脑端还是手机端
+    this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
   }
 
   handleSubmit = e => {
@@ -124,10 +126,28 @@ class CertificationCreate_Form extends Component {
     return isPNG;
   };
 
+  // 申请方式修改的标记修改
+  handleSelectChange = value => {
+    this.applyFlag = value;
+    this.props.form.setFieldsValue({
+      allowAdd: null,
+    });
+  };
+
+  // 适用用户修改的标记修改
+  suitSelectChange = value => {
+    this.suitFlag = value;
+    this.props.form.setFieldsValue({
+      onlyUser: [],
+    });
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { submit } = this.props.jumpFunction;
     const { TextArea } = Input;
+    const disabled = true;
+    const { suitFlag, applyFlag } = this;
     const {
       previewVisible1,
       previewImage1,
@@ -346,7 +366,7 @@ class CertificationCreate_Form extends Component {
                     },
                   ],
                 })(
-                  <Select style={{ width: 280, height: 32 }}>
+                  <Select style={{ width: 280, height: 32 }} onChange={this.handleSelectChange}>
                     {window.BI_Filter(`Certification_APPLYMETHOD`).map(item => (
                       <Option value={Number(item.id)} key={Number(item.id)}>
                         {item.name}
@@ -363,8 +383,12 @@ class CertificationCreate_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '允许添加附件为必填项，请选择！' });
+                        if (applyFlag === 1) {
+                          if (!value) {
+                            callback({ message: '允许添加附件为必填项，请选择！' });
+                          } else {
+                            callback();
+                          }
                         } else {
                           callback();
                         }
@@ -375,10 +399,18 @@ class CertificationCreate_Form extends Component {
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="allowAdd" value={1}>
+                    <Radio
+                      name="allowAdd"
+                      value={1}
+                      disabled={this.applyFlag === 2 ? disabled : false}
+                    >
                       是
                     </Radio>
-                    <Radio name="allowAdd" value={0}>
+                    <Radio
+                      name="allowAdd"
+                      value={2}
+                      disabled={this.applyFlag === 2 ? disabled : false}
+                    >
                       否
                     </Radio>
                   </RadioGroup>
@@ -404,7 +436,7 @@ class CertificationCreate_Form extends Component {
                     },
                   ],
                 })(
-                  <Select style={{ width: 280, height: 32 }}>
+                  <Select style={{ width: 280, height: 32 }} onChange={this.suitSelectChange}>
                     {window.BI_Filter(`Certification_SUITUSER`).map(item => (
                       <Option value={Number(item.id)} key={Number(item.id)}>
                         {item.name}
@@ -421,8 +453,12 @@ class CertificationCreate_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (!value || value.length <= 0) {
-                          callback({ message: '指定用户为必填项，请选择！' });
+                        if (suitFlag === 1) {
+                          if (!value || value.length <= 0) {
+                            callback({ message: '指定用户为必填项，请选择！' });
+                          } else {
+                            callback();
+                          }
                         } else {
                           callback();
                         }
@@ -434,6 +470,7 @@ class CertificationCreate_Form extends Component {
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     options={this.state.plainOptions}
                     className={common.checkboxGroup}
+                    disabled={this.suitFlag === 2 ? disabled : false}
                   />
                 )}
               </FormItem>
