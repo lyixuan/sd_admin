@@ -1,12 +1,27 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, Upload, Modal, message } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Row,
+  Radio,
+  Checkbox,
+  Col,
+  Select,
+  Spin,
+  Upload,
+  Modal,
+  message,
+} from 'antd';
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
 import styles from '../certification.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 
 class CertificationCreate_Form extends Component {
   constructor(props) {
@@ -18,6 +33,8 @@ class CertificationCreate_Form extends Component {
       previewImage2: '',
       fileList1: [],
       fileList2: [],
+      plainOptions: BI_Filter('Certification_ONLYUSER|id->value,name->label'),
+      defaultCheckedList: [],
     };
   }
 
@@ -311,6 +328,76 @@ class CertificationCreate_Form extends Component {
               </FormItem>
             </Col>
           </Row>
+
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*申请方式">
+                {getFieldDecorator('applyMethod', {
+                  initialValue: null,
+                })(
+                  <Select style={{ width: 280, height: 32 }}>
+                    {window.BI_Filter(`Certification_APPLYMETHOD`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*允许添加附件">
+                {getFieldDecorator('allowAdd', {
+                  initialValue: 0,
+                  rules: [],
+                })(
+                  <RadioGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                  >
+                    <Radio name="privilege" value={1}>
+                      是
+                    </Radio>
+                    <Radio name="privilege" value={0}>
+                      否
+                    </Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*适用用户">
+                {getFieldDecorator('perfectUser', {
+                  initialValue: null,
+                })(
+                  <Select style={{ width: 280, height: 32 }}>
+                    {window.BI_Filter(`Certification_SUITUSER`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*指定用户">
+                {getFieldDecorator('assessCyc', {
+                  initialValue: this.state.defaultCheckedList,
+                  rules: [],
+                })(
+                  <CheckboxGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                    options={this.state.plainOptions}
+                    className={common.checkboxGroup}
+                  />
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
           <Row style={{ marginTop: '20px' }}>
             <Col span={6} offset={17} style={{ textAlign: 'right' }}>
               <FormItem>
