@@ -385,7 +385,7 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*申请方式">
                 {getFieldDecorator('applyMethod', {
-                  initialValue: 1,
+                  initialValue: 2,
                   rules: [
                     {
                       validator(rule, value, callback) {
