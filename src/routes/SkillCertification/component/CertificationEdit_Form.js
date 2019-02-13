@@ -1,6 +1,19 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal, message } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Row,
+  Col,
+  Select,
+  Spin,
+  Radio,
+  Upload,
+  Modal,
+  message,
+  Checkbox,
+} from 'antd';
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
 import styles from '../certification.css';
@@ -8,6 +21,7 @@ import styles from '../certification.css';
 const FormItem = Form.Item;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 
 class CertificationEdit_Form extends Component {
   constructor(props) {
@@ -19,8 +33,12 @@ class CertificationEdit_Form extends Component {
       previewImage2: '',
       fileList1: [],
       fileList2: [],
+      plainOptions: BI_Filter('Certification_ONLYUSER|id->value,name->label'),
+      defaultCheckedList: [],
     };
     this.id = null;
+    this.applyFlag = null; // 标记申请方式是电脑端还是手机端
+    this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
   }
 
   UNSAFE_componentWillReceiveProps(nexprops) {
@@ -119,6 +137,14 @@ class CertificationEdit_Form extends Component {
         {text}图标
       </Button>
     );
+  };
+
+  // 适用用户修改的标记修改
+  suitSelectChange = value => {
+    this.suitFlag = value;
+    this.props.form.setFieldsValue({
+      onlyUser: [],
+    });
   };
 
   render() {
@@ -350,6 +376,134 @@ class CertificationEdit_Form extends Component {
                       否
                     </Radio>
                   </RadioGroup>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*申请方式">
+                {getFieldDecorator('applyMethod', {
+                  initialValue: 1,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '申请方式为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <Select style={{ width: 280, height: 32 }} disabled={disabled}>
+                    {window.BI_Filter(`Certification_APPLYMETHOD`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*允许添加附件">
+                {getFieldDecorator('allowAdd', {
+                  initialValue: 1,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (applyFlag === 1) {
+                          if (!value) {
+                            callback({ message: '允许添加附件为必填项，请选择！' });
+                          } else {
+                            callback();
+                          }
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <RadioGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                  >
+                    <Radio
+                      name="allowAdd"
+                      value={1}
+                      disabled={this.applyFlag === 2 ? disabled : false}
+                    >
+                      是
+                    </Radio>
+                    <Radio
+                      name="allowAdd"
+                      value={2}
+                      disabled={this.applyFlag === 2 ? disabled : false}
+                    >
+                      否
+                    </Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*适用用户">
+                {getFieldDecorator('perfectUser', {
+                  initialValue: 1,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '适用用户为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <Select style={{ width: 280, height: 32 }} onChange={this.suitSelectChange}>
+                    {window.BI_Filter(`Certification_SUITUSER`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*指定用户">
+                {getFieldDecorator('onlyUser', {
+                  initialValue: this.state.defaultCheckedList,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (suitFlag === 1) {
+                          if (!value || value.length <= 0) {
+                            callback({ message: '指定用户为必填项，至少选择一项！' });
+                          } else {
+                            callback();
+                          }
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <CheckboxGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                    options={this.state.plainOptions}
+                    className={common.checkboxGroup}
+                    disabled={this.suitFlag === 2 ? disabled : false}
+                  />
                 )}
               </FormItem>
             </Col>

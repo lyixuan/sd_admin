@@ -123,7 +123,7 @@ export const RECOMMEND_LEVEL = [
 ];
 
 // 认证管理申请方式
-export const Certification_APPLYMETHOD = [{ id: 1, name: '手机端' }, { id: 2, name: '电脑端' }];
+export const Certification_APPLYMETHOD = [{ id: 1, name: '电脑端' }, { id: 2, name: '手机端' }];
 // 认证管理适用用户
 export const Certification_SUITUSER = [{ id: 1, name: '指定用户' }, { id: 2, name: '岗位不限' }];
 // 认证管理指定用户
