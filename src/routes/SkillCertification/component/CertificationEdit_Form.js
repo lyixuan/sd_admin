@@ -293,7 +293,7 @@ class CertificationEdit_Form extends Component {
             </Col>
           </Row>
 
-          <Row>
+          <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;考核形式">
                 {getFieldDecorator('assessStyle', {
@@ -342,7 +342,7 @@ class CertificationEdit_Form extends Component {
             </Col>
           </Row>
 
-          <Row>
+          <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;是否停用">
                 {getFieldDecorator('isDisable', {
