@@ -165,6 +165,7 @@ class CertificationEdit_Form extends Component {
     this.id = id;
     const disabled = true;
     const { TextArea } = Input;
+    const { suitFlag, applyFlag } = this;
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
     const bol = true;
     let { fileList1, fileList2 } = this.state;
@@ -385,7 +386,7 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*申请方式">
                 {getFieldDecorator('applyMethod', {
-                  initialValue: 1,
+                  initialValue: 2,
                   rules: [
                     {
                       validator(rule, value, callback) {
