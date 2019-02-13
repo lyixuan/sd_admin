@@ -1,0 +1,90 @@
+import React, { Component } from 'react';
+import { connect } from 'dva';
+import { Button } from 'antd';
+import ContentLayout from '../../layouts/ContentLayout';
+import AuthorizedButton from '../../selfComponent/AuthorizedButton';
+import common from '../Common/common.css';
+import { getAuthority } from '../../utils/authority';
+import { ADMIN_USER } from '../../utils/constants';
+import { columnsFn } from './_selfColumn';
+import FormFilter from '../../selfComponent/FormFilter';
+
+@connect(({ bottomTable, loading }) => ({
+  bottomTable,
+  loading: loading.models.bottomTable,
+  isLoading: loading.effects['bottomTable/getRange'],
+}))
+class BottomList extends Component {
+  constructor(props) {
+    super(props);
+    const localStorage = getAuthority(ADMIN_USER);
+    const userId = !localStorage ? null : localStorage.userId;
+    this.state = {
+      userId,
+      pageNum: 0,
+      pageSize: 30,
+    };
+    this.dateArea = [];
+  }
+  componentDidMount() {
+    this.getDataList();
+  }
+
+  // 列表数据
+  getDataList = paramObj => {
+    const { userId, type, bottomTime, pageNum, pageSize } = this.state;
+    const params = { userId, type, bottomTime, pageNum, pageSize, ...paramObj };
+    this.props.dispatch({
+      type: 'bottomTable/bottomTableList',
+      payload: params,
+    });
+  };
+
+  // 点击某一页函数
+  changePage = (pageNum, size) => {
+    this.getDataList({
+      pageSize: size,
+      pageNum,
+    });
+  };
+
+  // 添加申请
+  addTasks = () => {
+    console.log(11);
+  };
+  checkDetail = record => {
+    console.log(record);
+  };
+
+  render() {
+    const { bottomTable = {}, loading } = this.props;
+    const { dataList = [], totalNum = 0 } = bottomTable;
+    const columns = columnsFn(this.checkDetail);
+    return (
+      <>
+        <ContentLayout
+          routerData={this.props.routerData}
+          contentButton={
+            <AuthorizedButton authority="/excellent/addExcellentCase">
+              <Button onClick={this.addTasks} type="primary" className={common.createButton}>
+                添加申请
+              </Button>
+            </AuthorizedButton>
+          }
+          contentTable={
+            <FormFilter.Table
+              bordered
+              totalNum={totalNum}
+              loading={loading}
+              dataSource={dataList}
+              columns={columns}
+              onChangePage={this.changePage}
+            />
+          }
+        />
+      </>
+    );
+  }
+}
+
+export default BottomList;

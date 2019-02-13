@@ -654,6 +654,12 @@ export const getRouterData = app => {
       name: '编辑调整',
     },
     // ---- 申诉  学分调整 end -----
+    '/excellent/excellentCase': {
+      component: dynamicWrapper(app, ['bottomTable'], () =>
+        import('../routes/ExcellentCase/ExcellentCase')
+      ),
+      name: '创新与优秀案例',
+    },
   };
   // Get name from ./menu.js or just set it in the router data.
   // const menuData = getFlatMenuData(getMenuData());
