@@ -9,12 +9,11 @@ import { ADMIN_USER } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
 import FormFilter from '../../selfComponent/FormFilter';
 
-@connect(({ bottomTable, loading }) => ({
-  bottomTable,
+@connect(({ excellent, loading }) => ({
+  excellent,
   loading: loading.models.bottomTable,
-  isLoading: loading.effects['bottomTable/getRange'],
 }))
-class BottomList extends Component {
+class ExcellentCase extends Component {
   constructor(props) {
     super(props);
     const localStorage = getAuthority(ADMIN_USER);
@@ -35,7 +34,7 @@ class BottomList extends Component {
     const { userId, type, bottomTime, pageNum, pageSize } = this.state;
     const params = { userId, type, bottomTime, pageNum, pageSize, ...paramObj };
     this.props.dispatch({
-      type: 'bottomTable/bottomTableList',
+      type: 'excellent/bottomTableList',
       payload: params,
     });
   };
@@ -50,15 +49,15 @@ class BottomList extends Component {
 
   // 添加申请
   addTasks = () => {
-    console.log(11);
+    this.props.setRouteUrlParams('/excellent/addExcellentCase', {});
   };
   checkDetail = record => {
     console.log(record);
   };
 
   render() {
-    const { bottomTable = {}, loading } = this.props;
-    const { dataList = [], totalNum = 0 } = bottomTable;
+    const { excellent = {}, loading } = this.props;
+    const { dataList = [], totalNum = 0 } = excellent;
     const columns = columnsFn(this.checkDetail);
     return (
       <>
@@ -87,4 +86,4 @@ class BottomList extends Component {
   }
 }
 
-export default BottomList;
+export default ExcellentCase;

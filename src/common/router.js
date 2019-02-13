@@ -654,11 +654,21 @@ export const getRouterData = app => {
       name: '编辑调整',
     },
     // ---- 申诉  学分调整 end -----
-    '/excellent/excellentCase': {
-      component: dynamicWrapper(app, ['bottomTable'], () =>
+    '/excellent/excellentCaseList': {
+      component: dynamicWrapper(app, ['excellent'], () =>
         import('../routes/ExcellentCase/ExcellentCase')
       ),
       name: '创新与优秀案例',
+    },
+    '/excellent/addExcellentCase': {
+      component: dynamicWrapper(app, ['excellent'], () =>
+        import('../routes/ExcellentCase/AddExcellentCase')
+      ),
+      bread: {
+        name: '创新与优秀案例',
+        path: '/excellent/excellentCaseList',
+      },
+      name: '添加申请',
     },
   };
   // Get name from ./menu.js or just set it in the router data.
