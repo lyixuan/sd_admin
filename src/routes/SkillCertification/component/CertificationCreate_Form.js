@@ -130,7 +130,7 @@ class CertificationCreate_Form extends Component {
   handleSelectChange = value => {
     this.applyFlag = value;
     this.props.form.setFieldsValue({
-      allowAdd: null,
+      allowAdd: 2,
     });
   };
 
@@ -379,7 +379,7 @@ class CertificationCreate_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*允许添加附件">
                 {getFieldDecorator('allowAdd', {
-                  initialValue: null,
+                  initialValue: 2,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -455,7 +455,7 @@ class CertificationCreate_Form extends Component {
                       validator(rule, value, callback) {
                         if (suitFlag === 1) {
                           if (!value || value.length <= 0) {
-                            callback({ message: '指定用户为必填项，请选择！' });
+                            callback({ message: '指定用户为必填项，至少选择一项！' });
                           } else {
                             callback();
                           }

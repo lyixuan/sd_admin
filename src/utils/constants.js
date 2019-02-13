@@ -127,7 +127,10 @@ export const Certification_APPLYMETHOD = [{ id: 1, name: '手机端' }, { id: 2,
 // 认证管理适用用户
 export const Certification_SUITUSER = [{ id: 1, name: '指定用户' }, { id: 2, name: '岗位不限' }];
 // 认证管理指定用户
-export const Certification_ONLYUSER = [{ id: 1, name: '班主任' }, { id: 2, name: '运营长' }];
+export const Certification_ONLYUSER = [
+  { id: 'class', name: '班主任' },
+  { id: 'group', name: '运营长' },
+];
 
 // 需要用于global filter 进行数据筛选的，必须加到default里
 export default {
