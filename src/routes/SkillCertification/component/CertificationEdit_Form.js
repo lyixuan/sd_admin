@@ -165,6 +165,7 @@ class CertificationEdit_Form extends Component {
     this.id = id;
     const disabled = true;
     const { TextArea } = Input;
+    const { suitFlag, applyFlag } = this;
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
     const bol = true;
     let { fileList1, fileList2 } = this.state;
