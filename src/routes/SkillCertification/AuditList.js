@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form } from 'antd';
+import { Table, Button, Form, Popconfirm } from 'antd';
 import { routerRedux } from 'dva/router';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -59,6 +59,27 @@ class AuditList extends Component {
       certificationInfoId: val.certificationInfoId,
     });
     sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
+  };
+
+  // 查看
+  onShowDetail = val => {
+    this.props.setRouteUrlParams('/skillCertification/auditApply', {
+      certificationInfoId: val.certificationInfoId,
+    });
+    sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
+  };
+
+  // 发布一个项目
+  onPublish = val => {
+    this.props.dispatch({
+      type: 'scoreAdjust/delById',
+      payload: {
+        id: val.id,
+        action: () => {
+          this.search();
+        },
+      },
+    });
   };
 
   // 导入认证
@@ -177,14 +198,24 @@ class AuditList extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
-        width: 163,
+        width: 130,
         render: (text, record) => {
           return (
             <div>
+              {true && (
+                <AuthorizedButton authority="/excellent/checkCertifiedDetail">
+                  <span
+                    style={{ color: '#52C9C2', marginRight: 10, cursor: 'pointer' }}
+                    onClick={() => this.onShowDetail(record)}
+                  >
+                    查看
+                  </span>
+                </AuthorizedButton>
+              )}
               {record.signStatus === 1 && (
                 <AuthorizedButton authority="/skillCertification/auditApply">
                   <span
-                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                    style={{ color: '#52C9C2', marginRight: 10, cursor: 'pointer' }}
                     onClick={() => this.onSign(record)}
                   >
                     报名审核
@@ -194,13 +225,27 @@ class AuditList extends Component {
               {record.signResult === 1 && (
                 <AuthorizedButton authority="/skillCertification/auditCertify">
                   <span
-                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                    style={{ color: '#52C9C2', marginRight: 10, cursor: 'pointer' }}
                     onClick={() => this.showModal(3, record)}
                   >
                     认证审核
                   </span>
                 </AuthorizedButton>
               )}
+              {record.examineStatus === 2 &&
+                !record.published && (
+                  <AuthorizedButton authority="/skillCertification/certificationPublishOne">
+                    <Popconfirm
+                      placement="topRight"
+                      title="是否确定发布该条认证审核结果？"
+                      onConfirm={() => this.onPublish(record)}
+                    >
+                      <span style={{ color: '#52C9C2', marginRight: 10, cursor: 'pointer' }}>
+                        发布
+                      </span>
+                    </Popconfirm>
+                  </AuthorizedButton>
+                )}
               <AuthorizedButton authority="/skillCertification/auditRecord">
                 <span
                   style={{ color: '#52C9C2', cursor: 'pointer' }}
