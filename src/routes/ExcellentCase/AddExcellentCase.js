@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { Form } from 'antd';
 import { connect } from 'dva';
 import ContentLayout from '../../layouts/ContentLayout';
-import PermissionForm from '../../selfComponent/PermissionForm';
+import AddCaseForm from './Components/AddCaseForm';
 
-const WrappedRegistrationForm = Form.create()(PermissionForm);
+const WrappedRegistrationForm = Form.create()(AddCaseForm);
 @connect(({ excellent, loading }) => ({
   excellent,
-  loading: false,
-  submit: loading.effects['excellent/addPermission'],
-  permissionListAllName: loading.effects['excellent/permissionListAllName'],
+  loading,
 }))
 class AddExcellentCase extends Component {
   constructor(props) {
@@ -22,7 +20,7 @@ class AddExcellentCase extends Component {
   };
 
   resetContent = () => {
-    this.props.setRouteUrlParams('/excellent/excellentCase');
+    this.props.setRouteUrlParams('/excellent/excellentCaseList');
   };
 
   render() {
