@@ -4,6 +4,7 @@ import { BOTTOM_TABLE_LIST } from '../../../utils/constants';
 import UEditor from './UEditor';
 import common from '../../../routes/Common/common.css';
 import styles from './common.less';
+import selfStyles from '../ExcellentCase.css';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -67,7 +68,6 @@ class RoleForm extends Component {
         authorization: 'authorization-text',
       },
       beforeUpload(file) {
-        console.log(file.type);
         const isPNG = file.type === 'application/zip' || 'application/rar';
         if (!isPNG) {
           message.error('文件仅仅支持zip或rar格式!');
@@ -125,7 +125,7 @@ class RoleForm extends Component {
             <div>业务方法论</div>
           </FormItem>
           <FormItem {...formItemLayout} label="上传附件：">
-            <div style={{ display: 'inline-flex' }}>
+            <div className={selfStyles.selfSty}>
               <Upload {...props}>
                 {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
               </Upload>
