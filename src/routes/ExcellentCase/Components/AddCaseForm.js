@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Select, Button } from 'antd';
+import { Form, Select, Button, Upload, message } from 'antd';
 import { BOTTOM_TABLE_LIST } from '../../../utils/constants';
 import UEditor from './UEditor';
 import common from '../../../routes/Common/common.css';
@@ -14,6 +14,7 @@ class RoleForm extends Component {
     this.state = {
       content: '请输入',
       loading: false,
+      fileList: [],
     };
   }
   /*
@@ -42,12 +43,62 @@ class RoleForm extends Component {
     });
   };
 
+  uploadFileChange = info => {
+    const { fileList = [], file = {} } = info;
+    if (file.response) {
+      if (file.response.code === 2000) {
+        this.setState({ fileList });
+      } else {
+        message.error(file.response.msg);
+      }
+    }
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
+    const props = {
+      name: 'file',
+      action: '//jsonplaceholder.typicode.com/posts/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      beforeUpload(file) {
+        console.log(file.type);
+        const isPNG = file.type === 'application/zip' || 'application/rar';
+        if (!isPNG) {
+          message.error('文件仅仅支持zip或rar格式!');
+        }
+        return isPNG;
+      },
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+          // this.setState({ fileList });
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+    const { fileList } = this.state;
+    console.log(fileList);
+    const uploadButton = (
+      <Button
+        type="primary"
+        className={common.submitButton}
+        style={{ margin: '0' }}
+        loading={false}
+      >
+        上传附件
+      </Button>
+    );
+
     return (
       <div className={styles.formCls}>
         <Form onSubmit={this.handleSubmit}>
@@ -74,7 +125,12 @@ class RoleForm extends Component {
             <div>业务方法论</div>
           </FormItem>
           <FormItem {...formItemLayout} label="上传附件：">
-            <div>(文件不能超过10M，格式要求：.zip/.rar)</div>
+            <div style={{ display: 'inline-flex' }}>
+              <Upload {...props}>
+                {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
+              </Upload>
+              <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>
+            </div>
           </FormItem>
           <FormItem
             {...formItemLayout}
