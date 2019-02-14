@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Progress } from 'antd';
 
 class DownLoad extends Component {
   static propTypes = {
@@ -95,7 +96,7 @@ class DownLoad extends Component {
     this.setState({ percent });
   };
   renderProgress = percent => {
-    return this.props.progress || `loading:${percent}`;
+    return this.props.progress || <Progress percent={percent} type="line" strokeColor="#52c9c2" />;
   };
   renderText = () => {
     return this.props.text || '下载';
