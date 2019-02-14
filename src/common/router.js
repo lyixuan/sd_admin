@@ -670,6 +670,16 @@ export const getRouterData = app => {
       },
       name: '添加申请',
     },
+    '/excellent/checkCertifiedDetail': {
+      component: dynamicWrapper(app, ['excellent'], () =>
+        import('../routes/ExcellentCase/ExcellentDetail')
+      ),
+      bread: {
+        name: '创新与优秀案例',
+        path: '/excellent/excellentCaseList',
+      },
+      name: '查看详情',
+    },
   };
   // Get name from ./menu.js or just set it in the router data.
   // const menuData = getFlatMenuData(getMenuData());
