@@ -63,7 +63,7 @@ class AuditList extends Component {
 
   // 查看
   onShowDetail = val => {
-    this.props.setRouteUrlParams('/skillCertification/auditApply', {
+    this.props.setRouteUrlParams('/excellent/checkCertifiedDetail', {
       certificationInfoId: val.certificationInfoId,
     });
     sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
