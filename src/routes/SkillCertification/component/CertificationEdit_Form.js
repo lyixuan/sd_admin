@@ -165,7 +165,7 @@ class CertificationEdit_Form extends Component {
     this.id = id;
     const disabled = true;
     const { TextArea } = Input;
-    const { suitFlag, applyFlag } = this;
+    const { suitFlag } = this;
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
     const bol = true;
     let { fileList1, fileList2 } = this.state;
@@ -386,7 +386,7 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*申请方式">
                 {getFieldDecorator('applyMethod', {
-                  initialValue: 2,
+                  initialValue: 1,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -412,16 +412,12 @@ class CertificationEdit_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*允许添加附件">
                 {getFieldDecorator('allowAdd', {
-                  initialValue: 1,
+                  initialValue: 2,
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (applyFlag === 1) {
-                          if (!value) {
-                            callback({ message: '允许添加附件为必填项，请选择！' });
-                          } else {
-                            callback();
-                          }
+                        if (!value) {
+                          callback({ message: '允许添加附件为必填项，请选择！' });
                         } else {
                           callback();
                         }
