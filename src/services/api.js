@@ -785,6 +785,14 @@ export async function auditPublish(params) {
   });
 }
 
+// 发布认证-单个发布
+export async function auditPublishSingle(params) {
+  return request(`${HOST}/cem/singlePublish`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
 // 校验审核excel文件 - 导入认证
 export async function verifyAuditDataExcel(params) {
   return request(`${HOST}/cem/verifyDataFromExcel`, {

@@ -5,6 +5,7 @@ import {
   getAuditList,
   exportBottomTable,
   auditPublish,
+  auditPublishSingle,
   submitExamineResult,
   findCertificationList,
   auditLogList,
@@ -111,6 +112,16 @@ export default {
         message.error(response.msg);
       }
       yield put({ type: 'publicSubmitting', payload: { publicSubmitting: false } });
+    },
+    // 发布认证-单一发布
+    *auditSinglePublish({ payload }, { call, put }) {
+      const response = yield call(auditPublishSingle, payload.params);
+      const backparams = payload.callbackParams;
+      if (response.code === 2000) {
+        yield put({ type: 'getAuditList', payload: { obj: backparams } });
+      } else {
+        message.error(response.msg);
+      }
     },
     // 认证审核
     *submitExamineResult({ payload }, { call, put }) {

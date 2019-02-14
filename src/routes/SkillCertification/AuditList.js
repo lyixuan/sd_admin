@@ -70,13 +70,13 @@ class AuditList extends Component {
   };
 
   // 发布一个项目
-  onPublish = val => {
+  onPublish = record => {
     this.props.dispatch({
-      type: 'scoreAdjust/delById',
+      type: 'audit/auditSinglePublish',
       payload: {
-        id: val.id,
-        action: () => {
-          this.search();
+        payload: {
+          params: { certificationDetailId: record.certificationDetailId },
+          callbackParams: this.params,
         },
       },
     });

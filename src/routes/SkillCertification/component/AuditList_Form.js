@@ -37,7 +37,7 @@ class AuditListForm extends Component {
     if (storageData) {
       for (const key in storageData) {
         if (key === 'monthRange' || key === 'quarterRange') {
-          this.state[key] = moment(storageData[key]);
+          this.state[key] = storageData[key] ? moment(storageData[key]) : null;
         } else {
           this.state[key] = storageData[key];
         }

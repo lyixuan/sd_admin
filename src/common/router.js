@@ -678,7 +678,7 @@ export const getRouterData = app => {
         name: '创新与优秀案例',
         path: '/excellent/excellentCaseList',
       },
-      name: '查看详情',
+      name: '认证详情',
     },
   };
   // Get name from ./menu.js or just set it in the router data.
