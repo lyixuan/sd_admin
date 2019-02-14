@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Select, Button } from 'antd';
 import { BOTTOM_TABLE_LIST } from '../../../utils/constants';
+import UEditor from './UEditor';
 import common from '../../../routes/Common/common.css';
 import styles from './common.less';
 
@@ -8,6 +9,13 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 class RoleForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: '请输入',
+      loading: false,
+    };
+  }
   /*
   * 取消事件
   * */
@@ -18,7 +26,20 @@ class RoleForm extends Component {
   * 提交事件
   * */
   handleSubmit = e => {
-    console.log(e);
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log(values);
+      } else {
+        console.error(err);
+      }
+    });
+    // this.props.setRouteUrlParams('/excellent/excellentCaseList');
+  };
+  handleChange = content => {
+    this.setState({
+      content,
+    });
   };
 
   render() {
@@ -34,22 +55,7 @@ class RoleForm extends Component {
             <div>刘洋</div>
           </FormItem>
           <FormItem {...formItemLayout} label="认证项目：">
-            {getFieldDecorator('name', {
-              rules: [
-                {
-                  validator(rule, value, callback) {
-                    const reg = !value ? '' : value.replace(/\s*/g, '');
-                    if (!reg) {
-                      callback({ message: '角色名称为必填项，请填写!' });
-                    } else if (reg.length < 2 || reg.length > 20) {
-                      callback({ message: '角色名称在2-20个字符之间，请填写!' });
-                    } else {
-                      callback();
-                    }
-                  },
-                },
-              ],
-            })(
+            {getFieldDecorator('name', {})(
               <Select
                 placeholder="优秀案例"
                 style={{ width: 230, height: 32 }}
@@ -74,7 +80,9 @@ class RoleForm extends Component {
             {...formItemLayout}
             label="详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情："
           >
-            <div>刘洋</div>
+            {getFieldDecorator('detail', {})(
+              <UEditor content={this.state.content} onChange={this.handleChange} />
+            )}
           </FormItem>
           <FormItem>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -82,7 +90,7 @@ class RoleForm extends Component {
                 取消
               </Button>
               <Button
-                loading={false}
+                loading={this.state.loading}
                 htmlType="submit"
                 type="primary"
                 className={common.submitButton}
