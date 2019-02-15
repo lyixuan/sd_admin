@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form, Select, Button, Upload, message } from 'antd';
-import { BOTTOM_TABLE_LIST } from '../../../utils/constants';
 import UEditor from './wangEditor';
 import common from '../../../routes/Common/common.css';
 import ModalDialog from '../../../selfComponent/Modal/Modal';
@@ -19,6 +18,7 @@ class RoleForm extends Component {
       sendVal: '',
       fileList: [],
     };
+    this.applyNote = '';
   }
   /*
   * 取消事件
@@ -71,6 +71,9 @@ class RoleForm extends Component {
       visible: bol,
     });
   };
+  editApplyNote = (val, w) => {
+    this.applyNote = w.props.applynote;
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -106,7 +109,23 @@ class RoleForm extends Component {
         上传附件
       </Button>
     );
-
+    const BOTTOM_TABLE_LIST = [
+      {
+        id: 1,
+        name: '查看绝对是你',
+        detail: '看家具的话',
+      },
+      {
+        id: 2,
+        name: '查对是你',
+        detail: '业务方法论',
+      },
+      {
+        id: 3,
+        name: '查看',
+        detail: '家具',
+      },
+    ];
     return (
       <div className={styles.formCls}>
         <Form onSubmit={this.handleSubmit}>
@@ -120,9 +139,10 @@ class RoleForm extends Component {
                 style={{ width: 230, height: 32 }}
                 flag="type"
                 type="select"
+                onChange={(val, w) => this.editApplyNote(val, w)}
               >
                 {BOTTOM_TABLE_LIST.map(item => (
-                  <Option key={item.id} value={item.id}>
+                  <Option key={item.id} value={item.id} applynote={item.detail}>
                     {item.name}
                   </Option>
                 ))}
@@ -130,7 +150,7 @@ class RoleForm extends Component {
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="申请说明：">
-            <div>业务方法论</div>
+            <div>{this.applyNote}</div>
           </FormItem>
           <FormItem {...formItemLayout} label="上传附件：">
             <div className={selfStyles.selfSty}>
