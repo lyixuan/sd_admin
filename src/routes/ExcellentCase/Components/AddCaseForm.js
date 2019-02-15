@@ -3,6 +3,7 @@ import { Form, Select, Button, Upload, message } from 'antd';
 import { BOTTOM_TABLE_LIST } from '../../../utils/constants';
 import UEditor from './wangEditor';
 import common from '../../../routes/Common/common.css';
+import ModalDialog from '../../../selfComponent/Modal/Modal';
 import styles from './common.less';
 import selfStyles from '../ExcellentCase.css';
 
@@ -14,6 +15,8 @@ class RoleForm extends Component {
     super(props);
     this.state = {
       loading: false,
+      visible: false,
+      sendVal: '',
       fileList: [],
     };
   }
@@ -30,12 +33,14 @@ class RoleForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values);
+        this.setState({
+          sendVal: values,
+        });
+        this.showModal(true);
       } else {
         console.error(err);
       }
     });
-    // this.props.setRouteUrlParams('/excellent/excellentCaseList');
   };
 
   uploadFileChange = info => {
@@ -50,7 +55,22 @@ class RoleForm extends Component {
     //   }
     // }
   };
-
+  // 模态框确定
+  clickModalOK = () => {
+    // this.props.dispatch({
+    //   type: 'shortName/editGroup',
+    //   payload: { paramsObj },
+    // });
+    console.log(this.state.sendVal);
+    this.showModal(false);
+    this.props.jumpFunction.setRouteUrlParams('/excellent/excellentCaseList');
+  };
+  // 模态框显隐回调
+  showModal = bol => {
+    this.setState({
+      visible: bol,
+    });
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -75,7 +95,7 @@ class RoleForm extends Component {
         return isZip && isLt10M;
       },
     };
-    const { fileList } = this.state;
+    const { fileList, visible } = this.state;
     const uploadButton = (
       <Button
         type="primary"
@@ -149,6 +169,13 @@ class RoleForm extends Component {
             </div>
           </FormItem>
         </Form>
+        <ModalDialog
+          title="提交申请"
+          visible={visible}
+          modalContent={<div style={{ textAlign: 'left' }}>是否确定提交认证申请？</div>}
+          showModal={bol => this.showModal(bol)}
+          clickOK={() => this.clickModalOK()}
+        />
       </div>
     );
   }
