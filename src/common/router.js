@@ -680,6 +680,13 @@ export const getRouterData = app => {
       },
       name: '认证详情',
     },
+    // ---- 其他配置  报名通道文案设置 end -----
+    '/otherConfig/officialSet': {
+      component: dynamicWrapper(app, ['otherConfig'], () =>
+        import('../routes/OtherConfig/OfficialSet')
+      ),
+      name: '文案配置',
+    },
   };
   // Get name from ./menu.js or just set it in the router data.
   // const menuData = getFlatMenuData(getMenuData());
