@@ -1,9 +1,6 @@
 import { Popover } from 'antd';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
-import { formatDate } from '../../utils/FormatDate';
-import { BOTTOM_TABLE_STATUS } from '../../utils/constants';
 import caseDetail from '../../assets/caseDetail.svg';
-import compress from '../../assets/compress.svg';
 import style from './ExcellentCase.css';
 
 // 获取table列表头
@@ -16,19 +13,10 @@ export function columnsFn(callback) {
     {
       title: '认证项目',
       dataIndex: 'certificationItemName',
-      render: text => {
-        return (
-          <>
-            <img src={compress} alt="compress" style={{ marginRight: '8px' }} />
-            {text}
-          </>
-        );
-      },
     },
     {
       title: '提交时间',
       dataIndex: 'applyTime',
-      render: text => formatDate(text).substr(0, 10),
     },
     {
       title: '报名',
@@ -36,13 +24,15 @@ export function columnsFn(callback) {
       render: (text, record) => {
         return (
           <>
-            <span>{text ? '待审核' : '通过'}</span>
-            <Popover
-              content={<div className={style.bline}>内容测试{record.reason}</div>}
-              trigger="click"
-            >
-              <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
-            </Popover>
+            {text}
+            {!record.signRemark ? null : (
+              <Popover
+                content={<div className={style.bline}>{record.signRemark}</div>}
+                trigger="click"
+              >
+                <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
+              </Popover>
+            )}
           </>
         );
       },
@@ -53,18 +43,15 @@ export function columnsFn(callback) {
       render: (text, record) => {
         return (
           <>
-            {BOTTOM_TABLE_STATUS.map(item => {
-              if (Number(item.id) === text) {
-                return item.name;
-              }
-              return null;
-            })}
-            <Popover
-              content={<div className={style.bline}>内容测试{record.reason}</div>}
-              trigger="click"
-            >
-              <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
-            </Popover>
+            {text}
+            {!record.authRemark ? null : (
+              <Popover
+                content={<div className={style.bline}>{record.authRemark}</div>}
+                trigger="click"
+              >
+                <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
+              </Popover>
+            )}
           </>
         );
       },
