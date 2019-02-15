@@ -4,8 +4,7 @@ import { Input, Button } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
-
-let firstPage = 0; // 分页的默认起开页面
+import ModalDialog from '../../selfComponent/Modal/Modal';
 
 @connect(({ account, loading }) => ({
   account,
@@ -14,46 +13,78 @@ let firstPage = 0; // 分页的默认起开页面
 class OfficialSet extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      visible: false, // 弹窗显隐
+    };
   }
 
   componentDidMount() {
-    const initVal = this.props.getUrlParams();
-    firstPage = !initVal.firstPage ? 0 : Number(initVal.firstPage);
-    const accountListParams = { size: 30, number: !firstPage ? 0 : firstPage, orderType: 'name' };
-    this.getData(accountListParams);
+    this.getData();
   }
 
   // 编辑账号函数
-  onEdit = key => {
-    this.props.setRouteUrlParams('/account/editAccount', {
-      id: key.id,
-    });
+  onEdit = () => {
+    this.setState({ visible: true });
   };
 
-  getData = accountListParams => {
-    this.props.dispatch({
-      type: 'account/accountList',
-      payload: { accountListParams },
-    });
+  getData = values => {
+    console.log(values);
+    // this.props.dispatch({
+    //   type: 'account/accountList',
+    //   payload: { accountListParams },
+    // });
+  };
+
+  setDialogSHow(bol) {
+    this.setState({ visible: bol });
+  }
+
+  // 模态框回显
+  editName = e => {
+    this.getData(e);
   };
 
   render() {
-    // const { loading } = this.props;
     const { TextArea } = Input;
+    const { visible = false } = this.state;
+    const modalContent = <TextArea style={{ width: '425px', height: '100px' }} />;
     return (
       <ContentLayout
         routerData={this.props.routerData}
         contentButton={
           <>
-            <p>报名通道文案设置</p>
-            <p>设置手机端报名通道关闭页的文案</p>
-            <TextArea style={{ width: '280px', height: '84px' }} />
+            <p style={{ color: '#000', fontSize: '18px' }}>报名通道文案设置</p>
+            <p style={{ color: '#000', fontSize: '14px' }}>设置手机端报名通道关闭页的文案</p>
+            <TextArea
+              style={{
+                width: '400px',
+                height: '86px',
+                display: 'block',
+                marginBottom: '30px',
+                marginTop: '27px',
+              }}
+            />
             <AuthorizedButton authority="/otherConfig/officialSet">
-              <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
+              <Button
+                onClick={this.onEdit}
+                type="primary"
+                className={common.createButton}
+                style={{ marginLeft: '180px' }}
+              >
                 编辑
               </Button>
             </AuthorizedButton>
+            <ModalDialog
+              style={{ width: '620px' }}
+              title="编辑文案"
+              visible={visible}
+              modalContent={modalContent}
+              clickOK={e => this.editName(e)}
+              footButton={['取消', '提交']}
+              showModal={bol => {
+                this.setDialogSHow(bol);
+              }}
+            />
           </>
         }
       />
