@@ -45,14 +45,16 @@ class RoleForm extends Component {
   };
 
   uploadFileChange = info => {
-    const { fileList = [], file = {} } = info;
-    if (file.response) {
-      if (file.response.code === 2000) {
-        this.setState({ fileList });
-      } else {
-        message.error(file.response.msg);
-      }
-    }
+    // const { fileList = [], file = {} } = info;
+    const { fileList = [] } = info;
+    this.setState({ fileList });
+    // if (file.response) {
+    //   if (file.response.code === 2000) {
+    //     this.setState({ fileList });
+    //   } else {
+    //     message.error(file.response.msg);
+    //   }
+    // }
   };
 
   render() {
@@ -68,26 +70,18 @@ class RoleForm extends Component {
         authorization: 'authorization-text',
       },
       beforeUpload(file) {
-        const isPNG = file.type === 'application/zip' || 'application/rar';
-        if (!isPNG) {
+        const isZip = file.type === 'application/zip' || 'application/rar';
+        if (!isZip) {
           message.error('文件仅仅支持zip或rar格式!');
         }
-        return isPNG;
-      },
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
+        const isLt10M = file.size / 1024 / 1024 < 30;
+        if (!isLt10M) {
+          message.error('文件不能大于 10MB！');
         }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-          // this.setState({ fileList });
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
+        return isZip && isLt10M;
       },
     };
     const { fileList } = this.state;
-    console.log(fileList);
     const uploadButton = (
       <Button
         type="primary"
@@ -126,7 +120,7 @@ class RoleForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="上传附件：">
             <div className={selfStyles.selfSty}>
-              <Upload {...props}>
+              <Upload {...props} onChange={this.uploadFileChange}>
                 {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
               </Upload>
               <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>

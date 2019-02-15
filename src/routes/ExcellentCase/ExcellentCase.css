@@ -10,11 +10,6 @@
 .selfSty{
   position: relative;
 }
-
-.selfSty :global(.ant-upload-list-item .anticon-close) {
-  left: 245px !important;
-}
-
-.selfSty :global(.ant-upload-list-item-info) {
+.selfSty :global(.ant-upload-list-item) {
   width: 264px !important;
 }
