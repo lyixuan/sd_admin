@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Input, Button } from 'antd';
+import { Input, Button, message } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
@@ -15,39 +15,56 @@ class OfficialSet extends Component {
     super(props);
     this.state = {
       visible: false, // 弹窗显隐
+      contentWord: null, // textArea回显初始化
     };
   }
 
-  componentDidMount() {
-    this.getData();
-  }
+  componentDidMount() {}
 
-  // 编辑账号函数
+  // 编辑
   onEdit = () => {
     this.setState({ visible: true });
   };
 
-  getData = values => {
-    console.log(values);
-    // this.props.dispatch({
-    //   type: 'account/accountList',
-    //   payload: { accountListParams },
-    // });
-  };
-
-  setDialogSHow(bol) {
+  showModal(bol) {
     this.setState({ visible: bol });
   }
 
   // 模态框回显
-  editName = e => {
-    this.getData(e);
+  clickModalOK = contentWord => {
+    if (!contentWord) {
+      message.error('文案编辑不可为空');
+      this.showModal(true);
+    } else {
+      // const paramsObj = { contentWord};
+      // this.props.dispatch({
+      //   type: 'shortName/editCollege',
+      //   payload: { paramsObj },
+      // });
+      console.log(contentWord);
+      this.showModal(false);
+    }
   };
+
+  // input双向绑定
+  handelChange(e) {
+    this.setState({
+      contentWord: e.target.value,
+    });
+  }
 
   render() {
     const { TextArea } = Input;
-    const { visible = false } = this.state;
-    const modalContent = <TextArea style={{ width: '425px', height: '100px' }} />;
+    const { visible = false, contentWord } = this.state;
+    const modalContent = (
+      <TextArea
+        style={{ width: '425px', height: '100px' }}
+        onChange={e => {
+          this.handelChange(e);
+        }}
+        value={contentWord}
+      />
+    );
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -74,16 +91,15 @@ class OfficialSet extends Component {
                 编辑
               </Button>
             </AuthorizedButton>
+
             <ModalDialog
               style={{ width: '620px' }}
               title="编辑文案"
               visible={visible}
+              footButton={['取消', '保存']}
               modalContent={modalContent}
-              clickOK={e => this.editName(e)}
-              footButton={['取消', '提交']}
-              showModal={bol => {
-                this.setDialogSHow(bol);
-              }}
+              showModal={bol => this.showModal(bol)}
+              clickOK={() => this.clickModalOK(contentWord)}
             />
           </>
         }
