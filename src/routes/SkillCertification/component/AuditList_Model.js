@@ -144,6 +144,7 @@ class AuditListForm extends Component {
           signResult: values.signResult,
           certificationDetailInfoId: this.props.record ? this.props.record.id : null,
           result: values.result,
+          remark: values.remark,
         };
         this.props.onOk(params);
       }
@@ -341,8 +342,8 @@ class AuditListForm extends Component {
           ) : null}
           {this.props.modelType === 3 ? (
             <FormItem {...formItemLayout}>
-              {getFieldDecorator('examineResult', {
-                initialValue: this.props.record.examineResult,
+              {getFieldDecorator('remark', {
+                initialValue: this.props.record.remark,
                 rules: [
                   {
                     validator(rule, value, callback) {

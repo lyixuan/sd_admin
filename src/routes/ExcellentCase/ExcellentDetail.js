@@ -5,6 +5,7 @@ import { Spin } from 'antd';
 // import moment from 'moment/moment';
 import { routerRedux } from 'dva/router';
 import ContentLayout from '../../layouts/ContentLayout';
+import downloadimg from '../../assets/download.svg';
 
 @connect(({ audit, loading }) => ({
   audit,
@@ -70,8 +71,9 @@ class AuditApply extends Component {
             认证详情
           </div>
           <div style={{ margin: '26px 18px', color: '#000', overflow: 'hidden' }}>
-            <span style={{ width: 540, float: 'left' }}>
-              附件：方法论高手案例-甘文斌-090091.zip
+            <span style={{ width: 540, float: 'left', cursor: 'pointer' }}>
+              附件：方法论高手案例-甘文斌-090091.zip{' '}
+              <img style={{ marginLeft: 10 }} src={downloadimg} alt="下载" />
             </span>
           </div>
           <div

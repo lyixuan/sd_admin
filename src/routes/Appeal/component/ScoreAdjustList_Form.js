@@ -17,7 +17,7 @@ class AuditListForm extends Component {
       dateRange: [],
     };
     // 搜索还原
-    const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
+    const storageData = JSON.parse(sessionStorage.getItem('appealFrom'));
     if (storageData) {
       this.state.collegeId = storageData.collegeId ? storageData.collegeId : null;
       this.state.dateRange =
@@ -26,7 +26,7 @@ class AuditListForm extends Component {
           : [];
     }
     this.initDate();
-    sessionStorage.removeItem('tempFrom');
+    sessionStorage.removeItem('appealFrom');
   }
 
   UNSAFE_componentWillMount() {
