@@ -5,6 +5,7 @@ import {
   bottomTableList,
   downLoadBT,
   addTask,
+  excellentCaseApplyDetail,
   findAllOrg,
 } from '../services/api';
 
@@ -46,9 +47,22 @@ export default {
       endTime: '',
       id: 1,
     },
+    detailInfo: {},
   },
 
   effects: {
+    // 获取创新案例申请详情
+    *excellentCaseApplyDetail({ payload }, { call, put }) {
+      const response = yield call(excellentCaseApplyDetail, payload.params);
+      if (response.code === 2000) {
+        yield put({
+          type: 'saveDetail',
+          payload: { detailInfo: response.data || {} },
+        });
+      } else {
+        message.error(response.msg);
+      }
+    },
     // 底表列表
     *bottomTableList({ payload }, { call, put }) {
       const response = yield call(bottomTableList, { ...payload });
@@ -144,6 +158,9 @@ export default {
       return { ...state, ...payload };
     },
     saveTime(state, { payload }) {
+      return { ...state, ...payload };
+    },
+    saveDetail(state, { payload }) {
       return { ...state, ...payload };
     },
   },
