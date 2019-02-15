@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Select, Button, Upload, message } from 'antd';
 import { BOTTOM_TABLE_LIST } from '../../../utils/constants';
-import UEditor from './UEditor';
+import UEditor from './wangEditor';
 import common from '../../../routes/Common/common.css';
 import styles from './common.less';
 import selfStyles from '../ExcellentCase.css';
@@ -13,7 +13,6 @@ class RoleForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: '请输入',
       loading: false,
       fileList: [],
     };
@@ -37,11 +36,6 @@ class RoleForm extends Component {
       }
     });
     // this.props.setRouteUrlParams('/excellent/excellentCaseList');
-  };
-  handleChange = content => {
-    this.setState({
-      content,
-    });
   };
 
   uploadFileChange = info => {
@@ -130,9 +124,9 @@ class RoleForm extends Component {
             {...formItemLayout}
             label="详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情："
           >
-            {getFieldDecorator('detail', {})(
-              <UEditor content={this.state.content} onChange={this.handleChange} />
-            )}
+            {getFieldDecorator('editorContent', {
+              initialValue: '请输入',
+            })(<UEditor />)}
           </FormItem>
           <FormItem>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
