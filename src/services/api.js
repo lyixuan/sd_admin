@@ -1027,3 +1027,10 @@ export async function organizationList(params) {
 }
 
 // ------------------- 学分调整 end -------------------
+
+// ------------------- 创新与优秀案例 -------------------
+export async function excellentList(params) {
+  return request(`${HOST}/innovationExcellent/list?${stringify(params)}`, {
+    method: 'GET',
+  });
+}

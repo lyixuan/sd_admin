@@ -4,8 +4,6 @@ import { Button } from 'antd';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
-import { getAuthority } from '../../utils/authority';
-import { ADMIN_USER } from '../../utils/constants';
 import { columnsFn } from './_selfColumn';
 import FormFilter from '../../selfComponent/FormFilter';
 
@@ -16,14 +14,10 @@ import FormFilter from '../../selfComponent/FormFilter';
 class ExcellentCase extends Component {
   constructor(props) {
     super(props);
-    const localStorage = getAuthority(ADMIN_USER);
-    const userId = !localStorage ? null : localStorage.userId;
     this.state = {
-      userId,
       pageNum: 0,
       pageSize: 30,
     };
-    this.dateArea = [];
   }
   componentDidMount() {
     this.getDataList();
@@ -31,10 +25,10 @@ class ExcellentCase extends Component {
 
   // 列表数据
   getDataList = paramObj => {
-    const { userId, type, bottomTime, pageNum, pageSize } = this.state;
-    const params = { userId, type, bottomTime, pageNum, pageSize, ...paramObj };
+    const { pageNum, pageSize } = this.state;
+    const params = { pageNum, pageSize, ...paramObj };
     this.props.dispatch({
-      type: 'excellent/bottomTableList',
+      type: 'excellent/excellentList',
       payload: params,
     });
   };

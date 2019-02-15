@@ -11,11 +11,11 @@ export function columnsFn(callback) {
   const columns = [
     {
       title: '序号',
-      dataIndex: 'type',
+      dataIndex: 'key',
     },
     {
       title: '认证项目',
-      dataIndex: 'taskName',
+      dataIndex: 'certificationItemName',
       render: text => {
         return (
           <>
@@ -27,12 +27,12 @@ export function columnsFn(callback) {
     },
     {
       title: '提交时间',
-      dataIndex: 'bottomTime',
+      dataIndex: 'applyTime',
       render: text => formatDate(text).substr(0, 10),
     },
     {
       title: '报名',
-      dataIndex: 'createTime',
+      dataIndex: 'sign',
       render: (text, record) => {
         return (
           <>
@@ -49,7 +49,7 @@ export function columnsFn(callback) {
     },
     {
       title: '认证',
-      dataIndex: 'status',
+      dataIndex: 'auth',
       render: (text, record) => {
         return (
           <>

@@ -125,7 +125,12 @@ class RoleForm extends Component {
             label="详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情："
           >
             {getFieldDecorator('editorContent', {
-              initialValue: '请输入',
+              rules: [
+                {
+                  required: true,
+                  message: '详情为必填项',
+                },
+              ],
             })(<UEditor />)}
           </FormItem>
           <FormItem>
