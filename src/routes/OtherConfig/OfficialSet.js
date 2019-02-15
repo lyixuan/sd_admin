@@ -23,7 +23,7 @@ class OfficialSet extends Component {
 
   // 编辑
   onEdit = () => {
-    this.setState({ visible: true });
+    this.showModal(true);
   };
 
   showModal(bol) {
@@ -91,7 +91,6 @@ class OfficialSet extends Component {
                 编辑
               </Button>
             </AuthorizedButton>
-
             <ModalDialog
               style={{ width: '620px' }}
               title="编辑文案"
