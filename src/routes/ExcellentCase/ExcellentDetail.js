@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Spin } from 'antd';
+import { Spin, message } from 'antd';
 import moment from 'moment/moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import downloadimg from '../../assets/download.svg';
 import DownLoad from '../../components/downLoad';
+import common from './Components/common.less';
 
 @connect(({ excellent, loading }) => ({
   excellent,
@@ -25,6 +26,12 @@ class AuditDetail extends Component {
     });
   }
 
+  onError = status => {
+    if (status !== 200) {
+      message.error('下载出错');
+    }
+  };
+
   renderText = () => {
     return <img src={downloadimg} alt="下载" />;
   };
@@ -33,6 +40,16 @@ class AuditDetail extends Component {
     const { loading } = this.props;
     const { detailInfo } = this.props.excellent;
 
+    const applyUser = (
+      <span>
+        <span style={{ marginRight: '10px' }}>{detailInfo.userName}</span>
+        <span style={{ marginRight: '10px' }}>
+          {window.BI_Filter(`Certification_ONLYUSER|id:${detailInfo.userType}`).name}
+        </span>
+        <span style={{ marginRight: '10px' }}>{detailInfo.orgName}</span>
+      </span>
+    );
+
     function getFileName() {
       return `${detailInfo.certificationItemName}-${detailInfo.userName}-${moment(
         detailInfo.applyTime
@@ -40,68 +57,49 @@ class AuditDetail extends Component {
     }
 
     function getFileType() {
-      const arr = attachmentUrl.splice('.');
-      return arr[arr.length - 1];
+      let result = '';
+      if (detailInfo.attachmentUrl) {
+        const arr = detailInfo.attachmentUrl.split('.');
+        result = `.${arr[arr.length - 1]}`;
+      }
+      return result;
     }
 
-    const mystyle = {
-      width: '30px',
-      float: 'left',
-      marginLeft: '20px',
-    };
-
-    const linestyle = {
-      background: '#FFF4E7',
-      height: '43px',
-      paddingLeft: '18px',
-      fontSize: '16px',
-      color: '#FD9929',
-      lineHeight: '43px',
-      fontWeight: 500,
-    };
-
-    const textstyle = {
-      margin: '26px 18px',
-      background: '#F6F7FA',
-      borderRadius: '4px',
-      overflow: 'hidden',
-      padding: '32px 28px',
-    };
+    function getDetail() {
+      return detailInfo.detail ? detailInfo.detail : '暂无内容';
+    }
 
     return (
       <ContentLayout routerData={this.props.routerData}>
         <Spin spinning={loading}>
-          <div style={linestyle}>基本信息</div>
+          <div className={common.linestyle}>基本信息</div>
           <div style={{ margin: '26px 0 0 18px', color: '#000', overflow: 'hidden' }}>
-            <span style={{ width: '100%', float: 'left' }}>
-              申&nbsp;&nbsp;请&nbsp;&nbsp;人：
-              <span style={{ marginRight: '10px' }}>{detailInfo.userName}</span>{' '}
-              <span style={{ marginRight: '10px' }}>{detailInfo.userType}</span>{' '}
-              <span style={{ marginRight: '10px' }}>{detailInfo.orgName}</span>
-            </span>
+            申&nbsp;&nbsp;请&nbsp;&nbsp;人：{applyUser}
           </div>
           <div style={{ margin: '22px 0 26px 18px', color: '#000' }}>
-            <span style={{ width: 540, float: 'left' }}>
+            <span style={{ width: 580, float: 'left' }}>
               认证项目：{detailInfo.certificationItemName}
             </span>
-            <span>提交时间：{detailInfo.applyTime}</span>
+            <span>提交时间：{moment(detailInfo.applyTime).format('YYYY-MM-DD HH:mm:ss')}</span>
           </div>
-          <div style={linestyle}>认证详情</div>
-          <div style={{ margin: '26px 18px', color: '#000', overflow: 'hidden' }}>
-            <span style={{ width: 540, float: 'left', cursor: 'pointer' }}>
+
+          <div className={common.linestyle}>认证详情</div>
+          {detailInfo.attachmentUrl && (
+            <div className={common.downBox}>
               <span style={{ float: 'left' }}>
-                附件：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{getFileName}
-                {getFileType}
+                附件：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{getFileName()}
+                {getFileType()}
               </span>
               <DownLoad
-                mystyle={mystyle}
-                loadUrl={detailInfo.attachmentUrl}
+                customClassName={common.mystyle}
+                loadUrl={UPLOAD_HOST + detailInfo.attachmentUrl}
                 fileName={getFileName}
                 text={this.renderText()}
+                onError={status => this.onError(status)}
               />
-            </span>
-          </div>
-          <div style={textstyle}>{detailInfo.detail ? detailInfo.detail : '暂无内容'}</div>
+            </div>
+          )}
+          <div className={common.textstyle} dangerouslySetInnerHTML={{ __html: getDetail() }} />
         </Spin>
       </ContentLayout>
     );

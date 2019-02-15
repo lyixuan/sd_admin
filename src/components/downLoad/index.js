@@ -105,13 +105,15 @@ class DownLoad extends Component {
     const { isShowProgressComponent, percent } = this.state;
     const { customClassName, mystyle } = this.props;
     return (
-      <div className={customClassName} style={mystyle}>
+      <>
         {isShowProgressComponent ? (
           <div>{this.renderProgress(percent)}</div>
         ) : (
-          <div onClick={this.onLoad}>{this.renderText()}</div>
+          <div className={customClassName} style={mystyle} onClick={this.onLoad}>
+            {this.renderText()}
+          </div>
         )}
-      </div>
+      </>
     );
   }
 }
