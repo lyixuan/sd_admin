@@ -76,5 +76,8 @@ const urlPathMap = {
   '/appeal/scoreAdjustDel': {
     name: '删除学分调整',
   },
+  '/otherConfig/officialSet': {
+    name: '文案编辑',
+  },
 };
 export { urlPathMap };

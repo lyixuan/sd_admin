@@ -6,6 +6,7 @@ export default {
 
   state: {
     // 接口返回数据存储
+    totalNum: null,
     dataList: [],
     detailInfo: {},
   },
@@ -32,17 +33,18 @@ export default {
       } else {
         yield put({
           type: 'excellentSave',
-          payload: { dataList: dataList.content, totalNum: dataList.totalElements },
+          payload: { dataList: dataList.content, totalNum: dataList.totalElements, ...payload },
         });
       }
     },
   },
   reducers: {
     excellentSave(state, { payload }) {
-      const { dataList } = payload;
+      const { dataList, pageSize, pageNum } = payload;
+
       if (dataList) {
         dataList.forEach((item, i) => {
-          dataList[i].key = i;
+          dataList[i].key = pageNum * pageSize + (1 + i); // 自己计算每页数据排序
         });
       }
       return { ...state, ...payload };
