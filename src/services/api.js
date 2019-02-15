@@ -818,7 +818,7 @@ export async function findCertificationList() {
 
 // 获取优秀案例申请详情
 export async function excellentCaseApplyDetail(params) {
-  return request(`${HOST}/cem/getSignExamineInfo?${stringify(params)}`, {
+  return request(`${HOST}/innovationExcellent/detail?${stringify(params)}`, {
     method: 'GET',
   });
 }
