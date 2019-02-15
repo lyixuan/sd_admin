@@ -1,23 +1,21 @@
-// import { Progress } from 'antd';
+import { Popover } from 'antd';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import { formatDate } from '../../utils/FormatDate';
 import { BOTTOM_TABLE_STATUS } from '../../utils/constants';
-import packSucess from '../../assets/packSucess.svg';
-import packError from '../../assets/packError.svg';
+import caseDetail from '../../assets/caseDetail.svg';
 import compress from '../../assets/compress.svg';
-import packing from '../../assets/packing.svg';
+import style from './ExcellentCase.css';
 
 // 获取table列表头
 export function columnsFn(callback) {
-  const imgArr = [packing, packSucess, packError];
   const columns = [
     {
       title: '序号',
-      dataIndex: 'type',
+      dataIndex: 'key',
     },
     {
       title: '认证项目',
-      dataIndex: 'taskName',
+      dataIndex: 'certificationItemName',
       render: text => {
         return (
           <>
@@ -29,27 +27,44 @@ export function columnsFn(callback) {
     },
     {
       title: '提交时间',
-      dataIndex: 'bottomTime',
+      dataIndex: 'applyTime',
       render: text => formatDate(text).substr(0, 10),
     },
     {
       title: '报名',
-      dataIndex: 'createTime',
-      render: text => formatDate(text),
+      dataIndex: 'sign',
+      render: (text, record) => {
+        return (
+          <>
+            <span>{text ? '待审核' : '通过'}</span>
+            <Popover
+              content={<div className={style.bline}>内容测试{record.reason}</div>}
+              trigger="click"
+            >
+              <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
+            </Popover>
+          </>
+        );
+      },
     },
     {
       title: '认证',
-      dataIndex: 'status',
-      render: text => {
+      dataIndex: 'auth',
+      render: (text, record) => {
         return (
           <>
-            <img src={imgArr[text]} alt="packError" style={{ marginRight: '8px' }} />
             {BOTTOM_TABLE_STATUS.map(item => {
               if (Number(item.id) === text) {
                 return item.name;
               }
               return null;
             })}
+            <Popover
+              content={<div className={style.bline}>内容测试{record.reason}</div>}
+              trigger="click"
+            >
+              <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
+            </Popover>
           </>
         );
       },

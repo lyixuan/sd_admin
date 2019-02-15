@@ -106,6 +106,7 @@ export default {
       const response = yield call(auditPublish, payload.params);
       const backparams = payload.callbackParams;
       if (response.code === 2000) {
+        message.success('发布成功');
         yield put({ type: 'showModel', payload: { visible: false } });
         yield put({ type: 'getAuditList', payload: { obj: backparams } });
       } else {
@@ -118,6 +119,7 @@ export default {
       const response = yield call(auditPublishSingle, payload.params);
       const backparams = payload.callbackParams;
       if (response.code === 2000) {
+        message.success('发布成功');
         yield put({ type: 'getAuditList', payload: { obj: backparams } });
       } else {
         message.error(response.msg);

@@ -27,8 +27,7 @@ class ScoreAdjustList extends Component {
     super(props);
     this.pageNum = 0;
     this.pageSize = 30;
-    const storageData = JSON.parse(sessionStorage.getItem('tempFrom'));
-    console.log(storageData);
+    const storageData = JSON.parse(sessionStorage.getItem('appealFrom'));
     if (storageData) {
       this.pageNum = storageData.pageNum;
       this.pageSize = storageData.pageSize;
@@ -50,7 +49,7 @@ class ScoreAdjustList extends Component {
   // 添加调整
   onCreate = () => {
     this.props.setRouteUrlParams('/appeal/scoreAdjustCreate', {});
-    sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
+    sessionStorage.setItem('appealFrom', JSON.stringify(this.oriSearchParams));
   };
 
   // 编辑调整
@@ -58,7 +57,7 @@ class ScoreAdjustList extends Component {
     this.props.setRouteUrlParams('/appeal/scoreAdjustEdit', {
       id: val.id,
     });
-    sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
+    sessionStorage.setItem('appealFrom', JSON.stringify(this.oriSearchParams));
   };
 
   // 删除

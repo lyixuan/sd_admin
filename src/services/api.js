@@ -816,6 +816,13 @@ export async function findCertificationList() {
   });
 }
 
+// 获取优秀案例申请详情
+export async function excellentCaseApplyDetail(params) {
+  return request(`${HOST}/cem/getSignExamineInfo?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
 // ------------------- 认证审核 end -------------------
 /*
 * 获取认证管理列表
@@ -1020,3 +1027,10 @@ export async function organizationList(params) {
 }
 
 // ------------------- 学分调整 end -------------------
+
+// ------------------- 创新与优秀案例 -------------------
+export async function excellentList(params) {
+  return request(`${HOST}/innovationExcellent/list?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
