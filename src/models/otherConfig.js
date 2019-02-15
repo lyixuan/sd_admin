@@ -1,38 +1,28 @@
-import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { appealList, addAppealList } from '../services/api';
+import { excellentList } from '../services/api';
 
 export default {
-  namespace: 'appeal',
+  namespace: 'otherConfig',
 
   state: {
     // 接口返回数据存储
-    appealListData: null,
-    addAppealData: null,
+    getData: null,
   },
 
   effects: {
-    *appealList({ payload }, { call, put }) {
-      const appealListData = yield call(appealList, payload.appealListParams);
-      if (appealListData.code === 2000) {
-        yield put({ type: 'appealListSave', payload: { appealListData } });
+    *getSignUpMessage({ payload }, { call, put }) {
+      const signUpData = yield call(excellentList, payload.params);
+      if (signUpData.code === 2000) {
+        const getData = signUpData.data || [];
+        yield put({ type: 'dataSave', payload: { getData } });
       } else {
-        message.error(appealListData.msg);
-      }
-    },
-    *addAppeal({ payload }, { call, put }) {
-      const addAppealData = yield call(addAppealList, payload.addAppealParams);
-      if (addAppealData.code === 2000) {
-        message.success('成功添加申诉！');
-        yield put(routerRedux.push('/appeal/appealList'));
-      } else {
-        message.error(addAppealData.msg);
+        message.error(signUpData.msg);
       }
     },
   },
 
   reducers: {
-    appealListSave(state, action) {
+    dataSave(state, action) {
       return { ...state, ...action.payload };
     },
   },

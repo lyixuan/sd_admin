@@ -6,9 +6,9 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 
-@connect(({ account, loading }) => ({
-  account,
-  loading: loading.effects['account/accountList'],
+@connect(({ otherConfig, loading }) => ({
+  otherConfig,
+  loading: loading.effects['otherConfig/getSignUpMessage'],
 }))
 class OfficialSet extends Component {
   constructor(props) {
@@ -19,7 +19,13 @@ class OfficialSet extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const params = {};
+    this.props.dispatch({
+      type: 'otherConfig/getSignUpMessage',
+      payload: { params },
+    });
+  }
 
   // 编辑
   onEdit = () => {
@@ -56,6 +62,7 @@ class OfficialSet extends Component {
   render() {
     const { TextArea } = Input;
     const { visible = false, contentWord } = this.state;
+    console.log(this.props);
     const modalContent = (
       <TextArea
         style={{ width: '425px', height: '100px' }}

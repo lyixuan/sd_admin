@@ -1034,3 +1034,10 @@ export async function excellentList(params) {
     method: 'GET',
   });
 }
+
+// ------------------- 其他配置 -------------------
+export async function getSignUpMessage(params) {
+  return request(`${HOST}/certificationItem/getSignUpMessage?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
