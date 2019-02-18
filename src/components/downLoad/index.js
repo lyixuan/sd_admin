@@ -67,7 +67,7 @@ class DownLoad extends Component {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
         this.onCompile(xhr);
-      } else if (this.props.onError) {
+      } else if (this.props.onError && xhr.status !== 200) {
         this.props.onError(xhr.status);
         this.hideProgressWrapperPanel();
       }
@@ -76,17 +76,11 @@ class DownLoad extends Component {
   };
   showProgressWrapperPanel = () => {
     // 显示进度组
-    const { isShowProgressComponent } = this.state;
-    if (!isShowProgressComponent) {
-      this.setState({ isShowProgressComponent: true });
-    }
+    this.setState({ isShowProgressComponent: true, percent: 0 });
   };
   hideProgressWrapperPanel = () => {
     // 显示进度组
-    const { isShowProgressComponent } = this.state;
-    if (isShowProgressComponent) {
-      this.setState({ isShowProgressComponent: false });
-    }
+    this.setState({ isShowProgressComponent: false });
   };
   updateProgressWrapper = (loaded = 0, total) => {
     const percent = Math.floor(loaded / total * 100);
@@ -117,7 +111,11 @@ class DownLoad extends Component {
     };
     return (
       <>
-        <span className={textClassName} style={textStyle} onClick={this.onLoad}>
+        <span
+          className={textClassName}
+          style={textStyle}
+          onClick={e => !isShowProgressComponent && this.onLoad(e)}
+        >
           {this.renderText()}
         </span>
         {isShowProgressComponent ? (

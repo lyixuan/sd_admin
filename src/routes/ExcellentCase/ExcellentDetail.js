@@ -35,12 +35,12 @@ class AuditDetail extends Component {
     }
   };
 
-  onChange = states => {
-    if (states === 'loaded') {
+  onChange = param => {
+    if (param.states === 'loaded') {
       this.setState({
         progressTextBtnAllow: true,
       });
-    } else if (states === 'loading') {
+    } else if (param.states === 'loading') {
       this.setState({
         progressTextBtnAllow: false,
       });
@@ -117,7 +117,7 @@ class AuditDetail extends Component {
                   textClassName={common.myTextStyle}
                   progressClassName={common.myProgressStyle}
                   onError={status => this.onError(status)}
-                  onChange={states => this.onChange(states)}
+                  onChange={param => this.onChange(param)}
                 />
               </div>
             </div>
