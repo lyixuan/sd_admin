@@ -1034,6 +1034,17 @@ export async function excellentList(params) {
     method: 'GET',
   });
 }
+export async function getPreInfo(params) {
+  return request(`${HOST}/innovationExcellent/getPreInfo?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function uploadPic(params) {
+  return request(`${HOST}/innovationExcellent/uploadPic`, {
+    method: 'POST',
+    body: params,
+  });
+}
 
 // ------------------- 其他配置 -------------------
 export async function getSignUpMessage(params) {

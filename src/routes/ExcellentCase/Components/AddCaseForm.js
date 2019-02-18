@@ -75,6 +75,7 @@ class RoleForm extends Component {
     this.applyNote = w.props.applynote;
   };
   render() {
+    const showInfo = this.props.jumpFunction.excellent.preInfo || {};
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
@@ -130,7 +131,7 @@ class RoleForm extends Component {
       <div className={styles.formCls}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="申&nbsp;&nbsp;请&nbsp;&nbsp;人：">
-            <div>刘洋</div>
+            <div>{showInfo.name}</div>
           </FormItem>
           <FormItem {...formItemLayout} label="认证项目：">
             {getFieldDecorator('name', {})(

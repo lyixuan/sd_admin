@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { excellentList, excellentCaseApplyDetail } from '../services/api';
+import { excellentList, excellentCaseApplyDetail, getPreInfo } from '../services/api';
 
 export default {
   namespace: 'excellent',
@@ -9,6 +9,7 @@ export default {
     totalNum: null,
     dataList: [],
     detailInfo: {},
+    preInfo: {}, // 添加申请-获取用户和认证项目信息
   },
 
   effects: {
@@ -34,6 +35,18 @@ export default {
         yield put({
           type: 'excellentSave',
           payload: { dataList: dataList.content, totalNum: dataList.totalElements, ...payload },
+        });
+      }
+    },
+    *getPreInfo({ payload }, { call, put }) {
+      const response = yield call(getPreInfo, { ...payload });
+      const preInfo = response.data || {};
+      if (response.code !== 2000) {
+        message.error(response.msg);
+      } else {
+        yield put({
+          type: 'saveDetail',
+          payload: { preInfo },
         });
       }
     },

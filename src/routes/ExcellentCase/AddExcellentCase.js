@@ -14,7 +14,15 @@ class AddExcellentCase extends Component {
     super(props);
     this.state = {};
   }
-
+  componentDidMount() {
+    this.getPreInfo();
+  }
+  getPreInfo = () => {
+    this.props.dispatch({
+      type: 'excellent/getPreInfo',
+      payload: {},
+    });
+  };
   handleSubmit = val => {
     console.log(val);
   };
