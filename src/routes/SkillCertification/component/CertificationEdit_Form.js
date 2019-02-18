@@ -38,7 +38,6 @@ class CertificationEdit_Form extends Component {
       // defaultCheckedList: [],
     };
     this.id = null;
-    this.applyFlag = null; // 标记申请方式是电脑端还是手机端
     this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
   }
 
@@ -148,6 +147,17 @@ class CertificationEdit_Form extends Component {
     });
   };
 
+  dataStruct = (value = []) => {
+    const list = [];
+    value.map(item => {
+      if (item.userType) {
+        list.push(item.userType);
+      }
+      return 0;
+    });
+    return list;
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { submit, itemDetal } = this.props.jumpFunction;
@@ -170,6 +180,7 @@ class CertificationEdit_Form extends Component {
     this.id = id;
     const disabled = true;
     const { suitFlag } = this;
+    const onlyUserList = this.dataStruct(certificationOrgMapList);
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
     const bol = true;
     let { fileList1, fileList2 } = this.state;
@@ -425,14 +436,14 @@ class CertificationEdit_Form extends Component {
                     <Radio
                       name="allowUpdateAttachment"
                       value={1}
-                      disabled={this.applyFlag === 100 ? disabled : false}
+                      disabled={Number(applyType) === 100 ? disabled : false}
                     >
                       是
                     </Radio>
                     <Radio
                       name="allowUpdateAttachment"
                       value={0}
-                      disabled={this.applyFlag === 100 ? disabled : false}
+                      disabled={Number(applyType) === 100 ? disabled : false}
                     >
                       否
                     </Radio>
@@ -472,7 +483,7 @@ class CertificationEdit_Form extends Component {
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*指定用户">
                 {getFieldDecorator('userTypeFormList', {
-                  initialValue: certificationOrgMapList,
+                  initialValue: onlyUserList,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -493,7 +504,9 @@ class CertificationEdit_Form extends Component {
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     options={this.state.plainOptions}
                     className={common.checkboxGroup}
-                    disabled={this.suitFlag === 200 ? disabled : false}
+                    disabled={
+                      suitFlag ? suitFlag === 200 : Number(fitUser) === 200 ? disabled : false
+                    }
                   />
                 )}
               </FormItem>
