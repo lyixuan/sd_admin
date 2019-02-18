@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import E from 'wangeditor';
 import { uploadPic } from '../../../services/api';
 
+/* global UPLOAD_HOST */
+
 class Editor extends Component {
   componentDidMount() {
     const elem = document.getElementById('editorElem');
@@ -28,7 +30,13 @@ class Editor extends Component {
       // editor.customConfig.uploadImgShowBase64 = true;
       editor.customConfig.uploadImgServer = uploadPic();
       editor.customConfig.showLinkImg = false;
+      editor.customConfig.uploadFileName = 'file';
     }
+    editor.customConfig.uploadImgHooks = {
+      customInsert(insertImg, result) {
+        insertImg(`${UPLOAD_HOST}${result.data.path}`);
+      },
+    };
     editor.create();
     editor.txt.html('<p>请输入...</p>');
   }
