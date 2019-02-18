@@ -19,6 +19,7 @@ import { uploadIcon } from '../../../services/api';
 import styles from '../certification.css';
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
@@ -130,7 +131,7 @@ class CertificationCreate_Form extends Component {
   handleSelectChange = value => {
     this.applyFlag = value;
     this.props.form.setFieldsValue({
-      allowAdd: value === 2 ? 2 : null,
+      allowUpdateAttachment: 0,
     });
   };
 
@@ -138,14 +139,13 @@ class CertificationCreate_Form extends Component {
   suitSelectChange = value => {
     this.suitFlag = value;
     this.props.form.setFieldsValue({
-      onlyUser: [],
+      userTypeFormList: [],
     });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const { submit } = this.props.jumpFunction;
-    const { TextArea } = Input;
     const disabled = true;
     const { suitFlag } = this;
     const {
@@ -352,7 +352,7 @@ class CertificationCreate_Form extends Component {
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*申请方式">
-                {getFieldDecorator('applyMethod', {
+                {getFieldDecorator('applyType', {
                   initialValue: null,
                   rules: [
                     {
@@ -378,34 +378,24 @@ class CertificationCreate_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*允许添加附件">
-                {getFieldDecorator('allowAdd', {
-                  initialValue: null,
-                  rules: [
-                    {
-                      validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '允许添加附件为必填项，请选择！' });
-                        } else {
-                          callback();
-                        }
-                      },
-                    },
-                  ],
+                {getFieldDecorator('allowUpdateAttachment', {
+                  initialValue: 0,
+                  rules: [],
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
                     <Radio
-                      name="allowAdd"
+                      name="allowUpdateAttachment"
                       value={1}
-                      disabled={this.applyFlag === 2 ? disabled : false}
+                      disabled={this.applyFlag === 100 ? disabled : false}
                     >
                       是
                     </Radio>
                     <Radio
-                      name="allowAdd"
-                      value={2}
-                      disabled={this.applyFlag === 2 ? disabled : false}
+                      name="allowUpdateAttachment"
+                      value={0}
+                      disabled={this.applyFlag === 100 ? disabled : false}
                     >
                       否
                     </Radio>
@@ -418,7 +408,7 @@ class CertificationCreate_Form extends Component {
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*适用用户">
-                {getFieldDecorator('perfectUser', {
+                {getFieldDecorator('fitUser', {
                   initialValue: null,
                   rules: [
                     {
@@ -444,12 +434,12 @@ class CertificationCreate_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*指定用户">
-                {getFieldDecorator('onlyUser', {
+                {getFieldDecorator('userTypeFormList', {
                   initialValue: this.state.defaultCheckedList,
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (suitFlag === 1) {
+                        if (suitFlag === 100) {
                           if (!value || value.length <= 0) {
                             callback({ message: '指定用户为必填项，至少选择一项！' });
                           } else {
@@ -466,7 +456,7 @@ class CertificationCreate_Form extends Component {
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     options={this.state.plainOptions}
                     className={common.checkboxGroup}
-                    disabled={this.suitFlag === 2 ? disabled : false}
+                    disabled={this.suitFlag === 200 ? disabled : false}
                   />
                 )}
               </FormItem>

@@ -3,6 +3,7 @@ import { Form, Select, Button, Upload, message } from 'antd';
 import UEditor from './wangEditor';
 import common from '../../../routes/Common/common.css';
 import ModalDialog from '../../../selfComponent/Modal/Modal';
+import { uploadAttachment } from '../../../services/api';
 import styles from './common.less';
 import selfStyles from '../ExcellentCase.css';
 
@@ -44,16 +45,14 @@ class RoleForm extends Component {
   };
 
   uploadFileChange = info => {
-    // const { fileList = [], file = {} } = info;
-    const { fileList = [] } = info;
-    this.setState({ fileList });
-    // if (file.response) {
-    //   if (file.response.code === 2000) {
-    //     this.setState({ fileList });
-    //   } else {
-    //     message.error(file.response.msg);
-    //   }
-    // }
+    const { fileList = [], file = {} } = info;
+    if (file.response) {
+      if (file.response.code === 2000) {
+        this.setState({ fileList });
+      } else {
+        message.error(file.response.msg);
+      }
+    }
   };
   // 模态框确定
   clickModalOK = () => {
@@ -83,7 +82,6 @@ class RoleForm extends Component {
     };
     const props = {
       name: 'file',
-      action: '//jsonplaceholder.typicode.com/posts/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -155,7 +153,7 @@ class RoleForm extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="上传附件：">
             <div className={selfStyles.selfSty}>
-              <Upload {...props} onChange={this.uploadFileChange}>
+              <Upload {...props} action={uploadAttachment()} onChange={this.uploadFileChange}>
                 {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
               </Upload>
               <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>

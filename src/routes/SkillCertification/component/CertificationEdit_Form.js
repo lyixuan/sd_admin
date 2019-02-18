@@ -19,6 +19,7 @@ import { uploadIcon } from '../../../services/api';
 import styles from '../certification.css';
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
@@ -34,7 +35,7 @@ class CertificationEdit_Form extends Component {
       fileList1: [],
       fileList2: [],
       plainOptions: BI_Filter('Certification_ONLYUSER|id->value,name->label'),
-      defaultCheckedList: [],
+      // defaultCheckedList: [],
     };
     this.id = null;
     this.applyFlag = null; // 标记申请方式是电脑端还是手机端
@@ -143,7 +144,7 @@ class CertificationEdit_Form extends Component {
   suitSelectChange = value => {
     this.suitFlag = value;
     this.props.form.setFieldsValue({
-      onlyUser: [],
+      userTypeFormList: [],
     });
   };
 
@@ -161,10 +162,13 @@ class CertificationEdit_Form extends Component {
       assessStyle = null,
       assessStandard = null,
       id = null,
+      allowUpdateAttachment = false,
+      applyType = 200,
+      fitUser = 100,
+      certificationOrgMapList = [],
     } = getItemById;
     this.id = id;
     const disabled = true;
-    const { TextArea } = Input;
     const { suitFlag } = this;
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
     const bol = true;
@@ -385,8 +389,8 @@ class CertificationEdit_Form extends Component {
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*申请方式">
-                {getFieldDecorator('applyMethod', {
-                  initialValue: 1,
+                {getFieldDecorator('applyType', {
+                  initialValue: applyType ? Number(applyType) : 200,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -411,34 +415,24 @@ class CertificationEdit_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*允许添加附件">
-                {getFieldDecorator('allowAdd', {
-                  initialValue: 2,
-                  rules: [
-                    {
-                      validator(rule, value, callback) {
-                        if (!value) {
-                          callback({ message: '允许添加附件为必填项，请选择！' });
-                        } else {
-                          callback();
-                        }
-                      },
-                    },
-                  ],
+                {getFieldDecorator('allowUpdateAttachment', {
+                  initialValue: allowUpdateAttachment ? 1 : 0,
+                  rules: [],
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
                     <Radio
-                      name="allowAdd"
+                      name="allowUpdateAttachment"
                       value={1}
-                      disabled={this.applyFlag === 2 ? disabled : false}
+                      disabled={this.applyFlag === 100 ? disabled : false}
                     >
                       是
                     </Radio>
                     <Radio
-                      name="allowAdd"
-                      value={2}
-                      disabled={this.applyFlag === 2 ? disabled : false}
+                      name="allowUpdateAttachment"
+                      value={0}
+                      disabled={this.applyFlag === 100 ? disabled : false}
                     >
                       否
                     </Radio>
@@ -451,8 +445,8 @@ class CertificationEdit_Form extends Component {
           <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*适用用户">
-                {getFieldDecorator('perfectUser', {
-                  initialValue: 1,
+                {getFieldDecorator('fitUser', {
+                  initialValue: fitUser ? Number(fitUser) : 100,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -477,12 +471,12 @@ class CertificationEdit_Form extends Component {
             </Col>
             <Col span={12} offset={3} style={{ textAlign: 'right' }}>
               <FormItem label="*指定用户">
-                {getFieldDecorator('onlyUser', {
-                  initialValue: this.state.defaultCheckedList,
+                {getFieldDecorator('userTypeFormList', {
+                  initialValue: certificationOrgMapList,
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        if (suitFlag === 1) {
+                        if (suitFlag === 100) {
                           if (!value || value.length <= 0) {
                             callback({ message: '指定用户为必填项，至少选择一项！' });
                           } else {
@@ -499,7 +493,7 @@ class CertificationEdit_Form extends Component {
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                     options={this.state.plainOptions}
                     className={common.checkboxGroup}
-                    disabled={this.suitFlag === 2 ? disabled : false}
+                    disabled={this.suitFlag === 200 ? disabled : false}
                   />
                 )}
               </FormItem>

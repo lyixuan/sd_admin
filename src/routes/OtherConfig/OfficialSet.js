@@ -6,6 +6,8 @@ import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import common from '../Common/common.css';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 
+const { TextArea } = Input;
+
 @connect(({ otherConfig, loading }) => ({
   otherConfig,
   loading: loading.effects['otherConfig/getSignUpMessage'],
@@ -15,15 +17,13 @@ class OfficialSet extends Component {
     super(props);
     this.state = {
       visible: false, // 弹窗显隐
-      contentWord: null, // textArea回显初始化
+      editText: null,
     };
   }
 
   componentDidMount() {
-    const params = {};
     this.props.dispatch({
       type: 'otherConfig/getSignUpMessage',
-      payload: { params },
     });
   }
 
@@ -33,43 +33,42 @@ class OfficialSet extends Component {
   };
 
   showModal(bol) {
-    this.setState({ visible: bol });
+    this.setState({ visible: bol, editText: this.props.otherConfig.messageText });
   }
 
   // 模态框回显
-  clickModalOK = contentWord => {
-    if (!contentWord) {
+  clickModalOK = () => {
+    const editText = this.state.editText || '';
+    if (!editText) {
       message.error('文案编辑不可为空');
-      this.showModal(true);
     } else {
-      // const paramsObj = { contentWord};
-      // this.props.dispatch({
-      //   type: 'shortName/editCollege',
-      //   payload: { paramsObj },
-      // });
-      console.log(contentWord);
+      const isEqure = editText === this.props.otherConfig.messageText;
+      if (!isEqure) {
+        this.props.dispatch({
+          type: 'otherConfig/saveSignUpMessage',
+          payload: { message: editText },
+        });
+      }
       this.showModal(false);
     }
   };
 
   // input双向绑定
-  handelChange(e) {
+  handelChange = e => {
     this.setState({
-      contentWord: e.target.value,
+      editText: e.target.value,
     });
-  }
+  };
 
   render() {
-    const { TextArea } = Input;
-    const { visible = false, contentWord } = this.state;
-    console.log(this.props);
+    const { visible = false, editText } = this.state;
+    const { otherConfig = {} } = this.props;
+    const { messageText } = otherConfig;
     const modalContent = (
       <TextArea
+        value={editText}
+        onChange={this.handelChange}
         style={{ width: '425px', height: '100px' }}
-        onChange={e => {
-          this.handelChange(e);
-        }}
-        value={contentWord}
       />
     );
     return (
@@ -80,6 +79,7 @@ class OfficialSet extends Component {
             <p style={{ color: '#000', fontSize: '18px' }}>报名通道文案设置</p>
             <p style={{ color: '#000', fontSize: '14px' }}>设置手机端报名通道关闭页的文案</p>
             <TextArea
+              disabled
               style={{
                 width: '400px',
                 height: '86px',
@@ -87,6 +87,7 @@ class OfficialSet extends Component {
                 marginBottom: '30px',
                 marginTop: '27px',
               }}
+              value={messageText}
             />
             <AuthorizedButton authority="/otherConfig/officialSet">
               <Button
@@ -105,7 +106,7 @@ class OfficialSet extends Component {
               footButton={['取消', '保存']}
               modalContent={modalContent}
               showModal={bol => this.showModal(bol)}
-              clickOK={() => this.clickModalOK(contentWord)}
+              clickOK={this.clickModalOK}
             />
           </>
         }
