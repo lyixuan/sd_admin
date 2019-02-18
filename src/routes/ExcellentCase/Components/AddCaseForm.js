@@ -37,26 +37,37 @@ class RoleForm extends Component {
   * */
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        this.setState({
-          sendVal: values,
-        });
-        this.showModal(true);
-      } else {
-        console.error(err);
-      }
-    });
+    const { fileList } = this.state;
+    if (fileList.length === 0) {
+      message.error('文件仅支持不大于10MB的zip或rar格式,请重新选择！');
+    } else {
+      this.props.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          this.setState({
+            sendVal: values,
+          });
+          this.showModal(true);
+        } else {
+          console.error(err);
+        }
+      });
+    }
   };
 
   uploadFileChange = info => {
     const { fileList = [], file = {} } = info;
-    if (file.response) {
-      if (file.response.code === 2000) {
-        this.setState({ fileList });
-      } else {
-        message.error(file.response.msg);
+    const isZip = file.type === 'application/zip' || file.type === 'application/x-rar';
+    const isLt10M = file.size / 1024 / 1024 < 30;
+    if (isZip && isLt10M) {
+      if (file.response) {
+        if (file.response.code === 2000) {
+          this.setState({ fileList });
+        } else {
+          message.error(file.response.msg);
+        }
       }
+    } else {
+      message.error('文件仅支持不大于10MB的zip或rar格式!');
     }
   };
   // 模态框确定
@@ -91,13 +102,13 @@ class RoleForm extends Component {
         authorization: 'authorization-text',
       },
       beforeUpload(file) {
-        const isZip = file.type === 'application/zip' || file.type === 'application/rar';
+        const isZip = file.type === 'application/zip' || file.type === 'application/x-rar';
         if (!isZip) {
-          message.error('文件仅仅支持zip或rar格式!');
+          message.error('文件仅支持zip或rar格式!');
         }
         const isLt10M = file.size / 1024 / 1024 < 30;
         if (!isLt10M) {
-          message.error('文件不能大于 10MB！');
+          message.error('文件不能大于10MB！');
         }
         return isZip && isLt10M;
       },
