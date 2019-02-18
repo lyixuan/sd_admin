@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Select, Button, Upload, message } from 'antd';
+import { Form, Select, Button, Upload, message, Spin } from 'antd';
 import UEditor from './wangEditor';
 import common from '../../../routes/Common/common.css';
 import ModalDialog from '../../../selfComponent/Modal/Modal';
@@ -79,6 +79,7 @@ class RoleForm extends Component {
   };
   render() {
     const showInfo = this.props.jumpFunction.excellent.preInfo || {};
+    const applyList = showInfo.certificationItemList ? showInfo.certificationItemList : [];
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
@@ -112,98 +113,89 @@ class RoleForm extends Component {
         上传附件
       </Button>
     );
-    const BOTTOM_TABLE_LIST = [
-      {
-        id: 1,
-        name: '查看绝对是你',
-        detail: '看家具的话',
-      },
-      {
-        id: 2,
-        name: '查对是你',
-        detail: '业务方法论',
-      },
-      {
-        id: 3,
-        name: '查看',
-        detail: '家具',
-      },
-    ];
     return (
-      <div className={styles.formCls}>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="申&nbsp;&nbsp;请&nbsp;&nbsp;人：">
-            <div>
-              {`${showInfo.name} ${
-                window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${showInfo.userType}`).name
-              } ${showInfo.org}`}
-            </div>
-          </FormItem>
-          <FormItem {...formItemLayout} label="认证项目：">
-            {getFieldDecorator('certificationItemId', {})(
-              <Select
-                placeholder="优秀案例"
-                style={{ width: 230, height: 32 }}
-                flag="type"
-                type="select"
-                onChange={(val, w) => this.editApplyNote(val, w)}
-              >
-                {BOTTOM_TABLE_LIST.map(item => (
-                  <Option key={item.id} value={item.id} applynote={item.detail}>
-                    {item.name}
-                  </Option>
-                ))}
-              </Select>
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="申请说明：">
-            <div>{this.applyNote}</div>
-          </FormItem>
-          <FormItem {...formItemLayout} label="上传附件：">
-            <div className={selfStyles.selfSty}>
-              <Upload {...props} action={uploadAttachment()} onChange={this.uploadFileChange}>
-                {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
-              </Upload>
-              <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>
-            </div>
-          </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情："
-          >
-            {getFieldDecorator('detail', {
-              rules: [
-                {
-                  required: true,
-                  message: '详情为必填项',
-                },
-              ],
-            })(<UEditor />)}
-          </FormItem>
-          <FormItem>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button onClick={this.cancel} type="primary" className={common.cancleButton}>
-                取消
-              </Button>
-              <Button
-                loading={this.state.loading}
-                htmlType="submit"
-                type="primary"
-                className={common.submitButton}
-              >
-                提交
-              </Button>
-            </div>
-          </FormItem>
-        </Form>
-        <ModalDialog
-          title="提交申请"
-          visible={visible}
-          modalContent={<div style={{ textAlign: 'left' }}>是否确定提交认证申请？</div>}
-          showModal={bol => this.showModal(bol)}
-          clickOK={() => this.clickModalOK()}
-        />
-      </div>
+      <Spin spinning={this.props.jumpFunction.getInfoLoading}>
+        <div className={styles.formCls}>
+          <Form onSubmit={this.handleSubmit}>
+            <FormItem {...formItemLayout} label="申&nbsp;&nbsp;请&nbsp;&nbsp;人：">
+              <div>
+                {`${showInfo.name} ${
+                  window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${showInfo.userType}`).name
+                } ${showInfo.org}`}
+              </div>
+            </FormItem>
+            <FormItem {...formItemLayout} label="认证项目：">
+              {getFieldDecorator('certificationItemId', {})(
+                <Select
+                  placeholder="请选择"
+                  style={{ width: 230, height: 32 }}
+                  flag="type"
+                  type="select"
+                  onChange={(val, w) => this.editApplyNote(val, w)}
+                >
+                  {applyList.length > 0
+                    ? applyList.map(item => (
+                        <Option
+                          key={item.applyType}
+                          value={item.applyType}
+                          applynote={`${item.assessStandard} ${item.assessStyle}`}
+                        >
+                          {item.applyTypeEnum}
+                        </Option>
+                      ))
+                    : null}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="申请说明：">
+              <div>{this.applyNote}</div>
+            </FormItem>
+            <FormItem {...formItemLayout} label="上传附件：">
+              <div className={selfStyles.selfSty}>
+                <Upload {...props} action={uploadAttachment()} onChange={this.uploadFileChange}>
+                  {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
+                </Upload>
+                <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>
+              </div>
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情："
+            >
+              {getFieldDecorator('detail', {
+                rules: [
+                  {
+                    required: true,
+                    message: '详情为必填项',
+                  },
+                ],
+              })(<UEditor />)}
+            </FormItem>
+            <FormItem>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button onClick={this.cancel} type="primary" className={common.cancleButton}>
+                  取消
+                </Button>
+                <Button
+                  loading={this.state.loading}
+                  htmlType="submit"
+                  type="primary"
+                  className={common.submitButton}
+                >
+                  提交
+                </Button>
+              </div>
+            </FormItem>
+          </Form>
+          <ModalDialog
+            title="提交申请"
+            visible={visible}
+            modalContent={<div style={{ textAlign: 'left' }}>是否确定提交认证申请？</div>}
+            showModal={bol => this.showModal(bol)}
+            clickOK={() => this.clickModalOK()}
+          />
+        </div>
+      </Spin>
     );
   }
 }
