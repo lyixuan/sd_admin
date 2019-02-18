@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Select, Button, Upload, message, Spin } from 'antd';
-import UEditor from './wangEditor';
+import UEditor from '../../../components/wangEditor';
 import common from '../../../routes/Common/common.css';
 import ModalDialog from '../../../selfComponent/Modal/Modal';
 import { uploadAttachment } from '../../../services/api';
@@ -155,17 +155,15 @@ class RoleForm extends Component {
                   type="select"
                   onChange={(val, w) => this.editApplyNote(val, w)}
                 >
-                  {applyList.length > 0
-                    ? applyList.map(item => (
-                        <Option
-                          key={item.id}
-                          value={item.id}
-                          applynote={this.renderApply(item.assessStandard, item.assessStyle)}
-                        >
-                          {item.name}
-                        </Option>
-                      ))
-                    : null}
+                  {applyList.map(item => (
+                    <Option
+                      key={`ID_${item.id}`}
+                      value={item.id}
+                      applynote={this.renderApply(item.assessStandard, item.assessStyle)}
+                    >
+                      {item.name}
+                    </Option>
+                  ))}
                 </Select>
               )}
             </FormItem>

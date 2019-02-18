@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import E from 'wangeditor';
-import { uploadPic } from '../../../services/api';
+import { uploadPic } from '../services/api';
 
 /* global UPLOAD_HOST */
 
