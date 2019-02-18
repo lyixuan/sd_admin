@@ -914,6 +914,12 @@ export function uploadIcon() {
   return `${HOST}/certificationItem/uploadIcon`;
 }
 
+// 优秀案例上传附件
+
+export function uploadAttachment() {
+  return `${HOST}/innovationExcellent/uploadAttachment`;
+}
+
 /*
 *
 添加或修改认证项目
