@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import E from 'wangeditor';
+import { uploadPic } from '../../../services/api';
 
 class Editor extends Component {
   componentDidMount() {
@@ -24,8 +25,8 @@ class Editor extends Component {
         'undo', // 撤销
         'redo', // 重复
       ];
-      editor.customConfig.uploadImgShowBase64 = true;
-      // editor.customConfig.uploadImgServer ='/server';
+      // editor.customConfig.uploadImgShowBase64 = true;
+      editor.customConfig.uploadImgServer = uploadPic();
       editor.customConfig.showLinkImg = false;
     }
     editor.create();

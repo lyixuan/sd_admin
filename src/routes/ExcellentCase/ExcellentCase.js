@@ -46,7 +46,9 @@ class ExcellentCase extends Component {
     this.props.setRouteUrlParams('/excellent/addExcellentCase', {});
   };
   checkDetail = record => {
-    console.log(record);
+    this.props.setRouteUrlParams('/excellent/checkCertifiedDetail', {
+      id: record.id,
+    });
   };
 
   render() {

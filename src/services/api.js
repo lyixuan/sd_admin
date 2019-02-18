@@ -1045,11 +1045,8 @@ export async function getPreInfo(params) {
     method: 'GET',
   });
 }
-export async function uploadPic(params) {
-  return request(`${HOST}/innovationExcellent/uploadPic`, {
-    method: 'POST',
-    body: params,
-  });
+export function uploadPic() {
+  return `${HOST}/innovationExcellent/uploadPic`;
 }
 
 // ------------------- 其他配置 -------------------
