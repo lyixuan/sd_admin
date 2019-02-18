@@ -6,6 +6,8 @@ import ModalDialog from '../../../selfComponent/Modal/Modal';
 import { uploadAttachment } from '../../../services/api';
 import styles from './common.less';
 import selfStyles from '../ExcellentCase.css';
+import { ADMIN_USER } from '../../../utils/constants';
+import { getAuthority } from '../../../utils/authority';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -13,11 +15,14 @@ const { Option } = Select;
 class RoleForm extends Component {
   constructor(props) {
     super(props);
+    const localStorage = getAuthority(ADMIN_USER);
+    const userId = !localStorage ? null : localStorage.userId;
     this.state = {
       loading: false,
       visible: false,
       sendVal: '',
       fileList: [],
+      userId,
     };
     this.applyNote = '';
   }
@@ -56,13 +61,12 @@ class RoleForm extends Component {
   };
   // 模态框确定
   clickModalOK = () => {
-    // this.props.dispatch({
-    //   type: 'shortName/editGroup',
-    //   payload: { paramsObj },
-    // });
-    console.log(this.state.sendVal);
+    const { sendVal, userId, fileList } = this.state;
+    this.props.jumpFunction.dispatch({
+      type: 'excellent/excellentAdd',
+      payload: { userId, attachmentUrl: fileList[0].response.data.path, ...sendVal },
+    });
     this.showModal(false);
-    this.props.jumpFunction.setRouteUrlParams('/excellent/excellentCaseList');
   };
   // 模态框显隐回调
   showModal = bol => {
@@ -86,7 +90,7 @@ class RoleForm extends Component {
         authorization: 'authorization-text',
       },
       beforeUpload(file) {
-        const isZip = file.type === 'application/zip' || 'application/rar';
+        const isZip = file.type === 'application/zip' || file.type === 'application/rar';
         if (!isZip) {
           message.error('文件仅仅支持zip或rar格式!');
         }
@@ -129,10 +133,14 @@ class RoleForm extends Component {
       <div className={styles.formCls}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="申&nbsp;&nbsp;请&nbsp;&nbsp;人：">
-            <div>{showInfo.name}</div>
+            <div>
+              {`${showInfo.name} ${
+                window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${showInfo.userType}`).name
+              } ${showInfo.org}`}
+            </div>
           </FormItem>
           <FormItem {...formItemLayout} label="认证项目：">
-            {getFieldDecorator('name', {})(
+            {getFieldDecorator('certificationItemId', {})(
               <Select
                 placeholder="优秀案例"
                 style={{ width: 230, height: 32 }}
@@ -163,7 +171,7 @@ class RoleForm extends Component {
             {...formItemLayout}
             label="详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情："
           >
-            {getFieldDecorator('editorContent', {
+            {getFieldDecorator('detail', {
               rules: [
                 {
                   required: true,

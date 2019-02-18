@@ -1,5 +1,6 @@
 import { message } from 'antd';
-import { excellentList, excellentCaseApplyDetail, getPreInfo } from '../services/api';
+import { routerRedux } from 'dva/router';
+import { excellentList, excellentCaseApplyDetail, getPreInfo, excellentAdd } from '../services/api';
 
 export default {
   namespace: 'excellent',
@@ -48,6 +49,15 @@ export default {
           type: 'saveDetail',
           payload: { preInfo },
         });
+      }
+    },
+    *excellentAdd({ payload }, { call, put }) {
+      const response = yield call(excellentAdd, { ...payload });
+      if (response.code === 2000) {
+        message.success('成功添加申请！');
+        yield put(routerRedux.push('/excellent/excellentCaseList'));
+      } else {
+        message.error(response.msg);
       }
     },
   },

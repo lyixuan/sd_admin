@@ -1048,7 +1048,12 @@ export async function getPreInfo(params) {
 export function uploadPic() {
   return `${HOST}/innovationExcellent/uploadPic`;
 }
-
+export async function excellentAdd(params) {
+  return request(`${HOST}/innovationExcellent/add`, {
+    method: 'POST',
+    body: params,
+  });
+}
 // ------------------- 其他配置 -------------------
 export async function getSignUpMessage(params) {
   return request(`${HOST}/certificationItem/getSignUpMessage?${stringify(params)}`, {
