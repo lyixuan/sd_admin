@@ -38,10 +38,10 @@ class Editor extends Component {
       },
     };
     editor.create();
-    editor.txt.html('<p>请输入...</p>');
+    editor.txt.html('<p>请输入...</p> ');
   }
   render() {
-    return <div id="editorElem" style={{ textAlign: 'left' }} />;
+    return <div id="editorElem" style={{ textAlign: 'left', position: 'relative', zIndex: 1 }} />;
   }
 }
 
