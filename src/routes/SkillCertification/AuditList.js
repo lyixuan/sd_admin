@@ -200,7 +200,7 @@ class AuditList extends Component {
         render: (text, record) => {
           return (
             <div>
-              {record.applyTypeName !== '电脑端' && (
+              {record.applyTypeName === '电脑端' && (
                 <AuthorizedButton authority="/excellent/checkCertifiedDetail">
                   <span
                     style={{ color: '#52C9C2', marginRight: 10, cursor: 'pointer' }}
