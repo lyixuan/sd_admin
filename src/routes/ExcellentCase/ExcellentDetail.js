@@ -111,7 +111,7 @@ class AuditDetail extends Component {
               </span>
               <div className={common.downloadWrap}>
                 <DownLoad
-                  loadUrl="http://47.104.97.226:7008/demo/abc.zip"
+                  loadUrl={UPLOAD_HOST + detailInfo.attachmentUrl}
                   fileName={getFileName}
                   text={this.renderText()}
                   textClassName={common.myTextStyle}
