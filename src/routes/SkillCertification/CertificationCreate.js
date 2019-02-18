@@ -21,6 +21,13 @@ class CertificationCreate extends Component {
     const obtainedIcon = response.data ? response.data : '';
     const file2 = fileList2[0] ? fileList2[0].response : '';
     const originalIcon = file2 ? file2.data : '';
+    const { userTypeFormList, fitUser, applyType, allowUpdateAttachment } = values;
+    const uerTypeLen = fitUser === 100 ? userTypeFormList.length : 0;
+    const turnObj =
+      uerTypeLen === 2
+        ? [{ userType: 'class' }, { userType: 'group' }]
+        : userTypeFormList[0] === 'class' ? [{ userType: 'class' }] : [{ userType: 'group' }];
+    const jsonList = fitUser === 100 ? turnObj : [];
     const saveOrModifyItemParams = {
       orderNum: Number(values.orderNum),
       name: values.name,
@@ -29,7 +36,12 @@ class CertificationCreate extends Component {
       assessStandard: values.assessStandard,
       obtainedIcon,
       originalIcon,
+      userTypeFormList: jsonList,
+      fitUser,
+      applyType,
+      allowUpdateAttachment,
     };
+    // console.log(userTypeFormList,jsonList,saveOrModifyItemParams)
     this.props.dispatch({
       type: 'certification/saveOrModifyItem',
       payload: { saveOrModifyItemParams },
