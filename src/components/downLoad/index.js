@@ -67,7 +67,10 @@ class DownLoad extends Component {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
         this.onCompile(xhr);
-      } else if (this.props.onError) this.props.onError(xhr.status);
+      } else if (this.props.onError) {
+        this.props.onError(xhr.status);
+        this.hideProgressWrapperPanel();
+      }
     };
     xhr.send();
   };
@@ -103,16 +106,25 @@ class DownLoad extends Component {
   };
   render() {
     const { isShowProgressComponent, percent } = this.state;
-    const { customClassName, mystyle } = this.props;
+    const { textClassName, progressClassName } = this.props;
+    const textStyle = {
+      float: 'left',
+    };
+    const progressStyle = {
+      float: 'left',
+      width: '100px',
+      marginLeft: '10px',
+    };
     return (
       <>
+        <span className={textClassName} style={textStyle} onClick={this.onLoad}>
+          {this.renderText()}
+        </span>
         {isShowProgressComponent ? (
-          <div>{this.renderProgress(percent)}</div>
-        ) : (
-          <div className={customClassName} style={mystyle} onClick={this.onLoad}>
-            {this.renderText()}
-          </div>
-        )}
+          <span className={progressClassName} style={progressStyle}>
+            {this.renderProgress(percent)}
+          </span>
+        ) : null}
       </>
     );
   }

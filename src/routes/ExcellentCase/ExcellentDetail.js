@@ -5,6 +5,7 @@ import { Spin, message } from 'antd';
 import moment from 'moment/moment';
 import ContentLayout from '../../layouts/ContentLayout';
 import downloadimg from '../../assets/download.svg';
+import downloadimg_disabled from '../../assets/download_disabled.svg';
 import DownLoad from '../../components/downLoad';
 import common from './Components/common.less';
 
@@ -15,7 +16,9 @@ import common from './Components/common.less';
 class AuditDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      progressTextBtnAllow: true,
+    };
   }
 
   UNSAFE_componentWillMount() {
@@ -32,8 +35,24 @@ class AuditDetail extends Component {
     }
   };
 
+  onChange = states => {
+    if (states === 'loaded') {
+      this.setState({
+        progressTextBtnAllow: true,
+      });
+    } else if (states === 'loading') {
+      this.setState({
+        progressTextBtnAllow: false,
+      });
+    }
+  };
+
   renderText = () => {
-    return <img src={downloadimg} alt="下载" />;
+    return this.state.progressTextBtnAllow ? (
+      <img src={downloadimg} alt="下载" />
+    ) : (
+      <img src={downloadimg_disabled} alt="下载" />
+    );
   };
 
   render() {
@@ -87,16 +106,20 @@ class AuditDetail extends Component {
           {detailInfo.attachmentUrl && (
             <div className={common.downBox}>
               <span style={{ float: 'left' }}>
-                附件：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{getFileName()}
+                附件：{getFileName()}
                 {getFileType()}
               </span>
-              <DownLoad
-                customClassName={common.mystyle}
-                loadUrl={UPLOAD_HOST + detailInfo.attachmentUrl}
-                fileName={getFileName}
-                text={this.renderText()}
-                onError={status => this.onError(status)}
-              />
+              <div className={common.downloadWrap}>
+                <DownLoad
+                  loadUrl={UPLOAD_HOST + detailInfo.attachmentUrl}
+                  fileName={getFileName}
+                  text={this.renderText()}
+                  textClassName={common.myTextStyle}
+                  progressClassName={common.myProgressStyle}
+                  onError={status => this.onError(status)}
+                  onChange={states => this.onChange(states)}
+                />
+              </div>
             </div>
           )}
           <div className={common.textstyle} dangerouslySetInnerHTML={{ __html: getDetail() }} />
