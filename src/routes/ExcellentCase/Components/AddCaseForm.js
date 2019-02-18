@@ -77,9 +77,20 @@ class RoleForm extends Component {
   editApplyNote = (val, w) => {
     this.applyNote = w.props.applynote;
   };
+  renderApply = (val1, val2) => {
+    return (
+      <>
+        <span>{val1}</span>
+        <br />
+        <span>{val2}</span>
+      </>
+    );
+  };
   render() {
     const showInfo = this.props.jumpFunction.excellent.preInfo || {};
-    const applyList = showInfo.certificationItemList ? showInfo.certificationItemList : [];
+    const applyList = showInfo.certificationItemList
+      ? showInfo.certificationItemList
+      : [{ applyType: 1, applyTypeEnum: 'cjhd' }];
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
@@ -136,11 +147,11 @@ class RoleForm extends Component {
                   {applyList.length > 0
                     ? applyList.map(item => (
                         <Option
-                          key={item.applyType}
-                          value={item.applyType}
-                          applynote={`${item.assessStandard} ${item.assessStyle}`}
+                          key={item.id}
+                          value={item.id}
+                          applynote={this.renderApply(item.assessStandard, item.assessStyle)}
                         >
-                          {item.applyTypeEnum}
+                          {item.name}
                         </Option>
                       ))
                     : null}
