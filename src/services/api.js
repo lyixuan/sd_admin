@@ -1041,3 +1041,9 @@ export async function getSignUpMessage(params) {
     method: 'GET',
   });
 }
+export async function saveSignUpMessage(params) {
+  return request(`${HOST}/certificationItem/saveSignUpMessage`, {
+    method: 'POST',
+    body: params,
+  });
+}
