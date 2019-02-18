@@ -7,7 +7,7 @@ import AddCaseForm from './Components/AddCaseForm';
 const WrappedRegistrationForm = Form.create()(AddCaseForm);
 @connect(({ excellent, loading }) => ({
   excellent,
-  loading,
+  getInfoLoading: loading.effects['excellent/getPreInfo'],
 }))
 class AddExcellentCase extends Component {
   constructor(props) {
