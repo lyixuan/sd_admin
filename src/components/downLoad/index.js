@@ -76,7 +76,7 @@ class DownLoad extends Component {
   };
   showProgressWrapperPanel = () => {
     // 显示进度组
-    this.setState({ isShowProgressComponent: true });
+    this.setState({ isShowProgressComponent: true, percent: 0 });
   };
   hideProgressWrapperPanel = () => {
     // 显示进度组
@@ -111,7 +111,11 @@ class DownLoad extends Component {
     };
     return (
       <>
-        <span className={textClassName} style={textStyle} onClick={this.onLoad}>
+        <span
+          className={textClassName}
+          style={textStyle}
+          onClick={e => !isShowProgressComponent && this.onLoad(e)}
+        >
           {this.renderText()}
         </span>
         {isShowProgressComponent ? (
