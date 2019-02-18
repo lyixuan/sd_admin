@@ -541,7 +541,3 @@
 }
 /* -------score change end------------ */
 
-/* 进度条 */
-:global(.ant-progress-success-bg, .ant-progress-bg) {
-  background-color: #FD9829;
-}
