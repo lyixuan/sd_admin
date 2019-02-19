@@ -38,35 +38,20 @@ class RoleForm extends Component {
   * */
   handleSubmit = e => {
     e.preventDefault();
-    const { fileList } = this.state;
-    if (this.allowUpdateAttachment && fileList.length === 0) {
-      message.error('文件仅支持不大于10M的zip或rar格式文件，请重新选择！');
-    } else {
-      this.props.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          this.setState({
-            sendVal: values,
-          });
-          this.showModal(true);
-        } else {
-          console.error(err);
-        }
-      });
-    }
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.setState({
+          sendVal: values,
+        });
+        this.showModal(true);
+      } else {
+        console.error(err);
+      }
+    });
   };
 
   uploadFileChange = info => {
     const { fileList = [], file = {} } = info;
-    const arr = file.name.split('.');
-    const isZip = arr[arr.length - 1] === 'zip' || arr[arr.length - 1] === 'rar';
-    const isLt10M = file.size / 1024 / 1024 < 10;
-    if (!isZip) {
-      message.error('文件仅支持zip或rar格式!');
-      return;
-    } else if (!isLt10M) {
-      message.error('文件不支持不大于10MB文件!');
-      return;
-    }
     if (file.response) {
       if (file.response.code === 2000) {
         this.setState({ fileList });
@@ -93,9 +78,10 @@ class RoleForm extends Component {
   // 模态框确定
   clickModalOK = () => {
     const { sendVal, userId, fileList } = this.state;
+    const attachmentUrl = fileList.length > 0 ? fileList[0].response.data.path : '';
     this.props.jumpFunction.dispatch({
       type: 'excellent/excellentAdd',
-      payload: { userId, attachmentUrl: fileList[0].response.data.path, ...sendVal },
+      payload: { userId, attachmentUrl, ...sendVal },
     });
     this.showModal(false);
   };
@@ -187,7 +173,7 @@ class RoleForm extends Component {
             {!this.showattachment ? null : (
               <FormItem {...formItemLayout} label="上传附件：">
                 <div className={selfStyles.selfSty}>
-                  <Upload {...props} action={uploadAttachment()}>
+                  <Upload {...props} action={uploadAttachment()} fileList={this.state.fileList}>
                     {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
                   </Upload>
                   <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>
