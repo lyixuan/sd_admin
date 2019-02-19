@@ -5,7 +5,7 @@
 * */
 import React, { Component } from 'react';
 import { Icon } from 'antd';
-import styles from './step.css';
+import styles from './step.less';
 
 class CheckResult extends Component {
   render() {

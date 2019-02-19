@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { message, Upload } from 'antd';
 import uploadImg from '../../assets/uploadImg.png';
-import styles from './step.css';
+import styles from './step.less';
 import { checkoutToken } from '../../utils/request';
 
 let isExcel = false;

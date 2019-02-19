@@ -5,7 +5,7 @@
 * */
 import React, { Component } from 'react';
 import { Input } from 'antd';
-import styles from './step.css';
+import styles from './step.less';
 
 const { TextArea } = Input;
 
