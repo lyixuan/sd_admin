@@ -189,6 +189,10 @@ class RoleForm extends Component {
               {getFieldDecorator('detail', {
                 rules: [
                   {
+                    required: true,
+                    message: '详情为必填项',
+                  },
+                  {
                     validator(rule, value, callback) {
                       if (value && (value === PlaceHolder || value === '<p><br></p>')) {
                         callback({ message: '详情为必填项' });
@@ -196,10 +200,6 @@ class RoleForm extends Component {
                         callback();
                       }
                     },
-                  },
-                  {
-                    required: true,
-                    message: '详情为必填项',
                   },
                 ],
               })(<UEditor />)}
