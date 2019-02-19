@@ -39,7 +39,7 @@ class RoleForm extends Component {
     e.preventDefault();
     const { fileList } = this.state;
     if (fileList.length === 0) {
-      message.error('文件仅支持大于10M的zip或rar格式文件，请重新选择！');
+      message.error('文件仅支持不大于10M的zip或rar格式文件，请重新选择！');
     } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
@@ -111,9 +111,6 @@ class RoleForm extends Component {
     };
     const props = {
       name: 'file',
-      headers: {
-        authorization: 'authorization-text',
-      },
       beforeUpload(file) {
         const arr = file.name.split('.');
         const isZip = arr[arr.length - 1] === 'zip' || arr[arr.length - 1] === 'rar';
