@@ -25,6 +25,7 @@ class RoleForm extends Component {
       userId,
     };
     this.applyNote = '';
+    this.allowUpdateAttachment = null;
   }
   /*
   * 取消事件
@@ -168,6 +169,7 @@ class RoleForm extends Component {
                       key={`ID_${item.id}`}
                       value={item.id}
                       applynote={this.renderApply(item.assessStandard, item.assessStyle)}
+                      allowUpdateAttachment={item.allowUpdateAttachment}
                     >
                       {item.name}
                     </Option>
@@ -178,14 +180,16 @@ class RoleForm extends Component {
             <FormItem {...formItemLayout} label="申请说明：">
               <div>{this.applyNote}</div>
             </FormItem>
-            <FormItem {...formItemLayout} label="上传附件：">
-              <div className={selfStyles.selfSty}>
-                <Upload {...props} action={uploadAttachment()} onChange={this.uploadFileChange}>
-                  {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
-                </Upload>
-                <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>
-              </div>
-            </FormItem>
+            {!this.allowUpdateAttachment ? null : (
+              <FormItem {...formItemLayout} label="上传附件：">
+                <div className={selfStyles.selfSty}>
+                  <Upload {...props} action={uploadAttachment()} onChange={this.uploadFileChange}>
+                    {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
+                  </Upload>
+                  <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>
+                </div>
+              </FormItem>
+            )}
             <FormItem
               {...formItemLayout}
               label="详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情："
