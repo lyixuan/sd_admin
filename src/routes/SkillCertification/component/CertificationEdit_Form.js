@@ -23,6 +23,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
+let isPng = false;
 
 class CertificationEdit_Form extends Component {
   constructor(props) {
@@ -99,19 +100,23 @@ class CertificationEdit_Form extends Component {
   };
 
   commonFun = (info = {}, type = 1) => {
-    const { file = {} } = info;
-    const oneList = info.fileList;
-    const fileList = oneList.slice(-1);
-    if (type === 1) {
-      this.setState({ fileList1: fileList });
-    } else {
-      this.setState({ fileList2: fileList });
-    }
-    if (file.response) {
-      if (file.response.code === 2000) {
-        this.props.saveFileList(fileList, type);
+    let { fileList } = info;
+    const { saveFileList } = this.props;
+    if (isPng) {
+      fileList = fileList.slice(-1);
+      if (type === 1) {
+        this.setState({ fileList1: fileList });
       } else {
-        message.error(file.response.msg);
+        this.setState({ fileList2: fileList });
+      }
+    }
+    if (info.file.response) {
+      if (info.file.response.code === 2000) {
+        if (saveFileList) {
+          saveFileList(fileList, type);
+        }
+      } else {
+        message.error(info.file.response.msg);
       }
     }
   };
@@ -124,11 +129,11 @@ class CertificationEdit_Form extends Component {
   };
 
   beforeUpload = file => {
-    const isPNG = file.type === 'image/png';
-    if (!isPNG) {
+    isPng = file.type === 'image/png';
+    if (!isPng) {
       message.error('图片仅支持PNG格式!');
     }
-    return isPNG;
+    return isPng;
   };
 
   wordFun = text => {
