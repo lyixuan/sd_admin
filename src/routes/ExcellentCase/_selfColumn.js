@@ -66,8 +66,6 @@ export function columnsFn(callback) {
               style={{
                 color: '#52C9C2',
                 cursor: 'pointer',
-                display: 'flex',
-                justifyContent: 'space-around',
               }}
               onClick={() => callback(record)}
             >
