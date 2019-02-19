@@ -39,7 +39,7 @@ class RoleForm extends Component {
     e.preventDefault();
     const { fileList } = this.state;
     if (fileList.length === 0) {
-      message.error('文件仅支持不大于10MB的zip或rar格式,请重新选择！');
+      message.error('请上传附件');
     } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
@@ -58,16 +58,14 @@ class RoleForm extends Component {
     const { fileList = [], file = {} } = info;
     const isZip = file.type === 'application/zip' || file.type === 'application/x-rar';
     const isLt10M = file.size / 1024 / 1024 < 30;
-    if (isZip && isLt10M) {
-      if (file.response) {
-        if (file.response.code === 2000) {
-          this.setState({ fileList });
-        } else {
-          message.error(file.response.msg);
-        }
-      }
+    if (!isZip) {
+      message.error('文件仅支持zip或rar格式!');
+    } else if (!isLt10M) {
+      message.error('文件不支持不大于10MB文件!');
+    } else if (file.response && file.response.code === 2000) {
+      this.setState({ fileList });
     } else {
-      message.error('文件仅支持不大于10MB的zip或rar格式!');
+      message.error(file.response.msg);
     }
   };
   // 模态框确定
@@ -99,9 +97,7 @@ class RoleForm extends Component {
   };
   render() {
     const showInfo = this.props.jumpFunction.excellent.preInfo || {};
-    const applyList = showInfo.certificationItemList
-      ? showInfo.certificationItemList
-      : [{ applyType: 1, applyTypeEnum: 'cjhd' }];
+    const applyList = showInfo.certificationItemList ? showInfo.certificationItemList : [];
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 2 },
@@ -147,7 +143,14 @@ class RoleForm extends Component {
               </div>
             </FormItem>
             <FormItem {...formItemLayout} label="认证项目：">
-              {getFieldDecorator('certificationItemId', {})(
+              {getFieldDecorator('certificationItemId', {
+                rules: [
+                  {
+                    required: true,
+                    message: '认证项目为必选项',
+                  },
+                ],
+              })(
                 <Select
                   placeholder="请选择"
                   style={{ width: 230, height: 32 }}

@@ -93,7 +93,7 @@ class DownLoad extends Component {
     this.setState({ percent });
   };
   renderProgress = percent => {
-    return this.props.progress || <Progress percent={percent} type="line" strokeColor="#52c9c2" />;
+    return this.props.progress || <Progress percent={percent} type="line" strokeColor="#FD9829" />;
   };
   renderText = () => {
     return this.props.text || '下载';

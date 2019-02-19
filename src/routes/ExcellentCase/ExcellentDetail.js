@@ -32,6 +32,9 @@ class AuditDetail extends Component {
   onError = status => {
     if (status !== 200) {
       message.error('下载出错');
+      this.setState({
+        progressTextBtnAllow: true,
+      });
     }
   };
 
