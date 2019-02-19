@@ -52,18 +52,31 @@ class CertificationCreate extends Component {
     window.history.go(-1);
   };
 
+  saveFileList = (fileList, type) => {
+    this.props.dispatch({
+      type: 'certification/creatPicFile',
+      payload: { fileList, type },
+    });
+  };
+
   render() {
+    const { picFile1, picFile2 } = this.props.certification;
     return (
       <ContentLayout
         routerData={this.props.routerData}
         contentForm={
           <WrappedRegistrationForm
             jumpFunction={this.props}
+            picFile1={picFile1}
+            picFile2={picFile2}
             resetContent={() => {
               this.resetContent();
             }}
             handleSubmit={(values, fileList1, fileList2) => {
               this.handleSubmit(values, fileList1, fileList2);
+            }}
+            saveFileList={(param, type) => {
+              this.saveFileList(param, type);
             }}
           />
         }

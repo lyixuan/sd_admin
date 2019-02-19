@@ -11,8 +11,8 @@ import { getAuthority } from '../../../utils/authority';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-// 请与wangEditor里的PlaceHolder保持一致
-const PlaceHolder = '<p style="color:#aaa" class="mypleceholder">请输入...</p>';
+let isLt10M = false;
+let isZip = false;
 
 class RoleForm extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class RoleForm extends Component {
       loading: false,
       visible: false,
       sendVal: '',
-      fileList: [],
+      fileList: this.props.fileList,
       userId,
     };
     this.applyNote = '';
@@ -53,12 +53,22 @@ class RoleForm extends Component {
   };
 
   uploadFileChange = info => {
-    const { fileList = [], file = {} } = info;
-    if (file.response) {
-      if (file.response.code === 2000) {
+    // tip 目前支持上传一个文件
+    let { fileList } = info;
+    if (isLt10M) {
+      fileList = fileList.slice(-1);
+      if (isZip) {
         this.setState({ fileList });
+      }
+    }
+    const { saveFileList } = this.props;
+    if (info.file.response) {
+      if (info.file.response.code === 2000) {
+        if (saveFileList) {
+          saveFileList(fileList);
+        }
       } else {
-        message.error(file.response.msg);
+        message.error(info.file.response.msg);
       }
     }
   };
@@ -66,11 +76,11 @@ class RoleForm extends Component {
   // 文件预上传判断
   beforeUpload = file => {
     const arr = file.name.split('.');
-    const isZip = arr[arr.length - 1] === 'zip' || arr[arr.length - 1] === 'rar';
+    isZip = arr[arr.length - 1] === 'zip' || arr[arr.length - 1] === 'rar';
     if (!isZip) {
       message.error('文件仅支持zip或rar格式!');
     }
-    const isLt10M = file.size / 1024 / 1024 < 10;
+    isLt10M = file.size / 1024 / 1024 < 10;
     if (!isLt10M) {
       message.error('文件不能大于10MB！');
     }
@@ -118,7 +128,7 @@ class RoleForm extends Component {
       beforeUpload: this.beforeUpload,
       onChange: this.uploadFileChange,
     };
-    const { fileList, visible } = this.state;
+    const { visible } = this.state;
     const uploadButton = (
       <Button
         type="primary"
@@ -176,7 +186,9 @@ class RoleForm extends Component {
               <FormItem {...formItemLayout} label="上传附件：">
                 <div className={selfStyles.selfSty}>
                   <Upload {...props} action={uploadAttachment()} fileList={this.state.fileList}>
-                    {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
+                    {Array.isArray(this.state.fileList)
+                      ? this.state.fileList.length >= 1 ? null : uploadButton
+                      : null}
                   </Upload>
                   <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>
                 </div>
@@ -191,15 +203,6 @@ class RoleForm extends Component {
                   {
                     required: true,
                     message: '详情为必填项',
-                  },
-                  {
-                    validator(rule, value, callback) {
-                      if (value && (value === PlaceHolder || value === '<p><br></p>')) {
-                        callback({ message: '详情为必填项' });
-                      } else {
-                        callback();
-                      }
-                    },
                   },
                 ],
               })(<UEditor />)}
