@@ -25,14 +25,14 @@ export function columnsFn(callback) {
         return (
           <>
             {text}
-            {!record.signRemark ? null : (
+            {!record.signRemark ? null : text === '通过' || text === '不通过' ? (
               <Popover
                 content={<div className={style.bline}>{record.signRemark}</div>}
                 trigger="click"
               >
                 <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
               </Popover>
-            )}
+            ) : null}
           </>
         );
       },
