@@ -2,7 +2,7 @@ import fetch from 'dva/fetch';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
-import { getAuthority } from './authority';
+import { checkoutToken } from './Authorized';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -33,11 +33,6 @@ function checkStatus(response) {
   throw error;
 }
 
-export function checkoutToken() {
-  const tokenObj = getAuthority('admin_user') || {};
-  const { userId = '', token = '' } = tokenObj;
-  return `${userId}_${token}`;
-}
 export function emitSys(res = {}) {
   const { dispatch } = store;
   if (res.code === -1005) {

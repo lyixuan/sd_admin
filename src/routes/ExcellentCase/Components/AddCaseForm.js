@@ -8,11 +8,14 @@ import styles from './common.less';
 import selfStyles from '../ExcellentCase.css';
 import { ADMIN_USER } from '../../../utils/constants';
 import { getAuthority } from '../../../utils/authority';
+import { checkoutToken } from '../../../utils/Authorized';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 let isLt10M = false;
 let isZip = false;
+// 请与wangEditor里的PlaceHolder保持一致
+const PlaceHolder = '<p style="color:#aaa" class="mypleceholder">请输入...</p>';
 
 class RoleForm extends Component {
   constructor(props) {
@@ -139,6 +142,7 @@ class RoleForm extends Component {
         上传附件
       </Button>
     );
+    const headerObj = { authorization: checkoutToken() };
     return (
       <Spin spinning={this.props.jumpFunction.getInfoLoading}>
         <div className={styles.formCls}>
@@ -185,7 +189,12 @@ class RoleForm extends Component {
             {!this.showattachment ? null : (
               <FormItem {...formItemLayout} label="上传附件：">
                 <div className={selfStyles.selfSty}>
-                  <Upload {...props} action={uploadAttachment()} fileList={this.state.fileList}>
+                  <Upload
+                    {...props}
+                    headers={headerObj}
+                    action={uploadAttachment()}
+                    fileList={this.state.fileList}
+                  >
                     {Array.isArray(this.state.fileList)
                       ? this.state.fileList.length >= 1 ? null : uploadButton
                       : null}
@@ -203,6 +212,15 @@ class RoleForm extends Component {
                   {
                     required: true,
                     message: '详情为必填项',
+                  },
+                  {
+                    validator(rule, value, callback) {
+                      if (value && (value === PlaceHolder || value === '<p><br></p>')) {
+                        callback({ message: '详情为必填项' });
+                      } else {
+                        callback();
+                      }
+                    },
                   },
                 ],
               })(<UEditor />)}
