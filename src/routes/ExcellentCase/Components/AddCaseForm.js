@@ -39,7 +39,7 @@ class RoleForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { fileList } = this.state;
-    if (fileList.length === 0) {
+    if (this.allowUpdateAttachment && fileList.length === 0) {
       message.error('文件仅支持不大于10M的zip或rar格式文件，请重新选择！');
     } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
