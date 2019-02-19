@@ -23,7 +23,7 @@ export function columnsFn(callback) {
       dataIndex: 'sign',
       render: (text, record) => {
         return (
-          <>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             {text}
             {!record.signRemark ? null : text === '通过' || text === '不通过' ? (
               <Popover
@@ -33,7 +33,7 @@ export function columnsFn(callback) {
                 <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
               </Popover>
             ) : null}
-          </>
+          </div>
         );
       },
     },
