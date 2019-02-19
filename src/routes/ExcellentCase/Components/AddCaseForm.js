@@ -40,7 +40,7 @@ class RoleForm extends Component {
     e.preventDefault();
     const { fileList } = this.state;
     if (fileList.length === 0) {
-      message.error('请上传附件');
+      message.error('文件仅支持不大于10M的zip或rar格式文件，请重新选择！');
     } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
@@ -57,8 +57,9 @@ class RoleForm extends Component {
 
   uploadFileChange = info => {
     const { fileList = [], file = {} } = info;
-    const isZip = file.type === 'application/zip' || file.type === 'application/x-rar';
-    const isLt10M = file.size / 1024 / 1024 < 30;
+    const arr = file.name.split('.');
+    const isZip = arr[arr.length - 1] === 'zip' || arr[arr.length - 1] === 'rar';
+    const isLt10M = file.size / 1024 / 1024 < 10;
     if (!isZip) {
       message.error('文件仅支持zip或rar格式!');
       return;
@@ -74,6 +75,21 @@ class RoleForm extends Component {
       }
     }
   };
+
+  // 文件预上传判断
+  beforeUpload = file => {
+    const arr = file.name.split('.');
+    const isZip = arr[arr.length - 1] === 'zip' || arr[arr.length - 1] === 'rar';
+    if (!isZip) {
+      message.error('文件仅支持zip或rar格式!');
+    }
+    const isLt10M = file.size / 1024 / 1024 < 10;
+    if (!isLt10M) {
+      message.error('文件不能大于10MB！');
+    }
+    return isZip && isLt10M;
+  };
+
   // 模态框确定
   clickModalOK = () => {
     const { sendVal, userId, fileList } = this.state;
@@ -110,21 +126,8 @@ class RoleForm extends Component {
       wrapperCol: { span: 22 },
     };
     const props = {
-      name: 'file',
-      headers: {
-        authorization: 'authorization-text',
-      },
-      beforeUpload(file) {
-        const isZip = file.type === 'application/zip' || file.type === 'application/x-rar';
-        if (!isZip) {
-          message.error('文件仅支持zip或rar格式!');
-        }
-        const isLt10M = file.size / 1024 / 1024 < 30;
-        if (!isLt10M) {
-          message.error('文件不能大于10MB！');
-        }
-        return isZip && isLt10M;
-      },
+      beforeUpload: this.beforeUpload,
+      onChange: this.uploadFileChange,
     };
     const { fileList, visible } = this.state;
     const uploadButton = (
@@ -183,7 +186,7 @@ class RoleForm extends Component {
             {!this.allowUpdateAttachment ? null : (
               <FormItem {...formItemLayout} label="上传附件：">
                 <div className={selfStyles.selfSty}>
-                  <Upload {...props} action={uploadAttachment()} onChange={this.uploadFileChange}>
+                  <Upload {...props} action={uploadAttachment()}>
                     {Array.isArray(fileList) ? (fileList.length >= 1 ? null : uploadButton) : null}
                   </Upload>
                   <span style={{ color: '#bfbfbf' }}>(文件不能超过10M，格式要求：.zip/.rar)</span>
