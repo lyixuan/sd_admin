@@ -3,7 +3,7 @@
 * imgtype, 图片类型0：删除，1：上传
 * */
 import React, { Component } from 'react';
-import styles from './step.css';
+import styles from './step.less';
 import sucessImg from '../../assets/sucessImg.png';
 import delImg from '../../assets/delImg.png';
 
