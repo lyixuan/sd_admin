@@ -36,7 +36,6 @@ class CertificationEdit_Form extends Component {
       fileList1: [],
       fileList2: [],
       plainOptions: BI_Filter('Certification_ONLYUSER|id->value,name->label'),
-      // defaultCheckedList: [],
     };
     this.id = null;
     this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
@@ -68,15 +67,11 @@ class CertificationEdit_Form extends Component {
       fileList1.length === 0 ? this.props.jumpFunction.certification.fileList1 : fileList1;
     fileList2 =
       fileList2.length === 0 ? this.props.jumpFunction.certification.fileList2 : fileList2;
-    if (fileList1.length === 0 || fileList2.length === 0) {
-      message.error('已获得或未获得图片是必传项，图片仅支持PNG格式，请重新选择！');
-    } else {
-      this.props.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          this.props.handleSubmit(values, fileList1, fileList2);
-        }
-      });
-    }
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.handleSubmit(values, fileList1, fileList2);
+      }
+    });
   };
 
   handleCancel1 = () => {
@@ -165,8 +160,8 @@ class CertificationEdit_Form extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { submit, itemDetal } = this.props.jumpFunction;
-    const { getItemById = {} } = this.props.jumpFunction.certification;
+    const { submit, itemDetal, certification = {} } = this.props.jumpFunction;
+    const { getItemById = {} } = certification;
     const {
       orderNum = null,
       name = null,
@@ -187,7 +182,6 @@ class CertificationEdit_Form extends Component {
     const { suitFlag } = this;
     const onlyUserList = this.dataStruct(certificationOrgMapList);
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
-    const bol = true;
     let { fileList1, fileList2 } = this.state;
     fileList1 =
       fileList1.length === 0 ? this.props.jumpFunction.certification.fileList1 : fileList1;
@@ -367,12 +361,12 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;是否停用">
                 {getFieldDecorator('isDisable', {
-                  initialValue: status === 3 ? bol : false,
+                  initialValue: status === 3 ? disabled : false,
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={bol}>
+                    <Radio name="privilege" value={disabled}>
                       是
                     </Radio>
                     <Radio name="privilege" value={false}>
@@ -390,7 +384,7 @@ class CertificationEdit_Form extends Component {
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={bol}>
+                    <Radio name="privilege" value={disabled}>
                       是
                     </Radio>
                     <Radio name="privilege" value={false}>
