@@ -62,7 +62,7 @@ class DownLoad extends Component {
       });
     }
     xhr.onprogress = e => {
-      this.updateProgressWrapper(e.loaded, e.total);
+      this.updateProgressWrapper(e.loaded, e.total, xhr);
     };
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
@@ -82,9 +82,9 @@ class DownLoad extends Component {
     // 显示进度组
     this.setState({ isShowProgressComponent: false });
   };
-  updateProgressWrapper = (loaded = 0, total) => {
+  updateProgressWrapper = (loaded = 0, total, xhr) => {
     const percent = Math.floor(loaded / total * 100);
-    if (this.props.onChange) {
+    if (this.props.onChange && xhr.status === 200) {
       this.props.onChange({
         states: percent >= 100 ? 'loaded' : 'loading',
         percent,
