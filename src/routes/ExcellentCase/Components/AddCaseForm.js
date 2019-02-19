@@ -10,6 +10,7 @@ import { ADMIN_USER } from '../../../utils/constants';
 import { getAuthority } from '../../../utils/authority';
 import { checkoutToken } from '../../../utils/Authorized';
 
+const headerObj = { authorization: checkoutToken() };
 const FormItem = Form.Item;
 const { Option } = Select;
 let isLt10M = false;
@@ -142,7 +143,7 @@ class RoleForm extends Component {
         上传附件
       </Button>
     );
-    const headerObj = { authorization: checkoutToken() };
+
     return (
       <Spin spinning={this.props.jumpFunction.getInfoLoading}>
         <div className={styles.formCls}>

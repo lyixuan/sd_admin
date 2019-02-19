@@ -17,6 +17,9 @@ import {
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
 import styles from '../certification.css';
+import { checkoutToken } from '../../../utils/Authorized';
+
+const headerObj = { authorization: checkoutToken() };
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -273,6 +276,7 @@ class CertificationCreate_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview1}
                       fileList={picFile1}
@@ -332,6 +336,7 @@ class CertificationCreate_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}

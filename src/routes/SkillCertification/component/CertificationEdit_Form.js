@@ -17,6 +17,7 @@ import {
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
 import styles from '../certification.css';
+import { checkoutToken } from '../../../utils/Authorized';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -24,6 +25,7 @@ const { Option } = Select;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 let isPng = false;
+const headerObj = { authorization: checkoutToken() };
 
 class CertificationEdit_Form extends Component {
   constructor(props) {
@@ -293,6 +295,7 @@ class CertificationEdit_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview1}
                       fileList={fileList1}
@@ -342,6 +345,7 @@ class CertificationEdit_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}
