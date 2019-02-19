@@ -25,7 +25,7 @@ class RoleForm extends Component {
       userId,
     };
     this.applyNote = '';
-    this.allowUpdateAttachment = null;
+    this.showattachment = null;
   }
   /*
   * 取消事件
@@ -107,6 +107,7 @@ class RoleForm extends Component {
   };
   editApplyNote = (val, w) => {
     this.applyNote = w.props.applynote;
+    this.showattachment = w.props.showattachment;
   };
   renderApply = (val1, val2) => {
     return (
@@ -172,7 +173,7 @@ class RoleForm extends Component {
                       key={`ID_${item.id}`}
                       value={item.id}
                       applynote={this.renderApply(item.assessStandard, item.assessStyle)}
-                      allowUpdateAttachment={item.allowUpdateAttachment}
+                      showattachment={item.allowUpdateAttachment ? 1 : 0}
                     >
                       {item.name}
                     </Option>
@@ -183,7 +184,7 @@ class RoleForm extends Component {
             <FormItem {...formItemLayout} label="申请说明：">
               <div>{this.applyNote}</div>
             </FormItem>
-            {!this.allowUpdateAttachment ? null : (
+            {!this.showattachment ? null : (
               <FormItem {...formItemLayout} label="上传附件：">
                 <div className={selfStyles.selfSty}>
                   <Upload {...props} action={uploadAttachment()}>
