@@ -115,7 +115,8 @@ class RoleForm extends Component {
         authorization: 'authorization-text',
       },
       beforeUpload(file) {
-        const isZip = file.type === 'application/zip' || file.type === 'application/x-rar';
+        const arr = file.name.split('.');
+        const isZip = arr[arr.length - 1] === 'zip' || arr[arr.length - 1] === 'rar';
         if (!isZip) {
           message.error('文件仅支持zip或rar格式!');
         }
