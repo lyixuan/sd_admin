@@ -60,12 +60,17 @@ class RoleForm extends Component {
     const isLt10M = file.size / 1024 / 1024 < 30;
     if (!isZip) {
       message.error('文件仅支持zip或rar格式!');
+      return;
     } else if (!isLt10M) {
       message.error('文件不支持不大于10MB文件!');
-    } else if (file.response && file.response.code === 2000) {
-      this.setState({ fileList });
-    } else {
-      message.error(file.response.msg);
+      return;
+    }
+    if (file.response) {
+      if (file.response.code === 2000) {
+        this.setState({ fileList });
+      } else {
+        message.error(file.response.msg);
+      }
     }
   };
   // 模态框确定
