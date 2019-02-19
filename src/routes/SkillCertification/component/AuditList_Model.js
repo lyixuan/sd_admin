@@ -144,7 +144,7 @@ class AuditListForm extends Component {
           signResult: values.signResult,
           certificationDetailInfoId: this.props.record ? this.props.record.id : null,
           result: values.result,
-          remark: values.remark,
+          remark: values.remark ? values.remark : '',
         };
         this.props.onOk(params);
       }
