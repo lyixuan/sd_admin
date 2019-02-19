@@ -11,6 +11,8 @@ import { getAuthority } from '../../../utils/authority';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+// 请与wangEditor里的PlaceHolder保持一致
+const PlaceHolder = '<p style="color:#aaa" class="mypleceholder">请输入...</p>';
 
 class RoleForm extends Component {
   constructor(props) {
@@ -43,6 +45,7 @@ class RoleForm extends Component {
       message.error('文件仅支持不大于10M的zip或rar格式文件，请重新选择！');
     } else {
       this.props.form.validateFieldsAndScroll((err, values) => {
+        console.log(values);
         if (!err) {
           this.setState({
             sendVal: values,
@@ -200,6 +203,15 @@ class RoleForm extends Component {
             >
               {getFieldDecorator('detail', {
                 rules: [
+                  {
+                    validator(rule, value, callback) {
+                      if (value && (value === PlaceHolder || value === '<p><br></p>')) {
+                        callback({ message: '详情为必填项' });
+                      } else {
+                        callback();
+                      }
+                    },
+                  },
                   {
                     required: true,
                     message: '详情为必填项',
