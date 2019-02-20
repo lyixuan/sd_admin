@@ -62,6 +62,11 @@ class CertificationEdit_Form extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.id = null;
+    this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     let { fileList1, fileList2 } = this.state;
@@ -175,13 +180,13 @@ class CertificationEdit_Form extends Component {
       assessStandard = null,
       id = null,
       allowUpdateAttachment = false,
-      applyType = 200,
+      applyType = 100,
       fitUser = 100,
       certificationOrgMapList = [],
     } = getItemById;
     this.id = id;
     const disabled = true;
-    const suitFlag = this.suitFlag ? this.suitFlag : Number(fitUser);
+    const suitFlag = fitUser || 100;
     const onlyUserList = this.dataStruct(certificationOrgMapList);
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
     let { fileList1, fileList2 } = this.state;
@@ -404,7 +409,7 @@ class CertificationEdit_Form extends Component {
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="*申请方式">
                 {getFieldDecorator('applyType', {
-                  initialValue: applyType ? Number(applyType) : 200,
+                  initialValue: applyType || 100,
                   rules: [
                     {
                       validator(rule, value, callback) {
@@ -490,7 +495,6 @@ class CertificationEdit_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        // const fileterFlag = suitFlag ? suitFlag : Number(fitUser);
                         if (suitFlag === 100) {
                           if (!value || value.length <= 0) {
                             callback({ message: '指定用户为必填项，至少选择一项！' });

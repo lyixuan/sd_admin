@@ -161,19 +161,11 @@ export default {
       if (type === 1) {
         const fileList1 = fileList;
         yield put({ type: 'save', payload: { fileList1 } });
-      } else {
+      } else if (type === 2) {
         const fileList2 = fileList;
         yield put({ type: 'save', payload: { fileList2 } });
-      }
-    },
-    *creatPicFile({ payload }, { put }) {
-      const { type, fileList } = payload;
-      if (type === 1) {
-        const picFile1 = fileList;
-        yield put({ type: 'save', payload: { picFile1 } });
       } else {
-        const picFile2 = fileList;
-        yield put({ type: 'save', payload: { picFile2 } });
+        yield put({ type: 'save', payload: { fileList1: [], fileList2: [] } });
       }
     },
   },

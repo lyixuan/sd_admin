@@ -15,6 +15,11 @@ class CertificationCreate extends Component {
     this.state = {};
   }
 
+  componentWillUnmount() {
+    // 点击添加的时候清除文件
+    this.saveFileList([], 3); // 1代表已获得图标，2是未获得，3是全部图标
+  }
+
   // 点击确定按钮请求接口
   handleSubmit = (values, fileList1 = [], fileList2 = []) => {
     const { response } = fileList1[0] ? fileList1[0] : '';
@@ -52,28 +57,28 @@ class CertificationCreate extends Component {
     window.history.go(-1);
   };
 
-  saveFileList = (fileList, type) => {
+  saveFileList = (fileList, type = 1) => {
     this.props.dispatch({
-      type: 'certification/creatPicFile',
+      type: 'certification/saveFileList',
       payload: { fileList, type },
     });
   };
 
   render() {
-    const { picFile1, picFile2 } = this.props.certification;
+    const { fileList1, fileList2 } = this.props.certification;
     return (
       <ContentLayout
         routerData={this.props.routerData}
         contentForm={
           <WrappedRegistrationForm
             jumpFunction={this.props}
-            picFile1={picFile1}
-            picFile2={picFile2}
+            fileList1={fileList1}
+            fileList2={fileList2}
             resetContent={() => {
               this.resetContent();
             }}
-            handleSubmit={(values, fileList1, fileList2) => {
-              this.handleSubmit(values, fileList1, fileList2);
+            handleSubmit={(values, file1, file2) => {
+              this.handleSubmit(values, file1, file2);
             }}
             saveFileList={(param, type) => {
               this.saveFileList(param, type);

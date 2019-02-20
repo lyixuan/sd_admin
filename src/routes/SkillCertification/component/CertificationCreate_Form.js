@@ -38,19 +38,24 @@ class CertificationCreate_Form extends Component {
       previewImage2: '',
       plainOptions: BI_Filter('Certification_ONLYUSER|id->value,name->label'),
       defaultCheckedList: [],
-      picFile1: this.props.picFile1,
-      picFile2: this.props.picFile2,
+      fileList1: this.props.fileList1,
+      fileList2: this.props.fileList2,
     };
+    this.applyFlag = null; // 标记申请方式是电脑端还是手机端
+    this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
+  }
+
+  componentWillUnmount() {
     this.applyFlag = null; // 标记申请方式是电脑端还是手机端
     this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    const { picFile1 = [], picFile2 = [] } = this.state;
+    const { fileList1 = [], fileList2 = [] } = this.state;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.handleSubmit(values, picFile1, picFile2);
+        this.props.handleSubmit(values, fileList1, fileList2);
       }
     });
   };
@@ -67,9 +72,9 @@ class CertificationCreate_Form extends Component {
 
   deleteIcon = (type = 1) => {
     if (type === 1) {
-      this.deleteDispatch(this.state.picFile1, type);
+      this.deleteDispatch(this.state.fileList1, type);
     } else {
-      this.deleteDispatch(this.state.picFile2, type);
+      this.deleteDispatch(this.state.fileList2, type);
     }
   };
   // 删除已获得认证图标
@@ -101,9 +106,9 @@ class CertificationCreate_Form extends Component {
     if (isPng) {
       fileList = fileList.slice(-1);
       if (type === 1) {
-        this.setState({ picFile1: fileList });
+        this.setState({ fileList1: fileList });
       } else {
-        this.setState({ picFile2: fileList });
+        this.setState({ fileList2: fileList });
       }
     }
     if (info.file.response) {
@@ -159,8 +164,8 @@ class CertificationCreate_Form extends Component {
       previewImage1,
       previewVisible2,
       previewImage2,
-      picFile1,
-      picFile2,
+      fileList1,
+      fileList2,
     } = this.state;
     const uploadButton = (
       <Button
@@ -279,14 +284,14 @@ class CertificationCreate_Form extends Component {
                       headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview1}
-                      fileList={picFile1}
+                      fileList={fileList1}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
                       data={{ type: 1 }}
                       onRemove={() => this.deleteIcon(1)}
                     >
-                      {Array.isArray(picFile1)
-                        ? picFile1.length >= 1 ? null : uploadButton
+                      {Array.isArray(fileList1)
+                        ? fileList1.length >= 1 ? null : uploadButton
                         : null}
                     </Upload>
                     <Modal visible={previewVisible1} footer={null} onCancel={this.handleCancel1}>
@@ -342,11 +347,11 @@ class CertificationCreate_Form extends Component {
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
                       data={{ type: 2 }}
-                      fileList={picFile2}
+                      fileList={fileList2}
                       onRemove={() => this.deleteIcon(2)}
                     >
-                      {Array.isArray(picFile2)
-                        ? picFile2.length >= 1 ? null : uploadButton
+                      {Array.isArray(fileList2)
+                        ? fileList2.length >= 1 ? null : uploadButton
                         : null}
                     </Upload>
                     <Modal visible={previewVisible2} footer={null} onCancel={this.handleCancel2}>
