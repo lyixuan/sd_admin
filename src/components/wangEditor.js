@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import E from 'wangeditor';
-import { uploadPic } from '../services/api';
 
 /* global UPLOAD_HOST */
 
@@ -44,7 +43,7 @@ class Editor extends Component {
         '#ffffff',
       ];
       // editor.customConfig.uploadImgShowBase64 = true;
-      editor.customConfig.uploadImgServer = uploadPic();
+      editor.customConfig.uploadImgServer = this.props.path;
       editor.customConfig.showLinkImg = false;
       editor.customConfig.uploadFileName = 'file';
       editor.customConfig.zIndex = 1;

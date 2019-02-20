@@ -3,7 +3,7 @@ import { Form, Select, Button, Upload, message, Spin } from 'antd';
 import UEditor from '../../../components/wangEditor';
 import common from '../../../routes/Common/common.css';
 import ModalDialog from '../../../selfComponent/Modal/Modal';
-import { uploadAttachment } from '../../../services/api';
+import { uploadAttachment, uploadPic } from '../../../services/api';
 import styles from './common.less';
 import selfStyles from '../ExcellentCase.css';
 import { ADMIN_USER } from '../../../utils/constants';
@@ -221,7 +221,7 @@ class RoleForm extends Component {
                     },
                   },
                 ],
-              })(<UEditor />)}
+              })(<UEditor path={uploadPic()} />)}
             </FormItem>
             <FormItem>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
