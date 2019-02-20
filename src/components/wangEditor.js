@@ -24,15 +24,30 @@ class Editor extends Component {
         'italic', // 斜体
         'underline', // 下划线
         'foreColor', // 文字颜色
+        'list', // 列表
         'justify', // 对齐方式
         'image', // 插入图片
         'undo', // 撤销
         'redo', // 重复
       ];
+      // 自定义配置颜色（字体颜色、背景色）
+      editor.customConfig.colors = [
+        '#000000',
+        '#999999',
+        '#1c487f',
+        '#4d80bf',
+        '#c24f4a',
+        '#8baa4a',
+        '#7b5ba1',
+        '#46acc8',
+        '#f9963b',
+        '#ffffff',
+      ];
       // editor.customConfig.uploadImgShowBase64 = true;
       editor.customConfig.uploadImgServer = uploadPic();
       editor.customConfig.showLinkImg = false;
       editor.customConfig.uploadFileName = 'file';
+      editor.customConfig.zIndex = 1;
     }
     editor.customConfig.uploadImgHooks = {
       customInsert(insertImg, result) {
