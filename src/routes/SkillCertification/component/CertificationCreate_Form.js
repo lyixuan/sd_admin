@@ -52,10 +52,17 @@ class CertificationCreate_Form extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { fileList1 = [], fileList2 = [] } = this.state;
+
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.handleSubmit(values, fileList1, fileList2);
+        const { fileList1 = [], fileList2 = [] } = this.state;
+        if (fileList1.length === 0) {
+          message.error('已获得认证图标为必填项，请上传!');
+        } else if (fileList2.length === 0) {
+          message.error('未获得认证图标为必填项，请上传!');
+        } else {
+          this.props.handleSubmit(values, fileList1, fileList2);
+        }
       }
     });
   };
@@ -80,10 +87,18 @@ class CertificationCreate_Form extends Component {
   // 删除已获得认证图标
   handleCancel1 = () => {
     this.setState({ previewVisible1: false });
+    const { saveFileList } = this.props;
+    if (saveFileList) {
+      saveFileList([], 1);
+    }
   };
   // 删除未获得认证图标
   handleCancel2 = () => {
     this.setState({ previewVisible2: false });
+    const { saveFileList } = this.props;
+    if (saveFileList) {
+      saveFileList([], 2);
+    }
   };
 
   handlePreview1 = file => {
@@ -269,6 +284,7 @@ class CertificationCreate_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
+                        console.log('已获得认证图标', value);
                         if (!value) {
                           callback({ message: '已获得认证图标为必填项，请上传！' });
                         } else {
@@ -329,6 +345,7 @@ class CertificationCreate_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
+                        console.log('未获得认证图标', value);
                         if (!value) {
                           callback({ message: '未获得认证图标为必填项，请上传！' });
                         } else {
