@@ -32,7 +32,6 @@ function checkStatus(response) {
   error.response = response;
   throw error;
 }
-
 export function checkoutToken() {
   const tokenObj = getAuthority('admin_user') || {};
   const { userId = '', token = '' } = tokenObj;
