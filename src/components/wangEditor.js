@@ -1,5 +1,7 @@
+/** 参数 path：string，图片上传的服务器 */
 import React, { Component } from 'react';
 import E from 'wangeditor';
+import { checkoutToken } from '../utils/Authorized';
 
 /* global UPLOAD_HOST */
 
@@ -43,7 +45,15 @@ class Editor extends Component {
         '#ffffff',
       ];
       // editor.customConfig.uploadImgShowBase64 = true;
-      editor.customConfig.uploadImgServer = this.props.path;
+      const { path } = this.props;
+      if (path) {
+        editor.customConfig.uploadImgServer = path;
+      } else {
+        console.error('父组件需要传参：path');
+      }
+      editor.customConfig.uploadImgHeaders = {
+        authorization: checkoutToken(),
+      };
       editor.customConfig.showLinkImg = false;
       editor.customConfig.uploadFileName = 'file';
       editor.customConfig.zIndex = 1;
