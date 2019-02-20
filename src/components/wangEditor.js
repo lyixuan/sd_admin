@@ -7,8 +7,9 @@ import { uploadPic } from '../services/api';
 const PlaceHolder = '<p style="color:#aaa" class="mypleceholder">请输入...</p>';
 class Editor extends Component {
   componentDidMount() {
-    const elem = document.getElementById('editorElem');
-    const editor = new E(elem);
+    const title = document.getElementById('editorTitle');
+    const content = document.getElementById('editorContent');
+    const editor = new E(title, content);
     editor.customConfig.onchange = html => {
       if (this.props.onChange) {
         this.props.onChange(html);
@@ -54,7 +55,21 @@ class Editor extends Component {
     editor.txt.html(PlaceHolder);
   }
   render() {
-    return <div id="editorElem" style={{ textAlign: 'left', position: 'relative', zIndex: 1 }} />;
+    return (
+      <div style={{ border: '1px solid #eee' }}>
+        <div
+          id="editorTitle"
+          style={{
+            textAlign: 'left',
+            position: 'relative',
+            backgroundColor: '#fbfbfb',
+            height: '40px',
+            lineHeight: '34px',
+          }}
+        />
+        <div id="editorContent" style={{ height: '460px ' }} />
+      </div>
+    );
   }
 }
 

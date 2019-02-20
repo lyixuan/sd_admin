@@ -204,10 +204,7 @@ class RoleForm extends Component {
                 </div>
               </FormItem>
             )}
-            <FormItem
-              {...formItemLayout}
-              label="详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情："
-            >
+            <FormItem {...formItemLayout} label="详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情：">
               {getFieldDecorator('detail', {
                 rules: [
                   {
