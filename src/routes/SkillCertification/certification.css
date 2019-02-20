@@ -69,3 +69,7 @@
   border-radius: 0 !important;
   background-color: #fff !important;
 }
+
+.divContent :global(.ant-upload.ant-upload-select-picture-card  .ant-upload) {
+  padding: 8px 0 !important;
+}
