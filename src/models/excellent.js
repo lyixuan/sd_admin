@@ -11,6 +11,7 @@ export default {
     dataList: [],
     detailInfo: {},
     preInfo: {}, // 添加申请-获取用户和认证项目信息
+    fileList: [],
   },
 
   effects: {
@@ -60,6 +61,11 @@ export default {
         message.error(response.msg);
       }
     },
+
+    *saveFileList({ payload }, { put }) {
+      const { fileList } = payload;
+      yield put({ type: 'save', payload: { fileList } });
+    },
   },
   reducers: {
     excellentSave(state, { payload }) {
@@ -71,6 +77,9 @@ export default {
         });
       }
       return { ...state, ...payload };
+    },
+    save(state, action) {
+      return { ...state, ...action.payload };
     },
     saveDetail(state, { payload }) {
       return { ...state, ...payload };

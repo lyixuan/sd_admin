@@ -9,7 +9,7 @@ import FormFilter from '../../selfComponent/FormFilter';
 
 @connect(({ excellent, loading }) => ({
   excellent,
-  loading: loading.models.bottomTable,
+  loading: loading.effects['excellent/excellentList'],
 }))
 class ExcellentCase extends Component {
   constructor(props) {

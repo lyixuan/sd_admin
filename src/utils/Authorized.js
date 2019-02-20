@@ -7,5 +7,12 @@ let Authorized = RenderAuthorized(getAuthority()); // eslint-disable-line
 const reloadAuthorized = () => {
   Authorized = RenderAuthorized(getAuthority());
 };
-export { reloadAuthorized };
+// 获取token
+const checkoutToken = () => {
+  const tokenObj = getAuthority('admin_user') || {};
+  const { userId = '', token = '' } = tokenObj;
+  return `${userId}_${token}`;
+};
+
+export { reloadAuthorized, checkoutToken };
 export default Authorized;

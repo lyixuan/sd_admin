@@ -2,7 +2,7 @@ import fetch from 'dva/fetch';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
-import { getAuthority } from './authority';
+import { checkoutToken } from './Authorized';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -31,11 +31,6 @@ function checkStatus(response) {
   error.name = response.status;
   error.response = response;
   throw error;
-}
-export function checkoutToken() {
-  const tokenObj = getAuthority('admin_user') || {};
-  const { userId = '', token = '' } = tokenObj;
-  return `${userId}_${token}`;
 }
 export function emitSys(res = {}) {
   const { dispatch } = store;
@@ -97,17 +92,16 @@ export default function request(url, options) {
           type: 'login/logout',
         });
         return;
-      }
-      if (status === 403) {
+      } else if (status === 403) {
         dispatch(routerRedux.push('/exception/403'));
         return;
-      }
-      if (status <= 504 && status >= 500) {
+      } else if (status <= 504 && status >= 500) {
         dispatch(routerRedux.push('/exception/500'));
         return;
-      }
-      if (status >= 404 && status < 422) {
+      } else if (status >= 404 && status < 422) {
         dispatch(routerRedux.push('/exception/404'));
+      } else {
+        message.error('服务器未知异常');
       }
     });
 }

@@ -23,8 +23,12 @@ class AddExcellentCase extends Component {
       payload: {},
     });
   };
-  handleSubmit = val => {
-    console.log(val);
+
+  saveFileList = fileList => {
+    this.props.dispatch({
+      type: 'excellent/saveFileList',
+      payload: { fileList },
+    });
   };
 
   resetContent = () => {
@@ -32,6 +36,7 @@ class AddExcellentCase extends Component {
   };
 
   render() {
+    const { fileList } = this.props.excellent;
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -44,6 +49,10 @@ class AddExcellentCase extends Component {
             handleSubmit={values => {
               this.handleSubmit(values);
             }}
+            saveFileList={param => {
+              this.saveFileList(param);
+            }}
+            fileList={fileList}
           />
         }
       />

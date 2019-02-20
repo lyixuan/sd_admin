@@ -15,6 +15,52 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  :global(.ant-upload-list){
+    position: absolute;
+    top: 140px;
+    left: 0;
+    background: rgba(203,235,233,0.40);
+    border-radius: 3px;
+    width: 100%;
+    font-size: 12px!important;
+  }
+  :global(.ant-progress-bg){
+    background-color: #52c9c2!important;
+  }
+  :global(.ant-upload-list-item){
+    margin: 6px 0 2px!important;
+  }
+  :global(.ant-upload-list-item-name){
+    padding-left: 33px!important;
+    padding-bottom: 13px!important;
+    font-size: 12px!important;
+  }
+  :global(.anticon-paper-clip:before){
+    font-size: 12px;
+    margin-left: 13px!important;
+  }
+  :global(.anticon-paper-clip){
+    color: #52c9c2!important;
+    top: 3px!important;
+  }
+  :global(.ant-upload-list-item-info .anticon-loading){
+    color: #52c9c2;
+    top: 1px!important;
+  }
+  :global(.ant-btn .anticon-loading){
+    color: #fff;
+    left: 3px;
+  }
+  :global(.anticon-close){
+    color: #52c9c2!important;
+  }
+  :global(.ant-upload-list-item-error){
+    font-size: 12px!important;
+    color: #52c9c2!important;
+  }
+  :global(.anticon-cross:before){
+    margin-right: 8px!important;
+  }
 }
 .upload:hover{
   border: 1px dashed #52C9C2;
@@ -49,52 +95,7 @@
   line-height: 28px;
 }
 
-:global(.ant-upload-list){
-  position: absolute;
-  top: 140px;
-  left: 0;
-  background: rgba(203,235,233,0.40);
-  border-radius: 3px;
-  width: 100%;
-  font-size: 12px!important;
-}
-:global(.ant-progress-bg){
-  background-color: #52c9c2!important;
-}
-:global(.ant-upload-list-item){
-  margin: 6px 0 2px!important;
-}
-:global(.ant-upload-list-item-name){
-  padding-left: 33px!important;
-  padding-bottom: 13px!important;
-  font-size: 12px!important;
-}
-:global(.anticon-paper-clip:before){
-  font-size: 12px;
-  margin-left: 13px!important;
-}
-:global(.anticon-paper-clip){
-  color: #52c9c2!important;
-  top: 3px!important;
-}
-:global(.ant-upload-list-item-info .anticon-loading){
-  color: #52c9c2;
-  top: 1px!important;
-}
-:global(.ant-btn .anticon-loading){
-  color: #fff;
-  left: 3px;
-}
-:global(.anticon-close){
-  color: #52c9c2!important;
-}
-:global(.ant-upload-list-item-error){
-  font-size: 12px!important;
-  color: #52c9c2!important;
-}
-:global(.anticon-cross:before){
-  margin-right: 8px!important;
-}
+
 /*
 * stepInput
 */

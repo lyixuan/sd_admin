@@ -66,7 +66,7 @@ class AuditDetail extends Component {
       <span>
         <span style={{ marginRight: '10px' }}>{detailInfo.userName}</span>
         <span style={{ marginRight: '10px' }}>
-          {window.BI_Filter(`Certification_ONLYUSER|id:${detailInfo.userType}`).name}
+          {window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${detailInfo.userType}`).name}
         </span>
         <span style={{ marginRight: '10px' }}>{detailInfo.orgName}</span>
       </span>

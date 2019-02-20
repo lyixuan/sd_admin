@@ -23,17 +23,17 @@ export function columnsFn(callback) {
       dataIndex: 'sign',
       render: (text, record) => {
         return (
-          <>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             {text}
-            {!record.signRemark ? null : (
+            {!record.signRemark ? null : text === '通过' || text === '不通过' ? (
               <Popover
                 content={<div className={style.bline}>{record.signRemark}</div>}
                 trigger="click"
               >
                 <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
               </Popover>
-            )}
-          </>
+            ) : null}
+          </div>
         );
       },
     },
@@ -66,8 +66,6 @@ export function columnsFn(callback) {
               style={{
                 color: '#52C9C2',
                 cursor: 'pointer',
-                display: 'flex',
-                justifyContent: 'space-around',
               }}
               onClick={() => callback(record)}
             >

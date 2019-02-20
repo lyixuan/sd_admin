@@ -7,6 +7,8 @@
 # production
 /dist
 /vscode
+/static
+/src/routes/ExcellentCase/Components/UEditor.js
 
 # misc
 .DS_Store

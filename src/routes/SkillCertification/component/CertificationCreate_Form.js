@@ -17,12 +17,16 @@ import {
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
 import styles from '../certification.css';
+import { checkoutToken } from '../../../utils/Authorized';
+
+const headerObj = { authorization: checkoutToken() };
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
+let isPng = false;
 
 class CertificationCreate_Form extends Component {
   constructor(props) {
@@ -32,10 +36,10 @@ class CertificationCreate_Form extends Component {
       previewImage1: '',
       previewVisible2: false,
       previewImage2: '',
-      fileList1: [],
-      fileList2: [],
       plainOptions: BI_Filter('Certification_ONLYUSER|id->value,name->label'),
       defaultCheckedList: [],
+      picFile1: this.props.picFile1,
+      picFile2: this.props.picFile2,
     };
     this.applyFlag = null; // 标记申请方式是电脑端还是手机端
     this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
@@ -43,18 +47,12 @@ class CertificationCreate_Form extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { fileList1 = [], fileList2 = [] } = this.state;
-    const file1 = fileList1.length;
-    const file2 = fileList2.length;
-    if (file1 === 0 || file2 === 0) {
-      message.error('已获得或未获得图片是必传项，图片仅支持PNG格式，请重新选择！');
-    } else {
-      this.props.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          this.props.handleSubmit(values, fileList1, fileList2);
-        }
-      });
-    }
+    const { picFile1 = [], picFile2 = [] } = this.state;
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.handleSubmit(values, picFile1, picFile2);
+      }
+    });
   };
 
   deleteDispatch = (val = [], type = 1) => {
@@ -69,9 +67,9 @@ class CertificationCreate_Form extends Component {
 
   deleteIcon = (type = 1) => {
     if (type === 1) {
-      this.deleteDispatch(this.state.fileList1, type);
+      this.deleteDispatch(this.state.picFile1, type);
     } else {
-      this.deleteDispatch(this.state.fileList2, type);
+      this.deleteDispatch(this.state.picFile2, type);
     }
   };
   // 删除已获得认证图标
@@ -97,16 +95,24 @@ class CertificationCreate_Form extends Component {
   };
 
   commonFun = (info = {}, type = 1) => {
-    const { fileList = [], file = {} } = info;
-    if (file.response) {
-      if (file.response.code === 2000) {
-        if (type === 1) {
-          this.setState({ fileList1: fileList });
-        } else {
-          this.setState({ fileList2: fileList });
+    // tip 目前支持上传一个文件
+    let { fileList } = info;
+    const { saveFileList } = this.props;
+    if (isPng) {
+      fileList = fileList.slice(-1);
+      if (type === 1) {
+        this.setState({ picFile1: fileList });
+      } else {
+        this.setState({ picFile2: fileList });
+      }
+    }
+    if (info.file.response) {
+      if (info.file.response.code === 2000) {
+        if (saveFileList) {
+          saveFileList(fileList, type);
         }
       } else {
-        message.error(file.response.msg);
+        message.error(info.file.response.msg);
       }
     }
   };
@@ -120,11 +126,11 @@ class CertificationCreate_Form extends Component {
   };
 
   beforeUpload = file => {
-    const isPNG = file.type === 'image/png';
-    if (!isPNG) {
+    isPng = file.type === 'image/png';
+    if (!isPng) {
       message.error('图片仅支持PNG格式!');
     }
-    return isPNG;
+    return isPng;
   };
 
   // 申请方式修改的标记修改
@@ -153,8 +159,8 @@ class CertificationCreate_Form extends Component {
       previewImage1,
       previewVisible2,
       previewImage2,
-      fileList2,
-      fileList1,
+      picFile1,
+      picFile2,
     } = this.state;
     const uploadButton = (
       <Button
@@ -270,16 +276,17 @@ class CertificationCreate_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview1}
-                      // fileList={fileList1}
+                      fileList={picFile1}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
                       data={{ type: 1 }}
                       onRemove={() => this.deleteIcon(1)}
                     >
-                      {Array.isArray(fileList1)
-                        ? fileList1.length >= 1 ? null : uploadButton
+                      {Array.isArray(picFile1)
+                        ? picFile1.length >= 1 ? null : uploadButton
                         : null}
                     </Upload>
                     <Modal visible={previewVisible1} footer={null} onCancel={this.handleCancel1}>
@@ -329,15 +336,17 @@ class CertificationCreate_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
                       data={{ type: 2 }}
+                      fileList={picFile2}
                       onRemove={() => this.deleteIcon(2)}
                     >
-                      {Array.isArray(fileList2)
-                        ? fileList2.length >= 1 ? null : uploadButton
+                      {Array.isArray(picFile2)
+                        ? picFile2.length >= 1 ? null : uploadButton
                         : null}
                     </Upload>
                     <Modal visible={previewVisible2} footer={null} onCancel={this.handleCancel2}>
