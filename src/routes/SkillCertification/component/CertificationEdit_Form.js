@@ -181,7 +181,7 @@ class CertificationEdit_Form extends Component {
     } = getItemById;
     this.id = id;
     const disabled = true;
-    const { suitFlag } = this;
+    const suitFlag = this.suitFlag ? this.suitFlag : Number(fitUser);
     const onlyUserList = this.dataStruct(certificationOrgMapList);
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
     let { fileList1, fileList2 } = this.state;
@@ -490,6 +490,7 @@ class CertificationEdit_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
+                        // const fileterFlag = suitFlag ? suitFlag : Number(fitUser);
                         if (suitFlag === 100) {
                           if (!value || value.length <= 0) {
                             callback({ message: '指定用户为必填项，至少选择一项！' });
