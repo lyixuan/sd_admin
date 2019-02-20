@@ -25,7 +25,7 @@ export function columnsFn(callback) {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             {text}
-            {!record.signRemark ? null : text === '通过' || text === '不通过' ? (
+            {(text === '通过' || text === '未通过') && record.signRemark ? (
               <Popover
                 content={<div className={style.bline}>{record.signRemark}</div>}
                 trigger="click"
