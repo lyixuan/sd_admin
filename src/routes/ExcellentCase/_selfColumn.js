@@ -30,7 +30,11 @@ export function columnsFn(callback) {
                 content={<div className={style.bline}>{record.signRemark}</div>}
                 trigger="click"
               >
-                <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
+                <img
+                  src={caseDetail}
+                  alt="packError"
+                  style={{ marginLeft: '10px', lineHeight: '88px' }}
+                />
               </Popover>
             ) : null}
           </div>
@@ -49,7 +53,11 @@ export function columnsFn(callback) {
                 content={<div className={style.bline}>{record.authRemark}</div>}
                 trigger="click"
               >
-                <img src={caseDetail} alt="packError" style={{ marginLeft: '10px' }} />
+                <img
+                  src={caseDetail}
+                  alt="packError"
+                  style={{ marginLeft: '10px', lineHeight: '88px' }}
+                />
               </Popover>
             )}
           </>
