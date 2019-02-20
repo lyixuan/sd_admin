@@ -545,3 +545,7 @@
 }
 /* -------score change end------------ */
 
+/* 调整textArea的异常提示与上面元素的间距和其他元素一直 */
+:global(.textAreaErrorSpan .ant-form-explain){
+  margin-top: 2px;
+}
