@@ -56,7 +56,7 @@ class Editor extends Component {
   }
   render() {
     return (
-      <div style={{ border: '1px solid #eee' }}>
+      <div style={{ border: '1px solid #eee', marginRight: '10px' }}>
         <div
           id="editorTitle"
           style={{
@@ -67,7 +67,7 @@ class Editor extends Component {
             lineHeight: '34px',
           }}
         />
-        <div id="editorContent" style={{ height: '460px ' }} />
+        <div id="editorContent" style={{ height: '600px ' }} />
       </div>
     );
   }
