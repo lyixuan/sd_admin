@@ -93,17 +93,16 @@ export default function request(url, options) {
           type: 'login/logout',
         });
         return;
-      }
-      if (status === 403) {
+      } else if (status === 403) {
         dispatch(routerRedux.push('/exception/403'));
         return;
-      }
-      if (status <= 504 && status >= 500) {
+      } else if (status <= 504 && status >= 500) {
         dispatch(routerRedux.push('/exception/500'));
         return;
-      }
-      if (status >= 404 && status < 422) {
+      } else if (status >= 404 && status < 422) {
         dispatch(routerRedux.push('/exception/404'));
+      } else {
+        message.error('服务器未知异常');
       }
     });
 }
