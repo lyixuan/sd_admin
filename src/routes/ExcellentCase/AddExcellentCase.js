@@ -17,6 +17,9 @@ class AddExcellentCase extends Component {
   componentDidMount() {
     this.getPreInfo();
   }
+  componentWillUnmount() {
+    this.saveFileList([]);
+  }
   getPreInfo = () => {
     this.props.dispatch({
       type: 'excellent/getPreInfo',
