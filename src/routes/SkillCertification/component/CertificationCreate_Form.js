@@ -52,7 +52,6 @@ class CertificationCreate_Form extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const { fileList1 = [], fileList2 = [] } = this.state;
@@ -204,7 +203,7 @@ class CertificationCreate_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        const reg = /^\d{3,6}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
+                        const reg = /^\d{3,6}$/;
                         if (!value) {
                           callback({ message: '排序为必填项，请填写!' });
                         } else if (!reg.test(value) && value) {
@@ -284,7 +283,6 @@ class CertificationCreate_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        console.log('已获得认证图标', value);
                         if (!value) {
                           callback({ message: '已获得认证图标为必填项，请上传！' });
                         } else {
@@ -345,7 +343,6 @@ class CertificationCreate_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        console.log('未获得认证图标', value);
                         if (!value) {
                           callback({ message: '未获得认证图标为必填项，请上传！' });
                         } else {
