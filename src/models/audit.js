@@ -107,7 +107,6 @@ export default {
       const backparams = payload.callbackParams;
       if (response.code === 2000) {
         message.success('发布成功');
-        yield put({ type: 'showModel', payload: { visible: false } });
         yield put({ type: 'getAuditList', payload: { obj: backparams } });
       } else {
         message.error(response.msg);
@@ -131,7 +130,7 @@ export default {
       const response = yield call(submitExamineResult, payload.params);
       const backparams = payload.callbackParams;
       if (response.code === 2000) {
-        yield put({ type: 'showModel', payload: { visible: false } });
+        message.success('认证审核成功');
         yield put({ type: 'getAuditList', payload: { obj: backparams } });
       } else {
         message.error(response.msg);

@@ -14,7 +14,12 @@ const SearchForm = Form.create()(AuditListForm);
 
 @connect(({ audit, loading }) => ({
   audit,
-  loading: loading.effects['audit/getAuditList'],
+  loading:
+    loading.effects['audit/getAuditList'] ||
+    loading.effects['audit/exportBottomTable'] ||
+    loading.effects['audit/auditPublish'] ||
+    loading.effects['audit/submitExamineResult'] ||
+    loading.effects['audit/auditSinglePublish'],
 }))
 class AuditList extends Component {
   constructor(props) {
@@ -117,6 +122,7 @@ class AuditList extends Component {
         payload: { params, callbackParams: this.params },
       });
     }
+    this.handleCancel();
   };
 
   handleCancel = () => {
