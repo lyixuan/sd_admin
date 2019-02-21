@@ -186,7 +186,7 @@ class CertificationEdit_Form extends Component {
     } = getItemById;
     this.id = id;
     const disabled = true;
-    const suitFlag = fitUser || 100;
+    const suitFlag = this.suitFlag || fitUser;
     const onlyUserList = this.dataStruct(certificationOrgMapList);
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
     let { fileList1, fileList2 } = this.state;
