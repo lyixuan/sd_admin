@@ -4,6 +4,7 @@ import { Form, Input, Select, DatePicker, Modal, Radio } from 'antd';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const { TextArea } = Input;
 const { MonthPicker } = DatePicker;
 const RadioGroup = Radio.Group;
 let propsVal = '';
@@ -143,6 +144,7 @@ class AuditListForm extends Component {
           signResult: values.signResult,
           certificationDetailInfoId: this.props.record ? this.props.record.id : null,
           result: values.result,
+          remark: values.remark ? values.remark : '',
         };
         this.props.onOk(params);
       }
@@ -169,6 +171,13 @@ class AuditListForm extends Component {
       const formLayout = 'inline';
       return (
         <Form layout={formLayout}>
+          {this.props.modelType === 1 && (
+            <FormItem className="SpecialAuditCSS">
+              <div style={{ width: '100%', marginLeft: '34px', color: 'rgba(0, 0, 0, 0.85)' }}>
+                批量发布认证结果（申请方式为手机端的认证）
+              </div>
+            </FormItem>
+          )}
           {this.props.modelType === 2 ? (
             <FormItem label="*底表类型" {...formItemLayout} className="SpecialAuditCSS">
               {getFieldDecorator('exportTableType', {
@@ -328,6 +337,30 @@ class AuditListForm extends Component {
                   <Radio value={1}>通过</Radio>
                   <Radio value={2}>不通过</Radio>
                 </RadioGroup>
+              )}
+            </FormItem>
+          ) : null}
+          {this.props.modelType === 3 ? (
+            <FormItem {...formItemLayout}>
+              {getFieldDecorator('remark', {
+                initialValue: this.props.record.remark,
+                rules: [
+                  {
+                    validator(rule, value, callback) {
+                      if (value && value.length > 200) {
+                        callback({ message: '限制200字以内!' });
+                      } else {
+                        callback();
+                      }
+                    },
+                  },
+                ],
+              })(
+                <TextArea
+                  placeholder="请输入通过/不通过原因，限制200字以内"
+                  autosize={{ minRows: 3, maxRows: 3 }}
+                  style={{ width: 380, marginLeft: '50px' }}
+                />
               )}
             </FormItem>
           ) : null}

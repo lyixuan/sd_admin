@@ -654,6 +654,39 @@ export const getRouterData = app => {
       name: '编辑调整',
     },
     // ---- 申诉  学分调整 end -----
+    '/excellent/excellentCaseList': {
+      component: dynamicWrapper(app, ['excellent'], () =>
+        import('../routes/ExcellentCase/ExcellentCase')
+      ),
+      name: '创新与优秀案例',
+    },
+    '/excellent/addExcellentCase': {
+      component: dynamicWrapper(app, ['excellent'], () =>
+        import('../routes/ExcellentCase/AddExcellentCase')
+      ),
+      bread: {
+        name: '创新与优秀案例',
+        path: '/excellent/excellentCaseList',
+      },
+      name: '添加申请',
+    },
+    '/excellent/checkCertifiedDetail': {
+      component: dynamicWrapper(app, ['excellent'], () =>
+        import('../routes/ExcellentCase/ExcellentDetail')
+      ),
+      bread: {
+        name: '创新与优秀案例',
+        path: '/excellent/excellentCaseList',
+      },
+      name: '认证详情',
+    },
+    // ---- 其他配置  报名通道文案设置 end -----
+    '/otherConfig/officialSet': {
+      component: dynamicWrapper(app, ['otherConfig'], () =>
+        import('../routes/OtherConfig/OfficialSet')
+      ),
+      name: '文案配置',
+    },
   };
   // Get name from ./menu.js or just set it in the router data.
   // const menuData = getFlatMenuData(getMenuData());

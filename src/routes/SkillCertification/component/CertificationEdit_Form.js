@@ -1,13 +1,31 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, Radio, Upload, Modal, message } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Row,
+  Col,
+  Select,
+  Spin,
+  Radio,
+  Upload,
+  Modal,
+  message,
+  Checkbox,
+} from 'antd';
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
 import styles from '../certification.css';
+import { checkoutToken } from '../../../utils/Authorized';
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
+let isPng = false;
+const headerObj = { authorization: checkoutToken() };
 
 class CertificationEdit_Form extends Component {
   constructor(props) {
@@ -19,8 +37,10 @@ class CertificationEdit_Form extends Component {
       previewImage2: '',
       fileList1: [],
       fileList2: [],
+      plainOptions: BI_Filter('Certification_ONLYUSER|id->value,name->label'),
     };
     this.id = null;
+    this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
   }
 
   UNSAFE_componentWillReceiveProps(nexprops) {
@@ -42,6 +62,11 @@ class CertificationEdit_Form extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.id = null;
+    this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     let { fileList1, fileList2 } = this.state;
@@ -49,15 +74,11 @@ class CertificationEdit_Form extends Component {
       fileList1.length === 0 ? this.props.jumpFunction.certification.fileList1 : fileList1;
     fileList2 =
       fileList2.length === 0 ? this.props.jumpFunction.certification.fileList2 : fileList2;
-    if (fileList1.length === 0 || fileList2.length === 0) {
-      message.error('已获得或未获得图片是必传项，图片仅支持PNG格式，请重新选择！');
-    } else {
-      this.props.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          this.props.handleSubmit(values, fileList1, fileList2);
-        }
-      });
-    }
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.handleSubmit(values, fileList1, fileList2);
+      }
+    });
   };
 
   handleCancel1 = () => {
@@ -81,19 +102,23 @@ class CertificationEdit_Form extends Component {
   };
 
   commonFun = (info = {}, type = 1) => {
-    const { file = {} } = info;
-    const oneList = info.fileList;
-    const fileList = oneList.slice(-1);
-    if (type === 1) {
-      this.setState({ fileList1: fileList });
-    } else {
-      this.setState({ fileList2: fileList });
-    }
-    if (file.response) {
-      if (file.response.code === 2000) {
-        this.props.saveFileList(fileList, type);
+    let { fileList } = info;
+    const { saveFileList } = this.props;
+    if (isPng) {
+      fileList = fileList.slice(-1);
+      if (type === 1) {
+        this.setState({ fileList1: fileList });
       } else {
-        message.error(file.response.msg);
+        this.setState({ fileList2: fileList });
+      }
+    }
+    if (info.file.response) {
+      if (info.file.response.code === 2000) {
+        if (saveFileList) {
+          saveFileList(fileList, type);
+        }
+      } else {
+        message.error(info.file.response.msg);
       }
     }
   };
@@ -106,11 +131,11 @@ class CertificationEdit_Form extends Component {
   };
 
   beforeUpload = file => {
-    const isPNG = file.type === 'image/png';
-    if (!isPNG) {
+    isPng = file.type === 'image/png';
+    if (!isPng) {
       message.error('图片仅支持PNG格式!');
     }
-    return isPNG;
+    return isPng;
   };
 
   wordFun = text => {
@@ -121,10 +146,29 @@ class CertificationEdit_Form extends Component {
     );
   };
 
+  // 适用用户修改的标记修改
+  suitSelectChange = value => {
+    this.suitFlag = value;
+    this.props.form.setFieldsValue({
+      userTypeFormList: [],
+    });
+  };
+
+  dataStruct = (value = []) => {
+    const list = [];
+    value.map(item => {
+      if (item.userType) {
+        list.push(item.userType);
+      }
+      return 0;
+    });
+    return list;
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { submit, itemDetal } = this.props.jumpFunction;
-    const { getItemById = {} } = this.props.jumpFunction.certification;
+    const { submit, itemDetal, certification = {} } = this.props.jumpFunction;
+    const { getItemById = {} } = certification;
     const {
       orderNum = null,
       name = null,
@@ -135,12 +179,16 @@ class CertificationEdit_Form extends Component {
       assessStyle = null,
       assessStandard = null,
       id = null,
+      allowUpdateAttachment = false,
+      applyType = 100,
+      fitUser = 100,
+      certificationOrgMapList = [],
     } = getItemById;
     this.id = id;
     const disabled = true;
-    const { TextArea } = Input;
+    const suitFlag = this.suitFlag || 100;
+    const onlyUserList = this.dataStruct(certificationOrgMapList);
     const { previewVisible1, previewImage1, previewVisible2, previewImage2 } = this.state;
-    const bol = true;
     let { fileList1, fileList2 } = this.state;
     fileList1 =
       fileList1.length === 0 ? this.props.jumpFunction.certification.fileList1 : fileList1;
@@ -246,6 +294,7 @@ class CertificationEdit_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview1}
                       fileList={fileList1}
@@ -267,7 +316,7 @@ class CertificationEdit_Form extends Component {
             </Col>
           </Row>
 
-          <Row>
+          <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;考核形式">
                 {getFieldDecorator('assessStyle', {
@@ -295,6 +344,7 @@ class CertificationEdit_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}
@@ -316,16 +366,16 @@ class CertificationEdit_Form extends Component {
             </Col>
           </Row>
 
-          <Row>
+          <Row style={{ marginBottom: '20px' }}>
             <Col span={8} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="&nbsp;&nbsp;是否停用">
                 {getFieldDecorator('isDisable', {
-                  initialValue: status === 3 ? bol : false,
+                  initialValue: status === 3 ? disabled : false,
                 })(
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={bol}>
+                    <Radio name="privilege" value={disabled}>
                       是
                     </Radio>
                     <Radio name="privilege" value={false}>
@@ -343,13 +393,129 @@ class CertificationEdit_Form extends Component {
                   <RadioGroup
                     style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
                   >
-                    <Radio name="privilege" value={bol}>
+                    <Radio name="privilege" value={disabled}>
                       是
                     </Radio>
                     <Radio name="privilege" value={false}>
                       否
                     </Radio>
                   </RadioGroup>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*申请方式">
+                {getFieldDecorator('applyType', {
+                  initialValue: applyType || 100,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '申请方式为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <Select style={{ width: 280, height: 32 }} disabled={disabled}>
+                    {window.BI_Filter(`Certification_APPLYMETHOD`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*允许添加附件">
+                {getFieldDecorator('allowUpdateAttachment', {
+                  initialValue: allowUpdateAttachment ? 1 : 0,
+                  rules: [],
+                })(
+                  <RadioGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                  >
+                    <Radio
+                      name="allowUpdateAttachment"
+                      value={1}
+                      disabled={Number(applyType) === 100 ? disabled : false}
+                    >
+                      是
+                    </Radio>
+                    <Radio
+                      name="allowUpdateAttachment"
+                      value={0}
+                      disabled={Number(applyType) === 100 ? disabled : false}
+                    >
+                      否
+                    </Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*适用用户">
+                {getFieldDecorator('fitUser', {
+                  initialValue: fitUser ? Number(fitUser) : 100,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '适用用户为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <Select style={{ width: 280, height: 32 }} onChange={this.suitSelectChange}>
+                    {window.BI_Filter(`Certification_SUITUSER`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*指定用户">
+                {getFieldDecorator('userTypeFormList', {
+                  initialValue: onlyUserList,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (suitFlag === 100) {
+                          if (!value || value.length <= 0) {
+                            callback({ message: '指定用户为必填项，至少选择一项！' });
+                          } else {
+                            callback();
+                          }
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <CheckboxGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                    options={this.state.plainOptions}
+                    className={common.checkboxGroup}
+                    disabled={
+                      suitFlag ? suitFlag === 200 : Number(fitUser) === 200 ? disabled : false
+                    }
+                  />
                 )}
               </FormItem>
             </Col>

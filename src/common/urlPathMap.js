@@ -59,7 +59,10 @@ const urlPathMap = {
     name: '导出底表',
   },
   '/skillCertification/certificationPublish': {
-    name: '发布认证',
+    name: '批量发布认证',
+  },
+  '/skillCertification/certificationPublishOne': {
+    name: '发布单一认证',
   },
   '/skillCertification/certificationDelete': {
     name: '认证删除',
@@ -72,6 +75,9 @@ const urlPathMap = {
   },
   '/appeal/scoreAdjustDel': {
     name: '删除学分调整',
+  },
+  '/otherConfig/officialSet': {
+    name: '文案编辑',
   },
 };
 export { urlPathMap };

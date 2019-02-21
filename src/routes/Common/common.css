@@ -12,6 +12,10 @@
   margin: 0;
 }
 
+:global(.has-error .ant-form-explain) {
+  text-align: left !important;
+}
+
 :global(.ant-table-tbody  tr  td) {
   padding: 0 10px !important;
   height: 44px;
@@ -541,3 +545,7 @@
 }
 /* -------score change end------------ */
 
+/* 调整textArea的异常提示与上面元素的间距和其他元素一直 */
+:global(.textAreaErrorSpan .ant-form-explain){
+  margin-top: 2px;
+}

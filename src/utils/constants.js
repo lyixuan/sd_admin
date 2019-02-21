@@ -121,10 +121,27 @@ export const RECOMMEND_LEVEL = [
   { id: 1, name: '60至120分钟' },
   { id: 2, name: '120分钟以上' },
 ];
+
+// 认证管理申请方式
+export const Certification_APPLYMETHOD = [{ id: 200, name: '电脑端' }, { id: 100, name: '手机端' }];
+// 认证管理适用用户
+export const Certification_SUITUSER = [
+  { id: 100, name: '指定用户' },
+  { id: 200, name: '岗位不限' },
+];
+// 认证管理指定用户
+export const Certification_ONLYUSER = [
+  { id: 'class', name: '班主任' },
+  { id: 'group', name: '运营长' },
+];
+
 // 需要用于global filter 进行数据筛选的，必须加到default里
 export default {
   Certification_TYPE,
   Certification_TIMEAREA,
+  Certification_APPLYMETHOD,
+  Certification_SUITUSER,
+  Certification_ONLYUSER,
   TIME_LOCAL,
   ADMIN_AUTH_LIST,
   ADMIN_USER,

@@ -41,6 +41,8 @@ export default {
     countItemByStatus: {},
     fileList1: [],
     fileList2: [],
+    picFile1: [],
+    picFile2: [],
   },
 
   effects: {
@@ -159,9 +161,11 @@ export default {
       if (type === 1) {
         const fileList1 = fileList;
         yield put({ type: 'save', payload: { fileList1 } });
-      } else {
+      } else if (type === 2) {
         const fileList2 = fileList;
         yield put({ type: 'save', payload: { fileList2 } });
+      } else {
+        yield put({ type: 'save', payload: { fileList1: [], fileList2: [] } });
       }
     },
   },

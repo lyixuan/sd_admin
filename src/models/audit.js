@@ -5,6 +5,7 @@ import {
   getAuditList,
   exportBottomTable,
   auditPublish,
+  auditPublishSingle,
   submitExamineResult,
   findCertificationList,
   auditLogList,
@@ -105,12 +106,23 @@ export default {
       const response = yield call(auditPublish, payload.params);
       const backparams = payload.callbackParams;
       if (response.code === 2000) {
-        yield put({ type: 'showModel', payload: { visible: false } });
+        message.success('发布成功');
         yield put({ type: 'getAuditList', payload: { obj: backparams } });
       } else {
         message.error(response.msg);
       }
       yield put({ type: 'publicSubmitting', payload: { publicSubmitting: false } });
+    },
+    // 发布认证-单一发布
+    *auditSinglePublish({ payload }, { call, put }) {
+      const response = yield call(auditPublishSingle, payload.params);
+      const backparams = payload.callbackParams;
+      if (response.code === 2000) {
+        message.success('发布成功');
+        yield put({ type: 'getAuditList', payload: { obj: backparams } });
+      } else {
+        message.error(response.msg);
+      }
     },
     // 认证审核
     *submitExamineResult({ payload }, { call, put }) {
@@ -118,7 +130,7 @@ export default {
       const response = yield call(submitExamineResult, payload.params);
       const backparams = payload.callbackParams;
       if (response.code === 2000) {
-        yield put({ type: 'showModel', payload: { visible: false } });
+        message.success('认证审核成功');
         yield put({ type: 'getAuditList', payload: { obj: backparams } });
       } else {
         message.error(response.msg);

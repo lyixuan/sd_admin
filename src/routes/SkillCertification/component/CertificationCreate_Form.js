@@ -1,12 +1,32 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col, Select, Spin, Upload, Modal, message } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Row,
+  Radio,
+  Checkbox,
+  Col,
+  Select,
+  Spin,
+  Upload,
+  Modal,
+  message,
+} from 'antd';
 import common from '../../Common/common.css';
 import { uploadIcon } from '../../../services/api';
 import styles from '../certification.css';
+import { checkoutToken } from '../../../utils/Authorized';
+
+const headerObj = { authorization: checkoutToken() };
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 const { Option } = Select;
+const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
+let isPng = false;
 
 class CertificationCreate_Form extends Component {
   constructor(props) {
@@ -16,25 +36,34 @@ class CertificationCreate_Form extends Component {
       previewImage1: '',
       previewVisible2: false,
       previewImage2: '',
-      fileList1: [],
-      fileList2: [],
+      plainOptions: BI_Filter('Certification_ONLYUSER|id->value,name->label'),
+      defaultCheckedList: [],
+      fileList1: this.props.fileList1,
+      fileList2: this.props.fileList2,
     };
+    this.applyFlag = null; // 标记申请方式是电脑端还是手机端
+    this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
+  }
+
+  componentWillUnmount() {
+    this.applyFlag = null; // 标记申请方式是电脑端还是手机端
+    this.suitFlag = null; // 标记适用用户是指定用户还是岗位不限
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    const { fileList1 = [], fileList2 = [] } = this.state;
-    const file1 = fileList1.length;
-    const file2 = fileList2.length;
-    if (file1 === 0 || file2 === 0) {
-      message.error('已获得或未获得图片是必传项，图片仅支持PNG格式，请重新选择！');
-    } else {
-      this.props.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        const { fileList1 = [], fileList2 = [] } = this.state;
+        if (fileList1.length === 0) {
+          message.error('已获得认证图标为必填项，请上传!');
+        } else if (fileList2.length === 0) {
+          message.error('未获得认证图标为必填项，请上传!');
+        } else {
           this.props.handleSubmit(values, fileList1, fileList2);
         }
-      });
-    }
+      }
+    });
   };
 
   deleteDispatch = (val = [], type = 1) => {
@@ -57,10 +86,18 @@ class CertificationCreate_Form extends Component {
   // 删除已获得认证图标
   handleCancel1 = () => {
     this.setState({ previewVisible1: false });
+    const { saveFileList } = this.props;
+    if (saveFileList) {
+      saveFileList([], 1);
+    }
   };
   // 删除未获得认证图标
   handleCancel2 = () => {
     this.setState({ previewVisible2: false });
+    const { saveFileList } = this.props;
+    if (saveFileList) {
+      saveFileList([], 2);
+    }
   };
 
   handlePreview1 = file => {
@@ -77,16 +114,24 @@ class CertificationCreate_Form extends Component {
   };
 
   commonFun = (info = {}, type = 1) => {
-    const { fileList = [], file = {} } = info;
-    if (file.response) {
-      if (file.response.code === 2000) {
-        if (type === 1) {
-          this.setState({ fileList1: fileList });
-        } else {
-          this.setState({ fileList2: fileList });
+    // tip 目前支持上传一个文件
+    let { fileList } = info;
+    const { saveFileList } = this.props;
+    if (isPng) {
+      fileList = fileList.slice(-1);
+      if (type === 1) {
+        this.setState({ fileList1: fileList });
+      } else {
+        this.setState({ fileList2: fileList });
+      }
+    }
+    if (info.file.response) {
+      if (info.file.response.code === 2000) {
+        if (saveFileList) {
+          saveFileList(fileList, type);
         }
       } else {
-        message.error(file.response.msg);
+        message.error(info.file.response.msg);
       }
     }
   };
@@ -100,24 +145,41 @@ class CertificationCreate_Form extends Component {
   };
 
   beforeUpload = file => {
-    const isPNG = file.type === 'image/png';
-    if (!isPNG) {
+    isPng = file.type === 'image/png';
+    if (!isPng) {
       message.error('图片仅支持PNG格式!');
     }
-    return isPNG;
+    return isPng;
+  };
+
+  // 申请方式修改的标记修改
+  handleSelectChange = value => {
+    this.applyFlag = value;
+    this.props.form.setFieldsValue({
+      allowUpdateAttachment: 0,
+    });
+  };
+
+  // 适用用户修改的标记修改
+  suitSelectChange = value => {
+    this.suitFlag = value;
+    this.props.form.setFieldsValue({
+      userTypeFormList: [],
+    });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const { submit } = this.props.jumpFunction;
-    const { TextArea } = Input;
+    const disabled = true;
+    const { suitFlag } = this;
     const {
       previewVisible1,
       previewImage1,
       previewVisible2,
       previewImage2,
-      fileList2,
       fileList1,
+      fileList2,
     } = this.state;
     const uploadButton = (
       <Button
@@ -141,7 +203,7 @@ class CertificationCreate_Form extends Component {
                   rules: [
                     {
                       validator(rule, value, callback) {
-                        const reg = /^\d{3,6}$/; // /^0?1[3|4|5|8|7][0-9]\d{8}$/
+                        const reg = /^\d{3,6}$/;
                         if (!value) {
                           callback({ message: '排序为必填项，请填写!' });
                         } else if (!reg.test(value) && value) {
@@ -233,9 +295,10 @@ class CertificationCreate_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview1}
-                      // fileList={fileList1}
+                      fileList={fileList1}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange1}
                       data={{ type: 1 }}
@@ -292,11 +355,13 @@ class CertificationCreate_Form extends Component {
                   <div className={styles.divContent}>
                     <Upload
                       action={uploadIcon()}
+                      headers={headerObj}
                       listType="picture-card"
                       onPreview={this.handlePreview2}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange2}
                       data={{ type: 2 }}
+                      fileList={fileList2}
                       onRemove={() => this.deleteIcon(2)}
                     >
                       {Array.isArray(fileList2)
@@ -311,6 +376,121 @@ class CertificationCreate_Form extends Component {
               </FormItem>
             </Col>
           </Row>
+
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*申请方式">
+                {getFieldDecorator('applyType', {
+                  initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '申请方式为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <Select style={{ width: 280, height: 32 }} onChange={this.handleSelectChange}>
+                    {window.BI_Filter(`Certification_APPLYMETHOD`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*允许添加附件">
+                {getFieldDecorator('allowUpdateAttachment', {
+                  initialValue: 0,
+                  rules: [],
+                })(
+                  <RadioGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                  >
+                    <Radio
+                      name="allowUpdateAttachment"
+                      value={1}
+                      disabled={this.applyFlag === 100 ? disabled : false}
+                    >
+                      是
+                    </Radio>
+                    <Radio
+                      name="allowUpdateAttachment"
+                      value={0}
+                      disabled={this.applyFlag === 100 ? disabled : false}
+                    >
+                      否
+                    </Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
+          <Row style={{ marginBottom: '20px' }}>
+            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+              <FormItem label="*适用用户">
+                {getFieldDecorator('fitUser', {
+                  initialValue: null,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (!value) {
+                          callback({ message: '适用用户为必填项，请选择！' });
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <Select style={{ width: 280, height: 32 }} onChange={this.suitSelectChange}>
+                    {window.BI_Filter(`Certification_SUITUSER`).map(item => (
+                      <Option value={Number(item.id)} key={Number(item.id)}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12} offset={3} style={{ textAlign: 'right' }}>
+              <FormItem label="*指定用户">
+                {getFieldDecorator('userTypeFormList', {
+                  initialValue: this.state.defaultCheckedList,
+                  rules: [
+                    {
+                      validator(rule, value, callback) {
+                        if (suitFlag === 100) {
+                          if (!value || value.length <= 0) {
+                            callback({ message: '指定用户为必填项，至少选择一项！' });
+                          } else {
+                            callback();
+                          }
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                })(
+                  <CheckboxGroup
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                    options={this.state.plainOptions}
+                    className={common.checkboxGroup}
+                    disabled={this.suitFlag === 200 ? disabled : false}
+                  />
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+
           <Row style={{ marginTop: '20px' }}>
             <Col span={6} offset={17} style={{ textAlign: 'right' }}>
               <FormItem>

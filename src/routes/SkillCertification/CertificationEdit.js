@@ -35,14 +35,25 @@ class CertificationEdit extends Component {
     });
   }
 
+  componentWillUnmount() {
+    // 点击添加的时候清除文件
+    this.saveFileList([], 3); // 1代表已获得图标，2是未获得，3是全部图标
+  }
+
   // 点击确定按钮请求接口
   handleSubmit = (values, fileList1 = [], fileList2 = []) => {
     const { response } = fileList1[0] ? fileList1[0] : '';
     const obtainedIcon = response.data ? response.data : '';
     const file2 = fileList2[0] ? fileList2[0].response : '';
     const originalIcon = file2 ? file2.data : '';
-
     const { id = 1 } = this.state;
+    const { userTypeFormList, fitUser, applyType, allowUpdateAttachment } = values;
+    const uerTypeLen = fitUser === 100 ? userTypeFormList.length : 0;
+    const turnObj =
+      uerTypeLen === 2
+        ? [{ userType: 'class' }, { userType: 'group' }]
+        : userTypeFormList[0] === 'class' ? [{ userType: 'class' }] : [{ userType: 'group' }];
+    const jsonList = fitUser === 100 ? turnObj : [];
     const saveOrModifyItemParams = {
       id: Number(id),
       orderNum: Number(values.orderNum),
@@ -55,6 +66,11 @@ class CertificationEdit extends Component {
       originalIcon,
       isDisable: values.isDisable,
       enabledSubDefine: values.enabledSubDefine,
+
+      userTypeFormList: jsonList,
+      fitUser,
+      applyType,
+      allowUpdateAttachment,
     };
     this.props.dispatch({
       type: 'certification/saveOrModifyItem',

@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Form } from 'antd';
+import { Table, Button, Form, Popconfirm } from 'antd';
 import { routerRedux } from 'dva/router';
 import ContentLayout from '../../layouts/ContentLayout';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
@@ -14,7 +14,12 @@ const SearchForm = Form.create()(AuditListForm);
 
 @connect(({ audit, loading }) => ({
   audit,
-  loading: loading.effects['audit/getAuditList'],
+  loading:
+    loading.effects['audit/getAuditList'] ||
+    loading.effects['audit/exportBottomTable'] ||
+    loading.effects['audit/auditPublish'] ||
+    loading.effects['audit/submitExamineResult'] ||
+    loading.effects['audit/auditSinglePublish'],
 }))
 class AuditList extends Component {
   constructor(props) {
@@ -61,6 +66,25 @@ class AuditList extends Component {
     sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
   };
 
+  // 查看
+  onShowDetail = val => {
+    this.props.setRouteUrlParams('/excellent/checkCertifiedDetail', {
+      id: val.id,
+    });
+    sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
+  };
+
+  // 发布一个项目
+  onPublish = record => {
+    this.props.dispatch({
+      type: 'audit/auditSinglePublish',
+      payload: {
+        params: { certificationDetailId: record.id },
+        callbackParams: this.params,
+      },
+    });
+  };
+
   // 导入认证
   importExcel = () => {
     this.props.dispatch(routerRedux.push('/skillCertification/auditImport'));
@@ -98,6 +122,7 @@ class AuditList extends Component {
         payload: { params, callbackParams: this.params },
       });
     }
+    this.handleCancel();
   };
 
   handleCancel = () => {
@@ -136,6 +161,7 @@ class AuditList extends Component {
     const columns = [
       {
         title: '编号',
+        width: 60,
         dataIndex: 'certificationInfoId',
       },
       {
@@ -144,10 +170,12 @@ class AuditList extends Component {
       },
       {
         title: '组织',
+        width: 150,
         dataIndex: 'orgName',
       },
       {
         title: '认证项目',
+        width: 150,
         dataIndex: 'certificationItemName',
       },
       {
@@ -177,14 +205,34 @@ class AuditList extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
-        width: 163,
+        width: 150,
         render: (text, record) => {
           return (
             <div>
+              {record.applyTypeName === '电脑端' && (
+                <AuthorizedButton authority="/excellent/checkCertifiedDetail">
+                  <span
+                    style={{
+                      color: '#52C9C2',
+                      marginRight: 10,
+                      cursor: 'pointer',
+                      display: 'inline-block',
+                    }}
+                    onClick={() => this.onShowDetail(record)}
+                  >
+                    查看
+                  </span>
+                </AuthorizedButton>
+              )}
               {record.signStatus === 1 && (
                 <AuthorizedButton authority="/skillCertification/auditApply">
                   <span
-                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                    style={{
+                      color: '#52C9C2',
+                      marginRight: 10,
+                      cursor: 'pointer',
+                      display: 'inline-block',
+                    }}
                     onClick={() => this.onSign(record)}
                   >
                     报名审核
@@ -194,16 +242,42 @@ class AuditList extends Component {
               {record.signResult === 1 && (
                 <AuthorizedButton authority="/skillCertification/auditCertify">
                   <span
-                    style={{ color: '#52C9C2', marginRight: 16, cursor: 'pointer' }}
+                    style={{
+                      color: '#52C9C2',
+                      marginRight: 10,
+                      cursor: 'pointer',
+                      display: 'inline-block',
+                    }}
                     onClick={() => this.showModal(3, record)}
                   >
                     认证审核
                   </span>
                 </AuthorizedButton>
               )}
+              {record.examineStatus === 2 &&
+                !record.published && (
+                  <AuthorizedButton authority="/skillCertification/certificationPublishOne">
+                    <Popconfirm
+                      placement="topRight"
+                      title="是否确定发布该条认证审核结果？"
+                      onConfirm={() => this.onPublish(record)}
+                    >
+                      <span
+                        style={{
+                          color: '#52C9C2',
+                          marginRight: 10,
+                          cursor: 'pointer',
+                          display: 'inline-block',
+                        }}
+                      >
+                        发布
+                      </span>
+                    </Popconfirm>
+                  </AuthorizedButton>
+                )}
               <AuthorizedButton authority="/skillCertification/auditRecord">
                 <span
-                  style={{ color: '#52C9C2', cursor: 'pointer' }}
+                  style={{ color: '#52C9C2', cursor: 'pointer', display: 'inline-block' }}
                   onClick={() => this.onRecord(record)}
                 >
                   审核记录

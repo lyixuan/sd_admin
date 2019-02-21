@@ -785,6 +785,14 @@ export async function auditPublish(params) {
   });
 }
 
+// 发布认证-单个发布
+export async function auditPublishSingle(params) {
+  return request(`${HOST}/cem/singlePublish`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
 // 校验审核excel文件 - 导入认证
 export async function verifyAuditDataExcel(params) {
   return request(`${HOST}/cem/verifyDataFromExcel`, {
@@ -804,6 +812,13 @@ export async function auditSaveExcel(params) {
 // 认证项目列表
 export async function findCertificationList() {
   return request(`${HOST}/certificationItem/findAllItemList`, {
+    method: 'GET',
+  });
+}
+
+// 获取优秀案例申请详情
+export async function excellentCaseApplyDetail(params) {
+  return request(`${HOST}/innovationExcellent/detail?${stringify(params)}`, {
     method: 'GET',
   });
 }
@@ -897,6 +912,12 @@ export async function certificationModify(params) {
 // 上传图片地址
 export function uploadIcon() {
   return `${HOST}/certificationItem/uploadIcon`;
+}
+
+// 优秀案例上传附件
+
+export function uploadAttachment() {
+  return `${HOST}/innovationExcellent/uploadAttachment`;
 }
 
 /*
@@ -1012,3 +1033,36 @@ export async function organizationList(params) {
 }
 
 // ------------------- 学分调整 end -------------------
+
+// ------------------- 创新与优秀案例 -------------------
+export async function excellentList(params) {
+  return request(`${HOST}/innovationExcellent/list?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function getPreInfo(params) {
+  return request(`${HOST}/innovationExcellent/getPreInfo?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export function uploadPic() {
+  return `${HOST}/innovationExcellent/uploadPic`;
+}
+export async function excellentAdd(params) {
+  return request(`${HOST}/innovationExcellent/add`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// ------------------- 其他配置 -------------------
+export async function getSignUpMessage(params) {
+  return request(`${HOST}/certificationItem/getSignUpMessage?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function saveSignUpMessage(params) {
+  return request(`${HOST}/certificationItem/saveSignUpMessage`, {
+    method: 'POST',
+    body: params,
+  });
+}
