@@ -206,7 +206,12 @@ class AuditList extends Component {
               {record.applyTypeName === '电脑端' && (
                 <AuthorizedButton authority="/excellent/checkCertifiedDetail">
                   <span
-                    style={{ color: '#52C9C2', marginRight: 10, cursor: 'pointer', width: 25 }}
+                    style={{
+                      color: '#52C9C2',
+                      marginRight: 10,
+                      cursor: 'pointer',
+                      display: 'inline-block',
+                    }}
                     onClick={() => this.onShowDetail(record)}
                   >
                     查看
@@ -216,7 +221,12 @@ class AuditList extends Component {
               {record.signStatus === 1 && (
                 <AuthorizedButton authority="/skillCertification/auditApply">
                   <span
-                    style={{ color: '#52C9C2', marginRight: 10, cursor: 'pointer', width: 55 }}
+                    style={{
+                      color: '#52C9C2',
+                      marginRight: 10,
+                      cursor: 'pointer',
+                      display: 'inline-block',
+                    }}
                     onClick={() => this.onSign(record)}
                   >
                     报名审核
@@ -226,7 +236,12 @@ class AuditList extends Component {
               {record.signResult === 1 && (
                 <AuthorizedButton authority="/skillCertification/auditCertify">
                   <span
-                    style={{ color: '#52C9C2', marginRight: 10, cursor: 'pointer', width: 55 }}
+                    style={{
+                      color: '#52C9C2',
+                      marginRight: 10,
+                      cursor: 'pointer',
+                      display: 'inline-block',
+                    }}
                     onClick={() => this.showModal(3, record)}
                   >
                     认证审核
@@ -242,7 +257,12 @@ class AuditList extends Component {
                       onConfirm={() => this.onPublish(record)}
                     >
                       <span
-                        style={{ color: '#52C9C2', marginRight: 10, cursor: 'pointer', width: 25 }}
+                        style={{
+                          color: '#52C9C2',
+                          marginRight: 10,
+                          cursor: 'pointer',
+                          display: 'inline-block',
+                        }}
                       >
                         发布
                       </span>
@@ -251,7 +271,7 @@ class AuditList extends Component {
                 )}
               <AuthorizedButton authority="/skillCertification/auditRecord">
                 <span
-                  style={{ color: '#52C9C2', cursor: 'pointer', width: 55 }}
+                  style={{ color: '#52C9C2', cursor: 'pointer', display: 'inline-block' }}
                   onClick={() => this.onRecord(record)}
                 >
                   审核记录

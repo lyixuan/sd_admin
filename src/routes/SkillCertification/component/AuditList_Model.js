@@ -173,7 +173,7 @@ class AuditListForm extends Component {
         <Form layout={formLayout}>
           {this.props.modelType === 1 && (
             <FormItem className="SpecialAuditCSS">
-              <div style={{ width: '100%', marginLeft: '25px' }}>
+              <div style={{ width: '100%', marginLeft: '34px', color: 'rgba(0, 0, 0, 0.85)' }}>
                 批量发布认证结果（申请方式为手机端的认证）
               </div>
             </FormItem>
