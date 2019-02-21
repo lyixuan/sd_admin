@@ -48,7 +48,7 @@ export function columnsFn(callback) {
         return (
           <>
             {text}
-            {!record.authRemark ? null : (
+            {(text === '通过' || text === '未通过' || text === '不通过') && record.authRemark ? (
               <Popover
                 content={<div className={style.bline}>{record.authRemark}</div>}
                 trigger="click"
@@ -59,7 +59,7 @@ export function columnsFn(callback) {
                   style={{ marginLeft: '10px', lineHeight: '88px' }}
                 />
               </Popover>
-            )}
+            ) : null}
           </>
         );
       },
