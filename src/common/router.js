@@ -597,7 +597,16 @@ export const getRouterData = app => {
       },
       name: '审核记录',
     },
-
+    '/skillCertification/checkCertifiedDetail': {
+      component: dynamicWrapper(app, ['excellent'], () =>
+        import('../routes/ExcellentCase/ExcellentDetail')
+      ),
+      bread: {
+        name: '审核管理',
+        path: '/skillCertification/auditList',
+      },
+      name: '认证详情',
+    },
     // 认证管理
     '/skillCertification/certificationList': {
       component: dynamicWrapper(app, ['certification'], () =>

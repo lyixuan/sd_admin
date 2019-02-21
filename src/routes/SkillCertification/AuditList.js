@@ -68,7 +68,7 @@ class AuditList extends Component {
 
   // 查看
   onShowDetail = val => {
-    this.props.setRouteUrlParams('/excellent/checkCertifiedDetail', {
+    this.props.setRouteUrlParams('/skillCertification/checkCertifiedDetail', {
       id: val.id,
     });
     sessionStorage.setItem('tempFrom', JSON.stringify(this.oriSearchParams));
@@ -210,7 +210,7 @@ class AuditList extends Component {
           return (
             <div>
               {record.applyTypeName === '电脑端' && (
-                <AuthorizedButton authority="/excellent/checkCertifiedDetail">
+                <AuthorizedButton authority="/skillCertification/checkCertifiedDetail">
                   <span
                     style={{
                       color: '#52C9C2',
