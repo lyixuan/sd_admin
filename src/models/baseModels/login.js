@@ -42,11 +42,15 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const { mail, password, autoLogin } = payload;
+      const { mail, password, autoLogin, redirectUrl } = payload;
       const response = yield call(userLogin, { mail, password });
       const saveObj = handleLogin({ mail, password, autoLogin }, response);
       if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
-        yield put(routerRedux.push('/'));
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+        } else {
+          yield put(routerRedux.push('/'));
+        }
       }
       yield put({
         type: 'changeLoginStatus',

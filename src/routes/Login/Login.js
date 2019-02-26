@@ -56,11 +56,15 @@ export default class LoginPage extends Component {
     if (!err) {
       const { autoLogin } = this.state;
       const mail = `${values.mail}@sunlands.com`;
+      // 判断url来源，是否从督学模块打开的登录
+      const query = this.props.getUrlParams() || {};
+      const { redirectUrl = null } = query;
       this.props.dispatch({
         type: 'login/login',
         payload: {
           ...values,
           mail,
+          redirectUrl,
           autoLogin,
         },
       });
