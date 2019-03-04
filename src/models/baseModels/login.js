@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-// import { Base64 } from 'js-base64';
+import { Base64 } from 'js-base64';
 import { userLogin, userLogout, CurrentUserListRole, userChangeRole } from '@/services/api';
 import { setAuthority, setAuthoritySeccion, removeStorge, getAuthority } from 'utils/authority';
 import { handleSuccess } from 'utils/Handle';
@@ -47,8 +47,19 @@ export default {
       const response = yield call(userLogin, { mail, password });
       const saveObj = handleLogin({ mail, password, autoLogin }, response);
       if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
-        if (redirectUrl) {
-          window.location.href = redirectUrl;
+        if (redirectUrl && typeof redirectUrl === 'string') {
+          const redirectParams = JSON.parse(Base64.decode(redirectUrl));
+          const { data: { userId, token } } = saveObj;
+          const { host, pathname, type } = redirectParams;
+          let url = host; // 回调地址
+          if (type === 'inspector') {
+            // 判断是否是督学模块
+            const userInfo = Base64.encode(JSON.stringify({ mail, password, userId, token })); // 正常情况下应当传递userId,和token
+            url = `${url}/inspector/user/${userInfo}?pathname=${pathname}`;
+          } else {
+            url = `${url}/${pathname}?pathname=${pathname}`;
+          }
+          window.location.href = url;
         } else {
           yield put(routerRedux.push('/'));
         }

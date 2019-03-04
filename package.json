@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "precommit": "npm run lint-staged",
-    "start": "cross-env API_TYPE=development NODE_ENV=development man-webpack dev",
+    "start": "PORT=8088 cross-env API_TYPE=development NODE_ENV=development man-webpack dev",
     "start:pro": "cross-env API_TYPE=production man-webpack dev",
     "start:no-proxy": "cross-env NO_PROXY=true man-webpack dev",
     "build": "cross-env API_TYPE=production man-webpack build",
