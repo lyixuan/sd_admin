@@ -1,5 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
+// import { Base64 } from 'js-base64';
 import { userLogin, userLogout, CurrentUserListRole, userChangeRole } from '@/services/api';
 import { setAuthority, setAuthoritySeccion, removeStorge, getAuthority } from 'utils/authority';
 import { handleSuccess } from 'utils/Handle';
