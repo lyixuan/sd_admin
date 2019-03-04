@@ -6,8 +6,8 @@
   "scripts": {
     "precommit": "npm run lint-staged",
     "start": "PORT=8088 cross-env API_TYPE=development NODE_ENV=development man-webpack dev",
-    "start:pro": "cross-env API_TYPE=production man-webpack dev",
-    "start:no-proxy": "cross-env NO_PROXY=true man-webpack dev",
+    "start:pro": "PORT=8088 cross-env API_TYPE=production man-webpack dev",
+    "start:no-proxy": "PORT=8088 cross-env NO_PROXY=true man-webpack dev",
     "build": "cross-env API_TYPE=production man-webpack build",
     "build:dev": "cross-env API_TYPE=development man-webpack build",
     "lint:style": "stylelint \"src/**/*.less\" --syntax less",
