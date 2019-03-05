@@ -50,24 +50,22 @@ export default {
         if (redirectUrl && typeof redirectUrl === 'string') {
           const redirectParams = JSON.parse(Base64.decode(redirectUrl));
           const { data: { userId, token } } = saveObj;
-          const { host, pathname, type } = redirectParams;
-          let url = host; // 回调地址
+          const { type } = redirectParams;
+          let { url } = redirectParams;
           if (type === 'inspector') {
             // 判断是否是督学模块
-            const userInfo = Base64.encode(JSON.stringify({ mail, password, userId, token })); // 正常情况下应当传递userId,和token
-            url = `${url}/inspector/user/${userInfo}?pathname=${pathname}`;
+            const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
+            url = `${url}?paramsId=${userInfo}`;
+            window.location.href = url;
           } else {
-            url = `${url}/${pathname}?pathname=${pathname}`;
+            yield put(routerRedux.push('/'));
           }
-          window.location.href = url;
-        } else {
-          yield put(routerRedux.push('/'));
         }
+        yield put({
+          type: 'changeLoginStatus',
+          payload: saveObj,
+        });
       }
-      yield put({
-        type: 'changeLoginStatus',
-        payload: saveObj,
-      });
     },
     *CurrentUserListRole({ payload }, { call, put }) {
       const response = yield call(CurrentUserListRole, { ...payload });
