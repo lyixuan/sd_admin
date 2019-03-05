@@ -57,9 +57,9 @@ export default {
             const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
             url = `${url}?paramsId=${userInfo}`;
             window.location.href = url;
-          } else {
-            yield put(routerRedux.push('/'));
           }
+        } else {
+          yield put(routerRedux.push('/'));
         }
         yield put({
           type: 'changeLoginStatus',
