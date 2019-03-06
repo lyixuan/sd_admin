@@ -58,10 +58,12 @@ export default {
           if (type === 'inspector') {
             // 判断督学模块是否有权限
             const isHasInspectorAuth = checkoutInspectorAuth(saveObj.privilegeList);
+            console.log(isHasInspectorAuth);
             if (isHasInspectorAuth) {
               // 判断是否是督学模块
               const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
               url = `${url}?paramsId=${userInfo}`;
+
               window.location.href = url;
             } else {
               yield put(routerRedux.push('/exception/403'));
