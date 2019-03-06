@@ -9,7 +9,6 @@ import { ADMIN_USER, ADMIN_AUTH_LIST } from '@/utils/constants';
 message.config({
   maxCount: 1,
 });
-
 const handleLogin = (payload, response) => {
   let saveObj = response || {};
   const { privilegeList = [], ...others } = response.data || {};
@@ -25,6 +24,10 @@ const handleLogin = (payload, response) => {
     setAuthority(ADMIN_AUTH_LIST, privilegeList);
   }
   return saveObj;
+};
+const checkoutInspectorAuth = data => {
+  const filterArr = data.filter(item => /^\/inspector\/(\w+\/?)+$/.test(item.resourceUrl));
+  return filterArr.length > 0;
 };
 export default {
   namespace: 'login',
@@ -53,10 +56,16 @@ export default {
           const { type } = redirectParams;
           let { url } = redirectParams;
           if (type === 'inspector') {
-            // 判断是否是督学模块
-            const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
-            url = `${url}?paramsId=${userInfo}`;
-            window.location.href = url;
+            // 判断督学模块是否有权限
+            const isHasInspectorAuth = checkoutInspectorAuth(saveObj.privilegeList);
+            if (isHasInspectorAuth) {
+              // 判断是否是督学模块
+              const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
+              url = `${url}?paramsId=${userInfo}`;
+              window.location.href = url;
+            } else {
+              yield put(routerRedux.push('/exception/403'));
+            }
           }
         } else {
           yield put(routerRedux.push('/'));
