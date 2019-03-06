@@ -1,5 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
+import { Base64 } from 'js-base64';
 import { userLogin, userLogout, CurrentUserListRole, userChangeRole } from '@/services/api';
 import { setAuthority, setAuthoritySeccion, removeStorge, getAuthority } from 'utils/authority';
 import { handleSuccess } from 'utils/Handle';
@@ -8,7 +9,6 @@ import { ADMIN_USER, ADMIN_AUTH_LIST } from '@/utils/constants';
 message.config({
   maxCount: 1,
 });
-
 const handleLogin = (payload, response) => {
   let saveObj = response || {};
   const { privilegeList = [], ...others } = response.data || {};
@@ -24,6 +24,10 @@ const handleLogin = (payload, response) => {
     setAuthority(ADMIN_AUTH_LIST, privilegeList);
   }
   return saveObj;
+};
+const checkoutInspectorAuth = data => {
+  const filterArr = data.filter(item => /^\/inspector\/(\w+\/?)+$/.test(item.resourceUrl));
+  return filterArr.length > 0;
 };
 export default {
   namespace: 'login',
@@ -42,16 +46,35 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const { mail, password, autoLogin } = payload;
+      const { mail, password, autoLogin, redirectUrl } = payload;
       const response = yield call(userLogin, { mail, password });
       const saveObj = handleLogin({ mail, password, autoLogin }, response);
       if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
-        yield put(routerRedux.push('/'));
+        if (redirectUrl && typeof redirectUrl === 'string') {
+          const redirectParams = JSON.parse(Base64.decode(redirectUrl));
+          const { data: { userId, token } } = saveObj;
+          const { type } = redirectParams;
+          let { url } = redirectParams;
+          if (type === 'inspector') {
+            // 判断督学模块是否有权限
+            const isHasInspectorAuth = checkoutInspectorAuth(saveObj.privilegeList);
+            if (isHasInspectorAuth) {
+              // 判断是否是督学模块
+              const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
+              url = `${url}?paramsId=${userInfo}`;
+              window.location.href = url;
+            } else {
+              yield put(routerRedux.push('/exception/403'));
+            }
+          }
+        } else {
+          yield put(routerRedux.push('/'));
+        }
+        yield put({
+          type: 'changeLoginStatus',
+          payload: saveObj,
+        });
       }
-      yield put({
-        type: 'changeLoginStatus',
-        payload: saveObj,
-      });
     },
     *CurrentUserListRole({ payload }, { call, put }) {
       const response = yield call(CurrentUserListRole, { ...payload });

@@ -7,6 +7,7 @@ import PassWordErrorAlert from '../../selfComponent/passWordErrot/PassWordErrorA
 import styles from './Login.less';
 import { getAuthority } from '../../utils/authority';
 import { formatEmail } from '../../utils/email';
+// import { Base64 } from 'js-base64';
 
 const { Emil, Submit, NoHintPwd } = Login;
 function checkoutLoginObj(loginObj, key) {
@@ -47,7 +48,18 @@ export default class LoginPage extends Component {
       });
     }
   }
-
+  // componentDidMount() {
+  // const query = this.props.getUrlParams() || {};
+  // const { redirectUrl = null } = query;
+  // const redirectParams = JSON.parse(Base64.decode(redirectUrl));
+  // const { host, pathname, type } = redirectParams
+  // if (type === 'inspector') {
+  //   const loginTokenStr = Base64.encode(JSON.stringify({ userId: 111, token: '111111' }));
+  //   const Base64Pathname = Base64.encode(JSON.stringify({ pathname }));
+  //   const url = `${host}/inspector/user/${loginTokenStr}?redirectPath=${Base64Pathname}`;
+  //   window.location.href = url;
+  // }
+  // }
   onTabChange = type => {
     this.setState({ type });
   };
@@ -56,11 +68,16 @@ export default class LoginPage extends Component {
     if (!err) {
       const { autoLogin } = this.state;
       const mail = `${values.mail}@sunlands.com`;
+      // 判断url来源，是否从督学模块打开的登录
+      const query = this.props.getUrlParams() || {};
+      const { redirectUrl = null } = query;
+
       this.props.dispatch({
         type: 'login/login',
         payload: {
           ...values,
           mail,
+          redirectUrl,
           autoLogin,
         },
       });
