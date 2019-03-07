@@ -66,6 +66,10 @@ export default {
             } else {
               yield put(routerRedux.push('/exception/403'));
             }
+          } else if (type === 'robot') {
+            const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
+            url = `${url}?paramsId=${userInfo}`;
+            window.location.href = url;
           }
         } else {
           yield put(routerRedux.push('/'));
