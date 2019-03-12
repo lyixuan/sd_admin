@@ -5,6 +5,10 @@ import {
   delBlRefundList,
   checkRefundList,
   saveDataRefund,
+  verifyRefundRetainDataFromExcel,
+  saveRefundRetainDatas,
+  preRefundRetainDelete,
+  confirmRefundRetainDelete,
 } from '../services/api';
 
 export default {
@@ -26,8 +30,11 @@ export default {
     },
     *checkRefund({ payload }, { call, put }) {
       const logMsg = [];
-      const { params } = payload;
-      const checkList = yield call(checkRefundList, { ...params });
+      const { params, search } = payload;
+      const checkList = yield call(
+        search === '1' ? checkRefundList : verifyRefundRetainDataFromExcel,
+        { ...params }
+      );
 
       if (checkList.code !== 2000) {
         if (checkList.data.excelError) {
@@ -52,9 +59,10 @@ export default {
       }
     },
     *saveExcel({ payload }, { call, put }) {
-      const { params } = payload;
-      console.log(params);
-      const excelData = yield call(saveDataRefund, { ...params });
+      const { params, search } = payload;
+      const excelData = yield call(search === '1' ? saveDataRefund : saveRefundRetainDatas, {
+        ...params,
+      });
       if (excelData.code !== 2000) {
         message.error(excelData.msg);
         yield put({ type: 'save', payload: { current: 1, isLoading: false } });
@@ -63,8 +71,10 @@ export default {
       }
     },
     *preDelRefund({ payload }, { call, put }) {
-      const { params } = payload;
-      const preDelData = yield call(preDelBlRefundList, { ...params });
+      const { params, search } = payload;
+      const preDelData = yield call(search === '1' ? preDelBlRefundList : preRefundRetainDelete, {
+        ...params,
+      });
       if (preDelData.code !== 2000) {
         message.error(preDelData.msg);
         yield put({ type: 'save', payload: { current: 0, isLoading: false } });
@@ -81,8 +91,10 @@ export default {
       }
     },
     *delRefund({ payload }, { call, put }) {
-      const { params } = payload;
-      const delData = yield call(delBlRefundList, { ...params });
+      const { params, search } = payload;
+      const delData = yield call(search === '1' ? delBlRefundList : confirmRefundRetainDelete, {
+        ...params,
+      });
       if (delData.code !== 2000) {
         message.error(delData.msg);
         yield put({ type: 'save', payload: { current: 2, isLoading: false } });

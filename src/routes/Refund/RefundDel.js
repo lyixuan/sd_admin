@@ -52,13 +52,13 @@ class RefundDel extends Component {
   fetchPreDel = params => {
     this.props.dispatch({
       type: 'blRefund/preDelRefund',
-      payload: { params },
+      payload: { params, search: this.props.location.search.split('?')[1] },
     });
   };
   fetchDel = params => {
     this.props.dispatch({
       type: 'blRefund/delRefund',
-      payload: { params },
+      payload: { params, search: this.props.location.search.split('?')[1] },
     });
   };
   editCurrent = current => {
@@ -68,7 +68,6 @@ class RefundDel extends Component {
     });
   };
   editLoading = isLoading => {
-    console.log(isLoading);
     this.props.dispatch({
       type: 'blRefund/editLoading',
       payload: { isLoading },

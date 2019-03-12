@@ -49,14 +49,14 @@ class RefundAdd extends Component {
   fetchCheckData = params => {
     this.props.dispatch({
       type: 'blRefund/checkRefund',
-      payload: { params },
+      payload: { params, search: this.props.location.search.split('?')[1] },
     });
   };
   // 保存excel数据
   saveExcelData = params => {
     this.props.dispatch({
       type: 'blRefund/saveExcel',
-      payload: { params },
+      payload: { params, search: this.props.location.search.split('?')[1] },
     });
   };
   saveFileList = fileList => {
