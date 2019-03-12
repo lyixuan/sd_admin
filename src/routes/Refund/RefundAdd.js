@@ -118,6 +118,7 @@ class RefundAdd extends Component {
     return columns;
   };
   render() {
+    const search = this.props.location.search.split('?')[1];
     let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
     const { current, checkList, fileList, disableDel, isLoading } = this.props.blRefund;
     const { isDisabled, checkParams } = this.state;
@@ -139,7 +140,7 @@ class RefundAdd extends Component {
             margin: '116px auto 0',
           }}
         >
-          本次添加退费数量
+          本次添加{search === '1' ? '退费' : '退挽'}数量
           <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
           条！确定上传？
         </div>
@@ -189,7 +190,7 @@ class RefundAdd extends Component {
     return (
       <StepLayout
         routerData={this.props.routerData}
-        title="添加退费"
+        title={search === '1' ? '添加退费' : '添加退挽'}
         steps={steps}
         isDisabled={isDisabled}
         disableDel={disableDel}

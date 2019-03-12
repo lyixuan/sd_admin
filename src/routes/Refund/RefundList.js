@@ -117,10 +117,15 @@ class RefundList extends Component {
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
+    const BOTTOM_LINE_TYPE = window.BI_Filter('BOTTOM_LINE_TYPE');
+
     val.map((item, index) =>
       data.push({
         key: index,
         ordId: item.ordId,
+        bottomLineType: BOTTOM_LINE_TYPE.find(ls => ls.id === item.bottomLineType)
+          ? BOTTOM_LINE_TYPE.find(ls => ls.id === item.bottomLineType).name
+          : null,
         complainTime: item.complainTime,
         id: item.id,
         collegeName: item.collegeName,
@@ -141,6 +146,10 @@ class RefundList extends Component {
         title: 'id',
         dataIndex: 'id',
         width: '90px',
+      },
+      {
+        title: '底线类型',
+        dataIndex: 'bottomLineType',
       },
       {
         title: '子订单编号',
@@ -170,10 +179,6 @@ class RefundList extends Component {
         title: '编号',
         dataIndex: 'bottomLineNum',
       },
-      {
-        title: '渠道',
-        dataIndex: 'complainChannel',
-      },
     ];
     return columns;
   };
@@ -182,6 +187,7 @@ class RefundList extends Component {
   refundAdd = () => {
     this.props.history.push({
       pathname: '/refund/refundAdd',
+      search: '?1',
     });
   };
 
@@ -189,9 +195,24 @@ class RefundList extends Component {
   refundDel = () => {
     this.props.history.push({
       pathname: '/refund/refundDel',
+      search: '?1',
+    });
+  };
+  // 添加退挽
+  returnAdd = () => {
+    this.props.history.push({
+      pathname: '/refund/returnAdd',
+      search: '?2',
     });
   };
 
+  // 删除退挽
+  returnDel = () => {
+    this.props.history.push({
+      pathname: '/refund/returnDel',
+      search: '?2',
+    });
+  };
   render() {
     const data = !this.props.blRefund.listData
       ? null
@@ -270,6 +291,20 @@ class RefundList extends Component {
                 className={common.deleteQualityButton}
               >
                 删除退费
+              </Button>
+            </AuthorizedButton>
+            <AuthorizedButton authority="/refund/returnAdd">
+              <Button onClick={this.returnAdd} type="primary" className={common.addQualityButton}>
+                添加退挽
+              </Button>
+            </AuthorizedButton>
+            <AuthorizedButton authority="/refund/returnDel">
+              <Button
+                onClick={this.returnDel}
+                type="primary"
+                className={common.deleteQualityButton}
+              >
+                删除退挽
               </Button>
             </AuthorizedButton>
           </div>

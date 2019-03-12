@@ -24,7 +24,16 @@ class stepInput extends Component {
     }
   }
   render() {
-    const { inputTitle, inputInfo, inputContent, inputTip, disabled, faileData, nums } = this.props;
+    const {
+      inputTitle,
+      inputInfo,
+      inputContent,
+      inputTip,
+      disabled,
+      faileData,
+      nums,
+      pageType,
+    } = this.props;
     let valueData = '';
     if (!faileData) {
       valueData = nums;
@@ -55,6 +64,9 @@ class stepInput extends Component {
         {inputTip ? (
           <div className={styles.inputTip}>
             <h1 className={styles.inputTip_txt}>注意事项：</h1>
+            {pageType === '1' ? (
+              <p className={styles.inputTip_txt}>删除退费将同步自动删除对应的退挽数据</p>
+            ) : null}
             <p className={styles.inputTip_txt}>多个编号，请用空格隔开</p>
             <p className={styles.inputTip_txt}>
               每天13:20前删除的数据，当天13:30后前端更新。13:20之后删除的数据，隔天13:30后前端更新。

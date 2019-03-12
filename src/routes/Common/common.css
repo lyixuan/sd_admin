@@ -242,7 +242,7 @@
   border: 1px solid #46A3EF;
 }
 .deleteQualityButton{
-  margin: 0 ;
+  margin-right: 10px ;
   background-color: #F29F38;
   font-size: 14px;
   width: 80px;
