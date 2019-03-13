@@ -100,13 +100,17 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(menuData, routerData),
     };
   }
+  componentWillMount() {
+    this.loginInSysItem();
+  }
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
       this.setState({
         isMobile: mobile,
       });
     });
-    this.MenuData();
+
+    // this.MenuData();
     this.setRedirectData(this.props.menuData);
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -156,6 +160,11 @@ class BasicLayout extends React.PureComponent {
       return authorizedPath;
     }
     return redirect;
+  };
+  loginInSysItem = () => {
+    this.props.dispatch({
+      type: 'login/loginin',
+    });
   };
   handleUserInfo = () => {
     const { userName = '小德' } = getAuthority(ADMIN_USER);
@@ -254,8 +263,10 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-export default connect(({ global, menu }) => ({
+export default connect(({ global, menu, login, loading }) => ({
   // currentUser: login.currentUser,
+  isLoginIng: loading.effects['login/loginin'],
+  login,
   menuData: menu.menuData,
   collapsed: global.collapsed,
 }))(BasicLayout);

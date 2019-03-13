@@ -1,6 +1,7 @@
 import { getAuthority } from './authority';
 
 export function checkoutLogin() {
+  console.log(getAuthority('admin_user'));
   const adminUser = getAuthority('admin_user');
   if (adminUser && adminUser.password && adminUser.mail) {
     return true;

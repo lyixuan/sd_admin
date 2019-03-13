@@ -12,6 +12,8 @@ export const ADMIN_USER = 'admin_user';
 export const TABLE_PAGES_NUM = 30;
 // 数据分析师id
 export const DATA_ANALYST_ID = '122';
+// 设置domain域名
+export const DOMAIN_HOST = '.ministudy.com';
 
 // Global Header Select
 export const GLOBAL_HEADER_SELECT = [

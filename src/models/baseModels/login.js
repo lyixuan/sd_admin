@@ -1,8 +1,21 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { Base64 } from 'js-base64';
-import { userLogin, userLogout, CurrentUserListRole, userChangeRole } from '@/services/api';
-import { setAuthority, setAuthoritySeccion, removeStorge, getAuthority } from 'utils/authority';
+import {
+  userLogin,
+  userLogout,
+  CurrentUserListRole,
+  userChangeRole,
+  getPrivilegeList,
+} from '@/services/api';
+import {
+  setAuthority,
+  setAuthoritySeccion,
+  removeStorge,
+  getAuthority,
+  getUserInfo,
+  isRepeatLogin,
+} from 'utils/authority';
 import { handleSuccess } from 'utils/Handle';
 import { ADMIN_USER, ADMIN_AUTH_LIST } from '@/utils/constants';
 
@@ -25,10 +38,6 @@ const handleLogin = (payload, response) => {
   }
   return saveObj;
 };
-const checkoutInspectorAuth = data => {
-  const filterArr = data.filter(item => /^\/inspector\/(\w+\/?)+$/.test(item.resourceUrl));
-  return filterArr.length > 0;
-};
 export default {
   namespace: 'login',
 
@@ -42,30 +51,57 @@ export default {
     currentUser: {},
     authList: [],
     roleList: [],
+    loginState: false,
   },
 
   effects: {
+    *loginin(_, { call, put }) {
+      //  用于和督导模块信息互通
+      const userInfo = getUserInfo();
+      let loginState = false;
+      if (userInfo) {
+        if (isRepeatLogin()) {
+          const response = yield call(getPrivilegeList);
+          if (response.code === 20000) {
+            const data = response.data || {};
+            const { privilegeList, ...others } = data;
+            const { token, userId } = userInfo;
+            const saveObj = { token, userId, ...others };
+            setAuthority(ADMIN_USER, saveObj);
+            setAuthority(ADMIN_AUTH_LIST, privilegeList);
+            loginState = true;
+          } else {
+            loginState = false;
+            message.error(response.msg);
+          }
+        } else {
+          loginState = true;
+        }
+      } else {
+        yield put(routerRedux.push('/userLayout/login'));
+      }
+      yield put({
+        type: 'menu/getMenu',
+      });
+      yield put({
+        type: 'logininState',
+        payload: { loginState },
+      });
+    },
     *login({ payload }, { call, put }) {
       const { mail, password, autoLogin, redirectUrl } = payload;
       const response = yield call(userLogin, { mail, password });
       const saveObj = handleLogin({ mail, password, autoLogin }, response);
       if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
+        console.log(getAuthority(ADMIN_USER));
         if (redirectUrl && typeof redirectUrl === 'string') {
           const redirectParams = JSON.parse(Base64.decode(redirectUrl));
           const { data: { userId, token } } = saveObj;
-          const { type } = redirectParams;
+          const { type, origin } = redirectParams;
           let { url } = redirectParams;
           if (type === 'inspector') {
-            // 判断督学模块是否有权限
-            const isHasInspectorAuth = checkoutInspectorAuth(saveObj.privilegeList);
-            if (isHasInspectorAuth) {
-              // 判断是否是督学模块
-              const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
-              url = `${url}?paramsId=${userInfo}`;
-              window.location.href = url;
-            } else {
-              yield put(routerRedux.push('/exception/403'));
-            }
+            url = `${origin}/`;
+            window.location.href = url;
           } else if (type === 'robot') {
             const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
             url = `${url}?paramsId=${userInfo}`;
@@ -124,6 +160,9 @@ export default {
   },
 
   reducers: {
+    logininState(state, { payload }) {
+      return { ...state, ...payload };
+    },
     changeLoginStatus(state, { payload }) {
       const loginStatusObj = {
         status: payload.code === 2000,
