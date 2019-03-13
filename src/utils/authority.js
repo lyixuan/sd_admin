@@ -13,14 +13,14 @@ export function getAuthority(key) {
     }
     return getItem(key);
   } catch (e) {
-    alert('读取本地存储失败,请检查浏览器对存储的设置');
+    console.warn(`1${e}`);
   }
 }
 export function getUserInfo() {
   let userInfo = Cookies.get(ADMIN_USER);
   userInfo =
     userInfo || localStorage.getItem(ADMIN_USER) || sessionStorage.getItem(ADMIN_USER) || '';
-  return JSON.parse(userInfo);
+  return userInfo ? JSON.parse(userInfo) : null;
 }
 export function getUserAuth() {
   return getAuthority(ADMIN_AUTH_LIST);
@@ -32,7 +32,7 @@ export function setAuthority(key, value) {
     }
     return localStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
-    alert('读取本地存储失败,请检查浏览器对存储的设置');
+    console.warn(`2${e}`);
   }
 }
 export function removeStorge(key) {
@@ -43,7 +43,7 @@ export function removeStorge(key) {
     window.localStorage.removeItem(key);
     window.sessionStorage.removeItem(key);
   } catch (e) {
-    alert('读取本地存储失败,请检查浏览器对存储的设置');
+    console.warn(`3${e}`);
   }
 }
 // 使用seccion会话记录不进行免登陆账号的问题
@@ -51,7 +51,7 @@ export function setAuthoritySeccion(key, value) {
   try {
     return window.sessionStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
-    alert('读取本地存储失败,请检查浏览器对存储的设置');
+    console.warn(`4${e}`);
   }
 }
 

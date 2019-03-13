@@ -12,7 +12,6 @@ import {
   setAuthority,
   setAuthoritySeccion,
   removeStorge,
-  getAuthority,
   getUserInfo,
   isRepeatLogin,
 } from 'utils/authority';
@@ -55,7 +54,7 @@ export default {
   },
 
   effects: {
-    *loginin(_, { call, put }) {
+    *reLogin(_, { call, put }) {
       //  用于和督导模块信息互通
       const userInfo = getUserInfo();
       let loginState = false;
@@ -65,8 +64,8 @@ export default {
           if (response.code === 20000) {
             const data = response.data || {};
             const { privilegeList, ...others } = data;
-            const { token, userId } = userInfo;
-            const saveObj = { token, userId, ...others };
+            const { token, userId, ...reOthers } = userInfo;
+            const saveObj = { token, userId, ...reOthers, ...others };
             setAuthority(ADMIN_USER, saveObj);
             setAuthority(ADMIN_AUTH_LIST, privilegeList);
             loginState = true;
@@ -93,7 +92,6 @@ export default {
       const response = yield call(userLogin, { mail, password });
       const saveObj = handleLogin({ mail, password, autoLogin }, response);
       if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
-        console.log(getAuthority(ADMIN_USER));
         if (redirectUrl && typeof redirectUrl === 'string') {
           const redirectParams = JSON.parse(Base64.decode(redirectUrl));
           const { data: { userId, token } } = saveObj;
@@ -129,21 +127,23 @@ export default {
     },
     *changeRole({ payload }, { call, put }) {
       const response = yield call(userChangeRole, { ...payload });
-      const { mail, password } = getAuthority(ADMIN_USER);
-      const saveObj = handleLogin({ mail, password, autoLogin: true }, response);
-      if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
+      const userInfo = getUserInfo();
+      if (response.code === 2000) {
+        const data = response.data || {};
+        const { privilegeList, ...resothers } = data;
+        const { token, userId, ...others } = userInfo;
+        const saveObj = { token, userId, ...others, ...resothers };
+        setAuthority(ADMIN_USER, saveObj);
+        setAuthority(ADMIN_AUTH_LIST, privilegeList);
+
         yield put({
           type: 'menu/getMenu',
-          payload: { routeData: saveObj.privilegeList },
+          payload: { routeData: response.privilegeList },
         });
         yield put(routerRedux.push('/'));
       } else {
-        message.error(saveObj.msg);
+        message.error(response.msg);
       }
-      yield put({
-        type: 'changeLoginStatus',
-        payload: saveObj,
-      });
     },
     *logout(_, { call }) {
       try {

@@ -100,7 +100,7 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(menuData, routerData),
     };
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.loginInSysItem();
   }
   componentDidMount() {
@@ -110,7 +110,7 @@ class BasicLayout extends React.PureComponent {
       });
     });
 
-    // this.MenuData();
+    this.MenuData();
     this.setRedirectData(this.props.menuData);
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -163,7 +163,7 @@ class BasicLayout extends React.PureComponent {
   };
   loginInSysItem = () => {
     this.props.dispatch({
-      type: 'login/loginin',
+      type: 'login/reLogin',
     });
   };
   handleUserInfo = () => {
@@ -265,7 +265,7 @@ class BasicLayout extends React.PureComponent {
 
 export default connect(({ global, menu, login, loading }) => ({
   // currentUser: login.currentUser,
-  isLoginIng: loading.effects['login/loginin'],
+  isLoginIng: loading.effects['login/reLogin'],
   login,
   menuData: menu.menuData,
   collapsed: global.collapsed,

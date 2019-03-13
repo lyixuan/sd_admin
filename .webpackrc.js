@@ -28,6 +28,7 @@ export default {
   publicPath: '/',
   hash: true,
   define: {
+    'process.env.LOGIN_HOST': process.env.LOGIN_HOST,
     'process.env.API_TYPE': process.env.API_TYPE,
     USE_COMMA: 222,
     UPLOAD_HOST: uploadImageHostObj[process.env.API_TYPE],

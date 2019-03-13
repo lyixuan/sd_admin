@@ -13,7 +13,14 @@ export const TABLE_PAGES_NUM = 30;
 // 数据分析师id
 export const DATA_ANALYST_ID = '122';
 // 设置domain域名
-export const DOMAIN_HOST = '.ministudy.com';
+// export const DOMAIN_HOST = '.ministudy.com';
+export const DOMAIN_HOST = 'localhost';
+// 设置督学模块跳转
+export const INSPECTOR_HOST = {
+  localhost: 'http://dx.ministudy.com',
+  development: 'http://test.dx.ministudy.com',
+  production: 'http://bd.ministudy.com',
+}[process.env.LOGIN_HOST];
 
 // Global Header Select
 export const GLOBAL_HEADER_SELECT = [

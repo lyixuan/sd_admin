@@ -1,3 +1,6 @@
+import { getAuthority } from 'utils/authority';
+import { ADMIN_AUTH_LIST } from '@/utils/constants';
+
 function getAuthData(data1) {
   const newArr = filterMenu(data1).sort((a, b) => a.sortFlag - b.sortFlag);
   return formatter(newArr, 0);
@@ -15,20 +18,16 @@ function formatter(data, parentId) {
     const node = data[i];
     // 如果level是3的话,是功能页面,并不展示
     if (Number(node.parentId) === Number(parentId) || Number(node.pid) === Number(parentId)) {
-      // 过滤掉督学相关path
-      const isInspector = /^\/inspector\/(\w+\/?)+$/.test(node.resourceUrl);
-      if (!isInspector) {
-        const newNode = {
-          icon: node.iconUrl,
-          id: node.id,
-          name: node.name,
-          path: node.resourceUrl,
-          authority: true,
-          hideInMenu: false, // level的等级大于2的话为功能权限
-          children: formatter(data, node.id),
-        };
-        itemArr.push(newNode);
-      }
+      const newNode = {
+        icon: node.iconUrl,
+        id: node.id,
+        name: node.name,
+        path: node.resourceUrl,
+        authority: true,
+        hideInMenu: false, // level的等级大于2的话为功能权限
+        children: formatter(data, node.id),
+      };
+      itemArr.push(newNode);
     }
   }
   return itemArr;
@@ -41,8 +40,8 @@ export default {
   },
 
   effects: {
-    *getMenu({ payload }, { put }) {
-      const { routeData } = payload;
+    *getMenu(_, { put }) {
+      const routeData = getAuthority(ADMIN_AUTH_LIST) || [];
       const menuData = getAuthData(routeData) || [];
       yield put({
         type: 'saveMenu',
