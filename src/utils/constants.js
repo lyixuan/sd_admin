@@ -134,6 +134,8 @@ export const Certification_ONLYUSER = [
   { id: 'class', name: '班主任' },
   { id: 'group', name: '运营长' },
 ];
+// 底线类型
+export const BOTTOM_LINE_TYPE = [{ id: 3, name: '退费' }, { id: 5, name: '退挽' }];
 
 // 需要用于global filter 进行数据筛选的，必须加到default里
 export default {
@@ -160,4 +162,5 @@ export default {
   CERTIFICATION_STATE,
   CERTIFICATION_RESULT,
   RECOMMEND_LEVEL,
+  BOTTOM_LINE_TYPE,
 };

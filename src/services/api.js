@@ -570,21 +570,48 @@ export async function saveDataRefund(params) {
     body: params,
   });
 }
-// 预删除投诉列表
+// 预删除退费列表
 export async function preDelBlRefundList(params) {
   return request(`${HOST}/blRefund/preDelete`, {
     method: 'POST',
     body: params,
   });
 }
-// 删除投诉列表
+// 删除退费列表
 export async function delBlRefundList(params) {
   return request(`${HOST}/blRefund/confirmDelete`, {
     method: 'POST',
     body: params,
   });
 }
-
+// 校验退挽excel文件
+export async function verifyRefundRetainDataFromExcel(params) {
+  return request(`${HOST}/blRefund/verifyRefundRetainDataFromExcel`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 确定excel文件数据插入数据库
+export async function saveRefundRetainDatas(params) {
+  return request(`${HOST}/blRefund/saveRefundRetainDatas`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 预删除退挽列表
+export async function preRefundRetainDelete(params) {
+  return request(`${HOST}/blRefund/preRefundRetainDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 删除退挽列表
+export async function confirmRefundRetainDelete(params) {
+  return request(`${HOST}/blRefund/confirmRefundRetainDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
 // 申诉列表
 export async function appealList(params) {
   return request(`${HOST}/appeal/list?${stringify(params)}`, {

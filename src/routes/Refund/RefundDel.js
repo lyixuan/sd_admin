@@ -52,13 +52,13 @@ class RefundDel extends Component {
   fetchPreDel = params => {
     this.props.dispatch({
       type: 'blRefund/preDelRefund',
-      payload: { params },
+      payload: { params, search: this.props.location.search.split('?')[1] },
     });
   };
   fetchDel = params => {
     this.props.dispatch({
       type: 'blRefund/delRefund',
-      payload: { params },
+      payload: { params, search: this.props.location.search.split('?')[1] },
     });
   };
   editCurrent = current => {
@@ -68,7 +68,6 @@ class RefundDel extends Component {
     });
   };
   editLoading = isLoading => {
-    console.log(isLoading);
     this.props.dispatch({
       type: 'blRefund/editLoading',
       payload: { isLoading },
@@ -128,6 +127,7 @@ class RefundDel extends Component {
     return columns;
   };
   render() {
+    const search = this.props.location.search.split('?')[1];
     const { preDelData, nums, current, disableDel, isLoading } = this.props.blRefund;
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
@@ -161,7 +161,7 @@ class RefundDel extends Component {
         title: '输入编号',
         content: (
           <StepInput
-            inputTitle="请输入想删除的 “工单编号”："
+            inputTitle="请输入想删除的 “编号”："
             inputContent="true"
             inputTip="true"
             nums={nums}
@@ -171,6 +171,7 @@ class RefundDel extends Component {
             callBackParent={bol => {
               this.onChildChange(bol);
             }}
+            pageType={search}
           />
         ),
       },
@@ -203,7 +204,7 @@ class RefundDel extends Component {
     return (
       <StepLayout
         routerData={this.props.routerData}
-        title="删除退费"
+        title={search === '1' ? '删除退费' : '删除退挽'}
         steps={steps}
         tipSucess={tipSucess}
         goBack={() => {

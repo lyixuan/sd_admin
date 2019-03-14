@@ -305,6 +305,22 @@ export const getRouterData = app => {
       },
       name: '删除退费',
     },
+    '/refund/returnAdd': {
+      component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundAdd')),
+      bread: {
+        name: '退费管理',
+        path: '/bottomLine/refundList',
+      },
+      name: '添加退挽',
+    },
+    '/refund/returnDel': {
+      component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundDel')),
+      bread: {
+        name: '退费管理',
+        path: '/bottomLine/refundList',
+      },
+      name: '删除退挽',
+    },
     '/bottomLine/complaintList': {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintList')
