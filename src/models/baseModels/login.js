@@ -91,14 +91,18 @@ export default {
       const { mail, password, autoLogin, redirectUrl } = payload;
       const response = yield call(userLogin, { mail, password });
       const saveObj = handleLogin({ mail, password, autoLogin }, response);
-      if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
+      if (saveObj.code === 2000) {
         if (redirectUrl && typeof redirectUrl === 'string') {
           const redirectParams = JSON.parse(Base64.decode(redirectUrl));
-          const { data: { userId, token } } = saveObj;
-          const { type, origin } = redirectParams;
+          const { data: { userId, token, positionCount } } = saveObj;
+          const { type, env } = redirectParams;
           let { url } = redirectParams;
           if (type === 'inspector') {
-            url = `${origin}/`;
+            // 在localhost即开发环境下使用跳转,将参数通过url传递
+            if (env === 'localhost') {
+              const userInfo = Base64.encode(JSON.stringify({ userId, token, positionCount })); // 正常情况下应当传递userId,和token
+              url = `${url}?paramsId=${userInfo}`;
+            }
             window.location.href = url;
           } else if (type === 'robot') {
             const userInfo = Base64.encode(JSON.stringify({ userId, token })); // 正常情况下应当传递userId,和token
