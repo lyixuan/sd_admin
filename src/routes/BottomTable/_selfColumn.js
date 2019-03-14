@@ -1,4 +1,5 @@
 // import { Progress } from 'antd';
+import { STATIC_HOST } from '@/utils/constants';
 import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 import { formatDate } from '../../utils/FormatDate';
 import { BOTTOM_TABLE_STATUS } from '../../utils/constants';
@@ -6,9 +7,10 @@ import packSucess from '../../assets/packSucess.svg';
 import packError from '../../assets/packError.svg';
 import compress from '../../assets/compress.svg';
 import packing from '../../assets/packing.svg';
+import DownLoad from '../../components/downLoad';
 
 // 获取table列表头
-export function columnsFn(callback) {
+export function columnsFn() {
   const imgArr = [packing, packSucess, packError];
   const columns = [
     {
@@ -76,9 +78,14 @@ export function columnsFn(callback) {
                     display: 'flex',
                     justifyContent: 'space-around',
                   }}
-                  onClick={() => callback(record)}
                 >
-                  <span style={{ marginRight: '8px' }}>下载</span>
+                  <div>
+                    <DownLoad
+                      loadUrl={`${STATIC_HOST}${record.zipPath}`}
+                      fileName={() => record.taskName}
+                    />
+                  </div>
+                  {/* <span style={{ marginRight: '8px' }}>下载</span> */}
                   {/* <div style={{ width: '32px' }}> */}
                   {/* <Progress percent={percent} showInfo={false} /> */}
                   {/* </div> */}

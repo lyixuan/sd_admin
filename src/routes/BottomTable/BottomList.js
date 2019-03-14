@@ -184,15 +184,6 @@ class BottomList extends Component {
       },
     });
   };
-  downLoadBTable = record => {
-    this.props.dispatch({
-      type: 'bottomTable/downLoadBT',
-      payload: {
-        id: record.id,
-        taskName: record.taskName,
-      },
-    });
-  };
 
   backTop = () => {
     window.scrollTo(0, 0);

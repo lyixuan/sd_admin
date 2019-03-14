@@ -12,6 +12,11 @@ export const ADMIN_USER = 'admin_user';
 export const TABLE_PAGES_NUM = 30;
 // 数据分析师id
 export const DATA_ANALYST_ID = '122';
+// 下载类资源host
+export const STATIC_HOST = {
+  development: 'http://172.16.117.65:8091',
+  production: 'http://api.bd.ministudy.com/download',
+}[process.env.API_TYPE];
 
 // Global Header Select
 export const GLOBAL_HEADER_SELECT = [

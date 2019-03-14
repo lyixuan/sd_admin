@@ -1,4 +1,5 @@
 import { message } from 'antd';
+import { STATIC_HOST } from '@/utils/constants';
 import {
   getRangeDate,
   getDate,
@@ -8,27 +9,11 @@ import {
   findAllOrg,
 } from '../services/api';
 
-function tagLoad(blob, name) {
+function tagLoad(url, name) {
   const a = document.createElement('a');
-  const url = window.URL.createObjectURL(blob);
   a.href = url;
   a.download = name;
   a.click();
-}
-function blobFileLoad(result) {
-  const promise = new Promise((res, err) => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      // if (e.target.result.indexOf('code') === -1 || JSON.parse(e.target.result).code !== 2000) {
-      if (typeof result === 'object' && result.type) {
-        res(result);
-      } else {
-        err(JSON.parse(e.target.result));
-      }
-    };
-    reader.readAsText(result);
-  });
-  return promise;
 }
 
 export default {
@@ -98,15 +83,12 @@ export default {
     *downLoadBT({ payload }, { call }) {
       const { id, taskName } = payload;
       const response = yield call(downLoadBT, { id });
-      blobFileLoad(response).then(
-        blob => {
-          tagLoad(blob, taskName);
-        },
-        err => {
-          message.error(err.msg);
-        }
-      );
-      // yield call(tagLoad, response, taskName);
+      if (response.code === 2000) {
+        const static_url = `${STATIC_HOST}${response.data}`;
+        tagLoad(static_url, taskName);
+      } else {
+        message.error(response.msg);
+      }
     },
     // 不可选时间列表
     *getDates({ payload }, { call, put }) {

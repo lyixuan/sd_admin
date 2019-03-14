@@ -743,9 +743,8 @@ export async function findAllOrg(params) {
 }
 // 底表下载
 export function downLoadBT(params) {
-  return request(`${HOST}/consoleBottomDown/downLoad?${stringify(params)}`, {
+  return request(`${HOST}/consoleBottomDown/newDownLoad?${stringify(params)}`, {
     method: 'GET',
-    stream: 'bolb',
   });
 }
 // 底表添加任务
