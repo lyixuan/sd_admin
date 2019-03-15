@@ -95,20 +95,27 @@ export default {
     },
     *changeRole({ payload }, { call, put }) {
       const response = yield call(userChangeRole, { ...payload });
-      const { mail, password } = getAuthority(ADMIN_USER);
-      const saveObj = handleLogin({ mail, password, autoLogin: true }, response);
-      if (saveObj.code === 2000 && saveObj.privilegeList.length > 0) {
+      const userInfo = getAuthority(ADMIN_USER);
+      // const saveObj = handleLogin({ mail, password, autoLogin: true }, response);
+      if (response.code === 2000) {
+        const data = response.data || {};
+        const { privilegeList, ...resothers } = data;
+        const { token, userId, ...others } = userInfo;
+        const saveObj = { token, userId, ...others, ...resothers };
+        setAuthority(ADMIN_USER, saveObj);
+        setAuthority(ADMIN_AUTH_LIST, privilegeList);
+
         yield put({
           type: 'menu/getMenu',
           payload: { routeData: saveObj.privilegeList },
         });
         yield put(routerRedux.push('/'));
       } else {
-        message.error(saveObj.msg);
+        message.error(response.msg);
       }
       yield put({
         type: 'changeLoginStatus',
-        payload: saveObj,
+        payload: response,
       });
     },
     *logout(_, { call }) {
