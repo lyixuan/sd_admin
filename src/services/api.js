@@ -5,7 +5,12 @@ const hostObj = {
   production: 'http://bd.ministudy.com/apis',
   development: 'http://172.16.117.65:8090',
 };
+const newHostObj = {
+  production: 'http://api.bd.ministudy.com/apis',
+  development: 'http://172.16.117.65:8085',
+};
 export const HOST = hostObj[process.env.API_TYPE];
+export const NEW_HOST = newHostObj[process.env.API_TYPE];
 /*
 * 用户登录接口
 * params：{name，password}
@@ -22,6 +27,14 @@ export async function userLogin(params) {
 * */
 export async function queryCurrentUser(params) {
   return request(`${HOST}/account/info?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+/*
+* 根据userId和token获取authList
+*/
+export async function getPrivilegeList() {
+  return request(`${NEW_HOST}/user/getPrivilegeList`, {
     method: 'GET',
   });
 }

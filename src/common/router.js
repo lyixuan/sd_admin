@@ -574,6 +574,9 @@ export const getRouterData = app => {
     '/userLayout/login': {
       component: dynamicWrapper(app, ['baseModels/login'], () => import('../routes/Login/Login')),
     },
+    '/userLayout/loginOut': {
+      component: dynamicWrapper(app, ['baseModels/login'], () => import('../routes/Login/Login')),
+    },
     // 业务技能认证
 
     // 审核管理

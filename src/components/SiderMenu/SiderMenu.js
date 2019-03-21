@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import { Link } from 'dva/router';
+import { INSPECTOR_HOST } from '@/utils/constants';
 import styles from './index.less';
 import { urlToList } from '../_utils/pathTools';
 
@@ -88,7 +89,8 @@ export default class SiderMenu extends PureComponent {
    * @memberof SiderMenu
    */
   getMenuItemPath = item => {
-    const itemPath = this.conversionPath(item.path);
+    let itemPath = this.conversionPath(item.path);
+    itemPath = this.addHosts(itemPath);
     const icon = getIcon(item.icon);
     const { target, name } = item;
     // Is it a http link
@@ -117,6 +119,7 @@ export default class SiderMenu extends PureComponent {
       </Link>
     );
   };
+
   /**
    * get SubMenu or Item
    */
@@ -148,6 +151,7 @@ export default class SiderMenu extends PureComponent {
       return <Menu.Item key={item.path}>{this.getMenuItemPath(item)}</Menu.Item>;
     }
   };
+
   /**
    * 获得菜单子节点
    * @memberof SiderMenu
@@ -169,6 +173,11 @@ export default class SiderMenu extends PureComponent {
   getSelectedMenuKeys = () => {
     const { location: { pathname } } = this.props;
     return getMenuMatchKeys(this.flatMenuKeys, urlToList(pathname));
+  };
+  addHosts = path => {
+    // 为特定path添加hosts
+    const isInspector = /^\/inspector\/(\w+\/?)+$/.test(path);
+    return isInspector ? `${INSPECTOR_HOST}${path}` : path;
   };
   // conversion Path
   // 转化路径
