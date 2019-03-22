@@ -19,7 +19,7 @@ export const DOMAIN_HOST = '.ministudy.com';
 export const INSPECTOR_HOST = {
   localhost: 'http://dx.ministudy.com',
   development: 'http://test.dx.ministudy.com',
-  production: 'http://bd.ministudy.com',
+  production: 'http://api.bd.ministudy.com',
 }[process.env.LOGIN_HOST];
 
 // Global Header Select
