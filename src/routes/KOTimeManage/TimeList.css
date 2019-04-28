@@ -60,7 +60,7 @@ p {
   width: 650px;
 }
 .titleEdit {
-  margin: 0 10px 0 55px;
+  margin: 0 10px 0 45px;
 }
 :global(.ant-popover-message) {
   width: 190px;
