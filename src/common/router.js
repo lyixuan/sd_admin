@@ -355,6 +355,14 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/Performance')),
       name: '时间管理',
     },
+    '/config/koSettings': {
+      component: dynamicWrapper(app, ['time'], () => import('../routes/KOTimeManage/TimeList')),
+      name: 'KO设置',
+    },
+    '/config/koSettings/koTimeManage': {
+      component: dynamicWrapper(app, ['time'], () => import('../routes/KOTimeManage/Performance')),
+      name: 'KO设置',
+    },
     '/config/group': {
       component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
       name: '小组短名称',
