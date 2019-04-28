@@ -172,7 +172,7 @@ class TimeList extends Component {
                 htmlType="submit"
                 loading={changeDateArea}
                 className={common.searchButton}
-                style={{ margin: '0' }}
+                style={{ marginRight: '10px' }}
               >
                 保存
               </Button>
