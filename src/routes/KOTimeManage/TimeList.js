@@ -117,7 +117,9 @@ class TimeList extends Component {
         this.setState({
           dateArea,
         });
-        this.changeDate();
+        setTimeout(() => {
+          this.changeDate();
+        });
       }
     });
   };
