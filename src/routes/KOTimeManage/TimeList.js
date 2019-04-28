@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Route, Switch, Redirect } from 'dva/router';
-import { Button, Form, DatePicker, Input } from 'antd';
+import { Button, Form, DatePicker, message, Input } from 'antd';
 import moment from 'moment';
 import ModalDialog from '../../selfComponent/Modal/Modal';
 import ContentLayout from '../../layouts/ContentLayout';
@@ -96,6 +96,14 @@ class TimeList extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       const { beginTime, endTime = '' } = values;
+      if (!beginTime) {
+        message.error('开始日期为必选项，请选择');
+        return;
+      }
+      if (!endTime) {
+        message.error('结束日期为必选项，请选择');
+        return;
+      }
       if (
         !beginTime ||
         (endTime && typeof endTime === 'object' && moment(beginTime).isAfter(endTime))
@@ -119,6 +127,10 @@ class TimeList extends Component {
     this.setState({ txtAreaObj });
   }
   handleSaveTxt() {
+    if (!this.state.txtAreaObj.message.trimRight(' ')) {
+      message.error('文案为必选项，请选择');
+      return;
+    }
     this.props.dispatch({
       type: 'time/updateKOMessage',
       payload: {
@@ -142,13 +154,13 @@ class TimeList extends Component {
           <FormItem label="开始日期">
             {getFieldDecorator('beginTime', {
               initialValue: dateArea.beginTime ? moment(dateArea.beginTime, dateFormat) : null,
-              rules: [{ required: true, message: '请选择开始日期' }],
+              rules: [{ required: false, message: '请选择开始日期' }],
             })(dateAreaPicker)}
           </FormItem>
           <FormItem label="结束日期">
             {getFieldDecorator('endTime', {
               initialValue: dateArea.endTime ? moment(dateArea.endTime, dateFormat) : null,
-              rules: [{ required: true, message: '请选择结束日期' }],
+              rules: [{ required: false, message: '请选择结束日期' }],
             })(dateAreaPicker)}
           </FormItem>
           <FormItem style={{ marginLeft: 30 }}>
@@ -184,7 +196,7 @@ class TimeList extends Component {
                       rows={4}
                       value={this.state.txtAreaObj.message}
                       onChange={e => this.handleTxt(e)}
-                      placeholder="注：当前可用日期至2019-xx-xx，更多数据同步中…"
+                      placeholder=""
                     />
                   </div>
                   <div className={styles.titleEdit}>
