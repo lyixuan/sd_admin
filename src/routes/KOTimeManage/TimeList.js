@@ -124,6 +124,10 @@ class TimeList extends Component {
     });
   };
   handleTxt(e) {
+    if (e.target.value.trimRight(' ').length > 40) {
+      message.error('最大长度为40个字符');
+      return;
+    }
     this.state.txtAreaObj.message = e.target.value;
     const txtAreaObj = { ...this.state.txtAreaObj };
     this.setState({ txtAreaObj });
@@ -131,6 +135,10 @@ class TimeList extends Component {
   handleSaveTxt() {
     if (!this.state.txtAreaObj.message.trimRight(' ')) {
       message.error('文案为必选项，请选择');
+      return;
+    }
+    if (!this.state.txtAreaObj.message.trimRight(' ').length > 40) {
+      message.error('最大长度为40个字符');
       return;
     }
     this.props.dispatch({
@@ -198,7 +206,7 @@ class TimeList extends Component {
                       rows={4}
                       value={this.state.txtAreaObj.message}
                       onChange={e => this.handleTxt(e)}
-                      placeholder=""
+                      placeholder="请输入..."
                     />
                   </div>
                   <div className={styles.titleEdit}>
@@ -209,7 +217,7 @@ class TimeList extends Component {
                       className={common.searchButton}
                       style={{ margin: '0' }}
                     >
-                      编辑
+                      保存
                     </Button>
                   </div>
                 </div>
