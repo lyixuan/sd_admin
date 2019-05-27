@@ -142,11 +142,11 @@ class RefundList extends Component {
   // 获取table列表头
   columnsData = () => {
     const columns = [
-      {
-        title: 'id',
-        dataIndex: 'id',
-        width: '90px',
-      },
+      // {
+      //   title: 'id',
+      //   dataIndex: 'id',
+      //   width: '90px',
+      // },
       {
         title: '底线类型',
         dataIndex: 'bottomLineType',
@@ -158,6 +158,9 @@ class RefundList extends Component {
       {
         title: '投诉时间',
         dataIndex: 'complainTime',
+        render: text => {
+          return <>{text.split(' ')[0]}</>;
+        },
       },
       {
         title: '老师名称',
@@ -178,6 +181,18 @@ class RefundList extends Component {
       {
         title: '编号',
         dataIndex: 'bottomLineNum',
+      },
+      {
+        title: '学院得分',
+        dataIndex: 'collegeScore',
+      },
+      {
+        title: '家族得分',
+        dataIndex: 'familyScore',
+      },
+      {
+        title: '小组得分',
+        dataIndex: 'groupScore',
       },
     ];
     return columns;

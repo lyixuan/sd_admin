@@ -114,6 +114,18 @@ class RefundAdd extends Component {
         title: '投诉时间',
         dataIndex: 'complainTime',
       },
+      {
+        title: '学院得分',
+        dataIndex: 'collegeScore',
+      },
+      {
+        title: '家族得分',
+        dataIndex: 'familyScore',
+      },
+      {
+        title: '小组得分',
+        dataIndex: 'groupScore',
+      },
     ];
     return columns;
   };
