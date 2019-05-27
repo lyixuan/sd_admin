@@ -456,10 +456,37 @@ export async function updateDate(params) {
   });
 }
 /*
+更新KO日期
+*/
+export async function updateKODate(params) {
+  return request(`${HOST}/time/updateKoAvailableDate`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+
+export async function saveKOMessage(params) {
+  return request(`${HOST}/certificationItem/saveKOMessage`, {
+    method: 'POST',
+    body: params,
+  });
+}
+export async function getKOMessage() {
+  return request(`${HOST}/certificationItem/getKOMessage`, {
+    method: 'GET',
+  });
+}
+
+/*
 设置可选日期区间回显
  */
 export async function getRangeDate(params) {
   return request(`${HOST}/time/getRange?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+export async function getKoDateRange(params) {
+  return request(`${HOST}/time/getKoDateRange?${stringify(params)}`, {
     method: 'GET',
   });
 }
