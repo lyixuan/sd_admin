@@ -9,6 +9,12 @@ module.exports = {
     jest: true,
     jasmine: true,
   },
+  settings: {
+    react: {
+      pragma: 'React',
+      version: 'detect',
+    },
+  },
   rules: {
     eqeqeq: [1],
     camelcase: [0],
