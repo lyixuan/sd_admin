@@ -55,7 +55,7 @@ class stepUpload extends Component {
             <p>
               每天13:20前导入的数据，当天13:30后前端可见。13:20之后导入的数据，隔天13:30后前端可见。
             </p>
-            <p>上传的数据限7天以内的数据</p>
+            <p>上传的数据限90天以内的数据</p>
           </div>
         ) : (
           <div className={styles.txt}>{customTip()}</div>

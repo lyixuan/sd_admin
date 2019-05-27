@@ -71,7 +71,7 @@ class stepInput extends Component {
             <p className={styles.inputTip_txt}>
               每天13:20前删除的数据，当天13:30后前端更新。13:20之后删除的数据，隔天13:30后前端更新。
             </p>
-            <p className={styles.inputTip_txt}>删除数据，仅限7天以内的数据</p>
+            <p className={styles.inputTip_txt}>删除数据，仅限90天以内的数据</p>
           </div>
         ) : null}
       </div>
