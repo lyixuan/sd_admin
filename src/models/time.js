@@ -4,7 +4,11 @@ import {
   addDate,
   deleteDate,
   updateDate,
+  updateKODate,
+  saveKOMessage,
+  getKOMessage,
   getRangeDate,
+  getKoDateRange,
   getKpiEffectMonth,
   updateKpiEffectMonth,
 } from '../services/api';
@@ -18,6 +22,10 @@ export default {
       beginTime: '',
       endTime: '',
       id: 1,
+    },
+    txtAreaObj: {
+      message: '',
+      saveTime: '',
     },
     kpiEffectMonthList: [],
   },
@@ -41,6 +49,26 @@ export default {
         yield put({
           type: 'saveTimeArea',
           payload: { dateArea },
+        });
+      }
+    },
+    *getKoDateRange(_, { call, put }) {
+      const response = yield call(getKoDateRange);
+      if (response.code === 2000) {
+        const [dateArea] = response.data || [];
+        yield put({
+          type: 'saveTimeArea',
+          payload: { dateArea },
+        });
+      }
+    },
+    *getKOMessage(_, { call, put }) {
+      const response = yield call(getKOMessage);
+      if (response.code === 2000) {
+        const txtAreaObj = response.data || '';
+        yield put({
+          type: 'saveTimeArea',
+          payload: { txtAreaObj },
         });
       }
     },
@@ -78,6 +106,23 @@ export default {
         message.error(response.msg);
       }
     },
+    *updateKOAreaDate({ payload }, { call }) {
+      const response = yield call(updateKODate, { ...payload });
+      if (response.code === 2000) {
+        message.success('修改日期成功');
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *updateKOMessage({ payload }, { call }) {
+      const response = yield call(saveKOMessage, { ...payload });
+      if (response.code === 2000) {
+        message.success('修改文案成功');
+      } else {
+        message.error(response.msg);
+      }
+    },
+
     *getKpiEffectMonth(_, { put, call }) {
       const response = yield call(getKpiEffectMonth);
       if (response.code === 2000) {

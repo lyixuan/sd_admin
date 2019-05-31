@@ -116,6 +116,8 @@ export default {
           type: 'changeLoginStatus',
           payload: saveObj,
         });
+      } else {
+        message.error(response.msg);
       }
     },
     *CurrentUserListRole({ payload }, { call, put }) {
