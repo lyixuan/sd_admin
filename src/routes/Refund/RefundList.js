@@ -134,6 +134,9 @@ class RefundList extends Component {
         cpName: item.cpName,
         bottomLineNum: item.bottomLineNum,
         complainChannel: item.complainChannel,
+        collegeScore: item.collegeScore,
+        familyScore: item.familyScore,
+        groupScore: item.groupScore,
       })
     );
     return data;
