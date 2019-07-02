@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Layout, Radio, Spin } from 'antd';
 import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+// import { routerRedux } from 'dva/router';
 import GlobalHeader from 'components/GlobalHeader';
 import Modal from '@/selfComponent/Modal/Modal';
 import { getAuthority } from '@/utils/authority';
@@ -33,9 +33,10 @@ export default class SelfHeader extends PureComponent {
   };
   handleMenuClick = ({ key }) => {
     switch (key) {
-      case 'changePwd':
-        this.props.dispatch(routerRedux.push('/changePwd/changePassword'));
-        break;
+      // 修改密码功能暂时隐藏
+      // case 'changePwd':
+      //   this.props.dispatch(routerRedux.push('/changePwd/changePassword'));
+      //   break;
       case 'logout':
         this.props.dispatch({ type: 'login/logout' });
         break;
