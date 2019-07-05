@@ -2,8 +2,9 @@ import { stringify } from 'qs';
 import request from '../utils/request';
 
 const hostObj = {
-  production: 'http://bd.ministudy.com/apis/ew',
-  development: 'http://172.16.117.65:8090/ew',
+  production: 'http://bd.ministudy.com/apis',
+  // development: 'http://172.16.117.65:8090',
+  development: 'http://test.xd.admin.ministudy.com/ew',
 };
 const newHostObj = {
   production: 'http://api.bd.ministudy.com/apis/ew',
