@@ -2,12 +2,12 @@ import { stringify } from 'qs';
 import request from '../utils/request';
 
 const hostObj = {
-  production: 'http://bd.ministudy.com/apis',
-  development: 'http://172.16.117.65:8090',
+  production: 'http://bd.ministudy.com/apis/ew',
+  development: 'http://172.16.117.65:8090/ew',
 };
 const newHostObj = {
-  production: 'http://api.bd.ministudy.com/apis',
-  development: 'http://172.16.117.65:8085',
+  production: 'http://api.bd.ministudy.com/apis/ew',
+  development: 'http://172.16.117.65:8085/ew',
 };
 export const HOST = hostObj[process.env.API_TYPE];
 export const NEW_HOST = newHostObj[process.env.API_TYPE];
@@ -30,6 +30,10 @@ export async function queryCurrentUser(params) {
     method: 'GET',
   });
 }
+
+export async function getBaseUserInfo() {
+  return request(`${HOST}/user/info`);
+}
 /*
 * 根据userId和token获取authList
 */
@@ -38,6 +42,12 @@ export async function getPrivilegeList() {
     method: 'GET',
   });
 }
+export async function getPrivilegeListNew() {
+  return request(`${NEW_HOST}/user/getPrivilegeList`, {
+    method: 'GET',
+  });
+}
+
 /*
 * 获取用户对应的角色信息信息
 * params：{userId}

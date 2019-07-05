@@ -101,7 +101,8 @@ class BasicLayout extends React.PureComponent {
     };
   }
   UNSAFE_componentWillMount() {
-    this.loginInSysItem();
+    // this.loginInSysItem();
+    this.initSysItem();
   }
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
@@ -161,9 +162,14 @@ class BasicLayout extends React.PureComponent {
     }
     return redirect;
   };
-  loginInSysItem = () => {
+  // loginInSysItem = () => {
+  //   this.props.dispatch({
+  //     type: 'login/reLogin',
+  //   });
+  // };
+  initSysItem = () => {
     this.props.dispatch({
-      type: 'login/reLogin',
+      type: 'login/initSubSystem',
     });
   };
   handleUserInfo = () => {
@@ -265,7 +271,7 @@ class BasicLayout extends React.PureComponent {
 
 export default connect(({ global, menu, login, loading }) => ({
   // currentUser: login.currentUser,
-  isLoginIng: loading.effects['login/reLogin'],
+  isLoginIng: loading.effects['login/initSubSystem'],
   login,
   menuData: menu.menuData,
   collapsed: global.collapsed,

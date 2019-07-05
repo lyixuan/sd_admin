@@ -88,9 +88,12 @@ export default function request(url, options) {
       const { dispatch } = store;
       const status = e.name;
       if (status === 401) {
-        dispatch({
-          type: 'login/logout',
-        });
+        const { href, origin } = window.location;
+        const serverUrl = `${origin}/ew/tologin`;
+        window.location.href = `${serverUrl}?originPage=${href}`;
+        // dispatch({
+        //   type: 'login/logout',
+        // });
         return;
       } else if (status === 403) {
         dispatch(routerRedux.push('/exception/403'));
