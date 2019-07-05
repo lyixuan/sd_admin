@@ -91,6 +91,7 @@ export default function request(url, options) {
       if (status === 401) {
         const { href, origin } = window.location;
         const serverUrl = `${origin}/ew/tologin`;
+        console.log('401', `${serverUrl}?originPage=${href}`);
         window.location.href = `${serverUrl}?originPage=${href}`;
         // dispatch({
         //   type: 'login/logout',
