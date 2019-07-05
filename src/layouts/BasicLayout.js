@@ -100,10 +100,10 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(menuData, routerData),
     };
   }
-  UNSAFE_componentWillMount() {
-    // this.loginInSysItem();
-    this.initSysItem();
-  }
+  // UNSAFE_componentWillMount() {
+  //   // this.loginInSysItem();
+  //   this.initSysItem();
+  // }
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
       this.setState({
