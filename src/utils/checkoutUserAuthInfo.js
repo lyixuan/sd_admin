@@ -3,7 +3,7 @@ import storage from './storage';
 
 export function checkoutLogin() {
   const adminUser = storage.getItem('admin_user');
-  if (adminUser && adminUser.userId && adminUser.mail) {
+  if (adminUser && adminUser.userId && adminUser.mail && adminUser.userName) {
     return true;
   } else return false;
 }

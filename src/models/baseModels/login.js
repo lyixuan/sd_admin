@@ -62,8 +62,8 @@ export default {
       if (!response2) return;
       if (response2.code === 2000) {
         const data = response2.data || {};
-        const { token, userId, ...others } = data;
-        const saveObj = { token, userId, ...others };
+        const { name: userName, id: userId, mail, positionCount, roleId, roleName } = data;
+        const saveObj = { userName, userId, mail, positionCount, roleId, roleName };
         storage.setItem('admin_user', saveObj);
       } else {
         message.error(response2.msg);
@@ -73,9 +73,8 @@ export default {
       if (!response) return;
       if (response && response.code === 2000) {
         const data = response.data || {};
-        const { privilegeList } = data;
-        storage.setItem('admin_auth', privilegeList);
-        yield put(routerRedux.push('/'));
+        storage.setItem('admin_auth', data);
+        yield put(routerRedux.push('/indexPage'));
       } else {
         message.error(response.msg);
         redirectToLogin();
