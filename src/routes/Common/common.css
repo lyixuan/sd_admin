@@ -205,6 +205,26 @@
   color: #fff;
 }
 
+.newButton{
+  margin: 0 0 24px 0;
+  background-color: #00CCC3;
+  font-size: 14px;
+  width: 80px;
+  height: 32px;
+  border: 1px solid #00CCC3 !important;
+  color: #fff;
+}
+.newButton:hover{
+  background-color: #00CCC3;
+  border: 1px solid #00CCC3;
+  color: #fff;
+}
+.newButton:focus{
+  background-color: #00CCC3;
+  border: 1px solid #00CCC3;
+  color: #fff;
+}
+
 .resetButton{
   margin: auto 0 auto 10px;
   background-color: #fff;
