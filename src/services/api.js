@@ -32,7 +32,7 @@ export async function queryCurrentUser(params) {
   });
 }
 
-export async function getBaseUserInfo() {
+export async function getUserInfoNew() {
   return request(`${HOST}/getUserInfo`);
 }
 /*
