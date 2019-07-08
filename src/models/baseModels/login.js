@@ -2,11 +2,10 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { Base64 } from 'js-base64';
 import storage from 'utils/storage';
-import { redirectToLogin } from 'utils/routeUtils';
+import { redirectToLogin, casLogout } from 'utils/routeUtils';
 
 import {
   userLogin,
-  userLogout,
   CurrentUserListRole,
   userChangeRole,
   getPrivilegeList,
@@ -20,7 +19,6 @@ import {
   getUserInfo,
   isRepeatLogin,
 } from 'utils/authority';
-import { handleSuccess } from 'utils/Handle';
 import { ADMIN_USER, ADMIN_AUTH_LIST } from '@/utils/constants';
 
 message.config({
@@ -61,7 +59,7 @@ export default {
   effects: {
     *initSubSystem(_, { call, put }) {
       const response2 = yield call(getBaseUserInfo);
-      if (response2.code === 20000) {
+      if (response2 && response2.code === 20000) {
         const data = response2.data || {};
         const { token, userId, ...others } = data;
         const saveObj = { token, userId, ...others };
@@ -71,7 +69,7 @@ export default {
         redirectToLogin();
       }
       const response = yield call(getPrivilegeListNew);
-      if (response.code === 20000) {
+      if (response && response.code === 20000) {
         const data = response.data || {};
         const { privilegeList } = data;
         storage.setItem('admin_auth', privilegeList);
@@ -178,18 +176,10 @@ export default {
         message.error(response.msg);
       }
     },
-    *logout(_, { call }) {
-      try {
-        yield call(userLogout);
-      } finally {
-        removeStorge(ADMIN_USER);
-        // todo 修改登出接口地址；主动登出和401时调用，401登出，需传递重定向参数
-        yield call(handleSuccess, {
-          content: '退出登录',
-          pathname: '/userLayout/login',
-          time: 0.5,
-        });
-      }
+    *logout() {
+      removeStorge(ADMIN_USER);
+      removeStorge(ADMIN_AUTH_LIST);
+      casLogout();
     },
   },
 

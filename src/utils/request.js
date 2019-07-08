@@ -90,6 +90,7 @@ export default function request(url, options) {
       const status = e.name;
       if (status === 401) {
         redirectToLogin();
+        return;
       } else if (status === 403) {
         dispatch(routerRedux.push('/exception/403'));
         return;

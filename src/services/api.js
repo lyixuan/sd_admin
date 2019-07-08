@@ -33,7 +33,7 @@ export async function queryCurrentUser(params) {
 }
 
 export async function getBaseUserInfo() {
-  return request(`${HOST}/user/getUserInfo`);
+  return request(`${HOST}/getUserInfo`);
 }
 /*
 * 根据userId和token获取authList
@@ -44,7 +44,7 @@ export async function getPrivilegeList() {
   });
 }
 export async function getPrivilegeListNew() {
-  return request(`${HOST}/user/getPrivilegeList`, {
+  return request(`${HOST}/getPrivilegeList`, {
     method: 'GET',
   });
 }
