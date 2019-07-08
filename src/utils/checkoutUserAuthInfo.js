@@ -1,8 +1,9 @@
 import { getAuthority } from './authority';
+import storage from './storage';
 
 export function checkoutLogin() {
-  const adminUser = getAuthority('admin_user');
-  if (adminUser && adminUser.password && adminUser.mail) {
+  const adminUser = storage.getItem('admin_user');
+  if (adminUser && adminUser.userId && adminUser.mail) {
     return true;
   } else return false;
 }

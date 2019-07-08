@@ -59,16 +59,7 @@ export default {
   },
 
   effects: {
-    *initSubSystem(_, { call }) {
-      const response = yield call(getPrivilegeListNew);
-      if (response.code === 20000) {
-        const data = response.data || {};
-        const { privilegeList } = data;
-        storage.setItem('admin_auth', privilegeList);
-      } else {
-        message.error(response.msg);
-        redirectToLogin();
-      }
+    *initSubSystem(_, { call, put }) {
       const response2 = yield call(getBaseUserInfo);
       if (response2.code === 20000) {
         const data = response2.data || {};
@@ -77,6 +68,16 @@ export default {
         storage.setItem('admin_user', saveObj);
       } else {
         message.error(response2.msg);
+        redirectToLogin();
+      }
+      const response = yield call(getPrivilegeListNew);
+      if (response.code === 20000) {
+        const data = response.data || {};
+        const { privilegeList } = data;
+        storage.setItem('admin_auth', privilegeList);
+        yield put(routerRedux.push('/'));
+      } else {
+        message.error(response.msg);
         redirectToLogin();
       }
     },

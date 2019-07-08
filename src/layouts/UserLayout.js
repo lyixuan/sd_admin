@@ -1,12 +1,17 @@
 import React from 'react';
-import { Switch, Route } from 'dva/router';
+// import { Switch, Route } from 'dva/router';
 import DocumentTitle from 'react-document-title';
+import { connect } from 'dva/index';
 import styles from './UserLayout.less';
 import logoWord from '../assets/bg_word.png';
 import logoImg from '../assets/bg_logo.png';
-import { getRoutes } from '../utils/utils';
+// import { getRoutes } from '../utils/utils';
 
 class UserLayout extends React.PureComponent {
+  UNSAFE_componentWillMount() {
+    this.initSysItem();
+  }
+
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
@@ -16,8 +21,13 @@ class UserLayout extends React.PureComponent {
     }
     return title;
   }
+  initSysItem = () => {
+    this.props.dispatch({
+      type: 'login/initSubSystem',
+    });
+  };
   render() {
-    const { routerData, match } = this.props;
+    // const { routerData, match } = this.props;
     return (
       <DocumentTitle title={this.getPageTitle()}>
         <div className={styles.container}>
@@ -30,23 +40,6 @@ class UserLayout extends React.PureComponent {
                 <div className={styles.logoContent}>
                   <img src={logoImg} alt="小德logo" className={styles.logoImg} />
                 </div>
-                <div className={styles.loginContainer}>
-                  <div className={styles.loginContent}>
-                    <span className={styles.header}>登录小德BI系统</span>
-                    <div className={styles.login}>
-                      <Switch>
-                        {getRoutes(match.path, routerData).map(item => (
-                          <Route
-                            key={item.key}
-                            path={item.path}
-                            component={item.component}
-                            exact={item.exact}
-                          />
-                        ))}
-                      </Switch>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
             <div className={styles.wordContent}>
@@ -58,5 +51,7 @@ class UserLayout extends React.PureComponent {
     );
   }
 }
-
-export default UserLayout;
+export default connect(({ login, loading }) => ({
+  isLoginIng: loading.effects['login/initSubSystem'],
+  login,
+}))(UserLayout);

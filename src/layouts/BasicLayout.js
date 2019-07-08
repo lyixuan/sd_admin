@@ -100,9 +100,6 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(menuData, routerData),
     };
   }
-  UNSAFE_componentWillMount() {
-    this.initSysItem();
-  }
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
       this.setState({
@@ -160,11 +157,6 @@ class BasicLayout extends React.PureComponent {
       return authorizedPath;
     }
     return redirect;
-  };
-  initSysItem = () => {
-    this.props.dispatch({
-      type: 'login/initSubSystem',
-    });
   };
   handleUserInfo = () => {
     const { userName = '小德' } = getAuthority(ADMIN_USER);

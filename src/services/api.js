@@ -44,7 +44,7 @@ export async function getPrivilegeList() {
   });
 }
 export async function getPrivilegeListNew() {
-  return request(`${NEW_HOST}/user/getPrivilegeList`, {
+  return request(`${HOST}/user/getPrivilegeList`, {
     method: 'GET',
   });
 }
