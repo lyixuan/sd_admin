@@ -24,7 +24,12 @@ class UserLayout extends React.PureComponent {
     });
   };
   render() {
-    return <DocumentTitle title={this.getPageTitle()}>&ngsp;</DocumentTitle>;
+    // const { routerData, match } = this.props;
+    return (
+      <DocumentTitle title={this.getPageTitle()}>
+        <div>1</div>
+      </DocumentTitle>
+    );
   }
 }
 export default connect(({ login, loading }) => ({
