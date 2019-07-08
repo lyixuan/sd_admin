@@ -62,8 +62,8 @@ export default {
       if (!response2) return;
       if (response2.code === 2000) {
         const data = response2.data || {};
-        const { name: userName, id: userId, mail, positionCount, roleId, roleName } = data;
-        const saveObj = { userName, userId, mail, positionCount, roleId, roleName };
+        const { userName, userId, mail, positionCount } = data;
+        const saveObj = { userName, userId, mail, positionCount };
         storage.setItem('admin_user', saveObj);
       } else {
         message.error(response2.msg);
