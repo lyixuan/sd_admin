@@ -2,7 +2,7 @@ import fetch from 'dva/fetch';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
-// import { checkoutToken } from './Authorized';
+import { redirectToLogin } from './routeUtils';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -89,14 +89,7 @@ export default function request(url, options) {
       const { dispatch } = store;
       const status = e.name;
       if (status === 401) {
-        const { href, origin } = window.location;
-        const serverUrl = `${origin}/tologin`;
-        console.log('401', `${serverUrl}?originPage=${href}`);
-        window.location.href = `${serverUrl}?originPage=${href}`;
-        // dispatch({
-        //   type: 'login/logout',
-        // });
-        return;
+        redirectToLogin();
       } else if (status === 403) {
         dispatch(routerRedux.push('/exception/403'));
         return;

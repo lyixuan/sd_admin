@@ -2,6 +2,8 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { Base64 } from 'js-base64';
 import storage from 'utils/storage';
+import { redirectToLogin } from 'utils/routeUtils';
+
 import {
   userLogin,
   userLogout,
@@ -58,7 +60,6 @@ export default {
 
   effects: {
     *initSubSystem(_, { call }) {
-      // 初始化系统，判断缓存信息是否存在，不存在从接口获取。
       const response = yield call(getPrivilegeListNew);
       if (response.code === 20000) {
         const data = response.data || {};
@@ -66,6 +67,7 @@ export default {
         storage.setItem('admin_auth', privilegeList);
       } else {
         message.error(response.msg);
+        redirectToLogin();
       }
       const response2 = yield call(getBaseUserInfo);
       if (response2.code === 20000) {
@@ -75,6 +77,7 @@ export default {
         storage.setItem('admin_user', saveObj);
       } else {
         message.error(response2.msg);
+        redirectToLogin();
       }
     },
     *reLogin(_, { call, put }) {
@@ -100,7 +103,6 @@ export default {
           loginState = true;
         }
       } else {
-        // todo 1 进入域名首页，请求该接口（获取用户信息和权限信息），先从缓存获取，失败后从接口获取，再失败（非401）跳转到sso登录地址；如401，在request.js页面拦截跳转到sso登录地址
         yield put(routerRedux.push('/userLayout/login'));
       }
       yield put({

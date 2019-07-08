@@ -33,7 +33,7 @@ export async function queryCurrentUser(params) {
 }
 
 export async function getBaseUserInfo() {
-  return request(`${HOST}/user/info`);
+  return request(`${HOST}/user/getUserInfo`);
 }
 /*
 * 根据userId和token获取authList
