@@ -100,10 +100,9 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap: getBreadcrumbNameMap(menuData, routerData),
     };
   }
-  // UNSAFE_componentWillMount() {
-  //   // this.loginInSysItem();
-  //   this.initSysItem();
-  // }
+  UNSAFE_componentWillMount() {
+    this.initSysItem();
+  }
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
       this.setState({
@@ -162,11 +161,6 @@ class BasicLayout extends React.PureComponent {
     }
     return redirect;
   };
-  // loginInSysItem = () => {
-  //   this.props.dispatch({
-  //     type: 'login/reLogin',
-  //   });
-  // };
   initSysItem = () => {
     this.props.dispatch({
       type: 'login/initSubSystem',
