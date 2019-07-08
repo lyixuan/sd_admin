@@ -4,7 +4,7 @@ import { connect } from 'dva';
 // import { routerRedux } from 'dva/router';
 import GlobalHeader from 'components/GlobalHeader';
 import Modal from '@/selfComponent/Modal/Modal';
-import { getAuthority } from '@/utils/authority';
+import { getItem } from '@/utils/storage';
 import { ADMIN_USER } from '@/utils/constants';
 import styles from './styles/header.less';
 
@@ -22,7 +22,7 @@ export default class SelfHeader extends PureComponent {
     super(props);
     this.state = {
       visible: false,
-      roleSelected: getAuthority(ADMIN_USER).userId,
+      roleSelected: getItem(ADMIN_USER) && getItem(ADMIN_USER).userId,
     };
   }
   getRoleList = () => {
