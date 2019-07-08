@@ -90,7 +90,7 @@ export default function request(url, options) {
       const status = e.name;
       if (status === 401) {
         const { href, origin } = window.location;
-        const serverUrl = `${origin}/ew/ew/tologin`;
+        const serverUrl = `${origin}/tologin`;
         console.log('401', `${serverUrl}?originPage=${href}`);
         window.location.href = `${serverUrl}?originPage=${href}`;
         // dispatch({
