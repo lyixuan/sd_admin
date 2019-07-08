@@ -59,7 +59,8 @@ export default {
   effects: {
     *initSubSystem(_, { call, put }) {
       const response2 = yield call(getBaseUserInfo);
-      if (response2 && response2.code === 20000) {
+      if (!response2) return;
+      if (response2.code === 20000) {
         const data = response2.data || {};
         const { token, userId, ...others } = data;
         const saveObj = { token, userId, ...others };
@@ -69,6 +70,7 @@ export default {
         redirectToLogin();
       }
       const response = yield call(getPrivilegeListNew);
+      if (!response) return;
       if (response && response.code === 20000) {
         const data = response.data || {};
         const { privilegeList } = data;
