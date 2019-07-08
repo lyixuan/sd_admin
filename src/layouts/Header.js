@@ -4,7 +4,7 @@ import { connect } from 'dva';
 // import { routerRedux } from 'dva/router';
 import GlobalHeader from 'components/GlobalHeader';
 import Modal from '@/selfComponent/Modal/Modal';
-import { getItem } from '@/utils/storage';
+import storage from '@/utils/storage';
 import { ADMIN_USER } from '@/utils/constants';
 import styles from './styles/header.less';
 
@@ -22,13 +22,13 @@ export default class SelfHeader extends PureComponent {
     super(props);
     this.state = {
       visible: false,
-      roleSelected: getItem(ADMIN_USER) && getItem(ADMIN_USER).userId,
+      roleSelected: storage.getItem(ADMIN_USER) && storage.getItem(ADMIN_USER).userId,
     };
   }
   getRoleList = () => {
     this.props.dispatch({
       type: 'login/CurrentUserListRole',
-      payload: { userId: getItem(ADMIN_USER).userId },
+      payload: { userId: storage.getItem(ADMIN_USER).userId },
     });
   };
   handleMenuClick = ({ key }) => {
@@ -63,7 +63,7 @@ export default class SelfHeader extends PureComponent {
   sureChoseRole = () => {
     const { roleSelected } = this.state;
     const { roleList = [] } = this.props;
-    if (getItem(ADMIN_USER).userId === roleSelected) {
+    if (storage.getItem(ADMIN_USER).userId === roleSelected) {
       this.setState({ visible: false });
       return;
     }
@@ -75,7 +75,7 @@ export default class SelfHeader extends PureComponent {
   };
   handleMenuList = () => {
     const selectedGroup = window.BI_Filter('GLOBAL_HEADER_SELECT');
-    const adminUser = getItem(ADMIN_USER) || {};
+    const adminUser = storage.getItem(ADMIN_USER) || {};
     const positionCount = adminUser.positionCount || 0;
     //  positionCount<=1  hide  changeRole selectItem
     return selectedGroup.filter(item => item.id !== 'changeRole' || positionCount > 1);
