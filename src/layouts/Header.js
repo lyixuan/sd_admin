@@ -28,7 +28,7 @@ export default class SelfHeader extends PureComponent {
   getRoleList = () => {
     this.props.dispatch({
       type: 'login/CurrentUserListRole',
-      payload: { userId: getAuthority(ADMIN_USER).userId },
+      payload: { userId: getItem(ADMIN_USER).userId },
     });
   };
   handleMenuClick = ({ key }) => {
@@ -63,7 +63,7 @@ export default class SelfHeader extends PureComponent {
   sureChoseRole = () => {
     const { roleSelected } = this.state;
     const { roleList = [] } = this.props;
-    if (getAuthority(ADMIN_USER).userId === roleSelected) {
+    if (getItem(ADMIN_USER).userId === roleSelected) {
       this.setState({ visible: false });
       return;
     }
@@ -75,7 +75,7 @@ export default class SelfHeader extends PureComponent {
   };
   handleMenuList = () => {
     const selectedGroup = window.BI_Filter('GLOBAL_HEADER_SELECT');
-    const adminUser = getAuthority(ADMIN_USER) || {};
+    const adminUser = getItem(ADMIN_USER) || {};
     const positionCount = adminUser.positionCount || 0;
     //  positionCount<=1  hide  changeRole selectItem
     return selectedGroup.filter(item => item.id !== 'changeRole' || positionCount > 1);
