@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Switch, Route } from 'dva/router';
+import { Switch, Route } from 'dva/router';
 import DocumentTitle from 'react-document-title';
 import styles from './UserLayout.less';
 import logoWord from '../assets/bg_word.png';
@@ -43,7 +43,6 @@ class UserLayout extends React.PureComponent {
                             exact={item.exact}
                           />
                         ))}
-                        <Redirect exact from="/user" to="/userLayout/login" />
                       </Switch>
                     </div>
                   </div>
