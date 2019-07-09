@@ -4,7 +4,7 @@ import request from '../utils/request';
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
   // development: 'http://172.16.117.65:8090',
-  development: 'http://test.xd.admin.ministudy.com/ew',
+  development: 'http://test.xd.admin.ministudy.com/apis',
 };
 const newHostObj = {
   production: 'http://api.bd.ministudy.com/apis/ew',
