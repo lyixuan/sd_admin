@@ -24,8 +24,8 @@ export const DOMAIN_HOST = '.ministudy.com';
 // 设置督学模块跳转
 export const INSPECTOR_HOST = {
   localhost: 'http://dx.ministudy.com',
-  development: 'http://test.dx.ministudy.com',
-  production: 'http://api.bd.ministudy.com',
+  development: 'http://test.xd.admin.ministudy.com',
+  production: 'http://bd.ministudy.com',
 }[process.env.LOGIN_HOST];
 
 // Global Header Select

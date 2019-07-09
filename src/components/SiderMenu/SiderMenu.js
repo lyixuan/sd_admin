@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import { Link } from 'dva/router';
-// import { INSPECTOR_HOST } from '@/utils/constants';
+import { INSPECTOR_HOST } from '@/utils/constants';
 import styles from './index.less';
 import { urlToList } from '../_utils/pathTools';
 
@@ -175,9 +175,8 @@ export default class SiderMenu extends PureComponent {
   };
   addHosts = path => {
     // 为特定path添加hosts
-    // const isInspector = /^\/inspector\/(\w+\/?)+$/.test(path);
-    // return isInspector ? `${INSPECTOR_HOST}${path}` : path;
-    return path;
+    const isInspector = /^\/inspector\/(\w+\/?)+$/.test(path);
+    return isInspector ? `${INSPECTOR_HOST}${path}` : path;
   };
   // conversion Path
   // 转化路径
