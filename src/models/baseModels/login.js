@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { Base64 } from 'js-base64';
 import storage from 'utils/storage';
-import { redirectToLogin, casLogout } from 'utils/routeUtils';
+import { casLogout } from 'utils/routeUtils';
 
 import {
   userLogin,
@@ -59,16 +59,34 @@ export default {
   effects: {
     *initSubSystem(_, { call, put }) {
       const response2 = yield call(getUserInfoNew);
+      const codeMsg403 = 10300;
       if (!response2) return;
-      if (response2.code === 2000) {
-        const data = response2.data || {};
-        const { userName, userId, mail, positionCount } = data;
-        const saveObj = { userName, userId, mail, positionCount };
-        storage.setItem('admin_user', saveObj);
-      } else {
-        message.error(response2.msg);
-        redirectToLogin();
+
+      const data2 = response2.data || {};
+      const { userName, userId, mail, positionCount } = data2;
+      const saveObj = { userName, userId, mail, positionCount };
+
+      switch (response2.code) {
+        case 2000:
+          storage.setItem('admin_user', saveObj);
+          break;
+        case codeMsg403:
+          yield put(routerRedux.push('/exception/403'));
+          break;
+        default:
+          message.error(response2.msg);
+          // redirectToLogin();
+          break;
       }
+      // if (response2.code === 2000) {
+      //   const data = response2.data || {};
+      //   const { userName, userId, mail, positionCount } = data;
+      //   const saveObj = { userName, userId, mail, positionCount };
+      //   storage.setItem('admin_user', saveObj);
+      // } else {
+      //   message.error(response2.msg);
+      //   redirectToLogin();
+      // }
       const response = yield call(getPrivilegeListNew);
       if (!response) return;
       if (response && response.code === 2000) {
@@ -77,7 +95,7 @@ export default {
         yield put(routerRedux.push('/indexPage'));
       } else {
         message.error(response.msg);
-        redirectToLogin();
+        // redirectToLogin();
       }
     },
     *reLogin(_, { call, put }) {
@@ -180,7 +198,7 @@ export default {
     *logout() {
       removeStorge(ADMIN_USER);
       removeStorge(ADMIN_AUTH_LIST);
-      casLogout();
+      yield casLogout();
     },
   },
 
