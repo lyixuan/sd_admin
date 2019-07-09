@@ -197,9 +197,10 @@ export default {
       }
     },
     *logout() {
+      if (0) yield call(userChangeRole);
       removeStorge(ADMIN_USER);
       removeStorge(ADMIN_AUTH_LIST);
-      yield casLogout();
+      casLogout();
     },
   },
 
