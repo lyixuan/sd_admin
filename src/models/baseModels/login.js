@@ -1,5 +1,4 @@
 import { routerRedux } from 'dva/router';
-import router from 'umi/router';
 import { message } from 'antd';
 import { Base64 } from 'js-base64';
 import storage from 'utils/storage';
@@ -72,7 +71,7 @@ export default {
           storage.setItem('admin_user', saveObj);
           break;
         case codeMsg403:
-          yield put(router.push('/exception/403'));
+          yield put(routerRedux.push('/exception/403'));
           break;
         default:
           message.error(response2.msg);
@@ -196,7 +195,7 @@ export default {
         message.error(response.msg);
       }
     },
-    *logout() {
+    *logout(_, { call }) {
       if (0) yield call(userChangeRole);
       removeStorge(ADMIN_USER);
       removeStorge(ADMIN_AUTH_LIST);
