@@ -1,3 +1,4 @@
+import pathToRegexp from 'path-to-regexp';
 import storage from './storage';
 
 export function redirectToLogin() {
