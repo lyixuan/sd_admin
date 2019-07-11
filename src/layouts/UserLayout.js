@@ -1,21 +1,22 @@
 import React from 'react';
-import { routerRedux } from 'dva/router';
+// import { routerRedux } from 'dva/router';
 // import { Switch, Route } from 'dva/router';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva/index';
-import storage from '../utils/storage';
+// import storage from '../utils/storage';
 
-function isLogin() {
-  return storage.getItem('admin_user') && storage.getItem('admin_user').userId;
-}
+// function isLogin() {
+//   return storage.getItem('admin_user') && storage.getItem('admin_user').userId;
+// }
 
 class UserLayout extends React.PureComponent {
   UNSAFE_componentWillMount() {
-    if (!isLogin) {
-      this.initSysItem();
-    } else {
-      this.props.dispatch(routerRedux.push({ pathname: '/' }));
-    }
+    this.initSysItem();
+    // if (!isLogin) {
+    //
+    // } else {
+    //   this.props.dispatch(routerRedux.push({ pathname: '/' }));
+    // }
   }
 
   getPageTitle() {
