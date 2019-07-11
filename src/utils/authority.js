@@ -8,9 +8,6 @@ export function getItem(key) {
 }
 export function getAuthority(key) {
   try {
-    if (key === ADMIN_USER) {
-      return getUserInfo();
-    }
     return getItem(key);
   } catch (e) {
     console.warn(`1${e}`);
