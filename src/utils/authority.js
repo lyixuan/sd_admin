@@ -1,6 +1,5 @@
 // use localStorage to store the authority info, which might be sent from server in actual project.
-import Cookies from 'js-cookie';
-import { ADMIN_USER, DOMAIN_HOST, ADMIN_AUTH_LIST } from './constants';
+import { ADMIN_USER, ADMIN_AUTH_LIST } from './constants';
 
 export function getItem(key) {
   const value = localStorage.getItem(key) || sessionStorage.getItem(key);
@@ -14,9 +13,7 @@ export function getAuthority(key) {
   }
 }
 export function getUserInfo() {
-  let userInfo = Cookies.get(ADMIN_USER);
-  userInfo =
-    userInfo || localStorage.getItem(ADMIN_USER) || sessionStorage.getItem(ADMIN_USER) || '';
+  const userInfo = localStorage.getItem(ADMIN_USER);
   return userInfo ? JSON.parse(userInfo) : null;
 }
 export function getUserAuth() {
@@ -24,9 +21,6 @@ export function getUserAuth() {
 }
 export function setAuthority(key, value) {
   try {
-    if (key === ADMIN_USER) {
-      Cookies.set(ADMIN_USER, { ...value }, { expires: 365, domain: DOMAIN_HOST });
-    }
     return localStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
     console.warn(`2${e}`);
@@ -34,9 +28,6 @@ export function setAuthority(key, value) {
 }
 export function removeStorge(key) {
   try {
-    if (key === ADMIN_USER) {
-      Cookies.remove(ADMIN_USER);
-    }
     window.localStorage.removeItem(key);
     window.sessionStorage.removeItem(key);
   } catch (e) {
