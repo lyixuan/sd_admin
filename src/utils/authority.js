@@ -2,7 +2,7 @@
 import { ADMIN_USER, ADMIN_AUTH_LIST } from './constants';
 
 export function getItem(key) {
-  const value = localStorage.getItem(key) || sessionStorage.getItem(key);
+  const value = localStorage.getItem(key);
   return value ? JSON.parse(value) : null;
 }
 export function getAuthority(key) {
