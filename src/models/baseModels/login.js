@@ -63,8 +63,8 @@ export default {
       if (!response2) return;
 
       const data2 = response2.data || {};
-      const { userName, userId, mail, positionCount } = data2;
-      const saveObj = { userName, userId, mail, positionCount };
+      const { userName, userId, mail, positionCount, token } = data2;
+      const saveObj = { userName, userId, mail, positionCount, token };
 
       switch (response2.code) {
         case 2000:

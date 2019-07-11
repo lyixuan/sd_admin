@@ -3,6 +3,7 @@ import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
 import { redirectToLogin } from './routeUtils';
+import { checkoutToken } from './Authorized';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -54,7 +55,7 @@ export default function request(url, options) {
     credentials: 'include',
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
-      // authorization: checkoutToken(),
+      authorization: checkoutToken(),
     },
   };
   const newOptions = { ...defaultOptions, ...options };
