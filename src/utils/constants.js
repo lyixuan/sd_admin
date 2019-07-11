@@ -21,6 +21,11 @@ export const STATIC_HOST = {
 // 设置domain域名
 export const DOMAIN_HOST = '.ministudy.com';
 // export const DOMAIN_HOST = 'localhost';
+export const CAS_HOST = {
+  development: 'http://test.xd.admin.ministudy.com',
+  production: 'http://bd.ministudy.com',
+}[process.env.LOGIN_HOST];
+
 // 设置督学模块跳转
 export const INSPECTOR_HOST = {
   localhost: 'http://dx.ministudy.com',
