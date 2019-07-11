@@ -58,44 +58,35 @@ export default {
 
   effects: {
     *initSubSystem(_, { call, put }) {
-      const response2 = yield call(getUserInfoNew);
+      const response = yield call(getUserInfoNew);
       const codeMsg403 = 10300;
-      if (!response2) return;
-
-      const data2 = response2.data || {};
+      if (!response) return;
+      const data2 = response.data || {};
       const { userName, userId, mail, positionCount, token } = data2;
       const saveObj = { userName, userId, mail, positionCount, token };
 
-      switch (response2.code) {
+      switch (response.code) {
         case 2000:
           storage.setItem('admin_user', saveObj);
+          yield put({ type: 'getProvilege', payload: { params: {} } });
           break;
         case codeMsg403:
           yield put(routerRedux.push('/exception/403'));
           break;
         default:
-          message.error(response2.msg);
-          // redirectToLogin();
+          message.error(response.msg);
           break;
       }
-      // if (response2.code === 2000) {
-      //   const data = response2.data || {};
-      //   const { userName, userId, mail, positionCount } = data;
-      //   const saveObj = { userName, userId, mail, positionCount };
-      //   storage.setItem('admin_user', saveObj);
-      // } else {
-      //   message.error(response2.msg);
-      //   redirectToLogin();
-      // }
+    },
+    *getProvilege(_, { call, put }) {
       const response = yield call(getPrivilegeListNew);
       if (!response) return;
-      if (response && response.code === 2000) {
-        const data = response.data || {};
+      if (response.code === 20000) {
+        const data = response.data || null;
         storage.setItem('admin_auth', data);
-        yield put(routerRedux.push('/indexPage'));
+        yield put(routerRedux.push('/'));
       } else {
         message.error(response.msg);
-        // redirectToLogin();
       }
     },
     *reLogin(_, { call, put }) {
