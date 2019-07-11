@@ -1,4 +1,5 @@
 import React from 'react';
+import { routerRedux } from 'dva/router';
 // import { Switch, Route } from 'dva/router';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva/index';
@@ -12,6 +13,8 @@ class UserLayout extends React.PureComponent {
   UNSAFE_componentWillMount() {
     if (!isLogin) {
       this.initSysItem();
+    } else {
+      this.props.dispatch(routerRedux.push({ pathname: '/' }));
     }
   }
 
