@@ -2,11 +2,17 @@ import React from 'react';
 // import { Switch, Route } from 'dva/router';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva/index';
-// import { getRoutes } from '../utils/utils';
+import storage from '../utils/storage';
+
+function isLogin() {
+  return storage.getItem('admin_user') && storage.getItem('admin_user').userId;
+}
 
 class UserLayout extends React.PureComponent {
   UNSAFE_componentWillMount() {
-    this.initSysItem();
+    if (!isLogin) {
+      this.initSysItem();
+    }
   }
 
   getPageTitle() {
