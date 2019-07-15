@@ -3,15 +3,10 @@ import request from '../utils/request';
 
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
-  // development: 'http://172.16.117.65:8090',
+  localhost: 'http://172.16.58.18:8084',
   development: 'http://test.xd.admin.ministudy.com/apis',
 };
-const newHostObj = {
-  production: 'http://api.bd.ministudy.com/apis/ew',
-  development: 'http://172.16.117.65:8085/ew',
-};
 export const HOST = hostObj[process.env.API_TYPE];
-export const NEW_HOST = newHostObj[process.env.API_TYPE];
 /*
 * 用户登录接口
 * params：{name，password}
@@ -32,17 +27,10 @@ export async function queryCurrentUser(params) {
   });
 }
 
-export async function getUserInfoNew() {
-  return request(`${HOST}/getUserInfo`);
+export async function getUserInfoNew(params) {
+  return request(`${HOST}/getUserInfo?${stringify(params)}`);
 }
-/*
-* 根据userId和token获取authList
-*/
-export async function getPrivilegeList() {
-  return request(`${NEW_HOST}/user/getPrivilegeList`, {
-    method: 'GET',
-  });
-}
+
 export async function getPrivilegeListNew() {
   return request(`${HOST}/getPrivilegeList`, {
     method: 'GET',

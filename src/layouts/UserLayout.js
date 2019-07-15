@@ -3,6 +3,7 @@ import React from 'react';
 // import { Switch, Route } from 'dva/router';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva/index';
+import { DEBUGGER_USER } from '@/utils/constants';
 // import storage from '../utils/storage';
 
 // function isLogin() {
@@ -31,6 +32,7 @@ class UserLayout extends React.PureComponent {
   initSysItem = () => {
     this.props.dispatch({
       type: 'login/initSubSystem',
+      payload: { userName: DEBUGGER_USER },
     });
   };
   render() {

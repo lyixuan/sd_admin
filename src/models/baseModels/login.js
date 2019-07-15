@@ -57,8 +57,8 @@ export default {
   },
 
   effects: {
-    *initSubSystem(_, { call, put }) {
-      const response = yield call(getUserInfoNew);
+    *initSubSystem({ payload }, { call, put }) {
+      const response = yield call(getUserInfoNew, { ...payload });
       const codeMsg403 = 10300;
       if (!response) return;
       const data2 = response.data || {};
