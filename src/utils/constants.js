@@ -12,6 +12,7 @@ export const ADMIN_USER = 'admin_user';
 export const TABLE_PAGES_NUM = 30;
 // 数据分析师id
 export const DATA_ANALYST_ID = '122';
+
 export const DEBUGGER_USER = {
   localhost: 'duchunjing',
 }[process.env.LOGIN_HOST];

@@ -3,7 +3,7 @@ import request from '../utils/request';
 
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
-  localhost: 'http://172.16.58.18:8084/apis',
+  localhost: 'http://dev.xd.admin.ministudy.com/apis',
   development: 'http://test.xd.admin.ministudy.com/apis',
 };
 export const HOST = hostObj[process.env.API_TYPE];
