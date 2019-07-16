@@ -1,8 +1,9 @@
+import { DEBUGGER_USER } from 'utils/constants';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { Base64 } from 'js-base64';
 import storage from 'utils/storage';
-import { casLogout } from 'utils/routeUtils';
+import { casLogout, casLogoutDev } from 'utils/routeUtils';
 
 import {
   userLogin,
@@ -190,7 +191,11 @@ export default {
       if (0) yield call(userChangeRole);
       removeStorge(ADMIN_USER);
       removeStorge(ADMIN_AUTH_LIST);
-      casLogout();
+      if (DEBUGGER_USER) {
+        casLogoutDev();
+      } else {
+        casLogout();
+      }
     },
   },
 
