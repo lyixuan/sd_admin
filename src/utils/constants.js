@@ -20,7 +20,7 @@ export const DEBUGGER_USER = {
 // 下载类资源host
 export const STATIC_HOST = {
   development: 'http://172.16.117.65:8091',
-  production: 'http://api.bd.ministudy.com/download',
+  production: 'http://bd.ministudy.com/download',
 }[process.env.API_TYPE];
 
 // 设置domain域名
