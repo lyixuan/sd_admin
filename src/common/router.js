@@ -393,6 +393,14 @@ export const getRouterData = app => {
       },
       name: '添加申诉',
     },
+    '/appeal/batchdelappeal': {
+      component: dynamicWrapper(app, ['quality'], () => import('../routes/Appeal/BatchDelAppeal')),
+      bread: {
+        name: '申诉管理',
+        path: '/appeal/appealList',
+      },
+      name: '批量申诉',
+    },
     '/performance/familyCoefficient': {
       component: dynamicWrapper(app, ['coefficient'], () =>
         import('../routes/Coefficient/Family/index')

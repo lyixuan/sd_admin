@@ -4,6 +4,7 @@ import {
   checkQualityList,
   delQualityList,
   preDelQualityList,
+  verifyConsultIds,
   saveDataQuality,
 } from '../services/api';
 
@@ -78,6 +79,26 @@ export default {
         yield put({
           type: 'save',
           payload: { preDelData, current: 1, disableDel: true, isLoading: false },
+        });
+      }
+    },
+    // 申诉管理接口，批量删除申诉 第一步接口
+    *verifyConsultIds({ payload }, { call, put }) {
+      const { params } = payload;
+      const verifyConsultIdsData = yield call(verifyConsultIds, { ...params });
+
+      if (verifyConsultIdsData.code !== 2000) {
+        message.error(verifyConsultIdsData.msg);
+        yield put({ type: 'save', payload: { current: 0, isLoading: false } });
+      } else if (verifyConsultIdsData.data.successSize > 0) {
+        yield put({
+          type: 'save',
+          payload: { verifyConsultIdsData, current: 1, disableDel: false, isLoading: false },
+        });
+      } else {
+        yield put({
+          type: 'save',
+          payload: { verifyConsultIdsData, current: 1, disableDel: true, isLoading: false },
         });
       }
     },

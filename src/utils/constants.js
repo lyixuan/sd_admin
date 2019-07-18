@@ -14,7 +14,7 @@ export const TABLE_PAGES_NUM = 30;
 export const DATA_ANALYST_ID = '122';
 
 export const DEBUGGER_USER = {
-  localhost: 'liuyixuan02',
+  localhost: 'zhanglulu02',
 }[process.env.LOGIN_HOST];
 
 // 下载类资源host
