@@ -13,13 +13,7 @@ import {
   getPrivilegeListNew,
   getUserInfoNew,
 } from '@/services/api';
-import {
-  setAuthority,
-  setAuthoritySeccion,
-  removeStorge,
-  getUserInfo,
-  isRepeatLogin,
-} from 'utils/authority';
+import { setAuthority, setAuthoritySeccion, getUserInfo, isRepeatLogin } from 'utils/authority';
 import { ADMIN_USER, ADMIN_AUTH_LIST } from '@/utils/constants';
 
 message.config({
@@ -189,8 +183,6 @@ export default {
     },
     *logout(_, { call }) {
       if (0) yield call(userChangeRole);
-      removeStorge(ADMIN_USER);
-      removeStorge(ADMIN_AUTH_LIST);
       if (DEBUGGER_USER) {
         casLogoutDev();
       } else {
