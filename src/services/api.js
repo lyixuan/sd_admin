@@ -3,8 +3,8 @@ import request from '../utils/request';
 
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
-  localhost: 'http://dev.xd.admin.ministudy.com/apis',
-  development: 'http://test.xd.admin.ministudy.com/apis', // 'http://172.16.59.227:18084'//
+  localhost: 'http://test.xd.admin.ministudy.com/apis',
+  development: 'http://test.xd.admin.ministudy.com/apis', // 'http://172.16.59.227:18084', //
 };
 export const HOST = hostObj[process.env.API_TYPE];
 /*
@@ -578,6 +578,13 @@ export async function preDelQualityList(params) {
 // 批量申诉  第一步
 export async function verifyConsultIds(params) {
   return request(`${HOST}/batchAppeal/verifyConsultIds`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 批量申诉  第二步
+export async function batchSave(params) {
+  return request(`${HOST}/batchAppeal/save`, {
     method: 'POST',
     body: params,
   });

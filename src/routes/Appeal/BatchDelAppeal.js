@@ -49,6 +49,12 @@ class BatchDelAppeal extends Component {
       payload: nums,
     });
   };
+  getAppealType = appealType => {
+    this.props.dispatch({
+      type: 'quality/getAppealType',
+      payload: appealType,
+    });
+  };
   // 初始化一些值
   initParamsFn = (disableDel, nums) => {
     const num = !nums ? this.props.quality.nums : '';
@@ -57,9 +63,17 @@ class BatchDelAppeal extends Component {
       payload: { disableDel, nums: num },
     });
   };
+  // 第一步，验证咨询id
   verifyConsultIds = params => {
     this.props.dispatch({
       type: 'quality/verifyConsultIds',
+      payload: { params },
+    });
+  };
+  // 第二步 批量申诉 id
+  batchSave = params => {
+    this.props.dispatch({
+      type: 'quality/batchSave',
       payload: { params },
     });
   };
@@ -87,69 +101,28 @@ class BatchDelAppeal extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/quality/qualityList',
+      pathname: '/appeal/appealList',
     });
   }
-  // 初始化tabale 列数据
-  // fillDataSource = val => {
-  //   const data = [];
-  //   val.map((item, index) =>
-  //     data.push({
-  //       key: index + 1,
-  //       qualityNum: item.qualityNum,
-  //       countValue: item.countValue,
-  //       qualityTypeName: item.qualityTypeName,
-  //       teaName: item.teaName,
-  //       name:
-  //         item.groupName && item.familyName
-  //           ? `${item.collegeName} | ${item.familyName} | ${item.groupName}`
-  //           : item.familyName ? `${item.collegeName} | ${item.familyName}` : `${item.collegeName}`,
-  //     })
-  //   );
-  //   return data;
-  // };
-  // columnsData = () => {
-  //   const columns = [
-  //     {
-  //       title: '序号',
-  //       dataIndex: 'key',
-  //     },
-  //     {
-  //       title: '质检编号',
-  //       dataIndex: 'qualityNum',
-  //     },
-  //     {
-  //       title: '扣除学分',
-  //       dataIndex: 'countValue',
-  //     },
-  //     {
-  //       title: '质检等级',
-  //       dataIndex: 'qualityTypeName',
-  //     },
-  //     {
-  //       title: '老师名称',
-  //       dataIndex: 'teaName',
-  //     },
-  //     {
-  //       title: '学院 | 家族 | 小组',
-  //       dataIndex: 'name',
-  //     },
-  //   ];
 
-  //   return columns;
-  // };
   render() {
-    const { verifyConsultIdsData, nums, current, disableDel, isLoading } = this.props.quality;
-    const { isDisabled, appealType } = this.state;
+    const { verifyConsultIdsData, nums, current, isLoading } = this.props.quality;
+    const { appealType } = this.state;
+    let { disableDel } = this.props.quality;
+    let { isDisabled } = this.state;
     const data = verifyConsultIdsData ? verifyConsultIdsData.data : null;
     let [successIdListLen, failIdListLen, totalLen] = [0, 0, 0];
     if (data) {
       successIdListLen = data.successIdList.length || 0;
       failIdListLen = data.failIdList.length || 0;
       totalLen = successIdListLen + failIdListLen;
+      // 判断 大于一条走下一步
+      if (successIdListLen) {
+        isDisabled = true;
+        disableDel = false;
+      }
     }
     const dataSource = !data || !data.successNums ? [] : data.successNums;
-    // const columns = !this.columnsData() ? [] : this.columnsData();
 
     const successNums = [];
     if (dataSource.length > 0) {
@@ -158,9 +131,8 @@ class BatchDelAppeal extends Component {
       });
     }
     // const failNums = data ? data.failNums : [];
-    const successSize = data ? data.successSize : 0;
+    const successSize = data ? successIdListLen : 0;
     // const inputCo，ntent = data ? data.failSize > 0 : null;
-
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
       setConfirm();
@@ -169,9 +141,6 @@ class BatchDelAppeal extends Component {
     }
 
     const tipSucess = `您已成功删除 ${successSize} 条数据！`;
-    // const checkRes = !data ? null : (
-    //   <CheckResult totalSize={data.totalSize} successSize={successSize} failSize={data.failSize} />
-    // );
     const successTips = <p>删除数据成功，请在申诉管理列表页查看最新的更新状态。</p>;
 
     const inputInfo = (
@@ -204,6 +173,7 @@ class BatchDelAppeal extends Component {
                 onChange={this.onSelectChange}
                 placeholder="请选择"
                 style={{ width: 230, height: 32 }}
+                defaultValue={appealType}
               >
                 <Option value="15">IM未回复</Option>
                 <Option value="16">IM不满意</Option>
@@ -211,12 +181,16 @@ class BatchDelAppeal extends Component {
               </Select>
             </div>
             <StepInput
-              inputTitle="请输入想删除的 “申诉ID”："
+              inputTitle="请输入想删除的 “咨询ID”："
               inputContent="true"
               inputTip="true"
               nums={nums}
+              appealType={appealType}
               getNums={param => {
                 this.getNums(param);
+              }}
+              getAppealType={param => {
+                this.getAppealType(param);
               }}
               callBackParent={bol => {
                 this.onChildChange(bol);
@@ -232,6 +206,10 @@ class BatchDelAppeal extends Component {
             message="搜索失败的咨询ID: (可能原因: 匹配失败、申诉中、已申诉)"
             inputInfo={inputInfo}
             nums={nums}
+            appealType={appealType}
+            getAppealType={param => {
+              this.getAppealType(param);
+            }}
             inputContent="false"
             disabled
           />
@@ -265,17 +243,18 @@ class BatchDelAppeal extends Component {
             message.error('申诉类型不能为空');
             return;
           }
-          // /batchAppeal/verifyConsultIds
           this.verifyConsultIds({ consultIds: nums, appealType });
         }}
         step2Fetch={() => {
           this.editCurrent(2);
-        }}
-        step3Fetch={() => {
-          this.fetchDel({ nums: successNums.join(' ') });
+          this.batchSave({ appealType, successIdList: data.successIdList });
         }}
         editLoading={loading => {
           this.editLoading(loading);
+        }}
+        appealType={appealType}
+        getAppealType={param => {
+          this.getAppealType(param);
         }}
         isLoading={isLoading}
         current={current}
