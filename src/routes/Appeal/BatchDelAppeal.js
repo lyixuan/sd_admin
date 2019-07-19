@@ -4,7 +4,6 @@ import { Select, Icon, message } from 'antd';
 import StepLayout from '../../layouts/stepLayout';
 import StepInput from '../../selfComponent/setpForm/stepInput';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
-// import CheckResult from '../../selfComponent/setpForm/checkResult';
 import { clearConfirm, setConfirm } from '../../utils/reloadConfirm';
 
 const { Option } = Select;
@@ -77,12 +76,6 @@ class BatchDelAppeal extends Component {
       payload: { params },
     });
   };
-  fetchDel = params => {
-    this.props.dispatch({
-      type: 'quality/delQuality',
-      payload: { params },
-    });
-  };
   editCurrent = current => {
     this.props.dispatch({
       type: 'quality/editCurrent',
@@ -122,17 +115,9 @@ class BatchDelAppeal extends Component {
         disableDel = false;
       }
     }
-    const dataSource = !data || !data.successNums ? [] : data.successNums;
 
-    const successNums = [];
-    if (dataSource.length > 0) {
-      data.successNums.forEach(item => {
-        successNums.push(item.qualityNum);
-      });
-    }
     const failNums = data ? data.failIdList : [];
     const successSize = data ? successIdListLen : 0;
-    // const inputCo，ntent = data ? data.failSize > 0 : null;
     // 有数据之后刷新页面提示弹框
     if (!isDisabled) {
       setConfirm();
