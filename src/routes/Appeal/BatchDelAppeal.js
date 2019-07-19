@@ -130,7 +130,7 @@ class BatchDelAppeal extends Component {
         successNums.push(item.qualityNum);
       });
     }
-    // const failNums = data ? data.failNums : [];
+    const failNums = data ? data.failIdList : [];
     const successSize = data ? successIdListLen : 0;
     // const inputCo，ntent = data ? data.failSize > 0 : null;
     // 有数据之后刷新页面提示弹框
@@ -206,6 +206,7 @@ class BatchDelAppeal extends Component {
             message="搜索失败的咨询ID: (可能原因: 匹配失败、申诉中、已申诉)"
             inputInfo={inputInfo}
             nums={nums}
+            faileData={failNums}
             appealType={appealType}
             getAppealType={param => {
               this.getAppealType(param);

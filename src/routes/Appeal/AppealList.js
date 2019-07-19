@@ -331,11 +331,11 @@ class AppealList extends Component {
                 添加申诉
               </Button>
             </AuthorizedButton>
-            <AuthorizedButton authority="/appeal/batchdelappeal">
+            <AuthorizedButton authority="/appeal/batchdelappeal" style={{ marginLeft: '10px' }}>
               <Button
                 onClick={this.batchDelAppeal}
                 type="primary"
-                className={common.deleteQualityButton}
+                className={common.batchDelButton}
               >
                 批量申诉
               </Button>
