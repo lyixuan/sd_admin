@@ -18,7 +18,7 @@ const { RangePicker } = DatePicker;
   goodStudent,
   loading: loading.models.goodStudent,
 }))
-class List extends Component {
+class KoIncomeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +30,7 @@ class List extends Component {
         endDate: null,
       },
     };
+    console.log(1111111);
   }
   componentDidMount() {
     this.getAllOrg();
@@ -229,7 +230,7 @@ class List extends Component {
     );
     const getTab = () => {
       return [
-        { name: '创收成单', path: '/bottomOrder' },
+        { name: '创收成单', path: '/bottomOrder/createIncome' },
         { name: 'KO成单', path: '/bottomOrder/koIncome' },
       ];
     };
@@ -278,4 +279,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default KoIncomeList;

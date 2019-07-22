@@ -11,7 +11,7 @@ export function columnsFn() {
       dataIndex: 'bizDate',
     },
     {
-      title: '子订单编号',
+      title: '子订单ID',
       dataIndex: 'ordId',
     },
     {

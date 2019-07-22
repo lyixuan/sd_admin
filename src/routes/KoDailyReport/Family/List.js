@@ -229,7 +229,7 @@ class List extends Component {
     );
     const getTab = () => {
       return [
-        { name: '家族', path: '/koDailyReport' },
+        { name: '家族', path: '/koDailyReport/family' },
         { name: '运营小组', path: '/koDailyReport/group' },
       ];
     };

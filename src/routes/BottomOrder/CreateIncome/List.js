@@ -18,7 +18,7 @@ const { RangePicker } = DatePicker;
   goodStudent,
   loading: loading.models.goodStudent,
 }))
-class List extends Component {
+class CreateList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -144,8 +144,9 @@ class List extends Component {
 
   // 添加数据
   goodStudentAdd = () => {
-    this.props.setRouteUrlParams('/goodStudent/goodStudentAdd');
+    this.props.setRouteUrlParams('/bottomOrder/createIncome/add');
   };
+
   splitOrgName = (...argument) => {
     return argument.filter(item => item).join(' | ');
   };
@@ -229,7 +230,7 @@ class List extends Component {
     );
     const getTab = () => {
       return [
-        { name: '创收成单', path: '/bottomOrder' },
+        { name: '创收成单', path: '/bottomOrder/createIncome' },
         { name: 'KO成单', path: '/bottomOrder/koIncome' },
       ];
     };
@@ -241,7 +242,7 @@ class List extends Component {
         contentForm={WrappedAdvancedSearchForm()}
         contentButton={
           <div>
-            <AuthorizedButton authority="/goodStudent/goodStudentAdd">
+            <AuthorizedButton authority="/bottomOrder/createIncome/add">
               <Button
                 onClick={this.goodStudentAdd}
                 type="primary"
@@ -278,4 +279,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default CreateList;
