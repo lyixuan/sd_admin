@@ -723,6 +723,118 @@ export const getRouterData = app => {
       ),
       name: '文案配置',
     },
+    // ---- 创收绩效 begin -----
+
+    // ---
+    '/bottomOrder': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/BottomOrder/CreateIncome/List')
+      ),
+      name: '创收成单',
+    },
+    '/bottomOrder/createIncome/add': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/BottomOrder/CreateIncome/Add')
+      ),
+      bread: {
+        name: '创收成单',
+        path: '/bottomOrder/createIncome',
+      },
+      name: '添加数据',
+    },
+    '/bottomOrder/createIncome/del': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/BottomOrder/CreateIncome/Del')
+      ),
+      bread: {
+        name: '创收成单',
+        path: '/bottomOrder/createIncome',
+      },
+      name: '删除数据',
+    },
+    // ---
+    '/bottomOrder/koIncome': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/BottomOrder/KoIncome/List')
+      ),
+      name: 'KO成单',
+    },
+    '/bottomOrder/koIncome/add': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/BottomOrder/KoIncome/Add')
+      ),
+      bread: {
+        name: 'KO成单',
+        path: '/bottomOrder/koIncome',
+      },
+      name: '添加数据',
+    },
+    '/bottomOrder/koIncome/del': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/BottomOrder/KoIncome/Del')
+      ),
+      bread: {
+        name: 'KO成单',
+        path: '/KO成单/koIncome',
+      },
+      name: '删除数据',
+    },
+
+    // ---
+    '/koDailyReport': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/KoDailyReport/Family/List')
+      ),
+      name: 'KO运营日报',
+    },
+    '/koDailyReport/family/add': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/KoDailyReport/Family/Add')
+      ),
+      bread: {
+        name: 'KO运营日报-家族',
+        path: '/koDailyReport/family',
+      },
+      name: '添加数据',
+    },
+    '/koDailyReport/family/del': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/KoDailyReport/Family/Del')
+      ),
+      bread: {
+        name: 'KO运营日报-家族',
+        path: '/koDailyReport/family',
+      },
+      name: '删除数据',
+    },
+    // ---
+    '/koDailyReport/group': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/KoDailyReport/Group/List')
+      ),
+      name: '小组',
+    },
+    '/koDailyReport/group/add': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/KoDailyReport/Group/Add')
+      ),
+      bread: {
+        name: 'KO运营日报-小组',
+        path: '/koDailyReport/group',
+      },
+      name: '添加数据',
+    },
+    '/koDailyReport/group/del': {
+      component: dynamicWrapper(app, ['goodStudent'], () =>
+        import('../routes/KoDailyReport/Group/Del')
+      ),
+      bread: {
+        name: 'KO运营日报-小组',
+        path: '/koDailyReport/group',
+      },
+      name: '删除数据',
+    },
+    // ---- 创收绩效 end -----
   };
   // Get name from ./menu.js or just set it in the router data.
   // const menuData = getFlatMenuData(getMenuData());
