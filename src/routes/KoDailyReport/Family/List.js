@@ -4,7 +4,7 @@ import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import { columnsFn } from './_selfColumn';
-import ContentLayout from '../../../layouts/ContentLayout';
+import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
 import FormFilter from '../../../selfComponent/FormFilter';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import common from '../../Common/common.css';
@@ -227,8 +227,16 @@ class List extends Component {
         </div>
       </FormFilter>
     );
+    const getTab = () => {
+      return [
+        { name: '家族', path: '/koDailyReport' },
+        { name: '运营小组', path: '/koDailyReport/group' },
+      ];
+    };
     return (
-      <ContentLayout
+      <ContentLayoutNew
+        {...this.props}
+        tab={getTab()}
         routerData={this.props.routerData}
         contentForm={WrappedAdvancedSearchForm()}
         contentButton={

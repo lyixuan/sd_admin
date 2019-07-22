@@ -37,6 +37,11 @@ export async function getPrivilegeListNew() {
   });
 }
 
+export async function getPrivilegeList() {
+  return request(`${HOST}/getPrivilegeList`, {
+    method: 'GET',
+  });
+}
 /*
 * 获取用户对应的角色信息信息
 * params：{userId}

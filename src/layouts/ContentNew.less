@@ -1,18 +1,15 @@
 @import '~antd/lib/style/themes/default.less';
 
 .content {
-  margin: 30px 18px;
-}
-.contentLayout {
-  margin: 0 0 32px 18px;
-  padding-bottom: 30px;
+  margin: 16px;
+  border-radius: 6px;
   background: #fff;
+  padding: 16px;
 }
 .bread {
   min-height: 28px;
   background: #f0f2f5;
 }
-
 .title {
   height: 70px;
   line-height: 70px;
@@ -36,7 +33,10 @@
 
 @media screen and (max-width: @screen-sm) {
   .content {
-    margin: 30px 18px;
+    margin: 16px;
+    border-radius: 6px;
+    background: #fff;
+    padding: 16px;
   }
   :global(.ant-layout-content) {
     -ms-flex: auto;
@@ -47,6 +47,27 @@
   background: #f0f2f5;
 }
 
+:global {
+  .ant-tabs {
+    color: #1a1c1f;
+  }
+  .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+    color: #52c9c2;
+  }
+  .ant-tabs-nav .ant-tabs-tab:hover {
+    color: #52c9c2;
+  }
+  .ant-tabs-nav .ant-tabs-tab-active {
+    color: #52c9c2;
+  }
+  .ant-tabs-bar {
+    margin-bottom: 0;
+    border-bottom: 1px solid #fff;
+  }
+  .ant-tabs-ink-bar {
+    background-color: #52c9c2;
+  }
+}
 //:global(.ant-avatar-sm) {
 //  width: 28px;
 //  height: 32px;

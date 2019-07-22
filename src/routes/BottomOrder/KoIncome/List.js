@@ -4,7 +4,7 @@ import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import { columnsFn } from './_selfColumn';
-import ContentLayout from '../../../layouts/ContentLayout';
+import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
 import FormFilter from '../../../selfComponent/FormFilter';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import common from '../../Common/common.css';
@@ -227,8 +227,16 @@ class List extends Component {
         </div>
       </FormFilter>
     );
+    const getTab = () => {
+      return [
+        { name: '创收成单', path: '/bottomOrder' },
+        { name: 'KO成单', path: '/bottomOrder/koIncome' },
+      ];
+    };
     return (
-      <ContentLayout
+      <ContentLayoutNew
+        {...this.props}
+        tab={getTab()}
         routerData={this.props.routerData}
         contentForm={WrappedAdvancedSearchForm()}
         contentButton={
@@ -239,7 +247,7 @@ class List extends Component {
                 type="primary"
                 className={common.addQualityButton}
               >
-                添加数据
+                添加数据11
               </Button>
             </AuthorizedButton>
             <AuthorizedButton authority="/goodStudent/goodStudentDel">
@@ -248,7 +256,7 @@ class List extends Component {
                 type="primary"
                 className={common.deleteQualityButton}
               >
-                删除数据
+                删除数据11
               </Button>
             </AuthorizedButton>
           </div>
