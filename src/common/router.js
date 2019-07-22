@@ -738,7 +738,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: '创收成单',
-        path: '/bottomOrder/createIncome',
+        path: '/bottomOrder',
       },
       name: '添加数据',
     },
@@ -748,7 +748,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: '创收成单',
-        path: '/bottomOrder/createIncome',
+        path: '/bottomOrder',
       },
       name: '删除数据',
     },
@@ -775,7 +775,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: 'KO成单',
-        path: '/KO成单/koIncome',
+        path: '/bottomOrder/koIncome',
       },
       name: '删除数据',
     },
@@ -793,7 +793,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: 'KO运营日报-家族',
-        path: '/koDailyReport/family',
+        path: '/koDailyReport',
       },
       name: '添加数据',
     },
@@ -803,7 +803,7 @@ export const getRouterData = app => {
       ),
       bread: {
         name: 'KO运营日报-家族',
-        path: '/koDailyReport/family',
+        path: '/koDailyReport',
       },
       name: '删除数据',
     },
