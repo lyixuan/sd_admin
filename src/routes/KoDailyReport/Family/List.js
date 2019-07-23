@@ -14,9 +14,9 @@ const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-@connect(({ goodStudent, loading }) => ({
-  goodStudent,
-  loading: loading.models.goodStudent,
+@connect(({ koDailyReportFamily, loading }) => ({
+  koDailyReportFamily,
+  loading: loading.models.koDailyReportFamily,
 }))
 class List extends Component {
   constructor(props) {
@@ -56,15 +56,15 @@ class List extends Component {
   // 所有学院列表
   getAllOrg = () => {
     this.props.dispatch({
-      type: 'goodStudent/findAllOrg',
+      type: 'koDailyReportFamily/findAllOrg',
       payload: {},
     });
   };
 
   getData = params => {
-    const getListParams = { ...this.props.goodStudent.getListParams, ...params };
+    const getListParams = { ...this.props.koDailyReportFamily.getListParams, ...params };
     this.props.dispatch({
-      type: 'goodStudent/recommendList',
+      type: 'koDailyReportFamily/recommendList',
       payload: { getListParams },
     });
   };
@@ -139,7 +139,7 @@ class List extends Component {
   };
 
   // 添加数据
-  goodStudentAdd = () => {
+  koDailyReportFamilyAdd = () => {
     this.props.setRouteUrlParams('/koDailyReport/familyAdd');
   };
   splitOrgName = (...argument) => {
@@ -147,11 +147,11 @@ class List extends Component {
   };
 
   render() {
-    const { findAllOrg } = this.props.goodStudent;
+    const { findAllOrg } = this.props.koDailyReportFamily;
     const options = this.memoizedFilter(findAllOrg);
 
     const { urlParams } = this.state;
-    const val = this.props.goodStudent.qualityList;
+    const val = this.props.koDailyReportFamily.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
@@ -239,7 +239,7 @@ class List extends Component {
           <div>
             <AuthorizedButton authority="/koDailyReport/familyAdd">
               <Button
-                onClick={this.goodStudentAdd}
+                onClick={this.koDailyReportFamilyAdd}
                 type="primary"
                 className={common.addQualityButton}
               >
