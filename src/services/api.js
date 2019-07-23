@@ -6,7 +6,13 @@ const hostObj = {
   localhost: 'http://dev.xd.admin.ministudy.com/apis',
   development: 'http://test.xd.admin.ministudy.com/apis',
 };
+const hostObjNew = {
+  production: 'http://bd.ministudy.com/inspectorapis',
+  localhost: 'http://dev.xd.admin.ministudy.com/inspectorapis',
+  development: 'http://test.xd.admin.ministudy.com/inspectorapis',
+};
 export const HOST = hostObj[process.env.API_TYPE];
+export const HOST_NEW = hostObjNew[process.env.API_TYPE];
 /*
 * 用户登录接口
 * params：{name，password}
@@ -1132,6 +1138,15 @@ export async function getSignUpMessage(params) {
 }
 export async function saveSignUpMessage(params) {
   return request(`${HOST}/certificationItem/saveSignUpMessage`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// ------------------- 创收绩效 -------------------
+
+export async function incomeOrderList(params) {
+  return request(`${HOST_NEW}/incomeOrder/list`, {
     method: 'POST',
     body: params,
   });

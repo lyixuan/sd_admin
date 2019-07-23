@@ -14,9 +14,9 @@ const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-@connect(({ goodStudent, loading }) => ({
-  goodStudent,
-  loading: loading.models.goodStudent,
+@connect(({ createIncome, loading }) => ({
+  createIncome,
+  loading: loading.models.createIncome,
 }))
 class CreateList extends Component {
   constructor(props) {
