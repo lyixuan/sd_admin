@@ -6,7 +6,6 @@ import {
   deleteCheck,
   deleteReview,
   deleteRecommend,
-  findAllOrg,
 } from '../services/api';
 
 export default {
@@ -23,18 +22,6 @@ export default {
   },
 
   effects: {
-    // 所有学院列表
-    *findAllOrg(_, { call, put }) {
-      const response = yield call(findAllOrg);
-      if (response.code !== 2000) {
-        message.error(response.msg);
-      } else {
-        yield put({
-          type: 'save',
-          payload: { findAllOrg: response.data },
-        });
-      }
-    },
     *recommendList({ payload }, { call, put }) {
       const { getListParams } = payload;
       const response = yield call(recommendList, { ...getListParams });

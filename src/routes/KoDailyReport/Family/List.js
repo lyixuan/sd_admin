@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
-import { Button, Input, Select, DatePicker } from 'antd';
+import { Button, Input, Select } from 'antd';
 import { connect } from 'dva';
-import moment from 'moment';
 import { columnsFn } from './_selfColumn';
 import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
 import FormFilter from '../../../selfComponent/FormFilter';
@@ -10,9 +9,7 @@ import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import common from '../../Common/common.css';
 import styles from './style.less';
 
-const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 
 @connect(({ koDailyReportFamily, loading }) => ({
   koDailyReportFamily,
@@ -23,17 +20,12 @@ class List extends Component {
     super(props);
     this.state = {
       urlParams: {
-        collegeId: null,
-        // familyId:null,
-        // groupId:null,
         beginDate: null,
         endDate: null,
       },
     };
   }
-  componentDidMount() {
-    this.getAllOrg();
-  }
+  componentDidMount() {}
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     this.changePage(current, pageSize);
@@ -53,13 +45,6 @@ class List extends Component {
       urlParams,
     });
   };
-  // 所有学院列表
-  getAllOrg = () => {
-    this.props.dispatch({
-      type: 'koDailyReportFamily/findAllOrg',
-      payload: {},
-    });
-  };
 
   getData = params => {
     const getListParams = { ...this.props.koDailyReportFamily.getListParams, ...params };
@@ -77,24 +62,18 @@ class List extends Component {
   // 表单搜索函数
   handleSearch = params => {
     const { beginDate = null, endDate = null } = params;
-    const collegeId = params.collegeId ? Number(params.collegeId) : null;
-    const urlParams = { ...this.state.urlParams, collegeId, beginDate, endDate };
+    const urlParams = { ...this.state.urlParams, beginDate, endDate };
     const newParams = this.handleParams(params);
     this.getData(this.filterEmptyParams(newParams));
     this.setState({ urlParams });
   };
   handleParams = params => {
-    const { beginDate = null, endDate = null, studentName = null, teacherName = null } = params;
-    const collegeId = params.collegeId ? Number(params.collegeId) : null;
-    const orderId = params.orderId ? Number(params.orderId) : null;
-    const pageIndex = params.pageNum ? Number(params.pageNum) : 0;
+    const { beginDate = null, endDate = null, orgName = null } = params;
+    const pageIndex = params.pageNum ? Number(params.pageNum) : 1;
     const newParams = {
-      collegeId,
       beginDate,
       endDate,
-      orderId,
-      studentName,
-      teacherName,
+      orgName,
       pageIndex,
     };
     return newParams;
@@ -163,27 +142,13 @@ class List extends Component {
         otherModal={urlParams}
       >
         <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>报名日期：</span>
-          <RangePicker
-            value={[urlParams.beginDate, urlParams.endDate].map(
-              item => (item ? moment(item) : null)
-            )}
-            format={dateFormat}
-            style={{ width: 230, height: 32 }}
-            onChange={this.onChange}
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>
-            学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：
-          </span>
+          <span style={{ lineHeight: '32px' }}>绩效周期：</span>
           <Select
-            placeholder="请选择学院"
+            placeholder="请选择"
             onChange={this.onSelectChange}
             style={{ width: 230, height: 32 }}
             value={urlParams.collegeId}
           >
-            <Option value={null}>全部</Option>
             {options.map(item => (
               <Option key={item.collegeId} value={item.collegeId}>
                 {item.collegeName}
@@ -192,33 +157,15 @@ class List extends Component {
           </Select>
         </div>
         <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>子订单编号：</span>
+          <span style={{ lineHeight: '32px' }}>
+            组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织：
+          </span>
           <Input
             placeholder="请输入"
             maxLength={20}
             style={{ width: 230, height: 32 }}
             type="input"
-            flag="orderId"
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>学员姓名：</span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="studentName"
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>老师姓名：</span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="teacherName"
+            flag="orgName"
           />
         </div>
       </FormFilter>
