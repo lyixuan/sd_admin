@@ -2,41 +2,44 @@
 export function columnsFn() {
   const columns = [
     {
-      title: '序号',
-      dataIndex: 'id',
-      width: '80px',
+      title: '报名时间',
+      dataIndex: 'registrationDate',
     },
     {
-      title: '报名日期',
-      dataIndex: 'bizDate',
-    },
-    {
-      title: '子订单编号',
+      title: '子订单ID',
       dataIndex: 'ordId',
     },
     {
-      title: '组织',
-      dataIndex: 'orgName',
+      title: '学员ID',
+      dataIndex: 'stuId',
     },
     {
-      title: '老师姓名',
-      dataIndex: 'cpName',
+      title: '零元单_学院',
+      dataIndex: 'collegeName',
     },
     {
-      title: '学员姓名',
-      dataIndex: 'stuName',
+      title: '零元单_家族',
+      dataIndex: 'familyName',
     },
     {
-      title: '推荐等级',
+      title: '零元单_小组',
+      dataIndex: 'groupName',
+    },
+    {
+      title: '净流水',
+      dataIndex: 'financeNetFlow',
+    },
+    {
+      title: '听课时长',
+      dataIndex: 'lecturesTime',
+    },
+    {
+      title: '听课时长范围',
+      dataIndex: 'fullLecturesFlag',
+    },
+    {
+      title: '单个学院运营转化绩效',
       dataIndex: 'recommendLevel',
-    },
-    {
-      title: 'up值达标',
-      dataIndex: 'upFlag',
-    },
-    {
-      title: '学分',
-      dataIndex: 'countValue',
     },
   ];
   return columns || [];
