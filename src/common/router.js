@@ -803,16 +803,6 @@ export const getRouterData = app => {
       },
       name: '添加数据',
     },
-    '/koDailyReport/familyDel': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
-        import('../routes/KoDailyReport/Family/Del')
-      ),
-      bread: {
-        name: 'KO运营日报-家族',
-        path: '/koDailyReport/family',
-      },
-      name: '删除数据',
-    },
     // ---
     '/koDailyReport/group': {
       component: dynamicWrapper(app, ['goodStudent'], () =>
@@ -829,16 +819,6 @@ export const getRouterData = app => {
         path: '/koDailyReport/group',
       },
       name: '添加数据',
-    },
-    '/koDailyReport/groupDel': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
-        import('../routes/KoDailyReport/Group/Del')
-      ),
-      bread: {
-        name: 'KO运营日报-小组',
-        path: '/koDailyReport/group',
-      },
-      name: '删除数据',
     },
     // ---- 创收绩效 end -----
   };

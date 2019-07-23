@@ -139,12 +139,12 @@ class CreateList extends Component {
   };
   // 删除数据
   goodStudentDel = () => {
-    this.props.setRouteUrlParams('/goodStudent/goodStudentDel');
+    this.props.setRouteUrlParams('/bottomOrder/createIncomeDel');
   };
 
   // 添加数据
   goodStudentAdd = () => {
-    this.props.setRouteUrlParams('/bottomOrder/createIncome/add');
+    this.props.setRouteUrlParams('/bottomOrder/createIncomeAdd');
   };
 
   splitOrgName = (...argument) => {
@@ -242,7 +242,7 @@ class CreateList extends Component {
         contentForm={WrappedAdvancedSearchForm()}
         contentButton={
           <div>
-            <AuthorizedButton authority="/bottomOrder/createIncome/add">
+            <AuthorizedButton authority="/bottomOrder/createIncomeAdd">
               <Button
                 onClick={this.goodStudentAdd}
                 type="primary"
@@ -251,7 +251,7 @@ class CreateList extends Component {
                 添加数据
               </Button>
             </AuthorizedButton>
-            <AuthorizedButton authority="/goodStudent/goodStudentDel">
+            <AuthorizedButton authority="/bottomOrder/createIncomeDel">
               <Button
                 onClick={this.goodStudentDel}
                 type="primary"

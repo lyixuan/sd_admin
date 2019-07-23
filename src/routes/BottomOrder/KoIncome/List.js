@@ -140,12 +140,12 @@ class KoIncomeList extends Component {
   };
   // 删除数据
   goodStudentDel = () => {
-    this.props.setRouteUrlParams('/goodStudent/goodStudentDel');
+    this.props.setRouteUrlParams('/bottomOrder/koIncomeAdd');
   };
 
   // 添加数据
   goodStudentAdd = () => {
-    this.props.setRouteUrlParams('/goodStudent/goodStudentAdd');
+    this.props.setRouteUrlParams('/bottomOrder/koIncomeDel');
   };
   splitOrgName = (...argument) => {
     return argument.filter(item => item).join(' | ');
@@ -242,7 +242,7 @@ class KoIncomeList extends Component {
         contentForm={WrappedAdvancedSearchForm()}
         contentButton={
           <div>
-            <AuthorizedButton authority="/goodStudent/goodStudentAdd">
+            <AuthorizedButton authority="/bottomOrder/koIncomeAdd">
               <Button
                 onClick={this.goodStudentAdd}
                 type="primary"
@@ -251,7 +251,7 @@ class KoIncomeList extends Component {
                 添加数据11
               </Button>
             </AuthorizedButton>
-            <AuthorizedButton authority="/goodStudent/goodStudentDel">
+            <AuthorizedButton authority="/bottomOrder/koIncomeDel">
               <Button
                 onClick={this.goodStudentDel}
                 type="primary"

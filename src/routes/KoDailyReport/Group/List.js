@@ -137,14 +137,9 @@ class List extends Component {
     );
     return data;
   };
-  // 删除数据
-  goodStudentDel = () => {
-    this.props.setRouteUrlParams('/goodStudent/goodStudentDel');
-  };
-
   // 添加数据
   goodStudentAdd = () => {
-    this.props.setRouteUrlParams('/goodStudent/goodStudentAdd');
+    this.props.setRouteUrlParams('/koDailyReport/groupAdd');
   };
   splitOrgName = (...argument) => {
     return argument.filter(item => item).join(' | ');
@@ -241,22 +236,13 @@ class List extends Component {
         contentForm={WrappedAdvancedSearchForm()}
         contentButton={
           <div>
-            <AuthorizedButton authority="/goodStudent/goodStudentAdd">
+            <AuthorizedButton authority="/koDailyReport/groupAdd">
               <Button
                 onClick={this.goodStudentAdd}
                 type="primary"
                 className={common.addQualityButton}
               >
                 添加数据
-              </Button>
-            </AuthorizedButton>
-            <AuthorizedButton authority="/goodStudent/goodStudentDel">
-              <Button
-                onClick={this.goodStudentDel}
-                type="primary"
-                className={common.deleteQualityButton}
-              >
-                删除数据
               </Button>
             </AuthorizedButton>
           </div>
