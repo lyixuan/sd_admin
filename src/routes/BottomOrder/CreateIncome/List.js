@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import memoizeOne from 'memoize-one';
 import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
@@ -23,42 +22,30 @@ class CreateList extends Component {
     super(props);
     this.state = {
       urlParams: {
-        collegeId: null,
-        // familyId:null,
-        // groupId:null,
-        beginDate: null,
-        endDate: null,
+        orderTypeList: [],
+        registrationBeginDate: null,
+        registrationEndDate: null,
       },
     };
-  }
-  componentDidMount() {
-    this.getAllOrg();
   }
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     this.changePage(current, pageSize);
   };
-  // 学院选择
-  onSelectChange = val => {
-    const urlParams = { ...this.state.urlParams, collegeId: val };
-    this.setState({ urlParams });
-  };
   onChange = (dates, dateStrings) => {
     const urlParams = {
       ...this.state.urlParams,
-      beginDate: dateStrings[0] || null,
-      endDate: dateStrings[1] || null,
+      registrationBeginDate: dateStrings[0] || null,
+      registrationEndDate: dateStrings[1] || null,
     };
     this.setState({
       urlParams,
     });
   };
-  // 所有学院列表
-  getAllOrg = () => {
-    this.props.dispatch({
-      type: 'createIncome/findAllOrg',
-      payload: {},
-    });
+  // 成单类型选择
+  onSelectChange = val => {
+    const urlParams = { ...this.state.urlParams, orderTypeList: val };
+    this.setState({ urlParams });
   };
 
   getData = params => {
@@ -76,25 +63,31 @@ class CreateList extends Component {
   };
   // 表单搜索函数
   handleSearch = params => {
-    const { beginDate = null, endDate = null } = params;
-    const collegeId = params.collegeId ? Number(params.collegeId) : null;
-    const urlParams = { ...this.state.urlParams, collegeId, beginDate, endDate };
+    const { registrationBeginDate = undefined, registrationEndDate = undefined } = params;
+    const urlParams = { ...this.state.urlParams, registrationBeginDate, registrationEndDate };
     const newParams = this.handleParams(params);
     this.getData(this.filterEmptyParams(newParams));
     this.setState({ urlParams });
   };
   handleParams = params => {
-    const { beginDate = null, endDate = null, studentName = null, teacherName = null } = params;
-    const collegeId = params.collegeId ? Number(params.collegeId) : null;
-    const orderId = params.orderId ? Number(params.orderId) : null;
-    const pageIndex = params.pageNum ? Number(params.pageNum) : 0;
+    const {
+      registrationBeginDate = undefined,
+      registrationEndDate = undefined,
+      orgName = undefined,
+      recommendedTeacher = undefined,
+      orderTypeList = undefined,
+    } = params;
+    const orderId = params.orderId ? Number(params.orderId) : undefined;
+    const stuId = params.stuId ? Number(params.stuId) : undefined;
+    const pageIndex = params.pageNum ? Number(params.pageNum) : 1;
     const newParams = {
-      collegeId,
-      beginDate,
-      endDate,
+      registrationBeginDate,
+      registrationEndDate,
+      recommendedTeacher,
+      orgName,
       orderId,
-      studentName,
-      teacherName,
+      stuId,
+      orderTypeList,
       pageIndex,
     };
     return newParams;
@@ -102,23 +95,17 @@ class CreateList extends Component {
   filterEmptyParams = data => {
     const params = data;
     for (const i in params) {
-      if (params[i] === undefined || params[i] === null || params[i] === '') {
+      if (
+        params[i] === undefined ||
+        params[i] === null ||
+        params[i] === '' ||
+        params[i].length === 0
+      ) {
         delete params[i];
       }
     }
     return params;
   };
-  // 过滤数据
-  memoizedFilter = memoizeOne(findAllOrg => {
-    const hash = {};
-    return findAllOrg.reduce((preVal, curVal) => {
-      if (!hash[curVal.collegeId]) {
-        hash[curVal.collegeId] = true;
-        preVal.push(curVal);
-      }
-      return preVal;
-    }, []);
-  });
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
@@ -152,13 +139,11 @@ class CreateList extends Component {
   };
 
   render() {
-    const { findAllOrg } = this.props.createIncome;
-    const options = this.memoizedFilter(findAllOrg);
-
+    const options = window.BI_Filter('BILL_TYPE');
     const { urlParams } = this.state;
     const val = this.props.createIncome.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
-    const totalNum = !data.totalElements ? 0 : data.totalElements;
+    const totalNum = !data.totalElements ? 1 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = columnsFn();
     const WrappedAdvancedSearchForm = () => (
@@ -170,7 +155,7 @@ class CreateList extends Component {
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>报名日期：</span>
           <RangePicker
-            value={[urlParams.beginDate, urlParams.endDate].map(
+            value={[urlParams.registrationBeginDate, urlParams.registrationEndDate].map(
               item => (item ? moment(item) : null)
             )}
             format={dateFormat}
@@ -180,50 +165,64 @@ class CreateList extends Component {
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>
-            学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：
+            组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织：
           </span>
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="orgName"
+          />
+        </div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>成单类型：</span>
           <Select
-            placeholder="请选择学院"
+            mode="multiple"
+            allowClear
+            showArrow
+            maxTagCount={1}
+            maxTagTextLength={7}
+            placeholder="请选择"
             onChange={this.onSelectChange}
             style={{ width: 230, height: 32 }}
-            value={urlParams.collegeId}
+            value={urlParams.orderTypeList}
           >
-            <Option value={null}>全部</Option>
             {options.map(item => (
-              <Option key={item.collegeId} value={item.collegeId}>
-                {item.collegeName}
+              <Option key={item.id} value={item.id}>
+                {item.name}
               </Option>
             ))}
           </Select>
         </div>
         <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>子订单编号：</span>
+          <span style={{ lineHeight: '32px' }}>学&nbsp;&nbsp;员&nbsp;&nbsp;ID：</span>
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="stuId"
+          />
+        </div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>推荐老师：</span>
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="recommendedTeacher"
+          />
+        </div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>子订单ID：</span>
           <Input
             placeholder="请输入"
             maxLength={20}
             style={{ width: 230, height: 32 }}
             type="input"
             flag="orderId"
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>学员姓名：</span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="studentName"
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>老师姓名：</span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="teacherName"
           />
         </div>
       </FormFilter>
@@ -265,7 +264,6 @@ class CreateList extends Component {
         contentTable={
           <div>
             <FormFilter.Table
-              bordered
               totalNum={totalNum}
               loading={this.props.loading}
               dataSource={dataSource}

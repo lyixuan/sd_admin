@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import memoizeOne from 'memoize-one';
-import { Button, Input, Select, DatePicker } from 'antd';
+import { Button, Input, DatePicker } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import { columnsFn } from './_selfColumn';
@@ -11,54 +10,34 @@ import common from '../../Common/common.css';
 import styles from './style.less';
 
 const dateFormat = 'YYYY-MM-DD';
-const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 @connect(({ koIncome, loading }) => ({
   koIncome,
   loading: loading.models.koIncome,
 }))
-class KoIncomeList extends Component {
+class KoIncome extends Component {
   constructor(props) {
     super(props);
     this.state = {
       urlParams: {
-        collegeId: null,
-        // familyId:null,
-        // groupId:null,
-        beginDate: null,
-        endDate: null,
+        registrationBeginDate: null,
+        registrationEndDate: null,
       },
     };
-    console.log(1111111);
-  }
-  componentDidMount() {
-    this.getAllOrg();
   }
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     this.changePage(current, pageSize);
   };
-  // 学院选择
-  onSelectChange = val => {
-    const urlParams = { ...this.state.urlParams, collegeId: val };
-    this.setState({ urlParams });
-  };
   onChange = (dates, dateStrings) => {
     const urlParams = {
       ...this.state.urlParams,
-      beginDate: dateStrings[0] || null,
-      endDate: dateStrings[1] || null,
+      registrationBeginDate: dateStrings[0] || null,
+      registrationEndDate: dateStrings[1] || null,
     };
     this.setState({
       urlParams,
-    });
-  };
-  // 所有学院列表
-  getAllOrg = () => {
-    this.props.dispatch({
-      type: 'koIncome/findAllOrg',
-      payload: {},
     });
   };
 
@@ -77,25 +56,27 @@ class KoIncomeList extends Component {
   };
   // 表单搜索函数
   handleSearch = params => {
-    const { beginDate = null, endDate = null } = params;
-    const collegeId = params.collegeId ? Number(params.collegeId) : null;
-    const urlParams = { ...this.state.urlParams, collegeId, beginDate, endDate };
+    const { registrationBeginDate = undefined, registrationEndDate = undefined } = params;
+    const urlParams = { ...this.state.urlParams, registrationBeginDate, registrationEndDate };
     const newParams = this.handleParams(params);
     this.getData(this.filterEmptyParams(newParams));
     this.setState({ urlParams });
   };
   handleParams = params => {
-    const { beginDate = null, endDate = null, studentName = null, teacherName = null } = params;
-    const collegeId = params.collegeId ? Number(params.collegeId) : null;
-    const orderId = params.orderId ? Number(params.orderId) : null;
-    const pageIndex = params.pageNum ? Number(params.pageNum) : 0;
+    const {
+      registrationBeginDate = undefined,
+      registrationEndDate = undefined,
+      orgName = undefined,
+    } = params;
+    const orderId = params.orderId ? Number(params.orderId) : undefined;
+    const stuId = params.stuId ? Number(params.stuId) : undefined;
+    const pageIndex = params.pageNum ? Number(params.pageNum) : 1;
     const newParams = {
-      collegeId,
-      beginDate,
-      endDate,
+      registrationBeginDate,
+      registrationEndDate,
+      orgName,
       orderId,
-      studentName,
-      teacherName,
+      stuId,
       pageIndex,
     };
     return newParams;
@@ -103,23 +84,17 @@ class KoIncomeList extends Component {
   filterEmptyParams = data => {
     const params = data;
     for (const i in params) {
-      if (params[i] === undefined || params[i] === null || params[i] === '') {
+      if (
+        params[i] === undefined ||
+        params[i] === null ||
+        params[i] === '' ||
+        params[i].length === 0
+      ) {
         delete params[i];
       }
     }
     return params;
   };
-  // 过滤数据
-  memoizedFilter = memoizeOne(findAllOrg => {
-    const hash = {};
-    return findAllOrg.reduce((preVal, curVal) => {
-      if (!hash[curVal.collegeId]) {
-        hash[curVal.collegeId] = true;
-        preVal.push(curVal);
-      }
-      return preVal;
-    }, []);
-  });
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
@@ -140,25 +115,23 @@ class KoIncomeList extends Component {
   };
   // 删除数据
   koIncomeDel = () => {
-    this.props.setRouteUrlParams('/bottomOrder/koIncomeAdd');
+    this.props.setRouteUrlParams('/bottomOrder/koIncomeDel');
   };
 
   // 添加数据
   koIncomeAdd = () => {
-    this.props.setRouteUrlParams('/bottomOrder/koIncomeDel');
+    this.props.setRouteUrlParams('/bottomOrder/koIncomeAdd');
   };
+
   splitOrgName = (...argument) => {
     return argument.filter(item => item).join(' | ');
   };
 
   render() {
-    const { findAllOrg } = this.props.koIncome;
-    const options = this.memoizedFilter(findAllOrg);
-
     const { urlParams } = this.state;
     const val = this.props.koIncome.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
-    const totalNum = !data.totalElements ? 0 : data.totalElements;
+    const totalNum = !data.totalElements ? 1 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
     const columns = columnsFn();
     const WrappedAdvancedSearchForm = () => (
@@ -170,7 +143,7 @@ class KoIncomeList extends Component {
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>报名日期：</span>
           <RangePicker
-            value={[urlParams.beginDate, urlParams.endDate].map(
+            value={[urlParams.registrationBeginDate, urlParams.registrationEndDate].map(
               item => (item ? moment(item) : null)
             )}
             format={dateFormat}
@@ -180,50 +153,34 @@ class KoIncomeList extends Component {
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>
-            学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：
+            组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织：
           </span>
-          <Select
-            placeholder="请选择学院"
-            onChange={this.onSelectChange}
+          <Input
+            placeholder="请输入"
+            maxLength={20}
             style={{ width: 230, height: 32 }}
-            value={urlParams.collegeId}
-          >
-            <Option value={null}>全部</Option>
-            {options.map(item => (
-              <Option key={item.collegeId} value={item.collegeId}>
-                {item.collegeName}
-              </Option>
-            ))}
-          </Select>
+            type="input"
+            flag="orgName"
+          />
         </div>
         <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>子订单编号：</span>
+          <span style={{ lineHeight: '32px' }}>学&nbsp;&nbsp;员&nbsp;&nbsp;ID：</span>
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="stuId"
+          />
+        </div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>子订单ID：</span>
           <Input
             placeholder="请输入"
             maxLength={20}
             style={{ width: 230, height: 32 }}
             type="input"
             flag="orderId"
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>学员姓名：</span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="studentName"
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>老师姓名：</span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="teacherName"
           />
         </div>
       </FormFilter>
@@ -244,7 +201,7 @@ class KoIncomeList extends Component {
           <div>
             <AuthorizedButton authority="/bottomOrder/koIncomeAdd">
               <Button onClick={this.koIncomeAdd} type="primary" className={common.addQualityButton}>
-                添加数据11
+                添加数据
               </Button>
             </AuthorizedButton>
             <AuthorizedButton authority="/bottomOrder/koIncomeDel">
@@ -253,7 +210,7 @@ class KoIncomeList extends Component {
                 type="primary"
                 className={common.deleteQualityButton}
               >
-                删除数据11
+                删除数据
               </Button>
             </AuthorizedButton>
           </div>
@@ -261,7 +218,6 @@ class KoIncomeList extends Component {
         contentTable={
           <div>
             <FormFilter.Table
-              bordered
               totalNum={totalNum}
               loading={this.props.loading}
               dataSource={dataSource}
@@ -275,4 +231,4 @@ class KoIncomeList extends Component {
   }
 }
 
-export default KoIncomeList;
+export default KoIncome;

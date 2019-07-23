@@ -1,12 +1,12 @@
 import { message } from 'antd';
 import {
+  // incomeOrderList,
   recommendList,
   importCheck,
   importUpload,
   deleteCheck,
   deleteReview,
   deleteRecommend,
-  findAllOrg,
 } from '../services/api';
 
 export default {
@@ -14,29 +14,17 @@ export default {
 
   state: {
     nums: '',
-    current: 0,
+    current: 1,
     disableDel: null, // 根据接口返回决定是否禁止下一步按钮：true--禁止
     qualityList: [],
     fileList: [],
-    findAllOrg: [], // 所有学院列表
     isLoading: null,
   },
 
   effects: {
-    // 所有学院列表
-    *findAllOrg(_, { call, put }) {
-      const response = yield call(findAllOrg);
-      if (response.code !== 2000) {
-        message.error(response.msg);
-      } else {
-        yield put({
-          type: 'save',
-          payload: { findAllOrg: response.data },
-        });
-      }
-    },
     *recommendList({ payload }, { call, put }) {
       const { getListParams } = payload;
+      // const response = yield call(incomeOrderList, { ...getListParams });
       const response = yield call(recommendList, { ...getListParams });
       yield put({ type: 'pureSave', payload: { response, getListParams } });
     },

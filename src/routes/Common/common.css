@@ -419,7 +419,7 @@
 }
 
 :global(.ant-calendar-range-picker-input) {
-  width: 35% !important;
+  /* width: 35% !important; */
 }
 
 :global(.ant-calendar-picker-clear, .ant-calendar-picker-icon) {
