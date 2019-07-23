@@ -14,9 +14,9 @@ const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-@connect(({ goodStudent, loading }) => ({
-  goodStudent,
-  loading: loading.models.goodStudent,
+@connect(({ koIncome, loading }) => ({
+  koIncome,
+  loading: loading.models.koIncome,
 }))
 class KoIncomeList extends Component {
   constructor(props) {
@@ -57,15 +57,15 @@ class KoIncomeList extends Component {
   // 所有学院列表
   getAllOrg = () => {
     this.props.dispatch({
-      type: 'goodStudent/findAllOrg',
+      type: 'koIncome/findAllOrg',
       payload: {},
     });
   };
 
   getData = params => {
-    const getListParams = { ...this.props.goodStudent.getListParams, ...params };
+    const getListParams = { ...this.props.koIncome.getListParams, ...params };
     this.props.dispatch({
-      type: 'goodStudent/recommendList',
+      type: 'koIncome/recommendList',
       payload: { getListParams },
     });
   };
@@ -139,12 +139,12 @@ class KoIncomeList extends Component {
     return data;
   };
   // 删除数据
-  goodStudentDel = () => {
+  koIncomeDel = () => {
     this.props.setRouteUrlParams('/bottomOrder/koIncomeAdd');
   };
 
   // 添加数据
-  goodStudentAdd = () => {
+  koIncomeAdd = () => {
     this.props.setRouteUrlParams('/bottomOrder/koIncomeDel');
   };
   splitOrgName = (...argument) => {
@@ -152,11 +152,11 @@ class KoIncomeList extends Component {
   };
 
   render() {
-    const { findAllOrg } = this.props.goodStudent;
+    const { findAllOrg } = this.props.koIncome;
     const options = this.memoizedFilter(findAllOrg);
 
     const { urlParams } = this.state;
-    const val = this.props.goodStudent.qualityList;
+    const val = this.props.koIncome.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
@@ -243,17 +243,13 @@ class KoIncomeList extends Component {
         contentButton={
           <div>
             <AuthorizedButton authority="/bottomOrder/koIncomeAdd">
-              <Button
-                onClick={this.goodStudentAdd}
-                type="primary"
-                className={common.addQualityButton}
-              >
+              <Button onClick={this.koIncomeAdd} type="primary" className={common.addQualityButton}>
                 添加数据11
               </Button>
             </AuthorizedButton>
             <AuthorizedButton authority="/bottomOrder/koIncomeDel">
               <Button
-                onClick={this.goodStudentDel}
+                onClick={this.koIncomeDel}
                 type="primary"
                 className={common.deleteQualityButton}
               >
