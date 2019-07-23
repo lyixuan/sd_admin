@@ -56,15 +56,15 @@ class CreateList extends Component {
   // 所有学院列表
   getAllOrg = () => {
     this.props.dispatch({
-      type: 'goodStudent/findAllOrg',
+      type: 'createIncome/findAllOrg',
       payload: {},
     });
   };
 
   getData = params => {
-    const getListParams = { ...this.props.goodStudent.getListParams, ...params };
+    const getListParams = { ...this.props.createIncome.getListParams, ...params };
     this.props.dispatch({
-      type: 'goodStudent/recommendList',
+      type: 'createIncome/recommendList',
       payload: { getListParams },
     });
   };
@@ -138,12 +138,12 @@ class CreateList extends Component {
     return data;
   };
   // 删除数据
-  goodStudentDel = () => {
+  createIncomeDel = () => {
     this.props.setRouteUrlParams('/bottomOrder/createIncomeDel');
   };
 
   // 添加数据
-  goodStudentAdd = () => {
+  createIncomeAdd = () => {
     this.props.setRouteUrlParams('/bottomOrder/createIncomeAdd');
   };
 
@@ -152,11 +152,11 @@ class CreateList extends Component {
   };
 
   render() {
-    const { findAllOrg } = this.props.goodStudent;
+    const { findAllOrg } = this.props.createIncome;
     const options = this.memoizedFilter(findAllOrg);
 
     const { urlParams } = this.state;
-    const val = this.props.goodStudent.qualityList;
+    const val = this.props.createIncome.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
     const totalNum = !data.totalElements ? 0 : data.totalElements;
     const dataSource = !data.content ? [] : this.fillDataSource(data.content);
@@ -244,7 +244,7 @@ class CreateList extends Component {
           <div>
             <AuthorizedButton authority="/bottomOrder/createIncomeAdd">
               <Button
-                onClick={this.goodStudentAdd}
+                onClick={this.createIncomeAdd}
                 type="primary"
                 className={common.addQualityButton}
               >
@@ -253,7 +253,7 @@ class CreateList extends Component {
             </AuthorizedButton>
             <AuthorizedButton authority="/bottomOrder/createIncomeDel">
               <Button
-                onClick={this.goodStudentDel}
+                onClick={this.createIncomeDel}
                 type="primary"
                 className={common.deleteQualityButton}
               >

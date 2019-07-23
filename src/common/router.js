@@ -733,13 +733,13 @@ export const getRouterData = app => {
     //   name: '创收成单',
     // },
     '/bottomOrder/createIncome': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['createIncome'], () =>
         import('../routes/BottomOrder/CreateIncome/List')
       ),
       name: '创收成单',
     },
     '/bottomOrder/createIncomeAdd': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['createIncome'], () =>
         import('../routes/BottomOrder/CreateIncome/Add')
       ),
       bread: {
@@ -749,7 +749,7 @@ export const getRouterData = app => {
       name: '添加数据',
     },
     '/bottomOrder/createIncomeDel': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['createIncome'], () =>
         import('../routes/BottomOrder/CreateIncome/Del')
       ),
       bread: {
@@ -760,13 +760,13 @@ export const getRouterData = app => {
     },
     // ---
     '/bottomOrder/koIncome': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['koIncome'], () =>
         import('../routes/BottomOrder/KoIncome/List')
       ),
       name: 'KO成单',
     },
     '/bottomOrder/koIncomeAdd': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['koIncome'], () =>
         import('../routes/BottomOrder/KoIncome/Add')
       ),
       bread: {
@@ -776,7 +776,7 @@ export const getRouterData = app => {
       name: '添加数据',
     },
     '/bottomOrder/koIncomeDel': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['koIncome'], () =>
         import('../routes/BottomOrder/KoIncome/Del')
       ),
       bread: {
@@ -788,13 +788,13 @@ export const getRouterData = app => {
 
     // ---
     '/koDailyReport/family': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['koDailyReportFamily'], () =>
         import('../routes/KoDailyReport/Family/List')
       ),
       name: '家族',
     },
     '/koDailyReport/familyAdd': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['koDailyReportFamily'], () =>
         import('../routes/KoDailyReport/Family/Add')
       ),
       bread: {
@@ -805,13 +805,13 @@ export const getRouterData = app => {
     },
     // ---
     '/koDailyReport/group': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['koDailyReportGroup'], () =>
         import('../routes/KoDailyReport/Group/List')
       ),
       name: '运营小组',
     },
     '/koDailyReport/groupAdd': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
+      component: dynamicWrapper(app, ['koDailyReportGroup'], () =>
         import('../routes/KoDailyReport/Group/Add')
       ),
       bread: {
