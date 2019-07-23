@@ -2,7 +2,7 @@
 export function columnsFn() {
   const columns = [
     {
-      title: '组织',
+      title: '学院',
       dataIndex: 'id',
       width: '80px',
     },
@@ -11,36 +11,40 @@ export function columnsFn() {
       dataIndex: 'bizDate',
     },
     {
-      title: '家族长',
+      title: '小组',
       dataIndex: 'ordId',
     },
     {
-      title: '家族长ID',
+      title: '运营长',
       dataIndex: 'orgName',
     },
     {
-      title: '累计选课人数',
+      title: '运营长ID',
       dataIndex: 'cpName',
     },
     {
-      title: '当前在服人数',
+      title: '累计选课人数',
       dataIndex: 'stuName',
     },
     {
+      title: '当前在服人数',
+      dataIndex: 'countValue',
+    },
+    {
       title: '应出勤人数',
-      dataIndex: 'recommendLevel',
+      dataIndex: 'countValue',
     },
     {
       title: '实际出勤人数',
-      dataIndex: 'upFlag',
+      dataIndex: 'countValue',
     },
     {
       title: '出勤率',
       dataIndex: 'countValue',
     },
     {
-      title: '家族人数',
-      dataIndex: 'upFlag',
+      title: '小组人数',
+      dataIndex: 'countValue',
     },
     {
       title: '人均应出勤学院',
@@ -48,7 +52,7 @@ export function columnsFn() {
     },
     {
       title: '足课人数',
-      dataIndex: 'upFlag',
+      dataIndex: 'countValue',
     },
     {
       title: '足课率',
