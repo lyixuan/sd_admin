@@ -739,7 +739,7 @@ export const getRouterData = app => {
       name: '创收成单',
     },
     '/bottomOrder/createIncomeAdd': {
-      component: dynamicWrapper(app, ['bottomOrder_createIncome'], () =>
+      component: dynamicWrapper(app, ['bottomOrder_createIncome', 'quality'], () =>
         import('../routes/BottomOrder/CreateIncome/Add')
       ),
       bread: {

@@ -4,15 +4,9 @@ import request from '../utils/request';
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
   localhost: 'http://dev.xd.admin.ministudy.com/apis',
-  development: 'http://test.xd.admin.ministudy.com/apis',
-};
-const hostObjNew = {
-  production: 'http://bd.ministudy.com/inspectorapis',
-  localhost: 'http://dev.xd.admin.ministudy.com/inspectorapis',
-  development: 'http://test.xd.admin.ministudy.com/inspectorapis',
+  development: 'http://test.xd.admin.ministudy.com/apis', // 'http://172.16.59.227:18084'//
 };
 export const HOST = hostObj[process.env.API_TYPE];
-export const HOST_NEW = hostObjNew[process.env.API_TYPE];
 /*
 * 用户登录接口
 * params：{name，password}
@@ -43,11 +37,6 @@ export async function getPrivilegeListNew() {
   });
 }
 
-export async function getPrivilegeList() {
-  return request(`${HOST}/getPrivilegeList`, {
-    method: 'GET',
-  });
-}
 /*
 * 获取用户对应的角色信息信息
 * params：{userId}
@@ -582,6 +571,13 @@ export async function saveDataQuality(params) {
 // 预删除质检列表
 export async function preDelQualityList(params) {
   return request(`${HOST}/metaQuality/preDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 批量申诉  第一步
+export async function verifyConsultIds(params) {
+  return request(`${HOST}/batchAppeal/verifyConsultIds`, {
     method: 'POST',
     body: params,
   });
@@ -1138,22 +1134,6 @@ export async function getSignUpMessage(params) {
 }
 export async function saveSignUpMessage(params) {
   return request(`${HOST}/certificationItem/saveSignUpMessage`, {
-    method: 'POST',
-    body: params,
-  });
-}
-
-// ------------------- 创收绩效 -------------------
-
-export async function incomeOrderList(params) {
-  return request(`${HOST_NEW}/incomeOrder/list`, {
-    method: 'POST',
-    body: params,
-  });
-}
-
-export async function koOrderList(params) {
-  return request(`${HOST_NEW}/koOrder/koOrderList`, {
     method: 'POST',
     body: params,
   });

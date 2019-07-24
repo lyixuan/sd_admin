@@ -6,9 +6,11 @@ import StepLayout from '../../../layouts/stepLayout';
 import StepUpload from '../../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../../selfComponent/setpForm/stepSucess';
+import Batch from '../../../components/batch';
 
-@connect(({ createIncome, loading }) => ({
+@connect(({ createIncome, quality, loading }) => ({
   createIncome,
+  quality,
   loading,
 }))
 class RefundAdd extends Component {
@@ -188,38 +190,41 @@ class RefundAdd extends Component {
       },
     ];
     fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
-
+    console.log(this.props.quality, 'quality');
     return (
-      <StepLayout
-        routerData={this.props.routerData}
-        title="添加质检"
-        steps={steps}
-        isDisabled={isDisabled}
-        disableDel={disableDel}
-        goBack={() => {
-          this.historyFn();
-        }}
-        callBackParent={bol => {
-          this.onChildChange(bol);
-        }}
-        initParamsFn={dis => {
-          this.initParamsFn(dis);
-        }}
-        step1Fetch={() => {
-          this.fetchCheckData(fileData);
-        }}
-        step2Fetch={() => {
-          this.saveExcelData(fileData);
-        }}
-        editLoading={loading => {
-          this.editLoading(loading);
-        }}
-        isLoading={isLoading}
-        current={current}
-        editCurrent={param => {
-          this.editCurrent(param);
-        }}
-      />
+      <div>
+        <Batch quality={this.props.quality} loading={this.props.loading} />
+        <StepLayout
+          routerData={this.props.routerData}
+          title="添加质检"
+          steps={steps}
+          isDisabled={isDisabled}
+          disableDel={disableDel}
+          goBack={() => {
+            this.historyFn();
+          }}
+          callBackParent={bol => {
+            this.onChildChange(bol);
+          }}
+          initParamsFn={dis => {
+            this.initParamsFn(dis);
+          }}
+          step1Fetch={() => {
+            this.fetchCheckData(fileData);
+          }}
+          step2Fetch={() => {
+            this.saveExcelData(fileData);
+          }}
+          editLoading={loading => {
+            this.editLoading(loading);
+          }}
+          isLoading={isLoading}
+          current={current}
+          editCurrent={param => {
+            this.editCurrent(param);
+          }}
+        />
+      </div>
     );
   }
 }
