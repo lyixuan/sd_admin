@@ -3,68 +3,68 @@ export function columnsFn() {
   const columns = [
     {
       title: '学院',
-      dataIndex: 'id',
+      dataIndex: 'collegeName',
       width: '80px',
     },
     {
       title: '家族',
-      dataIndex: 'bizDate',
+      dataIndex: 'familyName',
     },
     {
       title: '小组',
-      dataIndex: 'ordId',
+      dataIndex: 'groupName',
     },
     {
       title: '运营长',
-      dataIndex: 'orgName',
+      dataIndex: 'teamLeader',
     },
     {
       title: '运营长ID',
-      dataIndex: 'cpName',
+      dataIndex: 'teamLeaderId',
     },
     {
       title: '累计选课人数',
-      dataIndex: 'stuName',
+      dataIndex: 'totalStudentCount',
     },
     {
       title: '当前在服人数',
-      dataIndex: 'countValue',
+      dataIndex: 'currentStudentCount',
     },
     {
       title: '应出勤人数',
-      dataIndex: 'countValue',
+      dataIndex: 'attendanceCountShoulebe',
     },
     {
       title: '实际出勤人数',
-      dataIndex: 'countValue',
+      dataIndex: 'attendanceCountActual',
     },
     {
       title: '出勤率',
-      dataIndex: 'countValue',
+      dataIndex: 'attendanceRate',
     },
     {
       title: '小组人数',
-      dataIndex: 'countValue',
+      dataIndex: 'teamPersonCount',
     },
     {
       title: '人均应出勤学院',
-      dataIndex: 'countValue',
+      dataIndex: 'personalAvgAttendanceShouldebe',
     },
     {
       title: '足课人数',
-      dataIndex: 'countValue',
+      dataIndex: 'fullLecturesCount',
     },
     {
       title: '足课率',
-      dataIndex: 'countValue',
+      dataIndex: 'fullLecturesRate',
     },
     {
       title: '足课转化人数',
-      dataIndex: 'countValue',
+      dataIndex: 'fullLecturesTransCount',
     },
     {
       title: '足课转化率',
-      dataIndex: 'countValue',
+      dataIndex: 'fullLecturesTransRate',
     },
   ];
   return columns || [];

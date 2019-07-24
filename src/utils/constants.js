@@ -165,13 +165,13 @@ export const BOTTOM_LINE_TYPE = [{ id: 3, name: '退费' }, { id: 5, name: '退�
 
 // 成单类型
 export const BILL_TYPE = [
-  { id: '产品转介绍', name: '产品转介绍' },
-  { id: '运营转介绍', name: '运营转介绍' },
-  { id: '好推-前端发起', name: '好推-前端发起' },
-  { id: '好推-后端发起', name: '好推-后端发起' },
-  { id: '好推-无流量', name: '好推-无流量' },
-  { id: '续报', name: '续报' },
-  { id: '续报-竞合', name: '续报-竞合' },
+  { id: 1, name: '产品转介绍' },
+  { id: 2, name: '运营转介绍' },
+  { id: 3, name: '好推-前端发起' },
+  { id: 4, name: '好推-后端发起' },
+  { id: 5, name: '好推-无流量' },
+  { id: 6, name: '续报' },
+  { id: 7, name: '续报-竞合' },
 ];
 
 // 需要用于global filter 进行数据筛选的，必须加到default里
