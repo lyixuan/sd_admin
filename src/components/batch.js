@@ -17,13 +17,6 @@ class BatchDelAppeal extends Component {
     this.state = {
       isDisabled: true,
       appealType: null,
-      stepLayoutTitle: this.props.stepLayoutTitle || '删除质检',
-      step1Tile: this.props.step1Tile || '输入咨询ID11',
-      step1Msg: this.props.step1Msg || '请输入想删除的 “咨询ID”：',
-      step2Tile: this.props.step2Tile || '校验咨询ID',
-      step2Msg: this.props.step2Msg || '搜索失败的咨询ID: (可能原因: 匹配失败、申诉中、已申诉)',
-      step3Tile: '操作成功',
-      // name: this.props.name || 'quality',
     };
   }
 
@@ -51,7 +44,7 @@ class BatchDelAppeal extends Component {
 
   getNums = nums => {
     this.props.dispatch({
-      type: `${this.props.name}/getNums`,
+      type: 'quality/getNums',
       payload: nums,
     });
   };
@@ -83,12 +76,6 @@ class BatchDelAppeal extends Component {
       payload: { params },
     });
   };
-  fetchDel = params => {
-    this.props.dispatch({
-      type: 'quality/delQuality',
-      payload: { params },
-    });
-  };
   editCurrent = current => {
     this.props.dispatch({
       type: 'quality/editCurrent',
@@ -113,15 +100,7 @@ class BatchDelAppeal extends Component {
 
   render() {
     const { verifyConsultIdsData, nums, current, isLoading } = this.props.quality;
-    const {
-      appealType,
-      stepLayoutTitle,
-      step1Tile,
-      step1Msg,
-      step2Tile,
-      step2Msg,
-      step3Tile,
-    } = this.state;
+    const { appealType } = this.state;
     let { disableDel } = this.props.quality;
     let { isDisabled } = this.state;
     const data = verifyConsultIdsData ? verifyConsultIdsData.data : null;
@@ -136,14 +115,7 @@ class BatchDelAppeal extends Component {
         disableDel = false;
       }
     }
-    const dataSource = !data || !data.successNums ? [] : data.successNums;
 
-    const successNums = [];
-    if (dataSource.length > 0) {
-      data.successNums.forEach(item => {
-        successNums.push(item.qualityNum);
-      });
-    }
     const failNums = data ? data.failIdList : [];
     const successSize = data ? successIdListLen : 0;
     // 有数据之后刷新页面提示弹框
@@ -177,7 +149,7 @@ class BatchDelAppeal extends Component {
     );
     const steps = [
       {
-        title: step1Tile,
+        title: '输入咨询ID',
         content: (
           <div>
             <div style={{ width: '590px', margin: '20px auto 0' }}>
@@ -194,7 +166,7 @@ class BatchDelAppeal extends Component {
               </Select>
             </div>
             <StepInput
-              inputTitle={step1Msg}
+              inputTitle="请输入想删除的 “咨询ID”："
               inputContent="true"
               inputTip="true"
               nums={nums}
@@ -213,10 +185,10 @@ class BatchDelAppeal extends Component {
         ),
       },
       {
-        title: step2Tile,
+        title: '校验咨询ID',
         content: (
           <StepInput
-            message={step2Msg}
+            message="搜索失败的咨询ID: (可能原因: 匹配失败、申诉中、已申诉)"
             inputInfo={inputInfo}
             nums={nums}
             faileData={failNums}
@@ -230,14 +202,14 @@ class BatchDelAppeal extends Component {
         ),
       },
       {
-        title: step3Tile,
+        title: '操作成功',
         content: <StepSucess isDelImg="true" tipSucess={successTips} />,
       },
     ];
     return (
       <StepLayout
         routerData={this.props.routerData}
-        title={stepLayoutTitle}
+        title="删除质检"
         steps={steps}
         tipSucess={tipSucess}
         isDisabled={isDisabled}
