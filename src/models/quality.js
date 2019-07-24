@@ -4,6 +4,8 @@ import {
   checkQualityList,
   delQualityList,
   preDelQualityList,
+  verifyConsultIds,
+  batchSave,
   saveDataQuality,
 } from '../services/api';
 
@@ -17,6 +19,7 @@ export default {
     qualityList: [],
     fileList: [],
     isLoading: null,
+    appealType: null,
   },
 
   effects: {
@@ -81,6 +84,50 @@ export default {
         });
       }
     },
+    // 申诉管理接口，批量删除申诉 第一步接口
+    *verifyConsultIds({ payload }, { call, put }) {
+      const { params } = payload;
+      const verifyConsultIdsData = yield call(verifyConsultIds, { ...params });
+      const { appealType } = params;
+      if (verifyConsultIdsData.code !== 2000) {
+        message.error(verifyConsultIdsData.msg);
+        yield put({ type: 'save', payload: { current: 0, isLoading: false } });
+      } else if (verifyConsultIdsData.data.successSize > 0) {
+        yield put({
+          type: 'save',
+          payload: {
+            verifyConsultIdsData,
+            appealType,
+            current: 1,
+            disableDel: false,
+            isLoading: false,
+          },
+        });
+      } else {
+        yield put({
+          type: 'save',
+          payload: {
+            verifyConsultIdsData,
+            appealType,
+            current: 1,
+            disableDel: true,
+            isLoading: false,
+          },
+        });
+      }
+    },
+    // 申诉管理接口，批量删除申诉 第二步
+    *batchSave({ payload }, { call, put }) {
+      const { params } = payload;
+      const batchSaveData = yield call(batchSave, { ...params });
+      if (batchSaveData.code !== 2000) {
+        message.error(batchSaveData.msg);
+        yield put({ type: 'save', payload: { current: 1, isLoading: false } });
+      } else {
+        yield put({ type: 'save', payload: { batchSaveData, current: 2, isLoading: false } });
+      }
+    },
+
     *delQuality({ payload }, { call, put }) {
       const { params } = payload;
       const delData = yield call(delQualityList, { ...params });
@@ -95,6 +142,10 @@ export default {
       const { nums } = payload;
       yield put({ type: 'save', payload: { nums } });
     },
+    *getAppealType({ payload }, { put }) {
+      const { appealType } = payload;
+      yield put({ type: 'save', payload: { appealType } });
+    },
     *saveFileList({ payload }, { put }) {
       const { fileList } = payload;
       yield put({ type: 'save', payload: { fileList } });
@@ -108,8 +159,8 @@ export default {
       yield put({ type: 'save', payload: { isLoading } });
     },
     *initParams({ payload }, { put }) {
-      const { disableDel, nums } = payload;
-      yield put({ type: 'save', payload: { disableDel, nums } });
+      const { disableDel, nums, appealType } = payload;
+      yield put({ type: 'save', payload: { disableDel, nums, appealType } });
     },
   },
 
