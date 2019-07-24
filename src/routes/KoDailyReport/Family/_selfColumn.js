@@ -2,7 +2,7 @@
 export function columnsFn() {
   const columns = [
     {
-      title: '组织',
+      title: '学院',
       dataIndex: 'id',
       width: '80px',
     },

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
-import { Button, Input, Select } from 'antd';
+import { Button, Select } from 'antd';
 import { connect } from 'dva';
 import { columnsFn } from './_selfColumn';
 import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
@@ -77,12 +77,11 @@ class List extends Component {
     this.setState({ urlParams });
   };
   handleParams = params => {
-    const { beginDate = null, endDate = null, orgName = null } = params;
+    const { beginDate = null, endDate = null } = params;
     const pageIndex = params.pageNum ? Number(params.pageNum) : 1;
     const newParams = {
       beginDate,
       endDate,
-      orgName,
       pageIndex,
     };
     return newParams;
@@ -164,18 +163,6 @@ class List extends Component {
             ))}
           </Select>
         </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>
-            组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织：
-          </span>
-          <Input
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="orgName"
-          />
-        </div>
       </FormFilter>
     );
     const getTab = () => {
@@ -206,7 +193,6 @@ class List extends Component {
         contentTable={
           <div>
             <FormFilter.Table
-              bordered
               totalNum={totalNum}
               loading={this.props.loading}
               dataSource={dataSource}
