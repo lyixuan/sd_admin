@@ -7,8 +7,8 @@ import StepUpload from '../../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../../selfComponent/setpForm/stepSucess';
 
-@connect(({ goodStudent, loading }) => ({
-  goodStudent,
+@connect(({ createIncome, loading }) => ({
+  createIncome,
   loading,
 }))
 class RefundAdd extends Component {
@@ -45,47 +45,47 @@ class RefundAdd extends Component {
   // 初始化一些值
   initParamsFn = disableDel => {
     this.props.dispatch({
-      type: 'goodStudent/initParams',
+      type: 'createIncome/initParams',
       payload: { disableDel },
     });
   };
   // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
-      type: 'goodStudent/importCheck',
+      type: 'createIncome/importCheck',
       payload: { ...params },
     });
   };
   // 保存excel数据
   saveExcelData = params => {
     this.props.dispatch({
-      type: 'goodStudent/importUpload',
+      type: 'createIncome/importUpload',
       payload: { ...params },
     });
   };
 
   saveFileList = fileList => {
     this.props.dispatch({
-      type: 'goodStudent/saveFileList',
+      type: 'createIncome/saveFileList',
       payload: { fileList },
     });
   };
   editCurrent = current => {
     this.props.dispatch({
-      type: 'goodStudent/editCurrent',
+      type: 'createIncome/editCurrent',
       payload: { current },
     });
   };
   editLoading = isLoading => {
     console.log(isLoading);
     this.props.dispatch({
-      type: 'goodStudent/editLoading',
+      type: 'createIncome/editLoading',
       payload: { isLoading },
     });
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/goodStudent/goodStudentList',
+      pathname: '/createIncome/goodStudentList',
     });
   }
   columnsData = () => {
@@ -123,7 +123,7 @@ class RefundAdd extends Component {
   };
   render() {
     let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
-    const { current, checkList, fileList, disableDel, isLoading } = this.props.goodStudent;
+    const { current, checkList, fileList, disableDel, isLoading } = this.props.createIncome;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.totalCount;
     const failList = !checkList ? [] : checkList.data.failList;
