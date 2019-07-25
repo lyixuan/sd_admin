@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Select, Icon, message } from 'antd';
+import { Icon } from 'antd';
 import StepLayout from '../layouts/stepLayout';
 import StepInput from '../selfComponent/setpForm/stepInput';
 import StepSucess from '../selfComponent/setpForm/stepSucess';
 import { clearConfirm, setConfirm } from '../utils/reloadConfirm';
 
-const { Option } = Select;
-@connect(({ quality, loading }) => ({
-  quality,
+@connect(({ batch, loading }) => ({
+  batch,
   loading,
 }))
 class BatchDelAppeal extends Component {
@@ -17,6 +16,14 @@ class BatchDelAppeal extends Component {
     this.state = {
       isDisabled: true,
       appealType: null,
+      stepLayoutTitle: this.props.stepLayoutTitle || '删除数据',
+      step1Tile: this.props.step1Tile || '输入子订单',
+      step1Msg: this.props.step1Msg || '请输入想删除的 “子订单ID”：',
+      step2Tile: this.props.step2Tile || '校验子订单',
+      step2Msg: this.props.step2Msg || '搜索失败的子订单ID:',
+      step3Tile: '删除成功',
+      name: this.props.name || 'batch',
+      gotoUrl: this.props.gotoUrl || '/appeal/appealList',
     };
   }
 
@@ -44,41 +51,35 @@ class BatchDelAppeal extends Component {
 
   getNums = nums => {
     this.props.dispatch({
-      type: 'quality/getNums',
+      type: `${this.state.name}/getNums`,
       payload: nums,
-    });
-  };
-  getAppealType = appealType => {
-    this.props.dispatch({
-      type: 'quality/getAppealType',
-      payload: appealType,
     });
   };
   // 初始化一些值
   initParamsFn = (disableDel, nums) => {
-    const num = !nums ? this.props.quality.nums : '';
+    const num = !nums ? this.props.batch.nums : '';
     this.props.dispatch({
-      type: 'quality/initParams',
+      type: `${this.state.name}/initParams`,
       payload: { disableDel, nums: num },
     });
   };
   // 第一步，验证咨询id
   verifyConsultIds = params => {
     this.props.dispatch({
-      type: 'quality/verifyConsultIds',
+      type: `${this.state.name}/verifyConsultIds`,
       payload: { params },
     });
   };
   // 第二步 批量申诉 id
   batchSave = params => {
     this.props.dispatch({
-      type: 'quality/batchSave',
+      type: `${this.state.name}/batchSave`,
       payload: { params },
     });
   };
   editCurrent = current => {
     this.props.dispatch({
-      type: 'quality/editCurrent',
+      type: `${this.state.name}/editCurrent`,
       payload: { current },
     });
   };
@@ -88,20 +89,28 @@ class BatchDelAppeal extends Component {
       return;
     }
     this.props.dispatch({
-      type: 'quality/editLoading',
+      type: `${this.state.name}/editLoading`,
       payload: { isLoading },
     });
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/appeal/appealList',
+      pathname: this.state.gotoUrl,
     });
   }
 
   render() {
-    const { verifyConsultIdsData, nums, current, isLoading } = this.props.quality;
-    const { appealType } = this.state;
-    let { disableDel } = this.props.quality;
+    const { verifyConsultIdsData, nums, current, isLoading } = this.props.batch;
+    const {
+      appealType,
+      stepLayoutTitle,
+      step1Tile,
+      step2Tile,
+      step3Tile,
+      step1Msg,
+      step2Msg,
+    } = this.state;
+    let { disableDel } = this.props.batch;
     let { isDisabled } = this.state;
     const data = verifyConsultIdsData ? verifyConsultIdsData.data : null;
     let [successIdListLen, failIdListLen, totalLen] = [0, 0, 0];
@@ -149,33 +158,17 @@ class BatchDelAppeal extends Component {
     );
     const steps = [
       {
-        title: '输入咨询ID',
+        title: step1Tile,
         content: (
           <div>
-            <div style={{ width: '590px', margin: '20px auto 0' }}>
-              <span style={{ marginRight: '20px' }}>*申诉类型</span>
-              <Select
-                onChange={this.onSelectChange}
-                placeholder="请选择"
-                style={{ width: 230, height: 32 }}
-                defaultValue={appealType}
-              >
-                <Option value="15">IM未回复</Option>
-                <Option value="16">IM不满意</Option>
-                <Option value="17">IM不及时</Option>
-              </Select>
-            </div>
             <StepInput
-              inputTitle="请输入想删除的 “咨询ID”："
+              inputTitle={step1Msg}
               inputContent="true"
               inputTip="true"
               nums={nums}
-              appealType={appealType}
+              // appealType={appealType}
               getNums={param => {
                 this.getNums(param);
-              }}
-              getAppealType={param => {
-                this.getAppealType(param);
               }}
               callBackParent={bol => {
                 this.onChildChange(bol);
@@ -185,31 +178,32 @@ class BatchDelAppeal extends Component {
         ),
       },
       {
-        title: '校验咨询ID',
+        title: step2Tile,
         content: (
           <StepInput
-            message="搜索失败的咨询ID: (可能原因: 匹配失败、申诉中、已申诉)"
+            message={step2Msg}
             inputInfo={inputInfo}
             nums={nums}
             faileData={failNums}
-            appealType={appealType}
-            getAppealType={param => {
-              this.getAppealType(param);
-            }}
+            // appealType={appealType}
+            // getAppealType={param => {
+            //   this.getAppealType(param);
+            // }}
             inputContent="false"
             disabled
           />
         ),
       },
       {
-        title: '操作成功',
+        title: step3Tile,
         content: <StepSucess isDelImg="true" tipSucess={successTips} />,
       },
     ];
+    console.log(this.props.routerData, 'this.props.routerData');
     return (
       <StepLayout
         routerData={this.props.routerData}
-        title="删除质检"
+        title={stepLayoutTitle}
         steps={steps}
         tipSucess={tipSucess}
         isDisabled={isDisabled}
@@ -225,10 +219,6 @@ class BatchDelAppeal extends Component {
         }}
         // 第一步step 点击下一步的操作
         step1Fetch={() => {
-          if (!appealType) {
-            message.error('申诉类型不能为空');
-            return;
-          }
           this.verifyConsultIds({ consultIds: nums, appealType });
         }}
         step2Fetch={() => {
@@ -237,10 +227,6 @@ class BatchDelAppeal extends Component {
         }}
         editLoading={loading => {
           this.editLoading(loading);
-        }}
-        appealType={appealType}
-        getAppealType={param => {
-          this.getAppealType(param);
         }}
         isLoading={isLoading}
         current={current}

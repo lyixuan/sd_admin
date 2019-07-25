@@ -3,7 +3,8 @@ import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import { columnsFn } from './_selfColumn';
-import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
+// import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
+import ContentLayout from '../../../layouts/ContentLayout';
 import FormFilter from '../../../selfComponent/FormFilter';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import common from '../../Common/common.css';
@@ -228,16 +229,14 @@ class CreateList extends Component {
         <div className={styles.u_div}>&nbsp;</div>
       </FormFilter>
     );
-    const getTab = () => {
-      return [
-        { name: '创收成单', path: '/bottomOrder/createIncome' },
-        { name: 'KO成单', path: '/bottomOrder/koIncome' },
-      ];
-    };
+    // const getTab = () => {
+    //   return [
+    //     { name: '创收成单', path: '/bottomOrder/createIncome' },
+    //     { name: 'KO成单', path: '/bottomOrder/koIncome' },
+    //   ];
+    // };
     return (
-      <ContentLayoutNew
-        {...this.props}
-        tab={getTab()}
+      <ContentLayout
         routerData={this.props.routerData}
         contentForm={WrappedAdvancedSearchForm()}
         contentButton={

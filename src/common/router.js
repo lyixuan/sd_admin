@@ -739,7 +739,7 @@ export const getRouterData = app => {
       name: '创收成单',
     },
     '/bottomOrder/createIncomeAdd': {
-      component: dynamicWrapper(app, ['bottomOrder_createIncome', 'quality'], () =>
+      component: dynamicWrapper(app, ['bottomOrder_createIncome', 'batch'], () =>
         import('../routes/BottomOrder/CreateIncome/Add')
       ),
       bread: {
@@ -749,7 +749,7 @@ export const getRouterData = app => {
       name: '添加数据',
     },
     '/bottomOrder/createIncomeDel': {
-      component: dynamicWrapper(app, ['bottomOrder_createIncome'], () =>
+      component: dynamicWrapper(app, ['bottomOrder_createIncome', 'batch'], () =>
         import('../routes/BottomOrder/CreateIncome/Del')
       ),
       bread: {
@@ -759,32 +759,32 @@ export const getRouterData = app => {
       name: '删除数据',
     },
     // ---
-    '/bottomOrder/koIncome': {
-      component: dynamicWrapper(app, ['bottomOrder_koIncome'], () =>
-        import('../routes/BottomOrder/KoIncome/List')
-      ),
-      name: 'KO成单',
-    },
-    '/bottomOrder/koIncomeAdd': {
-      component: dynamicWrapper(app, ['bottomOrder_koIncome'], () =>
-        import('../routes/BottomOrder/KoIncome/Add')
-      ),
-      bread: {
-        name: 'KO成单',
-        path: '/bottomOrder/koIncome',
-      },
-      name: '添加数据',
-    },
-    '/bottomOrder/koIncomeDel': {
-      component: dynamicWrapper(app, ['bottomOrder_koIncome'], () =>
-        import('../routes/BottomOrder/KoIncome/Del')
-      ),
-      bread: {
-        name: 'KO成单',
-        path: '/bottomOrder/koIncome',
-      },
-      name: '删除数据',
-    },
+    // '/bottomOrder/koIncome': {
+    //   component: dynamicWrapper(app, ['bottomOrder_koIncome'], () =>
+    //     import('../routes/BottomOrder/KoIncome/List')
+    //   ),
+    //   name: 'KO成单',
+    // },
+    // '/bottomOrder/koIncomeAdd': {
+    //   component: dynamicWrapper(app, ['bottomOrder_koIncome'], () =>
+    //     import('../routes/BottomOrder/KoIncome/Add')
+    //   ),
+    //   bread: {
+    //     name: 'KO成单',
+    //     path: '/bottomOrder/koIncome',
+    //   },
+    //   name: '添加数据',
+    // },
+    // '/bottomOrder/koIncomeDel': {
+    //   component: dynamicWrapper(app, ['bottomOrder_koIncome', 'quality'], () =>
+    //     import('../routes/BottomOrder/KoIncome/Del')
+    //   ),
+    //   bread: {
+    //     name: 'KO成单',
+    //     path: '/bottomOrder/koIncome',
+    //   },
+    //   name: '删除数据',
+    // },
 
     // ---
     '/koDailyReport/family': {
