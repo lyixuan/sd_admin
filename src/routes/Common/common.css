@@ -298,6 +298,26 @@
   color: #000;
 }
 
+.cancleButtonGray{
+  margin: 0;
+  background-color: #E8EBED;
+  font-size: 14px;
+  width: 80px;
+  height: 32px;
+  border: 1px solid #E8EBED !important;
+  color: #000;
+}
+.cancleButtonGray:hover{
+  background-color: #E8EBED;
+  color: #000;
+  border: 1px solid #E8EBED;
+}
+.cancleButtonGray:focus {
+  background-color: #E8EBED;
+  border: 1px solid #E8EBED;
+  color: #000;
+}
+
 .submitButton{
   margin: 0 10px;
   background-color: #52C9C2;

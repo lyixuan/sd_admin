@@ -242,19 +242,16 @@ class CreateList extends Component {
         contentButton={
           <div>
             <AuthorizedButton authority="/bottomOrder/createIncomeAdd">
-              <Button
-                onClick={this.createIncomeAdd}
-                type="primary"
-                className={common.addQualityButton}
-              >
+              <Button onClick={this.createIncomeAdd} type="primary" className={common.newButton}>
                 添加数据
               </Button>
             </AuthorizedButton>
+            <span>&nbsp;&nbsp;</span>
             <AuthorizedButton authority="/bottomOrder/createIncomeDel">
               <Button
                 onClick={this.createIncomeDel}
                 type="primary"
-                className={common.deleteQualityButton}
+                className={common.cancleButtonGray}
               >
                 删除数据
               </Button>
