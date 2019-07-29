@@ -10,7 +10,7 @@ import {
 } from '../services/api';
 
 export default {
-  namespace: 'quality',
+  namespace: 'batch',
 
   state: {
     nums: '',

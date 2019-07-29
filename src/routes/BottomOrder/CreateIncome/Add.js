@@ -188,38 +188,39 @@ class RefundAdd extends Component {
       },
     ];
     fileData = fileList.length > 0 ? fileList[0].response.data : checkParams;
-
     return (
-      <StepLayout
-        routerData={this.props.routerData}
-        title="添加质检"
-        steps={steps}
-        isDisabled={isDisabled}
-        disableDel={disableDel}
-        goBack={() => {
-          this.historyFn();
-        }}
-        callBackParent={bol => {
-          this.onChildChange(bol);
-        }}
-        initParamsFn={dis => {
-          this.initParamsFn(dis);
-        }}
-        step1Fetch={() => {
-          this.fetchCheckData(fileData);
-        }}
-        step2Fetch={() => {
-          this.saveExcelData(fileData);
-        }}
-        editLoading={loading => {
-          this.editLoading(loading);
-        }}
-        isLoading={isLoading}
-        current={current}
-        editCurrent={param => {
-          this.editCurrent(param);
-        }}
-      />
+      <div>
+        <StepLayout
+          routerData={this.props.routerData}
+          title="添加质检"
+          steps={steps}
+          isDisabled={isDisabled}
+          disableDel={disableDel}
+          goBack={() => {
+            this.historyFn();
+          }}
+          callBackParent={bol => {
+            this.onChildChange(bol);
+          }}
+          initParamsFn={dis => {
+            this.initParamsFn(dis);
+          }}
+          step1Fetch={() => {
+            this.fetchCheckData(fileData);
+          }}
+          step2Fetch={() => {
+            this.saveExcelData(fileData);
+          }}
+          editLoading={loading => {
+            this.editLoading(loading);
+          }}
+          isLoading={isLoading}
+          current={current}
+          editCurrent={param => {
+            this.editCurrent(param);
+          }}
+        />
+      </div>
     );
   }
 }
