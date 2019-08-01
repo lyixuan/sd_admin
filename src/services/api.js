@@ -608,20 +608,6 @@ export async function delQualityList(params) {
   });
 }
 
-// 批量申诉  第一步
-export async function verifyConsultIds(params) {
-  return request(`${HOST}/batchAppeal/verifyConsultIds`, {
-    method: 'POST',
-    body: params,
-  });
-}
-// 批量申诉  第二步
-export async function batchSave(params) {
-  return request(`${HOST}/batchAppeal/save`, {
-    method: 'POST',
-    body: params,
-  });
-}
 // 上传图片地址
 export function qualityUpload() {
   return `${HOST}/metaQuality/uploadFile`;
