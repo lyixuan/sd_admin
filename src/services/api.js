@@ -9,7 +9,7 @@ const hostObj = {
 const hostObjNew = {
   production: 'http://bd.ministudy.com/inspectorapis',
   localhost: 'http://dev.xd.admin.ministudy.com/inspectorapis',
-  development: 'http://test.xd.admin.ministudy.com/inspectorapis', // 'http://172.16.59.227:8086' //
+  development: 'http://test.xd.admin.ministudy.com/inspectorapis', // 'http://172.16.59.227:8086', //
 };
 export const HOST = hostObj[process.env.API_TYPE];
 export const HOST_NEW = hostObjNew[process.env.API_TYPE];

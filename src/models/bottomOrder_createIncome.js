@@ -3,11 +3,12 @@ import {
   // incomeOrderList,
   recommendList,
   // importCheck,
-  importUpload,
-  deleteCheck,
-  deleteReview,
-  deleteRecommend,
+  // importUpload,
+  // deleteCheck,
+  // deleteReview,
+  // deleteRecommend,
   createIncomeCheck,
+  createIncomeData,
 } from '../services/api';
 
 export default {
@@ -54,8 +55,8 @@ export default {
         });
       }
     },
-    *importUpload({ payload }, { call, put }) {
-      const excelData = yield call(importUpload, { ...payload });
+    *createIncomeData({ payload }, { call, put }) {
+      const excelData = yield call(createIncomeData, { ...payload });
       if (excelData.code !== 2000) {
         message.error(excelData.msg);
         yield put({ type: 'save', payload: { current: 1, isLoading: false } });
@@ -63,49 +64,49 @@ export default {
         yield put({ type: 'save', payload: { current: 2, isLoading: false } });
       }
     },
-    *deleteCheck({ payload }, { call, put }) {
-      const { params } = payload;
-      const preDelData = yield call(deleteCheck, { ...params });
+    // *deleteCheck({ payload }, { call, put }) {
+    //   const { params } = payload;
+    //   const preDelData = yield call(deleteCheck, { ...params });
 
-      if (preDelData.code !== 2000) {
-        message.error(preDelData.msg);
-        yield put({ type: 'save', payload: { current: 0, isLoading: false } });
-      } else if (preDelData.data.successCount > 0) {
-        yield put({
-          type: 'save',
-          payload: { preDelData, current: 1, disableDel: false, isLoading: false },
-        });
-      } else {
-        yield put({
-          type: 'save',
-          payload: { preDelData, current: 1, disableDel: true, isLoading: false },
-        });
-      }
-    },
-    *deleteReview({ payload }, { call, put }) {
-      const delData = yield call(deleteReview, { ...payload });
-      if (delData.code !== 2000) {
-        message.error(delData.msg);
-        yield put({ type: 'save', payload: { current: 1, isLoading: false } });
-      } else {
-        yield put({
-          type: 'save',
-          payload: { delData: delData.data, current: 2, isLoading: false },
-        });
-      }
-    },
-    *deleteRecommend({ payload }, { call, put }) {
-      const delSucessData = yield call(deleteRecommend, { ...payload });
-      if (delSucessData.code !== 2000) {
-        message.error(delSucessData.msg);
-        yield put({ type: 'save', payload: { current: 2, isLoading: false } });
-      } else {
-        yield put({
-          type: 'save',
-          payload: { delSucessData: delSucessData.data, current: 3, isLoading: false },
-        });
-      }
-    },
+    //   if (preDelData.code !== 2000) {
+    //     message.error(preDelData.msg);
+    //     yield put({ type: 'save', payload: { current: 0, isLoading: false } });
+    //   } else if (preDelData.data.successCount > 0) {
+    //     yield put({
+    //       type: 'save',
+    //       payload: { preDelData, current: 1, disableDel: false, isLoading: false },
+    //     });
+    //   } else {
+    //     yield put({
+    //       type: 'save',
+    //       payload: { preDelData, current: 1, disableDel: true, isLoading: false },
+    //     });
+    //   }
+    // },
+    // *deleteReview({ payload }, { call, put }) {
+    //   const delData = yield call(deleteReview, { ...payload });
+    //   if (delData.code !== 2000) {
+    //     message.error(delData.msg);
+    //     yield put({ type: 'save', payload: { current: 1, isLoading: false } });
+    //   } else {
+    //     yield put({
+    //       type: 'save',
+    //       payload: { delData: delData.data, current: 2, isLoading: false },
+    //     });
+    //   }
+    // },
+    // *deleteRecommend({ payload }, { call, put }) {
+    //   const delSucessData = yield call(deleteRecommend, { ...payload });
+    //   if (delSucessData.code !== 2000) {
+    //     message.error(delSucessData.msg);
+    //     yield put({ type: 'save', payload: { current: 2, isLoading: false } });
+    //   } else {
+    //     yield put({
+    //       type: 'save',
+    //       payload: { delSucessData: delSucessData.data, current: 3, isLoading: false },
+    //     });
+    //   }
+    // },
     *getNums({ payload }, { put }) {
       const { nums } = payload;
       yield put({ type: 'save', payload: { nums } });
