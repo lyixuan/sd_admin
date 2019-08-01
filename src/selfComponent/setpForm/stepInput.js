@@ -33,6 +33,7 @@ class stepInput extends Component {
       faileData,
       nums,
       pageType,
+      message,
     } = this.props;
     let valueData = '';
     if (!faileData) {
@@ -48,7 +49,9 @@ class stepInput extends Component {
         ) : null}
         {inputContent ? (
           <div className={styles.inputContent}>
-            {!inputTip ? <div className={styles.inputContent_title}>搜索失败的编号：</div> : null}
+            {!inputTip ? (
+              <div className={styles.inputContent_title}>{message || '搜索失败的编号：'}</div>
+            ) : null}
             <TextArea
               className={styles.inputTextArea}
               rows={5}

@@ -278,6 +278,23 @@
   border: 1px solid #F29F38;
 }
 
+.batchDelButton{
+  margin-left: 10px ;
+  background-color: #F29F38;
+  font-size: 14px;
+  width: 80px;
+  height: 32px;
+  border: 1px solid #F29F38 !important;
+}
+.batchDelButton:hover{
+  background-color: #F29F38;
+  border: 1px solid #F29F38;
+}
+.batchDelButton:focus{
+  background-color: #F29F38;
+  border: 1px solid #F29F38;
+}
+
 .cancleButton{
   margin: 0;
   background-color: #fff;
