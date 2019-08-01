@@ -607,3 +607,7 @@
   margin-top: 2px;
 }
 
+:global(.agc  .ant-input-number-handler-wrap){
+  opacity: 0!important;
+}
+

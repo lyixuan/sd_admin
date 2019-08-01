@@ -197,7 +197,9 @@ class CreateList extends Component {
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>学&nbsp;&nbsp;员&nbsp;&nbsp;ID：</span>
           <InputNumber
+            className="agc"
             placeholder="请输入"
+            min={0}
             style={{ width: 230, height: 32 }}
             type="inputnumber"
             flag="stuId"
@@ -216,6 +218,8 @@ class CreateList extends Component {
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>子订单ID：</span>
           <InputNumber
+            className="agc"
+            min={0}
             placeholder="请输入"
             style={{ width: 230, height: 32 }}
             type="inputnumber"

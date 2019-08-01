@@ -28,7 +28,7 @@ export function columnsFn() {
     {
       title: '学院',
       dataIndex: 'college',
-      width: 100,
+      width: 120,
       fixed: 'left',
     },
     {
