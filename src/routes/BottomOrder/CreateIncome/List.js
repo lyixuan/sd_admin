@@ -261,7 +261,7 @@ class CreateList extends Component {
         contentTable={
           <div style={{ padding: 10 }}>
             <FormFilter.Table
-              scroll={{ x: 1630, y: 570 }}
+              scroll={{ x: 1630, y: 573 }}
               size="middle"
               totalNum={totalNum}
               loading={this.props.loading}
