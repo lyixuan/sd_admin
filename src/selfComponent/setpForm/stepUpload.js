@@ -35,7 +35,8 @@ class stepUpload extends Component {
     }
     callBackParent(true, '');
     if (info.file.response) {
-      if (info.file.response.code === 2000) {
+      const { code } = info.file.response;
+      if (code === 2000 || code === 20000) {
         callBackParent(false, info.file.response.data);
         if (saveFileList) {
           saveFileList(fileList);

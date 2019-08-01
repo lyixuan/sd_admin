@@ -4,9 +4,15 @@ import request from '../utils/request';
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
   localhost: 'http://dev.xd.admin.ministudy.com/apis',
-  development: 'http://test.xd.admin.ministudy.com/apis', // 'http://172.16.59.227:18084'//
+  development: 'http://test.xd.admin.ministudy.com/apis',
+};
+const hostObjNew = {
+  production: 'http://bd.ministudy.com/inspectorapis',
+  localhost: 'http://dev.xd.admin.ministudy.com/inspectorapis',
+  development: 'http://test.xd.admin.ministudy.com/inspectorapis', // 'http://172.16.59.227:8086' //
 };
 export const HOST = hostObj[process.env.API_TYPE];
+export const HOST_NEW = hostObjNew[process.env.API_TYPE];
 /*
 * 用户登录接口
 * params：{name，password}
@@ -37,6 +43,11 @@ export async function getPrivilegeListNew() {
   });
 }
 
+export async function getPrivilegeList() {
+  return request(`${HOST}/getPrivilegeList`, {
+    method: 'GET',
+  });
+}
 /*
 * 获取用户对应的角色信息信息
 * params：{userId}
@@ -575,6 +586,14 @@ export async function preDelQualityList(params) {
     body: params,
   });
 }
+// 删除质检列表
+export async function delQualityList(params) {
+  return request(`${HOST}/metaQuality/confirmDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
 // 批量申诉  第一步
 export async function verifyConsultIds(params) {
   return request(`${HOST}/batchAppeal/verifyConsultIds`, {
@@ -582,9 +601,9 @@ export async function verifyConsultIds(params) {
     body: params,
   });
 }
-// 删除质检列表
-export async function delQualityList(params) {
-  return request(`${HOST}/metaQuality/confirmDelete`, {
+// 批量申诉  第二步
+export async function batchSave(params) {
+  return request(`${HOST}/batchAppeal/save`, {
     method: 'POST',
     body: params,
   });
@@ -1134,6 +1153,59 @@ export async function getSignUpMessage(params) {
 }
 export async function saveSignUpMessage(params) {
   return request(`${HOST}/certificationItem/saveSignUpMessage`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// ------------------- 创收绩效 -------------------
+
+export async function incomeOrderList(params) {
+  return request(`${HOST_NEW}/incomeOrder/list`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function koOrderList(params) {
+  return request(`${HOST_NEW}/koOrder/koOrderList`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 创收底单-上传文件
+export async function createIncomeUpload() {
+  return `${HOST_NEW}/incomeOrder/uploadFile`;
+}
+
+// 创收底单-检验文件
+export async function createIncomeCheck(params) {
+  return request(`${HOST_NEW}/incomeOrder/verifyFile`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 创收底单-导入数据
+export async function createIncomeData(params) {
+  return request(`${HOST_NEW}/incomeOrder/import`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 创收底单- 验证子订单id
+// 批量申诉  第一步
+export async function verifyOrdIds(params) {
+  return request(`${HOST_NEW}/incomeOrder/verifyOrdIds`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 批量申诉  第二步
+export async function deleteOrdIds(params) {
+  return request(`${HOST_NEW}/incomeOrder/deleteOrdIds`, {
     method: 'POST',
     body: params,
   });

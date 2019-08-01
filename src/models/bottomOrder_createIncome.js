@@ -2,11 +2,12 @@ import { message } from 'antd';
 import {
   // incomeOrderList,
   recommendList,
-  importCheck,
+  // importCheck,
   importUpload,
   deleteCheck,
   deleteReview,
   deleteRecommend,
+  createIncomeCheck,
 } from '../services/api';
 
 export default {
@@ -28,10 +29,10 @@ export default {
       const response = yield call(recommendList, { ...getListParams });
       yield put({ type: 'pureSave', payload: { response, getListParams } });
     },
-    *importCheck({ payload }, { call, put }) {
+    *createIncomeCheck({ payload }, { call, put }) {
       const logMsg = [];
-      const checkList = yield call(importCheck, { ...payload });
-      if (checkList.code !== 2000) {
+      const checkList = yield call(createIncomeCheck, { ...payload });
+      if (checkList.code !== 20000) {
         if (checkList.data.failList) {
           checkList.data.failList.forEach(item => {
             logMsg.push(item.log);

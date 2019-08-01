@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { importSelect } from '../../../services/api';
+import { createIncomeUpload } from '../../../services/api';
 import { setConfirm, clearConfirm } from '../../../utils/reloadConfirm';
 import StepLayout from '../../../layouts/stepLayout';
 import StepUpload from '../../../selfComponent/setpForm/stepUpload';
@@ -52,19 +52,20 @@ class RefundAdd extends Component {
   // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
-      type: 'createIncome/importCheck',
+      type: 'createIncome/createIncomeCheck',
       payload: { ...params },
     });
   };
   // 保存excel数据
   saveExcelData = params => {
     this.props.dispatch({
-      type: 'createIncome/importUpload',
+      type: 'createIncome/createIncomeData',
       payload: { ...params },
     });
   };
 
   saveFileList = fileList => {
+    console.log(fileList, 'fileList');
     this.props.dispatch({
       type: 'createIncome/saveFileList',
       payload: { fileList },
@@ -85,38 +86,70 @@ class RefundAdd extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/createIncome/goodStudentList',
+      pathname: '/bottomOrder/createIncome',
     });
   }
   columnsData = () => {
     const columns = [
       {
-        title: '行数',
+        title: '序号',
         dataIndex: 'rowIndex',
       },
       {
-        title: '子订单编号',
-        dataIndex: 'ordIdResult',
-      },
-      {
         title: '报名时间',
-        dataIndex: 'bizDateResult',
+        dataIndex: 'registrationDate',
       },
       {
-        title: '学院名称',
-        dataIndex: 'collegeNameResult',
+        title: '子订单ID',
+        dataIndex: 'orderId',
       },
       {
-        title: '推荐等级',
-        dataIndex: 'recommendLevelResult',
+        title: '学员ID',
+        dataIndex: 'stuId',
       },
       {
-        title: 'up值达标',
-        dataIndex: 'upFlagResult',
+        title: '学院',
+        dataIndex: 'collegeName',
       },
       {
-        title: '学分',
-        dataIndex: 'countValueResult',
+        title: '家族',
+        dataIndex: 'familyName',
+      },
+      {
+        title: '小组',
+        dataIndex: 'groupName',
+      },
+      {
+        title: '推荐老师',
+        dataIndex: 'recommendedTeacher',
+      },
+      {
+        title: '净流水',
+        dataIndex: 'financeNetFlow',
+      },
+      {
+        title: '子订单归属学院',
+        dataIndex: 'subOrderOfCollege',
+      },
+      {
+        title: '听课时长',
+        dataIndex: 'lecturesTime',
+      },
+      {
+        title: '是否足课',
+        dataIndex: 'fullLecturesFlag',
+      },
+      {
+        title: '成单类型',
+        dataIndex: 'orderType',
+      },
+      {
+        title: '折扣（竞合比）',
+        dataIndex: 'saleoff',
+      },
+      {
+        title: '竞合后净流水',
+        dataIndex: 'financeNetFlowJh',
       },
     ];
     return columns;
@@ -129,7 +162,7 @@ class RefundAdd extends Component {
     const failList = !checkList ? [] : checkList.data.failList;
 
     const dataSource = !failList.length > 0 ? null : failList;
-    const columns = !this.columnsData() ? [] : this.columnsData();
+    const columns = this.columnsData(); // !this.columnsData() ? [] :
     const tableTitle =
       !failList.length > 0 ? (
         <div
@@ -142,7 +175,7 @@ class RefundAdd extends Component {
             margin: '116px auto 0',
           }}
         >
-          本次添加好学生推荐数量
+          本次成功
           <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
           条！确定上传？
         </div>
@@ -160,7 +193,7 @@ class RefundAdd extends Component {
         title: '选择Excel',
         content: (
           <StepUpload
-            uploadUrl={importSelect()}
+            uploadUrl={createIncomeUpload()}
             fileList={fileList}
             callBackParent={(bol, params) => {
               this.onChildChange(bol, params);

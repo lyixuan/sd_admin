@@ -9,7 +9,10 @@ import styles from './step.less';
 
 class stepTable extends Component {
   render() {
-    const { dataSource, columns, tableTitle, onlyTable } = this.props;
+    const { tableTitle, onlyTable } = this.props;
+    const dataSource = [];
+
+    const columns = [];
     return (
       <div className={styles.tableWrap}>
         {tableTitle ? (
