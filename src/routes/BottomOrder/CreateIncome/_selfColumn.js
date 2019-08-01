@@ -4,71 +4,91 @@ export function columnsFn() {
     {
       title: '序号',
       dataIndex: 'id',
-      width: '80px',
+      width: 50,
+      fixed: 'left',
     },
     {
       title: '报名时间',
       dataIndex: 'registrationDate',
+      width: 120,
+      fixed: 'left',
     },
     {
       title: '子订单ID',
-      dataIndex: 'ordId',
+      dataIndex: 'subOrderId',
+      width: 100,
+      fixed: 'left',
     },
     {
       title: '学员ID',
-      dataIndex: 'stuId',
+      dataIndex: 'studentId',
+      width: 90,
+      fixed: 'left',
     },
     {
       title: '学院',
-      dataIndex: 'collegeName',
+      dataIndex: 'college',
+      width: 100,
+      fixed: 'left',
     },
     {
       title: '家族',
-      dataIndex: 'familyName',
+      dataIndex: 'family',
+      width: 150,
     },
     {
       title: '小组',
-      dataIndex: 'groupName',
+      dataIndex: 'team',
+      width: 110,
     },
     {
       title: '推荐老师',
       dataIndex: 'recommendedTeacher',
+      width: 80,
     },
     {
       title: '老师ID',
       dataIndex: 'teacherId',
+      width: 80,
     },
     {
       title: '净流水',
       dataIndex: 'financeNetFlow',
+      width: 90,
     },
     {
       title: '子订单归属学院',
       dataIndex: 'subOrderOfCollege',
+      width: 120,
     },
     {
       title: '听课时长',
       dataIndex: 'lecturesTime',
+      width: 90,
     },
     {
       title: '是否足课',
       dataIndex: 'fullLecturesFlag',
-    },
-    {
-      title: '推荐等级',
-      dataIndex: 'recommendLevel',
+      width: 90,
     },
     {
       title: '成单类型',
       dataIndex: 'orderType',
+      width: 100,
     },
     {
       title: '折扣(竞合比)',
-      dataIndex: 'saleoff',
+      dataIndex: 'saleoffJh',
+      width: 110,
     },
     {
       title: '竞合后净流水',
       dataIndex: 'financeNetFlowJh',
+      width: 110,
+    },
+    {
+      title: '',
+      dataIndex: 'duoyukuandu',
     },
   ];
   return columns || [];

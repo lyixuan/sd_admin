@@ -93,6 +93,15 @@ class FormPrams extends Component {
     }
     this.forceUpdate();
   };
+  handleChange2 = (value, flag, originEvent) => {
+    console.log(12, value);
+    console.log(12, flag);
+    this.modal[flag] = value;
+    if (originEvent) {
+      originEvent.call(null, value);
+    }
+    this.forceUpdate();
+  };
   selectChange = (value, flag, originEvent) => {
     this.modal[flag] = value;
     if (originEvent) {
@@ -150,6 +159,14 @@ class FormPrams extends Component {
             ? child.props.value
             : this.modal[child.props.flag];
         returnObj.onChange = e => this.handleChange(e, child.props.onChange);
+        break;
+      case 'inputnumber':
+        returnObj.value =
+          this.modal[child.props.flag] === undefined
+            ? child.props.value
+            : this.modal[child.props.flag];
+        returnObj.onChange = value =>
+          this.handleChange2(value, child.props.flag, child.props.onChange);
         break;
       case 'select':
         returnObj.value =

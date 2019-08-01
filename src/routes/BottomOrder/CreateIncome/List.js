@@ -1,5 +1,6 @@
+/* eslint-disable radix */
 import React, { Component } from 'react';
-import { Button, Input, Select, DatePicker } from 'antd';
+import { Button, Input, Select, DatePicker, InputNumber } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import { columnsFn } from './_selfColumn';
@@ -78,9 +79,9 @@ class CreateList extends Component {
       recommendedTeacher = undefined,
       orderTypeList = undefined,
     } = params;
-    const orderId = params.orderId ? Number(params.orderId) : undefined;
-    const stuId = params.stuId ? Number(params.stuId) : undefined;
-    const pageIndex = params.pageNum ? Number(params.pageNum) : 1;
+    const orderId = params.orderId ? parseInt(params.orderId) : undefined;
+    const stuId = params.stuId ? parseInt(params.stuId) : undefined;
+    const pageNum = params.pageNum ? Number(params.pageNum) : 1;
     const newParams = {
       registrationBeginDate,
       registrationEndDate,
@@ -89,7 +90,7 @@ class CreateList extends Component {
       orderId,
       stuId,
       orderTypeList,
-      pageIndex,
+      pageNum,
     };
     return newParams;
   };
@@ -110,17 +111,14 @@ class CreateList extends Component {
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
-    const RECOMMEND_LEVEL = window.BI_Filter('RECOMMEND_LEVEL');
     val.map((item, index) =>
       data.push({
         ...item,
         key: index,
         id: item.id,
-        upFlag: item.upFlag ? '是' : '否',
-        recommendLevel: RECOMMEND_LEVEL.find(ls => ls.id === item.recommendLevel)
-          ? RECOMMEND_LEVEL.find(ls => ls.id === item.recommendLevel).name
-          : null,
-        orgName: this.splitOrgName(item.collegeName, item.familyName, item.groupName),
+        registrationDate: moment(item.registrationDate).format('YYYY-MM-DD'),
+        fullLecturesFlag: item.fullLecturesFlag ? '是' : '否',
+        orderType: window.BI_Filter(`BILL_TYPE|id:${item.orderType}`).name,
       })
     );
     return data;
@@ -144,8 +142,8 @@ class CreateList extends Component {
     const { urlParams } = this.state;
     const val = this.props.createIncome.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
-    const totalNum = !data.totalElements ? 1 : data.totalElements;
-    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
+    const totalNum = !data.total ? 0 : data.total;
+    const dataSource = !data.list ? [] : this.fillDataSource(data.list);
     const columns = columnsFn();
     const WrappedAdvancedSearchForm = () => (
       <FormFilter
@@ -198,11 +196,10 @@ class CreateList extends Component {
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>学&nbsp;&nbsp;员&nbsp;&nbsp;ID：</span>
-          <Input
+          <InputNumber
             placeholder="请输入"
-            maxLength={20}
             style={{ width: 230, height: 32 }}
-            type="input"
+            type="inputnumber"
             flag="stuId"
           />
         </div>
@@ -218,11 +215,10 @@ class CreateList extends Component {
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>子订单ID：</span>
-          <Input
+          <InputNumber
             placeholder="请输入"
-            maxLength={20}
             style={{ width: 230, height: 32 }}
-            type="input"
+            type="inputnumber"
             flag="orderId"
           />
         </div>
@@ -259,8 +255,10 @@ class CreateList extends Component {
           </div>
         }
         contentTable={
-          <div>
+          <div style={{ padding: 10 }}>
             <FormFilter.Table
+              scroll={{ x: 1630, y: 570 }}
+              size="middle"
               totalNum={totalNum}
               loading={this.props.loading}
               dataSource={dataSource}

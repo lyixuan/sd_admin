@@ -1161,7 +1161,7 @@ export async function saveSignUpMessage(params) {
 // ------------------- 创收绩效 -------------------
 
 export async function incomeOrderList(params) {
-  return request(`${HOST_NEW}/incomeOrder/list`, {
+  return request(`${HOST_NEW}/incomeOrder/incomeOrderList`, {
     method: 'POST',
     body: params,
   });

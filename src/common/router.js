@@ -347,202 +347,202 @@ export const getRouterData = app => {
     //   },
     //   name: '删除投诉',
     // },
-    '/config/timeList': {
-      component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),
-      name: '时间管理',
-    },
-    '/config/timeList/performance': {
-      component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/Performance')),
-      name: '时间管理',
-    },
-    '/config/koSettings': {
-      component: dynamicWrapper(app, ['time'], () => import('../routes/KOTimeManage/TimeList')),
-      name: 'KO设置',
-    },
-    '/config/koSettings/koTimeManage': {
-      component: dynamicWrapper(app, ['time'], () => import('../routes/KOTimeManage/Performance')),
-      name: 'KO设置',
-    },
-    '/config/group': {
-      component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
-      name: '小组短名称',
-    },
-    '/config/family': {
-      component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Family')),
-      name: '家族短名称',
-    },
-    '/config/college': {
-      component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/College')),
-      name: '学院短名称',
-    },
-    '/config/complaintDoublesList': {
-      component: dynamicWrapper(app, ['complaintDoubles'], () =>
-        import('../routes/ComplaintDoubles/ComplaintDoublesList')
-      ),
-      name: '投诉倍数管理',
-    },
-    '/appeal/appealList': {
-      component: dynamicWrapper(app, ['appeal'], () => import('../routes/Appeal/AppealList')),
-      name: '申诉管理',
-    },
-    '/appeal/addAppeal': {
-      component: dynamicWrapper(app, ['appeal'], () => import('../routes/Appeal/AddAppeal')),
-      bread: {
-        name: '申诉管理',
-        path: '/appeal/appealList',
-      },
-      name: '添加申诉',
-    },
-    '/appeal/batchdelappeal': {
-      component: dynamicWrapper(app, ['quality'], () => import('../routes/Appeal/BatchDelAppeal')),
-      bread: {
-        name: '申诉管理',
-        path: '/appeal/appealList',
-      },
-      name: '批量申诉',
-    },
-    '/performance/familyCoefficient': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Family/index')
-      ),
-      name: '家族系数管理',
-    },
-    '/performance/familyCoefficient/list': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Family/List')
-      ),
-      name: '家族系数管理',
-    },
-    '/performance/familyCoefficient/check': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Family/Check')
-      ),
-      bread: {
-        name: '家族系数管理',
-        path: '/performance/familyCoefficient/list',
-      },
-      name: '查看绩效包',
-    },
-    '/performance/familyCoefficient/create': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Family/Create')
-      ),
-      bread: {
-        name: '家族系数管理',
-        path: '/performance/familyCoefficient/list',
-      },
-      name: '创建绩效包',
-    },
-    '/performance/familyCoefficient/editor': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Family/Editor')
-      ),
-      bread: {
-        name: '家族系数管理',
-        path: '/performance/familyCoefficient/list',
-      },
-      name: '编辑绩效包',
-    },
-    '/performance/groupCoefficient': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Group/index')
-      ),
-      name: '小组系数管理',
-    },
-    '/performance/groupCoefficient/list': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Group/List')
-      ),
-      name: '小组系数管理',
-    },
-    '/performance/groupCoefficient/check': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Group/Check')
-      ),
-      bread: {
-        name: '小组系数管理',
-        path: '/performance/groupCoefficient/list',
-      },
-      name: '查看绩效包',
-    },
-    '/performance/groupCoefficient/create': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Group/Create')
-      ),
-      bread: {
-        name: '小组系数管理',
-        path: '/performance/groupCoefficient/list',
-      },
-      name: '创建绩效包',
-    },
-    '/performance/groupCoefficient/editor': {
-      component: dynamicWrapper(app, ['coefficient'], () =>
-        import('../routes/Coefficient/Group/Editor')
-      ),
-      bread: {
-        name: '小组系数管理',
-        path: '/performance/groupCoefficient/list',
-      },
-      name: '编辑绩效包',
-    },
-    '/performance/collegePerformance': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
-        import('../routes/Performance/CollegePerformance')
-      ),
-      name: '学院绩效金额',
-    },
-    '/performance/personalPerformance': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
-        import('../routes/Performance/PersonalPerformance')
-      ),
-      bread: {
-        name: '绩效管理',
-        path: '/performance/collegePerformance',
-      },
-      name: '个人绩效金额',
-    },
-    '/performance/importPerformance': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
-        import('../routes/Performance/ImportPerformance')
-      ),
-      bread: {
-        name: '绩效管理',
-        path: '/performance/collegePerformance',
-      },
-      name: '导入实发绩效',
-    },
-    '/performance/editPerformance': {
-      component: dynamicWrapper(app, ['collegePerformance'], () =>
-        import('../routes/Performance/EditPerformance')
-      ),
-      bread: {
-        name: '绩效管理',
-        path: '/performance/collegePerformance',
-      },
-      name: '编辑绩效',
-    },
-    '/bottomTable/bottomList': {
-      component: dynamicWrapper(app, ['bottomTable'], () =>
-        import('../routes/BottomTable/BottomList')
-      ),
-      name: '底表下载',
-    },
-    '/goodStudent/goodStudentList': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
-        import('../routes/GoodStudent/GoodStudentList')
-      ),
-      name: '好学生推荐',
-    },
-    '/goodStudent/goodStudentAdd': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
-        import('../routes/GoodStudent/GoodStudentAdd')
-      ),
-      bread: {
-        name: '好学生推荐',
-        path: '/goodStudent/goodStudentList',
-      },
-      name: '添加数据',
-    },
+    // '/config/timeList': {
+    //   component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/TimeList')),
+    //   name: '时间管理',
+    // },
+    // '/config/timeList/performance': {
+    //   component: dynamicWrapper(app, ['time'], () => import('../routes/TimeManage/Performance')),
+    //   name: '时间管理',
+    // },
+    // '/config/koSettings': {
+    //   component: dynamicWrapper(app, ['time'], () => import('../routes/KOTimeManage/TimeList')),
+    //   name: 'KO设置',
+    // },
+    // '/config/koSettings/koTimeManage': {
+    //   component: dynamicWrapper(app, ['time'], () => import('../routes/KOTimeManage/Performance')),
+    //   name: 'KO设置',
+    // },
+    // '/config/group': {
+    //   component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Group')),
+    //   name: '小组短名称',
+    // },
+    // '/config/family': {
+    //   component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/Family')),
+    //   name: '家族短名称',
+    // },
+    // '/config/college': {
+    //   component: dynamicWrapper(app, ['shortName'], () => import('../routes/ShotName/College')),
+    //   name: '学院短名称',
+    // },
+    // '/config/complaintDoublesList': {
+    //   component: dynamicWrapper(app, ['complaintDoubles'], () =>
+    //     import('../routes/ComplaintDoubles/ComplaintDoublesList')
+    //   ),
+    //   name: '投诉倍数管理',
+    // },
+    // '/appeal/appealList': {
+    //   component: dynamicWrapper(app, ['appeal'], () => import('../routes/Appeal/AppealList')),
+    //   name: '申诉管理',
+    // },
+    // '/appeal/addAppeal': {
+    //   component: dynamicWrapper(app, ['appeal'], () => import('../routes/Appeal/AddAppeal')),
+    //   bread: {
+    //     name: '申诉管理',
+    //     path: '/appeal/appealList',
+    //   },
+    //   name: '添加申诉',
+    // },
+    // '/appeal/batchdelappeal': {
+    //   component: dynamicWrapper(app, ['quality'], () => import('../routes/Appeal/BatchDelAppeal')),
+    //   bread: {
+    //     name: '申诉管理',
+    //     path: '/appeal/appealList',
+    //   },
+    //   name: '批量申诉',
+    // },
+    // '/performance/familyCoefficient': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Family/index')
+    //   ),
+    //   name: '家族系数管理',
+    // },
+    // '/performance/familyCoefficient/list': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Family/List')
+    //   ),
+    //   name: '家族系数管理',
+    // },
+    // '/performance/familyCoefficient/check': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Family/Check')
+    //   ),
+    //   bread: {
+    //     name: '家族系数管理',
+    //     path: '/performance/familyCoefficient/list',
+    //   },
+    //   name: '查看绩效包',
+    // },
+    // '/performance/familyCoefficient/create': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Family/Create')
+    //   ),
+    //   bread: {
+    //     name: '家族系数管理',
+    //     path: '/performance/familyCoefficient/list',
+    //   },
+    //   name: '创建绩效包',
+    // },
+    // '/performance/familyCoefficient/editor': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Family/Editor')
+    //   ),
+    //   bread: {
+    //     name: '家族系数管理',
+    //     path: '/performance/familyCoefficient/list',
+    //   },
+    //   name: '编辑绩效包',
+    // },
+    // '/performance/groupCoefficient': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Group/index')
+    //   ),
+    //   name: '小组系数管理',
+    // },
+    // '/performance/groupCoefficient/list': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Group/List')
+    //   ),
+    //   name: '小组系数管理',
+    // },
+    // '/performance/groupCoefficient/check': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Group/Check')
+    //   ),
+    //   bread: {
+    //     name: '小组系数管理',
+    //     path: '/performance/groupCoefficient/list',
+    //   },
+    //   name: '查看绩效包',
+    // },
+    // '/performance/groupCoefficient/create': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Group/Create')
+    //   ),
+    //   bread: {
+    //     name: '小组系数管理',
+    //     path: '/performance/groupCoefficient/list',
+    //   },
+    //   name: '创建绩效包',
+    // },
+    // '/performance/groupCoefficient/editor': {
+    //   component: dynamicWrapper(app, ['coefficient'], () =>
+    //     import('../routes/Coefficient/Group/Editor')
+    //   ),
+    //   bread: {
+    //     name: '小组系数管理',
+    //     path: '/performance/groupCoefficient/list',
+    //   },
+    //   name: '编辑绩效包',
+    // },
+    // '/performance/collegePerformance': {
+    //   component: dynamicWrapper(app, ['collegePerformance'], () =>
+    //     import('../routes/Performance/CollegePerformance')
+    //   ),
+    //   name: '学院绩效金额',
+    // },
+    // '/performance/personalPerformance': {
+    //   component: dynamicWrapper(app, ['collegePerformance'], () =>
+    //     import('../routes/Performance/PersonalPerformance')
+    //   ),
+    //   bread: {
+    //     name: '绩效管理',
+    //     path: '/performance/collegePerformance',
+    //   },
+    //   name: '个人绩效金额',
+    // },
+    // '/performance/importPerformance': {
+    //   component: dynamicWrapper(app, ['collegePerformance'], () =>
+    //     import('../routes/Performance/ImportPerformance')
+    //   ),
+    //   bread: {
+    //     name: '绩效管理',
+    //     path: '/performance/collegePerformance',
+    //   },
+    //   name: '导入实发绩效',
+    // },
+    // '/performance/editPerformance': {
+    //   component: dynamicWrapper(app, ['collegePerformance'], () =>
+    //     import('../routes/Performance/EditPerformance')
+    //   ),
+    //   bread: {
+    //     name: '绩效管理',
+    //     path: '/performance/collegePerformance',
+    //   },
+    //   name: '编辑绩效',
+    // },
+    // '/bottomTable/bottomList': {
+    //   component: dynamicWrapper(app, ['bottomTable'], () =>
+    //     import('../routes/BottomTable/BottomList')
+    //   ),
+    //   name: '底表下载',
+    // },
+    // '/goodStudent/goodStudentList': {
+    //   component: dynamicWrapper(app, ['goodStudent'], () =>
+    //     import('../routes/GoodStudent/GoodStudentList')
+    //   ),
+    //   name: '好学生推荐',
+    // },
+    // '/goodStudent/goodStudentAdd': {
+    //   component: dynamicWrapper(app, ['goodStudent'], () =>
+    //     import('../routes/GoodStudent/GoodStudentAdd')
+    //   ),
+    //   bread: {
+    //     name: '好学生推荐',
+    //     path: '/goodStudent/goodStudentList',
+    //   },
+    //   name: '添加数据',
+    // },
     // '/goodStudent/goodStudentDel': {
     //   component: dynamicWrapper(app, ['goodStudent'], () =>
     //     import('../routes/GoodStudent/GoodStudentDel')
@@ -587,12 +587,12 @@ export const getRouterData = app => {
     '/userLayout': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },
-    // '/userLayout/login': {
-    //   component: dynamicWrapper(app, ['baseModels/login'], () => import('../routes/Login/Login')),
-    // },
-    // '/userLayout/loginOut': {
-    //   component: dynamicWrapper(app, ['baseModels/login'], () => import('../routes/Login/Login')),
-    // },
+    '/userLayout/login': {
+      component: dynamicWrapper(app, ['baseModels/login'], () => import('../routes/Login/Login')),
+    },
+    '/userLayout/loginOut': {
+      component: dynamicWrapper(app, ['baseModels/login'], () => import('../routes/Login/Login')),
+    },
     // // 业务技能认证
     //
     // // 审核管理

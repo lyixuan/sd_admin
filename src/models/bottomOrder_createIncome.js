@@ -1,7 +1,6 @@
 import { message } from 'antd';
 import {
-  // incomeOrderList,
-  recommendList,
+  incomeOrderList,
   // importCheck,
   importUpload,
   deleteCheck,
@@ -25,8 +24,7 @@ export default {
   effects: {
     *recommendList({ payload }, { call, put }) {
       const { getListParams } = payload;
-      // const response = yield call(incomeOrderList, { ...getListParams });
-      const response = yield call(recommendList, { ...getListParams });
+      const response = yield call(incomeOrderList, { ...getListParams });
       yield put({ type: 'pureSave', payload: { response, getListParams } });
     },
     *createIncomeCheck({ payload }, { call, put }) {
