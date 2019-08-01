@@ -57,7 +57,7 @@ export default {
     },
     *createIncomeData({ payload }, { call, put }) {
       const excelData = yield call(createIncomeData, { ...payload });
-      if (excelData.code !== 2000) {
+      if (excelData.code !== 20000) {
         message.error(excelData.msg);
         yield put({ type: 'save', payload: { current: 1, isLoading: false } });
       } else {

@@ -117,7 +117,7 @@ class BatchDelAppeal extends Component {
     }
 
     const tipSucess = `您已成功删除 ${successSize} 条数据！`;
-    const successTips = <p>删除数据成功，请在申诉管理列表页查看最新的更新状态。</p>;
+    const successTips = <p>删除数据成功，请在创收成单列表页查看最新的更新状态。</p>;
 
     const inputInfo = (
       <div style={{ width: '100%', paddingLeft: '26px' }}>
