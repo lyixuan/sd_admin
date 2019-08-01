@@ -219,6 +219,11 @@ class AppealList extends Component {
     this.getData({ pageSize: 30, pageNum: 0 });
   };
 
+  // 批量删除申诉
+  batchDelAppeal = () => {
+    this.props.setRouteUrlParams('/appeal/batchdelappeal');
+  };
+
   render() {
     const appealList = this.props.appeal.appealListData;
     const { loading } = this.props;
@@ -320,11 +325,22 @@ class AppealList extends Component {
         routerData={this.props.routerData}
         contentForm={<WrappedAdvancedSearchForm />}
         contentButton={
-          <AuthorizedButton authority="/appeal/addAppeal">
-            <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
-              添加申诉
-            </Button>
-          </AuthorizedButton>
+          <div>
+            <AuthorizedButton authority="/appeal/addAppeal">
+              <Button onClick={this.handleAdd} type="primary" className={common.createButton}>
+                添加申诉
+              </Button>
+            </AuthorizedButton>
+            <AuthorizedButton authority="/appeal/batchdelappeal" style={{ marginLeft: '10px' }}>
+              <Button
+                onClick={this.batchDelAppeal}
+                type="primary"
+                className={common.batchDelButton}
+              >
+                批量申诉
+              </Button>
+            </AuthorizedButton>
+          </div>
         }
         contentTable={
           <div>

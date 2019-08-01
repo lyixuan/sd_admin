@@ -3,8 +3,8 @@ import request from '../utils/request';
 
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
-  localhost: 'http://dev.xd.admin.ministudy.com/apis',
-  development: 'http://test.xd.admin.ministudy.com/apis',
+  localhost: 'http://test.xd.admin.ministudy.com/apis',
+  development: 'http://test.xd.admin.ministudy.com/apis', // 'http://172.16.59.227:18084', //
 };
 const hostObjNew = {
   production: 'http://bd.ministudy.com/inspectorapis',
@@ -586,14 +586,6 @@ export async function preDelQualityList(params) {
     body: params,
   });
 }
-// 删除质检列表
-export async function delQualityList(params) {
-  return request(`${HOST}/metaQuality/confirmDelete`, {
-    method: 'POST',
-    body: params,
-  });
-}
-
 // 批量申诉  第一步
 export async function verifyConsultIds(params) {
   return request(`${HOST}/batchAppeal/verifyConsultIds`, {
@@ -608,6 +600,14 @@ export async function batchSave(params) {
     body: params,
   });
 }
+// 删除质检列表
+export async function delQualityList(params) {
+  return request(`${HOST}/metaQuality/confirmDelete`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
 // 上传图片地址
 export function qualityUpload() {
   return `${HOST}/metaQuality/uploadFile`;
