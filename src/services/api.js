@@ -1166,7 +1166,11 @@ export async function incomeOrderList(params) {
     body: params,
   });
 }
-
+export async function getDateRange() {
+  return request(`${HOST_NEW}/incomeOrder/dateRange`, {
+    method: 'GET',
+  });
+}
 export async function koOrderList(params) {
   return request(`${HOST_NEW}/koOrder/koOrderList`, {
     method: 'POST',

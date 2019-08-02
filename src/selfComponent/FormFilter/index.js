@@ -94,8 +94,6 @@ class FormPrams extends Component {
     this.forceUpdate();
   };
   handleChange2 = (value, flag, originEvent) => {
-    console.log(12, value);
-    console.log(12, flag);
     this.modal[flag] = value;
     if (originEvent) {
       originEvent.call(null, value);

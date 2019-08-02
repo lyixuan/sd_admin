@@ -47,6 +47,7 @@ export default class SelfTable extends PureComponent {
         />
         <SelfPagination
           total={totalNum}
+          current={pageNum + 1}
           defaultCurrent={pageNum + 1}
           onChange={(current, pageSize) => {
             this.changePage(current, pageSize);

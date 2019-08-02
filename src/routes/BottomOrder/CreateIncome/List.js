@@ -17,7 +17,8 @@ const { RangePicker } = DatePicker;
 
 @connect(({ createIncome, loading }) => ({
   createIncome,
-  loading: loading.models.createIncome,
+  loadingTime: loading.effects['createIncome/getDateRange'],
+  loading: loading.effects['createIncome/recommendList'],
 }))
 class CreateList extends Component {
   constructor(props) {
@@ -30,6 +31,23 @@ class CreateList extends Component {
       },
     };
   }
+  // componentDidMount() {
+  //   this.props.dispatch({
+  //     type: 'createIncome/getDateRange',
+  //     payload: { },
+  //   }).then((response)=>{
+  //     if (response) {
+  //       const urlParams = {
+  //         ...this.state.urlParams,
+  //         registrationBeginDate: response.beginDate || undefined,
+  //         registrationEndDate: response.endDate || undefined,
+  //       };
+  //       this.setState({
+  //         urlParams,
+  //       });
+  //     }
+  //   });
+  // }
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     this.changePage(current, pageSize);
@@ -81,7 +99,7 @@ class CreateList extends Component {
     } = params;
     const orderId = params.orderId ? parseInt(params.orderId) : undefined;
     const stuId = params.stuId ? parseInt(params.stuId) : undefined;
-    const pageNum = params.pageNum ? Number(params.pageNum) : 1;
+    const pageNum = params.pageNum ? Number(params.pageNum) : 0;
     const newParams = {
       registrationBeginDate,
       registrationEndDate,
@@ -137,6 +155,10 @@ class CreateList extends Component {
     return argument.filter(item => item).join(' | ');
   };
 
+  disabledDate = current => {
+    return current > moment(this.props.createIncome.endDate);
+  };
+
   render() {
     const options = window.BI_Filter('BILL_TYPE');
     const { urlParams } = this.state;
@@ -154,9 +176,11 @@ class CreateList extends Component {
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>报名日期：</span>
           <RangePicker
+            allowClear={false}
             value={[urlParams.registrationBeginDate, urlParams.registrationEndDate].map(
               item => (item ? moment(item) : null)
             )}
+            disabledDate={this.disabledDate}
             format={dateFormat}
             style={{ width: 230, height: 32 }}
             onChange={this.onChange}

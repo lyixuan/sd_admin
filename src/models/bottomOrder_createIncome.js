@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import {
   incomeOrderList,
+  getDateRange,
   // importCheck,
   // importUpload,
   // deleteCheck,
@@ -20,13 +21,24 @@ export default {
     qualityList: [],
     fileList: [],
     isLoading: null,
+    endDate: undefined,
   },
 
   effects: {
     *recommendList({ payload }, { call, put }) {
       const { getListParams } = payload;
-      const response = yield call(incomeOrderList, { ...getListParams });
+      const pageNum = getListParams.pageNum + 1;
+      const response = yield call(incomeOrderList, { ...getListParams, ...{ pageNum } });
       yield put({ type: 'pureSave', payload: { response, getListParams } });
+    },
+    *getDateRange(_, { call, put }) {
+      const response = yield call(getDateRange);
+      if (response.code === 20000) {
+        yield put({ type: 'saveTime', payload: { endDate: response.data.endDate } });
+        return response.data;
+      } else {
+        message.error(response.msg);
+      }
     },
     *createIncomeCheck({ payload }, { call, put }) {
       const logMsg = [];
@@ -139,6 +151,9 @@ export default {
         }
       }
       return { ...state, ...action.payload };
+    },
+    saveTime(state, { payload }) {
+      return { ...state, ...payload };
     },
     pureSave(state, action) {
       return {
