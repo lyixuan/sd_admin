@@ -4,7 +4,13 @@ import moment from 'moment';
 import Table from './table';
 import ButtonBox from './buttonBox';
 import styles from './index.less';
-import { saveParamsInUrl, filterEmptyUrlParams, getUrlParams, pageObj } from './saveUrlParams';
+import {
+  saveParamsInUrl,
+  saveParamsInUrl2,
+  filterEmptyUrlParams,
+  getUrlParams,
+  pageObj,
+} from './saveUrlParams';
 
 /*
 *@params modal         object  初始化参数非必填;   base string
@@ -39,10 +45,11 @@ class FormPrams extends Component {
     this.modal = Object.assign({}, this.props.modal, this.props.otherModal);
     this.flagKeyArr = [pageObj.key].concat(Object.keys(this.props.otherModal)); // 用于储存flag值,默认获取分页
     this.isLoading = this.props.isLoading || false;
+    this.isCreateIncome = this.props.isCreateIncome || false;
   }
 
   componentDidMount() {
-    if (!this.isLoading) {
+    if (!this.isLoading && !this.isCreateIncome) {
       this.initData();
     }
   }
@@ -57,12 +64,23 @@ class FormPrams extends Component {
 
   onReset = () => {
     this.flagKeyArr.forEach(item => {
-      this.modal[item] = this.props.modal[item] || null;
+      if (item === 'pageNum') {
+        this.modal[item] = 0;
+      }
+      if (item === 'orderTypeList') {
+        this.modal[item] = [];
+      } else {
+        this.modal[item] = this.props.modal[item] || undefined;
+      }
     });
-    this.saveData();
+    if (this.isCreateIncome) {
+      this.saveData2();
+    } else {
+      this.saveData();
+    }
   };
-  onSubmit = () => {
-    this.saveData();
+  onSubmit = pn => {
+    this.saveData(pn);
   };
   getParams = () => {
     let params = getUrlParams();
@@ -120,11 +138,20 @@ class FormPrams extends Component {
   };
 
   saveData = modal => {
-    const params = modal || this.modal;
+    const params = modal ? { ...this.modal, ...modal } : this.modal;
     if (this.props.onSubmit) {
       this.props.onSubmit(params);
     }
+
     saveParamsInUrl(params);
+  };
+  saveData2 = modal => {
+    const params = modal ? { ...this.modal, ...modal } : this.modal;
+    if (this.props.onSubmit) {
+      this.props.onSubmit(params);
+    }
+
+    saveParamsInUrl2(params);
   };
   checkoutComponentProps = child => {
     let addParams = {};
@@ -212,7 +239,11 @@ class FormPrams extends Component {
       <div className={styles.formCls}>
         {[...children]}
         <div className={styles.u_div}>
-          <ButtonBox {...this.props} onSubmit={this.onSubmit} onReset={this.onReset} />
+          <ButtonBox
+            {...this.props}
+            onSubmit={() => this.onSubmit({ pageNum: 0 })}
+            onReset={() => this.onReset()}
+          />
         </div>
         <div>{this.props.table ? this.props.table : null}</div>
       </div>

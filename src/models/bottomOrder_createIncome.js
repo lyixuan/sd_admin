@@ -27,8 +27,9 @@ export default {
   effects: {
     *recommendList({ payload }, { call, put }) {
       const { getListParams } = payload;
-      const pageNum = getListParams.pageNum + 1;
-      const response = yield call(incomeOrderList, { ...getListParams, ...{ pageNum } });
+      const page = getListParams.pageNum + 1;
+      delete getListParams.pageNum;
+      const response = yield call(incomeOrderList, { ...getListParams, ...{ page } });
       yield put({ type: 'pureSave', payload: { response, getListParams } });
     },
     *getDateRange(_, { call, put }) {

@@ -18,6 +18,11 @@ export default class SelfTable extends PureComponent {
       pageNum: this.getPageNum(),
     };
   }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(nextProps.pageNum) !== JSON.stringify(this.props.pageNum)) {
+      this.setState({ pageNum: nextProps.pageNum - 1 });
+    }
+  }
   getPageNum = () => {
     const params = getUrlParams();
     return params[pageObj.key] ? Number(params[pageObj.key]) : pageObj.value;

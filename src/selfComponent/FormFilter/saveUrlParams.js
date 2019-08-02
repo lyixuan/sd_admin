@@ -18,10 +18,17 @@ export const saveParamsInUrl = (query, url) => {
     search: stringify(paramsObj),
   });
 };
+export const saveParamsInUrl2 = (query, url) => {
+  const pathname = url || history.location.pathname;
+  history.replace({
+    pathname,
+    search: stringify(query),
+  });
+};
 export const filterEmptyUrlParams = params => {
   const newParams = params || {};
   for (const i in newParams) {
-    if (newParams[i] === undefined || newParams[i] === null) {
+    if (newParams[i] === undefined || newParams[i] === null || newParams[i] === []) {
       delete newParams[i];
     }
   }

@@ -10,6 +10,7 @@ import FormFilter from '../../../selfComponent/FormFilter';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import common from '../../Common/common.css';
 import styles from './style.less';
+import { saveParamsInUrl } from '../../../selfComponent/FormFilter/saveUrlParams';
 
 const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
@@ -31,23 +32,32 @@ class CreateList extends Component {
       },
     };
   }
-  // componentDidMount() {
-  //   this.props.dispatch({
-  //     type: 'createIncome/getDateRange',
-  //     payload: { },
-  //   }).then((response)=>{
-  //     if (response) {
-  //       const urlParams = {
-  //         ...this.state.urlParams,
-  //         registrationBeginDate: response.beginDate || undefined,
-  //         registrationEndDate: response.endDate || undefined,
-  //       };
-  //       this.setState({
-  //         urlParams,
-  //       });
-  //     }
-  //   });
-  // }
+  componentDidMount() {
+    const that = this;
+    this.props
+      .dispatch({
+        type: 'createIncome/getDateRange',
+        payload: {},
+      })
+      .then(response => {
+        if (response) {
+          const urlParams = {
+            ...this.state.urlParams,
+            registrationBeginDate: moment(response.beginDate).format('YYYY-MM-DD') || null,
+            registrationEndDate: moment(response.endDate).format('YYYY-MM-DD') || null,
+          };
+          this.setState({
+            urlParams,
+          });
+          const params = {
+            registrationBeginDate: moment(response.beginDate).format('YYYY-MM-DD') || undefined,
+            registrationEndDate: moment(response.endDate).format('YYYY-MM-DD') || undefined,
+          };
+          that.handleSearch(params);
+          saveParamsInUrl(params);
+        }
+      });
+  }
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
     this.changePage(current, pageSize);
@@ -62,6 +72,7 @@ class CreateList extends Component {
       urlParams,
     });
   };
+
   // 成单类型选择
   onSelectChange = val => {
     const urlParams = { ...this.state.urlParams, orderTypeList: val };
@@ -83,8 +94,17 @@ class CreateList extends Component {
   };
   // 表单搜索函数
   handleSearch = params => {
-    const { registrationBeginDate = undefined, registrationEndDate = undefined } = params;
-    const urlParams = { ...this.state.urlParams, registrationBeginDate, registrationEndDate };
+    const {
+      registrationBeginDate = undefined,
+      registrationEndDate = undefined,
+      orderTypeList = [],
+    } = params;
+    const urlParams = {
+      ...this.state.urlParams,
+      registrationBeginDate,
+      registrationEndDate,
+      orderTypeList,
+    };
     const newParams = this.handleParams(params);
     this.getData(this.filterEmptyParams(newParams));
     this.setState({ urlParams });
@@ -141,6 +161,10 @@ class CreateList extends Component {
     );
     return data;
   };
+  resetList = () => {
+    const urlParams = { ...this.state.urlParams, orderTypeList: [] };
+    this.setState({ urlParams });
+  };
   // 删除数据
   createIncomeDel = () => {
     this.props.setRouteUrlParams('/bottomOrder/createIncomeDel');
@@ -165,13 +189,16 @@ class CreateList extends Component {
     const val = this.props.createIncome.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
     const totalNum = !data.total ? 0 : data.total;
+    const pageNum = !data.pageNum ? 1 : data.pageNum;
     const dataSource = !data.list ? [] : this.fillDataSource(data.list);
     const columns = columnsFn();
     const WrappedAdvancedSearchForm = () => (
       <FormFilter
         onSubmit={this.handleSearch}
         isLoading={this.props.loading}
+        isCreateIncome={1}
         otherModal={urlParams}
+        resetList={this.resetList}
       >
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>报名日期：</span>
@@ -207,6 +234,8 @@ class CreateList extends Component {
             maxTagCount={1}
             maxTagTextLength={7}
             placeholder="请选择"
+            type="select"
+            flag="orderTypeList"
             onChange={this.onSelectChange}
             style={{ width: 230, height: 32 }}
             value={urlParams.orderTypeList}
@@ -287,6 +316,7 @@ class CreateList extends Component {
             <FormFilter.Table
               scroll={{ x: 1630, y: 573 }}
               size="middle"
+              pageNum={pageNum}
               totalNum={totalNum}
               loading={this.props.loading}
               dataSource={dataSource}
