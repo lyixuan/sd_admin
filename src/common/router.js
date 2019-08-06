@@ -734,12 +734,12 @@ export const getRouterData = app => {
     // ---- 创收绩效 begin -----
 
     // ---
-    '/bottomOrder': {
-      component: dynamicWrapper(app, ['goodStudent'], () =>
-        import('../routes/BottomOrder/CreateIncome/List')
-      ),
-      name: '创收成单',
-    },
+    // '/bottomOrder': {
+    //   component: dynamicWrapper(app, ['goodStudent'], () =>
+    //     import('../routes/BottomOrder/CreateIncome/List')
+    //   ),
+    //   name: '创收成单',
+    // },
     '/bottomOrder/createIncome': {
       component: dynamicWrapper(app, ['bottomOrder_createIncome'], () =>
         import('../routes/BottomOrder/CreateIncome/List')
