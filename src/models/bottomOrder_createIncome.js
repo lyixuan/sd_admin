@@ -35,7 +35,10 @@ export default {
     *getDateRange(_, { call, put }) {
       const response = yield call(getDateRange);
       if (response.code === 20000) {
-        yield put({ type: 'saveTime', payload: { endDate: response.data.endDate } });
+        yield put({
+          type: 'saveTime',
+          payload: { endDate: response.data && response.data.endDate },
+        });
         return response.data;
       } else {
         message.error(response.msg);

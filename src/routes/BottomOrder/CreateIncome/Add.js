@@ -65,7 +65,6 @@ class RefundAdd extends Component {
   };
 
   saveFileList = fileList => {
-    console.log(fileList, 'fileList');
     this.props.dispatch({
       type: 'createIncome/saveFileList',
       payload: { fileList },
@@ -78,7 +77,6 @@ class RefundAdd extends Component {
     });
   };
   editLoading = isLoading => {
-    console.log(isLoading);
     this.props.dispatch({
       type: 'createIncome/editLoading',
       payload: { isLoading },
