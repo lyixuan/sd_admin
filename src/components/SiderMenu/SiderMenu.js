@@ -176,7 +176,8 @@ export default class SiderMenu extends PureComponent {
   addHosts = path => {
     // 为特定path添加hosts
     const isInspector = /^\/inspector\/(\w+\/?)+$/.test(path);
-    return isInspector ? `${INSPECTOR_HOST}${path}` : path;
+    const isFreeStudy = /^\/freestudy\/(\w+\/?)+$/.test(path);
+    return isInspector || isFreeStudy ? `${INSPECTOR_HOST}${path}` : path;
   };
   // conversion Path
   // 转化路径
