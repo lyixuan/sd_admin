@@ -118,6 +118,10 @@ class RefundAdd extends Component {
         dataIndex: 'groupName',
       },
       {
+        title: '产品包名称',
+        dataIndex: 'productPackageName',
+      },
+      {
         title: '推荐老师',
         dataIndex: 'recommendedTeacher',
       },
