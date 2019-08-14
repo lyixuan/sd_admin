@@ -14,6 +14,7 @@ class RefundAdd extends Component {
           routerData={this.props.routerData}
           batch={this.props.batch}
           loading={this.props.loading}
+          history={this.props.history}
         />
       </div>
     );

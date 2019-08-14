@@ -22,7 +22,6 @@ class BatchDelAppeal extends Component {
       step2Msg: this.props.step2Msg || '搜索失败的子订单ID:',
       step3Tile: '删除成功',
       name: this.props.name || 'batch',
-      gotoUrl: this.props.gotoUrl || '/appeal/appealList',
     };
   }
 
@@ -85,7 +84,7 @@ class BatchDelAppeal extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: this.state.gotoUrl,
+      pathname: '/bottomOrder/createIncome',
     });
   }
 
