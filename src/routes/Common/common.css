@@ -207,21 +207,21 @@
 
 .newButton{
   margin: 0 0 24px 0;
-  background-color: #00CCC3;
+  background-color: #52C9C2;
   font-size: 14px;
   width: 80px;
   height: 32px;
-  border: 1px solid #00CCC3 !important;
+  border: 1px solid #52C9C2 !important;
   color: #fff;
 }
 .newButton:hover{
-  background-color: #00CCC3;
-  border: 1px solid #00CCC3;
+  background-color: #52C9C2;
+  border: 1px solid #52C9C2;
   color: #fff;
 }
 .newButton:focus{
-  background-color: #00CCC3;
-  border: 1px solid #00CCC3;
+  background-color: #52C9C2;
+  border: 1px solid #52C9C2;
   color: #fff;
 }
 
@@ -322,17 +322,17 @@
   width: 80px;
   height: 32px;
   border: 1px solid #E8EBED !important;
-  color: #000;
+  color: #56595E;
 }
 .cancleButtonGray:hover{
   background-color: #E8EBED;
-  color: #000;
+  color: #56595E;
   border: 1px solid #E8EBED;
 }
 .cancleButtonGray:focus {
   background-color: #E8EBED;
   border: 1px solid #E8EBED;
-  color: #000;
+  color: #56595E;
 }
 
 .submitButton{
@@ -611,3 +611,13 @@
   opacity: 0!important;
 }
 
+:global(.circleTable .ant-table-thead  tr:first-child  th:first-child){
+  border-radius: 6px  0 0 6px;
+}
+
+
+:global(.circleTable .ant-table-thead  tr  th){
+  border-bottom:none;
+  color: #7B7C80;
+  font-weight: normal;
+}

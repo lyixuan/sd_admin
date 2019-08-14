@@ -39,7 +39,7 @@ export default class SelfTable extends PureComponent {
     saveParamsInUrl(paramsObj);
   };
   render() {
-    const { dataSource, totalNum = 0, ...others } = this.props;
+    const { dataSource, totalNum = 0, className = '', ...others } = this.props;
     const { pageNum } = this.state;
     return (
       <div>
@@ -48,7 +48,8 @@ export default class SelfTable extends PureComponent {
           {...others}
           dataSource={dataSource}
           pagination={false}
-          className={styles.tableContentStyle}
+          className={className}
+          style={{ margin: 0 }}
         />
         <SelfPagination
           total={totalNum}

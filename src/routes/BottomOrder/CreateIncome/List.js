@@ -316,6 +316,7 @@ class CreateList extends Component {
             <FormFilter.Table
               scroll={{ x: 1630, y: 573 }}
               size="middle"
+              className="circleTable"
               pageNum={pageNum}
               totalNum={totalNum}
               loading={this.props.loading}
