@@ -210,7 +210,7 @@ class CreateList extends Component {
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>报名日期：</span>
           <RangePicker
-            allowClear={false}
+            allowClear
             value={[urlParams.registrationBeginDate, urlParams.registrationEndDate].map(
               item => (item ? moment(item) : null)
             )}
