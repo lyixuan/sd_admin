@@ -118,10 +118,6 @@ class RefundAdd extends Component {
         dataIndex: 'groupName',
       },
       {
-        title: '产品包名称',
-        dataIndex: 'productPackageName',
-      },
-      {
         title: '推荐老师',
         dataIndex: 'recommendedTeacher',
       },
@@ -130,12 +126,20 @@ class RefundAdd extends Component {
         dataIndex: 'cpId',
       },
       {
+        title: '产品包名称',
+        dataIndex: 'productPackageName',
+      },
+      {
         title: '净流水',
         dataIndex: 'financeNetFlow',
       },
       {
         title: '子订单归属学院',
         dataIndex: 'subOrderOfCollege',
+      },
+      {
+        title: '子订单归属家族',
+        dataIndex: 'subOrderOfFamily',
       },
       {
         title: '听课时长',
