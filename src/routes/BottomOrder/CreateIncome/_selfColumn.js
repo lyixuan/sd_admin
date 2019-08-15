@@ -49,7 +49,7 @@ export function columnsFn() {
     {
       title: '推荐老师邮箱',
       dataIndex: 'teacherName',
-      width: 80,
+      width: 110,
     },
     {
       title: '净流水',

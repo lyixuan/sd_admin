@@ -276,6 +276,16 @@ class CreateList extends Component {
           />
         </div>
         <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>推荐老师邮箱：</span>
+          <Input
+            placeholder="请输入"
+            maxLength={20}
+            style={{ width: 230, height: 32 }}
+            type="input"
+            flag="teacherName"
+          />
+        </div>
+        <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>子订单ID：</span>
           <InputNumber
             className="agc"
@@ -321,7 +331,7 @@ class CreateList extends Component {
         contentTable={
           <div style={{ padding: 10 }}>
             <FormFilter.Table
-              scroll={{ x: 1630, y: 573 }}
+              scroll={{ x: 1660, y: 573 }}
               size="middle"
               className="circleTable"
               pageNum={pageNum}
