@@ -147,8 +147,9 @@ class FormPrams extends Component {
   };
   saveData2 = modal => {
     const params = modal ? { ...this.modal, ...modal } : this.modal;
+    console.log({ ...this.props.initData });
     if (this.props.onSubmit) {
-      this.props.onSubmit(params);
+      this.props.onSubmit({ ...params, ...this.props.initData });
     }
 
     saveParamsInUrl2(params);

@@ -162,16 +162,7 @@ class CreateList extends Component {
     return data;
   };
   resetList = () => {
-    const { beginDate, endDate } = this.props.createIncome;
-    const registrationBeginDate = beginDate;
-    const registrationEndDate = endDate;
-    const urlParams = {
-      ...this.state.urlParams,
-      orderTypeList: [],
-      registrationBeginDate,
-      registrationEndDate,
-    };
-    console.log(urlParams, 'urlParams');
+    const urlParams = { ...this.state.urlParams, orderTypeList: [] };
     this.setState({ urlParams });
   };
   // 删除数据
@@ -200,10 +191,16 @@ class CreateList extends Component {
     const totalNum = !data.total ? 0 : data.total;
     const pageNum = !data.pageNum ? 1 : data.pageNum;
     const dataSource = !data.list ? [] : this.fillDataSource(data.list);
+    const { beginDate, endDate } = this.props.createIncome;
+    const initData = {
+      registrationBeginDate: beginDate,
+      registrationEndDate: endDate,
+    };
     const columns = columnsFn();
     const WrappedAdvancedSearchForm = () => (
       <FormFilter
         onSubmit={this.handleSearch}
+        initData={initData}
         isLoading={this.props.loading}
         isCreateIncome={1}
         otherModal={urlParams}
