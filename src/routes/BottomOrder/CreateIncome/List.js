@@ -154,6 +154,7 @@ class CreateList extends Component {
         ...item,
         key: index,
         id: item.id,
+        saleoffJh: item.saleoffJh * 100,
         registrationDate: moment(item.registrationDate).format('YYYY-MM-DD'),
         fullLecturesFlag: item.fullLecturesFlag ? '是' : '否',
         orderType: window.BI_Filter(`BILL_TYPE|id:${item.orderType}`).name,

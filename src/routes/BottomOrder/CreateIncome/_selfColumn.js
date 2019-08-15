@@ -47,8 +47,8 @@ export function columnsFn() {
       width: 80,
     },
     {
-      title: '老师ID',
-      dataIndex: 'teacherId',
+      title: '推荐老师邮箱',
+      dataIndex: 'teacherName',
       width: 80,
     },
     {
