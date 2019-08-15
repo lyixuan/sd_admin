@@ -22,6 +22,7 @@ export default {
     fileList: [],
     isLoading: null,
     endDate: undefined,
+    beginDate: undefined,
   },
 
   effects: {
@@ -37,7 +38,10 @@ export default {
       if (response.code === 20000) {
         yield put({
           type: 'saveTime',
-          payload: { endDate: response.data && response.data.endDate },
+          payload: {
+            endDate: response.data && response.data.endDate,
+            beginDate: response.data && response.data.beginDate,
+          },
         });
         return response.data;
       } else {

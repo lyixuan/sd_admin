@@ -162,7 +162,16 @@ class CreateList extends Component {
     return data;
   };
   resetList = () => {
-    const urlParams = { ...this.state.urlParams, orderTypeList: [] };
+    const { beginDate, endDate } = this.props.createIncome;
+    const registrationBeginDate = beginDate;
+    const registrationEndDate = endDate;
+    const urlParams = {
+      ...this.state.urlParams,
+      orderTypeList: [],
+      registrationBeginDate,
+      registrationEndDate,
+    };
+    console.log(urlParams, 'urlParams');
     this.setState({ urlParams });
   };
   // 删除数据
