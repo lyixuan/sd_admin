@@ -126,6 +126,10 @@ class RefundAdd extends Component {
         dataIndex: 'recommendedTeacher',
       },
       {
+        title: '推荐老师邮箱',
+        dataIndex: 'cpId',
+      },
+      {
         title: '净流水',
         dataIndex: 'financeNetFlow',
       },
