@@ -620,4 +620,5 @@
   border-bottom:none;
   color: #7B7C80;
   font-weight: normal;
+  white-space: nowrap;
 }
