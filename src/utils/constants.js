@@ -73,7 +73,8 @@ export const JOB_STATUS = [
 // 访问权限
 export const VISIT_RIGHT_LIST = [
   { id: 'scoreView', name: '学分' },
-  { id: 'privilegeView', name: '绩效' },
+  { id: 'privilegeView', name: '学分绩效' },
+  { id: 'incomeKpiView', name: '创收绩效' },
   { id: 'endView', name: '后台' },
 ];
 

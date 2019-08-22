@@ -62,6 +62,7 @@ class CreateUser extends Component {
     let scoreView = false;
     let privilegeView = false;
     let endView = false;
+    let incomeKpiView = false;
     view.map(item => {
       if (item === 'scoreView') {
         scoreView = bol;
@@ -69,6 +70,8 @@ class CreateUser extends Component {
         privilegeView = bol;
       } else if (item === 'endView') {
         endView = bol;
+      } else if (item === 'incomeKpiView') {
+        incomeKpiView = bol;
       }
       return 0;
     });
@@ -84,6 +87,7 @@ class CreateUser extends Component {
       scoreView,
       privilegeView,
       endView,
+      incomeKpiView,
       positionList: {
         privilege: rUserType === 'admin' ? false : values.privilege === 1,
         userType: rUserType,
