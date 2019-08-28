@@ -109,12 +109,18 @@ class FormPrams extends Component {
     if (originEvent) {
       originEvent.call(null, e);
     }
+    if (this.isCreateIncome) {
+      saveParamsInUrl(this.modal);
+    }
     this.forceUpdate();
   };
   handleChange2 = (value, flag, originEvent) => {
     this.modal[flag] = value;
     if (originEvent) {
       originEvent.call(null, value);
+    }
+    if (this.isCreateIncome) {
+      saveParamsInUrl(this.modal);
     }
     this.forceUpdate();
   };
@@ -126,6 +132,10 @@ class FormPrams extends Component {
     this.setState({
       isUpdate: !this.state.isUpdate,
     });
+    if (this.isCreateIncome) {
+      this.modal.morderTypeList = value.join(',');
+      saveParamsInUrl(this.modal);
+    }
   };
   pickerWrapperChange = (value, strData, flag, originEvent) => {
     this.modal[flag] = strData || '';
@@ -135,6 +145,9 @@ class FormPrams extends Component {
     this.setState({
       isUpdate: !this.state.isUpdate,
     });
+    if (this.isCreateIncome) {
+      saveParamsInUrl(this.modal);
+    }
   };
 
   saveData = modal => {
@@ -142,12 +155,10 @@ class FormPrams extends Component {
     if (this.props.onSubmit) {
       this.props.onSubmit(params);
     }
-
     saveParamsInUrl(params);
   };
   saveData2 = modal => {
     const params = modal ? { ...this.modal, ...modal } : this.modal;
-    console.log({ ...this.props.initData });
     if (this.props.onSubmit) {
       this.props.onSubmit({ ...params, ...this.props.initData });
     }

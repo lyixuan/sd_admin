@@ -4,7 +4,7 @@ export function columnsFn() {
     {
       title: '序号',
       dataIndex: 'id',
-      width: 50,
+      width: 60,
       fixed: 'left',
     },
     {
@@ -22,7 +22,7 @@ export function columnsFn() {
     {
       title: '学员ID',
       dataIndex: 'studentId',
-      width: 90,
+      width: 105,
       fixed: 'left',
     },
     {
