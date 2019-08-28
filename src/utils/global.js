@@ -46,7 +46,7 @@ window.BI_Filter = param => {
         const list = [...result];
         result = {};
         for (let i = 0; i < list.length; i += 1) {
-          if (list[i][type].toString() === value.toString()) {
+          if (String(list[i][type]) === String(value)) {
             result = list[i];
             break;
           }
