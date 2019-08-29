@@ -138,12 +138,12 @@ class RefundAdd extends Component {
         dataIndex: 'subOrderOfCollege',
       },
       {
-        title: '子订单归属家族',
-        dataIndex: 'subOrderOfFamily',
+        title: '重播听课时长（分钟）',
+        dataIndex: 'replayLecturesTime',
       },
       {
-        title: '听课时长',
-        dataIndex: 'lecturesTime',
+        title: '直播听课时长（分钟）',
+        dataIndex: 'liveLecturesTime',
       },
       {
         title: '是否足课',
@@ -160,6 +160,10 @@ class RefundAdd extends Component {
       {
         title: '竞合后净流水',
         dataIndex: 'financeNetFlowJh',
+      },
+      {
+        title: '绩效流水',
+        dataIndex: 'kpiFlow',
       },
     ];
     return columns;

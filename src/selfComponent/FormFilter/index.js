@@ -133,8 +133,30 @@ class FormPrams extends Component {
       isUpdate: !this.state.isUpdate,
     });
     if (this.isCreateIncome) {
-      this.modal.morderTypeList = value.join(',');
-      saveParamsInUrl(this.modal);
+      const {
+        registrationBeginDate = undefined,
+        registrationEndDate = undefined,
+        orgName = undefined,
+        recommendedTeacher = undefined,
+        orderTypeList = undefined,
+        teacherName = undefined,
+        orderId,
+        stuId,
+        pageNum,
+      } = this.modal;
+      const params = {
+        registrationBeginDate,
+        registrationEndDate,
+        recommendedTeacher,
+        teacherName,
+        orgName,
+        orderId,
+        stuId,
+        orderTypeList,
+        pageNum,
+        morderTypeList: value.join(','),
+      };
+      saveParamsInUrl2(params);
     }
   };
   pickerWrapperChange = (value, strData, flag, originEvent) => {

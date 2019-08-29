@@ -127,6 +127,11 @@ class CreateList extends Component {
       arr[i] = Number(item);
     });
     params.orderTypeList = arr;
+
+    if (params.registrationBeginDate) {
+      params.registrationBeginDate = Number(params.registrationBeginDate);
+      params.registrationEndDate = Number(params.registrationEndDate);
+    }
     this.handleSearch(params);
   };
 
@@ -213,6 +218,8 @@ class CreateList extends Component {
     const val = this.props.createIncome.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
     const totalNum = !data.total ? 0 : data.total;
+    // todo
+    const totalMoney = !data.total ? 0 : data.total;
     const pageNum = !data.pageNum ? 1 : data.pageNum;
     const dataSource = !data.list ? [] : this.fillDataSource(data.list);
     const { beginDate, endDate } = this.props.createIncome;
@@ -259,6 +266,7 @@ class CreateList extends Component {
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>成单类型：</span>
           <Select
+            allowClear
             mode="multiple"
             showArrow
             maxTagCount={1}
@@ -358,10 +366,11 @@ class CreateList extends Component {
         contentTable={
           <div style={{ padding: 10 }}>
             <FormFilter.Table
-              scroll={{ x: 1660, y: 573 }}
+              scroll={{ x: 1910, y: 573 }}
               size="middle"
               className="circleTable"
               pageNum={pageNum}
+              totalMoney={totalMoney}
               totalNum={totalNum}
               loading={this.props.loading}
               dataSource={dataSource}
