@@ -1040,6 +1040,13 @@ export async function recommendList(params) {
     method: 'GET',
   });
 }
+// 优质帖
+export async function highQualityList(params) {
+  return request(`${HOST_NEW}/ugc/queryPage`, {
+    method: 'POST',
+    body: params,
+  });
+}
 // 校验编号
 export async function deleteCheck(params) {
   return request(`${HOST}/student/recommend/deleteCheck`, {

@@ -533,6 +533,7 @@ export const getRouterData = app => {
       ),
       name: '好学生推荐',
     },
+
     '/goodStudent/goodStudentAdd': {
       component: dynamicWrapper(app, ['goodStudent'], () =>
         import('../routes/GoodStudent/GoodStudentAdd')
@@ -550,6 +551,33 @@ export const getRouterData = app => {
       bread: {
         name: '好学生推荐',
         path: '/goodStudent/goodStudentList',
+      },
+      name: '删除数据',
+    },
+    // 优质帖High quality stickers
+    '/highQuality/highQualityList': {
+      component: dynamicWrapper(app, ['highQuality'], () =>
+        import('../routes/HighQuality/HighQualityList')
+      ),
+      name: '优质帖',
+    },
+    '/highQuality/highQualityAdd': {
+      component: dynamicWrapper(app, ['highQuality'], () =>
+        import('../routes/HighQuality/HighQualityAdd')
+      ),
+      bread: {
+        name: '优质帖',
+        path: '/highQuality/highQualityList',
+      },
+      name: '添加数据',
+    },
+    '/highQuality/highQualityDel': {
+      component: dynamicWrapper(app, ['highQuality'], () =>
+        import('../routes/HighQuality/HighQualityDel')
+      ),
+      bread: {
+        name: '优质帖',
+        path: '/highQuality/highQualityList',
       },
       name: '删除数据',
     },
@@ -595,7 +623,7 @@ export const getRouterData = app => {
     },
     // // 业务技能认证
     //
-    // // 审核管理
+    // 审核管理
     '/skillCertification/auditList': {
       component: dynamicWrapper(app, ['audit'], () =>
         import('../routes/SkillCertification/AuditList')
@@ -766,7 +794,7 @@ export const getRouterData = app => {
       },
       name: '删除数据',
     },
-    // ---
+    // // ---
     '/bottomOrder/koIncome': {
       component: dynamicWrapper(app, ['bottomOrder_koIncome'], () =>
         import('../routes/BottomOrder/KoIncome/List')
