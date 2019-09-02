@@ -259,17 +259,18 @@ export default class SiderMenu extends PureComponent {
           </div>
           <ul className={styles.menuUl}>{this.getMenuItems(this.state.menus)}</ul>
         </Sider>
-        {!collapsed && (
-          <Menu
-            key="Menu"
-            theme="light"
-            mode="inline"
-            onOpenChange={this.handleOpenChange}
-            selectedKeys={this.state.openKeys}
-          >
-            {this.getNavMenuItems(this.getCurrentMenu())}
-          </Menu>
-        )}
+        {!collapsed &&
+          this.state.openMenu && (
+            <Menu
+              key="Menu"
+              theme="light"
+              mode="inline"
+              onOpenChange={this.handleOpenChange}
+              selectedKeys={this.state.openKeys}
+            >
+              {this.getNavMenuItems(this.getCurrentMenu())}
+            </Menu>
+          )}
       </div>
     );
   }
