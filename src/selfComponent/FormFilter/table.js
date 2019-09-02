@@ -39,11 +39,13 @@ export default class SelfTable extends PureComponent {
     saveParamsInUrl(paramsObj);
   };
   render() {
-    const { dataSource, totalNum = 0, className = '', ...others } = this.props;
+    const { dataSource, totalNum = 0, className = '', totalMoney = 0, ...others } = this.props;
     const { pageNum } = this.state;
     return (
       <div>
-        <p className={styles.totalNum}>总数：{totalNum}条</p>
+        <p className={styles.totalNum}>
+          {totalMoney ? `绩效流水合计：${totalMoney}` : ''} 总数：{totalNum}条
+        </p>
         <Table
           {...others}
           dataSource={dataSource}

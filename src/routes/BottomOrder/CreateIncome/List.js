@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 import React, { Component } from 'react';
-import { Button, Input, Select, DatePicker, InputNumber } from 'antd';
+import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import { columnsFn } from './_selfColumn';
@@ -10,7 +10,11 @@ import FormFilter from '../../../selfComponent/FormFilter';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import common from '../../Common/common.css';
 import styles from './style.less';
-import { saveParamsInUrl } from '../../../selfComponent/FormFilter/saveUrlParams';
+import {
+  filterEmptyUrlParams,
+  getUrlParams,
+  saveParamsInUrl,
+} from '../../../selfComponent/FormFilter/saveUrlParams';
 
 const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
@@ -86,6 +90,11 @@ class CreateList extends Component {
       payload: { getListParams },
     });
   };
+  getParamsOnEnter = () => {
+    const params = getUrlParams();
+    const p = filterEmptyUrlParams(params);
+    return p;
+  };
   // 点击某一页函数
   changePage = (pageNum, size) => {
     const params = FormFilter.getParams();
@@ -109,6 +118,23 @@ class CreateList extends Component {
     this.getData(this.filterEmptyParams(newParams));
     this.setState({ urlParams });
   };
+
+  handleSearchEnter = () => {
+    const params = this.getParamsOnEnter();
+    const arr = params.morderTypeList ? params.morderTypeList.split(',') : [];
+    arr.forEach((item, i) => {
+      if (item === '') arr.splice(i, 1);
+      arr[i] = Number(item);
+    });
+    params.orderTypeList = arr;
+
+    if (params.registrationBeginDate) {
+      params.registrationBeginDate = Number(params.registrationBeginDate);
+      params.registrationEndDate = Number(params.registrationEndDate);
+    }
+    this.handleSearch(params);
+  };
+
   handleParams = params => {
     const {
       registrationBeginDate = undefined,
@@ -116,6 +142,7 @@ class CreateList extends Component {
       orgName = undefined,
       recommendedTeacher = undefined,
       orderTypeList = undefined,
+      teacherName = undefined,
     } = params;
     const orderId = params.orderId ? parseInt(params.orderId) : undefined;
     const stuId = params.stuId ? parseInt(params.stuId) : undefined;
@@ -124,6 +151,7 @@ class CreateList extends Component {
       registrationBeginDate,
       registrationEndDate,
       recommendedTeacher,
+      teacherName,
       orgName,
       orderId,
       stuId,
@@ -188,14 +216,16 @@ class CreateList extends Component {
     const options = window.BI_Filter('BILL_TYPE');
     const { urlParams } = this.state;
     const val = this.props.createIncome.qualityList;
-    const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
+    const res = !val.response ? {} : !val.response.data ? {} : val.response.data;
+    const data = res.pageInfo || {};
     const totalNum = !data.total ? 0 : data.total;
+    const totalMoney = !res.kpiFlowTotal ? 0 : res.kpiFlowTotal;
     const pageNum = !data.pageNum ? 1 : data.pageNum;
     const dataSource = !data.list ? [] : this.fillDataSource(data.list);
     const { beginDate, endDate } = this.props.createIncome;
     const initData = {
-      registrationBeginDate: beginDate,
-      registrationEndDate: endDate,
+      registrationBeginDate: beginDate || null,
+      registrationEndDate: endDate || null,
     };
     const columns = columnsFn();
     const WrappedAdvancedSearchForm = () => (
@@ -225,6 +255,7 @@ class CreateList extends Component {
             组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织：
           </span>
           <Input
+            onPressEnter={this.handleSearchEnter}
             placeholder="请输入"
             maxLength={20}
             style={{ width: 230, height: 32 }}
@@ -235,8 +266,8 @@ class CreateList extends Component {
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>成单类型：</span>
           <Select
-            mode="multiple"
             allowClear
+            mode="multiple"
             showArrow
             maxTagCount={1}
             maxTagTextLength={7}
@@ -256,18 +287,20 @@ class CreateList extends Component {
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>学&nbsp;&nbsp;员&nbsp;&nbsp;ID：</span>
-          <InputNumber
+          <Input
+            onPressEnter={this.handleSearchEnter}
             className="agc"
-            placeholder="请输入"
+            placeholder="请输入数字"
             min={0}
             style={{ width: 230, height: 32 }}
-            type="inputnumber"
+            type="input"
             flag="stuId"
           />
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>推荐老师：</span>
           <Input
+            onPressEnter={this.handleSearchEnter}
             placeholder="请输入"
             maxLength={20}
             style={{ width: 230, height: 32 }}
@@ -278,6 +311,7 @@ class CreateList extends Component {
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>推荐老师邮箱：</span>
           <Input
+            onPressEnter={this.handleSearchEnter}
             placeholder="请输入"
             maxLength={20}
             style={{ width: 230, height: 32 }}
@@ -287,12 +321,13 @@ class CreateList extends Component {
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>子订单ID：</span>
-          <InputNumber
+          <Input
+            onPressEnter={this.handleSearchEnter}
             className="agc"
             min={0}
-            placeholder="请输入"
+            placeholder="请输入数字"
             style={{ width: 230, height: 32 }}
-            type="inputnumber"
+            type="input"
             flag="orderId"
           />
         </div>
@@ -331,10 +366,11 @@ class CreateList extends Component {
         contentTable={
           <div style={{ padding: 10 }}>
             <FormFilter.Table
-              scroll={{ x: 1660, y: 573 }}
+              scroll={{ x: 1910, y: 573 }}
               size="middle"
               className="circleTable"
               pageNum={pageNum}
+              totalMoney={totalMoney}
               totalNum={totalNum}
               loading={this.props.loading}
               dataSource={dataSource}

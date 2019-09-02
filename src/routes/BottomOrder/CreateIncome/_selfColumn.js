@@ -4,7 +4,7 @@ export function columnsFn() {
     {
       title: '序号',
       dataIndex: 'id',
-      width: 50,
+      width: 60,
       fixed: 'left',
     },
     {
@@ -22,7 +22,7 @@ export function columnsFn() {
     {
       title: '学员ID',
       dataIndex: 'studentId',
-      width: 90,
+      width: 105,
       fixed: 'left',
     },
     {
@@ -62,14 +62,14 @@ export function columnsFn() {
       width: 120,
     },
     {
-      title: '听课时长',
-      dataIndex: 'lecturesTime',
-      width: 90,
+      title: '重播听课时长（分钟）',
+      dataIndex: 'replayLecturesTime',
+      width: 160,
     },
     {
-      title: '是否足课',
-      dataIndex: 'fullLecturesFlag',
-      width: 90,
+      title: '直播听课时长（分钟）',
+      dataIndex: 'liveLecturesTime',
+      width: 160,
     },
     {
       title: '成单类型',
@@ -85,6 +85,11 @@ export function columnsFn() {
       title: '竞合后净流水',
       dataIndex: 'financeNetFlowJh',
       width: 110,
+    },
+    {
+      title: '绩效流水',
+      dataIndex: 'kpiFlow',
+      width: 70,
     },
     {
       title: '',
