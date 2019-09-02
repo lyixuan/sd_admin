@@ -216,10 +216,10 @@ class CreateList extends Component {
     const options = window.BI_Filter('BILL_TYPE');
     const { urlParams } = this.state;
     const val = this.props.createIncome.qualityList;
-    const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
+    const res = !val.response ? {} : !val.response.data ? {} : val.response.data;
+    const data = res.pageInfo || {};
     const totalNum = !data.total ? 0 : data.total;
-    // todo
-    const totalMoney = !data.total ? 0 : data.total;
+    const totalMoney = !res.kpiFlowTotal ? 0 : res.kpiFlowTotal;
     const pageNum = !data.pageNum ? 1 : data.pageNum;
     const dataSource = !data.list ? [] : this.fillDataSource(data.list);
     const { beginDate, endDate } = this.props.createIncome;
