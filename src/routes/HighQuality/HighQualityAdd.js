@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { importSelect } from '../../services/api';
+import { UGCimportUpload } from '../../services/api';
 import { setConfirm, clearConfirm } from '../../utils/reloadConfirm';
 import StepLayout from '../../layouts/stepLayout';
 import StepUpload from '../../selfComponent/setpForm/stepUpload';
 import StepTable from '../../selfComponent/setpForm/stepTable';
 import StepSucess from '../../selfComponent/setpForm/stepSucess';
 
-@connect(({ goodStudent, loading }) => ({
-  goodStudent,
+@connect(({ highQuality, loading }) => ({
+  highQuality,
   loading,
 }))
 class RefundAdd extends Component {
@@ -45,47 +45,47 @@ class RefundAdd extends Component {
   // 初始化一些值
   initParamsFn = disableDel => {
     this.props.dispatch({
-      type: 'goodStudent/initParams',
+      type: 'highQuality/initParams',
       payload: { disableDel },
     });
   };
   // 校验excel文件
   fetchCheckData = params => {
     this.props.dispatch({
-      type: 'goodStudent/importCheck',
+      type: 'highQuality/UGCimportCheck',
       payload: { ...params },
     });
   };
   // 保存excel数据
   saveExcelData = params => {
     this.props.dispatch({
-      type: 'goodStudent/importUpload',
+      type: 'highQuality/UGCimportSubmit',
       payload: { ...params },
     });
   };
 
   saveFileList = fileList => {
     this.props.dispatch({
-      type: 'goodStudent/saveFileList',
+      type: 'highQuality/saveFileList',
       payload: { fileList },
     });
   };
   editCurrent = current => {
     this.props.dispatch({
-      type: 'goodStudent/editCurrent',
+      type: 'highQuality/editCurrent',
       payload: { current },
     });
   };
   editLoading = isLoading => {
     console.log(isLoading);
     this.props.dispatch({
-      type: 'goodStudent/editLoading',
+      type: 'highQuality/editLoading',
       payload: { isLoading },
     });
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/goodStudent/goodStudentList',
+      pathname: '/highQuality/highQualityList',
     });
   }
   columnsData = () => {
@@ -123,7 +123,7 @@ class RefundAdd extends Component {
   };
   render() {
     let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
-    const { current, checkList, fileList, disableDel, isLoading } = this.props.goodStudent;
+    const { current, checkList, fileList, disableDel, isLoading } = this.props.highQuality;
     const { isDisabled, checkParams } = this.state;
     const sucessNum = !checkList ? 0 : checkList.data.totalCount;
     const failList = !checkList ? [] : checkList.data.failList;
@@ -160,7 +160,7 @@ class RefundAdd extends Component {
         title: '选择Excel',
         content: (
           <StepUpload
-            uploadUrl={importSelect()}
+            uploadUrl={UGCimportUpload()}
             fileList={fileList}
             callBackParent={(bol, params) => {
               this.onChildChange(bol, params);

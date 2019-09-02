@@ -1,12 +1,12 @@
 import { message } from 'antd';
 import {
-  importCheck,
-  importUpload,
   deleteCheck,
   deleteReview,
   deleteRecommend,
   findAllOrg,
   highQualityList,
+  UGCimportCheck,
+  UGCimportSubmit,
 } from '../services/api';
 
 export default {
@@ -46,10 +46,11 @@ export default {
       const response = yield call(highQualityList, { ...getListParams });
       yield put({ type: 'pureSave', payload: { response, getListParams } });
     },
-    *importCheck({ payload }, { call, put }) {
+    *UGCimportCheck({ payload }, { call, put }) {
       const logMsg = [];
-      const checkList = yield call(importCheck, { ...payload });
-      if (checkList.code !== 2000) {
+      const checkList = yield call(UGCimportCheck, { ...payload });
+      console.log(52, checkList);
+      if (checkList.code !== 20000) {
         if (checkList.data.failList) {
           checkList.data.failList.forEach(item => {
             logMsg.push(item.log);
@@ -71,9 +72,9 @@ export default {
         });
       }
     },
-    *importUpload({ payload }, { call, put }) {
-      const excelData = yield call(importUpload, { ...payload });
-      if (excelData.code !== 2000) {
+    *UGCimportSubmit({ payload }, { call, put }) {
+      const excelData = yield call(UGCimportSubmit, { ...payload });
+      if (excelData.code !== 20000) {
         message.error(excelData.msg);
         yield put({ type: 'save', payload: { current: 1, isLoading: false } });
       } else {

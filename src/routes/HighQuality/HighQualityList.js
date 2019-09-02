@@ -56,17 +56,18 @@ class GoodStudentList extends Component {
   // 所有学院列表
   getAllOrg = () => {
     this.props.dispatch({
-      type: 'goodStudent/findAllOrg',
+      type: 'highQuality/findAllOrg',
       payload: {},
     });
   };
 
   getData = params => {
-    const getListParams = { ...this.props.highQuality.getListParams, ...params };
-    this.props.dispatch({
-      type: 'highQuality/highQualityList',
-      payload: { getListParams },
-    });
+    console.log(65, params);
+    // const getListParams = { ...this.props.highQuality.getListParams, ...params };
+    // this.props.dispatch({
+    //   type: 'highQuality/highQualityList',
+    //   payload: { getListParams },
+    // });
   };
   // 点击某一页函数
   changePage = (pageNum, size) => {
@@ -84,7 +85,13 @@ class GoodStudentList extends Component {
     this.setState({ urlParams });
   };
   handleParams = params => {
-    const { beginDate = null, endDate = null, studentName = null, teacherName = null } = params;
+    const {
+      beginDate = null,
+      endDate = null,
+      studentName = null,
+      teacherName = null,
+      orderNum = null,
+    } = params;
     const collegeId = params.collegeId ? Number(params.collegeId) : null;
     const orderId = params.orderId ? Number(params.orderId) : null;
     const pageIndex = params.pageNum ? Number(params.pageNum) : 1;
@@ -96,7 +103,9 @@ class GoodStudentList extends Component {
       studentName,
       teacherName,
       pageIndex,
+      orderNum,
     };
+    console.log(102, newParams);
     return newParams;
   };
   filterEmptyParams = data => {
@@ -139,12 +148,12 @@ class GoodStudentList extends Component {
   };
   // 删除数据
   goodStudentDel = () => {
-    this.props.setRouteUrlParams('/goodStudent/goodStudentDel');
+    this.props.setRouteUrlParams('/highQuality/highQualityDel');
   };
 
   // 添加数据
   goodStudentAdd = () => {
-    this.props.setRouteUrlParams('/goodStudent/goodStudentAdd');
+    this.props.setRouteUrlParams('/highQuality/highQualityAdd');
   };
   splitOrgName = (...argument) => {
     return argument.filter(item => item).join(' | ');
@@ -232,7 +241,7 @@ class GoodStudentList extends Component {
             maxLength={20}
             style={{ width: 230, height: 32 }}
             type="input"
-            flag="teacherName"
+            flag="orderNum"
           />
         </div>
       </FormFilter>

@@ -8,7 +8,7 @@ const hostObj = {
 };
 const hostObjNew = {
   production: 'http://bd.ministudy.com/inspectorapis',
-  localhost: 'http://dev.xd.admin.ministudy.com/inspectorapis',
+  localhost: 'http://test.xd.admin.ministudy.com/inspectorapis',
   development: 'http://test.xd.admin.ministudy.com/inspectorapis', // 'http://172.16.59.227:8086', //
 };
 export const HOST = hostObj[process.env.API_TYPE];
@@ -1040,13 +1040,6 @@ export async function recommendList(params) {
     method: 'GET',
   });
 }
-// 优质帖
-export async function highQualityList(params) {
-  return request(`${HOST_NEW}/ugc/queryPage`, {
-    method: 'POST',
-    body: params,
-  });
-}
 // 校验编号
 export async function deleteCheck(params) {
   return request(`${HOST}/student/recommend/deleteCheck`, {
@@ -1068,7 +1061,32 @@ export async function deleteReview(params) {
     body: params,
   });
 }
+// 优质帖
+export async function highQualityList(params) {
+  return request(`${HOST_NEW}/ugc/queryPage`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 优质帖上传文件的方法
+export function UGCimportUpload() {
+  return `${HOST_NEW}/ugc/importUpload`;
+}
+// 优质帖校验文件
+export function UGCimportCheck(params) {
+  return request(`${HOST_NEW}/ugc/importCheck`, {
+    method: 'POST',
+    body: params,
+  });
+}
 
+// 优质帖提交excel文件/ugc/importSubmit
+export async function UGCimportSubmit(params) {
+  return request(`${HOST_NEW}/ugc/importSubmit`, {
+    method: 'POST',
+    body: params,
+  });
+}
 // 选择文件
 export function importSelect() {
   return `${HOST}/student/recommend/importSelect`;

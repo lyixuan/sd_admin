@@ -40,7 +40,7 @@ export function columnsFn() {
     },
     {
       title: '帖子链接',
-      dataIndex: 'countValue',
+      dataIndex: 'countValue1',
     },
   ];
   return columns || [];

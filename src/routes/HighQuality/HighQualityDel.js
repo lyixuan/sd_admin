@@ -8,8 +8,8 @@ import CheckResult from '../../selfComponent/setpForm/checkResult';
 import { trim } from '../../utils/utils';
 import { clearConfirm, setConfirm } from '../../utils/reloadConfirm';
 
-@connect(({ goodStudent, loading }) => ({
-  goodStudent,
+@connect(({ highQuality, loading }) => ({
+  highQuality,
   loading,
 }))
 class RefundDel extends Component {
@@ -38,52 +38,52 @@ class RefundDel extends Component {
   };
   getNums = nums => {
     this.props.dispatch({
-      type: 'goodStudent/getNums',
+      type: 'highQuality/getNums',
       payload: nums,
     });
   };
   // 初始化一些值
   initParamsFn = (disableDel, nums) => {
-    const num = !nums ? this.props.goodStudent.nums : '';
+    const num = !nums ? this.props.highQuality.nums : '';
     this.props.dispatch({
-      type: 'goodStudent/initParams',
+      type: 'highQuality/initParams',
       payload: { disableDel, nums: num },
     });
   };
   fetchPreDel = params => {
     this.props.dispatch({
-      type: 'goodStudent/deleteCheck',
+      type: 'highQuality/deleteCheck',
       payload: { params },
     });
   };
   fetchDel = deleteKey => {
     this.props.dispatch({
-      type: 'goodStudent/deleteRecommend',
+      type: 'highQuality/deleteRecommend',
       payload: { deleteKey },
     });
   };
   editCurrent = current => {
     this.props.dispatch({
-      type: 'goodStudent/editCurrent',
+      type: 'highQuality/editCurrent',
       payload: { current },
     });
   };
   fetchCheckDel = deleteKey => {
     this.props.dispatch({
-      type: 'goodStudent/deleteReview',
+      type: 'highQuality/deleteReview',
       payload: { deleteKey },
     });
   };
   editLoading = isLoading => {
     console.log(isLoading);
     this.props.dispatch({
-      type: 'goodStudent/editLoading',
+      type: 'highQuality/editLoading',
       payload: { isLoading },
     });
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/goodStudent/goodStudentList',
+      pathname: '/highQuality/goodStudentList',
     });
   }
   // 初始化tabale 列数据
@@ -108,28 +108,29 @@ class RefundDel extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序号',
+        title: '编号',
         dataIndex: 'key',
       },
       {
-        title: '报名日期',
+        title: '学分日期',
         dataIndex: 'bizDate',
       },
-      {
-        title: '子订单编号',
-        dataIndex: 'ordId',
-      },
+
       {
         title: '组织',
         dataIndex: 'name',
+      },
+      {
+        title: '学员姓名',
+        dataIndex: 'stuName',
       },
       {
         title: '老师姓名',
         dataIndex: 'cpName',
       },
       {
-        title: '学员姓名',
-        dataIndex: 'stuName',
+        title: '类型',
+        dataIndex: 'ordId',
       },
       {
         title: '学分',
@@ -140,19 +141,13 @@ class RefundDel extends Component {
     return columns;
   };
   render() {
-    const { preDelData, delData, nums, current, disableDel, isLoading } = this.props.goodStudent;
+    const { preDelData, delData, nums, current, disableDel, isLoading } = this.props.highQuality;
     const { isDisabled } = this.state;
     const data = preDelData ? preDelData.data : null;
 
     const dataSource = !delData ? [] : this.fillDataSource(delData);
     const columns = !this.columnsData() ? [] : this.columnsData();
 
-    // const successNums = [];
-    // if (dataSource.length > 0) {
-    //   data.successNums.forEach(item => {
-    //     successNums.push(item.qualityNum);
-    //   });
-    // }
     const failNums = data ? data.failOrderIdStr : [];
 
     const successSize = data ? data.successCount : 0;
@@ -178,7 +173,7 @@ class RefundDel extends Component {
         title: '输入编号',
         content: (
           <StepInput
-            inputTitle="请输入想删除的 “子订单编号”："
+            inputTitle="请输入想删除的 “编号”："
             inputContent="true"
             inputTip="true"
             nums={nums}
