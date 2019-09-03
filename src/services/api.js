@@ -1087,6 +1087,28 @@ export async function UGCimportSubmit(params) {
     body: params,
   });
 }
+// 优质帖校验编号
+export async function UGCdeleteCheck(params) {
+  return request(`${HOST_NEW}/ugc/deleteCheck`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 优质帖复合编号
+export async function UGCdeleteReview(params) {
+  return request(`${HOST_NEW}/ugc/deleteReview`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 优质帖删除编号
+export async function UGCdeleteRecommend(params) {
+  return request(`${HOST_NEW}//ugc/deleteSubmit`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
 // 选择文件
 export function importSelect() {
   return `${HOST}/student/recommend/importSelect`;

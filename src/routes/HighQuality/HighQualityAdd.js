@@ -51,6 +51,7 @@ class RefundAdd extends Component {
   };
   // 校验excel文件
   fetchCheckData = params => {
+    console.log(54, params);
     this.props.dispatch({
       type: 'highQuality/UGCimportCheck',
       payload: { ...params },
@@ -92,31 +93,35 @@ class RefundAdd extends Component {
     const columns = [
       {
         title: '行数',
-        dataIndex: 'rowIndex',
+        dataIndex: 'row',
       },
       {
-        title: '子订单编号',
-        dataIndex: 'ordIdResult',
+        title: '编号',
+        dataIndex: 'code',
       },
       {
-        title: '报名时间',
-        dataIndex: 'bizDateResult',
+        title: '学分日期',
+        dataIndex: 'scoreDate',
       },
       {
-        title: '学院名称',
-        dataIndex: 'collegeNameResult',
+        title: '学员id',
+        dataIndex: 'stuId',
       },
       {
-        title: '推荐等级',
-        dataIndex: 'recommendLevelResult',
+        title: '组织',
+        dataIndex: 'org',
       },
       {
-        title: 'up值达标',
-        dataIndex: 'upFlagResult',
+        title: '类型',
+        dataIndex: 'ugcType',
+      },
+      {
+        title: 'KOL学员',
+        dataIndex: 'kolFlag',
       },
       {
         title: '学分',
-        dataIndex: 'countValueResult',
+        dataIndex: 'countValue',
       },
     ];
     return columns;
@@ -125,7 +130,7 @@ class RefundAdd extends Component {
     let fileData = ''; // 保存上传文件返回值，防止返回再点下一步报错
     const { current, checkList, fileList, disableDel, isLoading } = this.props.highQuality;
     const { isDisabled, checkParams } = this.state;
-    const sucessNum = !checkList ? 0 : checkList.data.totalCount;
+    const sucessNum = !checkList ? 0 : checkList.data.successCount;
     const failList = !checkList ? [] : checkList.data.failList;
 
     const dataSource = !failList.length > 0 ? null : failList;

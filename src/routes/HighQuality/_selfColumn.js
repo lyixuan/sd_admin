@@ -1,14 +1,15 @@
 // 获取table列表头
-export function columnsFn() {
+
+export function columnsFn(callback) {
   const columns = [
     {
       title: '编号',
-      dataIndex: 'id',
-      width: '80px',
+      dataIndex: 'code',
+      width: '160px',
     },
     {
       title: '学分日期',
-      dataIndex: 'bizDate',
+      dataIndex: 'scoreDate',
     },
     {
       title: '子订单编号',
@@ -28,11 +29,11 @@ export function columnsFn() {
     },
     {
       title: '类型',
-      dataIndex: 'recommendLevel',
+      dataIndex: 'ugcType',
     },
     {
       title: 'KOL学员',
-      dataIndex: 'upFlag',
+      dataIndex: 'kolFlag',
     },
     {
       title: '学分',
@@ -40,7 +41,21 @@ export function columnsFn() {
     },
     {
       title: '帖子链接',
-      dataIndex: 'countValue1',
+      dataIndex: 'postUrl',
+      render: postUrl => {
+        console.log(45, postUrl);
+        return (
+          <div
+            style={{
+              color: '#52C9C2',
+              cursor: 'pointer',
+            }}
+            onClick={() => callback(postUrl)}
+          >
+            <span style={{ marginRight: '8px' }}>查看</span>
+          </div>
+        );
+      },
     },
   ];
   return columns || [];
