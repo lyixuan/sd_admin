@@ -23,6 +23,7 @@ class RefundDel extends Component {
   componentDidMount() {
     // init current
     this.editCurrent(0);
+    console.log(26, this.props.highQuality);
   }
 
   // 离开页面的时候，把disableDel，nums恢复默认值null
@@ -52,14 +53,14 @@ class RefundDel extends Component {
   };
   fetchPreDel = params => {
     this.props.dispatch({
-      type: 'highQuality/deleteCheck',
+      type: 'highQuality/UGCdeleteCheck',
       payload: { params },
     });
   };
-  fetchDel = deleteKey => {
+  fetchDel = uniqueKey => {
     this.props.dispatch({
-      type: 'highQuality/deleteRecommend',
-      payload: { deleteKey },
+      type: 'highQuality/UGCdeleteRecommend',
+      payload: { uniqueKey },
     });
   };
   editCurrent = current => {
@@ -68,10 +69,10 @@ class RefundDel extends Component {
       payload: { current },
     });
   };
-  fetchCheckDel = deleteKey => {
+  fetchCheckDel = uniqueKey => {
     this.props.dispatch({
-      type: 'highQuality/deleteReview',
-      payload: { deleteKey },
+      type: 'highQuality/UGCdeleteReview',
+      payload: { uniqueKey },
     });
   };
   editLoading = isLoading => {
@@ -83,7 +84,7 @@ class RefundDel extends Component {
   };
   historyFn() {
     this.props.history.push({
-      pathname: '/highQuality/goodStudentList',
+      pathname: '/highQuality/highQualityList',
     });
   }
   // 初始化tabale 列数据
@@ -92,28 +93,39 @@ class RefundDel extends Component {
     val.map((item, index) =>
       data.push({
         key: index + 1,
-        bizDate: item.bizDate,
-        ordId: item.ordId,
-        cpName: item.cpName,
-        stuName: item.stuName,
-        countValue: item.countValue,
+        code: item.code,
+        scoreDate: item.scoreDate,
         name:
           item.groupName && item.familyName
             ? `${item.collegeName} | ${item.familyName} | ${item.groupName}`
             : item.familyName ? `${item.collegeName} | ${item.familyName}` : `${item.collegeName}`,
+        stuName: item.stuName,
+        cpName: item.cpName,
+        ugcType: this.otherUgcType(item.ugcType),
+        countValue: item.countValue,
       })
     );
     return data;
+  };
+  // 优质帖类型回显
+  otherUgcType = type => {
+    if (type === 1) {
+      return '社区优质帖';
+    } else if (type === 2) {
+      return '知乎优质帖';
+    } else {
+      return '知乎排名帖';
+    }
   };
   columnsData = () => {
     const columns = [
       {
         title: '编号',
-        dataIndex: 'key',
+        dataIndex: 'code',
       },
       {
         title: '学分日期',
-        dataIndex: 'bizDate',
+        dataIndex: 'scoreDate',
       },
 
       {
@@ -130,7 +142,7 @@ class RefundDel extends Component {
       },
       {
         title: '类型',
-        dataIndex: 'ordId',
+        dataIndex: 'ugcType',
       },
       {
         title: '学分',
@@ -148,7 +160,7 @@ class RefundDel extends Component {
     const dataSource = !delData ? [] : this.fillDataSource(delData);
     const columns = !this.columnsData() ? [] : this.columnsData();
 
-    const failNums = data ? data.failOrderIdStr : [];
+    const failNums = data ? data.failCount : [];
 
     const successSize = data ? data.successCount : 0;
     const inputContent = data ? data.failCount > 0 : null;
@@ -231,14 +243,14 @@ class RefundDel extends Component {
           this.initParamsFn(dis);
         }}
         step1Fetch={() => {
-          this.fetchPreDel({ orderIdStr: trim(nums) });
+          this.fetchPreDel({ codeStr: trim(nums) });
         }}
         step2Fetch={() => {
           // this.editCurrent(2);
-          this.fetchCheckDel(data.deleteKey);
+          this.fetchCheckDel(data.uniqueKey);
         }}
         step3Fetch={() => {
-          this.fetchDel(data.deleteKey);
+          this.fetchDel(data.uniqueKey);
         }}
         editLoading={loading => {
           this.editLoading(loading);

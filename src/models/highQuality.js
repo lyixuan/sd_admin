@@ -1,8 +1,8 @@
 import { message } from 'antd';
 import {
-  deleteCheck,
-  deleteReview,
-  deleteRecommend,
+  UGCdeleteCheck,
+  UGCdeleteReview,
+  UGCdeleteRecommend,
   findAllOrg,
   highQualityList,
   UGCimportCheck,
@@ -49,7 +49,6 @@ export default {
     *UGCimportCheck({ payload }, { call, put }) {
       const logMsg = [];
       const checkList = yield call(UGCimportCheck, { ...payload });
-      console.log(52, checkList);
       if (checkList.code !== 20000) {
         if (checkList.data.failList) {
           checkList.data.failList.forEach(item => {
@@ -81,11 +80,11 @@ export default {
         yield put({ type: 'save', payload: { current: 2, isLoading: false } });
       }
     },
-    *deleteCheck({ payload }, { call, put }) {
+    *UGCdeleteCheck({ payload }, { call, put }) {
       const { params } = payload;
-      const preDelData = yield call(deleteCheck, { ...params });
+      const preDelData = yield call(UGCdeleteCheck, { ...params });
 
-      if (preDelData.code !== 2000) {
+      if (preDelData.code !== 20000) {
         message.error(preDelData.msg);
         yield put({ type: 'save', payload: { current: 0, isLoading: false } });
       } else if (preDelData.data.successCount > 0) {
@@ -100,9 +99,9 @@ export default {
         });
       }
     },
-    *deleteReview({ payload }, { call, put }) {
-      const delData = yield call(deleteReview, { ...payload });
-      if (delData.code !== 2000) {
+    *UGCdeleteReview({ payload }, { call, put }) {
+      const delData = yield call(UGCdeleteReview, { ...payload });
+      if (delData.code !== 20000) {
         message.error(delData.msg);
         yield put({ type: 'save', payload: { current: 1, isLoading: false } });
       } else {
@@ -112,9 +111,9 @@ export default {
         });
       }
     },
-    *deleteRecommend({ payload }, { call, put }) {
-      const delSucessData = yield call(deleteRecommend, { ...payload });
-      if (delSucessData.code !== 2000) {
+    *UGCdeleteRecommend({ payload }, { call, put }) {
+      const delSucessData = yield call(UGCdeleteRecommend, { ...payload });
+      if (delSucessData.code !== 20000) {
         message.error(delSucessData.msg);
         yield put({ type: 'save', payload: { current: 2, isLoading: false } });
       } else {

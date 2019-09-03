@@ -18,7 +18,7 @@ const { RangePicker } = DatePicker;
   highQuality,
   loading: loading.models.highQuality,
 }))
-class GoodStudentList extends Component {
+class HighQualityList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,6 +33,7 @@ class GoodStudentList extends Component {
   }
   componentDidMount() {
     this.getAllOrg();
+    console.log(36, this.props.highQuality);
   }
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
@@ -62,17 +63,17 @@ class GoodStudentList extends Component {
   };
 
   getData = params => {
-    console.log(65, params);
-    // const getListParams = { ...this.props.highQuality.getListParams, ...params };
-    // this.props.dispatch({
-    //   type: 'highQuality/highQualityList',
-    //   payload: { getListParams },
-    // });
+    const getListParams = { ...this.props.highQuality.getListParams, ...params };
+    this.props.dispatch({
+      type: 'highQuality/highQualityList',
+      payload: { getListParams },
+    });
   };
   // 点击某一页函数
   changePage = (pageNum, size) => {
     const params = FormFilter.getParams();
-    const newParams = this.handleParams({ ...params, pageNum, size });
+    const currentPageNum = pageNum + 1;
+    const newParams = this.handleParams({ ...params, pageNum: currentPageNum, size });
     this.getData(this.filterEmptyParams(newParams));
   };
   // 表单搜索函数
@@ -88,22 +89,24 @@ class GoodStudentList extends Component {
     const {
       beginDate = null,
       endDate = null,
-      studentName = null,
-      teacherName = null,
-      orderNum = null,
+      stuName = null,
+      cpName = null,
+      code = null,
+      pageSize = 15,
     } = params;
     const collegeId = params.collegeId ? Number(params.collegeId) : null;
     const orderId = params.orderId ? Number(params.orderId) : null;
-    const pageIndex = params.pageNum ? Number(params.pageNum) : 1;
+    const page = params.pageNum ? Number(params.pageNum) : 1;
     const newParams = {
       collegeId,
       beginDate,
       endDate,
       orderId,
-      studentName,
-      teacherName,
-      pageIndex,
-      orderNum,
+      stuName,
+      cpName,
+      page,
+      code,
+      pageSize,
     };
     console.log(102, newParams);
     return newParams;
@@ -116,6 +119,9 @@ class GoodStudentList extends Component {
       }
     }
     return params;
+  };
+  clickUrl = () => {
+    console.log(90909);
   };
   // 过滤数据
   memoizedFilter = memoizeOne(findAllOrg => {
@@ -131,20 +137,34 @@ class GoodStudentList extends Component {
   // 初始化tabale 列数据
   fillDataSource = val => {
     const data = [];
-    const RECOMMEND_LEVEL = window.BI_Filter('RECOMMEND_LEVEL');
+    // const RECOMMEND_LEVEL = window.BI_Filter('RECOMMEND_LEVEL');
     val.map((item, index) =>
       data.push({
         ...item,
         key: index,
-        id: item.id,
-        upFlag: item.upFlag ? '是' : '否',
-        recommendLevel: RECOMMEND_LEVEL.find(ls => ls.id === item.recommendLevel)
-          ? RECOMMEND_LEVEL.find(ls => ls.id === item.recommendLevel).name
-          : null,
+        code: item.code,
+        scoreDate: item.scoreDate,
+        ordId: item.ordId,
+        stuName: item.stuName,
+        cpName: item.cpName,
         orgName: this.splitOrgName(item.collegeName, item.familyName, item.groupName),
+        ugcType: this.otherUgcType(item.ugcType),
+        kolFlag: item.kolFlag === 1 ? '是' : '否',
+        countValue: item.countValue,
+        postUrl: item.postUrl,
       })
     );
     return data;
+  };
+  // 优质帖类型回显
+  otherUgcType = type => {
+    if (type === 1) {
+      return '社区优质帖';
+    } else if (type === 2) {
+      return '知乎优质帖';
+    } else {
+      return '知乎排名帖';
+    }
   };
   // 删除数据
   goodStudentDel = () => {
@@ -158,6 +178,9 @@ class GoodStudentList extends Component {
   splitOrgName = (...argument) => {
     return argument.filter(item => item).join(' | ');
   };
+  clickUrl = url => {
+    window.open(url);
+  };
 
   render() {
     const { findAllOrg } = this.props.highQuality;
@@ -166,9 +189,9 @@ class GoodStudentList extends Component {
     const { urlParams } = this.state;
     const val = this.props.highQuality.qualityList;
     const data = !val.response ? [] : !val.response.data ? [] : val.response.data;
-    const totalNum = !data.totalElements ? 0 : data.totalElements;
-    const dataSource = !data.content ? [] : this.fillDataSource(data.content);
-    const columns = columnsFn();
+    const totalNum = !data.total ? 0 : data.total;
+    const dataSource = !data.list ? [] : this.fillDataSource(data.list);
+    const columns = columnsFn(this.clickUrl);
     const WrappedAdvancedSearchForm = () => (
       <FormFilter
         onSubmit={this.handleSearch}
@@ -221,7 +244,7 @@ class GoodStudentList extends Component {
             maxLength={20}
             style={{ width: 230, height: 32 }}
             type="input"
-            flag="studentName"
+            flag="stuName"
           />
         </div>
         <div className={styles.u_div}>
@@ -231,7 +254,7 @@ class GoodStudentList extends Component {
             maxLength={20}
             style={{ width: 230, height: 32 }}
             type="input"
-            flag="teacherName"
+            flag="cpName"
           />
         </div>
         <div className={styles.u_div}>
@@ -241,11 +264,12 @@ class GoodStudentList extends Component {
             maxLength={20}
             style={{ width: 230, height: 32 }}
             type="input"
-            flag="orderNum"
+            flag="code"
           />
         </div>
       </FormFilter>
     );
+    console.log(265, data);
     return (
       <ContentLayout
         routerData={this.props.routerData}
@@ -280,6 +304,8 @@ class GoodStudentList extends Component {
               loading={this.props.loading}
               dataSource={dataSource}
               columns={columns}
+              defaultPageSize={15}
+              showPageSize={15}
               onChangePage={this.changePage}
             />
           </div>
@@ -289,4 +315,4 @@ class GoodStudentList extends Component {
   }
 }
 
-export default GoodStudentList;
+export default HighQualityList;

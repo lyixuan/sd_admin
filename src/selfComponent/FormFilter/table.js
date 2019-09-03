@@ -39,7 +39,15 @@ export default class SelfTable extends PureComponent {
     saveParamsInUrl(paramsObj);
   };
   render() {
-    const { dataSource, totalNum = 0, className = '', ...others } = this.props;
+    const {
+      dataSource,
+      totalNum = 0,
+      className = '',
+      defaultPageSize = 30,
+      showPageSize = 30,
+      ...others
+    } = this.props;
+    console.log(43, this.props, this.props.defaultPageSize);
     const { pageNum } = this.state;
     return (
       <div>
@@ -55,6 +63,8 @@ export default class SelfTable extends PureComponent {
           total={totalNum}
           current={pageNum + 1}
           defaultCurrent={pageNum + 1}
+          defaultPageSize={defaultPageSize}
+          showPageSize={showPageSize}
           onChange={(current, pageSize) => {
             this.changePage(current, pageSize);
           }}
