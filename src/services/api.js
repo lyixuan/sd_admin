@@ -1103,7 +1103,7 @@ export async function UGCdeleteReview(params) {
 }
 // 优质帖删除编号
 export async function UGCdeleteRecommend(params) {
-  return request(`${HOST_NEW}//ugc/deleteSubmit`, {
+  return request(`${HOST_NEW}/ugc/deleteSubmit`, {
     method: 'POST',
     body: params,
   });
