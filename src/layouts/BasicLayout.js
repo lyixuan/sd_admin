@@ -205,7 +205,7 @@ class BasicLayout extends React.PureComponent {
           isMobile={this.state.isMobile}
           onCollapse={this.handleMenuCollapse}
         />
-        <Layout>
+        <Layout style={{ backgroundColor: '#F5F8FA' }}>
           <HeaderLayout
             {...this.props}
             logo={biIcon}
