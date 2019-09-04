@@ -23,7 +23,6 @@ class SelfPagination extends Component {
       onShowSizeChange,
       showPageSize,
     } = this.props;
-    console.log(26, this.props);
     const isShowPage = showPageSize ? total > showPageSize : total > 30;
     return isShowPage ? (
       <Pagination

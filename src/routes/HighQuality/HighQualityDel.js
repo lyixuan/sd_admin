@@ -23,7 +23,6 @@ class RefundDel extends Component {
   componentDidMount() {
     // init current
     this.editCurrent(0);
-    console.log(26, this.props.highQuality);
   }
 
   // 离开页面的时候，把disableDel，nums恢复默认值null
@@ -76,7 +75,6 @@ class RefundDel extends Component {
     });
   };
   editLoading = isLoading => {
-    console.log(isLoading);
     this.props.dispatch({
       type: 'highQuality/editLoading',
       payload: { isLoading },
@@ -160,7 +158,7 @@ class RefundDel extends Component {
     const dataSource = !delData ? [] : this.fillDataSource(delData);
     const columns = !this.columnsData() ? [] : this.columnsData();
 
-    const failNums = data ? data.failCount : [];
+    const failNums = data ? data.failList : [];
 
     const successSize = data ? data.successCount : 0;
     const inputContent = data ? data.failCount > 0 : null;
@@ -174,11 +172,7 @@ class RefundDel extends Component {
 
     const tipSucess = `您已成功删除 ${successSize} 条数据！`;
     const checkRes = !data ? null : (
-      <CheckResult
-        totalSize={data.totalCount}
-        successSize={successSize}
-        failSize={data.failCount}
-      />
+      <CheckResult totalSize={data.total} successSize={successSize} failSize={data.failCount} />
     );
     const steps = [
       {
@@ -224,7 +218,6 @@ class RefundDel extends Component {
         content: <StepSucess isDelImg="true" tipSucess={tipSucess} />,
       },
     ];
-    console.log(data);
     return (
       <StepLayout
         routerData={this.props.routerData}

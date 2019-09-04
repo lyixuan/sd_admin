@@ -47,7 +47,6 @@ export default class SelfTable extends PureComponent {
       showPageSize = 30,
       ...others
     } = this.props;
-    console.log(43, this.props, this.props.defaultPageSize);
     const { pageNum } = this.state;
     return (
       <div>
