@@ -239,7 +239,7 @@ class FormPrams extends Component {
     return (
       <div className={styles.formCls}>
         {[...children]}
-        <div className={styles.u_div}>
+        <div className={this.props.isUgc ? styles.ugc_div : styles.u_div}>
           <ButtonBox
             {...this.props}
             onSubmit={() => this.onSubmit({ pageNum: 0 })}
