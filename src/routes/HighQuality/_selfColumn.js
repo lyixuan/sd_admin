@@ -43,7 +43,6 @@ export function columnsFn(callback) {
       title: '帖子链接',
       dataIndex: 'postUrl',
       render: postUrl => {
-        console.log(45, postUrl);
         return (
           <div
             style={{

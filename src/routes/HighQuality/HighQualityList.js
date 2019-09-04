@@ -33,7 +33,6 @@ class HighQualityList extends Component {
   }
   componentDidMount() {
     this.getAllOrg();
-    console.log(36, this.props.highQuality);
   }
   // 点击显示每页多少条数据函数
   onShowSizeChange = (current, pageSize) => {
@@ -108,7 +107,6 @@ class HighQualityList extends Component {
       code,
       pageSize,
     };
-    console.log(102, newParams);
     return newParams;
   };
   filterEmptyParams = data => {
@@ -120,9 +118,7 @@ class HighQualityList extends Component {
     }
     return params;
   };
-  clickUrl = () => {
-    console.log(90909);
-  };
+
   // 过滤数据
   memoizedFilter = memoizeOne(findAllOrg => {
     const hash = {};
@@ -269,7 +265,6 @@ class HighQualityList extends Component {
         </div>
       </FormFilter>
     );
-    console.log(265, data);
     return (
       <ContentLayout
         routerData={this.props.routerData}
