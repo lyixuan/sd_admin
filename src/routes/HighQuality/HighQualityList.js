@@ -29,6 +29,7 @@ class HighQualityList extends Component {
         beginDate: null,
         endDate: null,
       },
+      isUgc: true,
     };
   }
   componentDidMount() {
@@ -79,7 +80,8 @@ class HighQualityList extends Component {
   handleSearch = params => {
     const { beginDate = null, endDate = null } = params;
     const collegeId = params.collegeId ? Number(params.collegeId) : null;
-    const urlParams = { ...this.state.urlParams, collegeId, beginDate, endDate };
+    const ordId = params.ordId ? Number(params.ordId) : null;
+    const urlParams = { ...this.state.urlParams, collegeId, beginDate, endDate, ordId };
     const newParams = this.handleParams(params);
     this.getData(this.filterEmptyParams(newParams));
     this.setState({ urlParams });
@@ -94,13 +96,13 @@ class HighQualityList extends Component {
       pageSize = 15,
     } = params;
     const collegeId = params.collegeId ? Number(params.collegeId) : null;
-    const orderId = params.orderId ? Number(params.orderId) : null;
+    const ordId = params.ordId ? params.ordId : null;
     const page = params.pageNum ? Number(params.pageNum) : 1;
     const newParams = {
       collegeId,
       beginDate,
       endDate,
-      orderId,
+      ordId,
       stuName,
       cpName,
       page,
@@ -179,6 +181,7 @@ class HighQualityList extends Component {
   };
 
   render() {
+    console.log(184, this.state.isUgc);
     const { findAllOrg } = this.props.highQuality;
     const options = this.memoizedFilter(findAllOrg);
 
@@ -193,6 +196,7 @@ class HighQualityList extends Component {
         onSubmit={this.handleSearch}
         isLoading={this.props.loading}
         otherModal={urlParams}
+        isUgc={this.state.isUgc}
       >
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>学分日期：</span>
@@ -230,7 +234,7 @@ class HighQualityList extends Component {
             maxLength={20}
             style={{ width: 230, height: 32 }}
             type="input"
-            flag="orderId"
+            flag="ordId"
           />
         </div>
         <div className={styles.u_div}>
