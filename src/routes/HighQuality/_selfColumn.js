@@ -44,14 +44,18 @@ export function columnsFn(callback) {
       dataIndex: 'postUrl',
       render: postUrl => {
         return (
-          <div
-            style={{
-              color: '#52C9C2',
-              cursor: 'pointer',
-            }}
-            onClick={() => callback(postUrl)}
-          >
-            <span style={{ marginRight: '8px' }}>查看</span>
+          <div>
+            {postUrl ? (
+              <div
+                style={{
+                  color: '#52C9C2',
+                  cursor: 'pointer',
+                }}
+                onClick={() => callback(postUrl)}
+              >
+                <span style={{ marginRight: '8px' }}>查看</span>
+              </div>
+            ) : null}
           </div>
         );
       },
