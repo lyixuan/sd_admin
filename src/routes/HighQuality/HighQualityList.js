@@ -93,7 +93,7 @@ class HighQualityList extends Component {
       stuName = null,
       cpName = null,
       code = null,
-      pageSize = 15,
+      pageSize = 30,
     } = params;
     const collegeId = params.collegeId ? Number(params.collegeId) : null;
     const ordId = params.ordId ? params.ordId : null;
@@ -303,8 +303,8 @@ class HighQualityList extends Component {
               loading={this.props.loading}
               dataSource={dataSource}
               columns={columns}
-              defaultPageSize={15}
-              showPageSize={15}
+              defaultPageSize={30}
+              showPageSize={30}
               onChangePage={this.changePage}
             />
           </div>
