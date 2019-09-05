@@ -14,7 +14,7 @@
     "lint": "eslint --ext .js src mock tests && npm run lint:style",
     "lint:fix": "eslint --fix --ext .js src mock tests && npm run lint:style",
     "lint-staged": "lint-staged",
-    "lint-staged:js": "eslint --ext .js",
+    "lint-staged:js": "eslint --ext .",
     "test": "man-webpack test",
     "test:component": "man-webpack test ./src/components",
     "test:all": "node ./tests/run-tests.js",

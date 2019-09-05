@@ -471,14 +471,14 @@ class CreateUserForm extends Component {
             </Col>
           </Row>
           <Row style={{ marginTop: '20px' }}>
-            <Col span={8} offset={0} style={{ textAlign: 'left' }}>
+            <Col span={10} offset={0} style={{ textAlign: 'left' }}>
               <FormItem label="访问权限">
                 {getFieldDecorator('view', {
                   initialValue: this.state.defaultCheckedList,
                   rules: [],
                 })(
                   <CheckboxGroup
-                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                    style={{ color: 'rgba(0, 0, 0, 0.85)', width: '340px', textAlign: 'left' }}
                     options={this.state.plainOptions}
                     className={common.checkboxGroup}
                   />

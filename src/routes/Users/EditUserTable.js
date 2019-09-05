@@ -61,6 +61,9 @@ class EditUserTable extends Component {
     if (key.endView === '有') {
       defaultCheckedList.push('endView');
     }
+    if (key.incomeKpiView === '有') {
+      defaultCheckedList.push('incomeKpiView');
+    }
     this.setState({
       clickFlag: 2,
       userType: flag2,
@@ -115,6 +118,7 @@ class EditUserTable extends Component {
     let scoreView = false;
     let privilegeView = false;
     let endView = false;
+    let incomeKpiView = false;
     view.map(item => {
       if (item === 'scoreView') {
         scoreView = bol;
@@ -122,6 +126,8 @@ class EditUserTable extends Component {
         privilegeView = bol;
       } else if (item === 'endView') {
         endView = bol;
+      } else if (item === 'incomeKpiView') {
+        incomeKpiView = bol;
       }
       return 0;
     });
@@ -138,6 +144,7 @@ class EditUserTable extends Component {
         scoreView,
         privilegeView,
         endView,
+        incomeKpiView,
         positionList: {
           privilege: rUserType === 'admin' ? false : values.privilege === 1,
           userType: rUserType,
@@ -160,6 +167,7 @@ class EditUserTable extends Component {
         scoreView,
         privilegeView,
         endView,
+        incomeKpiView,
         userType: rUserType,
         userTypeId: typeId,
         wechatDepartmentId: Number(arrValue.wechatdepartmentid),
@@ -318,6 +326,7 @@ class EditUserTable extends Component {
         scoreView: item.scoreView ? '有' : '无',
         privilegeView: item.privilegeView ? '有' : '无',
         endView: item.endView ? '有' : '无',
+        incomeKpiView: item.incomeKpiView ? '有' : '无',
         userType: window.BI_Filter(`FRONT_ROLE_TYPE_LIST|id:${item.usertype}`).name,
         showName: !item.showname
           ? item.usertype === 'others' ? '无绩效岗位' : null
@@ -356,12 +365,16 @@ class EditUserTable extends Component {
         dataIndex: 'scoreView',
       },
       {
-        title: '绩效访问',
+        title: '学分绩效访问',
         dataIndex: 'privilegeView',
       },
       {
         title: '后台访问',
         dataIndex: 'endView',
+      },
+      {
+        title: '创收绩效访问',
+        dataIndex: 'incomeKpiView',
       },
       {
         title: '绩效权限',
@@ -593,14 +606,14 @@ class EditUserTable extends Component {
               </Col>
             </Row>
             <Row>
-              <Col span={20} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
+              <Col span={24} offset={1} style={{ padding: '3px', textAlign: 'left' }}>
                 <FormItem label="&nbsp;&nbsp;访问权限">
                   {getFieldDecorator('view', {
                     initialValue: this.state.clickFlag === 1 ? [] : this.state.defaultCheckedList,
                     rules: [],
                   })(
                     <CheckboxGroup
-                      style={{ color: 'rgba(0, 0, 0, 0.85)', width: '280px', textAlign: 'left' }}
+                      style={{ color: 'rgba(0, 0, 0, 0.85)', width: '320px', textAlign: 'left' }}
                       options={this.state.plainOptions}
                       className={common.checkboxGroup}
                     />
@@ -652,7 +665,10 @@ class EditUserTable extends Component {
     );
 
     return (
-      <div className={common.wrapContent}>
+      <div
+        className={common.wrapContent}
+        style={{ background: '#fff', marginLeft: 10, padding: 10 }}
+      >
         <Button
           style={{ marginTop: '36px', width: '110px' }}
           type="primary"
