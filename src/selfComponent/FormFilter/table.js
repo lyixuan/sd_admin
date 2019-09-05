@@ -52,7 +52,7 @@ export default class SelfTable extends PureComponent {
     return (
       <div>
         <p className={styles.totalNum}>
-          {totalMoney ? `绩效流水合计：${totalMoney}` : ''} 总数：{totalNum}条
+          {totalMoney ? `绩效流水合计：${totalMoney}` : ''} &nbsp;&nbsp;&nbsp;总数：{totalNum}条
         </p>
         <Table
           {...others}
