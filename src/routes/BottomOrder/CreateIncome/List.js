@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Button, Input, Select, DatePicker } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
-import { columnsFn } from './_selfColumn';
 // import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
 import ContentLayout from '../../../layouts/ContentLayout';
 import FormFilter from '../../../selfComponent/FormFilter';
@@ -19,6 +18,161 @@ import {
 const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+
+// 获取table列表头
+const tablecolumns = [
+  {
+    title: '报名时间',
+    dataIndex: 'registrationDate',
+    width: 120,
+    fixed: 'left',
+    render: text => {
+      return (
+        <>
+          {text === null ? (
+            <span className={styles.unFind}>未获取到</span>
+          ) : (
+            moment(text).format('YYYY-MM-DD')
+          )}
+        </>
+      );
+    },
+  },
+  {
+    title: '子订单ID',
+    dataIndex: 'subOrderId',
+    width: 100,
+    fixed: 'left',
+    render: text => {
+      return <>{text === null ? <span className={styles.unFind}>未获取到</span> : text}</>;
+    },
+  },
+  {
+    title: '学员ID',
+    dataIndex: 'studentId',
+    width: 105,
+    fixed: 'left',
+    render: text => {
+      return <>{text === null ? <span className={styles.unFind}>未获取到</span> : text}</>;
+    },
+  },
+  {
+    title: '组织架构',
+    dataIndex: 'college',
+    width: 180,
+    fixed: 'left',
+    render: (text, record) => {
+      return (
+        <>
+          {`${
+            record.collegeName ? (
+              record.collegeName
+            ) : (
+              <span className={styles.unFind}>未获取到</span>
+            )
+          } ${record.familyName ? `| ${record.familyName}` : ''}  ${
+            record.groupName ? `| ${record.groupName}` : ''
+          }`}
+        </>
+      );
+    },
+  },
+  {
+    title: '推荐老师邮箱',
+    dataIndex: 'teacherName',
+    width: 110,
+    render: text => {
+      return <>{text === null ? <span className={styles.unFind}>未获取到</span> : text}</>;
+    },
+  },
+  {
+    title: '推荐老师',
+    dataIndex: 'recommendedTeacher',
+    width: 80,
+  },
+  {
+    title: '重播听课',
+    dataIndex: 'replayLecturesTime',
+    width: 120,
+  },
+  {
+    title: '直播听课',
+    dataIndex: 'liveLecturesTime',
+    width: 120,
+  },
+  {
+    title: '判断逻辑',
+    dataIndex: 'college',
+    width: 100,
+    render: (text, record) => {
+      return <>{record.collegeName}</>;
+    },
+  },
+  {
+    title: '成单类型',
+    dataIndex: 'orderType',
+    width: 100,
+    render: text => {
+      return (
+        <>
+          {text === null ? (
+            <span className={styles.unFind}>未获取到</span>
+          ) : (
+            window.BI_Filter(`BILL_TYPE|id:${text}`).name
+          )}
+        </>
+      );
+    },
+  },
+  {
+    title: '是否提退',
+    dataIndex: 'orderType',
+    width: 100,
+    render: text => {
+      return <>{text === null ? 0 : text}</>;
+    },
+  },
+  {
+    title: '是否挽留成功',
+    dataIndex: 'orderType',
+    width: 100,
+    render: text => {
+      return <>{text === null ? 0 : text}</>;
+    },
+  },
+  {
+    title: '净流水',
+    dataIndex: 'financeNetFlow',
+    width: 90,
+    render: text => {
+      return <>{text === null ? '0.00' : text.toFixed(2)}</>;
+    },
+  },
+  {
+    title: '竞合比',
+    dataIndex: 'saleoffJh',
+    width: 110,
+    render: (text, record) => {
+      return <>{record.saleoffJh ? (record.saleoffJh * 100).toFixed(2) : '100.00'}</>;
+    },
+  },
+  {
+    title: '创收流水',
+    dataIndex: 'saleoffJh',
+    width: 120,
+    render: text => {
+      return <>{text === null ? '0.00' : text.toFixed(2)}</>;
+    },
+  },
+  {
+    title: '绩效流水',
+    dataIndex: 'kpiFlow',
+    width: 70,
+    render: text => {
+      return <>{text === null ? '0.00' : text.toFixed(2)}</>;
+    },
+  },
+];
 
 @connect(({ createIncome, loading }) => ({
   createIncome,
@@ -76,7 +230,9 @@ class CreateList extends Component {
       urlParams,
     });
   };
-
+  onEdit = () => {
+    console.log(111);
+  };
   // 成单类型选择
   onSelectChange = val => {
     const urlParams = { ...this.state.urlParams, orderTypeList: val };
@@ -174,22 +330,6 @@ class CreateList extends Component {
     }
     return params;
   };
-  // 初始化tabale 列数据
-  fillDataSource = val => {
-    const data = [];
-    val.map((item, index) =>
-      data.push({
-        ...item,
-        key: index,
-        id: item.id,
-        saleoffJh: item.saleoffJh * 100,
-        registrationDate: moment(item.registrationDate).format('YYYY-MM-DD'),
-        fullLecturesFlag: item.fullLecturesFlag ? '是' : '否',
-        orderType: window.BI_Filter(`BILL_TYPE|id:${item.orderType}`).name,
-      })
-    );
-    return data;
-  };
   resetList = () => {
     const urlParams = { ...this.state.urlParams, orderTypeList: [] };
     this.setState({ urlParams });
@@ -204,12 +344,34 @@ class CreateList extends Component {
     this.props.setRouteUrlParams('/bottomOrder/createIncomeAdd');
   };
 
-  splitOrgName = (...argument) => {
-    return argument.filter(item => item).join(' | ');
-  };
-
   disabledDate = current => {
     return current > moment(this.props.createIncome.endDate);
+  };
+
+  columnsAction = () => {
+    const actionObj = [
+      {
+        title: '操作',
+        dataIndex: 'operation',
+        render: (text, record) => {
+          return (
+            <>
+              <span
+                style={{ color: '#52C9C2', cursor: 'pointer' }}
+                onClick={() => this.onEdit(record)}
+              >
+                编辑
+              </span>
+            </>
+          );
+        },
+      },
+      {
+        title: '',
+        dataIndex: 'duoyukuandu',
+      },
+    ];
+    return [...tablecolumns, ...actionObj];
   };
 
   render() {
@@ -221,13 +383,13 @@ class CreateList extends Component {
     const totalNum = !data.total ? 0 : data.total;
     const totalMoney = !res.kpiFlowTotal ? 0 : res.kpiFlowTotal;
     const pageNum = !data.pageNum ? 1 : data.pageNum;
-    const dataSource = !data.list ? [] : this.fillDataSource(data.list);
+    const dataSource = data.list;
     const { beginDate, endDate } = this.props.createIncome;
     const initData = {
       registrationBeginDate: beginDate || null,
       registrationEndDate: endDate || null,
     };
-    const columns = columnsFn();
+    const columns = this.columnsAction();
     const WrappedAdvancedSearchForm = () => (
       <FormFilter
         onSubmit={this.handleSearch}
