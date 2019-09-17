@@ -1214,3 +1214,10 @@ export async function deleteOrdIds(params) {
     body: params,
   });
 }
+
+// 查询组织架构
+export async function getOrgMapList(params) {
+  return request(`${HOST_NEW}/orgMap/getOrgMapList${stringify(params)}`, {
+    method: 'GET',
+  });
+}
