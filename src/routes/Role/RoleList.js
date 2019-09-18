@@ -13,7 +13,9 @@ import common from '../Common/common.css';
 class RoleList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      pageNum: 0,
+    };
   }
 
   componentDidMount() {
@@ -29,7 +31,7 @@ class RoleList extends Component {
   };
 
   changePage = (current, pageSize) => {
-    console.log(current, pageSize);
+    this.setState({ pageNum: current });
     this.getData({ size: pageSize, number: current - 1, orderType: 'name' });
   };
 
@@ -79,6 +81,7 @@ class RoleList extends Component {
   };
   render() {
     const { dataList } = this.props.role;
+    const { pageNum } = this.state;
     const totalNum = !dataList ? 0 : dataList.totalElements;
     const dataSource = !dataList ? [] : dataList.content;
     const columns = !this.columnsData() ? [] : this.columnsData();
@@ -113,6 +116,7 @@ class RoleList extends Component {
         }
         contentPagination={
           <SelfPagination
+            defaultCurrent={pageNum}
             onChange={(current, pageSize) => {
               this.changePage(current, pageSize);
             }}
