@@ -1,13 +1,9 @@
 @import '~antd/lib/style/themes/default.less';
 @ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
 .logo {
-  height: 64px;
-  position: relative;
-  line-height: 64px;
-  padding-left: (@menu-collapsed-width - 32px) / 2;
-  transition: all 0.3s;
-  background: #002140;
-  overflow: hidden;
+  height: 54px;
+  line-height: 54px;
+  text-align: center;
   img {
     display: inline-block;
     vertical-align: middle;
@@ -21,22 +17,6 @@
     margin: 0 0 0 12px;
     font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     font-weight: 600;
-  }
-}
-
-.sider {
-  min-height: 100vh;
-  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-  position: relative;
-  z-index: 10;
-  &.ligth {
-    background-color: white;
-    .logo {
-      background: white;
-      h1 {
-        color: #002140;
-      }
-    }
   }
 }
 
@@ -67,5 +47,110 @@
   .ant-menu-submenu-title .sider-menu-item-img + span {
     transition: opacity 0.3s @ease-in-out, width 0.3s @ease-in-out;
     opacity: 1;
+  }
+}
+
+// 菜单主体
+.menuPart {
+  display: flex;
+  .sider {
+    min-height: 100vh;
+    position: relative;
+    z-index: 10;
+    :global {
+      .ant-layout-sider-children {
+        background-color: #00ccc3;
+      }
+    }
+    &.ligth {
+      background-color: white;
+      .logo {
+        background: white;
+        h1 {
+          color: #002140;
+        }
+      }
+    }
+  }
+
+  :global {
+    .ant-menu {
+      width: 136px;
+      padding-top: 54px;
+      border: none;
+      box-shadow: 2px 0 6px rgba(26, 28, 31, 0.05);
+      z-index: 1;
+    }
+    .ant-menu-item-selected {
+      background-color: #fff;
+    }
+    .ant-menu-item-active > a,
+    .ant-menu-item-selected > a:hover {
+      color: #00ccc3;
+    }
+    .ant-menu-item-selected > a,
+    .ant-menu-item-selected > a:hover {
+      color: #00ccc3;
+    }
+    .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+      background-color: #fff !important;
+    }
+    .ant-menu-inline .ant-menu-selected::after,
+    .ant-menu-inline .ant-menu-item-selected::after {
+      content: none;
+    }
+    .ant-menu-inline .ant-menu-item,
+    .ant-menu-inline .ant-menu-submenu-title {
+      width: 100%;
+    }
+    .ant-menu-vertical .ant-menu-item,
+    .ant-menu-vertical-left .ant-menu-item,
+    .ant-menu-vertical-right .ant-menu-item,
+    .ant-menu-inline .ant-menu-item,
+    .ant-menu-vertical .ant-menu-submenu-title,
+    .ant-menu-vertical-left .ant-menu-submenu-title,
+    .ant-menu-vertical-right .ant-menu-submenu-title,
+    .ant-menu-inline .ant-menu-submenu-title {
+      font-size: 13px;
+    }
+  }
+  .rightMenu {
+    width: 136px;
+    background-color: #fff;
+    .active {
+      color: #00ccc3;
+    }
+  }
+}
+.menuUl {
+  padding: 0;
+  > li {
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    text-align: center;
+    color: #fff;
+    font-size: 13px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    img {
+      width: 26px;
+      margin: 0;
+      margin-bottom: 10px;
+    }
+    a {
+      font-size: 13px;
+    }
+  }
+  // 注：图片必须和背景色保持一致
+  > .active {
+    background-color: #fff;
+    color: #00ccc3;
+    img {
+      filter: drop-shadow(#00ccc3 40px 0);
+      position: relative;
+      left: -40px;
+    }
   }
 }
