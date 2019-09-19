@@ -1214,3 +1214,18 @@ export async function deleteOrdIds(params) {
     body: params,
   });
 }
+
+// 批量编辑  第一步
+export async function stepsVerify(params) {
+  return request(`${HOST_NEW}/incomeOrder/batchEdit/verify`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 批量编辑  第二步
+export async function stepSubmit(params) {
+  return request(`${HOST_NEW}/incomeOrder/batchEdit/submit`, {
+    method: 'POST',
+    body: params,
+  });
+}

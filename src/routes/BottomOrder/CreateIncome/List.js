@@ -7,6 +7,7 @@ import moment from 'moment';
 import ContentLayout from '../../../layouts/ContentLayout';
 import FormFilter from '../../../selfComponent/FormFilter';
 import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
+import BatchProcess from './component/BatchProcessing';
 import common from '../../Common/common.css';
 import styles from './style.less';
 import {
@@ -231,7 +232,7 @@ class CreateList extends Component {
     });
   };
   onEdit = () => {
-    console.log(111);
+    // console.log(111);
   };
   // 成单类型选择
   onSelectChange = val => {
@@ -503,45 +504,48 @@ class CreateList extends Component {
     //   ];
     // };
     return (
-      <ContentLayout
-        routerData={this.props.routerData}
-        contentForm={WrappedAdvancedSearchForm()}
-        contentButton={
-          <div>
-            <AuthorizedButton authority="/bottomOrder/createIncomeAdd">
-              <Button onClick={this.createIncomeAdd} type="primary" className={common.newButton}>
-                添加数据
-              </Button>
-            </AuthorizedButton>
-            <span>&nbsp;&nbsp;</span>
-            <AuthorizedButton authority="/bottomOrder/createIncomeDel">
-              <Button
-                onClick={this.createIncomeDel}
-                type="primary"
-                className={common.cancleButtonGray}
-              >
-                删除数据
-              </Button>
-            </AuthorizedButton>
-          </div>
-        }
-        contentTable={
-          <div style={{ padding: 10 }}>
-            <FormFilter.Table
-              scroll={{ x: 1910, y: 573 }}
-              size="middle"
-              className="circleTable"
-              pageNum={pageNum}
-              totalMoney={totalMoney}
-              totalNum={totalNum}
-              loading={this.props.loading}
-              dataSource={dataSource}
-              columns={columns}
-              onChangePage={this.changePage}
-            />
-          </div>
-        }
-      />
+      <div>
+        <BatchProcess visible={false} />
+        <ContentLayout
+          routerData={this.props.routerData}
+          contentForm={WrappedAdvancedSearchForm()}
+          contentButton={
+            <div>
+              <AuthorizedButton authority="/bottomOrder/createIncomeAdd">
+                <Button onClick={this.createIncomeAdd} type="primary" className={common.newButton}>
+                  添加数据
+                </Button>
+              </AuthorizedButton>
+              <span>&nbsp;&nbsp;</span>
+              <AuthorizedButton authority="/bottomOrder/createIncomeDel">
+                <Button
+                  onClick={this.createIncomeDel}
+                  type="primary"
+                  className={common.cancleButtonGray}
+                >
+                  删除数据
+                </Button>
+              </AuthorizedButton>
+            </div>
+          }
+          contentTable={
+            <div style={{ padding: 10 }}>
+              <FormFilter.Table
+                scroll={{ x: 1910, y: 573 }}
+                size="middle"
+                className="circleTable"
+                pageNum={pageNum}
+                totalMoney={totalMoney}
+                totalNum={totalNum}
+                loading={this.props.loading}
+                dataSource={dataSource}
+                columns={columns}
+                onChangePage={this.changePage}
+              />
+            </div>
+          }
+        />
+      </div>
     );
   }
 }
