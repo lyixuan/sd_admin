@@ -10,6 +10,7 @@ import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import common from '../../Common/common.css';
 import styles from './style.less';
 import { deepCopy } from '../../../utils/utils';
+import EditModal from './component/EditModal';
 
 const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
@@ -191,6 +192,7 @@ class CreateList extends Component {
       orderId: undefined,
       orderTypeList: [],
       pageNum: 0,
+      visible: false,
     };
     this.state = { ...this.initData };
   }
@@ -218,8 +220,8 @@ class CreateList extends Component {
       payload: { params: {} },
     });
   }
-  onEdit = () => {
-    console.log(111);
+  onEdit = record => {
+    this.setState({ visible: true, editData: record });
   };
   onChange = (dates, dateStrings) => {
     this.setState({
@@ -366,21 +368,18 @@ class CreateList extends Component {
     const {
       registrationBeginDate = undefined,
       registrationEndDate = undefined,
-
       collegeIdList = [],
       familyIdList = [],
       groupIdList = [],
-
       refundFlag,
-
       stuId,
       teacherName,
       retainFlag,
-
       orderId,
       orderTypeList = [],
+      visible,
     } = this.state;
-    const { orgListTreeData = [] } = this.props.createIncome;
+    const { orgListTreeData = [], orgList = [] } = this.props.createIncome;
     const val = this.props.createIncome.qualityList;
     const res = !val.response ? {} : !val.response.data ? {} : val.response.data;
     const data = res.pageInfo || {};
@@ -563,7 +562,9 @@ class CreateList extends Component {
             />
           </div>
         }
-      />
+      >
+        <EditModal visible={visible} editData={this.state.editData} orgList={orgList} />
+      </ContentLayout>
     );
   }
 }

@@ -1,21 +1,59 @@
 import React, { Component } from 'react';
 // import { connect } from 'dva';
-import { Modal, Input, TreeSelect, Select, Form, message } from 'antd';
+import { Modal, Input, TreeSelect, Select, Form } from 'antd';
 import styles from './editModal.less';
 
-const { TreeNode } = TreeSelect;
 const { Option } = Select;
 
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class extends React.Component {
-    error = value => {
-      message.error(value);
-    };
+    constructor(props) {
+      super(props);
 
+      this.state = {
+        ...props.params,
+      };
+    }
+    onFormChange = (value, vname) => {
+      if (vname === 'organization') {
+        console.log(1111, value);
+        // const list1 = [];
+        // const list2 = [];
+        // const list3 = [];
+        // value.forEach(v => {
+        //   if (v.indexOf('a-') >= 0) {
+        //     list1.push(v);
+        //   }
+        //   if (v.indexOf('b-') >= 0) {
+        //     list2.push(v);
+        //   }
+        //   if (v.indexOf('c-') >= 0) {
+        //     list3.push(v);
+        //   }
+        // });
+        // this.setState({
+        //   collegeIdList: [...list1],
+        //   familyIdList: [...list2],
+        //   groupIdList: [...list3],
+        // });
+      } else {
+        this.setState({
+          [vname]: value,
+        });
+      }
+    };
     render() {
-      const { onCancel, onCreate, form } = this.props;
-      const { visible, title, orderId, stuId, value, recommendedTeacher } = this.props.params;
+      const { visible, title, onCancel, onCreate, form, orgList = [] } = this.props;
+      const {
+        orderId,
+        stuId,
+        collegeId,
+        familyId,
+        groupId,
+        recommendedTeacher,
+        teacherName,
+      } = this.state;
       const { getFieldDecorator } = form;
       return (
         <Modal visible={visible} title={title} okText="确定" onCancel={onCancel} onOk={onCreate}>
@@ -33,33 +71,19 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 <i className={styles.red}>*</i>组织架构:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('treeSelect', {
+                {getFieldDecorator('organization', {
                   rules: [{ required: true, message: '组织架构不能为空' }],
                 })(
                   <TreeSelect
-                    showSearch
                     style={{ width: 230 }}
-                    setFieldsValue={value}
-                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                    placeholder="Please select"
+                    placeholder="请选择"
                     allowClear
-                    treeDefaultExpandAll
-                    onChange={this.onChange}
-                  >
-                    <TreeNode value="parent 1" title="parent 1" key="0-1">
-                      <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-                        <TreeNode value="leaf1" title="my leaf" key="random" />
-                        <TreeNode value="leaf2" title="your leaf" key="random1" />
-                      </TreeNode>
-                      <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-                        <TreeNode
-                          value="sss"
-                          title={<b style={{ color: '#08c' }}>sss</b>}
-                          key="random3"
-                        />
-                      </TreeNode>
-                    </TreeNode>
-                  </TreeSelect>
+                    value={[collegeId, familyId, groupId]}
+                    showArrow
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    treeData={orgList}
+                    onChange={val => this.onFormChange(val, 'organization')}
+                  />
                 )}
               </Form.Item>
             </div>
@@ -68,7 +92,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 <i className={styles.red}>*</i>推荐老师邮箱:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('teacherName', {
+                {getFieldDecorator(recommendedTeacher, {
                   rules: [{ required: true, message: '推荐老师邮箱不能为空' }],
                 })(
                   <Input
@@ -82,7 +106,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             </div>
             <div className={styles.line}>
               <span className={styles.left}>推荐老师:</span>
-              {recommendedTeacher}
+              {teacherName}
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
@@ -206,24 +230,32 @@ class EditModal extends Component {
   };
 
   render() {
-    // const { visible, confirmLoading, title, orderId, stuId, recommendedTeacher } = this.state;
+    const {
+      editData = {},
+      visible = false,
+      confirmLoading = false,
+      orgListTreeData = [],
+    } = this.props;
     const params = {
-      orderId: this.props.orderId || 1111,
-      stuId: this.props.stuId || 1123,
-      recommendedTeacher: this.props.recommendedTeacher || 123,
-      visible: this.props.visible || false,
-      confirmLoading: false,
-      title: '编辑创收订单信息',
-      value: '',
+      orderId: editData.orderId || '未获取到',
+      stuId: editData.stuId || '未获取到',
+      collegeId: editData.collegeId || undefined,
+      familyId: editData.familyId || undefined,
+      groupId: editData.groupId || undefined,
+      recommendedTeacher: editData.recommendedTeacher || undefined,
+      teacherName: editData.teacherName || undefined,
     };
     return (
       <div>
         <CollectionCreateForm
-          wrappedComponentRef={this.saveFormRef}
-          visible={params.visible}
+          visible={visible}
+          confirmLoading={confirmLoading}
+          title="编辑创收订单信息"
+          orgListTreeData={orgListTreeData}
+          params={params}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
-          params={params}
+          wrappedComponentRef={this.saveFormRef}
         />
       </div>
     );
