@@ -25,10 +25,18 @@ export const STATIC_HOST = {
 
 // 设置domain域名
 export const DOMAIN_HOST = '.ministudy.com';
-// export const DOMAIN_HOST = 'localhost';
+
 export const CAS_HOST = {
-  localhost: 'http://test.xd.admin.ministudy.com',
-  development: 'http://test.xd.admin.ministudy.com',
+  // localhost: 'http://test.xd.admin.ministudy.com',
+  localhost: 'http://test.xd.temp.ministudy.com',
+  // development: 'http://test.xd.admin.ministudy.com',
+  development: 'http://test.xd.temp.ministudy.com',
+  production: 'http://bd.ministudy.com',
+}[process.env.LOGIN_HOST];
+
+export const API_HOST = {
+  localhost: 'http://test.xd.temp.ministudy.com',
+  development: 'http://test.xd.temp.ministudy.com',
   production: 'http://bd.ministudy.com',
 }[process.env.LOGIN_HOST];
 
