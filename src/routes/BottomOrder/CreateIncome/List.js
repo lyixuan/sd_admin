@@ -1,4 +1,4 @@
-/* eslint-disable radix */
+/* eslint-disable radix,prefer-destructuring */
 import React, { Component } from 'react';
 import { Button, Input, Select, DatePicker, TreeSelect } from 'antd';
 import { connect } from 'dva';
@@ -220,8 +220,27 @@ class CreateList extends Component {
       payload: { params: {} },
     });
   }
-  onEdit = record => {
-    this.setState({ visible: true, editData: record });
+  onEdit = () => {
+    const obj = {
+      collegeId: 104,
+      familyId: 269,
+      groupId: 151,
+      financeNetFlow: 5251.11,
+      id: 7539,
+      kpiFlow: 5251.13,
+      lecturesTime: null,
+      liveLecturesTime: 50,
+      orderType: 1,
+      recommendedTeacher: '孙晓伟',
+      registrationDate: 1568304000000,
+      replayLecturesTime: 40,
+      logicJudge: 'ko听课',
+      stuId: 11865500,
+      orderId: 54432882,
+      teacherName: 'sunxiaowei-fesco',
+      competitionRatio: null,
+    };
+    this.setState({ visible: true, editData: obj });
   };
   onChange = (dates, dateStrings) => {
     this.setState({
@@ -256,6 +275,21 @@ class CreateList extends Component {
       });
     }
   };
+  onSubmit = val => {
+    const params = { ...val };
+    params.competitionRatio = params.competitionRatio === undefined ? 100 : params.competitionRatio;
+    params.teacherName = params.recommendedTeacher;
+    params.collegeId = params.organization[0] || undefined;
+    params.familyId = params.organization[1] || undefined;
+    params.groupId = params.organization[2] || undefined;
+    this.props.dispatch({
+      type: 'createIncome/edit',
+      payload: { params },
+    });
+  };
+  onCancel = () => {
+    this.setState({ visible: false });
+  };
   getData = params => {
     const getListParams = { ...params };
     this.props.dispatch({
@@ -263,6 +297,7 @@ class CreateList extends Component {
       payload: { getListParams },
     });
   };
+
   // 点击某一页函数
   changePage = (pageNum, size) => {
     const newParams = this.handleParams({ ...this.state, pageNum, size });
@@ -322,6 +357,7 @@ class CreateList extends Component {
       this.getData(this.handleParams(this.filterEmptyParams(this.state)));
     });
   };
+
   // 删除数据
   createIncomeDel = () => {
     this.props.setRouteUrlParams('/bottomOrder/createIncomeDel');
@@ -563,7 +599,13 @@ class CreateList extends Component {
           </div>
         }
       >
-        <EditModal visible={visible} editData={this.state.editData} orgList={orgList} />
+        <EditModal
+          visible={visible}
+          editData={this.state.editData}
+          orgList={orgList}
+          onSubmit={value => this.onSubmit(value)}
+          onCancel={this.onCancel}
+        />
       </ContentLayout>
     );
   }

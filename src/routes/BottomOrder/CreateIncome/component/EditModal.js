@@ -1,49 +1,29 @@
 import React, { Component } from 'react';
 // import { connect } from 'dva';
-import { Modal, Input, Select, Form, Cascader } from 'antd';
+import { Modal, Input, InputNumber, Select, Form, Cascader } from 'antd';
 import styles from './editModal.less';
 
 const { Option } = Select;
 
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
-  // eslint-disable-next-line
   class extends React.Component {
-    constructor(props) {
-      super(props);
-
-      this.state = {
-        ...props.params,
-      };
-    }
-    onFormChange = (value, vname) => {
-      if (vname === 'organization') {
-        console.log(1111, value);
-      } else {
-        this.setState({
-          [vname]: value,
-        });
-      }
-    };
     onCancel = () => {
       this.props.onCancel();
     };
     handleSubmit = e => {
       e.preventDefault();
-      this.props.form.validateFieldsAndScroll((err, values) => {
-        console.log(44, values);
+      this.props.form.validateFields((err, values) => {
         if (!err) {
-          this.setState({
-            sendVal: values,
-          });
-          this.showModal(true);
-        } else {
-          console.error(err);
+          this.props.onCreate(values);
         }
       });
     };
 
+    teacherChange = val => {
+      console.log(val);
+    };
     render() {
-      const { visible, title, orgList = [], form } = this.props;
+      const { visible, title, orgList = [], form, params } = this.props;
       const {
         orderId,
         stuId,
@@ -55,8 +35,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
         replayLecturesTime,
         liveLecturesTime,
         competitionRatio,
-      } = this.state;
-      const teacherName = recommendedTeacher;
+      } = params;
       const { getFieldDecorator } = form;
       return (
         <Modal
@@ -66,14 +45,22 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
           onCancel={this.onCancel}
           onOk={this.handleSubmit}
         >
-          <Form layout="vertical">
+          <Form layout="vertical" className="createEditForm">
             <div className={styles.line}>
               <span className={styles.left}>子订单ID:</span>
-              {orderId}
+              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+                {getFieldDecorator('orderId', {
+                  initialValue: orderId,
+                })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
+              </Form.Item>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>学员ID:</span>
-              {stuId}
+              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+                {getFieldDecorator('stuId', {
+                  initialValue: stuId,
+                })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
+              </Form.Item>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
@@ -81,16 +68,16 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
                 {getFieldDecorator('organization', {
+                  initialValue: [collegeId, familyId, groupId],
                   rules: [{ required: true, message: '组织架构不能为空' }],
                 })(
                   <Cascader
                     style={{ width: 230 }}
                     placeholder="请选择"
                     allowClear
-                    value={[collegeId, familyId, groupId]}
                     options={orgList}
-                    fieldNames={{ label: 'id', value: 'name', children: 'nodeList' }}
-                    onChange={val => this.onFormChange(val, 'organization')}
+                    changeOnSelect
+                    fieldNames={{ label: 'name', value: 'id', children: 'nodeList' }}
                   />
                 )}
               </Form.Item>
@@ -103,13 +90,19 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 {getFieldDecorator('recommendedTeacher', {
                   initialValue: recommendedTeacher,
                   rules: [{ required: true, message: '推荐老师邮箱不能为空' }],
-                })(<Input style={{ width: 230, marginRight: '6px' }} />)}
+                })(
+                  <Input style={{ width: 230, marginRight: '6px' }} onChange={this.teacherChange} />
+                )}
               </Form.Item>
               <span>@sunlands.com</span>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>推荐老师:</span>
-              {teacherName}
+              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+                {getFieldDecorator('recommendedTeacher', {
+                  initialValue: recommendedTeacher,
+                })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
+              </Form.Item>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
@@ -158,37 +151,55 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
-                <i className={styles.red}>*</i>重播听课:
+                <i className={styles.red} />重播听课:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
                 {getFieldDecorator('replayLecturesTime', {
                   initialValue: replayLecturesTime,
-                  rules: [{ required: true, message: '重播听课不能为空' }],
-                })(<Input style={{ width: 230, marginRight: '6px' }} />)}
+                })(
+                  <InputNumber
+                    min={0}
+                    max={100000000}
+                    precision={2}
+                    style={{ width: 230, marginRight: '6px' }}
+                  />
+                )}
               </Form.Item>
               <span>分钟</span>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
-                <i className={styles.red}>*</i>直播听课:
+                <i className={styles.red} />直播听课:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
                 {getFieldDecorator('liveLecturesTime', {
                   initialValue: liveLecturesTime,
-                  rules: [{ required: true, message: '直播听课不能为空' }],
-                })(<Input style={{ width: 230, marginRight: '6px' }} />)}
+                })(
+                  <InputNumber
+                    min={0}
+                    max={100000000}
+                    precision={2}
+                    style={{ width: 230, marginRight: '6px' }}
+                  />
+                )}
               </Form.Item>
               <span>分钟</span>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
-                <i className={styles.red}>*</i>竞合比:
+                <i className={styles.red} />竞合比:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
                 {getFieldDecorator('competitionRatio', {
                   initialValue: competitionRatio,
-                  rules: [{ required: true, message: '竞合比不能为空' }],
-                })(<Input style={{ width: 230, marginRight: '6px' }} />)}
+                })(
+                  <InputNumber
+                    min={0}
+                    max={100}
+                    precision={2}
+                    style={{ width: 230, marginRight: '6px' }}
+                  />
+                )}
               </Form.Item>
               <span>%</span>
             </div>
@@ -201,19 +212,11 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
 
 // eslint-disable-next-line
 class EditModal extends Component {
-  // onChange = value => {
-  //   console.log(`selected ${value}`);
-  // };
-  handleCreate = () => {
-    console.log(1111);
-    const { form } = this.formRef.props;
-    form.validateFields(err => {
-      if (err) {
-        return;
-      }
-      // console.log('Received values of form: ', values);
-      form.resetFields();
-    });
+  handleCancel = () => {
+    this.props.onCancel();
+  };
+  handleCreate = val => {
+    this.props.onSubmit(val);
   };
 
   saveFormRef = formRef => {
@@ -221,12 +224,7 @@ class EditModal extends Component {
   };
 
   render() {
-    const {
-      editData = {},
-      visible = false,
-      confirmLoading = false,
-      orgListTreeData = [],
-    } = this.props;
+    const { editData = {}, visible = false, confirmLoading = false, orgList = [] } = this.props;
     const params = {
       orderId: editData.orderId || '未获取到',
       stuId: editData.stuId || '未获取到',
@@ -234,11 +232,15 @@ class EditModal extends Component {
       familyId: editData.familyId || undefined,
       groupId: editData.groupId || undefined,
       recommendedTeacher: editData.recommendedTeacher || undefined,
-      teacherName: editData.teacherName || undefined,
       logicJudge: editData.logicJudge,
       replayLecturesTime: editData.replayLecturesTime,
       liveLecturesTime: editData.liveLecturesTime,
-      competitionRatio: editData.competitionRatio,
+      competitionRatio:
+        editData.competitionRatio === null ||
+        editData.competitionRatio === undefined ||
+        editData.competitionRatio === ''
+          ? 100
+          : editData.competitionRatio,
     };
     return (
       <div>
@@ -246,7 +248,7 @@ class EditModal extends Component {
           visible={visible}
           confirmLoading={confirmLoading}
           title="编辑创收订单信息"
-          orgListTreeData={orgListTreeData}
+          orgList={orgList}
           params={params}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
