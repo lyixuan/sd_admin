@@ -218,6 +218,12 @@ class FormPrams extends Component {
       return React.cloneElement(child, { children: childrenItem, ...propsParams });
     });
   };
+  createIncomeAdd = () => {
+    this.props.createIncomeAdd();
+  };
+  createIncomeDel = () => {
+    this.props.createIncomeDel();
+  };
   render() {
     const children = this.cloneChildren(this.props.children);
     return (

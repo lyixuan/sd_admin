@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Table } from 'antd';
+import { Table, Button, Icon } from 'antd';
 import SelfPagination from '@/selfComponent/selfPagination/SelfPagination';
 import styles from './table.less';
+import common from '../../routes/Common/common.css';
 import { saveParamsInUrl, getUrlParams, pageObj } from './saveUrlParams';
+import AuthorizedButton from '../../selfComponent/AuthorizedButton';
 
 /*
 *isShowPagination    boolean   是否展示分页组件
@@ -38,14 +40,39 @@ export default class SelfTable extends PureComponent {
     });
     saveParamsInUrl(paramsObj);
   };
+
+  createIncomeAdd = () => {
+    this.props.createIncomeAdd();
+  };
+  createIncomeDel = () => {
+    this.props.createIncomeDel();
+  };
   render() {
     const { dataSource, totalNum = 0, className = '', totalMoney = 0, ...others } = this.props;
     const { pageNum } = this.state;
     return (
       <div>
-        <p className={styles.totalNum}>
-          {totalMoney ? `绩效流水合计：${totalMoney}` : ''} &nbsp;&nbsp;&nbsp;总数：{totalNum}条
-        </p>
+        {totalMoney && (
+          <p className={styles.totalNum1}>
+            绩效流水合计：{totalMoney} &nbsp;&nbsp;&nbsp;总数：{totalNum}条
+            <div>
+              <AuthorizedButton authority="/bottomOrder/createIncomeAdd">
+                <Button onClick={this.createIncomeAdd} type="primary" className={common.newButton}>
+                  <Icon type="plus" />
+                  批量添加
+                </Button>
+              </AuthorizedButton>
+              <span>&nbsp;&nbsp;</span>
+              <AuthorizedButton authority="/bottomOrder/createIncomeDel">
+                <Button onClick={this.createIncomeDel} type="primary" className={common.newButton}>
+                  <Icon type="edit" />
+                  批量编辑
+                </Button>
+              </AuthorizedButton>
+            </div>
+          </p>
+        )}
+        {!totalMoney && <p className={styles.totalNum}>总数：{totalNum}条</p>}
         <Table
           {...others}
           dataSource={dataSource}
