@@ -9,6 +9,7 @@ import {
   // deleteRecommend,
   createIncomeCheck,
   createIncomeData,
+  getOrgMapList,
 } from '../services/api';
 
 export default {
@@ -26,6 +27,17 @@ export default {
   },
 
   effects: {
+    *getOrgMapList({ payload }, { call, put }) {
+      const { params } = payload;
+      const result = yield call(getOrgMapList, params);
+      const orgList = result.data || [];
+
+      if (result.code === 20000) {
+        yield put({ type: 'saveMap', payload: { orgList } });
+      } else {
+        message.error(result.msg);
+      }
+    },
     *recommendList({ payload }, { call, put }) {
       const { getListParams } = payload;
       const page = getListParams.pageNum + 1;
@@ -169,5 +181,32 @@ export default {
         qualityList: action.payload,
       };
     },
+    saveMap(state, { payload }) {
+      const orgListTreeData = toTreeData(payload.orgList);
+      return { ...state, orgList: payload.orgList, orgListTreeData };
+    },
   },
 };
+
+function toTreeData(orgList) {
+  const treeData = [];
+  orgList.forEach(v => {
+    const o = { title: v.name, value: `a-${v.id}`, key: v.id, lv: 1 };
+    if (v.nodeList.length > 0) {
+      o.children = [];
+      v.nodeList.forEach(v1 => {
+        const o1 = { title: v1.name, value: `b-${v1.id}`, key: v1.id + 1000, lv: 2 };
+        o.children.push(o1);
+        if (v1.nodeList.length > 0) {
+          o1.children = [];
+          v1.nodeList.forEach(v2 => {
+            const o2 = { title: v2.name, value: `c-${v2.id}`, key: v2.id + 100000, lv: 3 };
+            o1.children.push(o2);
+          });
+        }
+      });
+    }
+    treeData.push(o);
+  });
+  return treeData;
+}

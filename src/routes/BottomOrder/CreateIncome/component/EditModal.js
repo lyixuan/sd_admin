@@ -1,65 +1,84 @@
 import React, { Component } from 'react';
 // import { connect } from 'dva';
-import { Modal, Input, TreeSelect, Select, Form, message } from 'antd';
+import { Modal, Input, InputNumber, Select, Form, Cascader } from 'antd';
 import styles from './editModal.less';
 
-const { TreeNode } = TreeSelect;
 const { Option } = Select;
 
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
-  // eslint-disable-next-line
   class extends React.Component {
-    error = value => {
-      message.error(value);
+    onCancel = () => {
+      this.props.onCancel();
+    };
+    handleSubmit = e => {
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          this.props.onCreate(values);
+        }
+      });
     };
 
+    teacherChange = val => {
+      console.log(val);
+    };
     render() {
-      const { onCancel, onCreate, form } = this.props;
-      const { visible, title, orderId, stuId, value, recommendedTeacher } = this.props.params;
+      const { visible, title, orgList = [], form, params } = this.props;
+      const {
+        orderId,
+        stuId,
+        collegeId,
+        familyId,
+        groupId,
+        recommendedTeacher,
+        logicJudge,
+        replayLecturesTime,
+        liveLecturesTime,
+        competitionRatio,
+      } = params;
       const { getFieldDecorator } = form;
       return (
-        <Modal visible={visible} title={title} okText="确定" onCancel={onCancel} onOk={onCreate}>
-          <Form layout="vertical">
+        <Modal
+          visible={visible}
+          title={title}
+          okText="确定"
+          onCancel={this.onCancel}
+          onOk={this.handleSubmit}
+        >
+          <Form layout="vertical" className="createEditForm">
             <div className={styles.line}>
               <span className={styles.left}>子订单ID:</span>
-              {orderId}
+              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+                {getFieldDecorator('orderId', {
+                  initialValue: orderId,
+                })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
+              </Form.Item>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>学员ID:</span>
-              {stuId}
+              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+                {getFieldDecorator('stuId', {
+                  initialValue: stuId,
+                })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
+              </Form.Item>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
                 <i className={styles.red}>*</i>组织架构:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('treeSelect', {
+                {getFieldDecorator('organization', {
+                  initialValue: [collegeId, familyId, groupId],
                   rules: [{ required: true, message: '组织架构不能为空' }],
                 })(
-                  <TreeSelect
-                    showSearch
+                  <Cascader
                     style={{ width: 230 }}
-                    setFieldsValue={value}
-                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                    placeholder="Please select"
+                    placeholder="请选择"
                     allowClear
-                    treeDefaultExpandAll
-                    onChange={this.onChange}
-                  >
-                    <TreeNode value="parent 1" title="parent 1" key="0-1">
-                      <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-                        <TreeNode value="leaf1" title="my leaf" key="random" />
-                        <TreeNode value="leaf2" title="your leaf" key="random1" />
-                      </TreeNode>
-                      <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-                        <TreeNode
-                          value="sss"
-                          title={<b style={{ color: '#08c' }}>sss</b>}
-                          key="random3"
-                        />
-                      </TreeNode>
-                    </TreeNode>
-                  </TreeSelect>
+                    options={orgList}
+                    changeOnSelect
+                    fieldNames={{ label: 'name', value: 'id', children: 'nodeList' }}
+                  />
                 )}
               </Form.Item>
             </div>
@@ -68,21 +87,22 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 <i className={styles.red}>*</i>推荐老师邮箱:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('teacherName', {
+                {getFieldDecorator('recommendedTeacher', {
+                  initialValue: recommendedTeacher,
                   rules: [{ required: true, message: '推荐老师邮箱不能为空' }],
                 })(
-                  <Input
-                    style={{ width: 230, marginRight: '6px' }}
-                    onKeyDown={this.onKeyDown}
-                    onBlur={this.leaveSearchMode}
-                  />
+                  <Input style={{ width: 230, marginRight: '6px' }} onChange={this.teacherChange} />
                 )}
               </Form.Item>
               <span>@sunlands.com</span>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>推荐老师:</span>
-              {recommendedTeacher}
+              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+                {getFieldDecorator('recommendedTeacher', {
+                  initialValue: recommendedTeacher,
+                })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
+              </Form.Item>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
@@ -90,6 +110,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               </span>
               <Form.Item>
                 {getFieldDecorator('title', {
+                  initialValue: recommendedTeacher,
                   rules: [{ required: true, message: '创收类型不能为空' }],
                 })(
                   <Select showSearch style={{ width: 230 }} onChange={this.onChange}>
@@ -104,7 +125,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               </Form.Item>
             </div>
             <div className={styles.line}>
-              <span className={styles.left}>转介绍产品类型:</span>
+              <span className={styles.left}>转介绍类型:</span>
               <Form.Item>
                 {getFieldDecorator('1')(
                   <Select showSearch style={{ width: 230 }} onChange={this.onChange}>
@@ -118,27 +139,29 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             <div className={styles.line}>
               <span className={styles.left}>逻辑判断:</span>
               <Form.Item>
-                {getFieldDecorator('2')(
-                  <Select showSearch style={{ width: 230 }} onChange={this.onChange}>
-                    <Option value="jack">ko听课</Option>
-                    <Option value="lucy">好推听课</Option>
-                    <Option value="lucy">未听课</Option>
+                {getFieldDecorator('logicJudge', {
+                  initialValue: logicJudge,
+                })(
+                  <Select showSearch style={{ width: 230 }}>
+                    <Option value="ko听课">ko听课</Option>
+                    <Option value="好推听课">好推听课</Option>
                   </Select>
                 )}
               </Form.Item>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
-                <i className={styles.red}>*</i>重播听课:
+                <i className={styles.red} />重播听课:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('title', {
-                  rules: [{ required: true, message: '创收类型不能为空' }],
+                {getFieldDecorator('replayLecturesTime', {
+                  initialValue: replayLecturesTime,
                 })(
-                  <Input
+                  <InputNumber
+                    min={0}
+                    max={100000000}
+                    precision={2}
                     style={{ width: 230, marginRight: '6px' }}
-                    onKeyDown={this.onKeyDown}
-                    onBlur={this.leaveSearchMode}
                   />
                 )}
               </Form.Item>
@@ -146,16 +169,17 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
-                <i className={styles.red}>*</i>直播听课:
+                <i className={styles.red} />直播听课:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('title', {
-                  rules: [{ required: true, message: '创收类型不能为空' }],
+                {getFieldDecorator('liveLecturesTime', {
+                  initialValue: liveLecturesTime,
                 })(
-                  <Input
+                  <InputNumber
+                    min={0}
+                    max={100000000}
+                    precision={2}
                     style={{ width: 230, marginRight: '6px' }}
-                    onKeyDown={this.onKeyDown}
-                    onBlur={this.leaveSearchMode}
                   />
                 )}
               </Form.Item>
@@ -163,16 +187,17 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             </div>
             <div className={styles.line}>
               <span className={styles.left}>
-                <i className={styles.red}>*</i>竞合比:
+                <i className={styles.red} />竞合比:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('title', {
-                  rules: [{ required: true, message: '创收类型不能为空' }],
+                {getFieldDecorator('competitionRatio', {
+                  initialValue: competitionRatio,
                 })(
-                  <Input
+                  <InputNumber
+                    min={0}
+                    max={100}
+                    precision={2}
                     style={{ width: 230, marginRight: '6px' }}
-                    onKeyDown={this.onKeyDown}
-                    onBlur={this.leaveSearchMode}
                   />
                 )}
               </Form.Item>
@@ -187,18 +212,11 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
 
 // eslint-disable-next-line
 class EditModal extends Component {
-  // onChange = value => {
-  //   console.log(`selected ${value}`);
-  // };
-  handleCreate = () => {
-    const { form } = this.formRef.props;
-    form.validateFields(err => {
-      if (err) {
-        return;
-      }
-      // console.log('Received values of form: ', values);
-      form.resetFields();
-    });
+  handleCancel = () => {
+    this.props.onCancel();
+  };
+  handleCreate = val => {
+    this.props.onSubmit(val);
   };
 
   saveFormRef = formRef => {
@@ -206,24 +224,35 @@ class EditModal extends Component {
   };
 
   render() {
-    // const { visible, confirmLoading, title, orderId, stuId, recommendedTeacher } = this.state;
+    const { editData = {}, visible = false, confirmLoading = false, orgList = [] } = this.props;
     const params = {
-      orderId: this.props.orderId || 1111,
-      stuId: this.props.stuId || 1123,
-      recommendedTeacher: this.props.recommendedTeacher || 123,
-      visible: this.props.visible || false,
-      confirmLoading: false,
-      title: '编辑创收订单信息',
-      value: '',
+      orderId: editData.orderId || '未获取到',
+      stuId: editData.stuId || '未获取到',
+      collegeId: editData.collegeId || undefined,
+      familyId: editData.familyId || undefined,
+      groupId: editData.groupId || undefined,
+      recommendedTeacher: editData.recommendedTeacher || undefined,
+      logicJudge: editData.logicJudge,
+      replayLecturesTime: editData.replayLecturesTime,
+      liveLecturesTime: editData.liveLecturesTime,
+      competitionRatio:
+        editData.competitionRatio === null ||
+        editData.competitionRatio === undefined ||
+        editData.competitionRatio === ''
+          ? 100
+          : editData.competitionRatio,
     };
     return (
       <div>
         <CollectionCreateForm
-          wrappedComponentRef={this.saveFormRef}
-          visible={params.visible}
+          visible={visible}
+          confirmLoading={confirmLoading}
+          title="编辑创收订单信息"
+          orgList={orgList}
+          params={params}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
-          params={params}
+          wrappedComponentRef={this.saveFormRef}
         />
       </div>
     );

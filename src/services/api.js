@@ -1215,6 +1215,13 @@ export async function deleteOrdIds(params) {
   });
 }
 
+// 查询组织架构
+export async function getOrgMapList(params) {
+  return request(`${HOST_NEW}/orgMap/getOrgMapList${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
 // 批量编辑  第一步
 export async function stepsVerify(params) {
   return request(`${HOST_NEW}/incomeOrder/batchEdit/verify`, {

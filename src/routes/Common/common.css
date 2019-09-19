@@ -615,9 +615,15 @@
   border-radius: 6px 0 0 6px;
 }
 
-:global(.circleTable .ant-table-thead tr th) {
-  border-bottom: none;
-  color: #7b7c80;
+
+
+:global(.circleTable .ant-table-thead  tr  th){
+  border-bottom:none;
+  color: #7B7C80;
   font-weight: normal;
   white-space: nowrap;
+}
+
+:global(.createEditForm .ant-input-disabled){
+  color: #666;
 }

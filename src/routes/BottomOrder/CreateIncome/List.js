@@ -1,6 +1,6 @@
-/* eslint-disable radix */
+/* eslint-disable radix,prefer-destructuring */
 import React, { Component } from 'react';
-import { Button, Input, Select, DatePicker } from 'antd';
+import { Button, Input, Select, DatePicker, TreeSelect } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 // import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
@@ -10,11 +10,8 @@ import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
 import BatchProcess from './component/BatchProcessing';
 import common from '../../Common/common.css';
 import styles from './style.less';
-import {
-  filterEmptyUrlParams,
-  getUrlParams,
-  saveParamsInUrl,
-} from '../../../selfComponent/FormFilter/saveUrlParams';
+import { deepCopy } from '../../../utils/utils';
+import EditModal from './component/EditModal';
 
 const dateFormat = 'YYYY-MM-DD';
 const { Option } = Select;
@@ -41,7 +38,7 @@ const tablecolumns = [
   },
   {
     title: '子订单ID',
-    dataIndex: 'subOrderId',
+    dataIndex: 'orderId',
     width: 100,
     fixed: 'left',
     render: text => {
@@ -50,7 +47,7 @@ const tablecolumns = [
   },
   {
     title: '学员ID',
-    dataIndex: 'studentId',
+    dataIndex: 'stuId',
     width: 105,
     fixed: 'left',
     render: text => {
@@ -103,10 +100,10 @@ const tablecolumns = [
   },
   {
     title: '判断逻辑',
-    dataIndex: 'college',
+    dataIndex: 'logicJudge',
     width: 100,
-    render: (text, record) => {
-      return <>{record.collegeName}</>;
+    render: text => {
+      return <>{text === null ? 0 : text}</>;
     },
   },
   {
@@ -127,7 +124,7 @@ const tablecolumns = [
   },
   {
     title: '是否提退',
-    dataIndex: 'orderType',
+    dataIndex: 'refundFlag',
     width: 100,
     render: text => {
       return <>{text === null ? 0 : text}</>;
@@ -135,7 +132,7 @@ const tablecolumns = [
   },
   {
     title: '是否挽留成功',
-    dataIndex: 'orderType',
+    dataIndex: 'retainFlag',
     width: 100,
     render: text => {
       return <>{text === null ? 0 : text}</>;
@@ -151,18 +148,18 @@ const tablecolumns = [
   },
   {
     title: '竞合比',
-    dataIndex: 'saleoffJh',
+    dataIndex: 'competitionRatio',
     width: 110,
-    render: (text, record) => {
-      return <>{record.saleoffJh ? (record.saleoffJh * 100).toFixed(2) : '100.00'}</>;
+    render: text => {
+      return <>{text ? (text * 100).toFixed(2) : '100.00'}</>;
     },
   },
   {
     title: '创收流水',
-    dataIndex: 'saleoffJh',
+    dataIndex: 'incomeFlow',
     width: 120,
     render: text => {
-      return <>{text === null ? '0.00' : text.toFixed(2)}</>;
+      return <>{text === null || text === undefined ? '0.00' : text.toFixed(2)}</>;
     },
   },
   {
@@ -183,13 +180,22 @@ const tablecolumns = [
 class CreateList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      urlParams: {
-        orderTypeList: [],
-        registrationBeginDate: null,
-        registrationEndDate: null,
-      },
+    this.initData = {
+      registrationBeginDate: null,
+      registrationEndDate: null,
+      collegeIdList: [],
+      familyIdList: [],
+      groupIdList: [],
+      refundFlag: undefined,
+      stuId: undefined,
+      teacherName: undefined,
+      retainFlag: undefined,
+      orderId: undefined,
+      orderTypeList: [],
+      pageNum: 0,
+      visible: false,
     };
+    this.state = { ...this.initData };
   }
   componentDidMount() {
     const that = this;
@@ -200,121 +206,137 @@ class CreateList extends Component {
       })
       .then(response => {
         if (response) {
-          const urlParams = {
-            ...this.state.urlParams,
-            registrationBeginDate: moment(response.beginDate).format('YYYY-MM-DD') || null,
-            registrationEndDate: moment(response.endDate).format('YYYY-MM-DD') || null,
-          };
+          this.initData.registrationBeginDate =
+            moment(response.beginDate).format('YYYY-MM-DD') || null;
+          this.initData.registrationEndDate = moment(response.endDate).format('YYYY-MM-DD') || null;
           this.setState({
-            urlParams,
+            ...this.initData,
           });
-          const params = {
-            registrationBeginDate: moment(response.beginDate).format('YYYY-MM-DD') || undefined,
-            registrationEndDate: moment(response.endDate).format('YYYY-MM-DD') || undefined,
-          };
-          that.handleSearch(params);
-          saveParamsInUrl(params);
+          that.handleSearch();
         }
       });
+    // 获取组织
+    this.props.dispatch({
+      type: 'createIncome/getOrgMapList',
+      payload: { params: {} },
+    });
   }
-  // 点击显示每页多少条数据函数
-  onShowSizeChange = (current, pageSize) => {
-    this.changePage(current, pageSize);
+  onEdit = () => {
+    const obj = {
+      collegeId: 104,
+      familyId: 269,
+      groupId: 151,
+      financeNetFlow: 5251.11,
+      id: 7539,
+      kpiFlow: 5251.13,
+      lecturesTime: null,
+      liveLecturesTime: 50,
+      orderType: 1,
+      recommendedTeacher: '孙晓伟',
+      registrationDate: 1568304000000,
+      replayLecturesTime: 40,
+      logicJudge: 'ko听课',
+      stuId: 11865500,
+      orderId: 54432882,
+      teacherName: 'sunxiaowei-fesco',
+      competitionRatio: null,
+    };
+    this.setState({ visible: true, editData: obj });
   };
   onChange = (dates, dateStrings) => {
-    const urlParams = {
-      ...this.state.urlParams,
+    this.setState({
       registrationBeginDate: dateStrings[0] || null,
       registrationEndDate: dateStrings[1] || null,
-    };
-    this.setState({
-      urlParams,
     });
   };
-  onEdit = () => {
-    // console.log(111);
+  onFormChange = (value, vname) => {
+    if (vname === 'organization') {
+      const list1 = [];
+      const list2 = [];
+      const list3 = [];
+      value.forEach(v => {
+        if (v.indexOf('a-') >= 0) {
+          list1.push(v);
+        }
+        if (v.indexOf('b-') >= 0) {
+          list2.push(v);
+        }
+        if (v.indexOf('c-') >= 0) {
+          list3.push(v);
+        }
+      });
+      this.setState({
+        collegeIdList: [...list1],
+        familyIdList: [...list2],
+        groupIdList: [...list3],
+      });
+    } else {
+      this.setState({
+        [vname]: value,
+      });
+    }
   };
-  // 成单类型选择
-  onSelectChange = val => {
-    const urlParams = { ...this.state.urlParams, orderTypeList: val };
-    this.setState({ urlParams });
+  onSubmit = val => {
+    const params = { ...val };
+    params.competitionRatio = params.competitionRatio === undefined ? 100 : params.competitionRatio;
+    params.teacherName = params.recommendedTeacher;
+    params.collegeId = params.organization[0] || undefined;
+    params.familyId = params.organization[1] || undefined;
+    params.groupId = params.organization[2] || undefined;
+    this.props.dispatch({
+      type: 'createIncome/edit',
+      payload: { params },
+    });
   };
-
+  onCancel = () => {
+    this.setState({ visible: false });
+  };
   getData = params => {
-    const getListParams = { ...this.props.createIncome.getListParams, ...params };
+    const getListParams = { ...params };
     this.props.dispatch({
       type: 'createIncome/recommendList',
       payload: { getListParams },
     });
   };
-  getParamsOnEnter = () => {
-    const params = getUrlParams();
-    const p = filterEmptyUrlParams(params);
-    return p;
-  };
+
   // 点击某一页函数
   changePage = (pageNum, size) => {
-    const params = FormFilter.getParams();
-    const newParams = this.handleParams({ ...params, pageNum, size });
+    const newParams = this.handleParams({ ...this.state, pageNum, size });
     this.getData(this.filterEmptyParams(newParams));
   };
   // 表单搜索函数
   handleSearch = params => {
-    const {
-      registrationBeginDate = undefined,
-      registrationEndDate = undefined,
-      orderTypeList = [],
-    } = params;
-    const urlParams = {
-      ...this.state.urlParams,
-      registrationBeginDate,
-      registrationEndDate,
-      orderTypeList,
-    };
-    const newParams = this.handleParams(params);
-    this.getData(this.filterEmptyParams(newParams));
-    this.setState({ urlParams });
+    this.getData(this.handleParams(this.filterEmptyParams({ ...this.state, ...params })));
   };
 
   handleSearchEnter = () => {
-    const params = this.getParamsOnEnter();
-    const arr = params.morderTypeList ? params.morderTypeList.split(',') : [];
-    arr.forEach((item, i) => {
-      if (item === '') arr.splice(i, 1);
-      arr[i] = Number(item);
-    });
-    params.orderTypeList = arr;
-
-    if (params.registrationBeginDate) {
-      params.registrationBeginDate = Number(params.registrationBeginDate);
-      params.registrationEndDate = Number(params.registrationEndDate);
-    }
-    this.handleSearch(params);
+    this.handleSearch();
   };
 
   handleParams = params => {
-    const {
-      registrationBeginDate = undefined,
-      registrationEndDate = undefined,
-      orgName = undefined,
-      recommendedTeacher = undefined,
-      orderTypeList = undefined,
-      teacherName = undefined,
-    } = params;
-    const orderId = params.orderId ? parseInt(params.orderId) : undefined;
-    const stuId = params.stuId ? parseInt(params.stuId) : undefined;
-    const pageNum = params.pageNum ? Number(params.pageNum) : 0;
-    const newParams = {
-      registrationBeginDate,
-      registrationEndDate,
-      recommendedTeacher,
-      teacherName,
-      orgName,
-      orderId,
-      stuId,
-      orderTypeList,
-      pageNum,
-    };
+    const newParams = deepCopy(params);
+    newParams.orderId = params.orderId ? parseInt(params.orderId) : undefined;
+    newParams.stuId = params.stuId ? parseInt(params.stuId) : undefined;
+    newParams.refundFlag = params.refundFlag ? parseInt(params.refundFlag) : undefined;
+    newParams.retainFlag = params.retainFlag ? parseInt(params.retainFlag) : undefined;
+    newParams.pageNum = params.pageNum ? Number(params.pageNum) : 0;
+    newParams.pageSize = params.pageSize ? Number(params.pageSize) : 30;
+
+    if (newParams.collegeIdList && newParams.collegeIdList.length > 0) {
+      newParams.collegeIdList = newParams.collegeIdList.map(v => {
+        return Number(v.replace('a-', ''));
+      });
+    }
+    if (newParams.familyIdList && newParams.familyIdList.length > 0) {
+      newParams.familyIdList = newParams.familyIdList.map(v => {
+        return Number(v.replace('b-', ''));
+      });
+    }
+    if (newParams.groupIdList && newParams.groupIdList.length > 0) {
+      newParams.groupIdList = newParams.groupIdList.map(v => {
+        return Number(v.replace('c-', ''));
+      });
+    }
     return newParams;
   };
   filterEmptyParams = data => {
@@ -332,9 +354,11 @@ class CreateList extends Component {
     return params;
   };
   resetList = () => {
-    const urlParams = { ...this.state.urlParams, orderTypeList: [] };
-    this.setState({ urlParams });
+    this.setState({ ...this.initData }, function() {
+      this.getData(this.handleParams(this.filterEmptyParams(this.state)));
+    });
   };
+
   // 删除数据
   createIncomeDel = () => {
     this.props.setRouteUrlParams('/bottomOrder/createIncomeDel');
@@ -378,6 +402,21 @@ class CreateList extends Component {
   render() {
     const options = window.BI_Filter('BILL_TYPE');
     const { urlParams } = this.state;
+    const {
+      registrationBeginDate = undefined,
+      registrationEndDate = undefined,
+      collegeIdList = [],
+      familyIdList = [],
+      groupIdList = [],
+      refundFlag,
+      stuId,
+      teacherName,
+      retainFlag,
+      orderId,
+      orderTypeList = [],
+      visible,
+    } = this.state;
+    const { orgListTreeData = [], orgList = [] } = this.props.createIncome;
     const val = this.props.createIncome.qualityList;
     const res = !val.response ? {} : !val.response.data ? {} : val.response.data;
     const data = res.pageInfo || {};
@@ -385,16 +424,10 @@ class CreateList extends Component {
     const totalMoney = !res.kpiFlowTotal ? 0 : res.kpiFlowTotal;
     const pageNum = !data.pageNum ? 1 : data.pageNum;
     const dataSource = data.list;
-    const { beginDate, endDate } = this.props.createIncome;
-    const initData = {
-      registrationBeginDate: beginDate || null,
-      registrationEndDate: endDate || null,
-    };
     const columns = this.columnsAction();
     const WrappedAdvancedSearchForm = () => (
       <FormFilter
         onSubmit={this.handleSearch}
-        initData={initData}
         isLoading={this.props.loading}
         isCreateIncome={1}
         otherModal={urlParams}
@@ -404,7 +437,7 @@ class CreateList extends Component {
           <span style={{ lineHeight: '32px' }}>报名日期：</span>
           <RangePicker
             allowClear
-            value={[urlParams.registrationBeginDate, urlParams.registrationEndDate].map(
+            value={[registrationBeginDate, registrationEndDate].map(
               item => (item ? moment(item) : null)
             )}
             disabledDate={this.disabledDate}
@@ -415,35 +448,33 @@ class CreateList extends Component {
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>
-            组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;织：
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 组织架构：
           </span>
-          <Input
-            onPressEnter={this.handleSearchEnter}
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="orgName"
+          <TreeSelect
+            style={{ width: 230 }}
+            placeholder="请选择"
+            allowClear
+            value={[...collegeIdList, ...familyIdList, ...groupIdList]}
+            multiple
+            showArrow
+            maxTagCount={1}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            treeData={orgListTreeData}
+            onChange={value => this.onFormChange(value, 'organization')}
           />
         </div>
         <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>成单类型：</span>
+          <span style={{ lineHeight: '32px' }}>是否提退：</span>
           <Select
             allowClear
-            mode="multiple"
-            showArrow
-            maxTagCount={1}
-            maxTagTextLength={7}
             placeholder="请选择"
-            type="select"
-            flag="orderTypeList"
-            onChange={this.onSelectChange}
+            onChange={value => this.onFormChange(value, 'refundFlag')}
             style={{ width: 230, height: 32 }}
-            value={urlParams.orderTypeList}
+            value={refundFlag}
           >
-            {options.map(item => (
-              <Option key={item.id} value={item.id}>
-                {item.name}
+            {['0', '1'].map(item => (
+              <Option key={item} value={item}>
+                {item}
               </Option>
             ))}
           </Select>
@@ -455,20 +486,9 @@ class CreateList extends Component {
             className="agc"
             placeholder="请输入数字"
             min={0}
+            value={stuId}
             style={{ width: 230, height: 32 }}
-            type="input"
-            flag="stuId"
-          />
-        </div>
-        <div className={styles.u_div}>
-          <span style={{ lineHeight: '32px' }}>推荐老师：</span>
-          <Input
-            onPressEnter={this.handleSearchEnter}
-            placeholder="请输入"
-            maxLength={20}
-            style={{ width: 230, height: 32 }}
-            type="input"
-            flag="recommendedTeacher"
+            onChange={e => this.onFormChange(e.target.value, 'stuId')}
           />
         </div>
         <div className={styles.u_div}>
@@ -477,10 +497,26 @@ class CreateList extends Component {
             onPressEnter={this.handleSearchEnter}
             placeholder="请输入"
             maxLength={20}
+            value={teacherName}
             style={{ width: 230, height: 32 }}
-            type="input"
-            flag="teacherName"
+            onChange={e => this.onFormChange(e.target.value, 'teacherName')}
           />
+        </div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>是否挽留成功：</span>
+          <Select
+            allowClear
+            placeholder="请选择"
+            style={{ width: 230, height: 32 }}
+            value={retainFlag}
+            onChange={value => this.onFormChange(value, 'retainFlag')}
+          >
+            {['0', '1'].map(item => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
+          </Select>
         </div>
         <div className={styles.u_div}>
           <span style={{ lineHeight: '32px' }}>子订单ID：</span>
@@ -488,13 +524,34 @@ class CreateList extends Component {
             onPressEnter={this.handleSearchEnter}
             className="agc"
             min={0}
+            value={orderId}
             placeholder="请输入数字"
             style={{ width: 230, height: 32 }}
-            type="input"
-            flag="orderId"
+            onChange={e => this.onFormChange(e.target.value, 'orderId')}
           />
         </div>
-        <div className={styles.u_div}>&nbsp;</div>
+        <div className={styles.u_div}>
+          <span style={{ lineHeight: '32px' }}>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 成单类型：
+          </span>
+          <Select
+            allowClear
+            mode="multiple"
+            showArrow
+            maxTagCount={1}
+            maxTagTextLength={7}
+            placeholder="请选择"
+            onChange={value => this.onFormChange(value, 'orderTypeList')}
+            style={{ width: 230, height: 32 }}
+            value={orderTypeList}
+          >
+            {options.map(item => (
+              <Option key={item.id} value={item.id}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
+        </div>
       </FormFilter>
     );
     // const getTab = () => {
@@ -544,7 +601,15 @@ class CreateList extends Component {
               />
             </div>
           }
-        />
+        >
+          <EditModal
+            visible={visible}
+            editData={this.state.editData}
+            orgList={orgList}
+            onSubmit={value => this.onSubmit(value)}
+            onCancel={this.onCancel}
+          />
+        </ContentLayout>
       </div>
     );
   }
