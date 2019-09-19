@@ -48,13 +48,17 @@ export default class SelfTable extends PureComponent {
     this.props.createIncomeDel();
   };
   render() {
+    // totalMoney 创收成单页面进入有绩效流水
     const { dataSource, totalNum = 0, className = '', totalMoney = 0, ...others } = this.props;
     const { pageNum } = this.state;
     return (
       <div>
         {totalMoney && (
           <p className={styles.totalNum1}>
-            绩效流水合计：{totalMoney} &nbsp;&nbsp;&nbsp;总数：{totalNum}条
+            <p>
+              绩效流水：<i className={styles.green}>{totalMoney}</i> &nbsp;&nbsp;&nbsp;总条数：
+              <i className={styles.green}>{totalNum}</i>
+            </p>
             <div>
               <AuthorizedButton authority="/bottomOrder/createIncomeAdd">
                 <Button onClick={this.createIncomeAdd} type="primary" className={common.newButton}>
