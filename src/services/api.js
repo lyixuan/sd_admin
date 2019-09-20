@@ -1166,6 +1166,12 @@ export async function incomeOrderList(params) {
     body: params,
   });
 }
+export async function incomeEditSave(params) {
+  return request(`${HOST_NEW}/incomeOrder/edit/submit`, {
+    method: 'POST',
+    body: params,
+  });
+}
 export async function getDateRange() {
   return request(`${HOST_NEW}/incomeOrder/dateRange`, {
     method: 'GET',

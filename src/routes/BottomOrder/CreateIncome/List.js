@@ -21,7 +21,7 @@ const tablecolumns = [
   {
     title: '报名时间',
     dataIndex: 'registrationDate',
-    width: 120,
+    width: 100,
     fixed: 'left',
     render: text => {
       return (
@@ -38,7 +38,7 @@ const tablecolumns = [
   {
     title: '子订单ID',
     dataIndex: 'orderId',
-    width: 100,
+    width: 80,
     fixed: 'left',
     render: text => {
       return <>{text === null ? <span className={styles.unFind}>未获取到</span> : text}</>;
@@ -47,7 +47,7 @@ const tablecolumns = [
   {
     title: '学员ID',
     dataIndex: 'stuId',
-    width: 105,
+    width: 90,
     fixed: 'left',
     render: text => {
       return <>{text === null ? <span className={styles.unFind}>未获取到</span> : text}</>;
@@ -56,28 +56,38 @@ const tablecolumns = [
   {
     title: '组织架构',
     dataIndex: 'college',
-    width: 180,
+    width: 185,
     fixed: 'left',
     render: (text, record) => {
-      return (
-        <>
-          {`${
-            record.collegeName ? (
-              record.collegeName
-            ) : (
-              <span className={styles.unFind}>未获取到</span>
-            )
-          } ${record.familyName ? `| ${record.familyName}` : ''}  ${
-            record.groupName ? `| ${record.groupName}` : ''
-          }`}
-        </>
+      const row1 =
+        record.collegeName && record.familyName && record.groupName ? (
+          <span style={{ fontSize: 12 }}>
+            {record.collegeName}|{record.familyName}|{record.groupName}
+          </span>
+        ) : (
+          false
+        );
+      const row2 =
+        record.collegeName && record.familyName ? (
+          <span style={{ fontSize: 12 }}>
+            {record.collegeName}|{record.familyName}
+          </span>
+        ) : (
+          false
+        );
+      const row3 = record.collegeName ? (
+        <span style={{ fontSize: 12 }}>{record.collegeName}</span>
+      ) : (
+        <span className={styles.unFind}>未获取到</span>
       );
+      return <>{row1 || (row2 || row3)}</>;
     },
   },
   {
     title: '推荐老师邮箱',
     dataIndex: 'teacherName',
-    width: 110,
+    fixed: 'left',
+    width: 120,
     render: text => {
       return <>{text === null ? <span className={styles.unFind}>未获取到</span> : text}</>;
     },
@@ -85,22 +95,40 @@ const tablecolumns = [
   {
     title: '推荐老师',
     dataIndex: 'recommendedTeacher',
-    width: 80,
+    fixed: 'left',
+    width: 85,
+  },
+  {
+    title: '',
+    dataIndex: 'du',
+    render: () => {
+      return (
+        <>
+          <span>&nbsp;</span>
+        </>
+      );
+    },
   },
   {
     title: '重播听课',
     dataIndex: 'replayLecturesTime',
-    width: 120,
+    width: 85,
+    render: text => {
+      return <>{text === null ? '' : text.toFixed(2)}</>;
+    },
   },
   {
     title: '直播听课',
     dataIndex: 'liveLecturesTime',
-    width: 120,
+    width: 85,
+    render: text => {
+      return <>{text === null ? '' : text.toFixed(2)}</>;
+    },
   },
   {
     title: '判断逻辑',
     dataIndex: 'logicJudge',
-    width: 100,
+    width: 85,
     render: text => {
       return <>{text === null ? 0 : text}</>;
     },
@@ -108,23 +136,15 @@ const tablecolumns = [
   {
     title: '成单类型',
     dataIndex: 'orderType',
-    width: 100,
+    width: 85,
     render: text => {
-      return (
-        <>
-          {text === null ? (
-            <span className={styles.unFind}>未获取到</span>
-          ) : (
-            window.BI_Filter(`BILL_TYPE|id:${text}`).name
-          )}
-        </>
-      );
+      return <>{text === null ? <span className={styles.unFind}>未获取到</span> : text}</>;
     },
   },
   {
     title: '是否提退',
     dataIndex: 'refundFlag',
-    width: 100,
+    width: 85,
     render: text => {
       return <>{text === null ? 0 : text}</>;
     },
@@ -132,7 +152,7 @@ const tablecolumns = [
   {
     title: '是否挽留成功',
     dataIndex: 'retainFlag',
-    width: 100,
+    width: 108,
     render: text => {
       return <>{text === null ? 0 : text}</>;
     },
@@ -140,7 +160,7 @@ const tablecolumns = [
   {
     title: '净流水',
     dataIndex: 'financeNetFlow',
-    width: 90,
+    width: 85,
     render: text => {
       return <>{text === null ? '0.00' : text.toFixed(2)}</>;
     },
@@ -148,7 +168,7 @@ const tablecolumns = [
   {
     title: '竞合比',
     dataIndex: 'competitionRatio',
-    width: 110,
+    width: 85,
     render: text => {
       return <>{text ? (text * 100).toFixed(2) : '100.00'}</>;
     },
@@ -156,7 +176,7 @@ const tablecolumns = [
   {
     title: '创收流水',
     dataIndex: 'incomeFlow',
-    width: 120,
+    width: 85,
     render: text => {
       return <>{text === null || text === undefined ? '0.00' : text.toFixed(2)}</>;
     },
@@ -164,7 +184,7 @@ const tablecolumns = [
   {
     title: '绩效流水',
     dataIndex: 'kpiFlow',
-    width: 70,
+    width: 85,
     render: text => {
       return <>{text === null ? '0.00' : text.toFixed(2)}</>;
     },
@@ -220,26 +240,8 @@ class CreateList extends Component {
       payload: { params: {} },
     });
   }
-  onEdit = () => {
-    const obj = {
-      collegeId: 104,
-      familyId: 269,
-      groupId: 151,
-      financeNetFlow: 5251.11,
-      id: 7539,
-      kpiFlow: 5251.13,
-      lecturesTime: null,
-      liveLecturesTime: 50,
-      orderType: 1,
-      recommendedTeacher: '孙晓伟',
-      registrationDate: 1568304000000,
-      replayLecturesTime: 40,
-      logicJudge: 'ko听课',
-      stuId: 11865500,
-      orderId: 54432882,
-      teacherName: 'sunxiaowei-fesco',
-      competitionRatio: null,
-    };
+  onEdit = record => {
+    const obj = deepCopy(record);
     this.setState({ visible: true, editData: obj });
   };
   onChange = (dates, dateStrings) => {
@@ -278,12 +280,13 @@ class CreateList extends Component {
   onSubmit = val => {
     const params = { ...val };
     params.competitionRatio = params.competitionRatio === undefined ? 100 : params.competitionRatio;
-    params.teacherName = params.recommendedTeacher;
+    params.recommendedTeacher = params.teacherName;
     params.collegeId = params.organization[0] || undefined;
     params.familyId = params.organization[1] || undefined;
     params.groupId = params.organization[2] || undefined;
+    delete params.organization;
     this.props.dispatch({
-      type: 'createIncome/edit',
+      type: 'createIncome/incomeEditSave',
       payload: { params },
     });
   };
@@ -292,6 +295,7 @@ class CreateList extends Component {
   };
   getData = params => {
     const getListParams = { ...params };
+    delete getListParams.visible;
     this.props.dispatch({
       type: 'createIncome/recommendList',
       payload: { getListParams },
@@ -353,7 +357,7 @@ class CreateList extends Component {
     return params;
   };
   resetList = () => {
-    this.setState({ ...this.initData }, function() {
+    this.setState({ ...this.initData }, () => {
       this.getData(this.handleParams(this.filterEmptyParams(this.state)));
     });
   };
@@ -377,6 +381,8 @@ class CreateList extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
+        width: 55,
+        fixed: 'right',
         render: (text, record) => {
           return (
             <>
@@ -389,10 +395,6 @@ class CreateList extends Component {
             </>
           );
         },
-      },
-      {
-        title: '',
-        dataIndex: 'duoyukuandu',
       },
     ];
     return [...tablecolumns, ...actionObj];
@@ -585,7 +587,7 @@ class CreateList extends Component {
         contentTable={
           <div style={{ padding: 10 }}>
             <FormFilter.Table
-              scroll={{ x: 1910, y: 573 }}
+              scroll={{ x: 1590, y: 573 }}
               size="middle"
               className="circleTable"
               pageNum={pageNum}

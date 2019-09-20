@@ -10,6 +10,7 @@ import {
   createIncomeCheck,
   createIncomeData,
   getOrgMapList,
+  incomeEditSave,
 } from '../services/api';
 
 export default {
@@ -34,6 +35,16 @@ export default {
 
       if (result.code === 20000) {
         yield put({ type: 'saveMap', payload: { orgList } });
+      } else {
+        message.error(result.msg);
+      }
+    },
+    *incomeEditSave({ payload }, { call, put }) {
+      const { params } = payload;
+      const result = yield call(incomeEditSave, params);
+      if (result.code === 20000) {
+        yield put({ type: 'recommendList', payload: { getListParams: this.state.getListParams } });
+        message.success('保存成功');
       } else {
         message.error(result.msg);
       }
