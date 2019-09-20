@@ -579,7 +579,7 @@ class CreateList extends Component {
     // };
     return (
       <div>
-        <BatchProcess visible={visibleDel} onCancel={this.onCancelStep} />
+        <BatchProcess visible={visibleDel} onCancel={this.onCancelStep} {...this.props} />
         <ContentLayout
           routerData={this.props.routerData}
           contentForm={WrappedAdvancedSearchForm()}

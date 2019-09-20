@@ -102,7 +102,6 @@ class BatchProcessing extends Component {
       })
       .then(res => {
         if (!res) return;
-        debugger;
         this.setState({ current: 1, step1Data: res.data });
       });
   };
@@ -123,10 +122,11 @@ class BatchProcessing extends Component {
       });
   };
   step3FetchFn = () => {
-    this.setState({ visible: false });
-    this.props.history.push({
-      pathname: '/bottomOrder/createIncome',
-    });
+    // this.setState({ visible: false });
+    this.onCancel();
+    // this.props.history.push({
+    //   pathname: '/bottomOrder/createIncome',
+    // });
   };
   editCurrentFn = current => {
     this.setState({ current });
@@ -244,9 +244,9 @@ class BatchProcessing extends Component {
               </p>
               <div className={styles.textAreaCon}>
                 <p>以下子订单ID未找到：</p>
-                <textArea disabled className={styles.text} style={{ width: '100%' }}>
+                <textarea disabled className={styles.text} style={{ width: '100%' }}>
                   {failList}
-                </textArea>
+                </textarea>
               </div>
             </div>
           </div>
