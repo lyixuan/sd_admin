@@ -366,7 +366,6 @@ class CreateList extends Component {
   // 删除数据
   createIncomeDel = () => {
     this.setState({ visibleDel: true });
-    // this.props.setRouteUrlParams('/bottomOrder/createIncomeDel');
   };
 
   // 添加数据

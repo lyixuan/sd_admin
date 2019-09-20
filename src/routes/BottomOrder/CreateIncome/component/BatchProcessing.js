@@ -73,14 +73,20 @@ class BatchProcessing extends Component {
   };
 
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.onCancel();
   };
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
+  //   onCancel = () => {
+  //     this.setState({
+  //       current: 0,
+  //       visible: false,
+  //       disabled: false,
+  //       batchType: null,
+  //       batchValue: null,
+  //       orderIds: '',
+  //     });
+  //     this.props.onCancel();
+  //   };
 
   step1FetchFn = () => {
     const { batchType, batchValue, orderIds } = this.state;
@@ -138,6 +144,14 @@ class BatchProcessing extends Component {
   };
 
   onCancel = () => {
+    this.setState({
+      current: 0,
+      visible: false,
+      disabled: false,
+      batchType: null,
+      batchValue: null,
+      orderIds: '',
+    });
     this.props.onCancel();
   };
   render() {
