@@ -54,7 +54,7 @@ export default class SelfTable extends PureComponent {
     return (
       <div>
         {totalMoney > 0 && (
-          <p className={styles.totalNum1}>
+          <div className={styles.totalNum1}>
             <p>
               绩效流水：<i className={styles.green}>{totalMoney}</i> &nbsp;&nbsp;&nbsp;总条数：
               <i className={styles.green}>{totalNum}</i>
@@ -74,7 +74,7 @@ export default class SelfTable extends PureComponent {
                 </Button>
               </AuthorizedButton>
             </div>
-          </p>
+          </div>
         )}
         {totalMoney === 0 && <p className={styles.totalNum}>总数：{totalNum}条</p>}
         <Table

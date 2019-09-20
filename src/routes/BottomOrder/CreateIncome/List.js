@@ -399,7 +399,6 @@ class CreateList extends Component {
   // 删除数据
   createIncomeDel = () => {
     this.setState({ visibleDel: true });
-    // this.props.setRouteUrlParams('/bottomOrder/createIncomeDel');
   };
 
   // 添加数据
@@ -599,7 +598,7 @@ class CreateList extends Component {
     // };
     return (
       <div>
-        <BatchProcess visible={visibleDel} onCancel={this.onCancelStep} />
+        <BatchProcess visible={visibleDel} onCancel={this.onCancelStep} {...this.props} />
         <ContentLayout
           routerData={this.props.routerData}
           contentForm={WrappedAdvancedSearchForm()}

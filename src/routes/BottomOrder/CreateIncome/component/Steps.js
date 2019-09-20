@@ -35,9 +35,6 @@ class Steps extends Component {
 
   handleCancel = () => {
     this.props.onCancel();
-    // this.setState({
-    //   visible: false,
-    // });
   };
 
   next = () => {

@@ -73,14 +73,20 @@ class BatchProcessing extends Component {
   };
 
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.onCancel();
   };
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
+  //   onCancel = () => {
+  //     this.setState({
+  //       current: 0,
+  //       visible: false,
+  //       disabled: false,
+  //       batchType: null,
+  //       batchValue: null,
+  //       orderIds: '',
+  //     });
+  //     this.props.onCancel();
+  //   };
 
   step1FetchFn = () => {
     const { batchType, batchValue, orderIds } = this.state;
@@ -96,7 +102,6 @@ class BatchProcessing extends Component {
       })
       .then(res => {
         if (!res) return;
-        debugger;
         this.setState({ current: 1, step1Data: res.data });
       });
   };
@@ -117,10 +122,7 @@ class BatchProcessing extends Component {
       });
   };
   step3FetchFn = () => {
-    this.setState({ visible: false });
-    this.props.history.push({
-      pathname: '/bottomOrder/createIncome',
-    });
+    this.onCancel();
   };
   editCurrentFn = current => {
     this.setState({ current });
@@ -138,6 +140,20 @@ class BatchProcessing extends Component {
   };
 
   onCancel = () => {
+    this.setState({
+      current: 0,
+      visible: false,
+      disabled: false,
+      batchType: null,
+      batchValue: null,
+      orderIds: '',
+      step1Data: {
+        failCount: 0,
+        failList: [],
+        successCount: 0,
+        totalCount: 0,
+      },
+    });
     this.props.onCancel();
   };
   render() {
@@ -187,7 +203,7 @@ class BatchProcessing extends Component {
                 <i className={styles.red}>*</i>子订单ID:
               </span>
               <TextArea
-                value={orderIds}
+                defaultValue={orderIds}
                 onChange={this.onTextChange}
                 style={{ width: 370 }}
                 placeholder="请输入子订单ID,多个编号请使用逗号、空格、换行区分"
@@ -230,9 +246,9 @@ class BatchProcessing extends Component {
               </p>
               <div className={styles.textAreaCon}>
                 <p>以下子订单ID未找到：</p>
-                <textArea disabled className={styles.text} style={{ width: '100%' }}>
+                <textarea disabled className={styles.text} style={{ width: '100%' }}>
                   {failList}
-                </textArea>
+                </textarea>
               </div>
             </div>
           </div>
@@ -262,7 +278,7 @@ class BatchProcessing extends Component {
               >
                 {step2Data.status ? (
                   <span>
-                    成功更新 <i className={styles.green}>98</i>条订单记录
+                    成功更新 <i className={styles.green}>{step2Data.totalCount}</i>条订单记录
                   </span>
                 ) : (
                   <i className={styles.red}>数据更新失败</i>

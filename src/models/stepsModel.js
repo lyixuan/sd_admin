@@ -41,10 +41,10 @@ export default {
       const stepSubmitData = yield call(stepSubmit, { ...params });
       if (stepSubmitData.code !== 20000) {
         message.error(stepSubmitData.msg);
-        yield put({ type: 'save', payload: { stepSubmitData } });
-        return stepSubmitData;
+        return false;
       } else {
         yield put({ type: 'save', payload: { stepSubmitData } });
+        return stepSubmitData;
       }
     },
   },
