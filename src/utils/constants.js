@@ -42,8 +42,8 @@ export const API_HOST = {
 
 // 设置督学模块跳转
 export const INSPECTOR_HOST = {
-  localhost: 'http://test.xd.admin.ministudy.com',
-  development: 'http://test.xd.admin.ministudy.com',
+  localhost: 'http://test.xd.temp.ministudy.com',
+  development: 'http://test.xd.temp.ministudy.com',
   production: 'http://bd.ministudy.com',
 }[process.env.LOGIN_HOST];
 
