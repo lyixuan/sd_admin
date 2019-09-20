@@ -11,6 +11,7 @@ import {
   createIncomeData,
   getOrgMapList,
   incomeEditSave,
+  getNameByMail,
 } from '../services/api';
 
 export default {
@@ -47,6 +48,13 @@ export default {
         message.success('保存成功');
       } else {
         message.error(result.msg);
+      }
+    },
+    *getNameByMail({ payload }, { call, put }) {
+      const { params } = payload;
+      const response = yield call(getNameByMail, params);
+      if (result.code === 20000) {
+        yield put({ type: 'saveTime', payload: { mailName: response } });
       }
     },
     *recommendList({ payload }, { call, put }) {
