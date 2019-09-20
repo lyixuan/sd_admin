@@ -122,11 +122,7 @@ class BatchProcessing extends Component {
       });
   };
   step3FetchFn = () => {
-    // this.setState({ visible: false });
     this.onCancel();
-    // this.props.history.push({
-    //   pathname: '/bottomOrder/createIncome',
-    // });
   };
   editCurrentFn = current => {
     this.setState({ current });
@@ -151,6 +147,12 @@ class BatchProcessing extends Component {
       batchType: null,
       batchValue: null,
       orderIds: '',
+      step1Data: {
+        failCount: 0,
+        failList: [],
+        successCount: 0,
+        totalCount: 0,
+      },
     });
     this.props.onCancel();
   };
@@ -201,7 +203,7 @@ class BatchProcessing extends Component {
                 <i className={styles.red}>*</i>子订单ID:
               </span>
               <TextArea
-                value={orderIds}
+                defaultValue={orderIds}
                 onChange={this.onTextChange}
                 style={{ width: 370 }}
                 placeholder="请输入子订单ID,多个编号请使用逗号、空格、换行区分"
@@ -276,7 +278,7 @@ class BatchProcessing extends Component {
               >
                 {step2Data.status ? (
                   <span>
-                    成功更新 <i className={styles.green}>98</i>条订单记录
+                    成功更新 <i className={styles.green}>{step2Data.totalCount}</i>条订单记录
                   </span>
                 ) : (
                   <i className={styles.red}>数据更新失败</i>
