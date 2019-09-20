@@ -166,9 +166,27 @@ export const BOTTOM_LINE_TYPE = [{ id: 3, name: '退费' }, { id: 5, name: '退�
 
 // 成单类型
 export const BILL_TYPE = [
-  { id: 1, name: '好推' },
-  { id: 2, name: '续报' },
-  { id: 3, name: '成考专本套' },
+  { id: '好推', name: '好推' },
+  { id: '续报', name: '续报' },
+  { id: '成考专本套', name: '成考专本套' },
+];
+
+// 创收类型
+export const CREATE_TYPE = [
+  { id: 1, name: '产品转介绍' },
+  { id: 2, name: '运营转介绍' },
+  { id: 3, name: 'APP转介绍' },
+];
+
+// 转介绍类型
+export const INTRO_TYPE = [
+  { id: 1, name: '普通好推' },
+  { id: 2, name: '竞合-前端发起' },
+  { id: 3, name: '竞合-后端发起' },
+  { id: 4, name: '竞合-后端发起（无归属）' },
+  { id: 5, name: '无流量' },
+  { id: 6, name: '普通续报' },
+  { id: 7, name: '竞合续报' },
 ];
 
 // 需要用于global filter 进行数据筛选的，必须加到default里
@@ -198,4 +216,6 @@ export default {
   RECOMMEND_LEVEL,
   BOTTOM_LINE_TYPE,
   BILL_TYPE,
+  CREATE_TYPE,
+  INTRO_TYPE,
 };

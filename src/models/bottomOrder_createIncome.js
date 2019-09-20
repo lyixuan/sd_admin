@@ -10,6 +10,8 @@ import {
   createIncomeCheck,
   createIncomeData,
   getOrgMapList,
+  incomeEditSave,
+  getNameByMail,
 } from '../services/api';
 
 export default {
@@ -38,12 +40,33 @@ export default {
         message.error(result.msg);
       }
     },
+    *incomeEditSave({ payload }, { call }) {
+      const { params } = payload;
+      const result = yield call(incomeEditSave, params);
+      if (result.code === 20000 && result.data) {
+        message.success('保存成功');
+        return true;
+      } else {
+        message.error(result.msgDetail);
+        return false;
+      }
+    },
+    *getNameByMail({ payload }, { call, put }) {
+      const { params } = payload;
+      const response = yield call(getNameByMail, params);
+      if (response.code === 20000) {
+        yield put({ type: 'saveTime', payload: { mailName: response } });
+      }
+    },
     *recommendList({ payload }, { call, put }) {
       const { getListParams } = payload;
       const page = getListParams.pageNum + 1;
       delete getListParams.pageNum;
       const response = yield call(incomeOrderList, { ...getListParams, ...{ page } });
-      yield put({ type: 'pureSave', payload: { response, getListParams } });
+      yield put({
+        type: 'pureSave',
+        payload: { response, getListParams: { ...getListParams, ...{ page } } },
+      });
     },
     *getDateRange(_, { call, put }) {
       const response = yield call(getDateRange);

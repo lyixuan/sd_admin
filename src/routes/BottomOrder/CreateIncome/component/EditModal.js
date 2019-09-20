@@ -19,9 +19,6 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
       });
     };
 
-    teacherChange = val => {
-      console.log(val);
-    };
     render() {
       const { visible, title, orgList = [], form, params } = this.props;
       const {
@@ -30,11 +27,14 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
         collegeId,
         familyId,
         groupId,
-        recommendedTeacher,
+        teacherName,
         logicJudge,
         replayLecturesTime,
         liveLecturesTime,
         competitionRatio,
+        engageType,
+        recommendType,
+        id,
       } = params;
       const { getFieldDecorator } = form;
       return (
@@ -47,6 +47,11 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
         >
           <Form layout="vertical" className="createEditForm">
             <div className={styles.line}>
+              <Form.Item style={{ display: 'none' }}>
+                {getFieldDecorator('id', {
+                  initialValue: id,
+                })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
+              </Form.Item>
               <span className={styles.left}>子订单ID:</span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
                 {getFieldDecorator('orderId', {
@@ -87,20 +92,18 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 <i className={styles.red}>*</i>推荐老师邮箱:
               </span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('recommendedTeacher', {
-                  initialValue: recommendedTeacher,
+                {getFieldDecorator('teacherName', {
+                  initialValue: teacherName,
                   rules: [{ required: true, message: '推荐老师邮箱不能为空' }],
-                })(
-                  <Input style={{ width: 230, marginRight: '6px' }} onChange={this.teacherChange} />
-                )}
+                })(<Input style={{ width: 230, marginRight: '6px' }} />)}
               </Form.Item>
               <span>@sunlands.com</span>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>推荐老师:</span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('recommendedTeacher', {
-                  initialValue: recommendedTeacher,
+                {getFieldDecorator('teacherName', {
+                  initialValue: teacherName,
                 })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
               </Form.Item>
             </div>
@@ -109,17 +112,16 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 <i className={styles.red}>*</i>创收类型:
               </span>
               <Form.Item>
-                {getFieldDecorator('title', {
-                  initialValue: recommendedTeacher,
+                {getFieldDecorator('engageType', {
+                  initialValue: engageType,
                   rules: [{ required: true, message: '创收类型不能为空' }],
                 })(
-                  <Select showSearch style={{ width: 230 }} onChange={this.onChange}>
-                    <Option value="jack">普通好推</Option>
-                    <Option value="lucy">竞合-前端发起</Option>
-                    <Option value="tom">竞合-后端发起（无归属）</Option>
-                    <Option value="tom">无流量</Option>
-                    <Option value="tom">普通续报</Option>
-                    <Option value="tom">竞合续报</Option>
+                  <Select showSearch style={{ width: 230 }}>
+                    {window.BI_Filter('INTRO_TYPE').map(item => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
                   </Select>
                 )}
               </Form.Item>
@@ -127,11 +129,15 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             <div className={styles.line}>
               <span className={styles.left}>转介绍类型:</span>
               <Form.Item>
-                {getFieldDecorator('1')(
+                {getFieldDecorator('recommendType', {
+                  initialValue: recommendType,
+                })(
                   <Select showSearch style={{ width: 230 }} onChange={this.onChange}>
-                    <Option value="1">产品转介绍</Option>
-                    <Option value="2">运营转介绍</Option>
-                    <Option value="3">APP转介绍</Option>
+                    {window.BI_Filter('CREATE_TYPE').map(item => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
                   </Select>
                 )}
               </Form.Item>
@@ -143,8 +149,9 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   initialValue: logicJudge,
                 })(
                   <Select showSearch style={{ width: 230 }}>
-                    <Option value="ko听课">ko听课</Option>
+                    <Option value="KO听课">KO听课</Option>
                     <Option value="好推听课">好推听课</Option>
+                    <Option value="未听课">未听课</Option>
                   </Select>
                 )}
               </Form.Item>
@@ -231,10 +238,13 @@ class EditModal extends Component {
       collegeId: editData.collegeId || undefined,
       familyId: editData.familyId || undefined,
       groupId: editData.groupId || undefined,
-      recommendedTeacher: editData.recommendedTeacher || undefined,
+      teacherName: editData.teacherName || undefined,
       logicJudge: editData.logicJudge,
       replayLecturesTime: editData.replayLecturesTime,
       liveLecturesTime: editData.liveLecturesTime,
+      engageType: editData.engageType,
+      recommendType: editData.recommendType,
+      id: editData.id,
       competitionRatio:
         editData.competitionRatio === null ||
         editData.competitionRatio === undefined ||
