@@ -1,13 +1,14 @@
 /* eslint-disable radix,prefer-destructuring */
 import React, { Component } from 'react';
-import { Button, Input, Select, DatePicker, TreeSelect } from 'antd';
+import { Input, Select, DatePicker, TreeSelect } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 // import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
 import ContentLayout from '../../../layouts/ContentLayout';
 import FormFilter from '../../../selfComponent/FormFilter';
-import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
-import common from '../../Common/common.css';
+// import AuthorizedButton from '../../../selfComponent/AuthorizedButton';
+import BatchProcess from './component/BatchProcessing';
+// import common from '../../Common/common.css';
 import styles from './style.less';
 import { deepCopy } from '../../../utils/utils';
 import EditModal from './component/EditModal';
@@ -213,6 +214,7 @@ class CreateList extends Component {
       orderTypeList: [],
       pageNum: 0,
       visible: false,
+      visibleDel: false,
     };
     this.state = { ...this.initData };
   }
@@ -293,6 +295,9 @@ class CreateList extends Component {
   onCancel = () => {
     this.setState({ visible: false });
   };
+  onCancelStep = () => {
+    this.setState({ visibleDel: false });
+  };
   getData = params => {
     const getListParams = { ...params };
     delete getListParams.visible;
@@ -364,7 +369,8 @@ class CreateList extends Component {
 
   // 删除数据
   createIncomeDel = () => {
-    this.props.setRouteUrlParams('/bottomOrder/createIncomeDel');
+    this.setState({ visibleDel: true });
+    // this.props.setRouteUrlParams('/bottomOrder/createIncomeDel');
   };
 
   // 添加数据
@@ -416,6 +422,7 @@ class CreateList extends Component {
       orderId,
       orderTypeList = [],
       visible,
+      visibleDel,
     } = this.state;
     const { orgListTreeData = [], orgList = [] } = this.props.createIncome;
     const val = this.props.createIncome.qualityList;
@@ -562,53 +569,58 @@ class CreateList extends Component {
     //   ];
     // };
     return (
-      <ContentLayout
-        routerData={this.props.routerData}
-        contentForm={WrappedAdvancedSearchForm()}
-        contentButton={
-          <div>
-            <AuthorizedButton authority="/bottomOrder/createIncomeAdd">
-              <Button onClick={this.createIncomeAdd} type="primary" className={common.newButton}>
-                添加数据
-              </Button>
-            </AuthorizedButton>
-            <span>&nbsp;&nbsp;</span>
-            <AuthorizedButton authority="/bottomOrder/createIncomeDel">
-              <Button
-                onClick={this.createIncomeDel}
-                type="primary"
-                className={common.cancleButtonGray}
-              >
-                删除数据
-              </Button>
-            </AuthorizedButton>
-          </div>
-        }
-        contentTable={
-          <div style={{ padding: 10 }}>
-            <FormFilter.Table
-              scroll={{ x: 1590, y: 573 }}
-              size="middle"
-              className="circleTable"
-              pageNum={pageNum}
-              totalMoney={totalMoney}
-              totalNum={totalNum}
-              loading={this.props.loading}
-              dataSource={dataSource}
-              columns={columns}
-              onChangePage={this.changePage}
-            />
-          </div>
-        }
-      >
-        <EditModal
-          visible={visible}
-          editData={this.state.editData}
-          orgList={orgList}
-          onSubmit={value => this.onSubmit(value)}
-          onCancel={this.onCancel}
-        />
-      </ContentLayout>
+      <div>
+        <BatchProcess visible={visibleDel} onCancel={this.onCancelStep} />
+        <ContentLayout
+          routerData={this.props.routerData}
+          contentForm={WrappedAdvancedSearchForm()}
+          // contentButton={
+          //   <div>
+          //     <AuthorizedButton authority="/bottomOrder/createIncomeAdd">
+          //       <Button onClick={this.createIncomeAdd} type="primary" className={common.newButton}>
+          //         添加数据
+          //       </Button>
+          //     </AuthorizedButton>
+          //     <span>&nbsp;&nbsp;</span>
+          //     <AuthorizedButton authority="/bottomOrder/createIncomeDel">
+          //       <Button
+          //         onClick={this.createIncomeDel}
+          //         type="primary"
+          //         className={common.cancleButtonGray}
+          //       >
+          //         删除数据
+          //       </Button>
+          //     </AuthorizedButton>
+          //   </div>
+          // }
+          contentTable={
+            <div style={{ padding: 10 }}>
+              <FormFilter.Table
+                scroll={{ x: 1590, y: 573 }}
+                size="middle"
+                className="circleTable"
+                pageNum={pageNum}
+                totalMoney={totalMoney}
+                totalNum={totalNum}
+                loading={this.props.loading}
+                dataSource={dataSource}
+                columns={columns}
+                onChangePage={this.changePage}
+                createIncomeAdd={() => this.createIncomeAdd()}
+                createIncomeDel={() => this.createIncomeDel()}
+              />
+            </div>
+          }
+        >
+          <EditModal
+            visible={visible}
+            editData={this.state.editData}
+            orgList={orgList}
+            onSubmit={value => this.onSubmit(value)}
+            onCancel={this.onCancel}
+          />
+        </ContentLayout>
+      </div>
     );
   }
 }
