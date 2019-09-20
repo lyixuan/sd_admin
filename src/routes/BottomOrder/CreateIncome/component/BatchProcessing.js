@@ -32,7 +32,12 @@ class BatchProcessing extends Component {
       batchType: null,
       batchValue: null,
       orderIds: '',
-      step1Data: {},
+      step1Data: {
+        failCount: 0,
+        failList: [],
+        successCount: 0,
+        totalCount: 0,
+      },
       step2Data: {},
     };
   }
@@ -90,7 +95,9 @@ class BatchProcessing extends Component {
         payload: { params },
       })
       .then(res => {
-        this.setState({ current: 1, step1Data: res });
+        if (!res) return;
+        debugger;
+        this.setState({ current: 1, step1Data: res.data });
       });
   };
   step2FetchFn = () => {
@@ -106,7 +113,7 @@ class BatchProcessing extends Component {
         payload: { params },
       })
       .then(res => {
-        this.setState({ current: 2, step2Data: res });
+        this.setState({ current: 2, step2Data: res.data });
       });
   };
   step3FetchFn = () => {
@@ -119,7 +126,7 @@ class BatchProcessing extends Component {
     this.setState({ current });
   };
 
-  gotoNext() {
+  gotoNext = () => {
     const { batchType, batchValue, orderIds } = this.state;
     if (batchType && batchType !== '3' && batchValue && orderIds) {
       return false;
@@ -128,11 +135,16 @@ class BatchProcessing extends Component {
       return false;
     }
     return true;
-  }
+  };
+
+  onCancel = () => {
+    this.props.onCancel();
+  };
   render() {
     const { current, visible, disabled, batchType, batchValue, orderIds } = this.state;
 
     const { step1Data, step2Data } = this.state;
+    let { totalCount, successCount, failList, failCount } = step1Data;
 
     const params = {};
     params.steps = [
@@ -200,18 +212,18 @@ class BatchProcessing extends Component {
             <div className={styles.num}>
               <p>
                 <span>
-                  校验数据总量：<i className={styles.green}>{step1Data.totalCount}</i> 条
+                  校验数据总量：<i className={styles.green}>{totalCount}</i> 条
                 </span>
                 <span>
                   <Icon
                     type="check-circle"
                     theme="filled"
                     style={{ color: '#52C9C2', marginRight: '5px' }}
-                  />成功：{step1Data.successCount} 条
+                  />成功：{successCount} 条
                 </span>
                 <span>
                   <Icon type="close-circle" style={{ color: 'red', marginRight: '5px' }} />失败：{
-                    step1Data.failCount
+                    failCount
                   }
                   条{' '}
                 </span>
@@ -219,7 +231,7 @@ class BatchProcessing extends Component {
               <div className={styles.textAreaCon}>
                 <p>以下子订单ID未找到：</p>
                 <textArea disabled className={styles.text} style={{ width: '100%' }}>
-                  {step1Data.failList}
+                  {failList}
                 </textArea>
               </div>
             </div>
@@ -281,7 +293,7 @@ class BatchProcessing extends Component {
 
     return (
       <div>
-        <Steps params={params} />
+        <Steps params={params} onCancel={this.onCancel} />
       </div>
     );
   }

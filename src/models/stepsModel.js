@@ -12,18 +12,16 @@ export default {
   effects: {
     // 申诉管理接口，批量删除申诉 第一步接口
     *stepsVerify({ payload }, { call, put }) {
-      //   const stepsVerifyData = {
-      //     totalCount: 20,
-      //     successCount: 10,
-      //     failCount: 10,
-      //     failList: [1, 23234, 3241],
-      //   };
       const { params } = payload;
       //   console.log(stepsVerifyData, 'stepsVerifyData');
       //   yield put({ type: 'save', payload: { stepsVerifyData } });
       //   return stepsVerifyData;
       const stepsVerifyData = yield call(stepsVerify, { ...params });
-      if (stepsVerifyData.code === 2000) {
+      if (stepsVerifyData.code === 20000) {
+        if (!stepsVerifyData.data) {
+          message.error(stepsVerifyData.msgDetail);
+          return false;
+        }
         yield put({ type: 'appealListSave', payload: { stepsVerifyData } });
         return stepsVerifyData;
       } else {

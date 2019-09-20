@@ -292,6 +292,9 @@ class CreateList extends Component {
   onCancel = () => {
     this.setState({ visible: false });
   };
+  onCancelStep = () => {
+    this.setState({ visibleDel: false });
+  };
   getData = params => {
     const getListParams = { ...params };
     this.props.dispatch({
@@ -565,8 +568,7 @@ class CreateList extends Component {
     // };
     return (
       <div>
-        <BatchProcess visible={visibleDel} />
-
+        <BatchProcess visible={visibleDel} onCancel={this.onCancelStep} />
         <ContentLayout
           routerData={this.props.routerData}
           contentForm={WrappedAdvancedSearchForm()}
