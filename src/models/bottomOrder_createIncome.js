@@ -58,6 +58,10 @@ export default {
         yield put({ type: 'saveTime', payload: { mailName: response.data } });
       }
     },
+    *saveMail({ payload }, { put }) {
+      const { params } = payload;
+      yield put({ type: 'saveTime', payload: { mailName: params.mailName } });
+    },
     *recommendList({ payload }, { call, put }) {
       const { getListParams } = payload;
       const page = getListParams.pageNum + 1;

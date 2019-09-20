@@ -1,6 +1,6 @@
 /* eslint-disable radix,prefer-destructuring */
 import React, { Component } from 'react';
-import { Input, Select, DatePicker, TreeSelect } from 'antd';
+import { Input, Select, DatePicker, TreeSelect, message } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 // import ContentLayoutNew from '../../../layouts/ContentLayoutNew';
@@ -245,11 +245,11 @@ class CreateList extends Component {
   }
   onEdit = record => {
     const obj = deepCopy(record);
-    this.setState({ visible: true, editData: obj });
     this.props.dispatch({
-      type: 'createIncome/saveTime',
+      type: 'createIncome/saveMail',
       payload: { params: { mailName: obj.recommendedTeacher } },
     });
+    this.setState({ visible: true, editData: obj });
   };
   onMailChange = mail => {
     this.props.dispatch({
@@ -292,6 +292,10 @@ class CreateList extends Component {
   };
   onSubmit = val => {
     const params = { ...val };
+    if (!params.recommendedTeacher) {
+      message.warn('邮箱未查询到用户名');
+      return;
+    }
     params.competitionRatio = params.competitionRatio === undefined ? 100 : params.competitionRatio;
     params.collegeId = params.organization[0] || undefined;
     params.familyId = params.organization[1] || undefined;
