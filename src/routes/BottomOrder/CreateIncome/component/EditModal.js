@@ -10,6 +10,10 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     onCancel = () => {
       this.props.onCancel();
     };
+    onMailChange = e => {
+      const mail = e.currentTarget.value ? e.currentTarget.value : null;
+      this.props.onMailChange(mail);
+    };
     handleSubmit = e => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
@@ -20,7 +24,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     };
 
     render() {
-      const { visible, title, orgList = [], form, params } = this.props;
+      const { visible, title, orgList = [], form, params, mailName } = this.props;
       const {
         orderId,
         stuId,
@@ -36,11 +40,14 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
         recommendType,
         id,
       } = params;
+
       const { getFieldDecorator } = form;
       return (
         <Modal
           visible={visible}
           title={title}
+          destroyOnClose
+          maskClosable={false}
           okText="确定"
           onCancel={this.onCancel}
           onOk={this.handleSubmit}
@@ -95,15 +102,20 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 {getFieldDecorator('teacherName', {
                   initialValue: teacherName,
                   rules: [{ required: true, message: '推荐老师邮箱不能为空' }],
-                })(<Input style={{ width: 230, marginRight: '6px' }} />)}
+                })(
+                  <Input
+                    style={{ width: 230, marginRight: '6px' }}
+                    onChange={e => this.onMailChange(e)}
+                  />
+                )}
               </Form.Item>
               <span>@sunlands.com</span>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>推荐老师:</span>
               <Form.Item style={{ float: 'left', marginTop: '3px' }}>
-                {getFieldDecorator('teacherName', {
-                  initialValue: teacherName,
+                {getFieldDecorator('recommendedTeacher', {
+                  initialValue: mailName,
                 })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
               </Form.Item>
             </div>
@@ -116,9 +128,9 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   initialValue: engageType,
                   rules: [{ required: true, message: '创收类型不能为空' }],
                 })(
-                  <Select showSearch style={{ width: 230 }}>
+                  <Select style={{ width: 230 }} allowClear>
                     {window.BI_Filter('INTRO_TYPE').map(item => (
-                      <Option key={item.id} value={item.id}>
+                      <Option key={item.name} value={item.name}>
                         {item.name}
                       </Option>
                     ))}
@@ -132,9 +144,9 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 {getFieldDecorator('recommendType', {
                   initialValue: recommendType,
                 })(
-                  <Select showSearch style={{ width: 230 }} onChange={this.onChange}>
+                  <Select style={{ width: 230 }} allowClear>
                     {window.BI_Filter('CREATE_TYPE').map(item => (
-                      <Option key={item.id} value={item.id}>
+                      <Option key={item.name} value={item.name}>
                         {item.name}
                       </Option>
                     ))}
@@ -148,7 +160,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 {getFieldDecorator('logicJudge', {
                   initialValue: logicJudge,
                 })(
-                  <Select showSearch style={{ width: 230 }}>
+                  <Select style={{ width: 230 }} allowClear>
                     <Option value="KO听课">KO听课</Option>
                     <Option value="好推听课">好推听课</Option>
                     <Option value="未听课">未听课</Option>
@@ -219,6 +231,9 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
 
 // eslint-disable-next-line
 class EditModal extends Component {
+  onMailChange = mail => {
+    this.props.onMailChange(mail);
+  };
   handleCancel = () => {
     this.props.onCancel();
   };
@@ -231,7 +246,13 @@ class EditModal extends Component {
   };
 
   render() {
-    const { editData = {}, visible = false, confirmLoading = false, orgList = [] } = this.props;
+    const {
+      editData = {},
+      visible = false,
+      confirmLoading = false,
+      orgList = [],
+      mailName,
+    } = this.props;
     const params = {
       orderId: editData.orderId || '未获取到',
       stuId: editData.stuId || '未获取到',
@@ -239,6 +260,7 @@ class EditModal extends Component {
       familyId: editData.familyId || undefined,
       groupId: editData.groupId || undefined,
       teacherName: editData.teacherName || undefined,
+      recommendedTeacher: editData.recommendedTeacher || undefined,
       logicJudge: editData.logicJudge,
       replayLecturesTime: editData.replayLecturesTime,
       liveLecturesTime: editData.liveLecturesTime,
@@ -253,18 +275,18 @@ class EditModal extends Component {
           : editData.competitionRatio,
     };
     return (
-      <div>
-        <CollectionCreateForm
-          visible={visible}
-          confirmLoading={confirmLoading}
-          title="编辑创收订单信息"
-          orgList={orgList}
-          params={params}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-          wrappedComponentRef={this.saveFormRef}
-        />
-      </div>
+      <CollectionCreateForm
+        visible={visible}
+        confirmLoading={confirmLoading}
+        title="编辑创收订单信息"
+        orgList={orgList}
+        params={params}
+        mailName={mailName}
+        onCancel={this.handleCancel}
+        onCreate={this.handleCreate}
+        onMailChange={mail => this.onMailChange(mail)}
+        wrappedComponentRef={this.saveFormRef}
+      />
     );
   }
 }

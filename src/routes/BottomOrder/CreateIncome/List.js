@@ -171,7 +171,7 @@ const tablecolumns = [
     dataIndex: 'competitionRatio',
     width: 85,
     render: text => {
-      return <>{text ? (text * 100).toFixed(2) : '100.00'}</>;
+      return <>{text ? text.toFixed(2) : '100.00'}</>;
     },
   },
   {
@@ -217,6 +217,7 @@ class CreateList extends Component {
       visibleDel: false,
     };
     this.state = { ...this.initData };
+    this.pageNum = 0;
   }
   componentDidMount() {
     const that = this;
@@ -245,6 +246,16 @@ class CreateList extends Component {
   onEdit = record => {
     const obj = deepCopy(record);
     this.setState({ visible: true, editData: obj });
+    this.props.dispatch({
+      type: 'createIncome/saveTime',
+      payload: { params: { mailName: obj.recommendedTeacher } },
+    });
+  };
+  onMailChange = mail => {
+    this.props.dispatch({
+      type: 'createIncome/getNameByMail',
+      payload: { params: { mail } },
+    });
   };
   onChange = (dates, dateStrings) => {
     this.setState({
@@ -282,7 +293,6 @@ class CreateList extends Component {
   onSubmit = val => {
     const params = { ...val };
     params.competitionRatio = params.competitionRatio === undefined ? 100 : params.competitionRatio;
-    params.recommendedTeacher = params.teacherName;
     params.collegeId = params.organization[0] || undefined;
     params.familyId = params.organization[1] || undefined;
     params.groupId = params.organization[2] || undefined;
@@ -296,7 +306,11 @@ class CreateList extends Component {
       .then(res => {
         if (res) {
           this.setState({ visible: false });
-          this.getData(this.handleParams(this.filterEmptyParams(that.state)));
+          this.getData(
+            this.handleParams(
+              this.filterEmptyParams({ ...that.state, ...{ pageNum: this.pageNum } })
+            )
+          );
         }
       });
   };
@@ -318,6 +332,7 @@ class CreateList extends Component {
   // 点击某一页函数
   changePage = (pageNum, size) => {
     const newParams = this.handleParams({ ...this.state, pageNum, size });
+    this.pageNum = pageNum;
     this.getData(this.filterEmptyParams(newParams));
   };
   // 表单搜索函数
@@ -434,7 +449,7 @@ class CreateList extends Component {
       visible,
       visibleDel,
     } = this.state;
-    const { orgListTreeData = [], orgList = [] } = this.props.createIncome;
+    const { orgListTreeData = [], orgList = [], mailName } = this.props.createIncome;
     const val = this.props.createIncome.qualityList;
     const res = !val.response ? {} : !val.response.data ? {} : val.response.data;
     const data = res.pageInfo || {};
@@ -622,13 +637,17 @@ class CreateList extends Component {
             </div>
           }
         >
-          <EditModal
-            visible={visible}
-            editData={this.state.editData}
-            orgList={orgList}
-            onSubmit={value => this.onSubmit(value)}
-            onCancel={this.onCancel}
-          />
+          {visible && (
+            <EditModal
+              visible
+              editData={this.state.editData}
+              orgList={orgList}
+              mailName={mailName}
+              onSubmit={value => this.onSubmit(value)}
+              onCancel={this.onCancel}
+              onMailChange={mail => this.onMailChange(mail)}
+            />
+          )}
         </ContentLayout>
       </div>
     );

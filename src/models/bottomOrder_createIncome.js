@@ -55,7 +55,7 @@ export default {
       const { params } = payload;
       const response = yield call(getNameByMail, params);
       if (response.code === 20000) {
-        yield put({ type: 'saveTime', payload: { mailName: response } });
+        yield put({ type: 'saveTime', payload: { mailName: response.data } });
       }
     },
     *recommendList({ payload }, { call, put }) {

@@ -1173,7 +1173,7 @@ export async function incomeEditSave(params) {
   });
 }
 export async function getNameByMail(params) {
-  return request(`${HOST_NEW}/incomeOrder/edit/getNameByMail${stringify(params)}`, {
+  return request(`${HOST_NEW}/incomeOrder/edit/getNameByMail?${stringify(params)}`, {
     method: 'GET',
   });
 }
