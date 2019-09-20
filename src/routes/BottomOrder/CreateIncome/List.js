@@ -287,10 +287,18 @@ class CreateList extends Component {
     params.familyId = params.organization[1] || undefined;
     params.groupId = params.organization[2] || undefined;
     delete params.organization;
-    this.props.dispatch({
-      type: 'createIncome/incomeEditSave',
-      payload: { params },
-    });
+    const that = this;
+    this.props
+      .dispatch({
+        type: 'createIncome/incomeEditSave',
+        payload: { params },
+      })
+      .then(res => {
+        if (res) {
+          this.setState({ visible: false });
+          this.getData(this.handleParams(this.filterEmptyParams(that.state)));
+        }
+      });
   };
   onCancel = () => {
     this.setState({ visible: false });
@@ -345,6 +353,8 @@ class CreateList extends Component {
         return Number(v.replace('c-', ''));
       });
     }
+
+    delete newParams.editData;
     return newParams;
   };
   filterEmptyParams = data => {
