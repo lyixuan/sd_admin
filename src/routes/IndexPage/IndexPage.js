@@ -8,6 +8,7 @@ class IndexPage extends Component {
   componentDidMount() {
     window.location.href = `${CAS_HOST}/inspector/indexPage`;
   }
+
   render() {
     return (
       <div className={styles.container}>
