@@ -1,15 +1,16 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
+import { API_HOST } from '../utils/constants';
 
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
-  localhost: 'http://test.xd.admin.ministudy.com/apis',
-  development: 'http://test.xd.admin.ministudy.com/apis', // 'http://172.16.59.227:18084', //
+  localhost: `${API_HOST}/apis`,
+  development: `${API_HOST}/apis`, // 'http://172.16.59.227:18084', //
 };
 const hostObjNew = {
   production: 'http://bd.ministudy.com/inspectorapis',
-  localhost: 'http://172.16.59.227:8086', // 'http://dev.xd.admin.ministudy.com/inspectorapis',
-  development: 'http://172.16.59.227:8086', // 'http://test.xd.admin.ministudy.com/inspectorapis', // 'http://172.16.59.227:8086', //
+  localhost: `${API_HOST}/inspectorapis`,
+  development: `${API_HOST}/inspectorapis`, // 'http://172.16.59.227:8086', //
 };
 export const HOST = hostObj[process.env.API_TYPE];
 export const HOST_NEW = hostObjNew[process.env.API_TYPE];
