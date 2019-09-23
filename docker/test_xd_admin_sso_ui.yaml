@@ -25,7 +25,7 @@ spec:
       labels:
         app: test-xd-sso-admin-ui-service
     spec:
-      nodeName: 172.16.109.138
+      nodeName: 172.16.109.121
       containers:
       - name: test-xd-sso-admin-ui-service
         image: hub.sunland2.com:8234/sscp-service/xd_sso_admin_ui:<BUILD_TAG>

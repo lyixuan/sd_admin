@@ -26,7 +26,6 @@ function formatter(data, parentId) {
         authority: true,
         hideInMenu: false, // level的等级大于2的话为功能权限
         children: formatter(data, node.id),
-        parentId: node.parentId,
       };
       itemArr.push(newNode);
     }

@@ -48,21 +48,12 @@ export default class SelfTable extends PureComponent {
     this.props.createIncomeDel();
   };
   render() {
-    const {
-      dataSource,
-      totalNum = 0,
-      className = '',
-      defaultPageSize = 30,
-      showPageSize = 30,
-      totalMoney = 0,
-      createIncome,
-      ...others
-    } = this.props;
+    // totalMoney 创收成单页面进入有绩效流水
+    const { dataSource, totalNum = 0, className = '', totalMoney = 0, ...others } = this.props;
     const { pageNum } = this.state;
     return (
       <div>
-        {createIncome}
-        {createIncome && (
+        {totalMoney > 0 && (
           <div className={styles.totalNum1}>
             <p>
               绩效流水：<i className={styles.green}>{totalMoney}</i> &nbsp;&nbsp;&nbsp;总条数：
@@ -85,7 +76,7 @@ export default class SelfTable extends PureComponent {
             </div>
           </div>
         )}
-        {!createIncome && <p className={styles.totalNum}>总数：{totalNum}条</p>}
+        {totalMoney === 0 && <p className={styles.totalNum}>总数：{totalNum}条</p>}
         <Table
           {...others}
           dataSource={dataSource}
@@ -97,8 +88,6 @@ export default class SelfTable extends PureComponent {
           total={totalNum}
           current={pageNum + 1}
           defaultCurrent={pageNum + 1}
-          defaultPageSize={defaultPageSize}
-          showPageSize={showPageSize}
           onChange={(current, pageSize) => {
             this.changePage(current, pageSize);
           }}

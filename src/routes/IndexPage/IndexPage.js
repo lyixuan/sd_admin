@@ -2,13 +2,8 @@ import React, { Component } from 'react';
 import styles from './indexPage.less';
 import homeImg from '../../assets/homeImg.png';
 import homeText from '../../assets/homeText.png';
-import { CAS_HOST } from '../../utils/constants';
 
 class IndexPage extends Component {
-  componentDidMount() {
-    window.location.href = `${CAS_HOST}/inspector/indexPage`;
-  }
-
   render() {
     return (
       <div className={styles.container}>

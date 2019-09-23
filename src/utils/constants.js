@@ -150,9 +150,9 @@ export const Certification_TIMEAREA = [
 ];
 // 好学生推荐等级
 export const RECOMMEND_LEVEL = [
-  { id: 0, name: '听课最低档' },
-  { id: 1, name: '听课中间档' },
-  { id: 2, name: '听课最高档' },
+  { id: 0, name: '60分钟以下' },
+  { id: 1, name: '60至120分钟' },
+  { id: 2, name: '120分钟以上' },
 ];
 
 // 认证管理申请方式

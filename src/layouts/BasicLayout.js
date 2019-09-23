@@ -14,12 +14,12 @@ import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import biIcon from '../assets/biIcon.png';
-import logo from '../assets/menu/logo.png';
+import logo from '../assets/logo.png';
 import { getAuthority } from '../utils/authority';
 import { checkPathname, addRouteData } from '../common/isCheckAuth';
 import HeaderLayout from './Header';
 
-const { Content } = Layout;
+const { Content, Header } = Layout;
 const { AuthorizedRoute, check } = Authorized;
 /**
  * 根据菜单取得重定向地址.
@@ -198,25 +198,27 @@ class BasicLayout extends React.PureComponent {
           // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
           // If you do not have the Authorized parameter
           // you will be forced to jump to the 403 interface without permission
-          // Authorized={Authorized}
+          Authorized={Authorized}
           menuData={menuData}
           collapsed={collapsed}
           location={location}
           isMobile={this.state.isMobile}
           onCollapse={this.handleMenuCollapse}
         />
-        <Layout style={{ backgroundColor: '#F5F8FA' }}>
-          <HeaderLayout
-            {...this.props}
-            logo={biIcon}
-            currentUser={currentUser}
-            fetchingNotices={fetchingNotices}
-            notices={notices}
-            collapsed={collapsed}
-            isMobile={this.state.isMobile}
-            onCollapse={this.handleMenuCollapse}
-            onNoticeVisibleChange={this.handleNoticeVisibleChange}
-          />
+        <Layout>
+          <Header style={{ padding: 0 }}>
+            <HeaderLayout
+              {...this.props}
+              logo={biIcon}
+              currentUser={currentUser}
+              fetchingNotices={fetchingNotices}
+              notices={notices}
+              collapsed={collapsed}
+              isMobile={this.state.isMobile}
+              onCollapse={this.handleMenuCollapse}
+              onNoticeVisibleChange={this.handleNoticeVisibleChange}
+            />
+          </Header>
           <Content>
             <Switch>
               {redirectData.map(item => (
