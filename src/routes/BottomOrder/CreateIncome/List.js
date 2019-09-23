@@ -629,6 +629,7 @@ class CreateList extends Component {
           contentTable={
             <div style={{ padding: 10 }}>
               <FormFilter.Table
+                createIncome
                 scroll={{ x: 1590, y: 573 }}
                 size="middle"
                 className="circleTable"

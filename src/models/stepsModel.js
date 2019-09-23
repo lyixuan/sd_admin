@@ -13,10 +13,8 @@ export default {
     // 申诉管理接口，批量删除申诉 第一步接口
     *stepsVerify({ payload }, { call, put }) {
       const { params } = payload;
-      //   console.log(stepsVerifyData, 'stepsVerifyData');
-      //   yield put({ type: 'save', payload: { stepsVerifyData } });
-      //   return stepsVerifyData;
       const stepsVerifyData = yield call(stepsVerify, { ...params });
+      console.log(222, stepsVerifyData);
       if (stepsVerifyData.code === 20000) {
         if (!stepsVerifyData.data) {
           message.error(stepsVerifyData.msgDetail);
@@ -27,6 +25,7 @@ export default {
       } else {
         message.error(stepsVerifyData.msg);
       }
+      // return ;
     },
     // 申诉管理接口，批量删除申诉 第二步
     *stepSubmit({ payload }, { call, put }) {
