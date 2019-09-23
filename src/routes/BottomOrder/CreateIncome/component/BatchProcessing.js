@@ -247,7 +247,7 @@ class BatchProcessing extends Component {
               <div className={styles.textAreaCon}>
                 <p>以下子订单ID未找到：</p>
                 <p className={styles.text} style={{ width: '100%' }}>
-                  {failList}
+                  {failList && failList.join(' , ')}
                 </p>
               </div>
             </div>
