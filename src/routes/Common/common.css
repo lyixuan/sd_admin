@@ -631,3 +631,8 @@
 :global(.createEditForm .ant-input-disabled){
   color: #666;
 }
+
+
+:global(.createEditForm .ant-form-item) {
+  margin-bottom: 5px;
+}

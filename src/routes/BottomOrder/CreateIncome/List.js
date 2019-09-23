@@ -131,7 +131,7 @@ const tablecolumns = [
     dataIndex: 'logicJudge',
     width: 85,
     render: text => {
-      return <>{text === null ? 0 : text}</>;
+      return <>{text === null ? '' : text}</>;
     },
   },
   {

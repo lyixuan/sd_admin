@@ -44,6 +44,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
       const { getFieldDecorator } = form;
       return (
         <Modal
+          width={550}
           visible={visible}
           title={title}
           destroyOnClose
@@ -60,7 +61,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
               </Form.Item>
               <span className={styles.left}>子订单ID:</span>
-              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+              <Form.Item>
                 {getFieldDecorator('orderId', {
                   initialValue: orderId,
                 })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
@@ -68,7 +69,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             </div>
             <div className={styles.line}>
               <span className={styles.left}>学员ID:</span>
-              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+              <Form.Item>
                 {getFieldDecorator('stuId', {
                   initialValue: stuId,
                 })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
@@ -78,7 +79,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               <span className={styles.left}>
                 <i className={styles.red}>*</i>组织架构:
               </span>
-              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+              <Form.Item style={{ overflow: 'hidden', marginTop: 3 }}>
                 {getFieldDecorator('organization', {
                   initialValue: [collegeId, familyId, groupId],
                   rules: [{ required: true, message: '组织架构不能为空' }],
@@ -98,7 +99,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               <span className={styles.left}>
                 <i className={styles.red}>*</i>推荐老师邮箱:
               </span>
-              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+              <Form.Item style={{ float: 'left' }}>
                 {getFieldDecorator('teacherName', {
                   initialValue: teacherName,
                   rules: [{ required: true, message: '推荐老师邮箱不能为空' }],
@@ -109,11 +110,11 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   />
                 )}
               </Form.Item>
-              <span>@sunlands.com</span>
+              <span className={styles.right}>@sunlands.com</span>
             </div>
             <div className={styles.line}>
               <span className={styles.left}>推荐老师:</span>
-              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+              <Form.Item>
                 {getFieldDecorator('recommendedTeacher', {
                   initialValue: mailName,
                 })(<Input disabled style={{ width: 230, marginRight: '6px' }} />)}
@@ -123,7 +124,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               <span className={styles.left}>
                 <i className={styles.red}>*</i>创收类型:
               </span>
-              <Form.Item>
+              <Form.Item style={{ overflow: 'hidden' }}>
                 {getFieldDecorator('engageType', {
                   initialValue: engageType,
                   rules: [{ required: true, message: '创收类型不能为空' }],
@@ -169,10 +170,8 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               </Form.Item>
             </div>
             <div className={styles.line}>
-              <span className={styles.left}>
-                <i className={styles.red} />重播听课:
-              </span>
-              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+              <span className={styles.left}>重播听课:</span>
+              <Form.Item style={{ float: 'left' }}>
                 {getFieldDecorator('replayLecturesTime', {
                   initialValue: replayLecturesTime,
                 })(
@@ -184,13 +183,11 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   />
                 )}
               </Form.Item>
-              <span>分钟</span>
+              <span className={styles.right}>分钟</span>
             </div>
             <div className={styles.line}>
-              <span className={styles.left}>
-                <i className={styles.red} />直播听课:
-              </span>
-              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+              <span className={styles.left}>直播听课:</span>
+              <Form.Item style={{ float: 'left' }}>
                 {getFieldDecorator('liveLecturesTime', {
                   initialValue: liveLecturesTime,
                 })(
@@ -202,13 +199,11 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   />
                 )}
               </Form.Item>
-              <span>分钟</span>
+              <span className={styles.right}>分钟</span>
             </div>
             <div className={styles.line}>
-              <span className={styles.left}>
-                <i className={styles.red} />竞合比:
-              </span>
-              <Form.Item style={{ float: 'left', marginTop: '3px' }}>
+              <span className={styles.left}>竞合比:</span>
+              <Form.Item style={{ float: 'left' }}>
                 {getFieldDecorator('competitionRatio', {
                   initialValue: competitionRatio,
                 })(
@@ -220,7 +215,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   />
                 )}
               </Form.Item>
-              <span>%</span>
+              <span className={styles.right}>%</span>
             </div>
           </Form>
         </Modal>
