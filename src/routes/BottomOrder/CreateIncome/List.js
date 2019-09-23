@@ -341,6 +341,7 @@ class CreateList extends Component {
   };
   // 表单搜索函数
   handleSearch = params => {
+    this.pageNum = 0;
     this.getData(this.handleParams(this.filterEmptyParams({ ...this.state, ...params })));
   };
 
@@ -391,6 +392,7 @@ class CreateList extends Component {
     return params;
   };
   resetList = () => {
+    this.pageNum = 0;
     this.setState({ ...this.initData }, () => {
       this.getData(this.handleParams(this.filterEmptyParams(this.state)));
     });
