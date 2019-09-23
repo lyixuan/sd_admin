@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: test-xd-sso-admin-ui-service
+  name: test-xd-sso-admin-ui-service
+spec:
+  ports:
+  - port: 9997
+    protocol: TCP
+    targetPort: 80
+    nodePort: 9997
+  selector:
+    app: test-xd-sso-admin-ui-service
+  type: NodePort
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: test-xd-sso-admin-ui-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: test-xd-sso-admin-ui-service
+    spec:
+      nodeName: 172.16.109.138
+      containers:
+      - name: test-xd-sso-admin-ui-service
+        image: hub.sunland2.com:8234/sscp-service/xd_sso_admin_ui:<BUILD_TAG>
+        ports:
+        - containerPort: 9997
