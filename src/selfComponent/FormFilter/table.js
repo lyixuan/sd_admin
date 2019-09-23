@@ -48,11 +48,12 @@ export default class SelfTable extends PureComponent {
     this.props.createIncomeDel();
   };
   render() {
-    // totalMoney 创收成单页面进入有绩效流水
     const {
       dataSource,
       totalNum = 0,
       className = '',
+      defaultPageSize = 30,
+      showPageSize = 30,
       totalMoney = 0,
       createIncome,
       ...others
