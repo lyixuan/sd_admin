@@ -246,9 +246,9 @@ class BatchProcessing extends Component {
               </p>
               <div className={styles.textAreaCon}>
                 <p>以下子订单ID未找到：</p>
-                <textarea disabled className={styles.text} style={{ width: '100%' }}>
-                  {failList}
-                </textarea>
+                <p className={styles.text} style={{ width: '100%' }}>
+                  {failList && failList.join(' , ')}
+                </p>
               </div>
             </div>
           </div>
@@ -262,12 +262,10 @@ class BatchProcessing extends Component {
               <span className={styles.left}>批量服务:</span>
               {batchType}
             </div>
-            {batchType !== '3' && (
-              <div className={styles.line}>
-                <span className={styles.left}>批量置为:</span>
-                {batchValue}
-              </div>
-            )}
+            <div className={styles.line}>
+              <span className={styles.left}>批量置为:</span>
+              {batchValue}
+            </div>
             <div className={styles.num}>
               <p className={styles.img}>
                 <img src={step2Data.status ? sucessImg : delImg} alt="" />
