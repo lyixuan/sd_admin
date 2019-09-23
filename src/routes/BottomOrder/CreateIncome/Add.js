@@ -90,20 +90,16 @@ class RefundAdd extends Component {
   columnsData = () => {
     const columns = [
       {
-        title: '序号',
-        dataIndex: 'rowIndex',
+        title: '子订单id',
+        dataIndex: 'orderId',
+      },
+      {
+        title: '班主任姓名',
+        dataIndex: 'recommendedTeacher',
       },
       {
         title: '报名时间',
         dataIndex: 'registrationDate',
-      },
-      {
-        title: '子订单ID',
-        dataIndex: 'orderId',
-      },
-      {
-        title: '学员ID',
-        dataIndex: 'stuId',
       },
       {
         title: '学院',
@@ -118,52 +114,40 @@ class RefundAdd extends Component {
         dataIndex: 'groupName',
       },
       {
-        title: '推荐老师',
-        dataIndex: 'recommendedTeacher',
-      },
-      {
-        title: '推荐老师邮箱',
-        dataIndex: 'cpId',
-      },
-      {
-        title: '产品包名称',
-        dataIndex: 'productPackageName',
+        title: '班主任263前缀',
+        dataIndex: 'userName',
       },
       {
         title: '净流水',
         dataIndex: 'financeNetFlow',
       },
       {
-        title: '子订单归属学院',
-        dataIndex: 'subOrderOfCollege',
+        title: '流水',
+        dataIndex: 'totalAmout',
       },
       {
-        title: '重播听课时长（分钟）',
-        dataIndex: 'replayLecturesTime',
+        title: '创收类型',
+        dataIndex: 'engageType',
       },
       {
-        title: '直播听课时长（分钟）',
+        title: '转介绍类型',
+        dataIndex: 'recommendType',
+      },
+      {
+        title: '逻辑判断',
+        dataIndex: 'logicJudge',
+      },
+      {
+        title: '直播时长',
         dataIndex: 'liveLecturesTime',
       },
       {
-        title: '是否足课',
-        dataIndex: 'fullLecturesFlag',
+        title: '重播时长',
+        dataIndex: 'replayLecturesTime',
       },
       {
-        title: '成单类型',
-        dataIndex: 'orderType',
-      },
-      {
-        title: '折扣（竞合比）',
-        dataIndex: 'saleoff',
-      },
-      {
-        title: '竞合后净流水',
-        dataIndex: 'financeNetFlowJh',
-      },
-      {
-        title: '绩效流水',
-        dataIndex: 'kpiFlow',
+        title: '竞合比',
+        dataIndex: 'concurrencePercent',
       },
     ];
     return columns;
