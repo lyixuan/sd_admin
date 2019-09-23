@@ -17,6 +17,7 @@ export default {
       //   yield put({ type: 'save', payload: { stepsVerifyData } });
       //   return stepsVerifyData;
       const stepsVerifyData = yield call(stepsVerify, { ...params });
+      console.log(stepsVerifyData, 'stepsVerifyData');
       if (stepsVerifyData.code === 20000) {
         if (!stepsVerifyData.data) {
           message.error(stepsVerifyData.msgDetail);
@@ -26,6 +27,7 @@ export default {
         return stepsVerifyData;
       } else {
         message.error(stepsVerifyData.msg);
+        return false;
       }
     },
     // 申诉管理接口，批量删除申诉 第二步

@@ -10,9 +10,6 @@ import Steps from './Steps';
 const { Option } = Select;
 const { TextArea } = Input;
 
-@connect(({ stepsModel }) => ({
-  stepsModel,
-}))
 /**
  * current ，，目前显示第几个modal
  * visible 显示隐藏modal
@@ -21,6 +18,9 @@ const { TextArea } = Input;
  * batchValue 批量服务value
  * orderIds 订单ids
  */
+@connect(({ stepsModel }) => ({
+  stepsModel,
+}))
 class BatchProcessing extends Component {
   constructor(props) {
     super(props);
@@ -95,6 +95,7 @@ class BatchProcessing extends Component {
       batchValue,
       orderIds,
     };
+    console.log(this.props, 'this.props');
     this.props
       .dispatch({
         type: 'stepsModel/stepsVerify',
