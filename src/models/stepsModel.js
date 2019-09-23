@@ -14,7 +14,7 @@ export default {
     *stepsVerify({ payload }, { call, put }) {
       const { params } = payload;
       const stepsVerifyData = yield call(stepsVerify, { ...params });
-      console.log(222, stepsVerifyData);
+      console.log(stepsVerifyData, 'stepsVerifyData');
       if (stepsVerifyData.code === 20000) {
         if (!stepsVerifyData.data) {
           message.error(stepsVerifyData.msgDetail);
@@ -24,6 +24,7 @@ export default {
         return stepsVerifyData;
       } else {
         message.error(stepsVerifyData.msg);
+        return false;
       }
       // return ;
     },

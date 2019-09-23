@@ -95,6 +95,7 @@ class BatchProcessing extends Component {
       batchValue,
       orderIds,
     };
+    console.log(this.props, 'this.props');
     this.props
       .dispatch({
         type: 'stepsModel/stepsVerify',
