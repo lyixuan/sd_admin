@@ -322,6 +322,9 @@ class CreateList extends Component {
     this.setState({ visible: false });
   };
   onCancelStep = () => {
+    this.getData(
+      this.handleParams(this.filterEmptyParams({ ...this.state, ...{ pageNum: this.pageNum } }))
+    );
     this.setState({ visibleDel: false });
   };
   getData = params => {

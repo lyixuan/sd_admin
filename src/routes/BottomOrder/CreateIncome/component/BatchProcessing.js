@@ -262,10 +262,12 @@ class BatchProcessing extends Component {
               <span className={styles.left}>批量服务:</span>
               {batchType}
             </div>
-            <div className={styles.line}>
-              <span className={styles.left}>批量置为:</span>
-              {batchValue}
-            </div>
+            {batchType !== '3' && (
+              <div className={styles.line}>
+                <span className={styles.left}>批量置为:</span>
+                {batchValue}
+              </div>
+            )}
             <div className={styles.num}>
               <p className={styles.img}>
                 <img src={step2Data.status ? sucessImg : delImg} alt="" />
