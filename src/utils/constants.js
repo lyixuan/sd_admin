@@ -34,8 +34,7 @@ export const CAS_HOST = {
 
 export const API_HOST = {
   localhost: 'http://test.xd.temp.ministudy.com',
-  // development: 'http://test.xd.temp.ministudy.com',
-  development: 'http://172.16.59.227:8086',
+  development: 'http://test.xd.temp.ministudy.com',
   production: 'http://bd.ministudy.com',
 }[process.env.LOGIN_HOST];
 
