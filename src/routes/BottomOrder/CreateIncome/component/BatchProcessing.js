@@ -95,7 +95,13 @@ class BatchProcessing extends Component {
       batchValue,
       orderIds,
     };
-    console.log(this.props, 'this.props');
+    console.log(
+      this.props.dispatch({
+        type: 'stepsModel/stepsVerify',
+        payload: { params },
+      }),
+      '213123'
+    );
     this.props
       .dispatch({
         type: 'stepsModel/stepsVerify',
@@ -297,22 +303,28 @@ class BatchProcessing extends Component {
     params.visible = visible;
     params.step1disabled = this.gotoNext();
     params.step2disabled = !(step1Data && step1Data.successCount >= 1);
-    params.step1Fetch = () => {
-      this.step1FetchFn();
-    };
-    params.step2Fetch = () => {
-      this.step2FetchFn();
-    };
-    params.step3Fetch = () => {
-      this.step3FetchFn();
-    };
+    // params.step1Fetch = () => {
+    //   this.step1FetchFn();
+    // };
+    // params.step2Fetch = () => {
+    //   this.step2FetchFn();
+    // };
+    // params.step3Fetch = () => {
+    //   this.step3FetchFn();
+    // };
     params.editCurrent = curr => {
       this.editCurrentFn(curr);
     };
 
     return (
       <div>
-        <Steps params={params} onCancel={this.onCancel} />
+        <Steps
+          params={params}
+          step1Fetch={() => this.step1FetchFn()}
+          step2Fetch={() => this.step2FetchFn()}
+          step3Fetch={() => this.step3FetchFn()}
+          onCancel={this.onCancel}
+        />
       </div>
     );
   }

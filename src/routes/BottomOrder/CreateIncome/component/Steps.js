@@ -38,17 +38,17 @@ class Steps extends Component {
   };
 
   next = () => {
-    const { step1Fetch, step2Fetch, step3Fetch, current } = this.props.params;
+    const { current } = this.props.params;
     // editLoading(true);
     switch (current) {
       case 0:
-        step1Fetch();
+        this.props.step1Fetch();
         break;
       case 1:
-        step2Fetch();
+        this.props.step2Fetch();
         break;
       case 2:
-        step3Fetch();
+        this.props.step3Fetch();
         break;
       default:
         break;
