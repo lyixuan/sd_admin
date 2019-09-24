@@ -46,10 +46,11 @@ export default {
     save(state, action) {
       const { checkList } = action.payload;
       if (checkList) {
-        const { errorList } = checkList.data;
-        if (errorList) {
-          errorList.forEach((item, i) => {
-            errorList[i].key = i;
+        const { failList } = checkList.data;
+        console.log(checkList.data, 'checkList.data');
+        if (failList) {
+          failList.forEach((item, i) => {
+            failList[i].key = i;
           });
         }
       }
