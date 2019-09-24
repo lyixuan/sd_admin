@@ -85,22 +85,14 @@ class BatchProcessing extends Component {
       batchValue,
       orderIds,
     };
-    console.log(
-      this.props.dispatch({
-        type: 'stepsModel/stepsVerify',
-        payload: { params },
-      }),
-      '213123'
-    );
-    const res = this.props.dispatch({
+    this.props.dispatch({
       type: 'stepsModel/stepsVerify',
       payload: { params },
+      callback: res => {
+        if (!res) return;
+        this.setState({ current: 1, step1Data: res.data });
+      },
     });
-    // .then(res => {
-    //   if (!res) return;
-    //   this.setState({ current: 1, step1Data: res.data });
-    // });
-    console.log(res, 'res');
   };
   step2FetchFn = () => {
     const { batchType, batchValue, orderIds } = this.state;
@@ -137,7 +129,6 @@ class BatchProcessing extends Component {
   };
 
   onCancel = () => {
-    debugger;
     this.setState({
       current: 0,
       visible: false,
