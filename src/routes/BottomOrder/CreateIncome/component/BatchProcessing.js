@@ -186,7 +186,7 @@ class BatchProcessing extends Component {
                 <i className={styles.red}>*</i>子订单ID:
               </span>
               <TextArea
-                defaultValue={orderIds}
+                value={orderIds}
                 onChange={this.onTextChange}
                 style={{ width: 370 }}
                 placeholder="请输入子订单ID,多个编号请使用逗号、空格、换行区分"
