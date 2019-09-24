@@ -13,6 +13,7 @@ export default {
     // 申诉管理接口，批量删除申诉 第一步接口
     *stepsVerify({ payload, callback }, { call, put }) {
       const { params } = payload;
+      console.log(yield call(stepsVerify, { ...params }), 'yield call(stepsVerify, { ...params })');
       const stepsVerifyData = yield call(stepsVerify, { ...params });
       if (stepsVerifyData.code === 20000) {
         if (!stepsVerifyData.data) {
@@ -46,10 +47,10 @@ export default {
     save(state, action) {
       const { checkList } = action.payload;
       if (checkList) {
-        const { errorList } = checkList.data;
-        if (errorList) {
-          errorList.forEach((item, i) => {
-            errorList[i].key = i;
+        const { failList } = checkList.data;
+        if (failList) {
+          failList.forEach((item, i) => {
+            failList[i].key = i;
           });
         }
       }
