@@ -92,15 +92,15 @@ class BatchProcessing extends Component {
       }),
       '213123'
     );
-    this.props
-      .dispatch({
-        type: 'stepsModel/stepsVerify',
-        payload: { params },
-      })
-      .then(res => {
-        if (!res) return;
-        this.setState({ current: 1, step1Data: res.data });
-      });
+    const res = this.props.dispatch({
+      type: 'stepsModel/stepsVerify',
+      payload: { params },
+    });
+    // .then(res => {
+    //   if (!res) return;
+    //   this.setState({ current: 1, step1Data: res.data });
+    // });
+    console.log(res, 'res');
   };
   step2FetchFn = () => {
     const { batchType, batchValue, orderIds } = this.state;
@@ -109,14 +109,14 @@ class BatchProcessing extends Component {
       batchValue,
       orderIds,
     };
-    this.props
-      .dispatch({
-        type: 'stepsModel/stepSubmit',
-        payload: { params },
-      })
-      .then(res => {
-        this.setState({ current: 2, step2Data: res.data });
-      });
+    const res = this.props.dispatch({
+      type: 'stepsModel/stepSubmit',
+      payload: { params },
+    });
+    // .then(res => {
+    //   this.setState({ current: 2, step2Data: res.data });
+    // });
+    console.log(res, 'res');
   };
   step3FetchFn = () => {
     this.onCancel();
