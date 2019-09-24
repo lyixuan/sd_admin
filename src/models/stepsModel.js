@@ -20,7 +20,7 @@ export default {
           message.error(stepsVerifyData.msgDetail);
           return false;
         }
-        yield put({ type: 'appealListSave', payload: { stepsVerifyData } });
+        yield put({ type: 'save', payload: { stepsVerifyData } });
         return stepsVerifyData;
       } else {
         message.error(stepsVerifyData.msg);
@@ -30,14 +30,7 @@ export default {
     },
     // 申诉管理接口，批量删除申诉 第二步
     *stepSubmit({ payload }, { call, put }) {
-      //   const stepSubmitData = {
-      //     status: false,
-      //     totalCount: 98,
-      //   };
       const { params } = payload;
-      //   console.log(stepSubmitData, 'stepSubmitData');
-      //   yield put({ type: 'save', payload: { stepSubmitData } });
-      //   return stepSubmitData;
       const stepSubmitData = yield call(stepSubmit, { ...params });
       if (stepSubmitData.code !== 20000) {
         message.error(stepSubmitData.msg);

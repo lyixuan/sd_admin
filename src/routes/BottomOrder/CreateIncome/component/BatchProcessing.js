@@ -52,6 +52,23 @@ class BatchProcessing extends Component {
     }
     return false;
   }
+
+  componentWillUnmount() {
+    this.setState({
+      current: 0,
+      visible: false,
+      disabled: false,
+      batchType: null,
+      batchValue: null,
+      orderIds: '',
+      step1Data: {
+        failCount: 0,
+        failList: [],
+        successCount: 0,
+        totalCount: 0,
+      },
+    });
+  }
   //   handleOk = () => {
   //     this.setState({ loading: true });
   //     setTimeout(() => {
@@ -147,20 +164,6 @@ class BatchProcessing extends Component {
   };
 
   onCancel = () => {
-    this.setState({
-      current: 0,
-      visible: false,
-      disabled: false,
-      batchType: null,
-      batchValue: null,
-      orderIds: '',
-      step1Data: {
-        failCount: 0,
-        failList: [],
-        successCount: 0,
-        totalCount: 0,
-      },
-    });
     this.props.onCancel();
   };
   render() {
