@@ -29,8 +29,8 @@ class BatchProcessing extends Component {
       current: 0,
       visible: false,
       disabled: false,
-      batchType: null,
-      batchValue: null,
+      batchType: undefined,
+      batchValue: undefined,
       orderIds: '',
       step1Data: {
         failCount: 0,
@@ -52,14 +52,6 @@ class BatchProcessing extends Component {
     }
     return false;
   }
-
-  componentWillUnmount() {}
-  //   handleOk = () => {
-  //     this.setState({ loading: true });
-  //     setTimeout(() => {
-  //       this.setState({ loading: false, visible: false });
-  //     }, 3000);
-  //   };
 
   onChangeFn1 = value => {
     value === '3'
@@ -101,14 +93,14 @@ class BatchProcessing extends Component {
       batchValue,
       orderIds,
     };
-    const res = this.props.dispatch({
-      type: 'stepsModel/stepSubmit',
-      payload: { params },
-    });
-    // .then(res => {
-    //   this.setState({ current: 2, step2Data: res.data });
-    // });
-    console.log(res, 'res');
+    this.props
+      .dispatch({
+        type: 'stepsModel/stepSubmit',
+        payload: { params },
+      })
+      .then(res => {
+        this.setState({ current: 2, step2Data: res.data });
+      });
   };
   step3FetchFn = () => {
     this.onCancel();
@@ -133,8 +125,8 @@ class BatchProcessing extends Component {
       current: 0,
       visible: false,
       disabled: false,
-      batchType: null,
-      batchValue: null,
+      batchType: undefined,
+      batchValue: undefined,
       orderIds: '',
       step1Data: {
         failCount: 0,
@@ -162,7 +154,7 @@ class BatchProcessing extends Component {
                 <i className={styles.red}>*</i>批量服务:
               </span>
               <Select
-                defaultValue={batchType}
+                value={batchType}
                 showSearch
                 placeholder="请选择"
                 style={{ width: 370 }}
@@ -178,7 +170,7 @@ class BatchProcessing extends Component {
                 <i className={styles.red}>*</i>批量置为:
               </span>
               <Select
-                defaultValue={batchValue}
+                value={batchValue}
                 showSearch
                 disabled={disabled}
                 placeholder="请选择"
