@@ -127,7 +127,7 @@ const tablecolumns = [
     },
   },
   {
-    title: '判断逻辑',
+    title: '逻辑判断',
     dataIndex: 'logicJudge',
     width: 85,
     render: text => {
