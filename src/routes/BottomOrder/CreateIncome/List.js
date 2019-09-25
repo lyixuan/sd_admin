@@ -293,7 +293,7 @@ class CreateList extends Component {
   onSubmit = val => {
     const params = { ...val };
     if (!params.recommendedTeacher) {
-      message.warn('邮箱未查询到用户名');
+      message.warn('未查找到该老师信息');
       return;
     }
     params.competitionRatio = params.competitionRatio === undefined ? 100 : params.competitionRatio;
