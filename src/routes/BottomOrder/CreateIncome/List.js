@@ -293,13 +293,18 @@ class CreateList extends Component {
   onSubmit = val => {
     const params = { ...val };
     if (!params.recommendedTeacher) {
-      message.warn('未查找到该老师信息');
+      message.warn('推荐老师邮箱不存在');
       return;
     }
     params.competitionRatio = params.competitionRatio === undefined ? 100 : params.competitionRatio;
     params.collegeId = params.organization[0] || undefined;
     params.familyId = params.organization[1] || undefined;
     params.groupId = params.organization[2] || undefined;
+    params.recommendType = params.recommendType || null;
+    params.logicJudge = params.logicJudge || null;
+    params.replayLecturesTime = params.replayLecturesTime || null;
+    params.liveLecturesTime = params.liveLecturesTime || null;
+
     delete params.organization;
     const that = this;
     this.props
