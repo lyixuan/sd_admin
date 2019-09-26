@@ -39,7 +39,7 @@ const tablecolumns = [
   {
     title: '子订单ID',
     dataIndex: 'orderId',
-    width: 80,
+    width: 90,
     fixed: 'left',
     render: text => {
       return <>{text === null ? <span className={styles.unFind}>未获取到</span> : text}</>;
@@ -501,6 +501,7 @@ class CreateList extends Component {
             placeholder="请选择"
             allowClear
             value={[...collegeIdList, ...familyIdList, ...groupIdList]}
+            maxTagPlaceholder={omittedValues => <span>{`+${omittedValues.length}`}</span>}
             multiple
             showArrow
             maxTagCount={1}
@@ -608,7 +609,7 @@ class CreateList extends Component {
     // };
     return (
       <div>
-        <BatchProcess visible={visibleDel} onCancel={this.onCancelStep} {...this.props} />
+        <BatchProcess visible={visibleDel} onCancel={this.onCancelStep} />
         <ContentLayout
           routerData={this.props.routerData}
           contentForm={WrappedAdvancedSearchForm()}

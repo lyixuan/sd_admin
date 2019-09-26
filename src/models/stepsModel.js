@@ -11,17 +11,18 @@ export default {
 
   effects: {
     // 申诉管理接口，批量删除申诉 第一步接口
-    *stepsVerify({ payload }, { call, put }) {
+    *stepsVerify({ payload, callback }, { call, put }) {
       const { params } = payload;
+      console.log(yield call(stepsVerify, { ...params }), 'yield call(stepsVerify, { ...params })');
       const stepsVerifyData = yield call(stepsVerify, { ...params });
-      console.log(stepsVerifyData, 'stepsVerifyData');
       if (stepsVerifyData.code === 20000) {
         if (!stepsVerifyData.data) {
           message.error(stepsVerifyData.msgDetail);
           return false;
         }
-        yield put({ type: 'appealListSave', payload: { stepsVerifyData } });
-        return stepsVerifyData;
+        yield put({ type: 'save', payload: { stepsVerifyData } });
+        callback(stepsVerifyData);
+        // return stepsVerifyData;
       } else {
         message.error(stepsVerifyData.msg);
         return false;
@@ -30,14 +31,7 @@ export default {
     },
     // 申诉管理接口，批量删除申诉 第二步
     *stepSubmit({ payload }, { call, put }) {
-      //   const stepSubmitData = {
-      //     status: false,
-      //     totalCount: 98,
-      //   };
       const { params } = payload;
-      //   console.log(stepSubmitData, 'stepSubmitData');
-      //   yield put({ type: 'save', payload: { stepSubmitData } });
-      //   return stepSubmitData;
       const stepSubmitData = yield call(stepSubmit, { ...params });
       if (stepSubmitData.code !== 20000) {
         message.error(stepSubmitData.msg);
@@ -53,10 +47,10 @@ export default {
     save(state, action) {
       const { checkList } = action.payload;
       if (checkList) {
-        const { errorList } = checkList.data;
-        if (errorList) {
-          errorList.forEach((item, i) => {
-            errorList[i].key = i;
+        const { failList } = checkList.data;
+        if (failList) {
+          failList.forEach((item, i) => {
+            failList[i].key = i;
           });
         }
       }
