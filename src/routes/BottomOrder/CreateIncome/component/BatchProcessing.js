@@ -203,7 +203,7 @@ class BatchProcessing extends Component {
           <div>
             <div className={styles.line}>
               <span className={styles.left}>批量服务:</span>
-              {batchArr[batchType]}
+              {batchArr[Number(batchType) - 1]}
             </div>
             <div className={styles.line}>
               <span className={styles.left}>批量置为:</span>
@@ -244,7 +244,7 @@ class BatchProcessing extends Component {
           <div>
             <div className={styles.line}>
               <span className={styles.left}>批量服务:</span>
-              {batchArr[batchType]}
+              {batchArr[Number(batchType) - 1]}
             </div>
             <div className={styles.line}>
               <span className={styles.left}>批量置为:</span>
