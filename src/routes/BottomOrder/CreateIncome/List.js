@@ -496,6 +496,7 @@ class CreateList extends Component {
             placeholder="请选择"
             allowClear
             value={[...collegeIdList, ...familyIdList, ...groupIdList]}
+            maxTagPlaceholder={omittedValues => <span>{`+${omittedValues.length}`}</span>}
             multiple
             showArrow
             maxTagCount={1}
