@@ -10,6 +10,7 @@ import Steps from './Steps';
 const { Option } = Select;
 const { TextArea } = Input;
 
+const batchArr = ['是否提退', '是否挽留成功', '删除'];
 /**
  * current ，，目前显示第几个modal
  * visible 显示隐藏modal
@@ -29,8 +30,8 @@ class BatchProcessing extends Component {
       current: 0,
       visible: false,
       disabled: false,
-      batchType: null,
-      batchValue: null,
+      batchType: undefined,
+      batchValue: undefined,
       orderIds: '',
       step1Data: {
         failCount: 0,
@@ -52,12 +53,6 @@ class BatchProcessing extends Component {
     }
     return false;
   }
-  //   handleOk = () => {
-  //     this.setState({ loading: true });
-  //     setTimeout(() => {
-  //       this.setState({ loading: false, visible: false });
-  //     }, 3000);
-  //   };
 
   onChangeFn1 = value => {
     value === '3'
@@ -76,18 +71,6 @@ class BatchProcessing extends Component {
     this.onCancel();
   };
 
-  //   onCancel = () => {
-  //     this.setState({
-  //       current: 0,
-  //       visible: false,
-  //       disabled: false,
-  //       batchType: null,
-  //       batchValue: null,
-  //       orderIds: '',
-  //     });
-  //     this.props.onCancel();
-  //   };
-
   step1FetchFn = () => {
     const { batchType, batchValue, orderIds } = this.state;
     const params = {
@@ -95,16 +78,14 @@ class BatchProcessing extends Component {
       batchValue,
       orderIds,
     };
-    console.log(this.props, 'this.props');
-    this.props
-      .dispatch({
-        type: 'stepsModel/stepsVerify',
-        payload: { params },
-      })
-      .then(res => {
+    this.props.dispatch({
+      type: 'stepsModel/stepsVerify',
+      payload: { params },
+      callback: res => {
         if (!res) return;
         this.setState({ current: 1, step1Data: res.data });
-      });
+      },
+    });
   };
   step2FetchFn = () => {
     const { batchType, batchValue, orderIds } = this.state;
@@ -145,8 +126,8 @@ class BatchProcessing extends Component {
       current: 0,
       visible: false,
       disabled: false,
-      batchType: null,
-      batchValue: null,
+      batchType: undefined,
+      batchValue: undefined,
       orderIds: '',
       step1Data: {
         failCount: 0,
@@ -174,7 +155,7 @@ class BatchProcessing extends Component {
                 <i className={styles.red}>*</i>批量服务:
               </span>
               <Select
-                defaultValue={batchType}
+                value={batchType}
                 showSearch
                 placeholder="请选择"
                 style={{ width: 370 }}
@@ -190,7 +171,7 @@ class BatchProcessing extends Component {
                 <i className={styles.red}>*</i>批量置为:
               </span>
               <Select
-                defaultValue={batchValue}
+                value={batchValue}
                 showSearch
                 disabled={disabled}
                 placeholder="请选择"
@@ -206,7 +187,7 @@ class BatchProcessing extends Component {
                 <i className={styles.red}>*</i>子订单ID:
               </span>
               <TextArea
-                defaultValue={orderIds}
+                value={orderIds}
                 onChange={this.onTextChange}
                 style={{ width: 370 }}
                 placeholder="请输入子订单ID,多个编号请使用逗号、空格、换行区分"
@@ -222,7 +203,7 @@ class BatchProcessing extends Component {
           <div>
             <div className={styles.line}>
               <span className={styles.left}>批量服务:</span>
-              {batchType}
+              {batchArr[batchType]}
             </div>
             <div className={styles.line}>
               <span className={styles.left}>批量置为:</span>
@@ -249,9 +230,9 @@ class BatchProcessing extends Component {
               </p>
               <div className={styles.textAreaCon}>
                 <p>以下子订单ID未找到：</p>
-                <p className={styles.text} style={{ width: '100%' }}>
+                <div className={styles.text} style={{ width: '100%', height: 'auto' }}>
                   {failList && failList.join(' , ')}
-                </p>
+                </div>
               </div>
             </div>
           </div>
@@ -263,7 +244,7 @@ class BatchProcessing extends Component {
           <div>
             <div className={styles.line}>
               <span className={styles.left}>批量服务:</span>
-              {batchType}
+              {batchArr[batchType]}
             </div>
             <div className={styles.line}>
               <span className={styles.left}>批量置为:</span>
@@ -297,22 +278,28 @@ class BatchProcessing extends Component {
     params.visible = visible;
     params.step1disabled = this.gotoNext();
     params.step2disabled = !(step1Data && step1Data.successCount >= 1);
-    params.step1Fetch = () => {
-      this.step1FetchFn();
-    };
-    params.step2Fetch = () => {
-      this.step2FetchFn();
-    };
-    params.step3Fetch = () => {
-      this.step3FetchFn();
-    };
+    // params.step1Fetch = () => {
+    //   this.step1FetchFn();
+    // };
+    // params.step2Fetch = () => {
+    //   this.step2FetchFn();
+    // };
+    // params.step3Fetch = () => {
+    //   this.step3FetchFn();
+    // };
     params.editCurrent = curr => {
       this.editCurrentFn(curr);
     };
 
     return (
       <div>
-        <Steps params={params} onCancel={this.onCancel} />
+        <Steps
+          params={params}
+          step1Fetch={() => this.step1FetchFn()}
+          step2Fetch={() => this.step2FetchFn()}
+          step3Fetch={() => this.step3FetchFn()}
+          onCancel={this.onCancel}
+        />
       </div>
     );
   }
