@@ -10,6 +10,7 @@ import Steps from './Steps';
 const { Option } = Select;
 const { TextArea } = Input;
 
+const batchArr = ['是否提退', '是否挽留成功', '删除'];
 /**
  * current ，，目前显示第几个modal
  * visible 显示隐藏modal
@@ -202,7 +203,7 @@ class BatchProcessing extends Component {
           <div>
             <div className={styles.line}>
               <span className={styles.left}>批量服务:</span>
-              {batchType}
+              {batchArr[batchType]}
             </div>
             <div className={styles.line}>
               <span className={styles.left}>批量置为:</span>
@@ -243,7 +244,7 @@ class BatchProcessing extends Component {
           <div>
             <div className={styles.line}>
               <span className={styles.left}>批量服务:</span>
-              {batchType}
+              {batchArr[batchType]}
             </div>
             <div className={styles.line}>
               <span className={styles.left}>批量置为:</span>
