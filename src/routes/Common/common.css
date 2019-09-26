@@ -142,6 +142,7 @@
 
 :global(.ant-cascader-picker-label) {
   text-align: left;
+  padding: 0 20px 0 12px;
 }
 
 :global(.ant-input:hover) {
