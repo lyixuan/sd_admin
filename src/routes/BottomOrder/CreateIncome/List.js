@@ -39,7 +39,7 @@ const tablecolumns = [
   {
     title: '子订单ID',
     dataIndex: 'orderId',
-    width: 80,
+    width: 90,
     fixed: 'left',
     render: text => {
       return <>{text === null ? <span className={styles.unFind}>未获取到</span> : text}</>;
