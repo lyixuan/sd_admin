@@ -1,18 +1,10 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
+import { SERVER_HOST } from '../utils/constants';
 
-const hostObj = {
-  production: 'http://bd.ministudy.com/apis',
-  localhost: 'http://test.xd.temp.ministudy.com/apis',
-  development: 'http://test.xd.temp.ministudy.com/apis', // 'http://172.16.59.227:18084', //
-};
-const hostObjNew = {
-  production: 'http://bd.ministudy.com/inspectorapis',
-  localhost: 'http://dev.xd.temp.ministudy.com/inspectorapis',
-  development: 'http://test.xd.temp.ministudy.com/inspectorapis', // 'http://172.16.59.227:8086', //
-};
-export const HOST = hostObj[process.env.API_TYPE];
-export const HOST_NEW = hostObjNew[process.env.API_TYPE];
+export const HOST = `${SERVER_HOST}/apis`;
+export const HOST_NEW = `${SERVER_HOST}/inspectorapis`;
+
 /*
 * 用户登录接口
 * params：{name，password}

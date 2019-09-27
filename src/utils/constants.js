@@ -1,6 +1,54 @@
 /**
  * 静态常量文件
  * */
+
+// =========================================== host ===============
+
+// 静态文件host
+export const STATIC_HOST = {
+  localhost: 'http://172.16.117.65',
+  localhost2: 'http://172.16.117.65',
+  development: 'http://172.16.117.65',
+  development2: 'http://172.16.117.65',
+  production: 'http://bd.ministudy.com/download',
+}[process.env.ENV_TYPE];
+
+// 服务器地址
+export const SERVER_HOST = {
+  production: 'http://bd.ministudy.com',
+  localhost: 'http://test.xd.admin.ministudy.com',
+  localhost2: 'http://test.xd.admin2.ministudy.com',
+  development: 'http://test.xd.admin.ministudy.com',
+  development2: 'http://test.xd.admin2.ministudy.com',
+}[process.env.ENV_TYPE];
+
+export const CAS_HOST = {
+  production: 'http://bd.ministudy.com',
+  localhost: 'http://test.xd.admin.ministudy.com',
+  localhost2: 'http://test.xd.admin2.ministudy.com',
+  development: 'http://test.xd.admin.ministudy.com',
+  development2: 'http://test.xd.admin2.ministudy.com',
+}[process.env.ENV_TYPE];
+
+export const INDEX_HOST = {
+  production: 'http://bd.ministudy.com',
+  localhost: false,
+  localhost2: false,
+  development: 'http://test.xd.admin.ministudy.com',
+  development2: 'http://test.xd.admin2.ministudy.com',
+}[process.env.ENV_TYPE];
+
+// 设置督学模块跳转
+export const MENU_HOST = {
+  production: 'http://bd.ministudy.com',
+  localhost: 'http://test.xd.admin.ministudy.com',
+  localhost2: 'http://test.xd.admin2.ministudy.com',
+  development: 'http://test.xd.admin.ministudy.com',
+  development2: 'http://test.xd.admin2.ministudy.com',
+}[process.env.ENV_TYPE];
+
+// =========================================== host ===============
+
 // time
 export const TIME_LOCAL = 'zh-cn';
 
@@ -12,32 +60,6 @@ export const ADMIN_USER = 'admin_user';
 export const TABLE_PAGES_NUM = 30;
 // 数据分析师id
 export const DATA_ANALYST_ID = '122';
-
-export const DEBUGGER_USER = {
-  localhost: 'zhanglulu02',
-}[process.env.LOGIN_HOST];
-
-// 下载类资源host
-export const STATIC_HOST = {
-  development: 'http://172.16.117.65:8091',
-  production: 'http://bd.ministudy.com/download',
-}[process.env.API_TYPE];
-
-// 设置domain域名
-export const DOMAIN_HOST = '.ministudy.com';
-
-export const CAS_HOST = {
-  localhost: 'http://test.xd.temp.ministudy.com',
-  development: 'http://test.xd.temp.ministudy.com',
-  production: 'http://bd.ministudy.com',
-}[process.env.LOGIN_HOST];
-
-// 设置督学模块跳转
-export const INSPECTOR_HOST = {
-  localhost: 'http://test.xd.admin.ministudy.com',
-  development: 'http://test.xd.admin.ministudy.com',
-  production: 'http://bd.ministudy.com',
-}[process.env.LOGIN_HOST];
 
 // Global Header Select
 export const GLOBAL_HEADER_SELECT = [
