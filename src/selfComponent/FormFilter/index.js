@@ -4,13 +4,7 @@ import moment from 'moment';
 import Table from './table';
 import ButtonBox from './buttonBox';
 import styles from './index.less';
-import {
-  saveParamsInUrl,
-  saveParamsInUrl2,
-  filterEmptyUrlParams,
-  getUrlParams,
-  pageObj,
-} from './saveUrlParams';
+import { saveParamsInUrl, filterEmptyUrlParams, getUrlParams, pageObj } from './saveUrlParams';
 
 /*
 *@params modal         object  初始化参数非必填;   base string
@@ -63,19 +57,16 @@ class FormPrams extends Component {
   }
 
   onReset = () => {
-    this.flagKeyArr.forEach(item => {
-      if (item === 'pageNum') {
-        this.modal[item] = 0;
-      }
-      if (item === 'orderTypeList') {
-        this.modal[item] = [];
-      } else {
-        this.modal[item] = this.props.modal[item] || undefined;
-      }
-    });
     if (this.isCreateIncome) {
-      this.saveData2();
+      this.props.resetList();
     } else {
+      this.flagKeyArr.forEach(item => {
+        if (item === 'pageNum') {
+          this.modal[item] = 0;
+        } else {
+          this.modal[item] = this.props.modal[item] || undefined;
+        }
+      });
       this.saveData();
     }
   };
@@ -109,9 +100,7 @@ class FormPrams extends Component {
     if (originEvent) {
       originEvent.call(null, e);
     }
-    if (this.isCreateIncome) {
-      saveParamsInUrl(this.modal);
-    }
+
     this.forceUpdate();
   };
   handleChange2 = (value, flag, originEvent) => {
@@ -119,9 +108,7 @@ class FormPrams extends Component {
     if (originEvent) {
       originEvent.call(null, value);
     }
-    if (this.isCreateIncome) {
-      saveParamsInUrl(this.modal);
-    }
+
     this.forceUpdate();
   };
   selectChange = (value, flag, originEvent) => {
@@ -132,32 +119,6 @@ class FormPrams extends Component {
     this.setState({
       isUpdate: !this.state.isUpdate,
     });
-    if (this.isCreateIncome) {
-      const {
-        registrationBeginDate = undefined,
-        registrationEndDate = undefined,
-        orgName = undefined,
-        recommendedTeacher = undefined,
-        orderTypeList = undefined,
-        teacherName = undefined,
-        orderId,
-        stuId,
-        pageNum,
-      } = this.modal;
-      const params = {
-        registrationBeginDate,
-        registrationEndDate,
-        recommendedTeacher,
-        teacherName,
-        orgName,
-        orderId,
-        stuId,
-        orderTypeList,
-        pageNum,
-        morderTypeList: value.join(','),
-      };
-      saveParamsInUrl2(params);
-    }
   };
   pickerWrapperChange = (value, strData, flag, originEvent) => {
     this.modal[flag] = strData || '';
@@ -167,9 +128,6 @@ class FormPrams extends Component {
     this.setState({
       isUpdate: !this.state.isUpdate,
     });
-    if (this.isCreateIncome) {
-      saveParamsInUrl(this.modal);
-    }
   };
 
   saveData = modal => {
@@ -179,14 +137,7 @@ class FormPrams extends Component {
     }
     saveParamsInUrl(params);
   };
-  saveData2 = modal => {
-    const params = modal ? { ...this.modal, ...modal } : this.modal;
-    if (this.props.onSubmit) {
-      this.props.onSubmit({ ...params, ...this.props.initData });
-    }
 
-    saveParamsInUrl2(params);
-  };
   checkoutComponentProps = child => {
     let addParams = {};
     if (child.props.flag) {
@@ -266,6 +217,12 @@ class FormPrams extends Component {
       const propsParams = this.checkoutComponentProps(child);
       return React.cloneElement(child, { children: childrenItem, ...propsParams });
     });
+  };
+  createIncomeAdd = () => {
+    this.props.createIncomeAdd();
+  };
+  createIncomeDel = () => {
+    this.props.createIncomeDel();
   };
   render() {
     const children = this.cloneChildren(this.props.children);

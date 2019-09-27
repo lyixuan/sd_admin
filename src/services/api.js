@@ -3,13 +3,13 @@ import request from '../utils/request';
 
 const hostObj = {
   production: 'http://bd.ministudy.com/apis',
-  localhost: 'http://test.xd.admin.ministudy.com/apis',
-  development: 'http://test.xd.admin.ministudy.com/apis', // 'http://172.16.59.227:18084', //
+  localhost: 'http://test.xd.temp.ministudy.com/apis',
+  development: 'http://test.xd.temp.ministudy.com/apis', // 'http://172.16.59.227:18084', //
 };
 const hostObjNew = {
   production: 'http://bd.ministudy.com/inspectorapis',
-  localhost: 'http://dev.xd.admin.ministudy.com/inspectorapis',
-  development: 'http://test.xd.admin.ministudy.com/inspectorapis', // 'http://172.16.59.227:8086', //
+  localhost: 'http://dev.xd.temp.ministudy.com/inspectorapis',
+  development: 'http://test.xd.temp.ministudy.com/inspectorapis', // 'http://172.16.59.227:8086', //
 };
 export const HOST = hostObj[process.env.API_TYPE];
 export const HOST_NEW = hostObjNew[process.env.API_TYPE];
@@ -1166,6 +1166,17 @@ export async function incomeOrderList(params) {
     body: params,
   });
 }
+export async function incomeEditSave(params) {
+  return request(`${HOST_NEW}/incomeOrder/edit/submit`, {
+    method: 'POST',
+    body: params,
+  });
+}
+export async function getNameByMail(params) {
+  return request(`${HOST_NEW}/incomeOrder/edit/getNameByMail?${stringify(params)}`, {
+    method: 'GET',
+  });
+}
 export async function getDateRange() {
   return request(`${HOST_NEW}/incomeOrder/dateRange`, {
     method: 'GET',
@@ -1210,6 +1221,28 @@ export async function verifyOrdIds(params) {
 // 批量申诉  第二步
 export async function deleteOrdIds(params) {
   return request(`${HOST_NEW}/incomeOrder/deleteOrdIds`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 查询组织架构
+export async function getOrgMapList(params) {
+  return request(`${HOST_NEW}/orgMap/getOrgMapList${stringify(params)}`, {
+    method: 'GET',
+  });
+}
+
+// 批量编辑  第一步
+export async function stepsVerify(params) {
+  return request(`${HOST_NEW}/incomeOrder/batchEdit/verify`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 批量编辑  第二步
+export async function stepSubmit(params) {
+  return request(`${HOST_NEW}/incomeOrder/batchEdit/submit`, {
     method: 'POST',
     body: params,
   });

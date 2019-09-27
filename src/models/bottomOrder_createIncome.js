@@ -9,6 +9,9 @@ import {
   // deleteRecommend,
   createIncomeCheck,
   createIncomeData,
+  getOrgMapList,
+  incomeEditSave,
+  getNameByMail,
 } from '../services/api';
 
 export default {
@@ -26,12 +29,48 @@ export default {
   },
 
   effects: {
+    *getOrgMapList({ payload }, { call, put }) {
+      const { params } = payload;
+      const result = yield call(getOrgMapList, params);
+      const orgList = result.data || [];
+
+      if (result.code === 20000) {
+        yield put({ type: 'saveMap', payload: { orgList } });
+      } else {
+        message.error(result.msg);
+      }
+    },
+    *incomeEditSave({ payload }, { call }) {
+      const { params } = payload;
+      const result = yield call(incomeEditSave, params);
+      if (result.code === 20000 && result.data) {
+        message.success('保存成功');
+        return true;
+      } else {
+        message.error(result.msgDetail);
+        return false;
+      }
+    },
+    *getNameByMail({ payload }, { call, put }) {
+      const { params } = payload;
+      const response = yield call(getNameByMail, params);
+      if (response.code === 20000) {
+        yield put({ type: 'saveTime', payload: { mailName: response.data } });
+      }
+    },
+    *saveMail({ payload }, { put }) {
+      const { params } = payload;
+      yield put({ type: 'saveTime', payload: { mailName: params.mailName } });
+    },
     *recommendList({ payload }, { call, put }) {
       const { getListParams } = payload;
       const page = getListParams.pageNum + 1;
       delete getListParams.pageNum;
       const response = yield call(incomeOrderList, { ...getListParams, ...{ page } });
-      yield put({ type: 'pureSave', payload: { response, getListParams } });
+      yield put({
+        type: 'pureSave',
+        payload: { response, getListParams: { ...getListParams, ...{ page } } },
+      });
     },
     *getDateRange(_, { call, put }) {
       const response = yield call(getDateRange);
@@ -169,5 +208,32 @@ export default {
         qualityList: action.payload,
       };
     },
+    saveMap(state, { payload }) {
+      const orgListTreeData = toTreeData(payload.orgList);
+      return { ...state, orgList: payload.orgList, orgListTreeData };
+    },
   },
 };
+
+function toTreeData(orgList) {
+  const treeData = [];
+  orgList.forEach(v => {
+    const o = { title: v.name, value: `a-${v.id}`, key: v.id, lv: 1 };
+    if (v.nodeList.length > 0) {
+      o.children = [];
+      v.nodeList.forEach(v1 => {
+        const o1 = { title: v1.name, value: `b-${v1.id}`, key: v1.id + 1000, lv: 2 };
+        o.children.push(o1);
+        if (v1.nodeList.length > 0) {
+          o1.children = [];
+          v1.nodeList.forEach(v2 => {
+            const o2 = { title: v2.name, value: `c-${v2.id}`, key: v2.id + 100000, lv: 3 };
+            o1.children.push(o2);
+          });
+        }
+      });
+    }
+    treeData.push(o);
+  });
+  return treeData;
+}

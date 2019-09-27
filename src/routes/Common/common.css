@@ -135,7 +135,7 @@
 }
 
 :global(.ant-form-inline .ant-form-item) {
- margin:0
+  margin: 0;
 }
 
 :global(.ant-btn) {
@@ -144,6 +144,7 @@
 
 :global(.ant-cascader-picker-label) {
   text-align: left;
+  padding-right: 20px!important;
 }
 
 :global(.ant-input:hover){
@@ -209,7 +210,6 @@
   margin: 0 0 24px 0;
   background-color: #52C9C2;
   font-size: 14px;
-  width: 80px;
   height: 32px;
   border: 1px solid #52C9C2 !important;
   color: #fff;
@@ -621,4 +621,17 @@
   color: #7B7C80;
   font-weight: normal;
   white-space: nowrap;
+}
+
+:global(.circleTable td){
+  font-size: 13px;
+}
+
+:global(.createEditForm .ant-input-disabled){
+  color: #666;
+}
+
+
+:global(.createEditForm .ant-form-item) {
+  margin-bottom: 5px;
 }
