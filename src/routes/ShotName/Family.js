@@ -51,31 +51,36 @@ class Family extends Component {
 
   // 模态框回显
   clickModalOK = (id, familyShortName, sort, objId, objName, objType) => {
+    this.showModal(true);
     if (!familyShortName) {
       message.error('家族简称不可为空');
-      this.showModal(true);
-    } else {
-      const { familyName = null } = this.state;
-      const paramsObj = {
-        id,
-        familyShortName,
-        sort,
-        objId,
-        objName,
-        objType,
-        orgName: familyName,
-      };
-      this.props
-        .dispatch({
-          type: 'shortName/editFamily',
-          payload: { paramsObj },
-        })
-        .then(res => {
-          if (res.code === 2000) {
-            this.showModal(false);
-          }
-        });
+      return;
     }
+    if (!sort) {
+      message.error('拼音名称不可为空');
+      // this.showModal(true);
+      return;
+    }
+    const { familyName = null } = this.state;
+    const paramsObj = {
+      id,
+      familyShortName,
+      sort,
+      objId,
+      objName,
+      objType,
+      orgName: familyName,
+    };
+    this.props
+      .dispatch({
+        type: 'shortName/editFamily',
+        payload: { paramsObj },
+      })
+      .then(res => {
+        if (res.code === 2000) {
+          this.showModal(false);
+        }
+      });
   };
   // input双向绑定
   handelChange(e) {
@@ -179,7 +184,7 @@ class Family extends Component {
               float: 'left',
             }}
           >
-            短名称：
+            家族简称：
           </span>
           <Input
             maxLength={30}

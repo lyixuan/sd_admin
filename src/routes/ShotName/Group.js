@@ -55,26 +55,32 @@ class Group extends Component {
 
   // 模态框确定
   clickModalOK = (id, groupShortName, sort, objId, objName, objType) => {
+    this.showModal(true);
     if (!groupShortName) {
       message.error('小组简称不可为空');
-      this.showModal(true);
-    } else {
-      const { groupName = null } = this.state;
-      const paramsObj = {
-        id,
-        groupShortName,
-        sort,
-        objId,
-        objName,
-        objType,
-        orgName: groupName,
-      };
-      this.props.dispatch({
-        type: 'shortName/editGroup',
-        payload: { paramsObj },
-      });
-      this.showModal(false);
+      return;
     }
+
+    if (!sort) {
+      message.error('拼音名称不可为空');
+      return;
+      // this.showModal(true);
+    }
+    const { groupName = null } = this.state;
+    const paramsObj = {
+      id,
+      groupShortName,
+      sort,
+      objId,
+      objName,
+      objType,
+      orgName: groupName,
+    };
+    this.props.dispatch({
+      type: 'shortName/editGroup',
+      payload: { paramsObj },
+    });
+    this.showModal(false);
   };
   // input双向绑定
   handelChange(e) {
@@ -182,7 +188,7 @@ class Group extends Component {
               float: 'left',
             }}
           >
-            短名称：
+            小组简称：
           </span>
           <Input
             maxLength={30}

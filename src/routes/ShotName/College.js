@@ -53,32 +53,37 @@ class College extends Component {
 
   // 模态框回显
   clickModalOK = (id, collegeShortName, sort, objId, objName, objType) => {
+    this.showModal(true);
     if (!collegeShortName) {
       message.error('学院简称不可为空');
-      this.showModal(true);
-    } else {
-      const { collegeName = null } = this.state;
-
-      const paramsObj = {
-        id,
-        collegeShortName,
-        sort,
-        objId,
-        objName,
-        objType,
-        orgName: collegeName,
-      };
-      this.props
-        .dispatch({
-          type: 'shortName/editCollege',
-          payload: { paramsObj },
-        })
-        .then(res => {
-          if (res.code === 2000) {
-            this.showModal(false);
-          }
-        });
+      return;
     }
+    if (!sort) {
+      message.error('拼音名称不可为空');
+      // this.showModal(true);
+      return;
+    }
+    const { collegeName = null } = this.state;
+
+    const paramsObj = {
+      id,
+      collegeShortName,
+      sort,
+      objId,
+      objName,
+      objType,
+      orgName: collegeName,
+    };
+    this.props
+      .dispatch({
+        type: 'shortName/editCollege',
+        payload: { paramsObj },
+      })
+      .then(res => {
+        if (res.code === 2000) {
+          this.showModal(false);
+        }
+      });
   };
   // input双向绑定
   handelChange(e) {
@@ -166,7 +171,7 @@ class College extends Component {
               float: 'left',
             }}
           >
-            短名称：
+            学院简称：
           </span>
           <Input
             maxLength={30}
