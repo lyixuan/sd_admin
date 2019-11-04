@@ -36,8 +36,10 @@ export default {
           type: 'save',
           payload: { collegeList, visible: false },
         });
+        return getCode;
       } else {
         message.error(getCode.msg);
+        return getCode;
       }
     },
     *familyList({ payload }, { put, call }) {
@@ -62,8 +64,10 @@ export default {
           type: 'save',
           payload: { familyList, visible: false },
         });
+        return getCode;
       } else {
         message.error(getCode.msg);
+        return getCode;
       }
     },
     *groupList({ payload }, { put, call }) {
@@ -88,8 +92,10 @@ export default {
           type: 'save',
           payload: { groupList, visible: false },
         });
+        return getCode;
       } else {
         message.error(getCode.msg);
+        return getCode;
       }
     },
   },
