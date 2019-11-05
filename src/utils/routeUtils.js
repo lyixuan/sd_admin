@@ -1,30 +1,26 @@
 import pathToRegexp from 'path-to-regexp';
 import storage from './storage';
-import { CAS_HOST, ADMIN_USER, ADMIN_AUTH_LIST } from './constants';
-import { removeStorge } from './authority';
+import { CAS_HOST } from './constants';
 
 export function redirectToLogin() {
-  removeStorge(ADMIN_USER);
-  removeStorge(ADMIN_AUTH_LIST);
-  const { origin } = window.location;
+  localStorage.clear();
+  const { href } = window.location;
   const serverUrl = `${CAS_HOST}/tologin`;
-  window.location.href = `${serverUrl}?originPage=${origin}`;
+  window.location.href = `${serverUrl}?originPage=${href}`;
 }
 
 export function casLogout() {
-  removeStorge(ADMIN_USER);
-  removeStorge(ADMIN_AUTH_LIST);
-  const { origin } = window.location;
+  localStorage.clear();
+  const { href } = window.location;
   const logoutUrl = `${CAS_HOST}/apis/caslogout?`;
 
-  const pageUrl = `pageUrl=${CAS_HOST}/tologin?originPage=${origin}`;
+  const pageUrl = `pageUrl=${CAS_HOST}/tologin?originPage=${href}`;
   window.location.href = `${logoutUrl}${pageUrl}`;
 }
 export function casLogoutDev() {
-  removeStorge(ADMIN_USER);
-  removeStorge(ADMIN_AUTH_LIST);
-  const { origin } = window.location;
-  window.location.href = `${origin}`;
+  localStorage.clear();
+  const { href } = window.location;
+  window.location.href = `${href}`;
 }
 
 export function checkPathname(path = '') {
