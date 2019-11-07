@@ -179,6 +179,15 @@ export default class SiderMenu extends PureComponent {
     const { location: { pathname } } = this.props;
     return getMenuMatchKeys(this.flatMenuKeys, urlToList(pathname));
   };
+  getActiveImg = (bul, url) => {
+    let icon = url;
+    if (bul) {
+      const index = url.lastIndexOf('/');
+      const str = url.substring(index + 1, url.length - 4);
+      icon = `http://bd.ministudy.com/staticFile/icon1/${str}1.svg`;
+    }
+    return getIcon(icon);
+  };
   // 一级菜单
   getMenuItems = menusData => {
     if (!menusData) {
@@ -193,7 +202,7 @@ export default class SiderMenu extends PureComponent {
             className={this.state.openMenu === item.id ? styles.active : ''}
             onClick={() => this.getOpenMenu(item.id)}
           >
-            {getIcon(item.icon)}
+            {this.getActiveImg(this.state.openMenu === item.id, item.icon)}
             <span>{item.name}</span>
           </li>
         );
