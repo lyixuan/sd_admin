@@ -21,3 +21,4 @@ yarn.lock
 *bak
 jsconfig.json
 .vscode/settings.json
+docker/

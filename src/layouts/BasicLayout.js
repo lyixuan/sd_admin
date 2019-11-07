@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
 import { enquireScreen, unenquireScreen } from 'enquire-js';
 import { ADMIN_USER, ADMIN_AUTH_LIST } from '@/utils/constants';
+import Footer from './Footer';
 import SiderMenu from '../components/SiderMenu';
 import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
@@ -192,55 +193,58 @@ class BasicLayout extends React.PureComponent {
     const bashRedirect = this.getBaseRedirect();
     routerData = addRouteData(routerData);
     const layout = (
-      <Layout>
-        <SiderMenu
-          logo={logo}
-          // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
-          // If you do not have the Authorized parameter
-          // you will be forced to jump to the 403 interface without permission
-          // Authorized={Authorized}
-          menuData={menuData}
-          collapsed={collapsed}
-          location={location}
-          isMobile={this.state.isMobile}
-          onCollapse={this.handleMenuCollapse}
-        />
-        <Layout style={{ backgroundColor: '#F5F8FA' }}>
-          <HeaderLayout
-            {...this.props}
-            logo={biIcon}
-            currentUser={currentUser}
-            fetchingNotices={fetchingNotices}
-            notices={notices}
+      <>
+        <Layout>
+          <SiderMenu
+            logo={logo}
+            // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
+            // If you do not have the Authorized parameter
+            // you will be forced to jump to the 403 interface without permission
+            // Authorized={Authorized}
+            menuData={menuData}
             collapsed={collapsed}
+            location={location}
             isMobile={this.state.isMobile}
             onCollapse={this.handleMenuCollapse}
-            onNoticeVisibleChange={this.handleNoticeVisibleChange}
           />
-          <Content>
-            <Switch>
-              {redirectData.map(item => (
-                <Redirect key={item.from} exact from={item.from} to={item.to} />
-              ))}
-              {getRoutes(match.path, routerData).map(item => {
-                const patchname = item.path;
-                return (
-                  <AuthorizedRoute
-                    key={item.key}
-                    path={item.path}
-                    component={item.component}
-                    exact={item.exact}
-                    authority={checkPathname.bind(null, patchname)}
-                    redirectPath="/exception/403"
-                  />
-                );
-              })}
-              <Redirect exact from="/" to={bashRedirect} />
-              <Route render={NotFound} />
-            </Switch>
-          </Content>
+          <Layout style={{ backgroundColor: '#F5F8FA' }}>
+            <HeaderLayout
+              {...this.props}
+              logo={biIcon}
+              currentUser={currentUser}
+              fetchingNotices={fetchingNotices}
+              notices={notices}
+              collapsed={collapsed}
+              isMobile={this.state.isMobile}
+              onCollapse={this.handleMenuCollapse}
+              onNoticeVisibleChange={this.handleNoticeVisibleChange}
+            />
+            <Content>
+              <Switch>
+                {redirectData.map(item => (
+                  <Redirect key={item.from} exact from={item.from} to={item.to} />
+                ))}
+                {getRoutes(match.path, routerData).map(item => {
+                  const patchname = item.path;
+                  return (
+                    <AuthorizedRoute
+                      key={item.key}
+                      path={item.path}
+                      component={item.component}
+                      exact={item.exact}
+                      authority={checkPathname.bind(null, patchname)}
+                      redirectPath="/exception/403"
+                    />
+                  );
+                })}
+                <Redirect exact from="/" to={bashRedirect} />
+                <Route render={NotFound} />
+              </Switch>
+            </Content>
+          </Layout>
         </Layout>
-      </Layout>
+        <Footer />
+      </>
     );
 
     return (

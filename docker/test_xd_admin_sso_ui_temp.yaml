@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: test-xd-sso-admin-ui-temp-service
-  name: test-xd-sso-admin-ui-temp-service
+    app: xd-test-admin-sys-admin2-service
+  name: xd-test-admin-sys-admin2-service
 spec:
   ports:
   - port: 19997
@@ -11,23 +11,23 @@ spec:
     targetPort: 80
     nodePort: 19997
   selector:
-    app: test-xd-sso-admin-ui-temp-service
+    app: xd-test-admin-sys-admin2-service
   type: NodePort
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: test-xd-sso-admin-ui-temp-deployment
+  name: xd-test-admin-sys-admin2-deployment
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: test-xd-sso-admin-ui-temp-service
+        app: xd-test-admin-sys-admin2-service
     spec:
       nodeName: 172.16.109.138
       containers:
-      - name: test-xd-sso-admin-ui-temp-service
+      - name: xd-test-admin-sys-admin2-service
         image: hub.sunland2.com:8234/sscp-service/xd_sso_admin_ui:<BUILD_TAG>
         ports:
         - containerPort: 19997
