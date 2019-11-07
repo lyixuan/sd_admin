@@ -101,7 +101,7 @@ export default class SelfHeader extends PureComponent {
     const { visible } = this.state;
     const selectedGroup = this.handleMenuList();
     return (
-      <Header style={{ padding: 0 }}>
+      <Header style={{ padding: 0, height: '54px', lineHeight: '54px' }}>
         <GlobalHeader
           {...this.props}
           onMenuClick={this.handleMenuClick}

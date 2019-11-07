@@ -90,6 +90,10 @@ class RefundAdd extends Component {
   columnsData = () => {
     const columns = [
       {
+        title: '行号',
+        dataIndex: 'rowIndex',
+      },
+      {
         title: '子订单id',
         dataIndex: 'orderId',
       },
