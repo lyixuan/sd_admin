@@ -21,6 +21,7 @@ class Group extends Component {
       groupName: '小组名字',
       id: 0,
       name: '',
+      sort: '',
     };
   }
 
@@ -39,7 +40,8 @@ class Group extends Component {
       objName: record.groupName,
       objType: 'group',
       visible: true,
-      name: '',
+      name: record.objShortName,
+      sort: record.sort,
     });
   };
 
@@ -52,31 +54,44 @@ class Group extends Component {
   };
 
   // 模态框确定
-  clickModalOK = (id, groupShortName, objId, objName, objType) => {
+  clickModalOK = (id, groupShortName, sort, objId, objName, objType) => {
+    this.showModal(true);
     if (!groupShortName) {
       message.error('小组简称不可为空');
-      this.showModal(true);
-    } else {
-      const {groupName=null}= this.state
-      const paramsObj = {
-        id,
-        groupShortName,
-        objId,
-        objName,
-        objType,
-        orgName:groupName,
-      };
-      this.props.dispatch({
-        type: 'shortName/editGroup',
-        payload: { paramsObj },
-      });
-      this.showModal(false);
+      return;
     }
+
+    if (!sort) {
+      message.error('拼音名称不可为空');
+      return;
+      // this.showModal(true);
+    }
+    const { groupName = null } = this.state;
+    const paramsObj = {
+      id,
+      groupShortName,
+      sort,
+      objId,
+      objName,
+      objType,
+      orgName: groupName,
+    };
+    this.props.dispatch({
+      type: 'shortName/editGroup',
+      payload: { paramsObj },
+    });
+    this.showModal(false);
   };
   // input双向绑定
   handelChange(e) {
     this.setState({
       name: e.target.value,
+    });
+  }
+
+  handelSortChange(e) {
+    this.setState({
+      sort: e.target.value,
     });
   }
   // 模态框显隐回调
@@ -113,6 +128,10 @@ class Group extends Component {
         dataIndex: 'objShortName',
       },
       {
+        title: '拼音名称',
+        dataIndex: 'sort',
+      },
+      {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
@@ -146,6 +165,7 @@ class Group extends Component {
       groupName,
       id,
       name,
+      sort,
       objId,
       objName,
       objType,
@@ -153,16 +173,68 @@ class Group extends Component {
     const modalTitle = `${collegeName} | ${familyName} | ${groupName}`;
     const modalContent = (
       <div>
-        <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
-        <Input
-          maxLength={20}
-          style={{ width: '300px', margin: '0 100px' }}
-          onChange={e => {
-            this.handelChange(e);
+        <p style={{ textAlign: 'center', marginBottom: '10px' }}> {modalTitle} </p>
+        <div
+          style={{
+            width: '100%',
+            height: '32px',
+            lineHeight: ' 32px',
+            marginBottom: '10px',
           }}
-          value={name}
-        />
+        >
+          <span
+            style={{
+              width: '100px',
+              float: 'left',
+            }}
+          >
+            小组简称：
+          </span>
+          <Input
+            maxLength={30}
+            style={{ width: '300px', float: 'left' }}
+            onChange={e => {
+              this.handelChange(e);
+            }}
+            value={name}
+          />
+        </div>
+        <div
+          style={{
+            width: '100%',
+            height: '32px',
+            lineHeight: ' 32px',
+          }}
+        >
+          <span
+            style={{
+              width: '100px',
+              float: 'left',
+            }}
+          >
+            拼音名称：
+          </span>
+          <Input
+            maxLength={30}
+            style={{ width: '300px', float: 'left' }}
+            onChange={e => {
+              this.handelSortChange(e);
+            }}
+            value={sort}
+          />
+        </div>
       </div>
+      // <div>
+      //   <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
+      //   <Input
+      //     maxLength={20}
+      //     style={{ width: '300px', margin: '0 100px' }}
+      //     onChange={e => {
+      //       this.handelChange(e);
+      //     }}
+      //     value={name}
+      //   />
+      // </div>
     );
     return (
       <div>
@@ -195,7 +267,7 @@ class Group extends Component {
           visible={visible}
           modalContent={modalContent}
           showModal={bol => this.showModal(bol)}
-          clickOK={() => this.clickModalOK(id, name, objId, objName, objType)}
+          clickOK={() => this.clickModalOK(id, name, sort, objId, objName, objType)}
         />
       </div>
     );

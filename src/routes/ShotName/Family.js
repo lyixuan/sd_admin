@@ -20,6 +20,7 @@ class Family extends Component {
       familyName: '家族名字',
       id: 0,
       name: '',
+      sort: '',
     };
   }
   componentDidMount() {
@@ -35,7 +36,8 @@ class Family extends Component {
       objName: record.familyName,
       objType: 'family',
       visible: true,
-      name: '',
+      name: record.objShortName,
+      sort: record.sort,
     });
   };
 
@@ -48,26 +50,37 @@ class Family extends Component {
   };
 
   // 模态框回显
-  clickModalOK = (id, familyShortName, objId, objName, objType) => {
+  clickModalOK = (id, familyShortName, sort, objId, objName, objType) => {
+    this.showModal(true);
     if (!familyShortName) {
       message.error('家族简称不可为空');
-      this.showModal(true);
-    } else {
-      const {familyName=null}= this.state
-      const paramsObj = {
-        id,
-        familyShortName,
-        objId,
-        objName,
-        objType,
-        orgName:familyName,
-      };
-      this.props.dispatch({
+      return;
+    }
+    if (!sort) {
+      message.error('拼音名称不可为空');
+      // this.showModal(true);
+      return;
+    }
+    const { familyName = null } = this.state;
+    const paramsObj = {
+      id,
+      familyShortName,
+      sort,
+      objId,
+      objName,
+      objType,
+      orgName: familyName,
+    };
+    this.props
+      .dispatch({
         type: 'shortName/editFamily',
         payload: { paramsObj },
+      })
+      .then(res => {
+        if (res.code === 2000) {
+          this.showModal(false);
+        }
       });
-      this.showModal(false);
-    }
   };
   // input双向绑定
   handelChange(e) {
@@ -76,6 +89,11 @@ class Family extends Component {
     });
   }
 
+  handelSortChange(e) {
+    this.setState({
+      sort: e.target.value,
+    });
+  }
   // 模态框显隐回调
   showModal = bol => {
     this.setState({
@@ -107,6 +125,10 @@ class Family extends Component {
         dataIndex: 'objShortName',
       },
       {
+        title: '拼音名称',
+        dataIndex: 'sort',
+      },
+      {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
@@ -133,19 +155,70 @@ class Family extends Component {
     const { familyList } = shortName;
     const dataSource = !familyList ? [] : familyList.data;
     const columns = !this.columnsData() ? [] : this.columnsData();
-    const { visible, collegeName, familyName, id, name, objId, objName, objType } = this.state;
+    const {
+      visible,
+      collegeName,
+      familyName,
+      id,
+      name,
+      objId,
+      sort,
+      objName,
+      objType,
+    } = this.state;
     const modalTitle = `${collegeName} | ${familyName}`;
     const modalContent = (
       <div>
-        <p style={{ textAlign: 'center', marginBottom: '10px' }}>{modalTitle}</p>
-        <Input
-          maxLength={20}
-          style={{ width: '300px', margin: '0 100px' }}
-          onChange={e => {
-            this.handelChange(e);
+        <p style={{ textAlign: 'center', marginBottom: '10px' }}> {modalTitle} </p>
+        <div
+          style={{
+            width: '100%',
+            height: '32px',
+            lineHeight: ' 32px',
+            marginBottom: '10px',
           }}
-          value={name}
-        />
+        >
+          <span
+            style={{
+              width: '100px',
+              float: 'left',
+            }}
+          >
+            家族简称：
+          </span>
+          <Input
+            maxLength={30}
+            style={{ width: '300px', float: 'left' }}
+            onChange={e => {
+              this.handelChange(e);
+            }}
+            value={name}
+          />
+        </div>
+        <div
+          style={{
+            width: '100%',
+            height: '32px',
+            lineHeight: ' 32px',
+          }}
+        >
+          <span
+            style={{
+              width: '100px',
+              float: 'left',
+            }}
+          >
+            拼音名称：
+          </span>
+          <Input
+            maxLength={30}
+            style={{ width: '300px', float: 'left' }}
+            onChange={e => {
+              this.handelSortChange(e);
+            }}
+            value={sort}
+          />
+        </div>
       </div>
     );
     return (
@@ -165,21 +238,13 @@ class Family extends Component {
               />
             </div>
           }
-          // contentPagination={
-          //   <SelfPagination
-          //     onChange={(current, pageSize) => {
-          //       this.changePage(current, pageSize);
-          //     }}
-          //     total={dataSource.length}
-          //   />
-          // }
         />
         <ModalDialog
           title="编辑家族短名称"
           visible={visible}
           modalContent={modalContent}
           showModal={bol => this.showModal(bol)}
-          clickOK={() => this.clickModalOK(id, name, objId, objName, objType)}
+          clickOK={() => this.clickModalOK(id, name, sort, objId, objName, objType)}
         />
       </div>
     );
