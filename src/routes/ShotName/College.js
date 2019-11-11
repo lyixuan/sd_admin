@@ -59,7 +59,7 @@ class College extends Component {
       return;
     }
     if (!sort) {
-      message.error('拼音名称不可为空');
+      message.error('排序不可为空');
       // this.showModal(true);
       return;
     }
@@ -123,7 +123,7 @@ class College extends Component {
         dataIndex: 'objShortName',
       },
       {
-        title: '拼音名称',
+        title: '排序',
         dataIndex: 'sort',
       },
       {
@@ -195,7 +195,7 @@ class College extends Component {
               float: 'left',
             }}
           >
-            拼音名称：
+            排序：
           </span>
           <Input
             maxLength={30}

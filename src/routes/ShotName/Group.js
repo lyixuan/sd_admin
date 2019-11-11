@@ -62,7 +62,7 @@ class Group extends Component {
     }
 
     if (!sort) {
-      message.error('拼音名称不可为空');
+      message.error('排序不可为空');
       return;
       // this.showModal(true);
     }
@@ -128,7 +128,7 @@ class Group extends Component {
         dataIndex: 'objShortName',
       },
       {
-        title: '拼音名称',
+        title: '排序',
         dataIndex: 'sort',
       },
       {
@@ -212,7 +212,7 @@ class Group extends Component {
               float: 'left',
             }}
           >
-            拼音名称：
+            排序：
           </span>
           <Input
             maxLength={30}
