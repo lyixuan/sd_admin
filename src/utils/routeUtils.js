@@ -4,17 +4,17 @@ import { CAS_HOST } from './constants';
 
 export function redirectToLogin() {
   localStorage.clear();
-  const { origin, pathname } = window.location;
+  const { origin } = window.location;
   const serverUrl = `${CAS_HOST}/tologin`;
-  window.location.href = `${serverUrl}?originPage=${origin}${pathname}`;
+  window.location.href = `${serverUrl}?originPage=${origin}`;
 }
 
 export function casLogout() {
   localStorage.clear();
-  const { origin, pathname } = window.location;
+  const { origin } = window.location;
   const logoutUrl = `${CAS_HOST}/apis/caslogout?`;
 
-  const pageUrl = `pageUrl=${CAS_HOST}/tologin?originPage=${origin}${pathname}`;
+  const pageUrl = `pageUrl=${CAS_HOST}/tologin?originPage=${origin}`;
   window.location.href = `${logoutUrl}${pageUrl}`;
 }
 export function casLogoutDev() {
