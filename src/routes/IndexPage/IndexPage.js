@@ -7,7 +7,7 @@ import { INDEX_HOST } from '../../utils/constants';
 class IndexPage extends Component {
   componentDidMount() {
     if (INDEX_HOST) {
-      window.location.href = `${INDEX_HOST}/inspector`;
+      window.location.href = `${INDEX_HOST}/inspector/indexPage`;
     }
   }
 
