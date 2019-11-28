@@ -44,7 +44,15 @@
     PMsdk({
       getUserIdentity: PM_getUserId,
       pathnameList: PM_list_name,
-      listFlag: 'black'
+      listFlag: 'black',
+      clickMiniCallback: function () {
+                      const { BI = {} } = window;
+                      BI.traceV &&  BI.traceV({"widgetName":"用户反馈入口","traceName":"用户反馈入口"});
+                },
+                clickNormalCallback: function () {
+                const { BI = {} } = window;
+                        BI.traceV &&  BI.traceV({"widgetName":"用户反馈入口","traceName":"用户反馈入口"});
+                }
     });
 </script>
 </html>
