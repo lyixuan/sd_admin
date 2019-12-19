@@ -4,6 +4,7 @@ import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'dva/router';
 import styles from './index.less';
 import bilogo from '../../assets/new-logo.png';
+import {MENU_HOST} from '../../utils/constants';
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
@@ -33,6 +34,7 @@ export default class GlobalHeader extends PureComponent {
       onNoticeClear,
       selectedGroup,
     } = this.props;
+    let linkUrl = MENU_HOST + '/inspector/indexPage';
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         {selectedGroup.map(item => (
@@ -53,7 +55,9 @@ export default class GlobalHeader extends PureComponent {
           </Link>,
           <Divider type="vertical" key="line" />,
         ]}
-        <img src={bilogo} alt="logo" className={styles.newLogo} />
+        <a href={linkUrl}>
+          <img src={bilogo} alt="logo" className={styles.newLogo} />
+        </a>
         {/*<Icon*/}
         {/*  className={styles.trigger}*/}
         {/*  type={collapsed ? 'menu-unfold' : 'menu-fold'}*/}
