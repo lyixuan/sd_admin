@@ -14,7 +14,7 @@ import SiderMenu from '../components/SiderMenu';
 import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
-import biIcon from '../assets/biIcon.png';
+import biIcon from '../assets/touxiang.png';
 import logo from '../assets/menu/logo.png';
 import { getAuthority } from '../utils/authority';
 import { checkPathname, addRouteData } from '../common/isCheckAuth';
