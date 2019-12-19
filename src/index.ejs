@@ -35,8 +35,18 @@
   <div id="root"></div>
 </body>
 
+<%
+    var traceHost = process.env.ENV_TYPE === 'production'
+        ? 'http://bd.ministudy.com'
+        : 'http://172.16.117.64:9999';
+    var backHost = process.env.ENV_TYPE === 'production'
+        ? 'http://bd.ministudy.com/pm_trace'
+        : 'http://172.16.109.87:20082';
+%>
+
  <!--埋点-->
-<script type="text/javascript" src="http://bd.ministudy.com/trace/trace_sdk.js?v=1.3"></script>
+<script type="text/javascript" src=<%= traceHost %>/trace/trace_sdk.js?v=1.3></script>
+<!--<script type="text/javascript" src="http://bd.ministudy.com/trace/trace_sdk.js?v=1.3"></script>-->
   <script>
     function getUserId() {
       const admin_user = localStorage.getItem('admin_user');
@@ -47,8 +57,8 @@
   </script>
 
 
-
-<script src="http://bd.ministudy.com/pm_trace/post_message_sdk.js"></script>
+<script src=<%= backHost %>/post_message_sdk.js></script>
+<!--<script src="http://bd.ministudy.com/pm_trace/post_message_sdk.js"></script>-->
 <script>
     function PM_getUserId() {
       return JSON.parse(localStorage.getItem('admin_user')).userId;
@@ -59,13 +69,14 @@
       pathnameList: PM_list_name,
       listFlag: 'black',
       clickMiniCallback: function () {
-                      const { BI = {} } = window;
-                      BI.traceV &&  BI.traceV({"widgetName":"用户反馈入口","traceName":"用户反馈入口"});
-                },
-                clickNormalCallback: function () {
-                const { BI = {} } = window;
-                        BI.traceV &&  BI.traceV({"widgetName":"用户反馈入口","traceName":"用户反馈入口"});
-                }
+        const { BI = {} } = window;
+        BI.traceV &&  BI.traceV({"widgetName":"用户反馈入口","traceName":"用户反馈入口"});
+      },
+      clickNormalCallback: function () {
+        const { BI = {} } = window;
+        BI.traceV &&  BI.traceV({"widgetName":"用户反馈入口","traceName":"用户反馈入口"});
+      },
+      windowWidth: document.documentElement.clientWidth || document.body.clientWidth
     });
 </script>
 </html>

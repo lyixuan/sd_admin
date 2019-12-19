@@ -19,6 +19,7 @@ import logo from '../assets/menu/logo.png';
 import { getAuthority } from '../utils/authority';
 import { checkPathname, addRouteData } from '../common/isCheckAuth';
 import HeaderLayout from './Header';
+import style from './basic.less';
 
 const { Content } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -195,30 +196,32 @@ class BasicLayout extends React.PureComponent {
     const layout = (
       <>
         <Layout>
-          <SiderMenu
-            logo={logo}
-            // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
-            // If you do not have the Authorized parameter
-            // you will be forced to jump to the 403 interface without permission
-            // Authorized={Authorized}
-            menuData={menuData}
+          <HeaderLayout
+            {...this.props}
+            logo={biIcon}
+            currentUser={currentUser}
+            fetchingNotices={fetchingNotices}
+            notices={notices}
             collapsed={collapsed}
-            location={location}
             isMobile={this.state.isMobile}
             onCollapse={this.handleMenuCollapse}
+            onNoticeVisibleChange={this.handleNoticeVisibleChange}
           />
-          <Layout style={{ backgroundColor: '#F5F8FA' }}>
-            <HeaderLayout
-              {...this.props}
-              logo={biIcon}
-              currentUser={currentUser}
-              fetchingNotices={fetchingNotices}
-              notices={notices}
+
+          <Layout className={style.contentLayout}>
+            <SiderMenu
+              logo={logo}
+              // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
+              // If you do not have the Authorized parameter
+              // you will be forced to jump to the 403 interface without permission
+              // Authorized={Authorized}
+              menuData={menuData}
               collapsed={collapsed}
+              location={location}
               isMobile={this.state.isMobile}
               onCollapse={this.handleMenuCollapse}
-              onNoticeVisibleChange={this.handleNoticeVisibleChange}
             />
+
             <Content>
               <Switch>
                 {redirectData.map(item => (

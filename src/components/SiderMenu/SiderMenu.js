@@ -82,11 +82,11 @@ export default class SiderMenu extends PureComponent {
   getDefaultCollapsedSubMenus(props) {
     const { location: { pathname } } = props || this.props;
     const open = getMenuMatchKeys(this.flatMenuKeys, urlToList(pathname));
-    const openMenu = open.length > 0 ? open[open.length - 1].parentId : '';
-    if (this.props.collapsed && openMenu) {
-      this.props.onCollapse(false);
-    }
-    return { openMenu, openKeys: open.map(item => item.path) };
+    const openKeys = open.length > 0 ? [open[open.length - 1].parentId.toString()] : [];
+    // if (this.props.collapsed && openMenu) {
+    //   this.props.onCollapse(false);
+    // }
+    return { openKeys, selectKeys: open.map(item => item.path) };
   }
 
   /**
@@ -102,13 +102,15 @@ export default class SiderMenu extends PureComponent {
     // Is it a http link
     if (/^https?:\/\//.test(itemPath)) {
       return (
-        <a href={itemPath} target={target}>
-          <span>{name}</span>
+        <a href={itemPath} target={target} className={styles.secondaryMenu}>
+          <span className={styles.dot}> </span>
+          <span className={styles.name}>{name}</span>
         </a>
       );
     }
     return (
       <Link
+        className={styles.secondaryMenu}
         to={itemPath}
         target={target}
         replace={itemPath === this.props.location.pathname}
@@ -120,7 +122,8 @@ export default class SiderMenu extends PureComponent {
             : undefined
         }
       >
-        <span>{name}</span>
+        <span className={styles.dot}> </span>
+        <span className={styles.name}>{name}</span>
       </Link>
     );
   };
@@ -145,7 +148,7 @@ export default class SiderMenu extends PureComponent {
                 item.name
               )
             }
-            key={item.path}
+            key={item.id}
           >
             {childrenItems}
           </SubMenu>
@@ -250,37 +253,43 @@ export default class SiderMenu extends PureComponent {
     return this.state.menus.some(item => key && (item.key === key || item.path === key));
   };
   handleOpenChange = openKeys => {
-    const lastOpenKey = openKeys[openKeys.length - 1];
-    const moreThanOne = openKeys.filter(openKey => this.isMainMenu(openKey)).length > 1;
+    // const lastOpenKey = openKeys[openKeys.length - 1];
+    // const moreThanOne = openKeys.filter(openKey => this.isMainMenu(openKey)).length > 1;
     this.setState({
-      openKeys: moreThanOne ? [lastOpenKey] : [...openKeys],
+      openKeys: openKeys,
+    });
+  };
+  changeSelect = ({ key }) => {
+    this.setState({
+      selectKeys: [key],
     });
   };
   render() {
-    const { logo, collapsed } = this.props;
+    const { menuData } = this.props;
+    const { openKeys, selectKeys } = this.state;
     return (
-      <div className={styles.menuPart}>
-        <Sider trigger={null} collapsible breakpoint="lg" width={80} className={styles.sider}>
-          <div className={styles.logo} key="logo">
-            <Link to="/">
-              <img src={logo} alt="logo" />
-            </Link>
-          </div>
-          <ul className={styles.menuUl}>{this.getMenuItems(this.state.menus)}</ul>
-        </Sider>
-        {!collapsed &&
-          this.state.openMenu && (
-            <Menu
-              key="Menu"
-              theme="light"
-              mode="inline"
-              onOpenChange={this.handleOpenChange}
-              selectedKeys={this.state.openKeys}
-            >
-              {this.getNavMenuItems(this.getCurrentMenu())}
-            </Menu>
-          )}
-      </div>
+      <Sider
+        trigger={null}
+        // collapsible
+        breakpoint="lg"
+        width={152}
+        className={styles.sider}
+      >
+        <div className={styles.menuBox}>
+          <Menu
+            key="Menu"
+            theme="light"
+            mode="inline"
+            className={styles.menuInner}
+            openKeys={openKeys}
+            selectedKeys={selectKeys}
+            onOpenChange={this.handleOpenChange}
+            onSelect={this.changeSelect}
+          >
+            {this.getNavMenuItems(menuData)}
+          </Menu>
+        </div>
+      </Sider>
     );
   }
 }
