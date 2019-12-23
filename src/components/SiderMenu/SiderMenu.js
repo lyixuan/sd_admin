@@ -5,6 +5,8 @@ import { Link } from 'dva/router';
 import { MENU_HOST } from '@/utils/constants';
 import styles from './index.less';
 import { urlToList } from '../_utils/pathTools';
+import { getAuthority } from 'utils/authority';
+import { ADMIN_AUTH_LIST } from '@/utils/constants';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -30,7 +32,7 @@ const getIcon = icon => {
  */
 export const getFlatMenuKeys = menu =>
   menu.reduce((keys, item) => {
-    keys.push({ path: item.path, parentId: item.parentId });
+    keys.push({ path: item.path, parentId: item.parentId, level: item.level });
     if (item.children) {
       return keys.concat(getFlatMenuKeys(item.children));
     }
@@ -80,13 +82,26 @@ export default class SiderMenu extends PureComponent {
    * @param  props
    */
   getDefaultCollapsedSubMenus(props) {
+    let routeData = getAuthority(ADMIN_AUTH_LIST) || [];
+    routeData = routeData.filter(
+      item => item.resourceUrl !== '/' && item.resourceUrl !== '/indexPage'
+    );
+    routeData.forEach(item => {
+      item.path = item.resourceUrl
+    });
+
     const { location: { pathname } } = props || this.props;
-    const open = getMenuMatchKeys(this.flatMenuKeys, urlToList(pathname));
-    const openKeys = open.length > 0 ? [open[open.length - 1].parentId.toString()] : [];
-    // if (this.props.collapsed && openMenu) {
-    //   this.props.onCollapse(false);
-    // }
-    return { openKeys, selectKeys: open.map(item => item.path) };
+    const open = getMenuMatchKeys(routeData, urlToList(pathname));
+    let match = open.length > 0 ? open[open.length - 1] : {};
+    if (match.level && match.level === 3) {
+      let level2 = routeData.filter(item => item.id === match.parentId)[0];
+      let openKeys = [level2.parentId.toString()];
+      let selectKeys = [level2.path];
+      return {openKeys, selectKeys}
+    } else {
+      const openKeys = open.length > 0 ? [match.parentId.toString()] : [];
+      return { openKeys, selectKeys: open.map(item => item.path) };
+    }
   }
 
   /**
