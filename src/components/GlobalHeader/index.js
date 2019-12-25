@@ -4,6 +4,7 @@ import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'dva/router';
 import styles from './index.less';
 import bilogo from '../../assets/new-logo.png';
+import downloadImg from '../../assets/download.png';
 import {MENU_HOST} from '../../utils/constants';
 
 export default class GlobalHeader extends PureComponent {
@@ -34,7 +35,8 @@ export default class GlobalHeader extends PureComponent {
       onNoticeClear,
       selectedGroup,
     } = this.props;
-    let linkUrl = MENU_HOST + '/inspector/indexPage';
+    let logoUrl = MENU_HOST + '/inspector/indexPage';
+    let downloadUrl = MENU_HOST + '/inspector/downloadCenter';
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         {selectedGroup.map(item => (
@@ -55,7 +57,7 @@ export default class GlobalHeader extends PureComponent {
           </Link>,
           <Divider type="vertical" key="line" />,
         ]}
-        <a href={linkUrl}>
+        <a href={logoUrl}>
           <img src={bilogo} alt="logo" className={styles.newLogo} />
         </a>
         {/*<Icon*/}
@@ -64,6 +66,9 @@ export default class GlobalHeader extends PureComponent {
         {/*  onClick={this.toggle}*/}
         {/*/>*/}
         <div className={styles.right}>
+          <a className={styles.download} href={downloadUrl}>
+            <img src={downloadImg} alt="" className={styles.image}/>
+          </a>
           {currentUser.name ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
