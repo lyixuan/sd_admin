@@ -39,6 +39,9 @@ export default class GlobalHeader extends PureComponent {
     let downloadUrl = MENU_HOST + '/inspector/downloadCenter';
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
+        <Menu.Item className={styles.userName}>
+          <span>{currentUser.name}</span>
+        </Menu.Item>
         {selectedGroup.map(item => (
           <Menu.Item key={item.id}>
             <span style={{ display: 'inline-block', width: '20px', marginLeft: '-3px' }}>
@@ -70,7 +73,7 @@ export default class GlobalHeader extends PureComponent {
             <img src={downloadImg} alt="" className={styles.image}/>
           </a>
           {currentUser.name ? (
-            <Dropdown overlay={menu}>
+            <Dropdown overlay={menu} placement="bottomRight">
               <span className={`${styles.action} ${styles.account}`}>
                 <Avatar size="large" className={styles.avatar} src={currentUser.avatar} />
                 {/*<span className={styles.name}>{currentUser.name}</span>*/}
