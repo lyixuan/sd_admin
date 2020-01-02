@@ -247,14 +247,14 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['permission'], () =>
         import('../routes/Permission/PermissionList')
       ),
-      name: '权限信息',
+      name: '权限管理',
     },
 
     '/config/cacheManage': {
       component: dynamicWrapper(app, ['cacheManage'], () =>
         import('../routes/CacheManage/CacheManage')
       ),
-      name: '缓存管理',
+      name: '学分缓存',
     },
 
     '/role/editRole': {
@@ -283,11 +283,11 @@ export const getRouterData = app => {
     },
     '/config/roleList': {
       component: dynamicWrapper(app, ['role'], () => import('../routes/Role/RoleList')),
-      name: '角色信息',
+      name: '角色管理',
     },
     '/bottomLine/refundList': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundList')),
-      name: '退费信息',
+      name: '退费管理',
     },
     '/refund/refundAdd': {
       component: dynamicWrapper(app, ['refund'], () => import('../routes/Refund/RefundAdd')),
@@ -325,7 +325,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['blComplain'], () =>
         import('../routes/Complaint/ComplaintList')
       ),
-      name: '投诉信息',
+      name: '投诉管理',
     },
     '/complaint/complaintAdd': {
       component: dynamicWrapper(app, ['blComplain'], () =>
@@ -702,7 +702,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['excellent'], () =>
         import('../routes/ExcellentCase/ExcellentCase')
       ),
-      name: '创新与优秀案例',
+      name: '能力认证',
     },
     '/excellent/addExcellentCase': {
       component: dynamicWrapper(app, ['excellent'], () =>
@@ -729,7 +729,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['otherConfig'], () =>
         import('../routes/OtherConfig/OfficialSet')
       ),
-      name: '文案配置',
+      name: '文案设置',
     },
     // ---- 创收绩效 begin -----
 
@@ -744,7 +744,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['bottomOrder_createIncome', 'stepsModel'], () =>
         import('../routes/BottomOrder/CreateIncome/List')
       ),
-      name: '创收成单',
+      name: '成单底表',
     },
     '/bottomOrder/createIncomeAdd': {
       component: dynamicWrapper(app, ['bottomOrder_createIncome', 'batch'], () =>
