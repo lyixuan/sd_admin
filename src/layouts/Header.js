@@ -11,11 +11,13 @@ import styles from './styles/header.less';
 const { Header } = Layout;
 const RadioGroup = Radio.Group;
 
-@connect(({ login = {}, loading }) => ({
+@connect(({ global, login = {}, loading }) => ({
   login,
   loading,
   getRoleListLoading: loading.effects['login/CurrentUserListRole'],
   roleList: login.roleList || [],
+  headerImage: global.headerImage,
+  headerBackgroundColor: global.headerBackgroundColor
 }))
 export default class SelfHeader extends PureComponent {
   constructor(props) {
@@ -100,9 +102,19 @@ export default class SelfHeader extends PureComponent {
   };
   render() {
     const { visible } = this.state;
+    const {headerImage, headerBackgroundColor} = this.props;
     const selectedGroup = this.handleMenuList();
+
+    // 动态设置头部背景色和背景图片
+    let headerStyle = {
+		  backgroundColor: headerBackgroundColor || ''
+    };
+    if (headerImage !== '') {
+      headerStyle.backgroundImage = `url("${headerImage}")`
+    }
+
     return (
-      <Header className={styles.headerWrap}>
+      <Header className={styles.headerWrap} style={headerStyle}>
         <GlobalHeader
           {...this.props}
           onMenuClick={this.handleMenuClick}

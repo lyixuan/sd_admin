@@ -1,3 +1,5 @@
+@import "../basic";
+
 .headerWrap {
   position: fixed;
   top: 0;
@@ -7,7 +9,10 @@
   padding: 0;
   height: 54px;
   line-height: 54px;
-  background: #ffe300;
+  background-color: @header-background;
+  background-repeat:no-repeat;
+  background-size:1260px 56px;
+  background-position:center 0;
 }
 // 设置radio组的样式
 .modalContent :global(.ant-radio-group) {

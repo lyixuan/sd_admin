@@ -1,9 +1,18 @@
+import {getThemeData} from '../../services/api';
+
 export default {
   namespace: 'global',
 
   state: {
     collapsed: true,
     notices: [],
+    tempLogo: null,
+    headerBackgroundColor: null,
+    layoutBackgroundColor: null,
+    headerImage: null,
+    layoutImage: null,
+    pmsdkImage: null,
+    animation: null
   },
 
   effects: {
@@ -18,6 +27,16 @@ export default {
         payload: count,
       });
     },
+    *getThemeInfo({payload}, {call, put}) {
+      let res = yield call(getThemeData);
+      if (res && res.code === 20000) {
+        let data = res.data;
+        yield put({
+          type: 'saveThemeData',
+          payload: data
+        })
+      } else {}
+    }
   },
 
   reducers: {
@@ -39,6 +58,12 @@ export default {
         notices: state.notices.filter(item => item.type !== payload),
       };
     },
+    saveThemeData(state, {payload}) {
+      return {
+        ...state,
+        ...payload
+      }
+    }
   },
 
   subscriptions: {

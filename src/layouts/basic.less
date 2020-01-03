@@ -1,9 +1,26 @@
+@outer-layout-background: #F4F4F4;
+@header-background: #FFE300;
+@menu-background: #ffffff;
+@menu-hover-color: #FFE300;
+@menu-select-color: #FFE300;
+@menu-text-color: #282828;
+@menu-select-text: #282828;
+@menu-arrow-color: #B9B9B9;
+
+.outerLayout {
+  background-color: @outer-layout-background;
+  background-repeat:no-repeat;
+  background-size:1920px 650px;
+  background-position:50% 76px;
+  background-attachment:fixed;
+}
 .contentLayout {
   display: flex;
   margin: 76px auto 0;
   width: 1260px;
   border-radius:20px;
   overflow:hidden;
+  background:rgba(0, 0, 0, 0);
 }
 :global(.ant-layout-content) {
   -ms-flex: auto;

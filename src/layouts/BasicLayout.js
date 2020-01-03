@@ -20,6 +20,7 @@ import { getAuthority } from '../utils/authority';
 import { checkPathname, addRouteData } from '../common/isCheckAuth';
 import HeaderLayout from './Header';
 import style from './basic.less';
+import ThingsFall from '../utils/thingsFall';
 
 const { Content } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -111,6 +112,9 @@ class BasicLayout extends React.PureComponent {
 
     this.MenuData();
     this.setRedirectData(this.props.menuData);
+    this.props.dispatch({
+      type: 'global/getThemeInfo'
+    });
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (JSON.stringify(nextProps.menuData) !== JSON.stringify(this.props.menuData)) {
@@ -186,16 +190,50 @@ class BasicLayout extends React.PureComponent {
   };
 
   render() {
-    const { collapsed, fetchingNotices, notices, match, location } = this.props;
+    const {
+      collapsed,
+      fetchingNotices,
+      notices,
+      match,
+      location,
+      layoutBackgroundColor,
+      layoutImage,
+      pmsdkImage,
+      animation } = this.props;
     let { routerData } = this.props;
     const { menuData } = this.props;
     const currentUser = this.handleUserInfo();
     currentUser.avatar = biIcon;
     const bashRedirect = this.getBaseRedirect();
     routerData = addRouteData(routerData);
+
+    // 动态设置全屏动效
+    if (animation && animation.image) {
+      let thingsFall = new ThingsFall({
+        image: animation.image,
+        continueTime: animation.continueTime,
+        minRadius: animation.minRadius,
+        maxRadius: animation.maxRadius
+      });
+    }
+
+    // 动态设置layout的背景色和背景图
+    let wrapStyle = {
+      backgroundColor: layoutBackgroundColor,
+    };
+    if (layoutImage !== '') {
+      wrapStyle.backgroundImage = `url("${layoutImage}")`
+    }
+
+    // 动态设置小德反馈入口的图片
+    if (pmsdkImage) {
+      let pmDom = document.getElementsByClassName('seven_entry_mini')[0];
+      pmDom.src = pmsdkImage;
+    }
+
     const layout = (
       <>
-        <Layout>
+        <Layout className={style.outerLayout} style={wrapStyle}>
           <HeaderLayout
             {...this.props}
             logo={biIcon}
@@ -266,4 +304,8 @@ export default connect(({ global, menu, login, loading }) => ({
   login,
   menuData: menu.menuData,
   collapsed: global.collapsed,
+  layoutBackgroundColor: global.layoutBackgroundColor,
+  layoutImage: global.layoutImage,
+  pmsdkImage: global.pmsdkImage,
+  animation: global.animation
 }))(BasicLayout);

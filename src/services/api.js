@@ -1239,3 +1239,8 @@ export async function stepSubmit(params) {
     body: params,
   });
 }
+
+// 获取主题相关信息
+export function getThemeData() {
+  return request(`${HOST_NEW}/globalApi/getThemeInfo`);
+}
