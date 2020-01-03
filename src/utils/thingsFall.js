@@ -5,12 +5,24 @@ let myImage = new Image();
 let fps = 60;
 let MAX_SPEED_X, MAX_SPEED_Y, G;
 
+/*
+* image 图片
+* width canvas宽度
+* height canvas高度
+* interval 每间隔一段时间向画布上添加一个新图像 ms
+* continueTime 效果持续时间 ms
+* maxRadius 图像最大直径
+* minRadius 图像最小直径
+* maxSpeedX 图像最大X轴速度
+* maxSpeedY 图像最大Y轴速度
+* G 加速度
+* */
 class ThingsFall {
   constructor(props) {
     this.things = [];
     this.canvasWidth = props.width || window.innerWidth;
     this.canvasHeight = props.height || window.innerHeight;
-    this.addThingsInterval = props.interval || 150;
+    this.addThingsInterval = props.interval || 500;
     this.recordTime = 0;
     this.startTime = Date.now();
     this.timing = 0;
@@ -37,7 +49,7 @@ class ThingsFall {
 
     myCanvas.width = this.canvasWidth;
     myCanvas.height = this.canvasHeight;
-    myCanvas.style.cssText = 'position: fixed; top: 0; left: 0; pointer-events: none;';
+    myCanvas.style.cssText = 'position: fixed; top: 0; z-index: 11; left: 0; pointer-events: none;';
     document.body.appendChild(myCanvas);
 
     if (this.continueTime) {
@@ -79,6 +91,7 @@ class ThingsFall {
       item.draw();
       if (item.y > this.canvasHeight) {
         this.things.splice(index, 1);
+        item = null;
       }
     });
 

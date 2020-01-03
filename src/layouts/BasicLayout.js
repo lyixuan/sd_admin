@@ -209,12 +209,14 @@ class BasicLayout extends React.PureComponent {
 
     // 动态设置全屏动效
     if (animation && animation.image) {
-      let thingsFall = new ThingsFall({
-        image: animation.image,
-        continueTime: animation.continueTime,
-        minRadius: animation.minRadius,
-        maxRadius: animation.maxRadius
-      });
+      if (!this.thingsFall) {
+        this.thingsFall = new ThingsFall({
+          image: animation.image,
+          continueTime: animation.continueTime,
+          minRadius: animation.minRadius,
+          maxRadius: animation.maxRadius
+        });
+      }
     }
 
     // 动态设置layout的背景色和背景图
