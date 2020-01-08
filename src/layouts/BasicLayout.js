@@ -220,17 +220,20 @@ class BasicLayout extends React.PureComponent {
     }
 
     // 动态设置layout的背景色和背景图
-    let wrapStyle = {
-      backgroundColor: layoutBackgroundColor,
-    };
-    if (layoutImage !== '') {
+    let wrapStyle = {};
+    if (layoutBackgroundColor) {
+      wrapStyle.backgroundColor = layoutBackgroundColor;
+    }
+    if (layoutImage) {
       wrapStyle.backgroundImage = `url("${layoutImage}")`
     }
 
     // 动态设置小德反馈入口的图片
     if (pmsdkImage) {
       let pmDom = document.getElementsByClassName('seven_entry_mini')[0];
-      pmDom.src = pmsdkImage;
+      if (pmDom) {
+        pmDom.src = pmsdkImage;
+      }
     }
 
     const layout = (
