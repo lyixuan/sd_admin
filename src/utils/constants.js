@@ -61,6 +61,38 @@ export const TABLE_PAGES_NUM = 30;
 // 数据分析师id
 export const DATA_ANALYST_ID = '122';
 
+export const DEBUGGER_USER = {
+  localhost: 'zhanglulu02',
+}[process.env.LOGIN_HOST];
+
+// 下载类资源host
+export const STATIC_HOST = {
+  development: 'http://172.16.117.65:8091',
+  production: 'http://bd.ministudy.com/download',
+}[process.env.API_TYPE];
+
+// 设置domain域名
+export const DOMAIN_HOST = '.ministudy.com';
+
+export const CAS_HOST = {
+  localhost: 'http://test.xd.admin.ministudy.com',
+  development: 'http://test.xd.admin.ministudy.com',
+  production: 'http://bd.ministudy.com',
+}[process.env.LOGIN_HOST];
+
+export const API_HOST = {
+  localhost: 'http://test.xd.admin.ministudy.com',
+  development: 'http://test.xd.admin.ministudy.com',
+  production: 'http://bd.ministudy.com',
+}[process.env.LOGIN_HOST];
+
+// 设置督学模块跳转
+export const INSPECTOR_HOST = {
+  localhost: 'http://test.xd.admin.ministudy.com',
+  development: 'http://test.xd.admin.ministudy.com',
+  production: 'http://bd.ministudy.com',
+}[process.env.LOGIN_HOST];
+
 // Global Header Select
 export const GLOBAL_HEADER_SELECT = [
   { id: 'changeRole', name: '切换角色', icon: 'user' },
