@@ -1053,7 +1053,53 @@ export async function deleteReview(params) {
     body: params,
   });
 }
+// 优质帖
+export async function highQualityList(params) {
+  return request(`${HOST_NEW}/ugc/queryPage`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 优质帖上传文件的方法
+export function UGCimportUpload() {
+  return `${HOST_NEW}/ugc/importUpload`;
+}
+// 优质帖校验文件
+export function UGCimportCheck(params) {
+  return request(`${HOST_NEW}/ugc/importCheck`, {
+    method: 'POST',
+    body: params,
+  });
+}
 
+// 优质帖提交excel文件/ugc/importSubmit
+export async function UGCimportSubmit(params) {
+  return request(`${HOST_NEW}/ugc/importSubmit`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 优质帖校验编号
+export async function UGCdeleteCheck(params) {
+  return request(`${HOST_NEW}/ugc/deleteCheck`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 优质帖复合编号
+export async function UGCdeleteReview(params) {
+  return request(`${HOST_NEW}/ugc/deleteReview`, {
+    method: 'POST',
+    body: params,
+  });
+}
+// 优质帖删除编号
+export async function UGCdeleteRecommend(params) {
+  return request(`${HOST_NEW}/ugc/deleteSubmit`, {
+    method: 'POST',
+    body: params,
+  });
+}
 // 选择文件
 export function importSelect() {
   return `${HOST}/student/recommend/importSelect`;
