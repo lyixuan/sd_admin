@@ -553,6 +553,33 @@ export const getRouterData = app => {
       },
       name: '删除数据',
     },
+    // 优质帖High quality stickers
+    '/highQuality/highQualityList': {
+      component: dynamicWrapper(app, ['highQuality'], () =>
+        import('../routes/HighQuality/HighQualityList')
+      ),
+      name: '优质帖',
+    },
+    '/highQuality/highQualityAdd': {
+      component: dynamicWrapper(app, ['highQuality'], () =>
+        import('../routes/HighQuality/HighQualityAdd')
+      ),
+      bread: {
+        name: '优质帖',
+        path: '/highQuality/highQualityList',
+      },
+      name: '添加数据',
+    },
+    '/highQuality/highQualityDel': {
+      component: dynamicWrapper(app, ['highQuality'], () =>
+        import('../routes/HighQuality/HighQualityDel')
+      ),
+      bread: {
+        name: '优质帖',
+        path: '/highQuality/highQualityList',
+      },
+      name: '删除数据',
+    },
     '/exception': {
       component: dynamicWrapper(app, [], () => import('../layouts/ExceptionLayout')),
     },
