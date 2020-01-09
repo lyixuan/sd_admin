@@ -147,7 +147,7 @@ class RefundAdd extends Component {
             margin: '116px auto 0',
           }}
         >
-          本次添加好学生推荐数量
+          本次添加优质帖数量
           <span style={{ color: '#52C9C2' }}>{sucessNum}</span>
           条！确定上传？
         </div>
