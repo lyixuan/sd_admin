@@ -1,1 +1,1 @@
-# sd_inspector
+# sd_admin
